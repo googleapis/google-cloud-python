@@ -1315,7 +1315,7 @@ libraries:
       - packages/google-cloud-contact-center-insights/
     tag_format: '{id}-v{version}'
   - id: google-cloud-container
-    version: 2.60.0
+    version: 2.61.0
     last_generated_commit: 94ccdfe4519e0ba817bd33aa22eb9c64f88a6874
     apis:
       - path: google/container/v1
@@ -1693,7 +1693,7 @@ libraries:
       - packages/google-cloud-dialogflow-cx
     tag_format: '{id}-v{version}'
   - id: google-cloud-discoveryengine
-    version: 0.14.0
+    version: 0.15.0
     last_generated_commit: c288189b43c016dd3cf1ec73ce3cadee8b732f07
     apis:
       - path: google/cloud/discoveryengine/v1
@@ -2093,7 +2093,7 @@ libraries:
       - packages/google-cloud-gke-multicloud
     tag_format: '{id}-v{version}'
   - id: google-cloud-gkerecommender
-    version: 0.0.0
+    version: 0.1.0
     last_generated_commit: 94ccdfe4519e0ba817bd33aa22eb9c64f88a6874
     apis:
       - path: google/cloud/gkerecommender/v1
@@ -2739,7 +2739,7 @@ libraries:
       - packages/google-cloud-optimization/
     tag_format: '{id}-v{version}'
   - id: google-cloud-oracledatabase
-    version: 0.2.0
+    version: 0.3.0
     last_generated_commit: 94ccdfe4519e0ba817bd33aa22eb9c64f88a6874
     apis:
       - path: google/cloud/oracledatabase/v1
@@ -3696,7 +3696,7 @@ libraries:
       - packages/google-cloud-telcoautomation/
     tag_format: '{id}-v{version}'
   - id: google-cloud-texttospeech
-    version: 2.32.0
+    version: 2.33.0
     last_generated_commit: c288189b43c016dd3cf1ec73ce3cadee8b732f07
     apis:
       - path: google/cloud/texttospeech/v1
@@ -4183,7 +4183,7 @@ libraries:
       - packages/google-maps-mapsplatformdatasets
     tag_format: '{id}-v{version}'
   - id: google-maps-places
-    version: 0.3.0
+    version: 0.4.0
     last_generated_commit: 55319b058f8a0e46bbeeff30e374e4b1f081f494
     apis:
       - path: google/maps/places/v1

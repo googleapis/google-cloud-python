@@ -4,6 +4,14 @@
 
 [1]: https://pypi.org/project/google-cloud-texttospeech/#history
 
+## [2.33.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-texttospeech-v2.32.0...google-cloud-texttospeech-v2.33.0) (2025-10-23)
+
+
+### Features
+
+* add `relax_safety_filters` proto field for Gemini TTS  ([1dbd0988eebdb63c7f08737d45f9ff67735ab396](https://github.com/googleapis/google-cloud-python/commit/1dbd0988eebdb63c7f08737d45f9ff67735ab396))
+* add `relax_safety_filters` proto field for Gemini TTS  ([1dbd0988eebdb63c7f08737d45f9ff67735ab396](https://github.com/googleapis/google-cloud-python/commit/1dbd0988eebdb63c7f08737d45f9ff67735ab396))
+
 ## [2.32.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-texttospeech-v2.31.0...google-cloud-texttospeech-v2.32.0) (2025-10-20)
 
 

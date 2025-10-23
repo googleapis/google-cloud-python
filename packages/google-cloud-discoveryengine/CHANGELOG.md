@@ -4,6 +4,14 @@
 
 [1]: https://pypi.org/project/google-cloud-discoveryengine/#history
 
+## [0.15.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-discoveryengine-v0.14.0...google-cloud-discoveryengine-v0.15.0) (2025-10-23)
+
+
+### Bug Fixes
+
+* Add labels for additional Sessions identification  ([1dbd0988eebdb63c7f08737d45f9ff67735ab396](https://github.com/googleapis/google-cloud-python/commit/1dbd0988eebdb63c7f08737d45f9ff67735ab396))
+* Include AssistAnswer as a part of the Session  ([1dbd0988eebdb63c7f08737d45f9ff67735ab396](https://github.com/googleapis/google-cloud-python/commit/1dbd0988eebdb63c7f08737d45f9ff67735ab396))
+
 ## [0.14.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-discoveryengine-v0.13.12...google-cloud-discoveryengine-v0.14.0) (2025-10-16)
 
 

@@ -4,6 +4,31 @@
 
 [1]: https://pypi.org/project/google-cloud-container/#history
 
+## [2.61.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-container-v2.60.0...google-cloud-container-v2.61.0) (2025-10-23)
+
+
+### Documentation
+
+* various documentation fixes  ([9170f84f016ab7563d9610b3c20a429ce03811c8](https://github.com/googleapis/google-cloud-python/commit/9170f84f016ab7563d9610b3c20a429ce03811c8))
+* various documentation fixes  ([9170f84f016ab7563d9610b3c20a429ce03811c8](https://github.com/googleapis/google-cloud-python/commit/9170f84f016ab7563d9610b3c20a429ce03811c8))
+
+
+### Features
+
+* add network_tier_config field to NodeNetworkConfig  ([9170f84f016ab7563d9610b3c20a429ce03811c8](https://github.com/googleapis/google-cloud-python/commit/9170f84f016ab7563d9610b3c20a429ce03811c8))
+* add membership_type field to Fleet  ([9170f84f016ab7563d9610b3c20a429ce03811c8](https://github.com/googleapis/google-cloud-python/commit/9170f84f016ab7563d9610b3c20a429ce03811c8))
+* deprecate enterprise_config field in Cluster  ([9170f84f016ab7563d9610b3c20a429ce03811c8](https://github.com/googleapis/google-cloud-python/commit/9170f84f016ab7563d9610b3c20a429ce03811c8))
+* add end_time_behavior field to MaintenanceExclusionOptions  ([9170f84f016ab7563d9610b3c20a429ce03811c8](https://github.com/googleapis/google-cloud-python/commit/9170f84f016ab7563d9610b3c20a429ce03811c8))
+* add rotation_config field to SecretManagerConfig  ([9170f84f016ab7563d9610b3c20a429ce03811c8](https://github.com/googleapis/google-cloud-python/commit/9170f84f016ab7563d9610b3c20a429ce03811c8))
+* add node_kernel_module_loading field to LinuxNodeConfig  ([9170f84f016ab7563d9610b3c20a429ce03811c8](https://github.com/googleapis/google-cloud-python/commit/9170f84f016ab7563d9610b3c20a429ce03811c8))
+* deprecate enable_legacy_lustre_port field in LustreCsiDriverConfig  ([9170f84f016ab7563d9610b3c20a429ce03811c8](https://github.com/googleapis/google-cloud-python/commit/9170f84f016ab7563d9610b3c20a429ce03811c8))
+* add autoscaled_rollout_policy field to BlueGreenSettings  ([9170f84f016ab7563d9610b3c20a429ce03811c8](https://github.com/googleapis/google-cloud-python/commit/9170f84f016ab7563d9610b3c20a429ce03811c8))
+* add writable_cgroups field to ContainerdConfig  ([9170f84f016ab7563d9610b3c20a429ce03811c8](https://github.com/googleapis/google-cloud-python/commit/9170f84f016ab7563d9610b3c20a429ce03811c8))
+* add privileged_admission_config field to Autopilot  ([9170f84f016ab7563d9610b3c20a429ce03811c8](https://github.com/googleapis/google-cloud-python/commit/9170f84f016ab7563d9610b3c20a429ce03811c8))
+* add network_tier_config field to IPAllocationPolicy  ([9170f84f016ab7563d9610b3c20a429ce03811c8](https://github.com/googleapis/google-cloud-python/commit/9170f84f016ab7563d9610b3c20a429ce03811c8))
+* deprecate desired_enterprise_config field in ClusterUpdate  ([9170f84f016ab7563d9610b3c20a429ce03811c8](https://github.com/googleapis/google-cloud-python/commit/9170f84f016ab7563d9610b3c20a429ce03811c8))
+* add desired_secret_sync_config to ClusterUpdate  ([9170f84f016ab7563d9610b3c20a429ce03811c8](https://github.com/googleapis/google-cloud-python/commit/9170f84f016ab7563d9610b3c20a429ce03811c8))
+
 ## [2.60.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-container-v2.59.0...google-cloud-container-v2.60.0) (2025-10-16)
 
 
