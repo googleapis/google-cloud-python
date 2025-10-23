@@ -4,6 +4,23 @@
 
 [1]: https://pypi.org/project/google-cloud-spanner/#history
 
+## [3.59.0](https://github.com/googleapis/python-spanner/compare/v3.58.0...v3.59.0) (2025-10-18)
+
+
+### Features
+
+* **spanner:** Add lazy decode to partitioned query ([#1411](https://github.com/googleapis/python-spanner/issues/1411)) ([a09961b](https://github.com/googleapis/python-spanner/commit/a09961b381314e3f06f1ff4be7b672cd9da9c64b))
+
+
+### Bug Fixes
+
+* **spanner:** Resolve TypeError in metrics resource detection ([#1446](https://github.com/googleapis/python-spanner/issues/1446)) ([7266686](https://github.com/googleapis/python-spanner/commit/7266686d6773f39a30603061ae881e258421d927))
+
+
+### Documentation
+
+* Add snippet for Repeatable Read configuration at client and transaction  ([#1326](https://github.com/googleapis/python-spanner/issues/1326)) ([58e2406](https://github.com/googleapis/python-spanner/commit/58e2406af3c8918e37e0daadefaf537073aed1a4))
+
 ## [3.58.0](https://github.com/googleapis/python-spanner/compare/v3.57.0...v3.58.0) (2025-09-10)
 
 
