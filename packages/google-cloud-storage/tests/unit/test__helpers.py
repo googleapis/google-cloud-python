@@ -735,7 +735,7 @@ class _MD5(object):
         self.hash_obj = _MD5Hash(digest_val)
         self._called = []
 
-    def __call__(self, data=None):
+    def __call__(self, data=None, usedforsecurity=True):
         self._called.append(data)
         return self.hash_obj
 

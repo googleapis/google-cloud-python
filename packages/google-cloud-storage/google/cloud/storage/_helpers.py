@@ -21,6 +21,7 @@ import base64
 import datetime
 from hashlib import md5
 import os
+import sys
 from urllib.parse import urlsplit
 from urllib.parse import urlunsplit
 from uuid import uuid4
@@ -536,7 +537,10 @@ def _base64_md5hash(buffer_object):
     :rtype: str
     :returns: A base64 encoded digest of the MD5 hash.
     """
-    hash_obj = md5()
+    if sys.version_info >= (3, 9):
+        hash_obj = md5(usedforsecurity=False)
+    else:
+        hash_obj = md5()
     _write_buffer_to_hash(buffer_object, hash_obj)
     digest_bytes = hash_obj.digest()
     return base64.b64encode(digest_bytes)
