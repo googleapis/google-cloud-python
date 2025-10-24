@@ -49,4 +49,5 @@ async def sample_get_asset():
     # Handle the response
     print(response)
 
+
 # [END dataplex_v1_generated_DataplexService_GetAsset_async]

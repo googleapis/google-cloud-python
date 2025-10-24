@@ -10,4 +10,4 @@ google-auth==2.14.1
 # Add the minimum supported version of grpcio to constraints files
 proto-plus==1.22.3
 protobuf==3.20.2
-google-apps-card==0.1.2
+google-apps-card==0.3.0

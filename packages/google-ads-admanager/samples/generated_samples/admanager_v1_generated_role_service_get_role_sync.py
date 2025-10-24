@@ -49,4 +49,5 @@ def sample_get_role():
     # Handle the response
     print(response)
 
+
 # [END admanager_v1_generated_RoleService_GetRole_sync]

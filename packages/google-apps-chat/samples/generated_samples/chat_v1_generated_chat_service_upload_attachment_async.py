@@ -50,4 +50,5 @@ async def sample_upload_attachment():
     # Handle the response
     print(response)
 
+
 # [END chat_v1_generated_ChatService_UploadAttachment_async]

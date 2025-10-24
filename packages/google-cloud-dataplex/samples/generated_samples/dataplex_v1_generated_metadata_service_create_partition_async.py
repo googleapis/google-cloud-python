@@ -40,7 +40,7 @@ async def sample_create_partition():
 
     # Initialize request argument(s)
     partition = dataplex_v1.Partition()
-    partition.values = ['values_value1', 'values_value2']
+    partition.values = ["values_value1", "values_value2"]
     partition.location = "location_value"
 
     request = dataplex_v1.CreatePartitionRequest(
@@ -53,5 +53,6 @@ async def sample_create_partition():
 
     # Handle the response
     print(response)
+
 
 # [END dataplex_v1_generated_MetadataService_CreatePartition_async]

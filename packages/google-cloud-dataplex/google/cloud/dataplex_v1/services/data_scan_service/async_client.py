@@ -57,6 +57,7 @@ from google.protobuf import timestamp_pb2  # type: ignore
 from google.cloud.dataplex_v1.services.data_scan_service import pagers
 from google.cloud.dataplex_v1.types import (
     data_discovery,
+    data_documentation,
     data_profile,
     data_quality,
     datascans,
@@ -434,6 +435,12 @@ class DataScanServiceAsyncClient:
                      Storage
                      data](https://cloud.google.com/bigquery/docs/automatic-discovery).
 
+                   \* Data documentation: analyzes the table details and
+                   generates insights including descriptions and sample
+                   SQL queries for the table. For more information, see
+                   [Generate data insights in
+                   BigQuery](https://cloud.google.com/bigquery/docs/data-insights).
+
         """
         # Create or coerce a protobuf request object.
         # - Quick check: If we got a request object, we should *not* have
@@ -591,6 +598,12 @@ class DataScanServiceAsyncClient:
                      information, see [Discover and catalog Cloud
                      Storage
                      data](https://cloud.google.com/bigquery/docs/automatic-discovery).
+
+                   \* Data documentation: analyzes the table details and
+                   generates insights including descriptions and sample
+                   SQL queries for the table. For more information, see
+                   [Generate data insights in
+                   BigQuery](https://cloud.google.com/bigquery/docs/data-insights).
 
         """
         # Create or coerce a protobuf request object.
@@ -870,6 +883,12 @@ class DataScanServiceAsyncClient:
                      information, see [Discover and catalog Cloud
                      Storage
                      data](https://cloud.google.com/bigquery/docs/automatic-discovery).
+
+                   \* Data documentation: analyzes the table details and
+                   generates insights including descriptions and sample
+                   SQL queries for the table. For more information, see
+                   [Generate data insights in
+                   BigQuery](https://cloud.google.com/bigquery/docs/data-insights).
 
         """
         # Create or coerce a protobuf request object.

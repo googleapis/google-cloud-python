@@ -50,4 +50,5 @@ def sample_list_custom_targeting_values():
     for response in page_result:
         print(response)
 
+
 # [END admanager_v1_generated_CustomTargetingValueService_ListCustomTargetingValues_sync]

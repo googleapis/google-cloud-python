@@ -50,4 +50,5 @@ def sample_list_custom_targeting_keys():
     for response in page_result:
         print(response)
 
+
 # [END admanager_v1_generated_CustomTargetingKeyService_ListCustomTargetingKeys_sync]

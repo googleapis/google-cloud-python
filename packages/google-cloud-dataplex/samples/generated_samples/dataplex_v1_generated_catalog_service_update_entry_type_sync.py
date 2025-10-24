@@ -39,8 +39,7 @@ def sample_update_entry_type():
     client = dataplex_v1.CatalogServiceClient()
 
     # Initialize request argument(s)
-    request = dataplex_v1.UpdateEntryTypeRequest(
-    )
+    request = dataplex_v1.UpdateEntryTypeRequest()
 
     # Make the request
     operation = client.update_entry_type(request=request)
@@ -51,5 +50,6 @@ def sample_update_entry_type():
 
     # Handle the response
     print(response)
+
 
 # [END dataplex_v1_generated_CatalogService_UpdateEntryType_sync]

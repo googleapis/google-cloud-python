@@ -39,8 +39,7 @@ async def sample_update_encryption_config():
     client = dataplex_v1.CmekServiceAsyncClient()
 
     # Initialize request argument(s)
-    request = dataplex_v1.UpdateEncryptionConfigRequest(
-    )
+    request = dataplex_v1.UpdateEncryptionConfigRequest()
 
     # Make the request
     operation = client.update_encryption_config(request=request)
@@ -51,5 +50,6 @@ async def sample_update_encryption_config():
 
     # Handle the response
     print(response)
+
 
 # [END dataplex_v1_generated_CmekService_UpdateEncryptionConfig_async]

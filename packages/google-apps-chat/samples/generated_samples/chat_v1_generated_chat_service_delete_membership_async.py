@@ -49,4 +49,5 @@ async def sample_delete_membership():
     # Handle the response
     print(response)
 
+
 # [END chat_v1_generated_ChatService_DeleteMembership_async]

@@ -49,4 +49,5 @@ def sample_get_taxonomy_category():
     # Handle the response
     print(response)
 
+
 # [END admanager_v1_generated_TaxonomyCategoryService_GetTaxonomyCategory_sync]

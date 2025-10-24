@@ -140,7 +140,7 @@ class CustomFieldOption(proto.Message):
 
     Attributes:
         custom_field_option_id (int):
-            Output only. ``CustomFieldOption`` ID.
+            Optional. Non-empty default. ``CustomFieldOption`` ID.
         display_name (str):
             Required. The display name of the ``CustomFieldOption``.
 

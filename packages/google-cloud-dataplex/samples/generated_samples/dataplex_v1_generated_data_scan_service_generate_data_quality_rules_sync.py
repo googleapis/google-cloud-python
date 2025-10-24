@@ -49,4 +49,5 @@ def sample_generate_data_quality_rules():
     # Handle the response
     print(response)
 
+
 # [END dataplex_v1_generated_DataScanService_GenerateDataQualityRules_sync]

@@ -32,6 +32,8 @@ __protobuf__ = proto.module(
 class CustomTargetingValue(proto.Message):
     r"""The ``CustomTargetingValue`` resource.
 
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         name (str):
             Identifier. The resource name of the
@@ -41,6 +43,8 @@ class CustomTargetingValue(proto.Message):
             Required. Immutable. The resource name of the
             ``CustomTargetingKey``. Format:
             ``networks/{network_code}/customTargetingKeys/{custom_targeting_key_id}``
+
+            This field is a member of `oneof`_ ``_custom_targeting_key``.
         ad_tag_name (str):
             Immutable. Name of the ``CustomTargetingValue``. Values can
             contain up to 40 characters each. You can use alphanumeric
@@ -48,14 +52,22 @@ class CustomTargetingValue(proto.Message):
             +, #, \*, ~, ;, ^, (, ), <, >, [, ]. Values are not
             data-specific; all values are treated as strings. For
             example, instead of using "age>=18 AND <=34", try "18-34".
+
+            This field is a member of `oneof`_ ``_ad_tag_name``.
         display_name (str):
             Optional. Descriptive name for the ``CustomTargetingValue``.
+
+            This field is a member of `oneof`_ ``_display_name``.
         match_type (google.ads.admanager_v1.types.CustomTargetingValueMatchTypeEnum.CustomTargetingValueMatchType):
             Required. Immutable. The way in which the
             CustomTargetingValue.name strings will be
             matched.
+
+            This field is a member of `oneof`_ ``_match_type``.
         status (google.ads.admanager_v1.types.CustomTargetingValueStatusEnum.CustomTargetingValueStatus):
             Output only. Status of the ``CustomTargetingValue``.
+
+            This field is a member of `oneof`_ ``_status``.
     """
 
     name: str = proto.Field(
@@ -65,23 +77,28 @@ class CustomTargetingValue(proto.Message):
     custom_targeting_key: str = proto.Field(
         proto.STRING,
         number=8,
+        optional=True,
     )
     ad_tag_name: str = proto.Field(
         proto.STRING,
         number=4,
+        optional=True,
     )
     display_name: str = proto.Field(
         proto.STRING,
         number=5,
+        optional=True,
     )
     match_type: custom_targeting_value_enums.CustomTargetingValueMatchTypeEnum.CustomTargetingValueMatchType = proto.Field(
         proto.ENUM,
         number=6,
+        optional=True,
         enum=custom_targeting_value_enums.CustomTargetingValueMatchTypeEnum.CustomTargetingValueMatchType,
     )
     status: custom_targeting_value_enums.CustomTargetingValueStatusEnum.CustomTargetingValueStatus = proto.Field(
         proto.ENUM,
         number=7,
+        optional=True,
         enum=custom_targeting_value_enums.CustomTargetingValueStatusEnum.CustomTargetingValueStatus,
     )
 

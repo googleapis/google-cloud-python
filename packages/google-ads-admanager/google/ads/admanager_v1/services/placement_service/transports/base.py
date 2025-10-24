@@ -144,6 +144,41 @@ class PlacementServiceTransport(abc.ABC):
                 default_timeout=None,
                 client_info=client_info,
             ),
+            self.create_placement: gapic_v1.method.wrap_method(
+                self.create_placement,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.update_placement: gapic_v1.method.wrap_method(
+                self.update_placement,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.batch_create_placements: gapic_v1.method.wrap_method(
+                self.batch_create_placements,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.batch_update_placements: gapic_v1.method.wrap_method(
+                self.batch_update_placements,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.batch_activate_placements: gapic_v1.method.wrap_method(
+                self.batch_activate_placements,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.batch_deactivate_placements: gapic_v1.method.wrap_method(
+                self.batch_deactivate_placements,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.batch_archive_placements: gapic_v1.method.wrap_method(
+                self.batch_archive_placements,
+                default_timeout=None,
+                client_info=client_info,
+            ),
             self.get_operation: gapic_v1.method.wrap_method(
                 self.get_operation,
                 default_timeout=None,
@@ -177,6 +212,84 @@ class PlacementServiceTransport(abc.ABC):
         Union[
             placement_service.ListPlacementsResponse,
             Awaitable[placement_service.ListPlacementsResponse],
+        ],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def create_placement(
+        self,
+    ) -> Callable[
+        [placement_service.CreatePlacementRequest],
+        Union[placement_messages.Placement, Awaitable[placement_messages.Placement]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def update_placement(
+        self,
+    ) -> Callable[
+        [placement_service.UpdatePlacementRequest],
+        Union[placement_messages.Placement, Awaitable[placement_messages.Placement]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def batch_create_placements(
+        self,
+    ) -> Callable[
+        [placement_service.BatchCreatePlacementsRequest],
+        Union[
+            placement_service.BatchCreatePlacementsResponse,
+            Awaitable[placement_service.BatchCreatePlacementsResponse],
+        ],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def batch_update_placements(
+        self,
+    ) -> Callable[
+        [placement_service.BatchUpdatePlacementsRequest],
+        Union[
+            placement_service.BatchUpdatePlacementsResponse,
+            Awaitable[placement_service.BatchUpdatePlacementsResponse],
+        ],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def batch_activate_placements(
+        self,
+    ) -> Callable[
+        [placement_service.BatchActivatePlacementsRequest],
+        Union[
+            placement_service.BatchActivatePlacementsResponse,
+            Awaitable[placement_service.BatchActivatePlacementsResponse],
+        ],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def batch_deactivate_placements(
+        self,
+    ) -> Callable[
+        [placement_service.BatchDeactivatePlacementsRequest],
+        Union[
+            placement_service.BatchDeactivatePlacementsResponse,
+            Awaitable[placement_service.BatchDeactivatePlacementsResponse],
+        ],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def batch_archive_placements(
+        self,
+    ) -> Callable[
+        [placement_service.BatchArchivePlacementsRequest],
+        Union[
+            placement_service.BatchArchivePlacementsResponse,
+            Awaitable[placement_service.BatchArchivePlacementsResponse],
         ],
     ]:
         raise NotImplementedError()

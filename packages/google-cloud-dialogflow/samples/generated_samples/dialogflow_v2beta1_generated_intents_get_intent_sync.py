@@ -49,4 +49,5 @@ def sample_get_intent():
     # Handle the response
     print(response)
 
+
 # [END dialogflow_v2beta1_generated_Intents_GetIntent_sync]

@@ -52,4 +52,5 @@ def sample_update_glossary_term():
     # Handle the response
     print(response)
 
+
 # [END dataplex_v1_generated_BusinessGlossaryService_UpdateGlossaryTerm_sync]

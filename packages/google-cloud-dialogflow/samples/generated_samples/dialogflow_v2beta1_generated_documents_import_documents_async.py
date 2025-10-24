@@ -40,11 +40,11 @@ async def sample_import_documents():
 
     # Initialize request argument(s)
     gcs_source = dialogflow_v2beta1.GcsSources()
-    gcs_source.uris = ['uris_value1', 'uris_value2']
+    gcs_source.uris = ["uris_value1", "uris_value2"]
 
     document_template = dialogflow_v2beta1.ImportDocumentTemplate()
     document_template.mime_type = "mime_type_value"
-    document_template.knowledge_types = ['SMART_REPLY']
+    document_template.knowledge_types = ["SMART_REPLY"]
 
     request = dialogflow_v2beta1.ImportDocumentsRequest(
         gcs_source=gcs_source,
@@ -61,5 +61,6 @@ async def sample_import_documents():
 
     # Handle the response
     print(response)
+
 
 # [END dialogflow_v2beta1_generated_Documents_ImportDocuments_async]

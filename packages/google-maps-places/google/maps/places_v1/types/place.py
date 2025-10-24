@@ -395,6 +395,10 @@ class Place(proto.Message):
         neighborhood_summary (google.maps.places_v1.types.Place.NeighborhoodSummary):
             A summary of points of interest near the
             place.
+        consumer_alert (google.maps.places_v1.types.Place.ConsumerAlert):
+            The consumer alert message for the place when
+            we detect suspicious review activity on a
+            business or a business violates our policies.
         moved_place (str):
             If this Place is permanently closed and has moved to a new
             Place, this field contains the new Place's resource name, in
@@ -1139,6 +1143,84 @@ class Place(proto.Message):
             message=localized_text_pb2.LocalizedText,
         )
 
+    class ConsumerAlert(proto.Message):
+        r"""The consumer alert message for the place when we detect
+        suspicious review activity on a business or a business violates
+        our policies.
+
+        Attributes:
+            overview (str):
+                The overview of the consumer alert message.
+            details (google.maps.places_v1.types.Place.ConsumerAlert.Details):
+                The details of the consumer alert message.
+            language_code (str):
+                The language code of the consumer alert
+                message. This is a BCP 47 language code.
+        """
+
+        class Details(proto.Message):
+            r"""The details of the consumer alert message.
+
+            Attributes:
+                title (str):
+                    The title to show together with the
+                    description.
+                description (str):
+                    The description of the consumer alert
+                    message.
+                about_link (google.maps.places_v1.types.Place.ConsumerAlert.Details.Link):
+                    The link to show together with the
+                    description to provide more information.
+            """
+
+            class Link(proto.Message):
+                r"""The link to show together with the description to provide
+                more information.
+
+                Attributes:
+                    title (str):
+                        The title to show for the link.
+                    uri (str):
+                        The uri of the link.
+                """
+
+                title: str = proto.Field(
+                    proto.STRING,
+                    number=1,
+                )
+                uri: str = proto.Field(
+                    proto.STRING,
+                    number=2,
+                )
+
+            title: str = proto.Field(
+                proto.STRING,
+                number=1,
+            )
+            description: str = proto.Field(
+                proto.STRING,
+                number=2,
+            )
+            about_link: "Place.ConsumerAlert.Details.Link" = proto.Field(
+                proto.MESSAGE,
+                number=3,
+                message="Place.ConsumerAlert.Details.Link",
+            )
+
+        overview: str = proto.Field(
+            proto.STRING,
+            number=1,
+        )
+        details: "Place.ConsumerAlert.Details" = proto.Field(
+            proto.MESSAGE,
+            number=2,
+            message="Place.ConsumerAlert.Details",
+        )
+        language_code: str = proto.Field(
+            proto.STRING,
+            number=3,
+        )
+
     name: str = proto.Field(
         proto.STRING,
         number=1,
@@ -1484,6 +1566,11 @@ class Place(proto.Message):
         proto.MESSAGE,
         number=91,
         message=NeighborhoodSummary,
+    )
+    consumer_alert: ConsumerAlert = proto.Field(
+        proto.MESSAGE,
+        number=92,
+        message=ConsumerAlert,
     )
     moved_place: str = proto.Field(
         proto.STRING,

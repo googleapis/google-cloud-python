@@ -54,4 +54,5 @@ def sample_create_entry_group():
     # Handle the response
     print(response)
 
+
 # [END dataplex_v1_generated_CatalogService_CreateEntryGroup_sync]

@@ -50,4 +50,5 @@ def sample_list_private_auctions():
     for response in page_result:
         print(response)
 
+
 # [END admanager_v1_generated_PrivateAuctionService_ListPrivateAuctions_sync]

@@ -39,8 +39,7 @@ def sample_update_lake():
     client = dataplex_v1.DataplexServiceClient()
 
     # Initialize request argument(s)
-    request = dataplex_v1.UpdateLakeRequest(
-    )
+    request = dataplex_v1.UpdateLakeRequest()
 
     # Make the request
     operation = client.update_lake(request=request)
@@ -51,5 +50,6 @@ def sample_update_lake():
 
     # Handle the response
     print(response)
+
 
 # [END dataplex_v1_generated_DataplexService_UpdateLake_sync]

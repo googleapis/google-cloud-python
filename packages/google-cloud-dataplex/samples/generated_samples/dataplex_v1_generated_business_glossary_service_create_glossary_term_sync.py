@@ -54,4 +54,5 @@ def sample_create_glossary_term():
     # Handle the response
     print(response)
 
+
 # [END dataplex_v1_generated_BusinessGlossaryService_CreateGlossaryTerm_sync]

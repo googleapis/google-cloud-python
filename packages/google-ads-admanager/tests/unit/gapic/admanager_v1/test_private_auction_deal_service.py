@@ -2322,6 +2322,36 @@ def test_create_private_auction_deal_rest_call_success(request_type):
                         "excluded_bandwidth_groups_value2",
                     ],
                 },
+                "browser_targeting": {
+                    "targeted_browsers": [
+                        "targeted_browsers_value1",
+                        "targeted_browsers_value2",
+                    ],
+                    "excluded_browsers": [
+                        "excluded_browsers_value1",
+                        "excluded_browsers_value2",
+                    ],
+                },
+                "browser_language_targeting": {
+                    "targeted_browser_languages": [
+                        "targeted_browser_languages_value1",
+                        "targeted_browser_languages_value2",
+                    ],
+                    "excluded_browser_languages": [
+                        "excluded_browser_languages_value1",
+                        "excluded_browser_languages_value2",
+                    ],
+                },
+                "device_capability_targeting": {
+                    "targeted_capabilities": [
+                        "targeted_capabilities_value1",
+                        "targeted_capabilities_value2",
+                    ],
+                    "excluded_capabilities": [
+                        "excluded_capabilities_value1",
+                        "excluded_capabilities_value2",
+                    ],
+                },
                 "device_category_targeting": {
                     "targeted_categories": [
                         "targeted_categories_value1",
@@ -2330,6 +2360,42 @@ def test_create_private_auction_deal_rest_call_success(request_type):
                     "excluded_categories": [
                         "excluded_categories_value1",
                         "excluded_categories_value2",
+                    ],
+                },
+                "device_manufacturer_targeting": {
+                    "targeted_device_manufacturers": [
+                        "targeted_device_manufacturers_value1",
+                        "targeted_device_manufacturers_value2",
+                    ],
+                    "excluded_device_manufacturers": [
+                        "excluded_device_manufacturers_value1",
+                        "excluded_device_manufacturers_value2",
+                    ],
+                    "targeted_mobile_devices": [
+                        "targeted_mobile_devices_value1",
+                        "targeted_mobile_devices_value2",
+                    ],
+                    "excluded_mobile_devices": [
+                        "excluded_mobile_devices_value1",
+                        "excluded_mobile_devices_value2",
+                    ],
+                    "targeted_mobile_device_submodels": [
+                        "targeted_mobile_device_submodels_value1",
+                        "targeted_mobile_device_submodels_value2",
+                    ],
+                    "excluded_mobile_device_submodels": [
+                        "excluded_mobile_device_submodels_value1",
+                        "excluded_mobile_device_submodels_value2",
+                    ],
+                },
+                "mobile_carrier_targeting": {
+                    "targeted_mobile_carriers": [
+                        "targeted_mobile_carriers_value1",
+                        "targeted_mobile_carriers_value2",
+                    ],
+                    "excluded_mobile_carriers": [
+                        "excluded_mobile_carriers_value1",
+                        "excluded_mobile_carriers_value2",
                     ],
                 },
                 "operating_system_targeting": {
@@ -2374,7 +2440,25 @@ def test_create_private_auction_deal_rest_call_success(request_type):
                                     "custom_targeting_values_value2",
                                 ],
                             }
-                        ]
+                        ],
+                        "audience_segment_targetings": [
+                            {
+                                "negative": True,
+                                "audience_segments": [
+                                    "audience_segments_value1",
+                                    "audience_segments_value2",
+                                ],
+                            }
+                        ],
+                        "cms_metadata_targetings": [
+                            {
+                                "negative": True,
+                                "cms_metadata_values": [
+                                    "cms_metadata_values_value1",
+                                    "cms_metadata_values_value2",
+                                ],
+                            }
+                        ],
                     }
                 ]
             },
@@ -2400,6 +2484,36 @@ def test_create_private_auction_deal_rest_call_success(request_type):
                 ]
             },
             "data_segment_targeting": {"has_data_segment_targeting": True},
+            "content_targeting": {
+                "targeted_content": [
+                    "targeted_content_value1",
+                    "targeted_content_value2",
+                ],
+                "excluded_content": [
+                    "excluded_content_value1",
+                    "excluded_content_value2",
+                ],
+                "targeted_content_bundles": [
+                    "targeted_content_bundles_value1",
+                    "targeted_content_bundles_value2",
+                ],
+                "excluded_content_bundles": [
+                    "excluded_content_bundles_value1",
+                    "excluded_content_bundles_value2",
+                ],
+            },
+            "mobile_application_targeting": {
+                "first_party_targeting": {
+                    "targeted_applications": [
+                        "targeted_applications_value1",
+                        "targeted_applications_value2",
+                    ],
+                    "excluded_applications": [
+                        "excluded_applications_value1",
+                        "excluded_applications_value2",
+                    ],
+                }
+            },
         },
         "end_time": {"seconds": 751, "nanos": 543},
         "floor_price": {
@@ -2675,6 +2789,36 @@ def test_update_private_auction_deal_rest_call_success(request_type):
                         "excluded_bandwidth_groups_value2",
                     ],
                 },
+                "browser_targeting": {
+                    "targeted_browsers": [
+                        "targeted_browsers_value1",
+                        "targeted_browsers_value2",
+                    ],
+                    "excluded_browsers": [
+                        "excluded_browsers_value1",
+                        "excluded_browsers_value2",
+                    ],
+                },
+                "browser_language_targeting": {
+                    "targeted_browser_languages": [
+                        "targeted_browser_languages_value1",
+                        "targeted_browser_languages_value2",
+                    ],
+                    "excluded_browser_languages": [
+                        "excluded_browser_languages_value1",
+                        "excluded_browser_languages_value2",
+                    ],
+                },
+                "device_capability_targeting": {
+                    "targeted_capabilities": [
+                        "targeted_capabilities_value1",
+                        "targeted_capabilities_value2",
+                    ],
+                    "excluded_capabilities": [
+                        "excluded_capabilities_value1",
+                        "excluded_capabilities_value2",
+                    ],
+                },
                 "device_category_targeting": {
                     "targeted_categories": [
                         "targeted_categories_value1",
@@ -2683,6 +2827,42 @@ def test_update_private_auction_deal_rest_call_success(request_type):
                     "excluded_categories": [
                         "excluded_categories_value1",
                         "excluded_categories_value2",
+                    ],
+                },
+                "device_manufacturer_targeting": {
+                    "targeted_device_manufacturers": [
+                        "targeted_device_manufacturers_value1",
+                        "targeted_device_manufacturers_value2",
+                    ],
+                    "excluded_device_manufacturers": [
+                        "excluded_device_manufacturers_value1",
+                        "excluded_device_manufacturers_value2",
+                    ],
+                    "targeted_mobile_devices": [
+                        "targeted_mobile_devices_value1",
+                        "targeted_mobile_devices_value2",
+                    ],
+                    "excluded_mobile_devices": [
+                        "excluded_mobile_devices_value1",
+                        "excluded_mobile_devices_value2",
+                    ],
+                    "targeted_mobile_device_submodels": [
+                        "targeted_mobile_device_submodels_value1",
+                        "targeted_mobile_device_submodels_value2",
+                    ],
+                    "excluded_mobile_device_submodels": [
+                        "excluded_mobile_device_submodels_value1",
+                        "excluded_mobile_device_submodels_value2",
+                    ],
+                },
+                "mobile_carrier_targeting": {
+                    "targeted_mobile_carriers": [
+                        "targeted_mobile_carriers_value1",
+                        "targeted_mobile_carriers_value2",
+                    ],
+                    "excluded_mobile_carriers": [
+                        "excluded_mobile_carriers_value1",
+                        "excluded_mobile_carriers_value2",
                     ],
                 },
                 "operating_system_targeting": {
@@ -2727,7 +2907,25 @@ def test_update_private_auction_deal_rest_call_success(request_type):
                                     "custom_targeting_values_value2",
                                 ],
                             }
-                        ]
+                        ],
+                        "audience_segment_targetings": [
+                            {
+                                "negative": True,
+                                "audience_segments": [
+                                    "audience_segments_value1",
+                                    "audience_segments_value2",
+                                ],
+                            }
+                        ],
+                        "cms_metadata_targetings": [
+                            {
+                                "negative": True,
+                                "cms_metadata_values": [
+                                    "cms_metadata_values_value1",
+                                    "cms_metadata_values_value2",
+                                ],
+                            }
+                        ],
                     }
                 ]
             },
@@ -2753,6 +2951,36 @@ def test_update_private_auction_deal_rest_call_success(request_type):
                 ]
             },
             "data_segment_targeting": {"has_data_segment_targeting": True},
+            "content_targeting": {
+                "targeted_content": [
+                    "targeted_content_value1",
+                    "targeted_content_value2",
+                ],
+                "excluded_content": [
+                    "excluded_content_value1",
+                    "excluded_content_value2",
+                ],
+                "targeted_content_bundles": [
+                    "targeted_content_bundles_value1",
+                    "targeted_content_bundles_value2",
+                ],
+                "excluded_content_bundles": [
+                    "excluded_content_bundles_value1",
+                    "excluded_content_bundles_value2",
+                ],
+            },
+            "mobile_application_targeting": {
+                "first_party_targeting": {
+                    "targeted_applications": [
+                        "targeted_applications_value1",
+                        "targeted_applications_value2",
+                    ],
+                    "excluded_applications": [
+                        "excluded_applications_value1",
+                        "excluded_applications_value2",
+                    ],
+                }
+            },
         },
         "end_time": {"seconds": 751, "nanos": 543},
         "floor_price": {
@@ -3316,9 +3544,57 @@ def test_parse_ad_unit_path():
     assert expected == actual
 
 
-def test_bandwidth_group_path():
+def test_application_path():
     network_code = "oyster"
-    bandwidth_group = "nudibranch"
+    application = "nudibranch"
+    expected = "networks/{network_code}/applications/{application}".format(
+        network_code=network_code,
+        application=application,
+    )
+    actual = PrivateAuctionDealServiceClient.application_path(network_code, application)
+    assert expected == actual
+
+
+def test_parse_application_path():
+    expected = {
+        "network_code": "cuttlefish",
+        "application": "mussel",
+    }
+    path = PrivateAuctionDealServiceClient.application_path(**expected)
+
+    # Check that the path construction is reversible.
+    actual = PrivateAuctionDealServiceClient.parse_application_path(path)
+    assert expected == actual
+
+
+def test_audience_segment_path():
+    network_code = "winkle"
+    audience_segment = "nautilus"
+    expected = "networks/{network_code}/audienceSegments/{audience_segment}".format(
+        network_code=network_code,
+        audience_segment=audience_segment,
+    )
+    actual = PrivateAuctionDealServiceClient.audience_segment_path(
+        network_code, audience_segment
+    )
+    assert expected == actual
+
+
+def test_parse_audience_segment_path():
+    expected = {
+        "network_code": "scallop",
+        "audience_segment": "abalone",
+    }
+    path = PrivateAuctionDealServiceClient.audience_segment_path(**expected)
+
+    # Check that the path construction is reversible.
+    actual = PrivateAuctionDealServiceClient.parse_audience_segment_path(path)
+    assert expected == actual
+
+
+def test_bandwidth_group_path():
+    network_code = "squid"
+    bandwidth_group = "clam"
     expected = "networks/{network_code}/bandwidthGroups/{bandwidth_group}".format(
         network_code=network_code,
         bandwidth_group=bandwidth_group,
@@ -3331,8 +3607,8 @@ def test_bandwidth_group_path():
 
 def test_parse_bandwidth_group_path():
     expected = {
-        "network_code": "cuttlefish",
-        "bandwidth_group": "mussel",
+        "network_code": "whelk",
+        "bandwidth_group": "octopus",
     }
     path = PrivateAuctionDealServiceClient.bandwidth_group_path(**expected)
 
@@ -3341,9 +3617,130 @@ def test_parse_bandwidth_group_path():
     assert expected == actual
 
 
-def test_custom_targeting_key_path():
+def test_browser_path():
+    network_code = "oyster"
+    browser = "nudibranch"
+    expected = "networks/{network_code}/browsers/{browser}".format(
+        network_code=network_code,
+        browser=browser,
+    )
+    actual = PrivateAuctionDealServiceClient.browser_path(network_code, browser)
+    assert expected == actual
+
+
+def test_parse_browser_path():
+    expected = {
+        "network_code": "cuttlefish",
+        "browser": "mussel",
+    }
+    path = PrivateAuctionDealServiceClient.browser_path(**expected)
+
+    # Check that the path construction is reversible.
+    actual = PrivateAuctionDealServiceClient.parse_browser_path(path)
+    assert expected == actual
+
+
+def test_browser_language_path():
     network_code = "winkle"
-    custom_targeting_key = "nautilus"
+    browser_language = "nautilus"
+    expected = "networks/{network_code}/browserLanguages/{browser_language}".format(
+        network_code=network_code,
+        browser_language=browser_language,
+    )
+    actual = PrivateAuctionDealServiceClient.browser_language_path(
+        network_code, browser_language
+    )
+    assert expected == actual
+
+
+def test_parse_browser_language_path():
+    expected = {
+        "network_code": "scallop",
+        "browser_language": "abalone",
+    }
+    path = PrivateAuctionDealServiceClient.browser_language_path(**expected)
+
+    # Check that the path construction is reversible.
+    actual = PrivateAuctionDealServiceClient.parse_browser_language_path(path)
+    assert expected == actual
+
+
+def test_cms_metadata_value_path():
+    network_code = "squid"
+    cms_metadata_value = "clam"
+    expected = "networks/{network_code}/cmsMetadataValues/{cms_metadata_value}".format(
+        network_code=network_code,
+        cms_metadata_value=cms_metadata_value,
+    )
+    actual = PrivateAuctionDealServiceClient.cms_metadata_value_path(
+        network_code, cms_metadata_value
+    )
+    assert expected == actual
+
+
+def test_parse_cms_metadata_value_path():
+    expected = {
+        "network_code": "whelk",
+        "cms_metadata_value": "octopus",
+    }
+    path = PrivateAuctionDealServiceClient.cms_metadata_value_path(**expected)
+
+    # Check that the path construction is reversible.
+    actual = PrivateAuctionDealServiceClient.parse_cms_metadata_value_path(path)
+    assert expected == actual
+
+
+def test_content_path():
+    network_code = "oyster"
+    content = "nudibranch"
+    expected = "networks/{network_code}/content/{content}".format(
+        network_code=network_code,
+        content=content,
+    )
+    actual = PrivateAuctionDealServiceClient.content_path(network_code, content)
+    assert expected == actual
+
+
+def test_parse_content_path():
+    expected = {
+        "network_code": "cuttlefish",
+        "content": "mussel",
+    }
+    path = PrivateAuctionDealServiceClient.content_path(**expected)
+
+    # Check that the path construction is reversible.
+    actual = PrivateAuctionDealServiceClient.parse_content_path(path)
+    assert expected == actual
+
+
+def test_content_bundle_path():
+    network_code = "winkle"
+    content_bundle = "nautilus"
+    expected = "networks/{network_code}/contentBundles/{content_bundle}".format(
+        network_code=network_code,
+        content_bundle=content_bundle,
+    )
+    actual = PrivateAuctionDealServiceClient.content_bundle_path(
+        network_code, content_bundle
+    )
+    assert expected == actual
+
+
+def test_parse_content_bundle_path():
+    expected = {
+        "network_code": "scallop",
+        "content_bundle": "abalone",
+    }
+    path = PrivateAuctionDealServiceClient.content_bundle_path(**expected)
+
+    # Check that the path construction is reversible.
+    actual = PrivateAuctionDealServiceClient.parse_content_bundle_path(path)
+    assert expected == actual
+
+
+def test_custom_targeting_key_path():
+    network_code = "squid"
+    custom_targeting_key = "clam"
     expected = (
         "networks/{network_code}/customTargetingKeys/{custom_targeting_key}".format(
             network_code=network_code,
@@ -3358,8 +3755,8 @@ def test_custom_targeting_key_path():
 
 def test_parse_custom_targeting_key_path():
     expected = {
-        "network_code": "scallop",
-        "custom_targeting_key": "abalone",
+        "network_code": "whelk",
+        "custom_targeting_key": "octopus",
     }
     path = PrivateAuctionDealServiceClient.custom_targeting_key_path(**expected)
 
@@ -3369,8 +3766,8 @@ def test_parse_custom_targeting_key_path():
 
 
 def test_custom_targeting_value_path():
-    network_code = "squid"
-    custom_targeting_value = "clam"
+    network_code = "oyster"
+    custom_targeting_value = "nudibranch"
     expected = (
         "networks/{network_code}/customTargetingValues/{custom_targeting_value}".format(
             network_code=network_code,
@@ -3385,8 +3782,8 @@ def test_custom_targeting_value_path():
 
 def test_parse_custom_targeting_value_path():
     expected = {
-        "network_code": "whelk",
-        "custom_targeting_value": "octopus",
+        "network_code": "cuttlefish",
+        "custom_targeting_value": "mussel",
     }
     path = PrivateAuctionDealServiceClient.custom_targeting_value_path(**expected)
 
@@ -3395,9 +3792,34 @@ def test_parse_custom_targeting_value_path():
     assert expected == actual
 
 
+def test_device_capability_path():
+    network_code = "winkle"
+    device_capability = "nautilus"
+    expected = "networks/{network_code}/deviceCapabilities/{device_capability}".format(
+        network_code=network_code,
+        device_capability=device_capability,
+    )
+    actual = PrivateAuctionDealServiceClient.device_capability_path(
+        network_code, device_capability
+    )
+    assert expected == actual
+
+
+def test_parse_device_capability_path():
+    expected = {
+        "network_code": "scallop",
+        "device_capability": "abalone",
+    }
+    path = PrivateAuctionDealServiceClient.device_capability_path(**expected)
+
+    # Check that the path construction is reversible.
+    actual = PrivateAuctionDealServiceClient.parse_device_capability_path(path)
+    assert expected == actual
+
+
 def test_device_category_path():
-    network_code = "oyster"
-    device_category = "nudibranch"
+    network_code = "squid"
+    device_category = "clam"
     expected = "networks/{network_code}/deviceCategories/{device_category}".format(
         network_code=network_code,
         device_category=device_category,
@@ -3410,13 +3832,40 @@ def test_device_category_path():
 
 def test_parse_device_category_path():
     expected = {
-        "network_code": "cuttlefish",
-        "device_category": "mussel",
+        "network_code": "whelk",
+        "device_category": "octopus",
     }
     path = PrivateAuctionDealServiceClient.device_category_path(**expected)
 
     # Check that the path construction is reversible.
     actual = PrivateAuctionDealServiceClient.parse_device_category_path(path)
+    assert expected == actual
+
+
+def test_device_manufacturer_path():
+    network_code = "oyster"
+    device_manufacturer = "nudibranch"
+    expected = (
+        "networks/{network_code}/deviceManufacturers/{device_manufacturer}".format(
+            network_code=network_code,
+            device_manufacturer=device_manufacturer,
+        )
+    )
+    actual = PrivateAuctionDealServiceClient.device_manufacturer_path(
+        network_code, device_manufacturer
+    )
+    assert expected == actual
+
+
+def test_parse_device_manufacturer_path():
+    expected = {
+        "network_code": "cuttlefish",
+        "device_manufacturer": "mussel",
+    }
+    path = PrivateAuctionDealServiceClient.device_manufacturer_path(**expected)
+
+    # Check that the path construction is reversible.
+    actual = PrivateAuctionDealServiceClient.parse_device_manufacturer_path(path)
     assert expected == actual
 
 
@@ -3440,6 +3889,83 @@ def test_parse_geo_target_path():
 
     # Check that the path construction is reversible.
     actual = PrivateAuctionDealServiceClient.parse_geo_target_path(path)
+    assert expected == actual
+
+
+def test_mobile_carrier_path():
+    network_code = "squid"
+    mobile_carrier = "clam"
+    expected = "networks/{network_code}/mobileCarriers/{mobile_carrier}".format(
+        network_code=network_code,
+        mobile_carrier=mobile_carrier,
+    )
+    actual = PrivateAuctionDealServiceClient.mobile_carrier_path(
+        network_code, mobile_carrier
+    )
+    assert expected == actual
+
+
+def test_parse_mobile_carrier_path():
+    expected = {
+        "network_code": "whelk",
+        "mobile_carrier": "octopus",
+    }
+    path = PrivateAuctionDealServiceClient.mobile_carrier_path(**expected)
+
+    # Check that the path construction is reversible.
+    actual = PrivateAuctionDealServiceClient.parse_mobile_carrier_path(path)
+    assert expected == actual
+
+
+def test_mobile_device_path():
+    network_code = "oyster"
+    mobile_device = "nudibranch"
+    expected = "networks/{network_code}/mobileDevices/{mobile_device}".format(
+        network_code=network_code,
+        mobile_device=mobile_device,
+    )
+    actual = PrivateAuctionDealServiceClient.mobile_device_path(
+        network_code, mobile_device
+    )
+    assert expected == actual
+
+
+def test_parse_mobile_device_path():
+    expected = {
+        "network_code": "cuttlefish",
+        "mobile_device": "mussel",
+    }
+    path = PrivateAuctionDealServiceClient.mobile_device_path(**expected)
+
+    # Check that the path construction is reversible.
+    actual = PrivateAuctionDealServiceClient.parse_mobile_device_path(path)
+    assert expected == actual
+
+
+def test_mobile_device_submodel_path():
+    network_code = "winkle"
+    mobile_device_submodel = "nautilus"
+    expected = (
+        "networks/{network_code}/mobileDeviceSubmodels/{mobile_device_submodel}".format(
+            network_code=network_code,
+            mobile_device_submodel=mobile_device_submodel,
+        )
+    )
+    actual = PrivateAuctionDealServiceClient.mobile_device_submodel_path(
+        network_code, mobile_device_submodel
+    )
+    assert expected == actual
+
+
+def test_parse_mobile_device_submodel_path():
+    expected = {
+        "network_code": "scallop",
+        "mobile_device_submodel": "abalone",
+    }
+    path = PrivateAuctionDealServiceClient.mobile_device_submodel_path(**expected)
+
+    # Check that the path construction is reversible.
+    actual = PrivateAuctionDealServiceClient.parse_mobile_device_submodel_path(path)
     assert expected == actual
 
 

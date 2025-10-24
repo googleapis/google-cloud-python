@@ -50,4 +50,5 @@ def sample_list_data_taxonomies():
     for response in page_result:
         print(response)
 
+
 # [END dataplex_v1_generated_DataTaxonomyService_ListDataTaxonomies_sync]

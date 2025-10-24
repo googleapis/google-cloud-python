@@ -39,13 +39,13 @@ async def sample_update_session_entity_type():
     client = dialogflow_v2beta1.SessionEntityTypesAsyncClient()
 
     # Initialize request argument(s)
-    request = dialogflow_v2beta1.UpdateSessionEntityTypeRequest(
-    )
+    request = dialogflow_v2beta1.UpdateSessionEntityTypeRequest()
 
     # Make the request
     response = await client.update_session_entity_type(request=request)
 
     # Handle the response
     print(response)
+
 
 # [END dialogflow_v2beta1_generated_SessionEntityTypes_UpdateSessionEntityType_async]

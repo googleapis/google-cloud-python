@@ -52,4 +52,5 @@ async def sample_create_space():
     # Handle the response
     print(response)
 
+
 # [END chat_v1_generated_ChatService_CreateSpace_async]

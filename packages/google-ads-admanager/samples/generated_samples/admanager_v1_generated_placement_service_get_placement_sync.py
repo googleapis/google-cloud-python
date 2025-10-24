@@ -49,4 +49,5 @@ def sample_get_placement():
     # Handle the response
     print(response)
 
+
 # [END admanager_v1_generated_PlacementService_GetPlacement_sync]

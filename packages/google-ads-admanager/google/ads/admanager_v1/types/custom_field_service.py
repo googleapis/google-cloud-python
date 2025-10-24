@@ -17,6 +17,7 @@ from __future__ import annotations
 
 from typing import MutableMapping, MutableSequence
 
+from google.protobuf import field_mask_pb2  # type: ignore
 import proto  # type: ignore
 
 from google.ads.admanager_v1.types import custom_field_messages
@@ -27,6 +28,16 @@ __protobuf__ = proto.module(
         "GetCustomFieldRequest",
         "ListCustomFieldsRequest",
         "ListCustomFieldsResponse",
+        "CreateCustomFieldRequest",
+        "BatchCreateCustomFieldsRequest",
+        "BatchCreateCustomFieldsResponse",
+        "UpdateCustomFieldRequest",
+        "BatchUpdateCustomFieldsRequest",
+        "BatchUpdateCustomFieldsResponse",
+        "BatchActivateCustomFieldsRequest",
+        "BatchActivateCustomFieldsResponse",
+        "BatchDeactivateCustomFieldsRequest",
+        "BatchDeactivateCustomFieldsResponse",
     },
 )
 
@@ -57,8 +68,8 @@ class ListCustomFieldsRequest(proto.Message):
             Optional. The maximum number of ``CustomFields`` to return.
             The service may return fewer than this value. If
             unspecified, at most 50 ``CustomFields`` will be returned.
-            The maximum value is 1000; values above 1000 will be coerced
-            to 1000.
+            The maximum value is 1000; values greater than 1000 will be
+            coerced to 1000.
         page_token (str):
             Optional. A page token, received from a previous
             ``ListCustomFields`` call. Provide this to retrieve the
@@ -122,8 +133,8 @@ class ListCustomFieldsResponse(proto.Message):
             included in the request, this reflects the total number
             after the filtering is applied.
 
-            ``total_size`` will not be calculated in the response unless
-            it has been included in a response field mask. The response
+            ``total_size`` won't be calculated in the response unless it
+            has been included in a response field mask. The response
             field mask can be provided to the method by using the URL
             parameter ``$fields`` or ``fields``, or by using the
             HTTP/gRPC header ``X-Goog-FieldMask``.
@@ -151,6 +162,187 @@ class ListCustomFieldsResponse(proto.Message):
         proto.INT32,
         number=3,
     )
+
+
+class CreateCustomFieldRequest(proto.Message):
+    r"""Request object for ``CreateCustomField`` method.
+
+    Attributes:
+        parent (str):
+            Required. The parent resource where this ``CustomField``
+            will be created. Format: ``networks/{network_code}``
+        custom_field (google.ads.admanager_v1.types.CustomField):
+            Required. The ``CustomField`` to create.
+    """
+
+    parent: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    custom_field: custom_field_messages.CustomField = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        message=custom_field_messages.CustomField,
+    )
+
+
+class BatchCreateCustomFieldsRequest(proto.Message):
+    r"""Request object for ``BatchCreateCustomFields`` method.
+
+    Attributes:
+        parent (str):
+            Required. The parent resource where ``CustomFields`` will be
+            created. Format: ``networks/{network_code}`` The parent
+            field in the CreateCustomFieldRequest must match this field.
+        requests (MutableSequence[google.ads.admanager_v1.types.CreateCustomFieldRequest]):
+            Required. The ``CustomField`` objects to create. A maximum
+            of 100 objects can be created in a batch.
+    """
+
+    parent: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    requests: MutableSequence["CreateCustomFieldRequest"] = proto.RepeatedField(
+        proto.MESSAGE,
+        number=2,
+        message="CreateCustomFieldRequest",
+    )
+
+
+class BatchCreateCustomFieldsResponse(proto.Message):
+    r"""Response object for ``BatchCreateCustomFields`` method.
+
+    Attributes:
+        custom_fields (MutableSequence[google.ads.admanager_v1.types.CustomField]):
+            The ``CustomField`` objects created.
+    """
+
+    custom_fields: MutableSequence[
+        custom_field_messages.CustomField
+    ] = proto.RepeatedField(
+        proto.MESSAGE,
+        number=1,
+        message=custom_field_messages.CustomField,
+    )
+
+
+class UpdateCustomFieldRequest(proto.Message):
+    r"""Request object for ``UpdateCustomField`` method.
+
+    Attributes:
+        custom_field (google.ads.admanager_v1.types.CustomField):
+            Required. The ``CustomField`` to update.
+
+            The ``CustomField``'s ``name`` is used to identify the
+            ``CustomField`` to update.
+        update_mask (google.protobuf.field_mask_pb2.FieldMask):
+            Required. The list of fields to update.
+    """
+
+    custom_field: custom_field_messages.CustomField = proto.Field(
+        proto.MESSAGE,
+        number=1,
+        message=custom_field_messages.CustomField,
+    )
+    update_mask: field_mask_pb2.FieldMask = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        message=field_mask_pb2.FieldMask,
+    )
+
+
+class BatchUpdateCustomFieldsRequest(proto.Message):
+    r"""Request object for ``BatchUpdateCustomFields`` method.
+
+    Attributes:
+        parent (str):
+            Required. The parent resource where ``CustomFields`` will be
+            updated. Format: ``networks/{network_code}`` The parent
+            field in the UpdateCustomFieldRequest must match this field.
+        requests (MutableSequence[google.ads.admanager_v1.types.UpdateCustomFieldRequest]):
+            Required. The ``CustomField`` objects to update. A maximum
+            of 100 objects can be updated in a batch.
+    """
+
+    parent: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    requests: MutableSequence["UpdateCustomFieldRequest"] = proto.RepeatedField(
+        proto.MESSAGE,
+        number=2,
+        message="UpdateCustomFieldRequest",
+    )
+
+
+class BatchUpdateCustomFieldsResponse(proto.Message):
+    r"""Response object for ``BatchUpdateCustomFields`` method.
+
+    Attributes:
+        custom_fields (MutableSequence[google.ads.admanager_v1.types.CustomField]):
+            The ``CustomField`` objects updated.
+    """
+
+    custom_fields: MutableSequence[
+        custom_field_messages.CustomField
+    ] = proto.RepeatedField(
+        proto.MESSAGE,
+        number=1,
+        message=custom_field_messages.CustomField,
+    )
+
+
+class BatchActivateCustomFieldsRequest(proto.Message):
+    r"""Request message for ``BatchActivateCustomFields`` method.
+
+    Attributes:
+        parent (str):
+            Required. Format: ``networks/{network_code}``
+        names (MutableSequence[str]):
+            Required. The resource names of the ``CustomField`` objects
+            to activate. Format:
+            ``networks/{network_code}/customFields/{custom_field_id}``
+    """
+
+    parent: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    names: MutableSequence[str] = proto.RepeatedField(
+        proto.STRING,
+        number=3,
+    )
+
+
+class BatchActivateCustomFieldsResponse(proto.Message):
+    r"""Response object for ``BatchActivateCustomFields`` method."""
+
+
+class BatchDeactivateCustomFieldsRequest(proto.Message):
+    r"""Request message for ``BatchDeactivateCustomFields`` method.
+
+    Attributes:
+        parent (str):
+            Required. Format: ``networks/{network_code}``
+        names (MutableSequence[str]):
+            Required. The resource names of the ``CustomField`` objects
+            to deactivate. Format:
+            ``networks/{network_code}/customFields/{custom_field_id}``
+    """
+
+    parent: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    names: MutableSequence[str] = proto.RepeatedField(
+        proto.STRING,
+        number=3,
+    )
+
+
+class BatchDeactivateCustomFieldsResponse(proto.Message):
+    r"""Response object for ``BatchDeactivateCustomFields`` method."""
 
 
 __all__ = tuple(sorted(__protobuf__.manifest))

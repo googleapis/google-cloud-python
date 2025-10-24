@@ -49,4 +49,5 @@ async def sample_get_partition():
     # Handle the response
     print(response)
 
+
 # [END dataplex_v1_generated_MetadataService_GetPartition_async]

@@ -49,4 +49,5 @@ async def sample_create_message():
     # Handle the response
     print(response)
 
+
 # [END chat_v1_generated_ChatService_CreateMessage_async]

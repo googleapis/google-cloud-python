@@ -1212,8 +1212,6 @@ class StreamingRecognitionResult(proto.Message):
             TRANSCRIPT (1):
                 Message contains a (possibly partial)
                 transcript.
-            DTMF_DIGITS (3):
-                Message contains DTMF digits.
             END_OF_SINGLE_UTTERANCE (2):
                 This event indicates that the server has detected the end of
                 the user's speech utterance and expects no additional
@@ -1225,6 +1223,8 @@ class StreamingRecognitionResult(proto.Message):
                 connection. This message is only sent if
                 ``single_utterance`` was set to ``true``, and is not used
                 otherwise.
+            DTMF_DIGITS (3):
+                Message contains DTMF digits.
             PARTIAL_DTMF_DIGITS (4):
                 Message contains DTMF digits. Before a message with
                 DTMF_DIGITS is sent, a message with PARTIAL_DTMF_DIGITS may
@@ -1233,8 +1233,8 @@ class StreamingRecognitionResult(proto.Message):
         """
         MESSAGE_TYPE_UNSPECIFIED = 0
         TRANSCRIPT = 1
-        DTMF_DIGITS = 3
         END_OF_SINGLE_UTTERANCE = 2
+        DTMF_DIGITS = 3
         PARTIAL_DTMF_DIGITS = 4
 
     message_type: MessageType = proto.Field(

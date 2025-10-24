@@ -50,4 +50,5 @@ def sample_list_knowledge_bases():
     for response in page_result:
         print(response)
 
+
 # [END dialogflow_v2beta1_generated_KnowledgeBases_ListKnowledgeBases_sync]

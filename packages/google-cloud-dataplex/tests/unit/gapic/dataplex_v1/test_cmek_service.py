@@ -2739,6 +2739,7 @@ def test_get_encryption_config(request_type, transport: str = "grpc"):
             key="key_value",
             encryption_state=cmek.EncryptionConfig.EncryptionState.ENCRYPTING,
             etag="etag_value",
+            enable_metastore_encryption=True,
         )
         response = client.get_encryption_config(request)
 
@@ -2754,6 +2755,7 @@ def test_get_encryption_config(request_type, transport: str = "grpc"):
     assert response.key == "key_value"
     assert response.encryption_state == cmek.EncryptionConfig.EncryptionState.ENCRYPTING
     assert response.etag == "etag_value"
+    assert response.enable_metastore_encryption is True
 
 
 def test_get_encryption_config_non_empty_request_with_auto_populated_field():
@@ -2892,6 +2894,7 @@ async def test_get_encryption_config_async(
                 key="key_value",
                 encryption_state=cmek.EncryptionConfig.EncryptionState.ENCRYPTING,
                 etag="etag_value",
+                enable_metastore_encryption=True,
             )
         )
         response = await client.get_encryption_config(request)
@@ -2908,6 +2911,7 @@ async def test_get_encryption_config_async(
     assert response.key == "key_value"
     assert response.encryption_state == cmek.EncryptionConfig.EncryptionState.ENCRYPTING
     assert response.etag == "etag_value"
+    assert response.enable_metastore_encryption is True
 
 
 @pytest.mark.asyncio
@@ -4467,6 +4471,7 @@ async def test_get_encryption_config_empty_call_grpc_asyncio():
                 key="key_value",
                 encryption_state=cmek.EncryptionConfig.EncryptionState.ENCRYPTING,
                 etag="etag_value",
+                enable_metastore_encryption=True,
             )
         )
         await client.get_encryption_config(request=None)
@@ -4533,6 +4538,7 @@ def test_create_encryption_config_rest_call_success(request_type):
         "encryption_state": 1,
         "etag": "etag_value",
         "failure_details": {"error_code": 1, "error_message": "error_message_value"},
+        "enable_metastore_encryption": True,
     }
     # The version of a generated dependency at test runtime may differ from the version used during generation.
     # Delete any fields which are not present in the current runtime dependency
@@ -4741,6 +4747,7 @@ def test_update_encryption_config_rest_call_success(request_type):
         "encryption_state": 1,
         "etag": "etag_value",
         "failure_details": {"error_code": 1, "error_message": "error_message_value"},
+        "enable_metastore_encryption": True,
     }
     # The version of a generated dependency at test runtime may differ from the version used during generation.
     # Delete any fields which are not present in the current runtime dependency
@@ -5207,6 +5214,7 @@ def test_get_encryption_config_rest_call_success(request_type):
             key="key_value",
             encryption_state=cmek.EncryptionConfig.EncryptionState.ENCRYPTING,
             etag="etag_value",
+            enable_metastore_encryption=True,
         )
 
         # Wrap the value into a proper Response obj
@@ -5227,6 +5235,7 @@ def test_get_encryption_config_rest_call_success(request_type):
     assert response.key == "key_value"
     assert response.encryption_state == cmek.EncryptionConfig.EncryptionState.ENCRYPTING
     assert response.etag == "etag_value"
+    assert response.enable_metastore_encryption is True
 
 
 @pytest.mark.parametrize("null_interceptor", [True, False])

@@ -49,4 +49,5 @@ def sample_get_custom_field():
     # Handle the response
     print(response)
 
+
 # [END admanager_v1_generated_CustomFieldService_GetCustomField_sync]

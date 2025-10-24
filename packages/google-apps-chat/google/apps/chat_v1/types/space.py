@@ -539,18 +539,33 @@ class Space(proto.Message):
     class PermissionSetting(proto.Message):
         r"""Represents a space permission setting.
 
+        .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
         Attributes:
             managers_allowed (bool):
-                Optional. Whether spaces managers have this
-                permission.
+                Optional. Whether space owners
+                ([``ROLE_MANAGER``][google.chat.v1.Membership.MembershipRole.ROLE_MANAGER])
+                have this permission.
+            assistant_managers_allowed (bool):
+                Optional. Whether space managers
+                [``ROLE_ASSISTANT_MANAGER``][google.chat.v1.Membership.MembershipRole.ROLE_ASSISTANT_MANAGER])
+                have this permission.
+
+                This field is a member of `oneof`_ ``_assistant_managers_allowed``.
             members_allowed (bool):
-                Optional. Whether non-manager members have
-                this permission.
+                Optional. Whether basic space members
+                ([``ROLE_MEMBER``][google.chat.v1.Membership.MembershipRole.ROLE_MEMBER])
+                have this permission.
         """
 
         managers_allowed: bool = proto.Field(
             proto.BOOL,
             number=1,
+        )
+        assistant_managers_allowed: bool = proto.Field(
+            proto.BOOL,
+            number=3,
+            optional=True,
         )
         members_allowed: bool = proto.Field(
             proto.BOOL,

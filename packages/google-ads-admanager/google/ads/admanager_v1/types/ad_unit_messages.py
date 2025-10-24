@@ -325,11 +325,18 @@ class AdUnitSize(proto.Message):
     r"""Represents the size, environment, and companions of an ad in
     an ad unit.
 
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         size (google.ads.admanager_v1.types.Size):
             Required. The Size of the AdUnit.
+
+            This field is a member of `oneof`_ ``_size``.
         environment_type (google.ads.admanager_v1.types.EnvironmentTypeEnum.EnvironmentType):
             Required. The EnvironmentType of the AdUnit
+
+            This field is a member of `oneof`_ ``_environment_type``.
         companions (MutableSequence[google.ads.admanager_v1.types.Size]):
             The companions for this ad unit size. Companions are only
             valid if the environment is
@@ -339,12 +346,14 @@ class AdUnitSize(proto.Message):
     size: gaa_size.Size = proto.Field(
         proto.MESSAGE,
         number=1,
+        optional=True,
         message=gaa_size.Size,
     )
     environment_type: environment_type_enum.EnvironmentTypeEnum.EnvironmentType = (
         proto.Field(
             proto.ENUM,
             number=2,
+            optional=True,
             enum=environment_type_enum.EnvironmentTypeEnum.EnvironmentType,
         )
     )
@@ -358,51 +367,70 @@ class AdUnitSize(proto.Message):
 class AdUnitParent(proto.Message):
     r"""The summary of a parent AdUnit.
 
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         parent_ad_unit (str):
             Output only. The parent of the current AdUnit Format:
             ``networks/{network_code}/adUnits/{ad_unit_id}``
+
+            This field is a member of `oneof`_ ``_parent_ad_unit``.
         display_name (str):
             Output only. The display name of the parent
             AdUnit.
+
+            This field is a member of `oneof`_ ``_display_name``.
         ad_unit_code (str):
             Output only. A string used to uniquely
             identify the ad unit for the purposes of serving
             the ad.
+
+            This field is a member of `oneof`_ ``_ad_unit_code``.
     """
 
     parent_ad_unit: str = proto.Field(
         proto.STRING,
         number=1,
+        optional=True,
     )
     display_name: str = proto.Field(
         proto.STRING,
         number=2,
+        optional=True,
     )
     ad_unit_code: str = proto.Field(
         proto.STRING,
         number=3,
+        optional=True,
     )
 
 
 class LabelFrequencyCap(proto.Message):
     r"""Frequency cap using a label.
 
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         label (str):
             Required. The label to used for frequency capping. Format:
             "networks/{network_code}/labels/{label_id}".
+
+            This field is a member of `oneof`_ ``_label``.
         frequency_cap (google.ads.admanager_v1.types.FrequencyCap):
             The frequency cap.
+
+            This field is a member of `oneof`_ ``_frequency_cap``.
     """
 
     label: str = proto.Field(
         proto.STRING,
         number=1,
+        optional=True,
     )
     frequency_cap: gaa_frequency_cap.FrequencyCap = proto.Field(
         proto.MESSAGE,
         number=2,
+        optional=True,
         message=gaa_frequency_cap.FrequencyCap,
     )
 

@@ -22014,7 +22014,11 @@ def test_create_message_rest_call_success(request_type):
                             "header": "header_value",
                             "widgets": [
                                 {
-                                    "text_paragraph": {"text": "text_value"},
+                                    "text_paragraph": {
+                                        "text": "text_value",
+                                        "max_lines": 960,
+                                        "text_syntax": 1,
+                                    },
                                     "image": {
                                         "image_url": "image_url_value",
                                         "on_click": {
@@ -22029,6 +22033,11 @@ def test_create_message_rest_call_success(request_type):
                                                 "load_indicator": 1,
                                                 "persist_values": True,
                                                 "interaction": 1,
+                                                "required_widgets": [
+                                                    "required_widgets_value1",
+                                                    "required_widgets_value2",
+                                                ],
+                                                "all_widgets_are_required": True,
                                             },
                                             "open_link": {
                                                 "url": "url_value",
@@ -22037,27 +22046,41 @@ def test_create_message_rest_call_success(request_type):
                                             },
                                             "open_dynamic_link_action": {},
                                             "card": {},
+                                            "overflow_menu": {
+                                                "items": [
+                                                    {
+                                                        "start_icon": {
+                                                            "known_icon": "known_icon_value",
+                                                            "icon_url": "icon_url_value",
+                                                            "material_icon": {
+                                                                "name": "name_value",
+                                                                "fill": True,
+                                                                "weight": 648,
+                                                                "grade": 515,
+                                                            },
+                                                            "alt_text": "alt_text_value",
+                                                            "image_type": 1,
+                                                        },
+                                                        "text": "text_value",
+                                                        "on_click": {},
+                                                        "disabled": True,
+                                                    }
+                                                ]
+                                            },
                                         },
                                         "alt_text": "alt_text_value",
                                     },
                                     "decorated_text": {
-                                        "icon": {
-                                            "known_icon": "known_icon_value",
-                                            "icon_url": "icon_url_value",
-                                            "material_icon": {
-                                                "name": "name_value",
-                                                "fill": True,
-                                                "weight": 648,
-                                                "grade": 515,
-                                            },
-                                            "alt_text": "alt_text_value",
-                                            "image_type": 1,
-                                        },
+                                        "icon": {},
                                         "start_icon": {},
+                                        "start_icon_vertical_alignment": 1,
                                         "top_label": "top_label_value",
+                                        "top_label_text": {},
                                         "text": "text_value",
+                                        "content_text": {},
                                         "wrap_text": True,
                                         "bottom_label": "bottom_label_value",
+                                        "bottom_label_text": {},
                                         "on_click": {},
                                         "button": {
                                             "text": "text_value",
@@ -22071,6 +22094,7 @@ def test_create_message_rest_call_success(request_type):
                                             "on_click": {},
                                             "disabled": True,
                                             "alt_text": "alt_text_value",
+                                            "type_": 1,
                                         },
                                         "switch_control": {
                                             "name": "name_value",
@@ -22093,6 +22117,10 @@ def test_create_message_rest_call_success(request_type):
                                             "items": [{"text": "text_value"}]
                                         },
                                         "auto_complete_action": {},
+                                        "validation": {
+                                            "character_limit": 1579,
+                                            "input_type": 1,
+                                        },
                                         "placeholder_text": "placeholder_text_value",
                                     },
                                     "selection_input": {
@@ -22167,16 +22195,49 @@ def test_create_message_rest_call_success(request_type):
                                                         "text_input": {},
                                                         "selection_input": {},
                                                         "date_time_picker": {},
+                                                        "chip_list": {
+                                                            "layout": 1,
+                                                            "chips": [
+                                                                {
+                                                                    "icon": {},
+                                                                    "label": "label_value",
+                                                                    "on_click": {},
+                                                                    "enabled": True,
+                                                                    "disabled": True,
+                                                                    "alt_text": "alt_text_value",
+                                                                }
+                                                            ],
+                                                        },
                                                     }
                                                 ],
                                             }
                                         ]
                                     },
+                                    "carousel": {
+                                        "carousel_cards": [
+                                            {
+                                                "widgets": [
+                                                    {
+                                                        "text_paragraph": {},
+                                                        "button_list": {},
+                                                        "image": {},
+                                                    }
+                                                ],
+                                                "footer_widgets": {},
+                                            }
+                                        ]
+                                    },
+                                    "chip_list": {},
                                     "horizontal_alignment": 1,
                                 }
                             ],
                             "collapsible": True,
                             "uncollapsible_widgets_count": 2891,
+                            "collapse_control": {
+                                "horizontal_alignment": 1,
+                                "expand_button": {},
+                                "collapse_button": {},
+                            },
                         }
                     ],
                     "section_divider_style": 1,
@@ -22269,6 +22330,7 @@ def test_create_message_rest_call_success(request_type):
             "permission_settings": {
                 "manage_members_and_groups": {
                     "managers_allowed": True,
+                    "assistant_managers_allowed": True,
                     "members_allowed": True,
                 },
                 "modify_space_details": {},
@@ -23140,7 +23202,11 @@ def test_update_message_rest_call_success(request_type):
                             "header": "header_value",
                             "widgets": [
                                 {
-                                    "text_paragraph": {"text": "text_value"},
+                                    "text_paragraph": {
+                                        "text": "text_value",
+                                        "max_lines": 960,
+                                        "text_syntax": 1,
+                                    },
                                     "image": {
                                         "image_url": "image_url_value",
                                         "on_click": {
@@ -23155,6 +23221,11 @@ def test_update_message_rest_call_success(request_type):
                                                 "load_indicator": 1,
                                                 "persist_values": True,
                                                 "interaction": 1,
+                                                "required_widgets": [
+                                                    "required_widgets_value1",
+                                                    "required_widgets_value2",
+                                                ],
+                                                "all_widgets_are_required": True,
                                             },
                                             "open_link": {
                                                 "url": "url_value",
@@ -23163,27 +23234,41 @@ def test_update_message_rest_call_success(request_type):
                                             },
                                             "open_dynamic_link_action": {},
                                             "card": {},
+                                            "overflow_menu": {
+                                                "items": [
+                                                    {
+                                                        "start_icon": {
+                                                            "known_icon": "known_icon_value",
+                                                            "icon_url": "icon_url_value",
+                                                            "material_icon": {
+                                                                "name": "name_value",
+                                                                "fill": True,
+                                                                "weight": 648,
+                                                                "grade": 515,
+                                                            },
+                                                            "alt_text": "alt_text_value",
+                                                            "image_type": 1,
+                                                        },
+                                                        "text": "text_value",
+                                                        "on_click": {},
+                                                        "disabled": True,
+                                                    }
+                                                ]
+                                            },
                                         },
                                         "alt_text": "alt_text_value",
                                     },
                                     "decorated_text": {
-                                        "icon": {
-                                            "known_icon": "known_icon_value",
-                                            "icon_url": "icon_url_value",
-                                            "material_icon": {
-                                                "name": "name_value",
-                                                "fill": True,
-                                                "weight": 648,
-                                                "grade": 515,
-                                            },
-                                            "alt_text": "alt_text_value",
-                                            "image_type": 1,
-                                        },
+                                        "icon": {},
                                         "start_icon": {},
+                                        "start_icon_vertical_alignment": 1,
                                         "top_label": "top_label_value",
+                                        "top_label_text": {},
                                         "text": "text_value",
+                                        "content_text": {},
                                         "wrap_text": True,
                                         "bottom_label": "bottom_label_value",
+                                        "bottom_label_text": {},
                                         "on_click": {},
                                         "button": {
                                             "text": "text_value",
@@ -23197,6 +23282,7 @@ def test_update_message_rest_call_success(request_type):
                                             "on_click": {},
                                             "disabled": True,
                                             "alt_text": "alt_text_value",
+                                            "type_": 1,
                                         },
                                         "switch_control": {
                                             "name": "name_value",
@@ -23219,6 +23305,10 @@ def test_update_message_rest_call_success(request_type):
                                             "items": [{"text": "text_value"}]
                                         },
                                         "auto_complete_action": {},
+                                        "validation": {
+                                            "character_limit": 1579,
+                                            "input_type": 1,
+                                        },
                                         "placeholder_text": "placeholder_text_value",
                                     },
                                     "selection_input": {
@@ -23293,16 +23383,49 @@ def test_update_message_rest_call_success(request_type):
                                                         "text_input": {},
                                                         "selection_input": {},
                                                         "date_time_picker": {},
+                                                        "chip_list": {
+                                                            "layout": 1,
+                                                            "chips": [
+                                                                {
+                                                                    "icon": {},
+                                                                    "label": "label_value",
+                                                                    "on_click": {},
+                                                                    "enabled": True,
+                                                                    "disabled": True,
+                                                                    "alt_text": "alt_text_value",
+                                                                }
+                                                            ],
+                                                        },
                                                     }
                                                 ],
                                             }
                                         ]
                                     },
+                                    "carousel": {
+                                        "carousel_cards": [
+                                            {
+                                                "widgets": [
+                                                    {
+                                                        "text_paragraph": {},
+                                                        "button_list": {},
+                                                        "image": {},
+                                                    }
+                                                ],
+                                                "footer_widgets": {},
+                                            }
+                                        ]
+                                    },
+                                    "chip_list": {},
                                     "horizontal_alignment": 1,
                                 }
                             ],
                             "collapsible": True,
                             "uncollapsible_widgets_count": 2891,
+                            "collapse_control": {
+                                "horizontal_alignment": 1,
+                                "expand_button": {},
+                                "collapse_button": {},
+                            },
                         }
                     ],
                     "section_divider_style": 1,
@@ -23395,6 +23518,7 @@ def test_update_message_rest_call_success(request_type):
             "permission_settings": {
                 "manage_members_and_groups": {
                     "managers_allowed": True,
+                    "assistant_managers_allowed": True,
                     "members_allowed": True,
                 },
                 "modify_space_details": {},
@@ -24453,6 +24577,7 @@ def test_create_space_rest_call_success(request_type):
         "permission_settings": {
             "manage_members_and_groups": {
                 "managers_allowed": True,
+                "assistant_managers_allowed": True,
                 "members_allowed": True,
             },
             "modify_space_details": {},
@@ -24863,6 +24988,7 @@ def test_update_space_rest_call_success(request_type):
         "permission_settings": {
             "manage_members_and_groups": {
                 "managers_allowed": True,
+                "assistant_managers_allowed": True,
                 "members_allowed": True,
             },
             "modify_space_details": {},

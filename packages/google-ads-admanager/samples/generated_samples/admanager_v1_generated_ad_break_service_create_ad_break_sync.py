@@ -49,4 +49,5 @@ def sample_create_ad_break():
     # Handle the response
     print(response)
 
+
 # [END admanager_v1_generated_AdBreakService_CreateAdBreak_sync]

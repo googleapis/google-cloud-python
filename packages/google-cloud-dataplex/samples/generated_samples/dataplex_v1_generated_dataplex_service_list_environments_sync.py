@@ -50,4 +50,5 @@ def sample_list_environments():
     for response in page_result:
         print(response)
 
+
 # [END dataplex_v1_generated_DataplexService_ListEnvironments_sync]

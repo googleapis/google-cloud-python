@@ -50,4 +50,5 @@ def sample_list_programmatic_buyers():
     for response in page_result:
         print(response)
 
+
 # [END admanager_v1_generated_ProgrammaticBuyerService_ListProgrammaticBuyers_sync]

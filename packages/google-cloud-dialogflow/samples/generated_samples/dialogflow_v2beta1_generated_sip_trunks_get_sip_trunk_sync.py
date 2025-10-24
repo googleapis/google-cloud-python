@@ -49,4 +49,5 @@ def sample_get_sip_trunk():
     # Handle the response
     print(response)
 
+
 # [END dialogflow_v2beta1_generated_SipTrunks_GetSipTrunk_sync]

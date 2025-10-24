@@ -61,8 +61,8 @@ class ListPrivateAuctionDealsRequest(proto.Message):
             Optional. The maximum number of ``PrivateAuctionDeals`` to
             return. The service may return fewer than this value. If
             unspecified, at most 50 ``PrivateAuctionDeals`` will be
-            returned. The maximum value is 1000; values above 1000 will
-            be coerced to 1000.
+            returned. The maximum value is 1000; values greater than
+            1000 will be coerced to 1000.
         page_token (str):
             Optional. A page token, received from a previous
             ``ListPrivateAuctionDeals`` call. Provide this to retrieve
@@ -127,8 +127,8 @@ class ListPrivateAuctionDealsResponse(proto.Message):
             was included in the request, this reflects the total number
             after the filtering is applied.
 
-            ``total_size`` will not be calculated in the response unless
-            it has been included in a response field mask. The response
+            ``total_size`` won't be calculated in the response unless it
+            has been included in a response field mask. The response
             field mask can be provided to the method by using the URL
             parameter ``$fields`` or ``fields``, or by using the
             HTTP/gRPC header ``X-Goog-FieldMask``.

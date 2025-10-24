@@ -34,6 +34,7 @@ __protobuf__ = proto.module(
         "InputAudioConfig",
         "VoiceSelectionParams",
         "SynthesizeSpeechConfig",
+        "CustomPronunciationParams",
         "OutputAudioConfig",
         "TelephonyDtmfEvents",
         "SpeechToTextConfig",
@@ -449,7 +450,9 @@ class InputAudioConfig(proto.Message):
             Support <https://cloud.google.com/dialogflow/docs/reference/language>`__
             for a list of the currently supported language codes. Note
             that queries in the same session do not necessarily need to
-            specify the same language.
+            specify the same language. If not set, the language is
+            inferred from the
+            [ConversationProfile.stt_config][google.cloud.dialogflow.v2beta1.ConversationProfile.stt_config].
         enable_word_info (bool):
             If ``true``, Dialogflow returns
             [SpeechWordInfo][google.cloud.dialogflow.v2beta1.SpeechWordInfo]
@@ -660,6 +663,9 @@ class SynthesizeSpeechConfig(proto.Message):
         voice (google.cloud.dialogflow_v2beta1.types.VoiceSelectionParams):
             Optional. The desired voice of the
             synthesized audio.
+        pronunciations (MutableSequence[google.cloud.dialogflow_v2beta1.types.CustomPronunciationParams]):
+            Optional. The custom pronunciations for the
+            synthesized audio.
     """
 
     speaking_rate: float = proto.Field(
@@ -682,6 +688,59 @@ class SynthesizeSpeechConfig(proto.Message):
         proto.MESSAGE,
         number=4,
         message="VoiceSelectionParams",
+    )
+    pronunciations: MutableSequence["CustomPronunciationParams"] = proto.RepeatedField(
+        proto.MESSAGE,
+        number=6,
+        message="CustomPronunciationParams",
+    )
+
+
+class CustomPronunciationParams(proto.Message):
+    r"""Pronunciation customization for a phrase.
+
+    Attributes:
+        phrase (str):
+            The phrase to which the customization is
+            applied. The phrase can be multiple words, such
+            as proper nouns, but shouldn't span the length
+            of the sentence.
+        phonetic_encoding (google.cloud.dialogflow_v2beta1.types.CustomPronunciationParams.PhoneticEncoding):
+            The phonetic encoding of the phrase.
+        pronunciation (str):
+            The pronunciation of the phrase. This must be
+            in the phonetic encoding specified above.
+    """
+
+    class PhoneticEncoding(proto.Enum):
+        r"""The phonetic encoding of the phrase.
+
+        Values:
+            PHONETIC_ENCODING_UNSPECIFIED (0):
+                Not specified.
+            PHONETIC_ENCODING_IPA (1):
+                IPA, such as apple -> ˈæpəl.
+                https://en.wikipedia.org/wiki/International_Phonetic_Alphabet
+            PHONETIC_ENCODING_X_SAMPA (2):
+                X-SAMPA, such as apple -> "{p@l".
+                https://en.wikipedia.org/wiki/X-SAMPA
+        """
+        PHONETIC_ENCODING_UNSPECIFIED = 0
+        PHONETIC_ENCODING_IPA = 1
+        PHONETIC_ENCODING_X_SAMPA = 2
+
+    phrase: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    phonetic_encoding: PhoneticEncoding = proto.Field(
+        proto.ENUM,
+        number=2,
+        enum=PhoneticEncoding,
+    )
+    pronunciation: str = proto.Field(
+        proto.STRING,
+        number=3,
     )
 
 
@@ -795,7 +854,10 @@ class SpeechToTextConfig(proto.Message):
             Support <https://cloud.google.com/dialogflow/docs/reference/language>`__
             for a list of the currently supported language codes. Note
             that queries in the same session do not necessarily need to
-            specify the same language.
+            specify the same language. If not specified, the default
+            language configured at
+            [ConversationProfile][google.cloud.dialogflow.v2beta1.ConversationProfile]
+            is used.
         enable_word_info (bool):
             If ``true``, Dialogflow returns
             [SpeechWordInfo][google.cloud.dialogflow.v2beta1.SpeechWordInfo]

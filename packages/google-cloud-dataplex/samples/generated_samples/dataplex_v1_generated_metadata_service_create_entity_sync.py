@@ -59,4 +59,5 @@ def sample_create_entity():
     # Handle the response
     print(response)
 
+
 # [END dataplex_v1_generated_MetadataService_CreateEntity_sync]

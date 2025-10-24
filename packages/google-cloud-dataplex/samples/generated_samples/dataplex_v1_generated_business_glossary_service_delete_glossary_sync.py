@@ -53,4 +53,5 @@ def sample_delete_glossary():
     # Handle the response
     print(response)
 
+
 # [END dataplex_v1_generated_BusinessGlossaryService_DeleteGlossary_sync]

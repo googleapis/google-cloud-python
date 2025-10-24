@@ -39,8 +39,7 @@ def sample_list_answer_records():
     client = dialogflow_v2beta1.AnswerRecordsClient()
 
     # Initialize request argument(s)
-    request = dialogflow_v2beta1.ListAnswerRecordsRequest(
-    )
+    request = dialogflow_v2beta1.ListAnswerRecordsRequest()
 
     # Make the request
     page_result = client.list_answer_records(request=request)
@@ -48,5 +47,6 @@ def sample_list_answer_records():
     # Handle the response
     for response in page_result:
         print(response)
+
 
 # [END dialogflow_v2beta1_generated_AnswerRecords_ListAnswerRecords_sync]

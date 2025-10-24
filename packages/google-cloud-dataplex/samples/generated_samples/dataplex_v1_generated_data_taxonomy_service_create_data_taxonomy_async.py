@@ -54,4 +54,5 @@ async def sample_create_data_taxonomy():
     # Handle the response
     print(response)
 
+
 # [END dataplex_v1_generated_DataTaxonomyService_CreateDataTaxonomy_async]

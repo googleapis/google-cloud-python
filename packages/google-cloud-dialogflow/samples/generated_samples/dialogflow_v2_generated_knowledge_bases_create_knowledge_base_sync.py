@@ -53,4 +53,5 @@ def sample_create_knowledge_base():
     # Handle the response
     print(response)
 
+
 # [END dialogflow_v2_generated_KnowledgeBases_CreateKnowledgeBase_sync]

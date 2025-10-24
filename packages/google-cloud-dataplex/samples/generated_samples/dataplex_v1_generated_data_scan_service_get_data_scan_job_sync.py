@@ -49,4 +49,5 @@ def sample_get_data_scan_job():
     # Handle the response
     print(response)
 
+
 # [END dataplex_v1_generated_DataScanService_GetDataScanJob_sync]

@@ -4705,6 +4705,7 @@ def test_get_aspect_type(request_type, transport: str = "grpc"):
             description="description_value",
             display_name="display_name_value",
             etag="etag_value",
+            data_classification=catalog.AspectType.DataClassification.METADATA_AND_DATA,
             transfer_status=catalog.TransferStatus.TRANSFER_STATUS_MIGRATED,
         )
         response = client.get_aspect_type(request)
@@ -4722,6 +4723,10 @@ def test_get_aspect_type(request_type, transport: str = "grpc"):
     assert response.description == "description_value"
     assert response.display_name == "display_name_value"
     assert response.etag == "etag_value"
+    assert (
+        response.data_classification
+        == catalog.AspectType.DataClassification.METADATA_AND_DATA
+    )
     assert response.transfer_status == catalog.TransferStatus.TRANSFER_STATUS_MIGRATED
 
 
@@ -4853,6 +4858,7 @@ async def test_get_aspect_type_async(
                 description="description_value",
                 display_name="display_name_value",
                 etag="etag_value",
+                data_classification=catalog.AspectType.DataClassification.METADATA_AND_DATA,
                 transfer_status=catalog.TransferStatus.TRANSFER_STATUS_MIGRATED,
             )
         )
@@ -4871,6 +4877,10 @@ async def test_get_aspect_type_async(
     assert response.description == "description_value"
     assert response.display_name == "display_name_value"
     assert response.etag == "etag_value"
+    assert (
+        response.data_classification
+        == catalog.AspectType.DataClassification.METADATA_AND_DATA
+    )
     assert response.transfer_status == catalog.TransferStatus.TRANSFER_STATUS_MIGRATED
 
 
@@ -19278,6 +19288,7 @@ async def test_get_aspect_type_empty_call_grpc_asyncio():
                 description="description_value",
                 display_name="display_name_value",
                 etag="etag_value",
+                data_classification=catalog.AspectType.DataClassification.METADATA_AND_DATA,
                 transfer_status=catalog.TransferStatus.TRANSFER_STATUS_MIGRATED,
             )
         )
@@ -20689,6 +20700,7 @@ def test_create_aspect_type_rest_call_success(request_type):
         "display_name": "display_name_value",
         "labels": {},
         "etag": "etag_value",
+        "data_classification": 1,
         "authorization": {"alternate_use_permission": "alternate_use_permission_value"},
         "metadata_template": {
             "index": 536,
@@ -20922,6 +20934,7 @@ def test_update_aspect_type_rest_call_success(request_type):
         "display_name": "display_name_value",
         "labels": {},
         "etag": "etag_value",
+        "data_classification": 1,
         "authorization": {"alternate_use_permission": "alternate_use_permission_value"},
         "metadata_template": {
             "index": 536,
@@ -21400,6 +21413,7 @@ def test_get_aspect_type_rest_call_success(request_type):
             description="description_value",
             display_name="display_name_value",
             etag="etag_value",
+            data_classification=catalog.AspectType.DataClassification.METADATA_AND_DATA,
             transfer_status=catalog.TransferStatus.TRANSFER_STATUS_MIGRATED,
         )
 
@@ -21422,6 +21436,10 @@ def test_get_aspect_type_rest_call_success(request_type):
     assert response.description == "description_value"
     assert response.display_name == "display_name_value"
     assert response.etag == "etag_value"
+    assert (
+        response.data_classification
+        == catalog.AspectType.DataClassification.METADATA_AND_DATA
+    )
     assert response.transfer_status == catalog.TransferStatus.TRANSFER_STATUS_MIGRATED
 
 

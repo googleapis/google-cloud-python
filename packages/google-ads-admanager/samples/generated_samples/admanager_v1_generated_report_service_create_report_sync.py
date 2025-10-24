@@ -40,9 +40,9 @@ def sample_create_report():
 
     # Initialize request argument(s)
     report = admanager_v1.Report()
-    report.report_definition.dimensions = ['CUSTOM_DIMENSION_9_VALUE']
-    report.report_definition.metrics = ['YIELD_GROUP_SUCCESSFUL_RESPONSES']
-    report.report_definition.report_type = "HISTORICAL"
+    report.report_definition.dimensions = ["CUSTOM_DIMENSION_9_VALUE"]
+    report.report_definition.metrics = ["YIELD_GROUP_SUCCESSFUL_RESPONSES"]
+    report.report_definition.report_type = "AD_SPEED"
 
     request = admanager_v1.CreateReportRequest(
         parent="parent_value",
@@ -54,5 +54,6 @@ def sample_create_report():
 
     # Handle the response
     print(response)
+
 
 # [END admanager_v1_generated_ReportService_CreateReport_sync]

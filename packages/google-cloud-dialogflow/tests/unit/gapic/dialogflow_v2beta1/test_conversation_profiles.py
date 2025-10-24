@@ -77,7 +77,7 @@ from google.cloud.dialogflow_v2beta1.types import (
 )
 from google.cloud.dialogflow_v2beta1.types import audio_config
 from google.cloud.dialogflow_v2beta1.types import conversation_profile
-from google.cloud.dialogflow_v2beta1.types import participant
+from google.cloud.dialogflow_v2beta1.types import generator, participant
 
 CRED_INFO_JSON = {
     "credential_source": "/path/to/file",
@@ -6212,6 +6212,12 @@ def test_create_conversation_profile_rest_call_success(request_type):
                         "enable_query_suggestion_when_no_answer": True,
                         "enable_conversation_augmented_query": True,
                         "enable_query_suggestion_only": True,
+                        "enable_response_debug_info": True,
+                        "rai_settings": {
+                            "rai_category_configs": [
+                                {"category": 1, "sensitivity_level": 1}
+                            ]
+                        },
                         "suggestion_trigger_settings": {
                             "no_small_talk": True,
                             "only_end_user": True,
@@ -6250,6 +6256,9 @@ def test_create_conversation_profile_rest_call_success(request_type):
                 "group_suggestion_responses": True,
                 "generators": ["generators_value1", "generators_value2"],
                 "disable_high_latency_features_sync_delivery": True,
+                "skip_empty_event_based_suggestion": True,
+                "use_unredacted_conversation_data": True,
+                "enable_async_tool_call": True,
             },
             "end_user_suggestion_config": {},
             "message_analysis_config": {
@@ -6292,6 +6301,13 @@ def test_create_conversation_profile_rest_call_success(request_type):
                 "effects_profile_id_value2",
             ],
             "voice": {"name": "name_value", "ssml_gender": 1},
+            "pronunciations": [
+                {
+                    "phrase": "phrase_value",
+                    "phonetic_encoding": 1,
+                    "pronunciation": "pronunciation_value",
+                }
+            ],
         },
     }
     # The version of a generated dependency at test runtime may differ from the version used during generation.
@@ -6536,6 +6552,12 @@ def test_update_conversation_profile_rest_call_success(request_type):
                         "enable_query_suggestion_when_no_answer": True,
                         "enable_conversation_augmented_query": True,
                         "enable_query_suggestion_only": True,
+                        "enable_response_debug_info": True,
+                        "rai_settings": {
+                            "rai_category_configs": [
+                                {"category": 1, "sensitivity_level": 1}
+                            ]
+                        },
                         "suggestion_trigger_settings": {
                             "no_small_talk": True,
                             "only_end_user": True,
@@ -6574,6 +6596,9 @@ def test_update_conversation_profile_rest_call_success(request_type):
                 "group_suggestion_responses": True,
                 "generators": ["generators_value1", "generators_value2"],
                 "disable_high_latency_features_sync_delivery": True,
+                "skip_empty_event_based_suggestion": True,
+                "use_unredacted_conversation_data": True,
+                "enable_async_tool_call": True,
             },
             "end_user_suggestion_config": {},
             "message_analysis_config": {
@@ -6616,6 +6641,13 @@ def test_update_conversation_profile_rest_call_success(request_type):
                 "effects_profile_id_value2",
             ],
             "voice": {"name": "name_value", "ssml_gender": 1},
+            "pronunciations": [
+                {
+                    "phrase": "phrase_value",
+                    "phonetic_encoding": 1,
+                    "pronunciation": "pronunciation_value",
+                }
+            ],
         },
     }
     # The version of a generated dependency at test runtime may differ from the version used during generation.

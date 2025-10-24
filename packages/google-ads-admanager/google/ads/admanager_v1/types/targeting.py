@@ -32,7 +32,12 @@ __protobuf__ = proto.module(
         "GeoTargeting",
         "TechnologyTargeting",
         "BandwidthTargeting",
+        "BrowserTargeting",
+        "BrowserLanguageTargeting",
         "DeviceCategoryTargeting",
+        "DeviceCapabilityTargeting",
+        "DeviceManufacturerTargeting",
+        "MobileCarrierTargeting",
         "OperatingSystemTargeting",
         "InventoryTargeting",
         "AdUnitTargeting",
@@ -40,10 +45,15 @@ __protobuf__ = proto.module(
         "CustomTargeting",
         "CustomTargetingClause",
         "CustomTargetingLiteral",
+        "AudienceSegmentTargeting",
+        "CmsMetadataTargeting",
         "UserDomainTargeting",
         "VideoPositionTargeting",
         "VideoPosition",
         "DataSegmentTargeting",
+        "ContentTargeting",
+        "MobileApplicationTargeting",
+        "FirstPartyMobileApplicationTargeting",
     },
 )
 
@@ -73,6 +83,10 @@ class Targeting(proto.Message):
             Optional. Used to target video positions.
         data_segment_targeting (google.ads.admanager_v1.types.DataSegmentTargeting):
             Optional. Used to target data segments.
+        content_targeting (google.ads.admanager_v1.types.ContentTargeting):
+            Optional. Used to target content.
+        mobile_application_targeting (google.ads.admanager_v1.types.MobileApplicationTargeting):
+            Optional. Used to target mobile applications.
     """
 
     geo_targeting: "GeoTargeting" = proto.Field(
@@ -115,6 +129,16 @@ class Targeting(proto.Message):
         number=13,
         message="DataSegmentTargeting",
     )
+    content_targeting: "ContentTargeting" = proto.Field(
+        proto.MESSAGE,
+        number=15,
+        message="ContentTargeting",
+    )
+    mobile_application_targeting: "MobileApplicationTargeting" = proto.Field(
+        proto.MESSAGE,
+        number=18,
+        message="MobileApplicationTargeting",
+    )
 
 
 class GeoTargeting(proto.Message):
@@ -146,9 +170,22 @@ class TechnologyTargeting(proto.Message):
     Attributes:
         bandwidth_targeting (google.ads.admanager_v1.types.BandwidthTargeting):
             Optional. Bandwidth targeting dimension.
+        browser_targeting (google.ads.admanager_v1.types.BrowserTargeting):
+            Optional. Browser targeting dimension.
+        browser_language_targeting (google.ads.admanager_v1.types.BrowserLanguageTargeting):
+            Optional. Browser language targeting
+            dimension.
+        device_capability_targeting (google.ads.admanager_v1.types.DeviceCapabilityTargeting):
+            Optional. Device capability targeting
+            dimension.
         device_category_targeting (google.ads.admanager_v1.types.DeviceCategoryTargeting):
             Optional. Device category targeting
             dimension.
+        device_manufacturer_targeting (google.ads.admanager_v1.types.DeviceManufacturerTargeting):
+            Optional. Device manufacturer targeting
+            dimension.
+        mobile_carrier_targeting (google.ads.admanager_v1.types.MobileCarrierTargeting):
+            Optional. Mobile carrier targeting dimension.
         operating_system_targeting (google.ads.admanager_v1.types.OperatingSystemTargeting):
             Optional. Operating system targeting
             dimension.
@@ -159,10 +196,35 @@ class TechnologyTargeting(proto.Message):
         number=3,
         message="BandwidthTargeting",
     )
+    browser_targeting: "BrowserTargeting" = proto.Field(
+        proto.MESSAGE,
+        number=4,
+        message="BrowserTargeting",
+    )
+    browser_language_targeting: "BrowserLanguageTargeting" = proto.Field(
+        proto.MESSAGE,
+        number=5,
+        message="BrowserLanguageTargeting",
+    )
+    device_capability_targeting: "DeviceCapabilityTargeting" = proto.Field(
+        proto.MESSAGE,
+        number=6,
+        message="DeviceCapabilityTargeting",
+    )
     device_category_targeting: "DeviceCategoryTargeting" = proto.Field(
         proto.MESSAGE,
         number=1,
         message="DeviceCategoryTargeting",
+    )
+    device_manufacturer_targeting: "DeviceManufacturerTargeting" = proto.Field(
+        proto.MESSAGE,
+        number=7,
+        message="DeviceManufacturerTargeting",
+    )
+    mobile_carrier_targeting: "MobileCarrierTargeting" = proto.Field(
+        proto.MESSAGE,
+        number=8,
+        message="MobileCarrierTargeting",
     )
     operating_system_targeting: "OperatingSystemTargeting" = proto.Field(
         proto.MESSAGE,
@@ -199,6 +261,60 @@ class BandwidthTargeting(proto.Message):
     )
 
 
+class BrowserTargeting(proto.Message):
+    r"""Browser Targeting.
+
+    Allows publishers to target/exclude a browser type (e.g. Chrome,
+    Firefox, Safari). For more information, see
+    https://support.google.com/admanager/answer/2884033 (Targeting
+    types > Browser).
+
+    Attributes:
+        targeted_browsers (MutableSequence[str]):
+            Optional. A list of browser resource names
+            that should be targeted/included.
+        excluded_browsers (MutableSequence[str]):
+            Optional. A list of browser resource names
+            that should be excluded.
+    """
+
+    targeted_browsers: MutableSequence[str] = proto.RepeatedField(
+        proto.STRING,
+        number=3,
+    )
+    excluded_browsers: MutableSequence[str] = proto.RepeatedField(
+        proto.STRING,
+        number=4,
+    )
+
+
+class BrowserLanguageTargeting(proto.Message):
+    r"""Browser Language Targeting.
+
+    For ads targeting mobile apps and their associated WebViews, the
+    language used is based on the language specified by the user in
+    their mobile device settings. If a browser has more than one
+    language assigned to it, each language generates an impression.
+
+    Attributes:
+        targeted_browser_languages (MutableSequence[str]):
+            Optional. A list of browser language resource
+            names that should be targeted/included.
+        excluded_browser_languages (MutableSequence[str]):
+            Optional. A list of browser language resource
+            names that should be excluded.
+    """
+
+    targeted_browser_languages: MutableSequence[str] = proto.RepeatedField(
+        proto.STRING,
+        number=3,
+    )
+    excluded_browser_languages: MutableSequence[str] = proto.RepeatedField(
+        proto.STRING,
+        number=4,
+    )
+
+
 class DeviceCategoryTargeting(proto.Message):
     r"""Represents a list of targeted and excluded device categories.
 
@@ -216,6 +332,114 @@ class DeviceCategoryTargeting(proto.Message):
         number=3,
     )
     excluded_categories: MutableSequence[str] = proto.RepeatedField(
+        proto.STRING,
+        number=4,
+    )
+
+
+class DeviceCapabilityTargeting(proto.Message):
+    r"""Device Capability Targeting.
+
+    Can be used to target/exclude users using mobile apps, ad
+    requests resulting from apps built on the MRAID standard, or
+    users on devices that are able to make phone calls versus
+    devices that aren't able to make phone calls, such as tablets.
+
+    Attributes:
+        targeted_capabilities (MutableSequence[str]):
+            Optional. A list of device capability
+            resource names that should be targeted/included.
+        excluded_capabilities (MutableSequence[str]):
+            Optional. A list of device capability
+            resource names that should be excluded.
+    """
+
+    targeted_capabilities: MutableSequence[str] = proto.RepeatedField(
+        proto.STRING,
+        number=3,
+    )
+    excluded_capabilities: MutableSequence[str] = proto.RepeatedField(
+        proto.STRING,
+        number=4,
+    )
+
+
+class DeviceManufacturerTargeting(proto.Message):
+    r"""Device Manufacturer Targeting.
+
+    Can be used to target/exclude users on devices made by specific
+    brands or companies, such as Apple, Google, Samsung and others.
+    For more information, see
+    https://support.google.com/admanager/answer/2884033 ("Targeting
+    types > Device manufacturer").
+
+    Attributes:
+        targeted_device_manufacturers (MutableSequence[str]):
+            Optional. A list of device manufacturer
+            resource names that should be targeted/included.
+        excluded_device_manufacturers (MutableSequence[str]):
+            Optional. A list of device manufacturer
+            resource names that should be excluded.
+        targeted_mobile_devices (MutableSequence[str]):
+            Optional. A list of mobile device resource
+            names that should be targeted/included.
+        excluded_mobile_devices (MutableSequence[str]):
+            Optional. A list of mobile device resource
+            names that should be excluded.
+        targeted_mobile_device_submodels (MutableSequence[str]):
+            Optional. A list of mobile device submodel
+            resource names that should be targeted/included.
+        excluded_mobile_device_submodels (MutableSequence[str]):
+            Optional. A list of mobile device submodel
+            resource names that should be excluded.
+    """
+
+    targeted_device_manufacturers: MutableSequence[str] = proto.RepeatedField(
+        proto.STRING,
+        number=7,
+    )
+    excluded_device_manufacturers: MutableSequence[str] = proto.RepeatedField(
+        proto.STRING,
+        number=8,
+    )
+    targeted_mobile_devices: MutableSequence[str] = proto.RepeatedField(
+        proto.STRING,
+        number=9,
+    )
+    excluded_mobile_devices: MutableSequence[str] = proto.RepeatedField(
+        proto.STRING,
+        number=10,
+    )
+    targeted_mobile_device_submodels: MutableSequence[str] = proto.RepeatedField(
+        proto.STRING,
+        number=11,
+    )
+    excluded_mobile_device_submodels: MutableSequence[str] = proto.RepeatedField(
+        proto.STRING,
+        number=12,
+    )
+
+
+class MobileCarrierTargeting(proto.Message):
+    r"""Mobile Carrier Targeting.
+
+    Can be used to target/exclude a variety of mobile carriers, such
+    as AT&T, Verizon, or T-Mobile.
+
+    Attributes:
+        targeted_mobile_carriers (MutableSequence[str]):
+            Optional. A list of mobile carrier resource
+            names that should be targeted/included.
+        excluded_mobile_carriers (MutableSequence[str]):
+            Optional. A list of mobile carrier resource
+            names that should be excluded.
+    """
+
+    targeted_mobile_carriers: MutableSequence[str] = proto.RepeatedField(
+        proto.STRING,
+        number=3,
+    )
+    excluded_mobile_carriers: MutableSequence[str] = proto.RepeatedField(
         proto.STRING,
         number=4,
     )
@@ -370,6 +594,12 @@ class CustomTargetingClause(proto.Message):
         custom_targeting_literals (MutableSequence[google.ads.admanager_v1.types.CustomTargetingLiteral]):
             Optional. Leaf targeting expressions for
             custom key/values.
+        audience_segment_targetings (MutableSequence[google.ads.admanager_v1.types.AudienceSegmentTargeting]):
+            Optional. Leaf targeting expressions for
+            audience segments.
+        cms_metadata_targetings (MutableSequence[google.ads.admanager_v1.types.CmsMetadataTargeting]):
+            Optional. Leaf targeting expressions for cms
+            metadata.
     """
 
     custom_targeting_literals: MutableSequence[
@@ -378,6 +608,20 @@ class CustomTargetingClause(proto.Message):
         proto.MESSAGE,
         number=1,
         message="CustomTargetingLiteral",
+    )
+    audience_segment_targetings: MutableSequence[
+        "AudienceSegmentTargeting"
+    ] = proto.RepeatedField(
+        proto.MESSAGE,
+        number=2,
+        message="AudienceSegmentTargeting",
+    )
+    cms_metadata_targetings: MutableSequence[
+        "CmsMetadataTargeting"
+    ] = proto.RepeatedField(
+        proto.MESSAGE,
+        number=3,
+        message="CmsMetadataTargeting",
     )
 
 
@@ -418,6 +662,73 @@ class CustomTargetingLiteral(proto.Message):
     custom_targeting_values: MutableSequence[str] = proto.RepeatedField(
         proto.STRING,
         number=5,
+    )
+
+
+class AudienceSegmentTargeting(proto.Message):
+    r"""Represents targeting for audience segments. The values are combined
+    in a logical ``OR``.
+
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
+    Attributes:
+        negative (bool):
+            Whether this expression is negatively
+            targeted, meaning it matches ad requests that
+            exclude the below values.
+
+            This field is a member of `oneof`_ ``_negative``.
+        audience_segments (MutableSequence[str]):
+            Optional. The targeted audience segments.
+
+            This is either the resource name of a first-party audience
+            segment or an alias to the effective third-party audience
+            segment. Third-party audience segment resource names
+            containing ``~direct`` or ``~global`` will be normalized by
+            the server. For example,
+            ``networks/1234/audienceSegments/4567~direct`` will be
+            normalized to ``networks/1234/audienceSegments/4567``.
+    """
+
+    negative: bool = proto.Field(
+        proto.BOOL,
+        number=1,
+        optional=True,
+    )
+    audience_segments: MutableSequence[str] = proto.RepeatedField(
+        proto.STRING,
+        number=3,
+    )
+
+
+class CmsMetadataTargeting(proto.Message):
+    r"""Represents targeting for CMS metadata. The values are ORed
+    together.
+
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
+    Attributes:
+        negative (bool):
+            Whether this expression is negatively
+            targeted, meaning it matches ad requests that
+            exclude the below values.
+
+            This field is a member of `oneof`_ ``_negative``.
+        cms_metadata_values (MutableSequence[str]):
+            Optional. The resource names of the targeted
+            CMS metadata values.
+    """
+
+    negative: bool = proto.Field(
+        proto.BOOL,
+        number=1,
+        optional=True,
+    )
+    cms_metadata_values: MutableSequence[str] = proto.RepeatedField(
+        proto.STRING,
+        number=3,
     )
 
 
@@ -543,6 +854,93 @@ class DataSegmentTargeting(proto.Message):
     has_data_segment_targeting: bool = proto.Field(
         proto.BOOL,
         number=2,
+    )
+
+
+class ContentTargeting(proto.Message):
+    r"""Content Targeting
+
+    Targeted/excluded content entities and bundles.
+
+    Attributes:
+        targeted_content (MutableSequence[str]):
+            Optional. The resource names of the
+            [Content][google.ads.admanager.v1.Content] that should be
+            targeted/included.
+        excluded_content (MutableSequence[str]):
+            Optional. The resource names of the
+            [Content][google.ads.admanager.v1.Content] that should be
+            excluded.
+        targeted_content_bundles (MutableSequence[str]):
+            Optional. The resource names of the
+            [ContentBundles][google.ads.admanager.v1.ContentBundle] that
+            should be targeted/included.
+        excluded_content_bundles (MutableSequence[str]):
+            Optional. The resource names of the
+            [ContentBundles][google.ads.admanager.v1.ContentBundle] that
+            should be excluded.
+    """
+
+    targeted_content: MutableSequence[str] = proto.RepeatedField(
+        proto.STRING,
+        number=5,
+    )
+    excluded_content: MutableSequence[str] = proto.RepeatedField(
+        proto.STRING,
+        number=6,
+    )
+    targeted_content_bundles: MutableSequence[str] = proto.RepeatedField(
+        proto.STRING,
+        number=7,
+    )
+    excluded_content_bundles: MutableSequence[str] = proto.RepeatedField(
+        proto.STRING,
+        number=8,
+    )
+
+
+class MobileApplicationTargeting(proto.Message):
+    r"""Mobile Application Targeting
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
+    Attributes:
+        first_party_targeting (google.ads.admanager_v1.types.FirstPartyMobileApplicationTargeting):
+            Optional. The targeted/excluded first-party
+            mobile applications.
+
+            This field is a member of `oneof`_ ``targeting``.
+    """
+
+    first_party_targeting: "FirstPartyMobileApplicationTargeting" = proto.Field(
+        proto.MESSAGE,
+        number=1,
+        oneof="targeting",
+        message="FirstPartyMobileApplicationTargeting",
+    )
+
+
+class FirstPartyMobileApplicationTargeting(proto.Message):
+    r"""First-party mobile application targeting.
+
+    Attributes:
+        targeted_applications (MutableSequence[str]):
+            Optional. The resource names of the
+            first-party applications that should be
+            targeted.
+        excluded_applications (MutableSequence[str]):
+            Optional. The resource names of the
+            first-party applications that should be
+            excluded.
+    """
+
+    targeted_applications: MutableSequence[str] = proto.RepeatedField(
+        proto.STRING,
+        number=3,
+    )
+    excluded_applications: MutableSequence[str] = proto.RepeatedField(
+        proto.STRING,
+        number=4,
     )
 
 

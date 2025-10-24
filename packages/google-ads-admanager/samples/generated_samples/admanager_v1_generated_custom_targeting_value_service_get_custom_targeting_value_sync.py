@@ -49,4 +49,5 @@ def sample_get_custom_targeting_value():
     # Handle the response
     print(response)
 
+
 # [END admanager_v1_generated_CustomTargetingValueService_GetCustomTargetingValue_sync]

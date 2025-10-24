@@ -90,8 +90,8 @@ class Order(proto.Message):
             "networks/{network_code}/teams/{team_id}".
         creator (str):
             Output only. The resource name of the User who created the
-            Order on behalf of the advertiser. This value is assigned by
-            Google. Format: "networks/{network_code}/users/{user_id}".
+            Order on behalf of the advertiser. Format:
+            "networks/{network_code}/users/{user_id}".
 
             This field is a member of `oneof`_ ``_creator``.
         currency_code (str):
@@ -102,16 +102,16 @@ class Order(proto.Message):
             This field is a member of `oneof`_ ``_currency_code``.
         start_time (google.protobuf.timestamp_pb2.Timestamp):
             Output only. The instant at which the Order and its
-            associated line items are eligible to begin serving. This
-            attribute is derived from the line item of the order that
-            has the earliest LineItem.start_time.
+            associated Line items are eligible to begin serving. This
+            attribute is derived from the Line item of the order that
+            has the earliest ``LineItem.start_time``.
 
             This field is a member of `oneof`_ ``_start_time``.
         end_time (google.protobuf.timestamp_pb2.Timestamp):
             Output only. The instant at which the Order and its
-            associated line items stop being served. This attribute is
-            derived from the line item of the order that has the latest
-            LineItem.end_time.
+            associated Line items stop being served. This attribute is
+            derived from the Line item of the order that has the latest
+            ``LineItem.end_time``.
 
             This field is a member of `oneof`_ ``_end_time``.
         unlimited_end_time (bool):

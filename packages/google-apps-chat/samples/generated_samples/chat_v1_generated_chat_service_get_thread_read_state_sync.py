@@ -49,4 +49,5 @@ def sample_get_thread_read_state():
     # Handle the response
     print(response)
 
+
 # [END chat_v1_generated_ChatService_GetThreadReadState_sync]

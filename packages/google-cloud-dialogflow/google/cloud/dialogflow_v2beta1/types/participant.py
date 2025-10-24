@@ -74,6 +74,8 @@ __protobuf__ = proto.module(
         "SuggestKnowledgeAssistRequest",
         "SuggestKnowledgeAssistResponse",
         "KnowledgeAssistAnswer",
+        "BidiStreamingAnalyzeContentRequest",
+        "BidiStreamingAnalyzeContentResponse",
     },
 )
 
@@ -585,50 +587,58 @@ class AutomatedAgentReply(proto.Message):
 
 
 class SuggestionInput(proto.Message):
-    r"""Represents the selection of a suggestion.
+    r"""Represents the action to take for a tool call that requires
+    confirmation.
 
     Attributes:
         answer_record (str):
-            Required. The ID of a suggestion selected by the human
-            agent. The suggestion(s) were generated in a previous call
-            to request Dialogflow assist. The format is:
+            Required. Format:
             ``projects/<Project ID>/locations/<Location ID>/answerRecords/<Answer Record ID>``
-            where is an alphanumeric string.
+            The answer record associated with the tool call.
         text_override (google.cloud.dialogflow_v2beta1.types.TextInput):
             Optional. If the customer edited the
             suggestion before using it, include the revised
             text here.
         parameters (google.protobuf.struct_pb2.Struct):
-            In Dialogflow assist for v3, the user can submit a form by
-            sending a
-            [SuggestionInput][google.cloud.dialogflow.v2beta1.SuggestionInput].
-            The form is uniquely determined by the
-            [answer_record][google.cloud.dialogflow.v2beta1.SuggestionInput.answer_record]
-            field, which identifies a v3
-            [QueryResult][google.cloud.dialogflow.v3alpha1.QueryResult]
-            containing the current
-            [page][google.cloud.dialogflow.v3alpha1.Page]. The form
-            parameters are specified via the
-            [parameters][google.cloud.dialogflow.v2beta1.SuggestionInput.parameters]
-            field.
-
-            Depending on your protocol or client library language, this
-            is a map, associative array, symbol table, dictionary, or
-            JSON object composed of a collection of (MapKey, MapValue)
-            pairs:
-
-            - MapKey type: string
-            - MapKey value: parameter name
-            - MapValue type: If parameter's entity type is a composite
-              entity then use map, otherwise, depending on the parameter
-              value type, it could be one of string, number, boolean,
-              null, list or map.
-            - MapValue value: If parameter's entity type is a composite
-              entity then use map from composite entity property names
-              to property values, otherwise, use parameter value.
+            Parameters to be used for the tool call.  If
+            not provided, the tool will be called without
+            any parameters.
+        action (google.cloud.dialogflow_v2beta1.types.SuggestionInput.Action):
+            Optional. The type of action to take with the
+            tool.
         intent_input (google.cloud.dialogflow_v2beta1.types.IntentInput):
             The intent to be triggered on V3 agent.
+        send_time (google.protobuf.timestamp_pb2.Timestamp):
+            Optional. Time when the current suggest input
+            is sent. For tool calls, this timestamp (along
+            with the answer record) will be included in the
+            corresponding tool call result so that it can be
+            identified.
     """
+
+    class Action(proto.Enum):
+        r"""Indicate what type of action to take with the tool call.
+
+        Values:
+            ACTION_UNSPECIFIED (0):
+                Action not specified.
+            CANCEL (1):
+                Indicates the user chooses to not make the
+                tool call. It is only applicable to tool calls
+                that are waiting for user confirmation.
+            REVISE (2):
+                Makes the tool call with provided parameters.
+                This action is intended for tool calls that only
+                read but not write data.
+            CONFIRM (3):
+                Makes the tool call with provided parameters.
+                This action is intended for tool calls that may
+                write data.
+        """
+        ACTION_UNSPECIFIED = 0
+        CANCEL = 1
+        REVISE = 2
+        CONFIRM = 3
 
     answer_record: str = proto.Field(
         proto.STRING,
@@ -644,10 +654,20 @@ class SuggestionInput(proto.Message):
         number=4,
         message=struct_pb2.Struct,
     )
+    action: Action = proto.Field(
+        proto.ENUM,
+        number=5,
+        enum=Action,
+    )
     intent_input: "IntentInput" = proto.Field(
         proto.MESSAGE,
         number=6,
         message="IntentInput",
+    )
+    send_time: timestamp_pb2.Timestamp = proto.Field(
+        proto.MESSAGE,
+        number=7,
+        message=timestamp_pb2.Timestamp,
     )
 
 
@@ -1159,12 +1179,15 @@ class StreamingAnalyzeContentRequest(proto.Message):
         input_intent (str):
             The intent to be triggered on V3 agent. Format:
             ``projects/<Project ID>/locations/<Location ID>/locations/ <Location ID>/agents/<Agent ID>/intents/<Intent ID>``.
+            This can only be used to trigger the Welcome intent id if
+            you are using text_config.
 
             This field is a member of `oneof`_ ``input``.
         input_event (str):
             The input event name.
             This can only be sent once and would cancel the
-            ongoing speech recognition if any.
+            ongoing speech recognition if any. To trigger
+            the Welcome intent use the event "WELCOME".
 
             This field is a member of `oneof`_ ``input``.
         query_params (google.cloud.dialogflow_v2beta1.types.QueryParameters):
@@ -2935,6 +2958,300 @@ class KnowledgeAssistAnswer(proto.Message):
     answer_record: str = proto.Field(
         proto.STRING,
         number=3,
+    )
+
+
+class BidiStreamingAnalyzeContentRequest(proto.Message):
+    r"""The request message for
+    [Participants.BidiStreamingAnalyzeContent][google.cloud.dialogflow.v2beta1.Participants.BidiStreamingAnalyzeContent].
+
+    This message has `oneof`_ fields (mutually exclusive fields).
+    For each oneof, at most one member field can be set at the same time.
+    Setting any member of the oneof automatically clears all other
+    members.
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
+    Attributes:
+        config (google.cloud.dialogflow_v2beta1.types.BidiStreamingAnalyzeContentRequest.Config):
+            The config message for this conversation.
+
+            This field is a member of `oneof`_ ``request``.
+        input (google.cloud.dialogflow_v2beta1.types.BidiStreamingAnalyzeContentRequest.Input):
+            Text, audio or other multi-modality inputs.
+            This is the second and following messages sent
+            by the client.
+
+            This field is a member of `oneof`_ ``request``.
+    """
+
+    class Config(proto.Message):
+        r"""The config of the session.
+
+        .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
+        Attributes:
+            participant (str):
+                Required. The name of the participant to fetch response for.
+                Format:
+                ``projects/<Project ID>/locations/<Location ID>/conversations/<Conversation ID>/participants/<Participant ID>``.
+            voice_session_config (google.cloud.dialogflow_v2beta1.types.BidiStreamingAnalyzeContentRequest.Config.VoiceSessionConfig):
+                Configure a voice-based session.
+
+                This field is a member of `oneof`_ ``config``.
+            initial_virtual_agent_parameters (google.protobuf.struct_pb2.Struct):
+                Parameters to be passed to the virtual agent
+                at the beginning.
+            initial_virtual_agent_query_params (google.cloud.dialogflow_v2beta1.types.QueryParameters):
+                Initial parameters for the virtual-agent.
+        """
+
+        class VoiceSessionConfig(proto.Message):
+            r"""The config about how to process the audio for a voice-based
+            session.
+
+            Attributes:
+                input_audio_encoding (google.cloud.dialogflow_v2beta1.types.AudioEncoding):
+                    Required. The encoding of input audio.
+                input_audio_sample_rate_hertz (int):
+                    Required. The sample rate of input audio.
+                output_audio_encoding (google.cloud.dialogflow_v2beta1.types.OutputAudioEncoding):
+                    Required. The encoding of output audio.
+                output_audio_sample_rate_hertz (int):
+                    Required. The sample rate of output audio.
+                enable_cx_proactive_processing (bool):
+                    Optional. Whether to enable CX proactive
+                    processing.
+                enable_streaming_synthesize (bool):
+                    Optional. If true, Dialogflow will stream the
+                    audio bytes from Cloud TTS for speech synthesis
+                    using the StreamingSynthesize api.
+            """
+
+            input_audio_encoding: gcd_audio_config.AudioEncoding = proto.Field(
+                proto.ENUM,
+                number=1,
+                enum=gcd_audio_config.AudioEncoding,
+            )
+            input_audio_sample_rate_hertz: int = proto.Field(
+                proto.INT32,
+                number=2,
+            )
+            output_audio_encoding: gcd_audio_config.OutputAudioEncoding = proto.Field(
+                proto.ENUM,
+                number=3,
+                enum=gcd_audio_config.OutputAudioEncoding,
+            )
+            output_audio_sample_rate_hertz: int = proto.Field(
+                proto.INT32,
+                number=4,
+            )
+            enable_cx_proactive_processing: bool = proto.Field(
+                proto.BOOL,
+                number=5,
+            )
+            enable_streaming_synthesize: bool = proto.Field(
+                proto.BOOL,
+                number=23,
+            )
+
+        participant: str = proto.Field(
+            proto.STRING,
+            number=1,
+        )
+        voice_session_config: "BidiStreamingAnalyzeContentRequest.Config.VoiceSessionConfig" = proto.Field(
+            proto.MESSAGE,
+            number=2,
+            oneof="config",
+            message="BidiStreamingAnalyzeContentRequest.Config.VoiceSessionConfig",
+        )
+        initial_virtual_agent_parameters: struct_pb2.Struct = proto.Field(
+            proto.MESSAGE,
+            number=3,
+            message=struct_pb2.Struct,
+        )
+        initial_virtual_agent_query_params: session.QueryParameters = proto.Field(
+            proto.MESSAGE,
+            number=4,
+            message=session.QueryParameters,
+        )
+
+    class TurnInput(proto.Message):
+        r"""Input that forms data for a single turn.
+
+        This message has `oneof`_ fields (mutually exclusive fields).
+        For each oneof, at most one member field can be set at the same time.
+        Setting any member of the oneof automatically clears all other
+        members.
+
+        .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
+        Attributes:
+            text (str):
+                The UTF-8 encoded natural language text to be
+                processed.
+
+                This field is a member of `oneof`_ ``main_content``.
+            intent (str):
+                The intent to be triggered on V3 agent. Format:
+                ``projects/<Project ID>/locations/<Location ID>/locations/ <Location ID>/agents/<Agent ID>/intents/<Intent ID>``.
+                This can only be used to trigger the Welcome intent id if
+                the modality is text.
+
+                This field is a member of `oneof`_ ``main_content``.
+            event (str):
+                The input event name.
+                This can only be sent once and would cancel the
+                ongoing speech recognition if any. To trigger
+                the Welcome intent use the event "WELCOME".
+
+                This field is a member of `oneof`_ ``main_content``.
+            virtual_agent_parameters (google.protobuf.struct_pb2.Struct):
+                Optional. Parameters to be passed to the
+                virtual agent.
+        """
+
+        text: str = proto.Field(
+            proto.STRING,
+            number=1,
+            oneof="main_content",
+        )
+        intent: str = proto.Field(
+            proto.STRING,
+            number=2,
+            oneof="main_content",
+        )
+        event: str = proto.Field(
+            proto.STRING,
+            number=3,
+            oneof="main_content",
+        )
+        virtual_agent_parameters: struct_pb2.Struct = proto.Field(
+            proto.MESSAGE,
+            number=4,
+            message=struct_pb2.Struct,
+        )
+
+    class Input(proto.Message):
+        r"""Input for the conversation.
+
+        This message has `oneof`_ fields (mutually exclusive fields).
+        For each oneof, at most one member field can be set at the same time.
+        Setting any member of the oneof automatically clears all other
+        members.
+
+        .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
+        Attributes:
+            audio (bytes):
+                The content of audio stream to be recognized.
+
+                This field is a member of `oneof`_ ``input``.
+            dtmf (google.cloud.dialogflow_v2beta1.types.TelephonyDtmfEvents):
+                The DTMF digits used to invoke intent and
+                fill in parameter value.
+                This input is ignored if the previous response
+                indicated that DTMF input is not accepted.
+
+                This field is a member of `oneof`_ ``input``.
+            turn (google.cloud.dialogflow_v2beta1.types.BidiStreamingAnalyzeContentRequest.TurnInput):
+                Turn input.
+
+                This field is a member of `oneof`_ ``input``.
+        """
+
+        audio: bytes = proto.Field(
+            proto.BYTES,
+            number=1,
+            oneof="input",
+        )
+        dtmf: gcd_audio_config.TelephonyDtmfEvents = proto.Field(
+            proto.MESSAGE,
+            number=2,
+            oneof="input",
+            message=gcd_audio_config.TelephonyDtmfEvents,
+        )
+        turn: "BidiStreamingAnalyzeContentRequest.TurnInput" = proto.Field(
+            proto.MESSAGE,
+            number=3,
+            oneof="input",
+            message="BidiStreamingAnalyzeContentRequest.TurnInput",
+        )
+
+    config: Config = proto.Field(
+        proto.MESSAGE,
+        number=1,
+        oneof="request",
+        message=Config,
+    )
+    input: Input = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        oneof="request",
+        message=Input,
+    )
+
+
+class BidiStreamingAnalyzeContentResponse(proto.Message):
+    r"""The response message for
+    [Participants.BidiStreamingAnalyzeContent][google.cloud.dialogflow.v2beta1.Participants.BidiStreamingAnalyzeContent].
+
+    This message has `oneof`_ fields (mutually exclusive fields).
+    For each oneof, at most one member field can be set at the same time.
+    Setting any member of the oneof automatically clears all other
+    members.
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
+    Attributes:
+        recognition_result (google.cloud.dialogflow_v2beta1.types.StreamingRecognitionResult):
+            The result of speech recognition.
+
+            This field is a member of `oneof`_ ``response``.
+        barge_in_signal (google.cloud.dialogflow_v2beta1.types.BidiStreamingAnalyzeContentResponse.BargeInSignal):
+            Indicate the user barge-in has been detected,
+            and client should stop playing back the audio.
+
+            This field is a member of `oneof`_ ``response``.
+        analyze_content_response (google.cloud.dialogflow_v2beta1.types.AnalyzeContentResponse):
+            The agent response from analyze content.
+
+            This field is a member of `oneof`_ ``response``.
+        turn_complete (google.cloud.dialogflow_v2beta1.types.BidiStreamingAnalyzeContentResponse.TurnComplete):
+            Indicate that the turn is complete.
+
+            This field is a member of `oneof`_ ``response``.
+    """
+
+    class BargeInSignal(proto.Message):
+        r"""Indicate the user barge-in has been detected."""
+
+    class TurnComplete(proto.Message):
+        r"""Indicate that the turn is complete."""
+
+    recognition_result: session.StreamingRecognitionResult = proto.Field(
+        proto.MESSAGE,
+        number=1,
+        oneof="response",
+        message=session.StreamingRecognitionResult,
+    )
+    barge_in_signal: BargeInSignal = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        oneof="response",
+        message=BargeInSignal,
+    )
+    analyze_content_response: "AnalyzeContentResponse" = proto.Field(
+        proto.MESSAGE,
+        number=3,
+        oneof="response",
+        message="AnalyzeContentResponse",
+    )
+    turn_complete: TurnComplete = proto.Field(
+        proto.MESSAGE,
+        number=4,
+        oneof="response",
+        message=TurnComplete,
     )
 
 

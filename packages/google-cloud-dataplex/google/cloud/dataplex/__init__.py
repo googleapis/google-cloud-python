@@ -159,6 +159,10 @@ from google.cloud.dataplex_v1.types.data_discovery import (
     DataDiscoveryResult,
     DataDiscoverySpec,
 )
+from google.cloud.dataplex_v1.types.data_documentation import (
+    DataDocumentationResult,
+    DataDocumentationSpec,
+)
 from google.cloud.dataplex_v1.types.data_profile import (
     DataProfileResult,
     DataProfileSpec,
@@ -406,6 +410,8 @@ __all__ = (
     "UpdateContentRequest",
     "DataDiscoveryResult",
     "DataDiscoverySpec",
+    "DataDocumentationResult",
+    "DataDocumentationSpec",
     "DataProfileResult",
     "DataProfileSpec",
     "DataQualityColumnResult",

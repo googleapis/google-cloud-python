@@ -49,4 +49,5 @@ async def sample_find_direct_message():
     # Handle the response
     print(response)
 
+
 # [END chat_v1_generated_ChatService_FindDirectMessage_async]

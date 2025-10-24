@@ -105,6 +105,7 @@ from .content import (
     UpdateContentRequest,
 )
 from .data_discovery import DataDiscoveryResult, DataDiscoverySpec
+from .data_documentation import DataDocumentationResult, DataDocumentationSpec
 from .data_profile import DataProfileResult, DataProfileSpec
 from .data_quality import (
     DataQualityColumnResult,
@@ -324,6 +325,8 @@ __all__ = (
     "UpdateContentRequest",
     "DataDiscoveryResult",
     "DataDiscoverySpec",
+    "DataDocumentationResult",
+    "DataDocumentationSpec",
     "DataProfileResult",
     "DataProfileSpec",
     "DataQualityColumnResult",

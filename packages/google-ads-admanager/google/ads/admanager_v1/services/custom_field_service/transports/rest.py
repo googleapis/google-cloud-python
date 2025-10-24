@@ -73,6 +73,46 @@ class CustomFieldServiceRestInterceptor:
 
     .. code-block:: python
         class MyCustomCustomFieldServiceInterceptor(CustomFieldServiceRestInterceptor):
+            def pre_batch_activate_custom_fields(self, request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_batch_activate_custom_fields(self, response):
+                logging.log(f"Received response: {response}")
+                return response
+
+            def pre_batch_create_custom_fields(self, request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_batch_create_custom_fields(self, response):
+                logging.log(f"Received response: {response}")
+                return response
+
+            def pre_batch_deactivate_custom_fields(self, request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_batch_deactivate_custom_fields(self, response):
+                logging.log(f"Received response: {response}")
+                return response
+
+            def pre_batch_update_custom_fields(self, request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_batch_update_custom_fields(self, response):
+                logging.log(f"Received response: {response}")
+                return response
+
+            def pre_create_custom_field(self, request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_create_custom_field(self, response):
+                logging.log(f"Received response: {response}")
+                return response
+
             def pre_get_custom_field(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
@@ -89,11 +129,278 @@ class CustomFieldServiceRestInterceptor:
                 logging.log(f"Received response: {response}")
                 return response
 
+            def pre_update_custom_field(self, request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_update_custom_field(self, response):
+                logging.log(f"Received response: {response}")
+                return response
+
         transport = CustomFieldServiceRestTransport(interceptor=MyCustomCustomFieldServiceInterceptor())
         client = CustomFieldServiceClient(transport=transport)
 
 
     """
+
+    def pre_batch_activate_custom_fields(
+        self,
+        request: custom_field_service.BatchActivateCustomFieldsRequest,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        custom_field_service.BatchActivateCustomFieldsRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
+        """Pre-rpc interceptor for batch_activate_custom_fields
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the CustomFieldService server.
+        """
+        return request, metadata
+
+    def post_batch_activate_custom_fields(
+        self, response: custom_field_service.BatchActivateCustomFieldsResponse
+    ) -> custom_field_service.BatchActivateCustomFieldsResponse:
+        """Post-rpc interceptor for batch_activate_custom_fields
+
+        DEPRECATED. Please use the `post_batch_activate_custom_fields_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
+        after it is returned by the CustomFieldService server but before
+        it is returned to user code. This `post_batch_activate_custom_fields` interceptor runs
+        before the `post_batch_activate_custom_fields_with_metadata` interceptor.
+        """
+        return response
+
+    def post_batch_activate_custom_fields_with_metadata(
+        self,
+        response: custom_field_service.BatchActivateCustomFieldsResponse,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        custom_field_service.BatchActivateCustomFieldsResponse,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
+        """Post-rpc interceptor for batch_activate_custom_fields
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the CustomFieldService server but before it is returned to user code.
+
+        We recommend only using this `post_batch_activate_custom_fields_with_metadata`
+        interceptor in new development instead of the `post_batch_activate_custom_fields` interceptor.
+        When both interceptors are used, this `post_batch_activate_custom_fields_with_metadata` interceptor runs after the
+        `post_batch_activate_custom_fields` interceptor. The (possibly modified) response returned by
+        `post_batch_activate_custom_fields` will be passed to
+        `post_batch_activate_custom_fields_with_metadata`.
+        """
+        return response, metadata
+
+    def pre_batch_create_custom_fields(
+        self,
+        request: custom_field_service.BatchCreateCustomFieldsRequest,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        custom_field_service.BatchCreateCustomFieldsRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
+        """Pre-rpc interceptor for batch_create_custom_fields
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the CustomFieldService server.
+        """
+        return request, metadata
+
+    def post_batch_create_custom_fields(
+        self, response: custom_field_service.BatchCreateCustomFieldsResponse
+    ) -> custom_field_service.BatchCreateCustomFieldsResponse:
+        """Post-rpc interceptor for batch_create_custom_fields
+
+        DEPRECATED. Please use the `post_batch_create_custom_fields_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
+        after it is returned by the CustomFieldService server but before
+        it is returned to user code. This `post_batch_create_custom_fields` interceptor runs
+        before the `post_batch_create_custom_fields_with_metadata` interceptor.
+        """
+        return response
+
+    def post_batch_create_custom_fields_with_metadata(
+        self,
+        response: custom_field_service.BatchCreateCustomFieldsResponse,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        custom_field_service.BatchCreateCustomFieldsResponse,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
+        """Post-rpc interceptor for batch_create_custom_fields
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the CustomFieldService server but before it is returned to user code.
+
+        We recommend only using this `post_batch_create_custom_fields_with_metadata`
+        interceptor in new development instead of the `post_batch_create_custom_fields` interceptor.
+        When both interceptors are used, this `post_batch_create_custom_fields_with_metadata` interceptor runs after the
+        `post_batch_create_custom_fields` interceptor. The (possibly modified) response returned by
+        `post_batch_create_custom_fields` will be passed to
+        `post_batch_create_custom_fields_with_metadata`.
+        """
+        return response, metadata
+
+    def pre_batch_deactivate_custom_fields(
+        self,
+        request: custom_field_service.BatchDeactivateCustomFieldsRequest,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        custom_field_service.BatchDeactivateCustomFieldsRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
+        """Pre-rpc interceptor for batch_deactivate_custom_fields
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the CustomFieldService server.
+        """
+        return request, metadata
+
+    def post_batch_deactivate_custom_fields(
+        self, response: custom_field_service.BatchDeactivateCustomFieldsResponse
+    ) -> custom_field_service.BatchDeactivateCustomFieldsResponse:
+        """Post-rpc interceptor for batch_deactivate_custom_fields
+
+        DEPRECATED. Please use the `post_batch_deactivate_custom_fields_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
+        after it is returned by the CustomFieldService server but before
+        it is returned to user code. This `post_batch_deactivate_custom_fields` interceptor runs
+        before the `post_batch_deactivate_custom_fields_with_metadata` interceptor.
+        """
+        return response
+
+    def post_batch_deactivate_custom_fields_with_metadata(
+        self,
+        response: custom_field_service.BatchDeactivateCustomFieldsResponse,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        custom_field_service.BatchDeactivateCustomFieldsResponse,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
+        """Post-rpc interceptor for batch_deactivate_custom_fields
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the CustomFieldService server but before it is returned to user code.
+
+        We recommend only using this `post_batch_deactivate_custom_fields_with_metadata`
+        interceptor in new development instead of the `post_batch_deactivate_custom_fields` interceptor.
+        When both interceptors are used, this `post_batch_deactivate_custom_fields_with_metadata` interceptor runs after the
+        `post_batch_deactivate_custom_fields` interceptor. The (possibly modified) response returned by
+        `post_batch_deactivate_custom_fields` will be passed to
+        `post_batch_deactivate_custom_fields_with_metadata`.
+        """
+        return response, metadata
+
+    def pre_batch_update_custom_fields(
+        self,
+        request: custom_field_service.BatchUpdateCustomFieldsRequest,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        custom_field_service.BatchUpdateCustomFieldsRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
+        """Pre-rpc interceptor for batch_update_custom_fields
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the CustomFieldService server.
+        """
+        return request, metadata
+
+    def post_batch_update_custom_fields(
+        self, response: custom_field_service.BatchUpdateCustomFieldsResponse
+    ) -> custom_field_service.BatchUpdateCustomFieldsResponse:
+        """Post-rpc interceptor for batch_update_custom_fields
+
+        DEPRECATED. Please use the `post_batch_update_custom_fields_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
+        after it is returned by the CustomFieldService server but before
+        it is returned to user code. This `post_batch_update_custom_fields` interceptor runs
+        before the `post_batch_update_custom_fields_with_metadata` interceptor.
+        """
+        return response
+
+    def post_batch_update_custom_fields_with_metadata(
+        self,
+        response: custom_field_service.BatchUpdateCustomFieldsResponse,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        custom_field_service.BatchUpdateCustomFieldsResponse,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
+        """Post-rpc interceptor for batch_update_custom_fields
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the CustomFieldService server but before it is returned to user code.
+
+        We recommend only using this `post_batch_update_custom_fields_with_metadata`
+        interceptor in new development instead of the `post_batch_update_custom_fields` interceptor.
+        When both interceptors are used, this `post_batch_update_custom_fields_with_metadata` interceptor runs after the
+        `post_batch_update_custom_fields` interceptor. The (possibly modified) response returned by
+        `post_batch_update_custom_fields` will be passed to
+        `post_batch_update_custom_fields_with_metadata`.
+        """
+        return response, metadata
+
+    def pre_create_custom_field(
+        self,
+        request: custom_field_service.CreateCustomFieldRequest,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        custom_field_service.CreateCustomFieldRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
+        """Pre-rpc interceptor for create_custom_field
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the CustomFieldService server.
+        """
+        return request, metadata
+
+    def post_create_custom_field(
+        self, response: custom_field_messages.CustomField
+    ) -> custom_field_messages.CustomField:
+        """Post-rpc interceptor for create_custom_field
+
+        DEPRECATED. Please use the `post_create_custom_field_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
+        after it is returned by the CustomFieldService server but before
+        it is returned to user code. This `post_create_custom_field` interceptor runs
+        before the `post_create_custom_field_with_metadata` interceptor.
+        """
+        return response
+
+    def post_create_custom_field_with_metadata(
+        self,
+        response: custom_field_messages.CustomField,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        custom_field_messages.CustomField, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
+        """Post-rpc interceptor for create_custom_field
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the CustomFieldService server but before it is returned to user code.
+
+        We recommend only using this `post_create_custom_field_with_metadata`
+        interceptor in new development instead of the `post_create_custom_field` interceptor.
+        When both interceptors are used, this `post_create_custom_field_with_metadata` interceptor runs after the
+        `post_create_custom_field` interceptor. The (possibly modified) response returned by
+        `post_create_custom_field` will be passed to
+        `post_create_custom_field_with_metadata`.
+        """
+        return response, metadata
 
     def pre_get_custom_field(
         self,
@@ -195,6 +502,57 @@ class CustomFieldServiceRestInterceptor:
         `post_list_custom_fields` interceptor. The (possibly modified) response returned by
         `post_list_custom_fields` will be passed to
         `post_list_custom_fields_with_metadata`.
+        """
+        return response, metadata
+
+    def pre_update_custom_field(
+        self,
+        request: custom_field_service.UpdateCustomFieldRequest,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        custom_field_service.UpdateCustomFieldRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
+        """Pre-rpc interceptor for update_custom_field
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the CustomFieldService server.
+        """
+        return request, metadata
+
+    def post_update_custom_field(
+        self, response: custom_field_messages.CustomField
+    ) -> custom_field_messages.CustomField:
+        """Post-rpc interceptor for update_custom_field
+
+        DEPRECATED. Please use the `post_update_custom_field_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
+        after it is returned by the CustomFieldService server but before
+        it is returned to user code. This `post_update_custom_field` interceptor runs
+        before the `post_update_custom_field_with_metadata` interceptor.
+        """
+        return response
+
+    def post_update_custom_field_with_metadata(
+        self,
+        response: custom_field_messages.CustomField,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        custom_field_messages.CustomField, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
+        """Post-rpc interceptor for update_custom_field
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the CustomFieldService server but before it is returned to user code.
+
+        We recommend only using this `post_update_custom_field_with_metadata`
+        interceptor in new development instead of the `post_update_custom_field` interceptor.
+        When both interceptors are used, this `post_update_custom_field_with_metadata` interceptor runs after the
+        `post_update_custom_field` interceptor. The (possibly modified) response returned by
+        `post_update_custom_field` will be passed to
+        `post_update_custom_field_with_metadata`.
         """
         return response, metadata
 
@@ -310,6 +668,806 @@ class CustomFieldServiceRestTransport(_BaseCustomFieldServiceRestTransport):
             self._session.configure_mtls_channel(client_cert_source_for_mtls)
         self._interceptor = interceptor or CustomFieldServiceRestInterceptor()
         self._prep_wrapped_messages(client_info)
+
+    class _BatchActivateCustomFields(
+        _BaseCustomFieldServiceRestTransport._BaseBatchActivateCustomFields,
+        CustomFieldServiceRestStub,
+    ):
+        def __hash__(self):
+            return hash("CustomFieldServiceRestTransport.BatchActivateCustomFields")
+
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+            return response
+
+        def __call__(
+            self,
+            request: custom_field_service.BatchActivateCustomFieldsRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+        ) -> custom_field_service.BatchActivateCustomFieldsResponse:
+            r"""Call the batch activate custom
+            fields method over HTTP.
+
+                Args:
+                    request (~.custom_field_service.BatchActivateCustomFieldsRequest):
+                        The request object. Request message for ``BatchActivateCustomFields``
+                    method.
+                    retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                        should be retried.
+                    timeout (float): The timeout for this request.
+                    metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                        sent along with the request as metadata. Normally, each value must be of type `str`,
+                        but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                        be of type `bytes`.
+
+                Returns:
+                    ~.custom_field_service.BatchActivateCustomFieldsResponse:
+                        Response object for ``BatchActivateCustomFields``
+                    method.
+
+            """
+
+            http_options = (
+                _BaseCustomFieldServiceRestTransport._BaseBatchActivateCustomFields._get_http_options()
+            )
+
+            request, metadata = self._interceptor.pre_batch_activate_custom_fields(
+                request, metadata
+            )
+            transcoded_request = _BaseCustomFieldServiceRestTransport._BaseBatchActivateCustomFields._get_transcoded_request(
+                http_options, request
+            )
+
+            body = _BaseCustomFieldServiceRestTransport._BaseBatchActivateCustomFields._get_request_body_json(
+                transcoded_request
+            )
+
+            # Jsonify the query params
+            query_params = _BaseCustomFieldServiceRestTransport._BaseBatchActivateCustomFields._get_query_params_json(
+                transcoded_request
+            )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.ads.admanager_v1.CustomFieldServiceClient.BatchActivateCustomFields",
+                    extra={
+                        "serviceName": "google.ads.admanager.v1.CustomFieldService",
+                        "rpcName": "BatchActivateCustomFields",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
+
+            # Send the request
+            response = CustomFieldServiceRestTransport._BatchActivateCustomFields._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+                body,
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+
+            # Return the response
+            resp = custom_field_service.BatchActivateCustomFieldsResponse()
+            pb_resp = custom_field_service.BatchActivateCustomFieldsResponse.pb(resp)
+
+            json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
+            resp = self._interceptor.post_batch_activate_custom_fields(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_batch_activate_custom_fields_with_metadata(
+                resp, response_metadata
+            )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = (
+                        custom_field_service.BatchActivateCustomFieldsResponse.to_json(
+                            response
+                        )
+                    )
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.ads.admanager_v1.CustomFieldServiceClient.batch_activate_custom_fields",
+                    extra={
+                        "serviceName": "google.ads.admanager.v1.CustomFieldService",
+                        "rpcName": "BatchActivateCustomFields",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
+            return resp
+
+    class _BatchCreateCustomFields(
+        _BaseCustomFieldServiceRestTransport._BaseBatchCreateCustomFields,
+        CustomFieldServiceRestStub,
+    ):
+        def __hash__(self):
+            return hash("CustomFieldServiceRestTransport.BatchCreateCustomFields")
+
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+            return response
+
+        def __call__(
+            self,
+            request: custom_field_service.BatchCreateCustomFieldsRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+        ) -> custom_field_service.BatchCreateCustomFieldsResponse:
+            r"""Call the batch create custom
+            fields method over HTTP.
+
+                Args:
+                    request (~.custom_field_service.BatchCreateCustomFieldsRequest):
+                        The request object. Request object for ``BatchCreateCustomFields`` method.
+                    retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                        should be retried.
+                    timeout (float): The timeout for this request.
+                    metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                        sent along with the request as metadata. Normally, each value must be of type `str`,
+                        but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                        be of type `bytes`.
+
+                Returns:
+                    ~.custom_field_service.BatchCreateCustomFieldsResponse:
+                        Response object for ``BatchCreateCustomFields`` method.
+            """
+
+            http_options = (
+                _BaseCustomFieldServiceRestTransport._BaseBatchCreateCustomFields._get_http_options()
+            )
+
+            request, metadata = self._interceptor.pre_batch_create_custom_fields(
+                request, metadata
+            )
+            transcoded_request = _BaseCustomFieldServiceRestTransport._BaseBatchCreateCustomFields._get_transcoded_request(
+                http_options, request
+            )
+
+            body = _BaseCustomFieldServiceRestTransport._BaseBatchCreateCustomFields._get_request_body_json(
+                transcoded_request
+            )
+
+            # Jsonify the query params
+            query_params = _BaseCustomFieldServiceRestTransport._BaseBatchCreateCustomFields._get_query_params_json(
+                transcoded_request
+            )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.ads.admanager_v1.CustomFieldServiceClient.BatchCreateCustomFields",
+                    extra={
+                        "serviceName": "google.ads.admanager.v1.CustomFieldService",
+                        "rpcName": "BatchCreateCustomFields",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
+
+            # Send the request
+            response = (
+                CustomFieldServiceRestTransport._BatchCreateCustomFields._get_response(
+                    self._host,
+                    metadata,
+                    query_params,
+                    self._session,
+                    timeout,
+                    transcoded_request,
+                    body,
+                )
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+
+            # Return the response
+            resp = custom_field_service.BatchCreateCustomFieldsResponse()
+            pb_resp = custom_field_service.BatchCreateCustomFieldsResponse.pb(resp)
+
+            json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
+            resp = self._interceptor.post_batch_create_custom_fields(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_batch_create_custom_fields_with_metadata(
+                resp, response_metadata
+            )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = (
+                        custom_field_service.BatchCreateCustomFieldsResponse.to_json(
+                            response
+                        )
+                    )
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.ads.admanager_v1.CustomFieldServiceClient.batch_create_custom_fields",
+                    extra={
+                        "serviceName": "google.ads.admanager.v1.CustomFieldService",
+                        "rpcName": "BatchCreateCustomFields",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
+            return resp
+
+    class _BatchDeactivateCustomFields(
+        _BaseCustomFieldServiceRestTransport._BaseBatchDeactivateCustomFields,
+        CustomFieldServiceRestStub,
+    ):
+        def __hash__(self):
+            return hash("CustomFieldServiceRestTransport.BatchDeactivateCustomFields")
+
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+            return response
+
+        def __call__(
+            self,
+            request: custom_field_service.BatchDeactivateCustomFieldsRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+        ) -> custom_field_service.BatchDeactivateCustomFieldsResponse:
+            r"""Call the batch deactivate custom
+            fields method over HTTP.
+
+                Args:
+                    request (~.custom_field_service.BatchDeactivateCustomFieldsRequest):
+                        The request object. Request message for ``BatchDeactivateCustomFields``
+                    method.
+                    retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                        should be retried.
+                    timeout (float): The timeout for this request.
+                    metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                        sent along with the request as metadata. Normally, each value must be of type `str`,
+                        but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                        be of type `bytes`.
+
+                Returns:
+                    ~.custom_field_service.BatchDeactivateCustomFieldsResponse:
+                        Response object for ``BatchDeactivateCustomFields``
+                    method.
+
+            """
+
+            http_options = (
+                _BaseCustomFieldServiceRestTransport._BaseBatchDeactivateCustomFields._get_http_options()
+            )
+
+            request, metadata = self._interceptor.pre_batch_deactivate_custom_fields(
+                request, metadata
+            )
+            transcoded_request = _BaseCustomFieldServiceRestTransport._BaseBatchDeactivateCustomFields._get_transcoded_request(
+                http_options, request
+            )
+
+            body = _BaseCustomFieldServiceRestTransport._BaseBatchDeactivateCustomFields._get_request_body_json(
+                transcoded_request
+            )
+
+            # Jsonify the query params
+            query_params = _BaseCustomFieldServiceRestTransport._BaseBatchDeactivateCustomFields._get_query_params_json(
+                transcoded_request
+            )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.ads.admanager_v1.CustomFieldServiceClient.BatchDeactivateCustomFields",
+                    extra={
+                        "serviceName": "google.ads.admanager.v1.CustomFieldService",
+                        "rpcName": "BatchDeactivateCustomFields",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
+
+            # Send the request
+            response = CustomFieldServiceRestTransport._BatchDeactivateCustomFields._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+                body,
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+
+            # Return the response
+            resp = custom_field_service.BatchDeactivateCustomFieldsResponse()
+            pb_resp = custom_field_service.BatchDeactivateCustomFieldsResponse.pb(resp)
+
+            json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
+            resp = self._interceptor.post_batch_deactivate_custom_fields(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            (
+                resp,
+                _,
+            ) = self._interceptor.post_batch_deactivate_custom_fields_with_metadata(
+                resp, response_metadata
+            )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = custom_field_service.BatchDeactivateCustomFieldsResponse.to_json(
+                        response
+                    )
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.ads.admanager_v1.CustomFieldServiceClient.batch_deactivate_custom_fields",
+                    extra={
+                        "serviceName": "google.ads.admanager.v1.CustomFieldService",
+                        "rpcName": "BatchDeactivateCustomFields",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
+            return resp
+
+    class _BatchUpdateCustomFields(
+        _BaseCustomFieldServiceRestTransport._BaseBatchUpdateCustomFields,
+        CustomFieldServiceRestStub,
+    ):
+        def __hash__(self):
+            return hash("CustomFieldServiceRestTransport.BatchUpdateCustomFields")
+
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+            return response
+
+        def __call__(
+            self,
+            request: custom_field_service.BatchUpdateCustomFieldsRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+        ) -> custom_field_service.BatchUpdateCustomFieldsResponse:
+            r"""Call the batch update custom
+            fields method over HTTP.
+
+                Args:
+                    request (~.custom_field_service.BatchUpdateCustomFieldsRequest):
+                        The request object. Request object for ``BatchUpdateCustomFields`` method.
+                    retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                        should be retried.
+                    timeout (float): The timeout for this request.
+                    metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                        sent along with the request as metadata. Normally, each value must be of type `str`,
+                        but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                        be of type `bytes`.
+
+                Returns:
+                    ~.custom_field_service.BatchUpdateCustomFieldsResponse:
+                        Response object for ``BatchUpdateCustomFields`` method.
+            """
+
+            http_options = (
+                _BaseCustomFieldServiceRestTransport._BaseBatchUpdateCustomFields._get_http_options()
+            )
+
+            request, metadata = self._interceptor.pre_batch_update_custom_fields(
+                request, metadata
+            )
+            transcoded_request = _BaseCustomFieldServiceRestTransport._BaseBatchUpdateCustomFields._get_transcoded_request(
+                http_options, request
+            )
+
+            body = _BaseCustomFieldServiceRestTransport._BaseBatchUpdateCustomFields._get_request_body_json(
+                transcoded_request
+            )
+
+            # Jsonify the query params
+            query_params = _BaseCustomFieldServiceRestTransport._BaseBatchUpdateCustomFields._get_query_params_json(
+                transcoded_request
+            )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.ads.admanager_v1.CustomFieldServiceClient.BatchUpdateCustomFields",
+                    extra={
+                        "serviceName": "google.ads.admanager.v1.CustomFieldService",
+                        "rpcName": "BatchUpdateCustomFields",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
+
+            # Send the request
+            response = (
+                CustomFieldServiceRestTransport._BatchUpdateCustomFields._get_response(
+                    self._host,
+                    metadata,
+                    query_params,
+                    self._session,
+                    timeout,
+                    transcoded_request,
+                    body,
+                )
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+
+            # Return the response
+            resp = custom_field_service.BatchUpdateCustomFieldsResponse()
+            pb_resp = custom_field_service.BatchUpdateCustomFieldsResponse.pb(resp)
+
+            json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
+            resp = self._interceptor.post_batch_update_custom_fields(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_batch_update_custom_fields_with_metadata(
+                resp, response_metadata
+            )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = (
+                        custom_field_service.BatchUpdateCustomFieldsResponse.to_json(
+                            response
+                        )
+                    )
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.ads.admanager_v1.CustomFieldServiceClient.batch_update_custom_fields",
+                    extra={
+                        "serviceName": "google.ads.admanager.v1.CustomFieldService",
+                        "rpcName": "BatchUpdateCustomFields",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
+            return resp
+
+    class _CreateCustomField(
+        _BaseCustomFieldServiceRestTransport._BaseCreateCustomField,
+        CustomFieldServiceRestStub,
+    ):
+        def __hash__(self):
+            return hash("CustomFieldServiceRestTransport.CreateCustomField")
+
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+            return response
+
+        def __call__(
+            self,
+            request: custom_field_service.CreateCustomFieldRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+        ) -> custom_field_messages.CustomField:
+            r"""Call the create custom field method over HTTP.
+
+            Args:
+                request (~.custom_field_service.CreateCustomFieldRequest):
+                    The request object. Request object for ``CreateCustomField`` method.
+                retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                    should be retried.
+                timeout (float): The timeout for this request.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
+
+            Returns:
+                ~.custom_field_messages.CustomField:
+                    An additional, user-created field on
+                an entity.
+
+            """
+
+            http_options = (
+                _BaseCustomFieldServiceRestTransport._BaseCreateCustomField._get_http_options()
+            )
+
+            request, metadata = self._interceptor.pre_create_custom_field(
+                request, metadata
+            )
+            transcoded_request = _BaseCustomFieldServiceRestTransport._BaseCreateCustomField._get_transcoded_request(
+                http_options, request
+            )
+
+            body = _BaseCustomFieldServiceRestTransport._BaseCreateCustomField._get_request_body_json(
+                transcoded_request
+            )
+
+            # Jsonify the query params
+            query_params = _BaseCustomFieldServiceRestTransport._BaseCreateCustomField._get_query_params_json(
+                transcoded_request
+            )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.ads.admanager_v1.CustomFieldServiceClient.CreateCustomField",
+                    extra={
+                        "serviceName": "google.ads.admanager.v1.CustomFieldService",
+                        "rpcName": "CreateCustomField",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
+
+            # Send the request
+            response = CustomFieldServiceRestTransport._CreateCustomField._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+                body,
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+
+            # Return the response
+            resp = custom_field_messages.CustomField()
+            pb_resp = custom_field_messages.CustomField.pb(resp)
+
+            json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
+            resp = self._interceptor.post_create_custom_field(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_create_custom_field_with_metadata(
+                resp, response_metadata
+            )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = custom_field_messages.CustomField.to_json(
+                        response
+                    )
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.ads.admanager_v1.CustomFieldServiceClient.create_custom_field",
+                    extra={
+                        "serviceName": "google.ads.admanager.v1.CustomFieldService",
+                        "rpcName": "CreateCustomField",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
+            return resp
 
     class _GetCustomField(
         _BaseCustomFieldServiceRestTransport._BaseGetCustomField,
@@ -613,6 +1771,218 @@ class CustomFieldServiceRestTransport(_BaseCustomFieldServiceRestTransport):
                 )
             return resp
 
+    class _UpdateCustomField(
+        _BaseCustomFieldServiceRestTransport._BaseUpdateCustomField,
+        CustomFieldServiceRestStub,
+    ):
+        def __hash__(self):
+            return hash("CustomFieldServiceRestTransport.UpdateCustomField")
+
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+            return response
+
+        def __call__(
+            self,
+            request: custom_field_service.UpdateCustomFieldRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+        ) -> custom_field_messages.CustomField:
+            r"""Call the update custom field method over HTTP.
+
+            Args:
+                request (~.custom_field_service.UpdateCustomFieldRequest):
+                    The request object. Request object for ``UpdateCustomField`` method.
+                retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                    should be retried.
+                timeout (float): The timeout for this request.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
+
+            Returns:
+                ~.custom_field_messages.CustomField:
+                    An additional, user-created field on
+                an entity.
+
+            """
+
+            http_options = (
+                _BaseCustomFieldServiceRestTransport._BaseUpdateCustomField._get_http_options()
+            )
+
+            request, metadata = self._interceptor.pre_update_custom_field(
+                request, metadata
+            )
+            transcoded_request = _BaseCustomFieldServiceRestTransport._BaseUpdateCustomField._get_transcoded_request(
+                http_options, request
+            )
+
+            body = _BaseCustomFieldServiceRestTransport._BaseUpdateCustomField._get_request_body_json(
+                transcoded_request
+            )
+
+            # Jsonify the query params
+            query_params = _BaseCustomFieldServiceRestTransport._BaseUpdateCustomField._get_query_params_json(
+                transcoded_request
+            )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.ads.admanager_v1.CustomFieldServiceClient.UpdateCustomField",
+                    extra={
+                        "serviceName": "google.ads.admanager.v1.CustomFieldService",
+                        "rpcName": "UpdateCustomField",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
+
+            # Send the request
+            response = CustomFieldServiceRestTransport._UpdateCustomField._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+                body,
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+
+            # Return the response
+            resp = custom_field_messages.CustomField()
+            pb_resp = custom_field_messages.CustomField.pb(resp)
+
+            json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
+            resp = self._interceptor.post_update_custom_field(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_update_custom_field_with_metadata(
+                resp, response_metadata
+            )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = custom_field_messages.CustomField.to_json(
+                        response
+                    )
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.ads.admanager_v1.CustomFieldServiceClient.update_custom_field",
+                    extra={
+                        "serviceName": "google.ads.admanager.v1.CustomFieldService",
+                        "rpcName": "UpdateCustomField",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
+            return resp
+
+    @property
+    def batch_activate_custom_fields(
+        self,
+    ) -> Callable[
+        [custom_field_service.BatchActivateCustomFieldsRequest],
+        custom_field_service.BatchActivateCustomFieldsResponse,
+    ]:
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return self._BatchActivateCustomFields(self._session, self._host, self._interceptor)  # type: ignore
+
+    @property
+    def batch_create_custom_fields(
+        self,
+    ) -> Callable[
+        [custom_field_service.BatchCreateCustomFieldsRequest],
+        custom_field_service.BatchCreateCustomFieldsResponse,
+    ]:
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return self._BatchCreateCustomFields(self._session, self._host, self._interceptor)  # type: ignore
+
+    @property
+    def batch_deactivate_custom_fields(
+        self,
+    ) -> Callable[
+        [custom_field_service.BatchDeactivateCustomFieldsRequest],
+        custom_field_service.BatchDeactivateCustomFieldsResponse,
+    ]:
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return self._BatchDeactivateCustomFields(self._session, self._host, self._interceptor)  # type: ignore
+
+    @property
+    def batch_update_custom_fields(
+        self,
+    ) -> Callable[
+        [custom_field_service.BatchUpdateCustomFieldsRequest],
+        custom_field_service.BatchUpdateCustomFieldsResponse,
+    ]:
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return self._BatchUpdateCustomFields(self._session, self._host, self._interceptor)  # type: ignore
+
+    @property
+    def create_custom_field(
+        self,
+    ) -> Callable[
+        [custom_field_service.CreateCustomFieldRequest],
+        custom_field_messages.CustomField,
+    ]:
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return self._CreateCustomField(self._session, self._host, self._interceptor)  # type: ignore
+
     @property
     def get_custom_field(
         self,
@@ -633,6 +2003,17 @@ class CustomFieldServiceRestTransport(_BaseCustomFieldServiceRestTransport):
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._ListCustomFields(self._session, self._host, self._interceptor)  # type: ignore
+
+    @property
+    def update_custom_field(
+        self,
+    ) -> Callable[
+        [custom_field_service.UpdateCustomFieldRequest],
+        custom_field_messages.CustomField,
+    ]:
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return self._UpdateCustomField(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
     def get_operation(self):

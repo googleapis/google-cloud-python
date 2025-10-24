@@ -86,6 +86,8 @@ class GeneratorsAsyncClient:
 
     generator_path = staticmethod(GeneratorsClient.generator_path)
     parse_generator_path = staticmethod(GeneratorsClient.parse_generator_path)
+    tool_path = staticmethod(GeneratorsClient.tool_path)
+    parse_tool_path = staticmethod(GeneratorsClient.parse_tool_path)
     common_billing_account_path = staticmethod(
         GeneratorsClient.common_billing_account_path
     )

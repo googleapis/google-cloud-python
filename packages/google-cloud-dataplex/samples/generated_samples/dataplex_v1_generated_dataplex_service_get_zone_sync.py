@@ -49,4 +49,5 @@ def sample_get_zone():
     # Handle the response
     print(response)
 
+
 # [END dataplex_v1_generated_DataplexService_GetZone_sync]

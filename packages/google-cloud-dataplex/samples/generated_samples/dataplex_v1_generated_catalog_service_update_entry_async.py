@@ -52,4 +52,5 @@ async def sample_update_entry():
     # Handle the response
     print(response)
 
+
 # [END dataplex_v1_generated_CatalogService_UpdateEntry_async]
