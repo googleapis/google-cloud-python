@@ -5,7 +5,9 @@ WITH `bfcte_0` AS (
 ), `bfcte_1` AS (
   SELECT
     *,
-    -`bfcol_0` AS `bfcol_1`
+    -(
+      `bfcol_0`
+    ) AS `bfcol_1`
   FROM `bfcte_0`
 )
 SELECT

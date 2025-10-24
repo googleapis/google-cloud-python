@@ -190,7 +190,7 @@ def _(expr: TypedExpr) -> sge.Expression:
 
 @register_unary_op(ops.neg_op)
 def _(expr: TypedExpr) -> sge.Expression:
-    return sge.Neg(this=expr.expr)
+    return sge.Neg(this=sge.paren(expr.expr))
 
 
 @register_unary_op(ops.pos_op)

@@ -76,8 +76,8 @@ def _(expr: TypedExpr) -> sge.Expression:
 @register_unary_op(ops.invert_op)
 def _(expr: TypedExpr) -> sge.Expression:
     if expr.dtype == dtypes.BOOL_DTYPE:
-        return sge.Not(this=expr.expr)
-    return sge.BitwiseNot(this=expr.expr)
+        return sge.Not(this=sge.paren(expr.expr))
+    return sge.BitwiseNot(this=sge.paren(expr.expr))
 
 
 @register_unary_op(ops.isnull_op)

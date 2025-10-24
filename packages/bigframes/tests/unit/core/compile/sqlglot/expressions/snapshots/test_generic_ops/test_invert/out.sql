@@ -7,9 +7,15 @@ WITH `bfcte_0` AS (
 ), `bfcte_1` AS (
   SELECT
     *,
-    ~`bfcol_2` AS `bfcol_6`,
-    ~`bfcol_1` AS `bfcol_7`,
-    NOT `bfcol_0` AS `bfcol_8`
+    ~(
+      `bfcol_2`
+    ) AS `bfcol_6`,
+    ~(
+      `bfcol_1`
+    ) AS `bfcol_7`,
+    NOT (
+      `bfcol_0`
+    ) AS `bfcol_8`
   FROM `bfcte_0`
 )
 SELECT

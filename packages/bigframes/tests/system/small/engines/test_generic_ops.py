@@ -454,7 +454,7 @@ def test_engines_isin_op(scalars_array_value: array_value.ArrayValue, engine):
     assert_equivalence_execution(arr.node, REFERENCE_ENGINE, engine)
 
 
-@pytest.mark.parametrize("engine", ["polars", "bq"], indirect=True)
+@pytest.mark.parametrize("engine", ["polars", "bq", "bq-sqlglot"], indirect=True)
 def test_engines_isin_op_nested_filter(
     scalars_array_value: array_value.ArrayValue, engine
 ):
