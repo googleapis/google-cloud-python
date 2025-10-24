@@ -828,7 +828,13 @@ class TestBackgroundConsumer(object):
         bidi_rpc._start_rpc.side_effect = expected_exception
 
         consumer = bidi.BackgroundConsumer(bidi_rpc, on_response=None)
+
         consumer.start()
+
+        # Wait for the consumer's thread to exit.
+        while consumer.is_active:
+            pass  # pragma: NO COVER
+
         assert callback.call_args.args[0] == grpc.StatusCode.INVALID_ARGUMENT
 
     def test_consumer_expected_error(self, caplog):

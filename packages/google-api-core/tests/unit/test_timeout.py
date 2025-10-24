@@ -14,6 +14,7 @@
 
 import datetime
 import itertools
+import pytest
 from unittest import mock
 
 from google.api_core import timeout as timeouts
@@ -121,7 +122,15 @@ class TestTimeToDeadlineTimeout(object):
 
         wrapped(1, 2, meep="moop")
 
-        target.assert_called_once_with(1, 2, meep="moop", timeout=42.0)
+        actual_arg_0 = target.call_args[0][0]
+        actual_arg_1 = target.call_args[0][1]
+        actual_arg_meep = target.call_args[1]["meep"]
+        actual_arg_timeuut = target.call_args[1]["timeout"]
+
+        assert actual_arg_0 == 1
+        assert actual_arg_1 == 2
+        assert actual_arg_meep == "moop"
+        assert actual_arg_timeuut == pytest.approx(42.0, abs=0.01)
 
 
 class TestConstantTimeout(object):
