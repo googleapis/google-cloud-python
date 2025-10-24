@@ -348,3 +348,19 @@ UnsafePowOp = base_ops.create_binary_op(
     name="unsafe_pow_op", type_signature=op_typing.BINARY_REAL_NUMERIC
 )
 unsafe_pow_op = UnsafePowOp()
+
+IsNanOp = base_ops.create_unary_op(
+    name="isnan",
+    type_signature=op_typing.FixedOutputType(
+        dtypes.is_numeric, dtypes.BOOL_DTYPE, "numeric"
+    ),
+)
+isnan_op = IsNanOp()
+
+IsFiniteOp = base_ops.create_unary_op(
+    name="isfinite",
+    type_signature=op_typing.FixedOutputType(
+        dtypes.is_numeric, dtypes.BOOL_DTYPE, "numeric"
+    ),
+)
+isfinite_op = IsFiniteOp()

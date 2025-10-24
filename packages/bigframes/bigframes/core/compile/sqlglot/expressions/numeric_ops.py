@@ -22,6 +22,7 @@ from bigframes import operations as ops
 import bigframes.core.compile.sqlglot.expressions.constants as constants
 from bigframes.core.compile.sqlglot.expressions.typed_expr import TypedExpr
 import bigframes.core.compile.sqlglot.scalar_compiler as scalar_compiler
+from bigframes.operations import numeric_ops
 
 register_unary_op = scalar_compiler.scalar_op_compiler.register_unary_op
 register_binary_op = scalar_compiler.scalar_op_compiler.register_binary_op
@@ -405,6 +406,21 @@ def _(left: TypedExpr, right: TypedExpr) -> sge.Expression:
 
     raise TypeError(
         f"Cannot subtract type {left.dtype} and {right.dtype}. {bf_constants.FEEDBACK_LINK}"
+    )
+
+
+@register_unary_op(numeric_ops.isnan_op)
+def isnan(arg: TypedExpr) -> sge.Expression:
+    return sge.IsNan(this=arg.expr)
+
+
+@register_unary_op(numeric_ops.isfinite_op)
+def isfinite(arg: TypedExpr) -> sge.Expression:
+    return sge.Not(
+        this=sge.Or(
+            this=sge.IsInf(this=arg.expr),
+            right=sge.IsNan(this=arg.expr),
+        ),
     )
 
 

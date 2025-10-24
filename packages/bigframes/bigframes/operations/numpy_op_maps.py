@@ -40,6 +40,8 @@ NUMPY_TO_OP: dict[np.ufunc, base_ops.UnaryOp] = {
     np.ceil: numeric_ops.ceil_op,
     np.log1p: numeric_ops.log1p_op,
     np.expm1: numeric_ops.expm1_op,
+    np.isnan: numeric_ops.isnan_op,
+    np.isfinite: numeric_ops.isfinite_op,
 }
 
 

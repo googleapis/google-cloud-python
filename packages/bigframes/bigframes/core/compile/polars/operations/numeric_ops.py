@@ -89,3 +89,21 @@ def sqrt_op_impl(
     import polars as pl
 
     return pl.when(input < 0).then(float("nan")).otherwise(input.sqrt())
+
+
+@polars_compiler.register_op(numeric_ops.IsNanOp)
+def is_nan_op_impl(
+    compiler: polars_compiler.PolarsExpressionCompiler,
+    op: numeric_ops.IsNanOp,  # type: ignore
+    input: pl.Expr,
+) -> pl.Expr:
+    return input.is_nan()
+
+
+@polars_compiler.register_op(numeric_ops.IsFiniteOp)
+def is_finite_op_impl(
+    compiler: polars_compiler.PolarsExpressionCompiler,
+    op: numeric_ops.IsFiniteOp,  # type: ignore
+    input: pl.Expr,
+) -> pl.Expr:
+    return input.is_finite()

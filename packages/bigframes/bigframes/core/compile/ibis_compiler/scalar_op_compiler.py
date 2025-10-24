@@ -26,6 +26,7 @@ import bigframes_vendored.ibis.expr.types as ibis_types
 from bigframes.core import agg_expressions, ordering
 import bigframes.core.compile.ibis_types
 import bigframes.core.expression as ex
+from bigframes.operations import numeric_ops
 
 if TYPE_CHECKING:
     import bigframes.operations as ops
@@ -267,3 +268,13 @@ class ExpressionCompiler:
 
 # Singleton compiler
 scalar_op_compiler = ExpressionCompiler()
+
+
+@scalar_op_compiler.register_unary_op(numeric_ops.isnan_op)
+def isnanornull(arg):
+    return arg.isnan()
+
+
+@scalar_op_compiler.register_unary_op(numeric_ops.isfinite_op)
+def isfinite(arg):
+    return arg.isinf().negate() & arg.isnan().negate()
