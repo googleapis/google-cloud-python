@@ -1,6 +1,13 @@
 # Changelog
 
 
+## [1.29.0](https://github.com/googleapis/gapic-generator-python/compare/v1.28.3...v1.29.0) (2025-10-23)
+
+
+### Features
+
+* Check Python and dependency versions in generated GAPICs ([#2419](https://github.com/googleapis/gapic-generator-python/issues/2419)) ([a9484c6](https://github.com/googleapis/gapic-generator-python/commit/a9484c6a29687c0f3ffb63f271e350054547d495))
+
 ## [1.28.3](https://github.com/googleapis/gapic-generator-python/compare/v1.28.2...v1.28.3) (2025-10-21)
 
 
