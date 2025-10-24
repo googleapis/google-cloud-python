@@ -23,6 +23,7 @@ import proto  # type: ignore
 
 from google.cloud.dataplex_v1.types import (
     data_discovery,
+    data_documentation,
     data_profile,
     data_quality,
     processing,
@@ -64,11 +65,14 @@ class DataScanType(proto.Enum):
             Data profile scan.
         DATA_DISCOVERY (3):
             Data discovery scan.
+        DATA_DOCUMENTATION (4):
+            Data documentation scan.
     """
     DATA_SCAN_TYPE_UNSPECIFIED = 0
     DATA_QUALITY = 1
     DATA_PROFILE = 2
     DATA_DISCOVERY = 3
+    DATA_DOCUMENTATION = 4
 
 
 class CreateDataScanRequest(proto.Message):
@@ -518,6 +522,10 @@ class DataScan(proto.Message):
       then catalog metadata. For more information, see `Discover and
       catalog Cloud Storage
       data <https://cloud.google.com/bigquery/docs/automatic-discovery>`__.
+    - Data documentation: analyzes the table details and generates
+      insights including descriptions and sample SQL queries for the
+      table. For more information, see `Generate data insights in
+      BigQuery <https://cloud.google.com/bigquery/docs/data-insights>`__.
 
     This message has `oneof`_ fields (mutually exclusive fields).
     For each oneof, at most one member field can be set at the same time.
@@ -581,6 +589,10 @@ class DataScan(proto.Message):
             Settings for a data discovery scan.
 
             This field is a member of `oneof`_ ``spec``.
+        data_documentation_spec (google.cloud.dataplex_v1.types.DataDocumentationSpec):
+            Settings for a data documentation scan.
+
+            This field is a member of `oneof`_ ``spec``.
         data_quality_result (google.cloud.dataplex_v1.types.DataQualityResult):
             Output only. The result of a data quality
             scan.
@@ -594,6 +606,11 @@ class DataScan(proto.Message):
         data_discovery_result (google.cloud.dataplex_v1.types.DataDiscoveryResult):
             Output only. The result of a data discovery
             scan.
+
+            This field is a member of `oneof`_ ``result``.
+        data_documentation_result (google.cloud.dataplex_v1.types.DataDocumentationResult):
+            Output only. The result of a data
+            documentation scan.
 
             This field is a member of `oneof`_ ``result``.
     """
@@ -738,6 +755,12 @@ class DataScan(proto.Message):
         oneof="spec",
         message=data_discovery.DataDiscoverySpec,
     )
+    data_documentation_spec: data_documentation.DataDocumentationSpec = proto.Field(
+        proto.MESSAGE,
+        number=103,
+        oneof="spec",
+        message=data_documentation.DataDocumentationSpec,
+    )
     data_quality_result: data_quality.DataQualityResult = proto.Field(
         proto.MESSAGE,
         number=200,
@@ -755,6 +778,12 @@ class DataScan(proto.Message):
         number=202,
         oneof="result",
         message=data_discovery.DataDiscoveryResult,
+    )
+    data_documentation_result: data_documentation.DataDocumentationResult = proto.Field(
+        proto.MESSAGE,
+        number=203,
+        oneof="result",
+        message=data_documentation.DataDocumentationResult,
     )
 
 
@@ -811,6 +840,11 @@ class DataScanJob(proto.Message):
             scan.
 
             This field is a member of `oneof`_ ``spec``.
+        data_documentation_spec (google.cloud.dataplex_v1.types.DataDocumentationSpec):
+            Output only. Settings for a data
+            documentation scan.
+
+            This field is a member of `oneof`_ ``spec``.
         data_quality_result (google.cloud.dataplex_v1.types.DataQualityResult):
             Output only. The result of a data quality
             scan.
@@ -824,6 +858,11 @@ class DataScanJob(proto.Message):
         data_discovery_result (google.cloud.dataplex_v1.types.DataDiscoveryResult):
             Output only. The result of a data discovery
             scan.
+
+            This field is a member of `oneof`_ ``result``.
+        data_documentation_result (google.cloud.dataplex_v1.types.DataDocumentationResult):
+            Output only. The result of a data
+            documentation scan.
 
             This field is a member of `oneof`_ ``result``.
     """
@@ -912,6 +951,12 @@ class DataScanJob(proto.Message):
         oneof="spec",
         message=data_discovery.DataDiscoverySpec,
     )
+    data_documentation_spec: data_documentation.DataDocumentationSpec = proto.Field(
+        proto.MESSAGE,
+        number=103,
+        oneof="spec",
+        message=data_documentation.DataDocumentationSpec,
+    )
     data_quality_result: data_quality.DataQualityResult = proto.Field(
         proto.MESSAGE,
         number=200,
@@ -929,6 +974,12 @@ class DataScanJob(proto.Message):
         number=202,
         oneof="result",
         message=data_discovery.DataDiscoveryResult,
+    )
+    data_documentation_result: data_documentation.DataDocumentationResult = proto.Field(
+        proto.MESSAGE,
+        number=203,
+        oneof="result",
+        message=data_documentation.DataDocumentationResult,
     )
 
 

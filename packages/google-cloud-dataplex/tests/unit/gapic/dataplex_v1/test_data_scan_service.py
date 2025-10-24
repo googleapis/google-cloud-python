@@ -77,6 +77,7 @@ from google.cloud.dataplex_v1.services.data_scan_service import (
 )
 from google.cloud.dataplex_v1.types import (
     data_discovery,
+    data_documentation,
     data_profile,
     data_quality,
     datascans,
@@ -7162,6 +7163,7 @@ def test_create_data_scan_rest_call_success(request_type):
                 },
             },
         },
+        "data_documentation_spec": {},
         "data_quality_result": {
             "passed": True,
             "score": 0.54,
@@ -7200,6 +7202,12 @@ def test_create_data_scan_rest_call_success(request_type):
                 "bigquery_export_result": {"state": 1, "message": "message_value"}
             },
             "catalog_publishing_status": {"state": 1},
+            "anomaly_detection_generated_assets": {
+                "result_table": "result_table_value",
+                "data_intermediate_table": "data_intermediate_table_value",
+                "freshness_intermediate_table": "freshness_intermediate_table_value",
+                "volume_intermediate_table": "volume_intermediate_table_value",
+            },
         },
         "data_profile_result": {
             "row_count": 992,
@@ -7259,6 +7267,22 @@ def test_create_data_scan_rest_call_success(request_type):
                 "filesets_deleted": 1685,
                 "filesets_updated": 1701,
             },
+        },
+        "data_documentation_result": {
+            "table_result": {
+                "name": "name_value",
+                "overview": "overview_value",
+                "schema": {
+                    "fields": [
+                        {
+                            "name": "name_value",
+                            "description": "description_value",
+                            "fields": {},
+                        }
+                    ]
+                },
+                "queries": [{"sql": "sql_value", "description": "description_value"}],
+            }
         },
     }
     # The version of a generated dependency at test runtime may differ from the version used during generation.
@@ -7564,6 +7588,7 @@ def test_update_data_scan_rest_call_success(request_type):
                 },
             },
         },
+        "data_documentation_spec": {},
         "data_quality_result": {
             "passed": True,
             "score": 0.54,
@@ -7602,6 +7627,12 @@ def test_update_data_scan_rest_call_success(request_type):
                 "bigquery_export_result": {"state": 1, "message": "message_value"}
             },
             "catalog_publishing_status": {"state": 1},
+            "anomaly_detection_generated_assets": {
+                "result_table": "result_table_value",
+                "data_intermediate_table": "data_intermediate_table_value",
+                "freshness_intermediate_table": "freshness_intermediate_table_value",
+                "volume_intermediate_table": "volume_intermediate_table_value",
+            },
         },
         "data_profile_result": {
             "row_count": 992,
@@ -7661,6 +7692,22 @@ def test_update_data_scan_rest_call_success(request_type):
                 "filesets_deleted": 1685,
                 "filesets_updated": 1701,
             },
+        },
+        "data_documentation_result": {
+            "table_result": {
+                "name": "name_value",
+                "overview": "overview_value",
+                "schema": {
+                    "fields": [
+                        {
+                            "name": "name_value",
+                            "description": "description_value",
+                            "fields": {},
+                        }
+                    ]
+                },
+                "queries": [{"sql": "sql_value", "description": "description_value"}],
+            }
         },
     }
     # The version of a generated dependency at test runtime may differ from the version used during generation.

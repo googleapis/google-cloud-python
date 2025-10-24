@@ -39,13 +39,13 @@ def sample_update_space_read_state():
     client = chat_v1.ChatServiceClient()
 
     # Initialize request argument(s)
-    request = chat_v1.UpdateSpaceReadStateRequest(
-    )
+    request = chat_v1.UpdateSpaceReadStateRequest()
 
     # Make the request
     response = client.update_space_read_state(request=request)
 
     # Handle the response
     print(response)
+
 
 # [END chat_v1_generated_ChatService_UpdateSpaceReadState_sync]

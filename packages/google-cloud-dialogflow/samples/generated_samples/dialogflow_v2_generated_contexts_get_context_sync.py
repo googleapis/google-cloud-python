@@ -49,4 +49,5 @@ def sample_get_context():
     # Handle the response
     print(response)
 
+
 # [END dialogflow_v2_generated_Contexts_GetContext_sync]

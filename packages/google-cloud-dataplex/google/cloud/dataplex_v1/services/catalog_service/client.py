@@ -3161,7 +3161,12 @@ class CatalogServiceClient(metaclass=CatalogServiceClientMeta):
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> pagers.ListEntriesPager:
-        r"""Lists Entries within an EntryGroup.
+        r"""Lists Entries within an EntryGroup. Caution: The Vertex AI,
+        Bigtable, Spanner, Pub/Sub, Dataform, and Dataproc Metastore
+        metadata that is stored in Dataplex Universal Catalog is
+        changing. For more information, see `Changes to metadata stored
+        in Dataplex Universal
+        Catalog <https://cloud.google.com/dataplex/docs/metadata-changes>`__.
 
         .. code-block:: python
 
@@ -3283,7 +3288,12 @@ class CatalogServiceClient(metaclass=CatalogServiceClientMeta):
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> catalog.Entry:
-        r"""Gets an Entry.
+        r"""Gets an Entry. Caution: The Vertex AI, Bigtable, Spanner,
+        Pub/Sub, Dataform, and Dataproc Metastore metadata that is
+        stored in Dataplex Universal Catalog is changing. For more
+        information, see `Changes to metadata stored in Dataplex
+        Universal
+        Catalog <https://cloud.google.com/dataplex/docs/metadata-changes>`__.
 
         .. code-block:: python
 
@@ -3390,8 +3400,12 @@ class CatalogServiceClient(metaclass=CatalogServiceClientMeta):
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> catalog.Entry:
-        r"""Looks up an entry by name using the permission on the
-        source system.
+        r"""Looks up an entry by name using the permission on the source
+        system. Caution: The Vertex AI, Bigtable, Spanner, Pub/Sub,
+        Dataform, and Dataproc Metastore metadata that is stored in
+        Dataplex Universal Catalog is changing. For more information,
+        see `Changes to metadata stored in Dataplex Universal
+        Catalog <https://cloud.google.com/dataplex/docs/metadata-changes>`__.
 
         .. code-block:: python
 

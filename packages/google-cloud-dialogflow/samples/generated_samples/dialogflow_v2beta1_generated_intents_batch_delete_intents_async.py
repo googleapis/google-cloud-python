@@ -57,4 +57,5 @@ async def sample_batch_delete_intents():
     # Handle the response
     print(response)
 
+
 # [END dialogflow_v2beta1_generated_Intents_BatchDeleteIntents_async]

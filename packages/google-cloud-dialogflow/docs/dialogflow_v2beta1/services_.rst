@@ -13,6 +13,7 @@ Services for Google Cloud Dialogflow v2beta1 API
     entity_types
     environments
     fulfillments
+    generator_evaluations
     generators
     intents
     knowledge_bases
@@ -21,4 +22,5 @@ Services for Google Cloud Dialogflow v2beta1 API
     session_entity_types
     sessions
     sip_trunks
+    tools
     versions

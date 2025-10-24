@@ -48,7 +48,7 @@ class DeletionMetadata(proto.Message):
             CREATOR (1):
                 User deleted their own message.
             SPACE_OWNER (2):
-                A space manager deleted the message.
+                An owner or manager deleted the message.
             ADMIN (3):
                 A Google Workspace administrator deleted the
                 message. Administrators can delete any message

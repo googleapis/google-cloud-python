@@ -39,13 +39,13 @@ def sample_update_answer_record():
     client = dialogflow_v2.AnswerRecordsClient()
 
     # Initialize request argument(s)
-    request = dialogflow_v2.UpdateAnswerRecordRequest(
-    )
+    request = dialogflow_v2.UpdateAnswerRecordRequest()
 
     # Make the request
     response = client.update_answer_record(request=request)
 
     # Handle the response
     print(response)
+
 
 # [END dialogflow_v2_generated_AnswerRecords_UpdateAnswerRecord_sync]

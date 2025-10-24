@@ -39,8 +39,7 @@ async def sample_list_custom_emojis():
     client = chat_v1.ChatServiceAsyncClient()
 
     # Initialize request argument(s)
-    request = chat_v1.ListCustomEmojisRequest(
-    )
+    request = chat_v1.ListCustomEmojisRequest()
 
     # Make the request
     page_result = client.list_custom_emojis(request=request)
@@ -48,5 +47,6 @@ async def sample_list_custom_emojis():
     # Handle the response
     async for response in page_result:
         print(response)
+
 
 # [END chat_v1_generated_ChatService_ListCustomEmojis_async]

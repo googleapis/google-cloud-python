@@ -40,8 +40,14 @@ async def sample_create_metadata_job():
 
     # Initialize request argument(s)
     metadata_job = dataplex_v1.MetadataJob()
-    metadata_job.import_spec.scope.entry_groups = ['entry_groups_value1', 'entry_groups_value2']
-    metadata_job.import_spec.scope.entry_types = ['entry_types_value1', 'entry_types_value2']
+    metadata_job.import_spec.scope.entry_groups = [
+        "entry_groups_value1",
+        "entry_groups_value2",
+    ]
+    metadata_job.import_spec.scope.entry_types = [
+        "entry_types_value1",
+        "entry_types_value2",
+    ]
     metadata_job.import_spec.entry_sync_mode = "NONE"
     metadata_job.import_spec.aspect_sync_mode = "NONE"
     metadata_job.type_ = "EXPORT"
@@ -60,5 +66,6 @@ async def sample_create_metadata_job():
 
     # Handle the response
     print(response)
+
 
 # [END dataplex_v1_generated_CatalogService_CreateMetadataJob_async]

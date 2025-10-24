@@ -127,6 +127,7 @@ from .types.content import (
     UpdateContentRequest,
 )
 from .types.data_discovery import DataDiscoveryResult, DataDiscoverySpec
+from .types.data_documentation import DataDocumentationResult, DataDocumentationSpec
 from .types.data_profile import DataProfileResult, DataProfileSpec
 from .types.data_quality import (
     DataQualityColumnResult,
@@ -308,6 +309,8 @@ __all__ = (
     "DataAttributeBinding",
     "DataDiscoveryResult",
     "DataDiscoverySpec",
+    "DataDocumentationResult",
+    "DataDocumentationSpec",
     "DataProfileResult",
     "DataProfileSpec",
     "DataQualityColumnResult",

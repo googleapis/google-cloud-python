@@ -49,4 +49,5 @@ def sample_delete_entry_link():
     # Handle the response
     print(response)
 
+
 # [END dataplex_v1_generated_CatalogService_DeleteEntryLink_sync]

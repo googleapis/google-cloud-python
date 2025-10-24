@@ -50,4 +50,5 @@ def sample_list_partitions():
     for response in page_result:
         print(response)
 
+
 # [END dataplex_v1_generated_MetadataService_ListPartitions_sync]

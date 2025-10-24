@@ -39,13 +39,13 @@ async def sample_create_custom_emoji():
     client = chat_v1.ChatServiceAsyncClient()
 
     # Initialize request argument(s)
-    request = chat_v1.CreateCustomEmojiRequest(
-    )
+    request = chat_v1.CreateCustomEmojiRequest()
 
     # Make the request
     response = await client.create_custom_emoji(request=request)
 
     # Handle the response
     print(response)
+
 
 # [END chat_v1_generated_ChatService_CreateCustomEmoji_async]

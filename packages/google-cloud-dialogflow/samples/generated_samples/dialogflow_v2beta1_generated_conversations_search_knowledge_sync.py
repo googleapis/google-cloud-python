@@ -51,4 +51,5 @@ def sample_search_knowledge():
     # Handle the response
     print(response)
 
+
 # [END dialogflow_v2beta1_generated_Conversations_SearchKnowledge_sync]

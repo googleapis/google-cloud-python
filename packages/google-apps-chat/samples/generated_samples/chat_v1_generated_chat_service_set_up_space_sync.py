@@ -52,4 +52,5 @@ def sample_set_up_space():
     # Handle the response
     print(response)
 
+
 # [END chat_v1_generated_ChatService_SetUpSpace_sync]

@@ -39,13 +39,13 @@ async def sample_get_answer_record():
     client = dialogflow_v2beta1.AnswerRecordsAsyncClient()
 
     # Initialize request argument(s)
-    request = dialogflow_v2beta1.GetAnswerRecordRequest(
-    )
+    request = dialogflow_v2beta1.GetAnswerRecordRequest()
 
     # Make the request
     response = await client.get_answer_record(request=request)
 
     # Handle the response
     print(response)
+
 
 # [END dialogflow_v2beta1_generated_AnswerRecords_GetAnswerRecord_async]

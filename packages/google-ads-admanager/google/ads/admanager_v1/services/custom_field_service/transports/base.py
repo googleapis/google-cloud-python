@@ -144,6 +144,36 @@ class CustomFieldServiceTransport(abc.ABC):
                 default_timeout=None,
                 client_info=client_info,
             ),
+            self.create_custom_field: gapic_v1.method.wrap_method(
+                self.create_custom_field,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.batch_create_custom_fields: gapic_v1.method.wrap_method(
+                self.batch_create_custom_fields,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.update_custom_field: gapic_v1.method.wrap_method(
+                self.update_custom_field,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.batch_update_custom_fields: gapic_v1.method.wrap_method(
+                self.batch_update_custom_fields,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.batch_activate_custom_fields: gapic_v1.method.wrap_method(
+                self.batch_activate_custom_fields,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.batch_deactivate_custom_fields: gapic_v1.method.wrap_method(
+                self.batch_deactivate_custom_fields,
+                default_timeout=None,
+                client_info=client_info,
+            ),
             self.get_operation: gapic_v1.method.wrap_method(
                 self.get_operation,
                 default_timeout=None,
@@ -180,6 +210,78 @@ class CustomFieldServiceTransport(abc.ABC):
         Union[
             custom_field_service.ListCustomFieldsResponse,
             Awaitable[custom_field_service.ListCustomFieldsResponse],
+        ],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def create_custom_field(
+        self,
+    ) -> Callable[
+        [custom_field_service.CreateCustomFieldRequest],
+        Union[
+            custom_field_messages.CustomField,
+            Awaitable[custom_field_messages.CustomField],
+        ],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def batch_create_custom_fields(
+        self,
+    ) -> Callable[
+        [custom_field_service.BatchCreateCustomFieldsRequest],
+        Union[
+            custom_field_service.BatchCreateCustomFieldsResponse,
+            Awaitable[custom_field_service.BatchCreateCustomFieldsResponse],
+        ],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def update_custom_field(
+        self,
+    ) -> Callable[
+        [custom_field_service.UpdateCustomFieldRequest],
+        Union[
+            custom_field_messages.CustomField,
+            Awaitable[custom_field_messages.CustomField],
+        ],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def batch_update_custom_fields(
+        self,
+    ) -> Callable[
+        [custom_field_service.BatchUpdateCustomFieldsRequest],
+        Union[
+            custom_field_service.BatchUpdateCustomFieldsResponse,
+            Awaitable[custom_field_service.BatchUpdateCustomFieldsResponse],
+        ],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def batch_activate_custom_fields(
+        self,
+    ) -> Callable[
+        [custom_field_service.BatchActivateCustomFieldsRequest],
+        Union[
+            custom_field_service.BatchActivateCustomFieldsResponse,
+            Awaitable[custom_field_service.BatchActivateCustomFieldsResponse],
+        ],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def batch_deactivate_custom_fields(
+        self,
+    ) -> Callable[
+        [custom_field_service.BatchDeactivateCustomFieldsRequest],
+        Union[
+            custom_field_service.BatchDeactivateCustomFieldsResponse,
+            Awaitable[custom_field_service.BatchDeactivateCustomFieldsResponse],
         ],
     ]:
         raise NotImplementedError()

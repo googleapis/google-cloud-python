@@ -57,4 +57,5 @@ def sample_update_aspect_type():
     # Handle the response
     print(response)
 
+
 # [END dataplex_v1_generated_CatalogService_UpdateAspectType_sync]

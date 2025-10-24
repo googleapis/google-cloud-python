@@ -39,8 +39,7 @@ def sample_update_data_attribute():
     client = dataplex_v1.DataTaxonomyServiceClient()
 
     # Initialize request argument(s)
-    request = dataplex_v1.UpdateDataAttributeRequest(
-    )
+    request = dataplex_v1.UpdateDataAttributeRequest()
 
     # Make the request
     operation = client.update_data_attribute(request=request)
@@ -51,5 +50,6 @@ def sample_update_data_attribute():
 
     # Handle the response
     print(response)
+
 
 # [END dataplex_v1_generated_DataTaxonomyService_UpdateDataAttribute_sync]

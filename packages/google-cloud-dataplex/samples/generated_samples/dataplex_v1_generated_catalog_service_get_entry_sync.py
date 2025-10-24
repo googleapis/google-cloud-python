@@ -49,4 +49,5 @@ def sample_get_entry():
     # Handle the response
     print(response)
 
+
 # [END dataplex_v1_generated_CatalogService_GetEntry_sync]

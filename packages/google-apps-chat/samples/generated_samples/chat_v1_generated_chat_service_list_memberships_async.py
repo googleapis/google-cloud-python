@@ -50,4 +50,5 @@ async def sample_list_memberships():
     async for response in page_result:
         print(response)
 
+
 # [END chat_v1_generated_ChatService_ListMemberships_async]

@@ -49,4 +49,5 @@ async def sample_get_space_read_state():
     # Handle the response
     print(response)
 
+
 # [END chat_v1_generated_ChatService_GetSpaceReadState_async]

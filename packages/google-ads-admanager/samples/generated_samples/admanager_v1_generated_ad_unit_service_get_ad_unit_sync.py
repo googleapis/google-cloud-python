@@ -49,4 +49,5 @@ def sample_get_ad_unit():
     # Handle the response
     print(response)
 
+
 # [END admanager_v1_generated_AdUnitService_GetAdUnit_sync]

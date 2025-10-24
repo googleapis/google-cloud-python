@@ -49,4 +49,5 @@ def sample_get_conversation_model():
     # Handle the response
     print(response)
 
+
 # [END dialogflow_v2_generated_ConversationModels_GetConversationModel_sync]

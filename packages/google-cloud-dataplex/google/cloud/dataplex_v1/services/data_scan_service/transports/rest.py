@@ -1425,6 +1425,11 @@ class DataScanServiceRestTransport(_BaseDataScanServiceRestTransport):
                   extract and then catalog metadata. For more
                   information, see `Discover and catalog Cloud Storage
                   data <https://cloud.google.com/bigquery/docs/automatic-discovery>`__.
+                - Data documentation: analyzes the table details and
+                  generates insights including descriptions and sample
+                  SQL queries for the table. For more information, see
+                  `Generate data insights in
+                  BigQuery <https://cloud.google.com/bigquery/docs/data-insights>`__.
 
             """
 

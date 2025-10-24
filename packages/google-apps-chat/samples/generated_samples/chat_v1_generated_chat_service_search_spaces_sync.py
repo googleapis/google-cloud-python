@@ -50,4 +50,5 @@ def sample_search_spaces():
     for response in page_result:
         print(response)
 
+
 # [END chat_v1_generated_ChatService_SearchSpaces_sync]

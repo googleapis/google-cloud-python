@@ -50,4 +50,5 @@ def sample_list_bandwidth_groups():
     for response in page_result:
         print(response)
 
+
 # [END admanager_v1_generated_BandwidthGroupService_ListBandwidthGroups_sync]

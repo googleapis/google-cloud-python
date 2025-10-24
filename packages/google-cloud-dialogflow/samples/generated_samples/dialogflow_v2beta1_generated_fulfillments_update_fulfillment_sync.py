@@ -53,4 +53,5 @@ def sample_update_fulfillment():
     # Handle the response
     print(response)
 
+
 # [END dialogflow_v2beta1_generated_Fulfillments_UpdateFulfillment_sync]

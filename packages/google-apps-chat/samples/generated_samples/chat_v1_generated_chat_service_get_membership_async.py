@@ -49,4 +49,5 @@ async def sample_get_membership():
     # Handle the response
     print(response)
 
+
 # [END chat_v1_generated_ChatService_GetMembership_async]

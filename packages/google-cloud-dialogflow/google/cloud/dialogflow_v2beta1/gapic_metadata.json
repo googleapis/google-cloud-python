@@ -1155,6 +1155,85 @@
         }
       }
     },
+    "GeneratorEvaluations": {
+      "clients": {
+        "grpc": {
+          "libraryClient": "GeneratorEvaluationsClient",
+          "rpcs": {
+            "CreateGeneratorEvaluation": {
+              "methods": [
+                "create_generator_evaluation"
+              ]
+            },
+            "DeleteGeneratorEvaluation": {
+              "methods": [
+                "delete_generator_evaluation"
+              ]
+            },
+            "GetGeneratorEvaluation": {
+              "methods": [
+                "get_generator_evaluation"
+              ]
+            },
+            "ListGeneratorEvaluations": {
+              "methods": [
+                "list_generator_evaluations"
+              ]
+            }
+          }
+        },
+        "grpc-async": {
+          "libraryClient": "GeneratorEvaluationsAsyncClient",
+          "rpcs": {
+            "CreateGeneratorEvaluation": {
+              "methods": [
+                "create_generator_evaluation"
+              ]
+            },
+            "DeleteGeneratorEvaluation": {
+              "methods": [
+                "delete_generator_evaluation"
+              ]
+            },
+            "GetGeneratorEvaluation": {
+              "methods": [
+                "get_generator_evaluation"
+              ]
+            },
+            "ListGeneratorEvaluations": {
+              "methods": [
+                "list_generator_evaluations"
+              ]
+            }
+          }
+        },
+        "rest": {
+          "libraryClient": "GeneratorEvaluationsClient",
+          "rpcs": {
+            "CreateGeneratorEvaluation": {
+              "methods": [
+                "create_generator_evaluation"
+              ]
+            },
+            "DeleteGeneratorEvaluation": {
+              "methods": [
+                "delete_generator_evaluation"
+              ]
+            },
+            "GetGeneratorEvaluation": {
+              "methods": [
+                "get_generator_evaluation"
+              ]
+            },
+            "ListGeneratorEvaluations": {
+              "methods": [
+                "list_generator_evaluations"
+              ]
+            }
+          }
+        }
+      }
+    },
     "Generators": {
       "clients": {
         "grpc": {
@@ -1477,6 +1556,11 @@
                 "analyze_content"
               ]
             },
+            "BidiStreamingAnalyzeContent": {
+              "methods": [
+                "bidi_streaming_analyze_content"
+              ]
+            },
             "CompileSuggestion": {
               "methods": [
                 "compile_suggestion"
@@ -1542,6 +1626,11 @@
                 "analyze_content"
               ]
             },
+            "BidiStreamingAnalyzeContent": {
+              "methods": [
+                "bidi_streaming_analyze_content"
+              ]
+            },
             "CompileSuggestion": {
               "methods": [
                 "compile_suggestion"
@@ -1605,6 +1694,11 @@
             "AnalyzeContent": {
               "methods": [
                 "analyze_content"
+              ]
+            },
+            "BidiStreamingAnalyzeContent": {
+              "methods": [
+                "bidi_streaming_analyze_content"
               ]
             },
             "CompileSuggestion": {
@@ -1976,6 +2070,100 @@
             "UpdateSipTrunk": {
               "methods": [
                 "update_sip_trunk"
+              ]
+            }
+          }
+        }
+      }
+    },
+    "Tools": {
+      "clients": {
+        "grpc": {
+          "libraryClient": "ToolsClient",
+          "rpcs": {
+            "CreateTool": {
+              "methods": [
+                "create_tool"
+              ]
+            },
+            "DeleteTool": {
+              "methods": [
+                "delete_tool"
+              ]
+            },
+            "GetTool": {
+              "methods": [
+                "get_tool"
+              ]
+            },
+            "ListTools": {
+              "methods": [
+                "list_tools"
+              ]
+            },
+            "UpdateTool": {
+              "methods": [
+                "update_tool"
+              ]
+            }
+          }
+        },
+        "grpc-async": {
+          "libraryClient": "ToolsAsyncClient",
+          "rpcs": {
+            "CreateTool": {
+              "methods": [
+                "create_tool"
+              ]
+            },
+            "DeleteTool": {
+              "methods": [
+                "delete_tool"
+              ]
+            },
+            "GetTool": {
+              "methods": [
+                "get_tool"
+              ]
+            },
+            "ListTools": {
+              "methods": [
+                "list_tools"
+              ]
+            },
+            "UpdateTool": {
+              "methods": [
+                "update_tool"
+              ]
+            }
+          }
+        },
+        "rest": {
+          "libraryClient": "ToolsClient",
+          "rpcs": {
+            "CreateTool": {
+              "methods": [
+                "create_tool"
+              ]
+            },
+            "DeleteTool": {
+              "methods": [
+                "delete_tool"
+              ]
+            },
+            "GetTool": {
+              "methods": [
+                "get_tool"
+              ]
+            },
+            "ListTools": {
+              "methods": [
+                "list_tools"
+              ]
+            },
+            "UpdateTool": {
+              "methods": [
+                "update_tool"
               ]
             }
           }

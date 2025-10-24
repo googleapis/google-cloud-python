@@ -53,4 +53,5 @@ def sample_update_entity_type():
     # Handle the response
     print(response)
 
+
 # [END dialogflow_v2_generated_EntityTypes_UpdateEntityType_sync]

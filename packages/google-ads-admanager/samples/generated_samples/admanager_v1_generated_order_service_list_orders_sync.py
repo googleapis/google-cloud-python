@@ -50,4 +50,5 @@ def sample_list_orders():
     for response in page_result:
         print(response)
 
+
 # [END admanager_v1_generated_OrderService_ListOrders_sync]

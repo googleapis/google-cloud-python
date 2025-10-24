@@ -57,4 +57,5 @@ def sample_batch_update_entities():
     # Handle the response
     print(response)
 
+
 # [END dialogflow_v2beta1_generated_EntityTypes_BatchUpdateEntities_sync]

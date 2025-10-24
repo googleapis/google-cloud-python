@@ -50,4 +50,5 @@ def sample_list_aspect_types():
     for response in page_result:
         print(response)
 
+
 # [END dataplex_v1_generated_CatalogService_ListAspectTypes_sync]

@@ -49,4 +49,5 @@ async def sample_get_fulfillment():
     # Handle the response
     print(response)
 
+
 # [END dialogflow_v2beta1_generated_Fulfillments_GetFulfillment_async]

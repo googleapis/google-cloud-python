@@ -39,6 +39,30 @@
         }
       }
     },
+    "AdReviewCenterAdService": {
+      "clients": {
+        "rest": {
+          "libraryClient": "AdReviewCenterAdServiceClient",
+          "rpcs": {
+            "BatchAllowAdReviewCenterAds": {
+              "methods": [
+                "batch_allow_ad_review_center_ads"
+              ]
+            },
+            "BatchBlockAdReviewCenterAds": {
+              "methods": [
+                "batch_block_ad_review_center_ads"
+              ]
+            },
+            "SearchAdReviewCenterAds": {
+              "methods": [
+                "search_ad_review_center_ads"
+              ]
+            }
+          }
+        }
+      }
+    },
     "AdUnitService": {
       "clients": {
         "rest": {
@@ -57,6 +81,44 @@
             "ListAdUnits": {
               "methods": [
                 "list_ad_units"
+              ]
+            }
+          }
+        }
+      }
+    },
+    "ApplicationService": {
+      "clients": {
+        "rest": {
+          "libraryClient": "ApplicationServiceClient",
+          "rpcs": {
+            "GetApplication": {
+              "methods": [
+                "get_application"
+              ]
+            },
+            "ListApplications": {
+              "methods": [
+                "list_applications"
+              ]
+            }
+          }
+        }
+      }
+    },
+    "AudienceSegmentService": {
+      "clients": {
+        "rest": {
+          "libraryClient": "AudienceSegmentServiceClient",
+          "rpcs": {
+            "GetAudienceSegment": {
+              "methods": [
+                "get_audience_segment"
+              ]
+            },
+            "ListAudienceSegments": {
+              "methods": [
+                "list_audience_segments"
               ]
             }
           }
@@ -82,6 +144,82 @@
         }
       }
     },
+    "BrowserLanguageService": {
+      "clients": {
+        "rest": {
+          "libraryClient": "BrowserLanguageServiceClient",
+          "rpcs": {
+            "GetBrowserLanguage": {
+              "methods": [
+                "get_browser_language"
+              ]
+            },
+            "ListBrowserLanguages": {
+              "methods": [
+                "list_browser_languages"
+              ]
+            }
+          }
+        }
+      }
+    },
+    "BrowserService": {
+      "clients": {
+        "rest": {
+          "libraryClient": "BrowserServiceClient",
+          "rpcs": {
+            "GetBrowser": {
+              "methods": [
+                "get_browser"
+              ]
+            },
+            "ListBrowsers": {
+              "methods": [
+                "list_browsers"
+              ]
+            }
+          }
+        }
+      }
+    },
+    "CmsMetadataKeyService": {
+      "clients": {
+        "rest": {
+          "libraryClient": "CmsMetadataKeyServiceClient",
+          "rpcs": {
+            "GetCmsMetadataKey": {
+              "methods": [
+                "get_cms_metadata_key"
+              ]
+            },
+            "ListCmsMetadataKeys": {
+              "methods": [
+                "list_cms_metadata_keys"
+              ]
+            }
+          }
+        }
+      }
+    },
+    "CmsMetadataValueService": {
+      "clients": {
+        "rest": {
+          "libraryClient": "CmsMetadataValueServiceClient",
+          "rpcs": {
+            "GetCmsMetadataValue": {
+              "methods": [
+                "get_cms_metadata_value"
+              ]
+            },
+            "ListCmsMetadataValues": {
+              "methods": [
+                "list_cms_metadata_values"
+              ]
+            }
+          }
+        }
+      }
+    },
     "CompanyService": {
       "clients": {
         "rest": {
@@ -101,11 +239,151 @@
         }
       }
     },
+    "ContactService": {
+      "clients": {
+        "rest": {
+          "libraryClient": "ContactServiceClient",
+          "rpcs": {
+            "BatchCreateContacts": {
+              "methods": [
+                "batch_create_contacts"
+              ]
+            },
+            "BatchUpdateContacts": {
+              "methods": [
+                "batch_update_contacts"
+              ]
+            },
+            "CreateContact": {
+              "methods": [
+                "create_contact"
+              ]
+            },
+            "GetContact": {
+              "methods": [
+                "get_contact"
+              ]
+            },
+            "ListContacts": {
+              "methods": [
+                "list_contacts"
+              ]
+            },
+            "UpdateContact": {
+              "methods": [
+                "update_contact"
+              ]
+            }
+          }
+        }
+      }
+    },
+    "ContentBundleService": {
+      "clients": {
+        "rest": {
+          "libraryClient": "ContentBundleServiceClient",
+          "rpcs": {
+            "GetContentBundle": {
+              "methods": [
+                "get_content_bundle"
+              ]
+            },
+            "ListContentBundles": {
+              "methods": [
+                "list_content_bundles"
+              ]
+            }
+          }
+        }
+      }
+    },
+    "ContentLabelService": {
+      "clients": {
+        "rest": {
+          "libraryClient": "ContentLabelServiceClient",
+          "rpcs": {
+            "GetContentLabel": {
+              "methods": [
+                "get_content_label"
+              ]
+            },
+            "ListContentLabels": {
+              "methods": [
+                "list_content_labels"
+              ]
+            }
+          }
+        }
+      }
+    },
+    "ContentService": {
+      "clients": {
+        "rest": {
+          "libraryClient": "ContentServiceClient",
+          "rpcs": {
+            "GetContent": {
+              "methods": [
+                "get_content"
+              ]
+            },
+            "ListContent": {
+              "methods": [
+                "list_content"
+              ]
+            }
+          }
+        }
+      }
+    },
+    "CreativeTemplateService": {
+      "clients": {
+        "rest": {
+          "libraryClient": "CreativeTemplateServiceClient",
+          "rpcs": {
+            "GetCreativeTemplate": {
+              "methods": [
+                "get_creative_template"
+              ]
+            },
+            "ListCreativeTemplates": {
+              "methods": [
+                "list_creative_templates"
+              ]
+            }
+          }
+        }
+      }
+    },
     "CustomFieldService": {
       "clients": {
         "rest": {
           "libraryClient": "CustomFieldServiceClient",
           "rpcs": {
+            "BatchActivateCustomFields": {
+              "methods": [
+                "batch_activate_custom_fields"
+              ]
+            },
+            "BatchCreateCustomFields": {
+              "methods": [
+                "batch_create_custom_fields"
+              ]
+            },
+            "BatchDeactivateCustomFields": {
+              "methods": [
+                "batch_deactivate_custom_fields"
+              ]
+            },
+            "BatchUpdateCustomFields": {
+              "methods": [
+                "batch_update_custom_fields"
+              ]
+            },
+            "CreateCustomField": {
+              "methods": [
+                "create_custom_field"
+              ]
+            },
             "GetCustomField": {
               "methods": [
                 "get_custom_field"
@@ -114,6 +392,11 @@
             "ListCustomFields": {
               "methods": [
                 "list_custom_fields"
+              ]
+            },
+            "UpdateCustomField": {
+              "methods": [
+                "update_custom_field"
               ]
             }
           }
@@ -158,6 +441,25 @@
         }
       }
     },
+    "DeviceCapabilityService": {
+      "clients": {
+        "rest": {
+          "libraryClient": "DeviceCapabilityServiceClient",
+          "rpcs": {
+            "GetDeviceCapability": {
+              "methods": [
+                "get_device_capability"
+              ]
+            },
+            "ListDeviceCapabilities": {
+              "methods": [
+                "list_device_capabilities"
+              ]
+            }
+          }
+        }
+      }
+    },
     "DeviceCategoryService": {
       "clients": {
         "rest": {
@@ -171,6 +473,25 @@
             "ListDeviceCategories": {
               "methods": [
                 "list_device_categories"
+              ]
+            }
+          }
+        }
+      }
+    },
+    "DeviceManufacturerService": {
+      "clients": {
+        "rest": {
+          "libraryClient": "DeviceManufacturerServiceClient",
+          "rpcs": {
+            "GetDeviceManufacturer": {
+              "methods": [
+                "get_device_manufacturer"
+              ]
+            },
+            "ListDeviceManufacturers": {
+              "methods": [
+                "list_device_manufacturers"
               ]
             }
           }
@@ -229,6 +550,63 @@
             "ListGeoTargets": {
               "methods": [
                 "list_geo_targets"
+              ]
+            }
+          }
+        }
+      }
+    },
+    "MobileCarrierService": {
+      "clients": {
+        "rest": {
+          "libraryClient": "MobileCarrierServiceClient",
+          "rpcs": {
+            "GetMobileCarrier": {
+              "methods": [
+                "get_mobile_carrier"
+              ]
+            },
+            "ListMobileCarriers": {
+              "methods": [
+                "list_mobile_carriers"
+              ]
+            }
+          }
+        }
+      }
+    },
+    "MobileDeviceService": {
+      "clients": {
+        "rest": {
+          "libraryClient": "MobileDeviceServiceClient",
+          "rpcs": {
+            "GetMobileDevice": {
+              "methods": [
+                "get_mobile_device"
+              ]
+            },
+            "ListMobileDevices": {
+              "methods": [
+                "list_mobile_devices"
+              ]
+            }
+          }
+        }
+      }
+    },
+    "MobileDeviceSubmodelService": {
+      "clients": {
+        "rest": {
+          "libraryClient": "MobileDeviceSubmodelServiceClient",
+          "rpcs": {
+            "GetMobileDeviceSubmodel": {
+              "methods": [
+                "get_mobile_device_submodel"
+              ]
+            },
+            "ListMobileDeviceSubmodels": {
+              "methods": [
+                "list_mobile_device_submodels"
               ]
             }
           }
@@ -316,6 +694,36 @@
         "rest": {
           "libraryClient": "PlacementServiceClient",
           "rpcs": {
+            "BatchActivatePlacements": {
+              "methods": [
+                "batch_activate_placements"
+              ]
+            },
+            "BatchArchivePlacements": {
+              "methods": [
+                "batch_archive_placements"
+              ]
+            },
+            "BatchCreatePlacements": {
+              "methods": [
+                "batch_create_placements"
+              ]
+            },
+            "BatchDeactivatePlacements": {
+              "methods": [
+                "batch_deactivate_placements"
+              ]
+            },
+            "BatchUpdatePlacements": {
+              "methods": [
+                "batch_update_placements"
+              ]
+            },
+            "CreatePlacement": {
+              "methods": [
+                "create_placement"
+              ]
+            },
             "GetPlacement": {
               "methods": [
                 "get_placement"
@@ -324,6 +732,11 @@
             "ListPlacements": {
               "methods": [
                 "list_placements"
+              ]
+            },
+            "UpdatePlacement": {
+              "methods": [
+                "update_placement"
               ]
             }
           }
@@ -465,6 +878,55 @@
         }
       }
     },
+    "SiteService": {
+      "clients": {
+        "rest": {
+          "libraryClient": "SiteServiceClient",
+          "rpcs": {
+            "BatchCreateSites": {
+              "methods": [
+                "batch_create_sites"
+              ]
+            },
+            "BatchDeactivateSites": {
+              "methods": [
+                "batch_deactivate_sites"
+              ]
+            },
+            "BatchSubmitSitesForApproval": {
+              "methods": [
+                "batch_submit_sites_for_approval"
+              ]
+            },
+            "BatchUpdateSites": {
+              "methods": [
+                "batch_update_sites"
+              ]
+            },
+            "CreateSite": {
+              "methods": [
+                "create_site"
+              ]
+            },
+            "GetSite": {
+              "methods": [
+                "get_site"
+              ]
+            },
+            "ListSites": {
+              "methods": [
+                "list_sites"
+              ]
+            },
+            "UpdateSite": {
+              "methods": [
+                "update_site"
+              ]
+            }
+          }
+        }
+      }
+    },
     "TaxonomyCategoryService": {
       "clients": {
         "rest": {
@@ -478,6 +940,55 @@
             "ListTaxonomyCategories": {
               "methods": [
                 "list_taxonomy_categories"
+              ]
+            }
+          }
+        }
+      }
+    },
+    "TeamService": {
+      "clients": {
+        "rest": {
+          "libraryClient": "TeamServiceClient",
+          "rpcs": {
+            "BatchActivateTeams": {
+              "methods": [
+                "batch_activate_teams"
+              ]
+            },
+            "BatchCreateTeams": {
+              "methods": [
+                "batch_create_teams"
+              ]
+            },
+            "BatchDeactivateTeams": {
+              "methods": [
+                "batch_deactivate_teams"
+              ]
+            },
+            "BatchUpdateTeams": {
+              "methods": [
+                "batch_update_teams"
+              ]
+            },
+            "CreateTeam": {
+              "methods": [
+                "create_team"
+              ]
+            },
+            "GetTeam": {
+              "methods": [
+                "get_team"
+              ]
+            },
+            "ListTeams": {
+              "methods": [
+                "list_teams"
+              ]
+            },
+            "UpdateTeam": {
+              "methods": [
+                "update_team"
               ]
             }
           }

@@ -50,4 +50,5 @@ def sample_list_device_categories():
     for response in page_result:
         print(response)
 
+
 # [END admanager_v1_generated_DeviceCategoryService_ListDeviceCategories_sync]

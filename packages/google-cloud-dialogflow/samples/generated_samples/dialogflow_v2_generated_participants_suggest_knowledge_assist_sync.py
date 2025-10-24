@@ -49,4 +49,5 @@ def sample_suggest_knowledge_assist():
     # Handle the response
     print(response)
 
+
 # [END dialogflow_v2_generated_Participants_SuggestKnowledgeAssist_sync]

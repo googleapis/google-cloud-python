@@ -21,7 +21,7 @@ from google.protobuf import field_mask_pb2  # type: ignore
 from google.protobuf import timestamp_pb2  # type: ignore
 import proto  # type: ignore
 
-from google.ads.admanager_v1.types import report_messages
+from google.ads.admanager_v1.types import report_definition, report_messages
 
 __protobuf__ = proto.module(
     package="google.ads.admanager.v1",
@@ -118,7 +118,7 @@ class ListReportsRequest(proto.Message):
             Optional. The maximum number of ``Reports`` to return. The
             service may return fewer than this value. If unspecified, at
             most 50 ``Reports`` will be returned. The maximum value is
-            1000; values above 1000 will be coerced to 1000.
+            1000; values greater than 1000 will be coerced to 1000.
         page_token (str):
             Optional. A page token, received from a previous
             ``ListReports`` call. Provide this to retrieve the
@@ -182,8 +182,8 @@ class ListReportsResponse(proto.Message):
             in the request, this reflects the total number after the
             filtering is applied.
 
-            ``total_size`` will not be calculated in the response unless
-            it has been included in a response field mask. The response
+            ``total_size`` won't be calculated in the response unless it
+            has been included in a response field mask. The response
             field mask can be provided to the method by using the URL
             parameter ``$fields`` or ``fields``, or by using the
             HTTP/gRPC header ``X-Goog-FieldMask``.
@@ -268,7 +268,7 @@ class FetchReportResultRowsRequest(proto.Message):
             return. The service may return fewer than this
             value. If unspecified, at most 1,000 rows will
             be returned. The maximum value is 10,000; values
-            above 10,000 will be reduced to 10,000.
+            greater than 10,000 will be reduced to 10,000.
         page_token (str):
             Optional. A page token, received from a previous
             ``FetchReportResultRows`` call. Provide this to retrieve the
@@ -294,17 +294,17 @@ class FetchReportResultRowsResponse(proto.Message):
     endpoint.
 
     Attributes:
-        rows (MutableSequence[google.ads.admanager_v1.types.Report.DataTable.Row]):
+        rows (MutableSequence[google.ads.admanager_v1.types.ReportDataTable.Row]):
             Up to ``page_size`` rows of report data.
         run_time (google.protobuf.timestamp_pb2.Timestamp):
             The time at which the report was scheduled to
             run. For non-scheduled reports, this is the time
             at which the report was requested to be run.
-        date_ranges (MutableSequence[google.ads.admanager_v1.types.Report.DateRange.FixedDateRange]):
+        date_ranges (MutableSequence[google.ads.admanager_v1.types.ReportDefinition.DateRange.FixedDateRange]):
             The computed fixed date ranges this report includes. Only
             returned with the first page of results (when page_token is
             not included in the request).
-        comparison_date_ranges (MutableSequence[google.ads.admanager_v1.types.Report.DateRange.FixedDateRange]):
+        comparison_date_ranges (MutableSequence[google.ads.admanager_v1.types.ReportDefinition.DateRange.FixedDateRange]):
             The computed comparison fixed date ranges this report
             includes. Only returned with the first page of results (when
             page_token is not included in the request).
@@ -322,10 +322,10 @@ class FetchReportResultRowsResponse(proto.Message):
     def raw_page(self):
         return self
 
-    rows: MutableSequence[report_messages.Report.DataTable.Row] = proto.RepeatedField(
+    rows: MutableSequence[report_messages.ReportDataTable.Row] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
-        message=report_messages.Report.DataTable.Row,
+        message=report_messages.ReportDataTable.Row,
     )
     run_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
@@ -333,18 +333,18 @@ class FetchReportResultRowsResponse(proto.Message):
         message=timestamp_pb2.Timestamp,
     )
     date_ranges: MutableSequence[
-        report_messages.Report.DateRange.FixedDateRange
+        report_definition.ReportDefinition.DateRange.FixedDateRange
     ] = proto.RepeatedField(
         proto.MESSAGE,
         number=3,
-        message=report_messages.Report.DateRange.FixedDateRange,
+        message=report_definition.ReportDefinition.DateRange.FixedDateRange,
     )
     comparison_date_ranges: MutableSequence[
-        report_messages.Report.DateRange.FixedDateRange
+        report_definition.ReportDefinition.DateRange.FixedDateRange
     ] = proto.RepeatedField(
         proto.MESSAGE,
         number=4,
-        message=report_messages.Report.DateRange.FixedDateRange,
+        message=report_definition.ReportDefinition.DateRange.FixedDateRange,
     )
     total_row_count: int = proto.Field(
         proto.INT32,

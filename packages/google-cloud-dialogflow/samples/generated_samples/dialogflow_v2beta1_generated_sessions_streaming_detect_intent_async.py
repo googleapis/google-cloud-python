@@ -66,4 +66,5 @@ async def sample_streaming_detect_intent():
     async for response in stream:
         print(response)
 
+
 # [END dialogflow_v2beta1_generated_Sessions_StreamingDetectIntent_async]

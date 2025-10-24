@@ -41,7 +41,7 @@ def sample_batch_delete_entities():
     # Initialize request argument(s)
     request = dialogflow_v2beta1.BatchDeleteEntitiesRequest(
         parent="parent_value",
-        entity_values=['entity_values_value1', 'entity_values_value2'],
+        entity_values=["entity_values_value1", "entity_values_value2"],
     )
 
     # Make the request
@@ -53,5 +53,6 @@ def sample_batch_delete_entities():
 
     # Handle the response
     print(response)
+
 
 # [END dialogflow_v2beta1_generated_EntityTypes_BatchDeleteEntities_sync]

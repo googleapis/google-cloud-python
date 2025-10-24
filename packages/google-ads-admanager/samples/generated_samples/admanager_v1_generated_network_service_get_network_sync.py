@@ -49,4 +49,5 @@ def sample_get_network():
     # Handle the response
     print(response)
 
+
 # [END admanager_v1_generated_NetworkService_GetNetwork_sync]

@@ -54,4 +54,5 @@ def sample_set_suggestion_feature_config():
     # Handle the response
     print(response)
 
+
 # [END dialogflow_v2_generated_ConversationProfiles_SetSuggestionFeatureConfig_sync]

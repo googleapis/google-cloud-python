@@ -58,4 +58,5 @@ def sample_update_entity():
     # Handle the response
     print(response)
 
+
 # [END dataplex_v1_generated_MetadataService_UpdateEntity_sync]

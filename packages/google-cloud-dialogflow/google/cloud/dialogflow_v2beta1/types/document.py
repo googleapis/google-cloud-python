@@ -587,6 +587,8 @@ class KnowledgeOperationMetadata(proto.Message):
             as the destination of export.
 
             This field is a member of `oneof`_ ``operation_metadata``.
+        done_time (google.protobuf.timestamp_pb2.Timestamp):
+            The time when the operation finished.
     """
 
     class State(proto.Enum):
@@ -622,6 +624,11 @@ class KnowledgeOperationMetadata(proto.Message):
         number=4,
         oneof="operation_metadata",
         message="ExportOperationMetadata",
+    )
+    done_time: timestamp_pb2.Timestamp = proto.Field(
+        proto.MESSAGE,
+        number=5,
+        message=timestamp_pb2.Timestamp,
     )
 
 

@@ -49,4 +49,5 @@ def sample_create_private_auction():
     # Handle the response
     print(response)
 
+
 # [END admanager_v1_generated_PrivateAuctionService_CreatePrivateAuction_sync]

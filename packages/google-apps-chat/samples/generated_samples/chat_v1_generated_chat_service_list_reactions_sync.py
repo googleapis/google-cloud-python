@@ -50,4 +50,5 @@ def sample_list_reactions():
     for response in page_result:
         print(response)
 
+
 # [END chat_v1_generated_ChatService_ListReactions_sync]

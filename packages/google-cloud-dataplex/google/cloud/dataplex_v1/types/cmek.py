@@ -65,6 +65,9 @@ class EncryptionConfig(proto.Message):
         failure_details (google.cloud.dataplex_v1.types.EncryptionConfig.FailureDetails):
             Output only. Details of the failure if
             anything related to Cmek db fails.
+        enable_metastore_encryption (bool):
+            Optional. Represent the state of CMEK opt-in
+            for metastore.
     """
 
     class EncryptionState(proto.Enum):
@@ -162,6 +165,10 @@ class EncryptionConfig(proto.Message):
         proto.MESSAGE,
         number=7,
         message=FailureDetails,
+    )
+    enable_metastore_encryption: bool = proto.Field(
+        proto.BOOL,
+        number=8,
     )
 
 

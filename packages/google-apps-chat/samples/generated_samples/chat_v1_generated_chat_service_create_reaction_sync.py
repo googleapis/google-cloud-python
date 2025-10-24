@@ -53,4 +53,5 @@ def sample_create_reaction():
     # Handle the response
     print(response)
 
+
 # [END chat_v1_generated_ChatService_CreateReaction_sync]

@@ -185,7 +185,7 @@ class FetchReportResultRowsPager:
             )
             yield self._response
 
-    def __iter__(self) -> Iterator[report_messages.Report.DataTable.Row]:
+    def __iter__(self) -> Iterator[report_messages.ReportDataTable.Row]:
         for page in self.pages:
             yield from page.rows
 

@@ -152,6 +152,10 @@ class _BaseParticipantsRestTransport(ParticipantsTransport):
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
 
+    class _BaseBidiStreamingAnalyzeContent:
+        def __hash__(self):  # pragma: NO COVER
+            return NotImplementedError("__hash__ must be implemented.")
+
     class _BaseCompileSuggestion:
         def __hash__(self):  # pragma: NO COVER
             return NotImplementedError("__hash__ must be implemented.")

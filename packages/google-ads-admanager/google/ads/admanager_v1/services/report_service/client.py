@@ -68,7 +68,11 @@ from google.protobuf import field_mask_pb2  # type: ignore
 from google.protobuf import timestamp_pb2  # type: ignore
 
 from google.ads.admanager_v1.services.report_service import pagers
-from google.ads.admanager_v1.types import report_messages, report_service
+from google.ads.admanager_v1.types import (
+    report_definition,
+    report_messages,
+    report_service,
+)
 
 from .transports.base import DEFAULT_CLIENT_INFO, ReportServiceTransport
 from .transports.rest import ReportServiceRestTransport
@@ -978,7 +982,7 @@ class ReportServiceClient(metaclass=ReportServiceClientMeta):
                 report = admanager_v1.Report()
                 report.report_definition.dimensions = ['CUSTOM_DIMENSION_9_VALUE']
                 report.report_definition.metrics = ['YIELD_GROUP_SUCCESSFUL_RESPONSES']
-                report.report_definition.report_type = "HISTORICAL"
+                report.report_definition.report_type = "AD_SPEED"
 
                 request = admanager_v1.CreateReportRequest(
                     parent="parent_value",
@@ -1097,7 +1101,7 @@ class ReportServiceClient(metaclass=ReportServiceClientMeta):
                 report = admanager_v1.Report()
                 report.report_definition.dimensions = ['CUSTOM_DIMENSION_9_VALUE']
                 report.report_definition.metrics = ['YIELD_GROUP_SUCCESSFUL_RESPONSES']
-                report.report_definition.report_type = "HISTORICAL"
+                report.report_definition.report_type = "AD_SPEED"
 
                 request = admanager_v1.UpdateReportRequest(
                     report=report,
@@ -1196,7 +1200,7 @@ class ReportServiceClient(metaclass=ReportServiceClientMeta):
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> operation.Operation:
         r"""Initiates the execution of an existing report asynchronously.
-        Users can get the report by polling this operation via
+        Users can get the report by polling this operation using
         ``OperationsService.GetOperation``. Poll every 5 seconds
         initially, with an exponential backoff. Once a report is
         complete, the operation will contain a ``RunReportResponse`` in

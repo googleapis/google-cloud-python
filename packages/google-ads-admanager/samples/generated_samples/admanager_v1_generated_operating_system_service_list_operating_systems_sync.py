@@ -50,4 +50,5 @@ def sample_list_operating_systems():
     for response in page_result:
         print(response)
 
+
 # [END admanager_v1_generated_OperatingSystemService_ListOperatingSystems_sync]

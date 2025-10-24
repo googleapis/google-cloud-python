@@ -59,4 +59,5 @@ def sample_create_aspect_type():
     # Handle the response
     print(response)
 
+
 # [END dataplex_v1_generated_CatalogService_CreateAspectType_sync]

@@ -159,7 +159,7 @@ class Conversation(proto.Message):
                 this call in E.164 format.
             sdp (str):
                 Optional. SDP of the call. It's initially the
-                SDP answer to the endpoint, but maybe later
+                SDP answer to the incoming call, but maybe later
                 updated for the purpose of making the link
                 active, etc.
             sip_headers (MutableSequence[google.cloud.dialogflow_v2beta1.types.Conversation.TelephonyConnectionInfo.SipHeader]):
@@ -280,6 +280,11 @@ class Conversation(proto.Message):
                     Output only. The time when this information
                     was incorporated into the relevant context
                     reference.
+                answer_record (str):
+                    If the context content was generated from a tool call,
+                    specify the answer record associated with the tool call.
+                    Format:
+                    ``projects/<Project ID>/locations/<Location ID>/answerRecords/<Answer Record ID>``.
             """
 
             class ContentFormat(proto.Enum):
@@ -310,6 +315,10 @@ class Conversation(proto.Message):
                 proto.MESSAGE,
                 number=3,
                 message=timestamp_pb2.Timestamp,
+            )
+            answer_record: str = proto.Field(
+                proto.STRING,
+                number=4,
             )
 
         context_contents: MutableSequence[
@@ -1052,6 +1061,15 @@ class GenerateStatelessSuggestionRequest(proto.Message):
             Optional. A list of trigger events. Generator
             will be triggered only if it's trigger event is
             included here.
+        security_settings (str):
+            Optional. Name of the CX SecuritySettings which is used to
+            redact generated response. If this field is empty, try to
+            fetch v2 security_settings, which is a project level
+            setting. If this field is empty and no v2 security_settings
+            set up in this project, no redaction will be done.
+
+            Format:
+            ``projects/<Project ID>/locations/<Location ID>/securitySettings/<Security Settings ID>``.
     """
 
     parent: str = proto.Field(
@@ -1086,6 +1104,10 @@ class GenerateStatelessSuggestionRequest(proto.Message):
         proto.ENUM,
         number=6,
         enum=gcd_generator.TriggerEvent,
+    )
+    security_settings: str = proto.Field(
+        proto.STRING,
+        number=8,
     )
 
 
