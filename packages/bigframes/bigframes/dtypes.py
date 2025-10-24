@@ -340,6 +340,12 @@ def is_struct_like(type_: ExpressionType) -> bool:
     )
 
 
+def is_json_arrow_type(type_: pa.DataType) -> bool:
+    return isinstance(type_, db_dtypes.JSONArrowType) or (
+        hasattr(pa, "JsonType") and isinstance(type_, pa.JsonType)
+    )
+
+
 def is_json_like(type_: ExpressionType) -> bool:
     return type_ == JSON_DTYPE or type_ == STRING_DTYPE  # Including JSON string
 
@@ -509,6 +515,10 @@ def arrow_dtype_to_bigframes_dtype(
 
     if arrow_dtype == pa.null():
         return DEFAULT_DTYPE
+
+    # Allow both db_dtypes.JSONArrowType() and pa.json_(pa.string())
+    if is_json_arrow_type(arrow_dtype):
+        return JSON_DTYPE
 
     # No other types matched.
     raise TypeError(

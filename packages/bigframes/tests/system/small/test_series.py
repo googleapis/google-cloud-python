@@ -353,6 +353,41 @@ def test_series_construct_w_json_dtype(json_type):
     assert s[5] == '{"a":{"b":[1,2,3],"c":true}}'
 
 
+def test_series_construct_w_nested_json_dtype():
+    list_data = [
+        [{"key": "1"}],
+        [{"key": None}],
+        [{"key": '["1","3","5"]'}],
+        [{"key": '{"a":1,"b":["x","y"],"c":{"x":[],"z":false}}'}],
+    ]
+    pa_array = pa.array(list_data, type=pa.list_(pa.struct([("key", pa.string())])))
+
+    db_json_arrow_dtype = db_dtypes.JSONArrowType()
+    s = bigframes.pandas.Series(
+        pd.arrays.ArrowExtensionArray(pa_array),  # type: ignore
+        dtype=pd.ArrowDtype(
+            pa.list_(pa.struct([("key", db_json_arrow_dtype)])),
+        ),
+    )
+
+    assert s[0][0]["key"] == "1"
+    assert not s[1][0]["key"]
+    assert s[2][0]["key"] == '["1","3","5"]'
+    assert s[3][0]["key"] == '{"a":1,"b":["x","y"],"c":{"x":[],"z":false}}'
+
+    # Test with pyarrow.json_(pa.string()) if available.
+    if hasattr(pa, "JsonType"):
+        pyarrow_json_dtype = pa.json_(pa.string())
+        s2 = bigframes.pandas.Series(
+            pd.arrays.ArrowExtensionArray(pa_array),  # type: ignore
+            dtype=pd.ArrowDtype(
+                pa.list_(pa.struct([("key", pyarrow_json_dtype)])),
+            ),
+        )
+
+        pd.testing.assert_series_equal(s.to_pandas(), s2.to_pandas())
+
+
 def test_series_keys(scalars_dfs):
     scalars_df, scalars_pandas_df = scalars_dfs
     bf_result = scalars_df["int64_col"].keys().to_pandas()
