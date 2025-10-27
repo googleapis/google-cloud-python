@@ -24,6 +24,7 @@ from bigframes import operations as ops
 from bigframes.core.compile.sqlglot.expressions.typed_expr import TypedExpr
 import bigframes.core.compile.sqlglot.scalar_compiler as scalar_compiler
 
+register_nary_op = scalar_compiler.scalar_op_compiler.register_nary_op
 register_unary_op = scalar_compiler.scalar_op_compiler.register_unary_op
 
 
@@ -39,4 +40,14 @@ def _(expr: TypedExpr, op: ops.StructFieldOp) -> sge.Expression:
     return sge.Column(
         this=sge.to_identifier(name, quoted=True),
         catalog=expr.expr,
+    )
+
+
+@register_nary_op(ops.StructOp, pass_op=True)
+def _(*exprs: TypedExpr, op: ops.StructOp) -> sge.Struct:
+    return sge.Struct(
+        expressions=[
+            sge.PropertyEQ(this=sge.to_identifier(col), expression=expr.expr)
+            for col, expr in zip(op.column_names, exprs)
+        ]
     )

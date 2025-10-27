@@ -14,6 +14,7 @@
 
 from __future__ import annotations
 
+import sqlglot as sg
 import sqlglot.expressions as sge
 
 from bigframes import dtypes
@@ -78,6 +79,16 @@ def _(expr: TypedExpr) -> sge.Expression:
     if expr.dtype == dtypes.BOOL_DTYPE:
         return sge.Not(this=sge.paren(expr.expr))
     return sge.BitwiseNot(this=sge.paren(expr.expr))
+
+
+@register_nary_op(ops.SqlScalarOp, pass_op=True)
+def _(*operands: TypedExpr, op: ops.SqlScalarOp) -> sge.Expression:
+    return sg.parse_one(
+        op.sql_template.format(
+            *[operand.expr.sql(dialect="bigquery") for operand in operands]
+        ),
+        dialect="bigquery",
+    )
 
 
 @register_unary_op(ops.isnull_op)
