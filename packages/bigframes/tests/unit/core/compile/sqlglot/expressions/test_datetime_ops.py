@@ -39,12 +39,11 @@ def test_day(scalar_types_df: bpd.DataFrame, snapshot):
 
 
 def test_dayofweek(scalar_types_df: bpd.DataFrame, snapshot):
-    col_name = "timestamp_col"
-    bf_df = scalar_types_df[[col_name]]
-    sql = utils._apply_unary_ops(
-        bf_df, [ops.dayofweek_op.as_expr(col_name)], [col_name]
-    )
+    col_names = ["datetime_col", "timestamp_col", "date_col"]
+    bf_df = scalar_types_df[col_names]
+    ops_map = {col_name: ops.dayofweek_op.as_expr(col_name) for col_name in col_names}
 
+    sql = utils._apply_unary_ops(bf_df, list(ops_map.values()), list(ops_map.keys()))
     snapshot.assert_match(sql, "out.sql")
 
 
@@ -59,13 +58,38 @@ def test_dayofyear(scalar_types_df: bpd.DataFrame, snapshot):
 
 
 def test_floor_dt(scalar_types_df: bpd.DataFrame, snapshot):
+    col_names = ["datetime_col", "timestamp_col", "date_col"]
+    bf_df = scalar_types_df[col_names]
+    ops_map = {
+        "timestamp_col_us": ops.FloorDtOp("us").as_expr("timestamp_col"),
+        "timestamp_col_ms": ops.FloorDtOp("ms").as_expr("timestamp_col"),
+        "timestamp_col_s": ops.FloorDtOp("s").as_expr("timestamp_col"),
+        "timestamp_col_min": ops.FloorDtOp("min").as_expr("timestamp_col"),
+        "timestamp_col_h": ops.FloorDtOp("h").as_expr("timestamp_col"),
+        "timestamp_col_D": ops.FloorDtOp("D").as_expr("timestamp_col"),
+        "timestamp_col_W": ops.FloorDtOp("W").as_expr("timestamp_col"),
+        "timestamp_col_M": ops.FloorDtOp("M").as_expr("timestamp_col"),
+        "timestamp_col_Q": ops.FloorDtOp("Q").as_expr("timestamp_col"),
+        "timestamp_col_Y": ops.FloorDtOp("Y").as_expr("timestamp_col"),
+        "datetime_col_q": ops.FloorDtOp("us").as_expr("datetime_col"),
+        "datetime_col_us": ops.FloorDtOp("us").as_expr("datetime_col"),
+    }
+
+    sql = utils._apply_unary_ops(bf_df, list(ops_map.values()), list(ops_map.keys()))
+    snapshot.assert_match(sql, "out.sql")
+
+
+def test_floor_dt_op_invalid_freq(scalar_types_df: bpd.DataFrame):
     col_name = "timestamp_col"
     bf_df = scalar_types_df[[col_name]]
-    sql = utils._apply_unary_ops(
-        bf_df, [ops.FloorDtOp("D").as_expr(col_name)], [col_name]
-    )
-
-    snapshot.assert_match(sql, "out.sql")
+    with pytest.raises(
+        NotImplementedError, match="Unsupported freq paramater: invalid"
+    ):
+        utils._apply_unary_ops(
+            bf_df,
+            [ops.FloorDtOp(freq="invalid").as_expr(col_name)],  # type:ignore
+            [col_name],
+        )
 
 
 def test_hour(scalar_types_df: bpd.DataFrame, snapshot):

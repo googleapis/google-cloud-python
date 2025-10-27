@@ -25,7 +25,7 @@ pytest.importorskip("polars")
 REFERENCE_ENGINE = polars_executor.PolarsExecutor()
 
 
-@pytest.mark.parametrize("engine", ["polars", "bq"], indirect=True)
+@pytest.mark.parametrize("engine", ["polars", "bq", "bq-sqlglot"], indirect=True)
 def test_engines_dt_floor(scalars_array_value: array_value.ArrayValue, engine):
     arr, _ = scalars_array_value.compute_values(
         [
@@ -46,7 +46,7 @@ def test_engines_dt_floor(scalars_array_value: array_value.ArrayValue, engine):
     assert_equivalence_execution(arr.node, REFERENCE_ENGINE, engine)
 
 
-@pytest.mark.parametrize("engine", ["polars", "bq"], indirect=True)
+@pytest.mark.parametrize("engine", ["polars", "bq", "bq-sqlglot"], indirect=True)
 def test_engines_date_accessors(scalars_array_value: array_value.ArrayValue, engine):
     datelike_cols = ["datetime_col", "timestamp_col", "date_col"]
     accessors = [

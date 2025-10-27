@@ -25,8 +25,28 @@ register_unary_op = scalar_compiler.scalar_op_compiler.register_unary_op
 
 @register_unary_op(ops.FloorDtOp, pass_op=True)
 def _(expr: TypedExpr, op: ops.FloorDtOp) -> sge.Expression:
-    # TODO: Remove this method when it is covered by ops.FloorOp
-    return sge.TimestampTrunc(this=expr.expr, unit=sge.Identifier(this=op.freq))
+    pandas_to_bq_freq_map = {
+        "Y": "YEAR",
+        "Q": "QUARTER",
+        "M": "MONTH",
+        "W": "WEEK(MONDAY)",
+        "D": "DAY",
+        "h": "HOUR",
+        "min": "MINUTE",
+        "s": "SECOND",
+        "ms": "MILLISECOND",
+        "us": "MICROSECOND",
+        "ns": "NANOSECOND",
+    }
+    if op.freq not in pandas_to_bq_freq_map.keys():
+        raise NotImplementedError(
+            f"Unsupported freq paramater: {op.freq}"
+            + " Supported freq parameters are: "
+            + ",".join(pandas_to_bq_freq_map.keys())
+        )
+
+    bq_freq = pandas_to_bq_freq_map[op.freq]
+    return sge.TimestampTrunc(this=expr.expr, unit=sge.Identifier(this=bq_freq))
 
 
 @register_unary_op(ops.hour_op)

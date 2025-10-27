@@ -35,10 +35,7 @@ def _(expr: TypedExpr) -> sge.Expression:
 
 @register_unary_op(ops.dayofweek_op)
 def _(expr: TypedExpr) -> sge.Expression:
-    # Adjust the 1-based day-of-week index (from SQL) to a 0-based index.
-    return sge.Extract(
-        this=sge.Identifier(this="DAYOFWEEK"), expression=expr.expr
-    ) - sge.convert(1)
+    return dayofweek_op_impl(expr)
 
 
 @register_unary_op(ops.dayofyear_op)
@@ -48,7 +45,8 @@ def _(expr: TypedExpr) -> sge.Expression:
 
 @register_unary_op(ops.iso_day_op)
 def _(expr: TypedExpr) -> sge.Expression:
-    return sge.Extract(this=sge.Identifier(this="DAYOFWEEK"), expression=expr.expr)
+    # Plus 1 because iso day of week uses 1-based indexing
+    return dayofweek_op_impl(expr) + sge.convert(1)
 
 
 @register_unary_op(ops.iso_week_op)
@@ -59,3 +57,16 @@ def _(expr: TypedExpr) -> sge.Expression:
 @register_unary_op(ops.iso_year_op)
 def _(expr: TypedExpr) -> sge.Expression:
     return sge.Extract(this=sge.Identifier(this="ISOYEAR"), expression=expr.expr)
+
+
+# Helpers
+def dayofweek_op_impl(expr: TypedExpr) -> sge.Expression:
+    # BigQuery SQL Extract(DAYOFWEEK) returns 1 for Sunday through 7 for Saturday.
+    # We want 0 for Monday through 6 for Sunday to be compatible with Pandas.
+    extract_expr = sge.Extract(
+        this=sge.Identifier(this="DAYOFWEEK"), expression=expr.expr
+    )
+    return sge.Cast(
+        this=sge.Mod(this=extract_expr + sge.convert(5), expression=sge.convert(7)),
+        to="INT64",
+    )
