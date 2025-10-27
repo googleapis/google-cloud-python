@@ -172,3 +172,12 @@ def test_dataframe_semantics_property_future_warning(
         FutureWarning
     ):
         dataframe.semantics
+
+
+def test_dataframe_ai_property_future_warning(
+    monkeypatch: pytest.MonkeyPatch,
+):
+    dataframe = mocks.create_dataframe(monkeypatch)
+
+    with pytest.warns(FutureWarning):
+        dataframe.ai

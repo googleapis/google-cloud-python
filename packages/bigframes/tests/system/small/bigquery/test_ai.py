@@ -20,9 +20,10 @@ import pyarrow as pa
 import pytest
 import sqlglot
 
-from bigframes import dtypes, series
+from bigframes import dataframe, dtypes, series
 import bigframes.bigquery as bbq
 import bigframes.pandas as bpd
+from bigframes.testing import utils as test_utils
 
 
 def test_ai_function_pandas_input(session):
@@ -323,6 +324,53 @@ def test_ai_score_multi_model(session):
 
     assert _contains_no_nulls(result)
     assert result.dtype == dtypes.FLOAT_DTYPE
+
+
+def test_forecast_default_params(time_series_df_default_index: dataframe.DataFrame):
+    df = time_series_df_default_index[time_series_df_default_index["id"] == "1"]
+
+    result = bbq.ai.forecast(df, timestamp_col="parsed_date", data_col="total_visits")
+
+    expected_columns = [
+        "forecast_timestamp",
+        "forecast_value",
+        "confidence_level",
+        "prediction_interval_lower_bound",
+        "prediction_interval_upper_bound",
+        "ai_forecast_status",
+    ]
+    test_utils.check_pandas_df_schema_and_index(
+        result,
+        columns=expected_columns,
+        index=10,
+    )
+
+
+def test_forecast_w_params(time_series_df_default_index: dataframe.DataFrame):
+    result = bbq.ai.forecast(
+        time_series_df_default_index,
+        timestamp_col="parsed_date",
+        data_col="total_visits",
+        id_cols=["id"],
+        horizon=20,
+        confidence_level=0.98,
+        context_window=64,
+    )
+
+    expected_columns = [
+        "id",
+        "forecast_timestamp",
+        "forecast_value",
+        "confidence_level",
+        "prediction_interval_lower_bound",
+        "prediction_interval_upper_bound",
+        "ai_forecast_status",
+    ]
+    test_utils.check_pandas_df_schema_and_index(
+        result,
+        columns=expected_columns,
+        index=20 * 2,  # 20 for each id
+    )
 
 
 def _contains_no_nulls(s: series.Series) -> bool:

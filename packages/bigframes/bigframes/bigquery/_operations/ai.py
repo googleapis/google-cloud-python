@@ -19,12 +19,15 @@ https://cloud.google.com/bigquery/docs/reference/standard-sql/bigqueryml-syntax-
 from __future__ import annotations
 
 import json
-from typing import Any, List, Literal, Mapping, Tuple, Union
+from typing import Any, Iterable, List, Literal, Mapping, Tuple, Union
 
 import pandas as pd
 
-from bigframes import clients, dtypes, series, session
+from bigframes import clients, dataframe, dtypes
+from bigframes import pandas as bpd
+from bigframes import series, session
 from bigframes.core import convert, log_adapter
+from bigframes.ml import core as ml_core
 from bigframes.operations import ai_ops, output_schemas
 
 PROMPT_TYPE = Union[
@@ -546,6 +549,91 @@ def score(
     )
 
     return series_list[0]._apply_nary_op(operator, series_list[1:])
+
+
+@log_adapter.method_logger(custom_base_name="bigquery_ai")
+def forecast(
+    df: dataframe.DataFrame | pd.DataFrame,
+    *,
+    data_col: str,
+    timestamp_col: str,
+    model: str = "TimesFM 2.0",
+    id_cols: Iterable[str] | None = None,
+    horizon: int = 10,
+    confidence_level: float = 0.95,
+    context_window: int | None = None,
+) -> dataframe.DataFrame:
+    """
+    Forecast time series at future horizon. Using Google Research's open source TimesFM(https://github.com/google-research/timesfm) model.
+
+    .. note::
+
+        This product or feature is subject to the "Pre-GA Offerings Terms" in the General Service Terms section of the
+        Service Specific Terms(https://cloud.google.com/terms/service-terms#1). Pre-GA products and features are available "as is"
+        and might have limited support. For more information, see the launch stage descriptions
+        (https://cloud.google.com/products#product-launch-stages).
+
+    Args:
+        df (DataFrame):
+            The dataframe that contains the data that you want to forecast. It could be either a BigFrames Dataframe or
+            a pandas DataFrame. If it's a pandas DataFrame, the global BigQuery session will be used to load the data.
+        data_col (str):
+            A str value that specifies the name of the data column. The data column contains the data to forecast.
+            The data column must use one of the following data types: INT64, NUMERIC and FLOAT64
+        timestamp_col (str):
+            A str value that specified the name of the time points column.
+            The time points column provides the time points used to generate the forecast.
+            The time points column must use one of the following data types: TIMESTAMP, DATE and DATETIME
+        model (str, default "TimesFM 2.0"):
+            A str value that specifies the name of the model. TimesFM 2.0 is the only supported value, and is the default value.
+        id_cols (Iterable[str], optional):
+            An iterable of str value that specifies the names of one or more ID columns. Each ID identifies a unique time series to forecast.
+            Specify one or more values for this argument in order to forecast multiple time series using a single query.
+            The columns that you specify must use one of the following data types: STRING, INT64, ARRAY<STRING> and ARRAY<INT64>
+        horizon (int, default 10):
+            An int value that specifies the number of time points to forecast. The default value is 10. The valid input range is [1, 10,000].
+        confidence_level (float, default 0.95):
+            A FLOAT64 value that specifies the percentage of the future values that fall in the prediction interval.
+            The default value is 0.95. The valid input range is [0, 1).
+        context_window (int, optional):
+            An int value that specifies the context window length used by BigQuery ML's built-in TimesFM model.
+            The context window length determines how many of the most recent data points from the input time series are use by the model.
+            If you don't specify a value, the AI.FORECAST function automatically chooses the smallest possible context window length to use
+            that is still large enough to cover the number of time series data points in your input data.
+
+    Returns:
+        DataFrame:
+            The forecast dataframe matches that of the BigQuery AI.FORECAST function.
+            See: https://cloud.google.com/bigquery/docs/reference/standard-sql/bigqueryml-syntax-ai-forecast
+
+    Raises:
+        ValueError: when any column ID does not exist in the dataframe.
+    """
+
+    if isinstance(df, pd.DataFrame):
+        # Load the pandas DataFrame with global session
+        df = bpd.read_pandas(df)
+
+    columns = [timestamp_col, data_col]
+    if id_cols:
+        columns += id_cols
+    for column in columns:
+        if column not in df.columns:
+            raise ValueError(f"Column `{column}` not found")
+
+    options: dict[str, Union[int, float, str, Iterable[str]]] = {
+        "data_col": data_col,
+        "timestamp_col": timestamp_col,
+        "model": model,
+        "horizon": horizon,
+        "confidence_level": confidence_level,
+    }
+    if id_cols:
+        options["id_cols"] = id_cols
+    if context_window:
+        options["context_window"] = context_window
+
+    return ml_core.BaseBqml(df._session).ai_forecast(input_data=df, options=options)
 
 
 def _separate_context_and_series(
