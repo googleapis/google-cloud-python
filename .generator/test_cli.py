@@ -1014,20 +1014,29 @@ def test_update_global_changelog(mocker, mock_release_init_request_file):
 
 
 def test_update_version_for_library_success_gapic(mocker):
+    mock_content = '__version__ = "1.2.2"'
+    mock_json_metadata = {"clientLibrary": {"version": "0.1.0"}}
+    mock_shutil_copy = mocker.patch("shutil.copy")
+
     m = mock_open()
 
     mock_rglob = mocker.patch("pathlib.Path.rglob")
     mock_rglob.side_effect = [
         [pathlib.Path("repo/gapic_version.py")],  # 1st call (gapic_version.py)
-        [],  # 2nd call (version.py)
+        [pathlib.Path("repo/types/version.py")],  # 2nd call (types/version.py).
         [pathlib.Path("repo/samples/snippet_metadata.json")],  # 3rd call (snippets)
     ]
-    mock_shutil_copy = mocker.patch("shutil.copy")
-    mock_content = '__version__ = "1.2.2"'
-    mock_json_metadata = {"clientLibrary": {"version": "0.1.0"}}
+    mock_rglob = mocker.patch("cli._read_text_file")
+    mock_rglob.side_effect = [
+        mock_content,  # 1st call (gapic_version.py)
+        # Do not process version files in the `types` directory as some
+        # GAPIC libraries have `version.py` which are generated from
+        # `version.proto` and do not include SDK versions.
+        # Leave the content as empty because it doesn't contain version information
+        "",  # 2nd call (types/version.py)
+    ]
 
     with unittest.mock.patch("cli.open", m):
-        mocker.patch("cli._read_text_file", return_value=mock_content)
         mocker.patch("cli._read_json_file", return_value=mock_json_metadata)
         _update_version_for_library(
             "repo", "output", "packages/google-cloud-language", "1.2.3"
