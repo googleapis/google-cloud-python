@@ -74,6 +74,7 @@ import bigframes.operations.blob as blob
 import bigframes.operations.datetimes as dt
 import bigframes.operations.lists as lists
 import bigframes.operations.plotting as plotting
+import bigframes.operations.python_op_maps as python_ops
 import bigframes.operations.structs as structs
 import bigframes.session
 
@@ -2033,88 +2034,97 @@ class Series(vendored_pandas_series.Series):
         if by_row not in ["compat", False]:
             raise ValueError("Param by_row must be one of 'compat' or False")
 
-        if not callable(func):
+        if not callable(func) and not isinstance(func, numpy.ufunc):
             raise ValueError(
                 "Only a ufunc (a function that applies to the entire Series) or"
                 " a BigFrames BigQuery function that only works on single values"
                 " are supported."
             )
 
-        if not isinstance(func, bigframes.functions.BigqueryCallableRoutine):
-            # It is neither a remote function nor a managed function.
-            # Then it must be a vectorized function that applies to the Series
-            # as a whole.
-            if by_row:
-                raise ValueError(
-                    "You have passed a function as-is. If your intention is to "
-                    "apply this function in a vectorized way (i.e. to the "
-                    "entire Series as a whole, and you are sure that it "
-                    "performs only the operations that are implemented for a "
-                    "Series (e.g. a chain of arithmetic/logical operations, "
-                    "such as `def foo(s): return s % 2 == 1`), please also "
-                    "specify `by_row=False`. If your function contains "
-                    "arbitrary code, it can only be applied to every element "
-                    "in the Series individually, in which case you must "
-                    "convert it to a BigFrames BigQuery function using "
-                    "`bigframes.pandas.udf`, "
-                    "or `bigframes.pandas.remote_function` before passing."
+        if isinstance(func, bigframes.functions.BigqueryCallableRoutine):
+            # We are working with bigquery function at this point
+            if args:
+                result_series = self._apply_nary_op(
+                    ops.NaryRemoteFunctionOp(function_def=func.udf_def), args
                 )
+                # TODO(jialuo): Investigate why `_apply_nary_op` drops the series
+                # `name`. Manually reassigning it here as a temporary fix.
+                result_series.name = self.name
+            else:
+                result_series = self._apply_unary_op(
+                    ops.RemoteFunctionOp(function_def=func.udf_def, apply_on_null=True)
+                )
+            result_series = func._post_process_series(result_series)
 
-            try:
-                return func(self)
-            except Exception as ex:
-                # This could happen if any of the operators in func is not
-                # supported on a Series. Let's guide the customer to use a
-                # bigquery function instead
-                if hasattr(ex, "message"):
-                    ex.message += f"\n{_bigquery_function_recommendation_message}"
-                raise
+            return result_series
 
-        # We are working with bigquery function at this point
-        if args:
-            result_series = self._apply_nary_op(
-                ops.NaryRemoteFunctionOp(function_def=func.udf_def), args
+        bf_op = python_ops.python_callable_to_op(func)
+        if bf_op and isinstance(bf_op, ops.UnaryOp):
+            return self._apply_unary_op(bf_op)
+
+        # It is neither a remote function nor a managed function.
+        # Then it must be a vectorized function that applies to the Series
+        # as a whole.
+        if by_row:
+            raise ValueError(
+                "You have passed a function as-is. If your intention is to "
+                "apply this function in a vectorized way (i.e. to the "
+                "entire Series as a whole, and you are sure that it "
+                "performs only the operations that are implemented for a "
+                "Series (e.g. a chain of arithmetic/logical operations, "
+                "such as `def foo(s): return s % 2 == 1`), please also "
+                "specify `by_row=False`. If your function contains "
+                "arbitrary code, it can only be applied to every element "
+                "in the Series individually, in which case you must "
+                "convert it to a BigFrames BigQuery function using "
+                "`bigframes.pandas.udf`, "
+                "or `bigframes.pandas.remote_function` before passing."
             )
-            # TODO(jialuo): Investigate why `_apply_nary_op` drops the series
-            # `name`. Manually reassigning it here as a temporary fix.
-            result_series.name = self.name
-        else:
-            result_series = self._apply_unary_op(
-                ops.RemoteFunctionOp(function_def=func.udf_def, apply_on_null=True)
-            )
-        result_series = func._post_process_series(result_series)
 
-        return result_series
+        try:
+            return func(self)  # type: ignore
+        except Exception as ex:
+            # This could happen if any of the operators in func is not
+            # supported on a Series. Let's guide the customer to use a
+            # bigquery function instead
+            if hasattr(ex, "message"):
+                ex.message += f"\n{_bigquery_function_recommendation_message}"
+            raise
 
     def combine(
         self,
         other,
         func,
     ) -> Series:
-        if not callable(func):
+        if not callable(func) and not isinstance(func, numpy.ufunc):
             raise ValueError(
                 "Only a ufunc (a function that applies to the entire Series) or"
                 " a BigFrames BigQuery function that only works on single values"
                 " are supported."
             )
 
-        if not isinstance(func, bigframes.functions.BigqueryCallableRoutine):
-            # Keep this in sync with .apply
-            try:
-                return func(self, other)
-            except Exception as ex:
-                # This could happen if any of the operators in func is not
-                # supported on a Series. Let's guide the customer to use a
-                # bigquery function instead
-                if hasattr(ex, "message"):
-                    ex.message += f"\n{_bigquery_function_recommendation_message}"
-                raise
+        if isinstance(func, bigframes.functions.BigqueryCallableRoutine):
+            result_series = self._apply_binary_op(
+                other, ops.BinaryRemoteFunctionOp(function_def=func.udf_def)
+            )
+            result_series = func._post_process_series(result_series)
+            return result_series
 
-        result_series = self._apply_binary_op(
-            other, ops.BinaryRemoteFunctionOp(function_def=func.udf_def)
-        )
-        result_series = func._post_process_series(result_series)
-        return result_series
+        bf_op = python_ops.python_callable_to_op(func)
+        if bf_op and isinstance(bf_op, ops.BinaryOp):
+            result_series = self._apply_binary_op(other, bf_op)
+            return result_series
+
+        # Keep this in sync with .apply
+        try:
+            return func(self, other)
+        except Exception as ex:
+            # This could happen if any of the operators in func is not
+            # supported on a Series. Let's guide the customer to use a
+            # bigquery function instead
+            if hasattr(ex, "message"):
+                ex.message += f"\n{_bigquery_function_recommendation_message}"
+            raise
 
     @validations.requires_index
     def add_prefix(self, prefix: str, axis: int | str | None = None) -> Series:

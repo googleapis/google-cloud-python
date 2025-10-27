@@ -27,6 +27,7 @@ from bigframes.operations import (
     generic_ops,
     json_ops,
     numeric_ops,
+    string_ops,
 )
 import bigframes.operations as ops
 
@@ -347,11 +348,28 @@ class LowerIsinOp(op_lowering.OpLoweringRule):
             return ops.coalesce_op.as_expr(new_isin, expression.const(False))
 
 
+class LowerLenOp(op_lowering.OpLoweringRule):
+    @property
+    def op(self) -> type[ops.ScalarOp]:
+        return string_ops.LenOp
+
+    def lower(self, expr: expression.OpExpression) -> expression.Expression:
+        assert isinstance(expr.op, string_ops.LenOp)
+        arg = expr.children[0]
+
+        if dtypes.is_string_like(arg.output_type):
+            return string_ops.StrLenOp().as_expr(arg)
+        elif dtypes.is_array_like(arg.output_type):
+            return string_ops.ArrayLenOp().as_expr(arg)
+        else:
+            raise ValueError(f"Unexpected type: {arg.output_type}")
+
+
 def _coerce_comparables(
     expr1: expression.Expression,
     expr2: expression.Expression,
     *,
-    bools_only: bool = False
+    bools_only: bool = False,
 ):
     if bools_only:
         if (
@@ -446,6 +464,7 @@ POLARS_LOWERING_RULES = (
     LowerAsTypeRule(),
     LowerInvertOp(),
     LowerIsinOp(),
+    LowerLenOp(),
 )
 
 

@@ -106,3 +106,33 @@ def test_len(column_name, dtype, repeated_df, repeated_pandas_df):
         check_index_type=False,
         check_names=False,
     )
+
+
+@pytest.mark.parametrize(
+    ("column_name", "dtype"),
+    [
+        pytest.param("int_list_col", pd.ArrowDtype(pa.list_(pa.int64()))),
+        pytest.param("float_list_col", pd.ArrowDtype(pa.list_(pa.float64()))),
+    ],
+)
+@pytest.mark.parametrize(
+    ("func",),
+    [
+        pytest.param(len),
+        pytest.param(all),
+        pytest.param(any),
+        pytest.param(min),
+        pytest.param(max),
+        pytest.param(sum),
+    ],
+)
+def test_list_apply_callable(column_name, dtype, repeated_df, repeated_pandas_df, func):
+    bf_result = repeated_df[column_name].apply(func).to_pandas()
+    pd_result = repeated_pandas_df[column_name].astype(dtype).apply(func)
+    pd_result.index = pd_result.index.astype("Int64")
+
+    assert_series_equal(
+        pd_result,
+        bf_result,
+        check_dtype=False,
+    )

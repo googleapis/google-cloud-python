@@ -30,6 +30,23 @@ LenOp = base_ops.create_unary_op(
 )
 len_op = LenOp()
 
+## Specialized len ops for compile-time lowering
+StrLenOp = base_ops.create_unary_op(
+    name="strlen",
+    type_signature=op_typing.FixedOutputType(
+        dtypes.is_string_like, dtypes.INT_DTYPE, description="string-like"
+    ),
+)
+str_len_op = StrLenOp()
+
+ArrayLenOp = base_ops.create_unary_op(
+    name="arraylen",
+    type_signature=op_typing.FixedOutputType(
+        dtypes.is_array_like, dtypes.INT_DTYPE, description="array-like"
+    ),
+)
+array_len_op = ArrayLenOp()
+
 ReverseOp = base_ops.create_unary_op(
     name="reverse", type_signature=op_typing.STRING_TRANSFORM
 )

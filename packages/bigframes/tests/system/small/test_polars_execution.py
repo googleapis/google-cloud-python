@@ -11,9 +11,12 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
+import math
+
 import pytest
 
 import bigframes
+import bigframes.bigquery
 from bigframes.testing.utils import assert_pandas_df_equal
 
 polars = pytest.importorskip("polars")
@@ -63,13 +66,9 @@ def test_polar_execution_unsupported_sql_fallback(
     execution_count_before = session_w_polars._metrics.execution_count
     bf_df = session_w_polars.read_pandas(scalars_pandas_df_index)
 
-    pd_df = scalars_pandas_df_index.copy()
-    pd_df["str_len_col"] = pd_df.string_col.str.len()
-    pd_result = pd_df
-
-    bf_df["str_len_col"] = bf_df.string_col.str.len()
+    bf_df["geo_area"] = bigframes.bigquery.st_length(bf_df.geography_col)
     bf_result = bf_df.to_pandas()
 
-    # str len not supported by polar engine yet, so falls back to bq execution
+    # geo fns not supported by polar engine yet, so falls back to bq execution
     assert session_w_polars._metrics.execution_count == (execution_count_before + 1)
-    assert_pandas_df_equal(bf_result, pd_result)
+    assert math.isclose(bf_result.geo_area.sum(), 70.52332050, rel_tol=0.00001)

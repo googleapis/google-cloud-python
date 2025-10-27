@@ -29,15 +29,6 @@ if TYPE_CHECKING:
     import polars as pl
 
 
-@polars_compiler.register_op(numeric_ops.CosOp)
-def cos_op_impl(
-    compiler: polars_compiler.PolarsExpressionCompiler,
-    op: numeric_ops.CosOp,  # type: ignore
-    input: pl.Expr,
-) -> pl.Expr:
-    return input.cos()
-
-
 @polars_compiler.register_op(numeric_ops.LnOp)
 def ln_op_impl(
     compiler: polars_compiler.PolarsExpressionCompiler,
@@ -78,6 +69,78 @@ def sin_op_impl(
     input: pl.Expr,
 ) -> pl.Expr:
     return input.sin()
+
+
+@polars_compiler.register_op(numeric_ops.CosOp)
+def cos_op_impl(
+    compiler: polars_compiler.PolarsExpressionCompiler,
+    op: numeric_ops.CosOp,  # type: ignore
+    input: pl.Expr,
+) -> pl.Expr:
+    return input.cos()
+
+
+@polars_compiler.register_op(numeric_ops.TanOp)
+def tan_op_impl(
+    compiler: polars_compiler.PolarsExpressionCompiler,
+    op: numeric_ops.SinOp,  # type: ignore
+    input: pl.Expr,
+) -> pl.Expr:
+    return input.tan()
+
+
+@polars_compiler.register_op(numeric_ops.SinhOp)
+def sinh_op_impl(
+    compiler: polars_compiler.PolarsExpressionCompiler,
+    op: numeric_ops.SinOp,  # type: ignore
+    input: pl.Expr,
+) -> pl.Expr:
+    return input.sinh()
+
+
+@polars_compiler.register_op(numeric_ops.CoshOp)
+def cosh_op_impl(
+    compiler: polars_compiler.PolarsExpressionCompiler,
+    op: numeric_ops.CosOp,  # type: ignore
+    input: pl.Expr,
+) -> pl.Expr:
+    return input.cosh()
+
+
+@polars_compiler.register_op(numeric_ops.TanhOp)
+def tanh_op_impl(
+    compiler: polars_compiler.PolarsExpressionCompiler,
+    op: numeric_ops.SinOp,  # type: ignore
+    input: pl.Expr,
+) -> pl.Expr:
+    return input.tanh()
+
+
+@polars_compiler.register_op(numeric_ops.ArcsinOp)
+def asin_op_impl(
+    compiler: polars_compiler.PolarsExpressionCompiler,
+    op: numeric_ops.ArcsinOp,  # type: ignore
+    input: pl.Expr,
+) -> pl.Expr:
+    return input.arcsin()
+
+
+@polars_compiler.register_op(numeric_ops.ArccosOp)
+def acos_op_impl(
+    compiler: polars_compiler.PolarsExpressionCompiler,
+    op: numeric_ops.ArccosOp,  # type: ignore
+    input: pl.Expr,
+) -> pl.Expr:
+    return input.arccos()
+
+
+@polars_compiler.register_op(numeric_ops.ArctanOp)
+def atan_op_impl(
+    compiler: polars_compiler.PolarsExpressionCompiler,
+    op: numeric_ops.ArctanOp,  # type: ignore
+    input: pl.Expr,
+) -> pl.Expr:
+    return input.arctan()
 
 
 @polars_compiler.register_op(numeric_ops.SqrtOp)

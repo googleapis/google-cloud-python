@@ -328,6 +328,26 @@ if polars_installed:
             assert isinstance(op, string_ops.StrContainsRegexOp)
             return input.str.contains(pattern=op.pat, literal=False)
 
+        @compile_op.register(string_ops.UpperOp)
+        def _(self, op: ops.ScalarOp, input: pl.Expr) -> pl.Expr:
+            assert isinstance(op, string_ops.UpperOp)
+            return input.str.to_uppercase()
+
+        @compile_op.register(string_ops.LowerOp)
+        def _(self, op: ops.ScalarOp, input: pl.Expr) -> pl.Expr:
+            assert isinstance(op, string_ops.LowerOp)
+            return input.str.to_lowercase()
+
+        @compile_op.register(string_ops.ArrayLenOp)
+        def _(self, op: ops.ScalarOp, input: pl.Expr) -> pl.Expr:
+            assert isinstance(op, string_ops.ArrayLenOp)
+            return input.list.len()
+
+        @compile_op.register(string_ops.StrLenOp)
+        def _(self, op: ops.ScalarOp, input: pl.Expr) -> pl.Expr:
+            assert isinstance(op, string_ops.StrLenOp)
+            return input.str.len_chars()
+
         @compile_op.register(string_ops.StartsWithOp)
         def _(self, op: ops.ScalarOp, input: pl.Expr) -> pl.Expr:
             assert isinstance(op, string_ops.StartsWithOp)
