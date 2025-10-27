@@ -4,6 +4,24 @@
 
 [1]: https://pypi.org/project/bigframes/#history
 
+## [2.27.0](https://github.com/googleapis/python-bigquery-dataframes/compare/v2.26.0...v2.27.0) (2025-10-24)
+
+
+### Features
+
+* Add __abs__ to dataframe ([#2186](https://github.com/googleapis/python-bigquery-dataframes/issues/2186)) ([c331dfe](https://github.com/googleapis/python-bigquery-dataframes/commit/c331dfed59174962fbdc8ace175dd00fcc3d5d50))
+* Add df.groupby().corr()/cov() support ([#2190](https://github.com/googleapis/python-bigquery-dataframes/issues/2190)) ([ccd7c07](https://github.com/googleapis/python-bigquery-dataframes/commit/ccd7c0774a65d09e6cf31d2b62d0bc64bd7c4248))
+* Add str accessor to index ([#2179](https://github.com/googleapis/python-bigquery-dataframes/issues/2179)) ([cd87ce0](https://github.com/googleapis/python-bigquery-dataframes/commit/cd87ce0d504747f44d1b5a55f869a2e0fca6df17))
+* Add support for `np.isnan` and `np.isfinite` ufuncs ([#2188](https://github.com/googleapis/python-bigquery-dataframes/issues/2188)) ([68723bc](https://github.com/googleapis/python-bigquery-dataframes/commit/68723bc1f08013e43a8b11752f908bf8fd6d51f5))
+* Include local data bytes in the dry run report when available ([#2185](https://github.com/googleapis/python-bigquery-dataframes/issues/2185)) ([ee2c40c](https://github.com/googleapis/python-bigquery-dataframes/commit/ee2c40c6789535e259fb6a9774831d6913d16212))
+* Support len() on Groupby objects ([#2183](https://github.com/googleapis/python-bigquery-dataframes/issues/2183)) ([4191821](https://github.com/googleapis/python-bigquery-dataframes/commit/4191821b0976281a96c8965336ef51f061b0c481))
+* Support pa.json_(pa.string()) in struct/list if available ([#2180](https://github.com/googleapis/python-bigquery-dataframes/issues/2180)) ([5ec3cc0](https://github.com/googleapis/python-bigquery-dataframes/commit/5ec3cc0298c7a6195d5bd12a08d996e7df57fc5f))
+
+
+### Documentation
+
+* Update AI operators deprecation notice ([#2182](https://github.com/googleapis/python-bigquery-dataframes/issues/2182)) ([2c50310](https://github.com/googleapis/python-bigquery-dataframes/commit/2c503107e17c59232b14b0d7bc40c350bb087d6f))
+
 ## [2.26.0](https://github.com/googleapis/python-bigquery-dataframes/compare/v2.25.0...v2.26.0) (2025-10-17)
 
 
