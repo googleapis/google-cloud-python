@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-api-core/#history
 
+## [2.28.0](https://github.com/googleapis/python-api-core/compare/v2.27.0...v2.28.0) (2025-10-24)
+
+
+### Features
+
+* Provide and use Python version support check ([#832](https://github.com/googleapis/python-api-core/issues/832)) ([d36e896](https://github.com/googleapis/python-api-core/commit/d36e896f98a2371c4d58ce1a7a3bc1a77a081836))
+
 ## [2.27.0](https://github.com/googleapis/python-api-core/compare/v2.26.0...v2.27.0) (2025-10-22)
 
 
