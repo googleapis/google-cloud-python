@@ -1197,6 +1197,11 @@ def _update_version_for_library(
         version_files = [pyproject_toml if pyproject_toml.exists() else setup_py]
 
     for version_file in version_files:
+        # Do not process version files in the types directory as some
+        # GAPIC libraries have `version.py` which are generated from
+        # `version.proto` and do not include SDK versions.
+        if version_file.parent.name == "types":
+            continue
         updated_content = _process_version_file(
             _read_text_file(version_file), version, version_file
         )
