@@ -34,7 +34,8 @@ dependencies = [
 ]
 extras = {
     "grpc": [
-        "grpcio >= 1.38.0, < 2.0.0",
+        "grpcio >= 1.38.0, < 2.0.0; python_version < '3.14'",
+        "grpcio >= 1.75.1, < 2.0.0; python_version >= '3.14'",
         "grpcio-status >= 1.38.0, < 2.0.0",
     ],
 }
@@ -82,6 +83,7 @@ setuptools.setup(
         "Programming Language :: Python :: 3.11",
         "Programming Language :: Python :: 3.12",
         "Programming Language :: Python :: 3.13",
+        "Programming Language :: Python :: 3.14",
         "Operating System :: OS Independent",
         "Topic :: Internet",
     ],
