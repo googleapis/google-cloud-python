@@ -27,6 +27,10 @@ ISORT_VERSION = "isort==5.11.0"
 
 LINT_PATHS = ["docs", "google", "tests", "noxfile.py", "setup.py"]
 
+# Add samples to the list of directories to format if the directory exists.
+if os.path.isdir("samples"):
+    LINT_PATHS.append("samples")
+
 ALL_PYTHON = [
     "3.7",
     "3.8",
@@ -38,7 +42,12 @@ ALL_PYTHON = [
     "3.14",
 ]
 
-DEFAULT_PYTHON_VERSION = ALL_PYTHON[-1]
+DEFAULT_PYTHON_VERSION = "3.14"
+
+# TODO(https://github.com/googleapis/gapic-generator-python/issues/2450):
+# Switch this to Python 3.15 alpha1
+# https://peps.python.org/pep-0790/
+PREVIEW_PYTHON_VERSION = "3.14"
 
 CURRENT_DIRECTORY = pathlib.Path(__file__).parent.absolute()
 
@@ -63,15 +72,7 @@ UNIT_TEST_EXTRAS: List[str] = [
 ]
 UNIT_TEST_EXTRAS_BY_PYTHON: Dict[str, List[str]] = {}
 
-SYSTEM_TEST_PYTHON_VERSIONS: List[str] = [
-    "3.8",
-    "3.9",
-    "3.10",
-    "3.11",
-    "3.12",
-    "3.13",
-    "3.14",
-]
+SYSTEM_TEST_PYTHON_VERSIONS: List[str] = ALL_PYTHON
 SYSTEM_TEST_STANDARD_DEPENDENCIES = [
     "mock",
     "pytest",
@@ -242,22 +243,22 @@ def install_unittest_dependencies(session, *constraints):
 def unit(session, protobuf_implementation):
     # Install all test dependencies, then install this package in-place.
 
-    if protobuf_implementation == "cpp" and session.python in ("3.11", "3.12", "3.13"):
+    # TODO(https://github.com/googleapis/gapic-generator-python/issues/2388):
+    # Remove this check once support for Protobuf 3.x is dropped.
+    if protobuf_implementation == "cpp" and session.python in (
+        "3.11",
+        "3.12",
+        "3.13",
+        "3.14",
+    ):
         session.skip("cpp implementation is not supported in python 3.11+")
-
-    # TODO(https://github.com/googleapis/google-cloud-python/issues/14686):
-    # Run tests with 3.14 once this bug is fixed
-    if session.python == "3.14":
-        session.skip(
-            "3.14 is not yet supported. See https://github.com/googleapis/google-cloud-python/issues/14686"
-        )
 
     constraints_path = str(
         CURRENT_DIRECTORY / "testing" / f"constraints-{session.python}.txt"
     )
     install_unittest_dependencies(session, "-c", constraints_path)
 
-    # TODO(https://github.com/googleapis/synthtool/issues/1976):
+    # TODO(https://github.com/googleapis/gapic-generator-python/issues/2388):
     # Remove the 'cpp' implementation once support for Protobuf 3.x is dropped.
     # The 'cpp' implementation requires Protobuf<4.
     if protobuf_implementation == "cpp":
@@ -475,7 +476,7 @@ def docfx(session):
     )
 
 
-@nox.session(python=["3.13", "3.14"])
+@nox.session(python=PREVIEW_PYTHON_VERSION)
 @nox.parametrize(
     "protobuf_implementation",
     ["python", "upb", "cpp"],
@@ -488,15 +489,15 @@ def prerelease_deps(session, protobuf_implementation):
     `pip install --pre <package>`.
     """
 
-    if protobuf_implementation == "cpp" and session.python in ("3.11", "3.12", "3.13"):
+    # TODO(https://github.com/googleapis/gapic-generator-python/issues/2388):
+    # Remove this check once support for Protobuf 3.x is dropped.
+    if protobuf_implementation == "cpp" and session.python in (
+        "3.11",
+        "3.12",
+        "3.13",
+        "3.14",
+    ):
         session.skip("cpp implementation is not supported in python 3.11+")
-
-    # TODO(https://github.com/googleapis/google-cloud-python/issues/14686):
-    # Run tests with 3.14 once this bug is fixed
-    if session.python == "3.14":
-        session.skip(
-            "3.14 is not yet supported. See https://github.com/googleapis/google-cloud-python/issues/14686"
-        )
 
     # Install all dependencies
     session.install("-e", ".")
@@ -581,7 +582,7 @@ def prerelease_deps(session, protobuf_implementation):
     )
 
 
-@nox.session(python=["3.13", "3.14"])
+@nox.session(python=DEFAULT_PYTHON_VERSION)
 @nox.parametrize(
     "protobuf_implementation",
     ["python", "upb"],
@@ -590,13 +591,6 @@ def core_deps_from_source(session, protobuf_implementation):
     """Run all tests with core dependencies installed from source
     rather than pulling the dependencies from PyPI.
     """
-
-    # TODO(https://github.com/googleapis/google-cloud-python/issues/14686):
-    # Run tests with 3.14 once this bug is fixed
-    if session.python == "3.14":
-        session.skip(
-            "3.14 is not yet supported. See https://github.com/googleapis/google-cloud-python/issues/14686"
-        )
 
     # Install all dependencies
     session.install("-e", ".")
