@@ -31,6 +31,37 @@ class ScalarOpCompiler:
         typing.Callable[[typing.Sequence[TypedExpr], ops.RowOp], sge.Expression],
     ] = {}
 
+    # A set of SQLGlot classes that may need to be parenthesized
+    SQLGLOT_NEEDS_PARENS = {
+        # Numeric operations
+        sge.Add,
+        sge.Sub,
+        sge.Mul,
+        sge.Div,
+        sge.Mod,
+        sge.Pow,
+        # Comparison operations
+        sge.GTE,
+        sge.GT,
+        sge.LTE,
+        sge.LT,
+        sge.EQ,
+        sge.NEQ,
+        # Logical operations
+        sge.And,
+        sge.Or,
+        sge.Xor,
+        # Bitwise operations
+        sge.BitwiseAnd,
+        sge.BitwiseOr,
+        sge.BitwiseXor,
+        sge.BitwiseLeftShift,
+        sge.BitwiseRightShift,
+        sge.BitwiseNot,
+        # Other operations
+        sge.Is,
+    }
+
     @functools.singledispatchmethod
     def compile_expression(
         self,
@@ -110,10 +141,12 @@ class ScalarOpCompiler:
 
         def decorator(impl: typing.Callable[..., sge.Expression]):
             def normalized_impl(args: typing.Sequence[TypedExpr], op: ops.RowOp):
+                left = self._add_parentheses(args[0])
+                right = self._add_parentheses(args[1])
                 if pass_op:
-                    return impl(args[0], args[1], op)
+                    return impl(left, right, op)
                 else:
-                    return impl(args[0], args[1])
+                    return impl(left, right)
 
             self._register(key, normalized_impl)
             return impl
@@ -176,6 +209,12 @@ class ScalarOpCompiler:
         if op_name in self._registry:
             raise ValueError(f"Operation name {op_name} already registered")
         self._registry[op_name] = impl
+
+    @classmethod
+    def _add_parentheses(cls, expr: TypedExpr) -> TypedExpr:
+        if type(expr.expr) in cls.SQLGLOT_NEEDS_PARENS:
+            return TypedExpr(sge.paren(expr.expr, copy=False), expr.dtype)
+        return expr
 
 
 # Singleton compiler

@@ -170,6 +170,43 @@ def test_register_nary_op_pass_on():
     mock_impl.assert_called_once_with(arg1, arg2, arg3, arg4, op=mock_op)
 
 
+def test_binary_op_parentheses():
+    compiler = scalar_compiler.ScalarOpCompiler()
+
+    class MockAddOp(ops.BinaryOp):
+        name = "mock_add_op"
+
+    class MockMulOp(ops.BinaryOp):
+        name = "mock_mul_op"
+
+    add_op = MockAddOp()
+    mul_op = MockMulOp()
+
+    @compiler.register_binary_op(add_op)
+    def _(left: TypedExpr, right: TypedExpr) -> sge.Expression:
+        return sge.Add(this=left.expr, expression=right.expr)
+
+    @compiler.register_binary_op(mul_op)
+    def _(left: TypedExpr, right: TypedExpr) -> sge.Expression:
+        return sge.Mul(this=left.expr, expression=right.expr)
+
+    a = TypedExpr(sge.Identifier(this="a"), "int")
+    b = TypedExpr(sge.Identifier(this="b"), "int")
+    c = TypedExpr(sge.Identifier(this="c"), "int")
+
+    # (a + b) * c
+    add_expr = compiler.compile_row_op(add_op, [a, b])
+    add_typed_expr = TypedExpr(add_expr, "int")
+    result1 = compiler.compile_row_op(mul_op, [add_typed_expr, c])
+    assert result1.sql() == "(a + b) * c"
+
+    # a * (b + c)
+    add_expr_2 = compiler.compile_row_op(add_op, [b, c])
+    add_typed_expr_2 = TypedExpr(add_expr_2, "int")
+    result2 = compiler.compile_row_op(mul_op, [a, add_typed_expr_2])
+    assert result2.sql() == "a * (b + c)"
+
+
 def test_register_duplicate_op_raises():
     compiler = scalar_compiler.ScalarOpCompiler()
 
