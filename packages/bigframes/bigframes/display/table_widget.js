@@ -137,6 +137,12 @@ function render({ model, el }) {
 		}
 	});
 	model.on(Event.CHANGE_TABLE_HTML, handleTableHTMLChange);
+	model.on(`change:${ModelProperty.ROW_COUNT}`, updateButtonStates);
+	model.on(`change:_initial_load_complete`, (val) => {
+		if (val) {
+			updateButtonStates();
+		}
+	});
 
 	// Assemble the DOM
 	paginationContainer.appendChild(prevPage);
