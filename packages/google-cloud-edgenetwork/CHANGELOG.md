@@ -4,6 +4,14 @@
 
 [1]: https://pypi.org/project/google-cloud-edgenetwork/#history
 
+## [0.3.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-edgenetwork-v0.2.0...google-cloud-edgenetwork-v0.3.0) (2025-10-28)
+
+
+### Features
+
+* A new field `remote_peering_network_type` is added to message `google.cloud.edgenetwork.v1.Interconnect`  ([3264efa1c5a6b6bfdefce081a1ee95a61693a003](https://github.com/googleapis/google-cloud-python/commit/3264efa1c5a6b6bfdefce081a1ee95a61693a003))
+* A new field `peering_type` is added to message `google.cloud.edgenetwork.v1.InterconnectAttachment`  ([3264efa1c5a6b6bfdefce081a1ee95a61693a003](https://github.com/googleapis/google-cloud-python/commit/3264efa1c5a6b6bfdefce081a1ee95a61693a003))
+
 ## [0.2.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-edgenetwork-v0.1.18...google-cloud-edgenetwork-v0.2.0) (2025-10-16)
 
 

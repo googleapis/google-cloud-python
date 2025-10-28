@@ -4,6 +4,14 @@
 
 [1]: https://pypi.org/project/google-maps-places/#history
 
+## [0.5.0](https://github.com/googleapis/google-cloud-python/compare/google-maps-places-v0.4.0...google-maps-places-v0.5.0) (2025-10-28)
+
+
+### Features
+
+* Add Review.visitDate field to indicate when the review author visited  ([c3c2fbbacf03dcaf015bbfb949f95d46d9e669cb](https://github.com/googleapis/google-cloud-python/commit/c3c2fbbacf03dcaf015bbfb949f95d46d9e669cb))
+* Add Place.consumerAlert field for suspicious review activity  ([c3c2fbbacf03dcaf015bbfb949f95d46d9e669cb](https://github.com/googleapis/google-cloud-python/commit/c3c2fbbacf03dcaf015bbfb949f95d46d9e669cb))
+
 ## [0.4.0](https://github.com/googleapis/google-cloud-python/compare/google-maps-places-v0.3.0...google-maps-places-v0.4.0) (2025-10-23)
 
 
