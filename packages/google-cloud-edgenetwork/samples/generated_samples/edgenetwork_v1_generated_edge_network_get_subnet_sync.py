@@ -49,4 +49,5 @@ def sample_get_subnet():
     # Handle the response
     print(response)
 
+
 # [END edgenetwork_v1_generated_EdgeNetwork_GetSubnet_sync]

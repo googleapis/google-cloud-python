@@ -6572,6 +6572,7 @@ def test_get_interconnect(request_type, transport: str = "grpc"):
             uuid="uuid_value",
             device_cloud_resource_name="device_cloud_resource_name_value",
             physical_ports=["physical_ports_value"],
+            remote_peering_network_type=resources.RemotePeeringNetworkType.REMOTE_PEERING_NETWORK_TYPE_CUSTOMER_INTERNAL,
         )
         response = client.get_interconnect(request)
 
@@ -6591,6 +6592,10 @@ def test_get_interconnect(request_type, transport: str = "grpc"):
     assert response.uuid == "uuid_value"
     assert response.device_cloud_resource_name == "device_cloud_resource_name_value"
     assert response.physical_ports == ["physical_ports_value"]
+    assert (
+        response.remote_peering_network_type
+        == resources.RemotePeeringNetworkType.REMOTE_PEERING_NETWORK_TYPE_CUSTOMER_INTERNAL
+    )
 
 
 def test_get_interconnect_non_empty_request_with_auto_populated_field():
@@ -6724,6 +6729,7 @@ async def test_get_interconnect_async(
                 uuid="uuid_value",
                 device_cloud_resource_name="device_cloud_resource_name_value",
                 physical_ports=["physical_ports_value"],
+                remote_peering_network_type=resources.RemotePeeringNetworkType.REMOTE_PEERING_NETWORK_TYPE_CUSTOMER_INTERNAL,
             )
         )
         response = await client.get_interconnect(request)
@@ -6744,6 +6750,10 @@ async def test_get_interconnect_async(
     assert response.uuid == "uuid_value"
     assert response.device_cloud_resource_name == "device_cloud_resource_name_value"
     assert response.physical_ports == ["physical_ports_value"]
+    assert (
+        response.remote_peering_network_type
+        == resources.RemotePeeringNetworkType.REMOTE_PEERING_NETWORK_TYPE_CUSTOMER_INTERNAL
+    )
 
 
 @pytest.mark.asyncio
@@ -7817,6 +7827,7 @@ def test_get_interconnect_attachment(request_type, transport: str = "grpc"):
             vlan_id=733,
             mtu=342,
             state=resources.ResourceState.STATE_PENDING,
+            peering_type=resources.RemotePeeringNetworkType.REMOTE_PEERING_NETWORK_TYPE_CUSTOMER_INTERNAL,
         )
         response = client.get_interconnect_attachment(request)
 
@@ -7835,6 +7846,10 @@ def test_get_interconnect_attachment(request_type, transport: str = "grpc"):
     assert response.vlan_id == 733
     assert response.mtu == 342
     assert response.state == resources.ResourceState.STATE_PENDING
+    assert (
+        response.peering_type
+        == resources.RemotePeeringNetworkType.REMOTE_PEERING_NETWORK_TYPE_CUSTOMER_INTERNAL
+    )
 
 
 def test_get_interconnect_attachment_non_empty_request_with_auto_populated_field():
@@ -7977,6 +7992,7 @@ async def test_get_interconnect_attachment_async(
                 vlan_id=733,
                 mtu=342,
                 state=resources.ResourceState.STATE_PENDING,
+                peering_type=resources.RemotePeeringNetworkType.REMOTE_PEERING_NETWORK_TYPE_CUSTOMER_INTERNAL,
             )
         )
         response = await client.get_interconnect_attachment(request)
@@ -7996,6 +8012,10 @@ async def test_get_interconnect_attachment_async(
     assert response.vlan_id == 733
     assert response.mtu == 342
     assert response.state == resources.ResourceState.STATE_PENDING
+    assert (
+        response.peering_type
+        == resources.RemotePeeringNetworkType.REMOTE_PEERING_NETWORK_TYPE_CUSTOMER_INTERNAL
+    )
 
 
 @pytest.mark.asyncio
@@ -17490,6 +17510,7 @@ async def test_get_interconnect_empty_call_grpc_asyncio():
                 uuid="uuid_value",
                 device_cloud_resource_name="device_cloud_resource_name_value",
                 physical_ports=["physical_ports_value"],
+                remote_peering_network_type=resources.RemotePeeringNetworkType.REMOTE_PEERING_NETWORK_TYPE_CUSTOMER_INTERNAL,
             )
         )
         await client.get_interconnect(request=None)
@@ -17582,6 +17603,7 @@ async def test_get_interconnect_attachment_empty_call_grpc_asyncio():
                 vlan_id=733,
                 mtu=342,
                 state=resources.ResourceState.STATE_PENDING,
+                peering_type=resources.RemotePeeringNetworkType.REMOTE_PEERING_NETWORK_TYPE_CUSTOMER_INTERNAL,
             )
         )
         await client.get_interconnect_attachment(request=None)
@@ -19868,6 +19890,7 @@ def test_get_interconnect_rest_call_success(request_type):
             uuid="uuid_value",
             device_cloud_resource_name="device_cloud_resource_name_value",
             physical_ports=["physical_ports_value"],
+            remote_peering_network_type=resources.RemotePeeringNetworkType.REMOTE_PEERING_NETWORK_TYPE_CUSTOMER_INTERNAL,
         )
 
         # Wrap the value into a proper Response obj
@@ -19892,6 +19915,10 @@ def test_get_interconnect_rest_call_success(request_type):
     assert response.uuid == "uuid_value"
     assert response.device_cloud_resource_name == "device_cloud_resource_name_value"
     assert response.physical_ports == ["physical_ports_value"]
+    assert (
+        response.remote_peering_network_type
+        == resources.RemotePeeringNetworkType.REMOTE_PEERING_NETWORK_TYPE_CUSTOMER_INTERNAL
+    )
 
 
 @pytest.mark.parametrize("null_interceptor", [True, False])
@@ -20279,6 +20306,7 @@ def test_get_interconnect_attachment_rest_call_success(request_type):
             vlan_id=733,
             mtu=342,
             state=resources.ResourceState.STATE_PENDING,
+            peering_type=resources.RemotePeeringNetworkType.REMOTE_PEERING_NETWORK_TYPE_CUSTOMER_INTERNAL,
         )
 
         # Wrap the value into a proper Response obj
@@ -20302,6 +20330,10 @@ def test_get_interconnect_attachment_rest_call_success(request_type):
     assert response.vlan_id == 733
     assert response.mtu == 342
     assert response.state == resources.ResourceState.STATE_PENDING
+    assert (
+        response.peering_type
+        == resources.RemotePeeringNetworkType.REMOTE_PEERING_NETWORK_TYPE_CUSTOMER_INTERNAL
+    )
 
 
 @pytest.mark.parametrize("null_interceptor", [True, False])
@@ -20419,6 +20451,7 @@ def test_create_interconnect_attachment_rest_call_success(request_type):
         "vlan_id": 733,
         "mtu": 342,
         "state": 1,
+        "peering_type": 1,
     }
     # The version of a generated dependency at test runtime may differ from the version used during generation.
     # Delete any fields which are not present in the current runtime dependency

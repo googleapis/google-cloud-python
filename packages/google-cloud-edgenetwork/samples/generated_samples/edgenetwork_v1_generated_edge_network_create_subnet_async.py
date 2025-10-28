@@ -59,4 +59,5 @@ async def sample_create_subnet():
     # Handle the response
     print(response)
 
+
 # [END edgenetwork_v1_generated_EdgeNetwork_CreateSubnet_async]

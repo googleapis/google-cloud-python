@@ -49,4 +49,5 @@ async def sample_diagnose_router():
     # Handle the response
     print(response)
 
+
 # [END edgenetwork_v1_generated_EdgeNetwork_DiagnoseRouter_async]
