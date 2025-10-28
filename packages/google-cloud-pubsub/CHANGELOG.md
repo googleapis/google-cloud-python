@@ -5,6 +5,20 @@
 [1]: https://pypi.org/project/google-cloud-pubsub/#history
 
 
+## [2.32.0](https://github.com/googleapis/python-pubsub/compare/v2.31.1...v2.32.0) (2025-10-28)
+
+
+### Features
+
+* Adds Python 3.14 support ([#1512](https://github.com/googleapis/python-pubsub/issues/1512)) ([95a2690](https://github.com/googleapis/python-pubsub/commit/95a26907efecfa5d56b140b7f833640b7fbb21d7))
+* Debug logs ([#1460](https://github.com/googleapis/python-pubsub/issues/1460)) ([b5d4a45](https://github.com/googleapis/python-pubsub/commit/b5d4a458ca9319bebbe3142a1f05d4d4471c8d4d))
+* Support the protocol version in StreamingPullRequest ([#1455](https://github.com/googleapis/python-pubsub/issues/1455)) ([e6294a1](https://github.com/googleapis/python-pubsub/commit/e6294a1883abf9809cb56d5cd4ad25cc501bc994))
+
+
+### Bug Fixes
+
+* Ignore future warnings on python versions ([#1546](https://github.com/googleapis/python-pubsub/issues/1546)) ([8e28dea](https://github.com/googleapis/python-pubsub/commit/8e28dea5b68fc940266d0b1a9f2a07a7b5f10b34))
+
 ## [2.31.1](https://github.com/googleapis/python-pubsub/compare/v2.31.0...v2.31.1) (2025-07-28)
 
 
