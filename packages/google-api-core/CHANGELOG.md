@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-api-core/#history
 
+## [2.28.1](https://github.com/googleapis/python-api-core/compare/v2.28.0...v2.28.1) (2025-10-28)
+
+
+### Bug Fixes
+
+* Remove dependency on packaging and pkg_resources ([#852](https://github.com/googleapis/python-api-core/issues/852)) ([ca59a86](https://github.com/googleapis/python-api-core/commit/ca59a863b08a79c2bf0607f9085de1417422820b))
+
 ## [2.28.0](https://github.com/googleapis/python-api-core/compare/v2.27.0...v2.28.0) (2025-10-24)
 
 
