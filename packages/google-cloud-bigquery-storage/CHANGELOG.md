@@ -4,6 +4,20 @@
 
 [1]: https://pypi.org/project/google-cloud-bigquery-storage/#history
 
+## [2.34.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-bigquery-storage-v2.33.1...google-cloud-bigquery-storage-v2.34.0) (2025-10-28)
+
+
+### Features
+
+* Add support for Python 3.14  ([bd0f5422aa8d817e936f556ce33c0e96b5d02874](https://github.com/googleapis/google-cloud-python/commit/bd0f5422aa8d817e936f556ce33c0e96b5d02874))
+
+
+### Bug Fixes
+
+* Deprecate `credentials_file` argument  ([bd0f5422aa8d817e936f556ce33c0e96b5d02874](https://github.com/googleapis/google-cloud-python/commit/bd0f5422aa8d817e936f556ce33c0e96b5d02874))
+* Require grpcio >= 1.33.2  ([bd0f5422aa8d817e936f556ce33c0e96b5d02874](https://github.com/googleapis/google-cloud-python/commit/bd0f5422aa8d817e936f556ce33c0e96b5d02874))
+* Require grpcio >= 1.75.1 for Python 3.14  ([bd0f5422aa8d817e936f556ce33c0e96b5d02874](https://github.com/googleapis/google-cloud-python/commit/bd0f5422aa8d817e936f556ce33c0e96b5d02874))
+
 ## [2.33.1](https://github.com/googleapis/python-bigquery-storage/compare/v2.33.0...v2.33.1) (2025-09-08)
 
 

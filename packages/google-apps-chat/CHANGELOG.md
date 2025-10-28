@@ -4,6 +4,18 @@
 
 [1]: https://pypi.org/project/google-apps-chat/#history
 
+## [0.4.0](https://github.com/googleapis/google-cloud-python/compare/google-apps-chat-v0.3.0...google-apps-chat-v0.4.0) (2025-10-28)
+
+
+### Documentation
+
+* Update field documentations for space.proto and membership.proto  ([c3c2fbbacf03dcaf015bbfb949f95d46d9e669cb](https://github.com/googleapis/google-cloud-python/commit/c3c2fbbacf03dcaf015bbfb949f95d46d9e669cb))
+
+
+### Features
+
+* add ROLE_ASSISTANT_MANAGER to the MembershipRole enum in the Membership proto and assistant_managers_allowed to the PermissionSetting  ([c3c2fbbacf03dcaf015bbfb949f95d46d9e669cb](https://github.com/googleapis/google-cloud-python/commit/c3c2fbbacf03dcaf015bbfb949f95d46d9e669cb))
+
 ## [0.3.0](https://github.com/googleapis/google-cloud-python/compare/google-apps-chat-v0.2.9...google-apps-chat-v0.3.0) (2025-10-16)
 
 

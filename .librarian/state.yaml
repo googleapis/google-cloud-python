@@ -1,7 +1,7 @@
 image: us-central1-docker.pkg.dev/cloud-sdk-librarian-prod/images-prod/python-librarian-generator:latest
 libraries:
   - id: google-ads-admanager
-    version: 0.5.0
+    version: 0.6.0
     last_generated_commit: e8365a7f88fabe8717cb8322b8ce784b03b6daea
     apis:
       - path: google/ads/admanager/v1
@@ -128,7 +128,7 @@ libraries:
       - packages/google-apps-card/
     tag_format: '{id}-v{version}'
   - id: google-apps-chat
-    version: 0.3.0
+    version: 0.4.0
     last_generated_commit: e8365a7f88fabe8717cb8322b8ce784b03b6daea
     apis:
       - path: google/chat/v1
@@ -958,7 +958,7 @@ libraries:
       - packages/google-cloud-bigquery-reservation/
     tag_format: '{id}-v{version}'
   - id: google-cloud-bigquery-storage
-    version: 2.33.1
+    version: 2.34.0
     last_generated_commit: 0654a03c3f7a6cb46e36227d17cfcc6f4b71fa5a
     apis:
       - path: google/cloud/bigquery/storage/v1beta2
@@ -1221,7 +1221,7 @@ libraries:
       - packages/google-cloud-commerce-consumer-procurement/
     tag_format: '{id}-v{version}'
   - id: google-cloud-common
-    version: 1.6.0
+    version: 1.7.0
     last_generated_commit: e8365a7f88fabe8717cb8322b8ce784b03b6daea
     apis:
       - path: google/cloud/common
@@ -1556,7 +1556,7 @@ libraries:
       - packages/google-cloud-datalabeling/
     tag_format: '{id}-v{version}'
   - id: google-cloud-dataplex
-    version: 2.13.0
+    version: 2.14.0
     last_generated_commit: e8365a7f88fabe8717cb8322b8ce784b03b6daea
     apis:
       - path: google/cloud/dataplex/v1
@@ -1695,7 +1695,7 @@ libraries:
       - packages/google-cloud-devicestreaming/
     tag_format: '{id}-v{version}'
   - id: google-cloud-dialogflow
-    version: 2.42.0
+    version: 2.43.0
     last_generated_commit: e8365a7f88fabe8717cb8322b8ce784b03b6daea
     apis:
       - path: google/cloud/dialogflow/v2beta1
@@ -1859,7 +1859,7 @@ libraries:
       - packages/google-cloud-edgecontainer/
     tag_format: '{id}-v{version}'
   - id: google-cloud-edgenetwork
-    version: 0.2.0
+    version: 0.3.0
     last_generated_commit: b1a9eefc2e1021fb9465bdac5e2984499451ae34
     apis:
       - path: google/cloud/edgenetwork/v1
@@ -4227,7 +4227,7 @@ libraries:
       - packages/google-maps-mapsplatformdatasets
     tag_format: '{id}-v{version}'
   - id: google-maps-places
-    version: 0.4.0
+    version: 0.5.0
     last_generated_commit: e8365a7f88fabe8717cb8322b8ce784b03b6daea
     apis:
       - path: google/maps/places/v1

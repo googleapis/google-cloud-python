@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-cloud-common/#history
 
+## [1.7.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-common-v1.6.0...google-cloud-common-v1.7.0) (2025-10-28)
+
+
+### Bug Fixes
+
+* upgrade gRPC service registration func An update to Go gRPC Protobuf generation will change service registration function signatures to use an interface instead of a concrete type in generated .pb.go service files. This change should affect very few client library users. See release notes advisories in https://github.com/googleapis/google-cloud-go/pull/11025.  ([c3c2fbbacf03dcaf015bbfb949f95d46d9e669cb](https://github.com/googleapis/google-cloud-python/commit/c3c2fbbacf03dcaf015bbfb949f95d46d9e669cb))
+
 ## [1.6.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-common-v1.5.2...google-cloud-common-v1.6.0) (2025-10-16)
 
 
