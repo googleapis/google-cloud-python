@@ -179,16 +179,34 @@ def test_dataframe_to_bigquery_fields_fallback_needed_w_pyarrow(module_under_tes
 
 
 def test_dataframe_to_bigquery_fields_w_extra_fields(module_under_test):
-    with pytest.raises(ValueError) as exc_context:
-        module_under_test.dataframe_to_bigquery_fields(
-            pandas.DataFrame(),
-            override_bigquery_fields=(schema.SchemaField("not_in_df", "STRING"),),
-        )
-    message = str(exc_context.value)
-    assert (
-        "Provided BigQuery fields contain field(s) not present in DataFrame:" in message
+    dataframe = pandas.DataFrame({"in_df": [1, 2, 3]})
+    bq_schema = (
+        schema.SchemaField("in_df", "INTEGER"),
+        schema.SchemaField("not_in_df", "STRING"),
+        schema.SchemaField("also_not_in_df", "INTEGER"),
     )
-    assert "not_in_df" in message
+
+    with pytest.warns(UserWarning) as record:
+        returned_schema = module_under_test.dataframe_to_bigquery_fields(
+            dataframe, override_bigquery_fields=bq_schema
+        )
+
+    assert len(record) == 1
+    message = str(record[0].message)
+    assert (
+        "Provided BigQuery fields contain field(s) not present in DataFrame" in message
+    )
+    # Note: The field names are sorted in the warning message.
+    assert "['also_not_in_df', 'not_in_df']" in message
+
+    expected_schema = (
+        schema.SchemaField("in_df", "INTEGER"),
+        # Note: The fields are sorted by name as they are added from the set of
+        # unused fields.
+        schema.SchemaField("also_not_in_df", "INTEGER"),
+        schema.SchemaField("not_in_df", "STRING"),
+    )
+    assert returned_schema == expected_schema
 
 
 def test_dataframe_to_bigquery_fields_geography(module_under_test):

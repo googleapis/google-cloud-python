@@ -139,14 +139,16 @@ def dataframe_to_bigquery_fields(
         bq_schema_out.append(bq_field)
         unknown_type_fields.append(bq_field)
 
-    # Catch any schema mismatch. The developer explicitly asked to serialize a
-    # column, but it was not found.
+    # Append any fields from the BigQuery schema that are not in the
+    # DataFrame.
     if override_fields_unused:
-        raise ValueError(
-            "Provided BigQuery fields contain field(s) not present in DataFrame: {}".format(
-                override_fields_unused
-            )
+        warnings.warn(
+            "Provided BigQuery fields contain field(s) not present in "
+            "DataFrame: {}".format(sorted(override_fields_unused)),
+            UserWarning,
         )
+        for field_name in sorted(override_fields_unused):
+            bq_schema_out.append(override_fields_by_name[field_name])
 
     # If schema detection was not successful for all columns, also try with
     # pyarrow, if available.
