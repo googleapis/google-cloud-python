@@ -995,7 +995,6 @@ libraries:
       - samples/to_dataframe
       - samples/noxfile.py
       - scripts/client-post-processing
-      - scripts/decrypt-secrets.sh
       - scripts/readme-gen
       - testing/.gitignore
       - tests/system
