@@ -1213,6 +1213,12 @@ Libraries
      -
      -
      - `Client Library Issues <https://github.com/googleapis/google-cloud-python/issues>`_
+   * - `GKE Recommender API <https://github.com/googleapis/google-cloud-python/tree/main/packages/google-cloud-gkerecommender>`_
+     - preview
+     - |PyPI-google-cloud-gkerecommender|
+     - `API Issues <https://issuetracker.google.com/issues?q=componentid:1790908>`_
+     - `File an API Issue <https://issuetracker.google.com/issues/new?component=1790908>`_
+     - `Client Library Issues <https://github.com/googleapis/google-cloud-python/issues>`_
    * - `Generative Language API <https://github.com/googleapis/google-cloud-python/tree/main/packages/google-ai-generativelanguage>`_
      - preview
      - |PyPI-google-ai-generativelanguage|
@@ -1960,6 +1966,8 @@ Libraries
      :target: https://pypi.org/project/google-cloud-gdchardwaremanagement
 .. |PyPI-google-cloud-gke-connect-gateway| image:: https://img.shields.io/pypi/v/google-cloud-gke-connect-gateway.svg
      :target: https://pypi.org/project/google-cloud-gke-connect-gateway
+.. |PyPI-google-cloud-gkerecommender| image:: https://img.shields.io/pypi/v/google-cloud-gkerecommender.svg
+     :target: https://pypi.org/project/google-cloud-gkerecommender
 .. |PyPI-google-ai-generativelanguage| image:: https://img.shields.io/pypi/v/google-ai-generativelanguage.svg
      :target: https://pypi.org/project/google-ai-generativelanguage
 .. |PyPI-google-geo-type| image:: https://img.shields.io/pypi/v/google-geo-type.svg
