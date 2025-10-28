@@ -53,4 +53,5 @@ async def sample_delete_interconnect_attachment():
     # Handle the response
     print(response)
 
+
 # [END edgenetwork_v1_generated_EdgeNetwork_DeleteInterconnectAttachment_async]

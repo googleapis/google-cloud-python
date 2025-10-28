@@ -49,4 +49,5 @@ def sample_get_interconnect_attachment():
     # Handle the response
     print(response)
 
+
 # [END edgenetwork_v1_generated_EdgeNetwork_GetInterconnectAttachment_sync]

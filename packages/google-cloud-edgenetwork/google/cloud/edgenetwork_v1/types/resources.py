@@ -24,6 +24,7 @@ __protobuf__ = proto.module(
     package="google.cloud.edgenetwork.v1",
     manifest={
         "ResourceState",
+        "RemotePeeringNetworkType",
         "Zone",
         "Network",
         "Subnet",
@@ -68,6 +69,24 @@ class ResourceState(proto.Enum):
     STATE_RUNNING = 3
     STATE_SUSPENDED = 4
     STATE_DELETING = 5
+
+
+class RemotePeeringNetworkType(proto.Enum):
+    r"""Defines the remote peering destination for the interface. It
+    is required when peering separation is enabled.
+
+    Values:
+        REMOTE_PEERING_NETWORK_TYPE_UNSPECIFIED (0):
+            Unspecified.
+        REMOTE_PEERING_NETWORK_TYPE_CUSTOMER_INTERNAL (1):
+            Customer's trusted internal network.
+        REMOTE_PEERING_NETWORK_TYPE_CUSTOMER_INTERNET (2):
+            Customer's untrust network that has internet
+            access.
+    """
+    REMOTE_PEERING_NETWORK_TYPE_UNSPECIFIED = 0
+    REMOTE_PEERING_NETWORK_TYPE_CUSTOMER_INTERNAL = 1
+    REMOTE_PEERING_NETWORK_TYPE_CUSTOMER_INTERNET = 2
 
 
 class Zone(proto.Message):
@@ -312,6 +331,10 @@ class Interconnect(proto.Message):
         physical_ports (MutableSequence[str]):
             Output only. Physical ports (e.g.,
             TenGigE0/0/0/1) that form the interconnect.
+        remote_peering_network_type (google.cloud.edgenetwork_v1.types.RemotePeeringNetworkType):
+            Optional. The remote peering network type of
+            the interconnect. It is required when peering
+            separation is enabled.
     """
 
     class InterconnectType(proto.Enum):
@@ -366,6 +389,11 @@ class Interconnect(proto.Message):
         proto.STRING,
         number=9,
     )
+    remote_peering_network_type: "RemotePeeringNetworkType" = proto.Field(
+        proto.ENUM,
+        number=10,
+        enum="RemotePeeringNetworkType",
+    )
 
 
 class InterconnectAttachment(proto.Message):
@@ -404,6 +432,10 @@ class InterconnectAttachment(proto.Message):
         state (google.cloud.edgenetwork_v1.types.ResourceState):
             Output only. Current stage of the resource to
             the device by config push.
+        peering_type (google.cloud.edgenetwork_v1.types.RemotePeeringNetworkType):
+            Optional. The remote peering network type of
+            the underlying interconnect. It is required when
+            peering separation is enabled.
     """
 
     name: str = proto.Field(
@@ -449,6 +481,11 @@ class InterconnectAttachment(proto.Message):
         proto.ENUM,
         number=10,
         enum="ResourceState",
+    )
+    peering_type: "RemotePeeringNetworkType" = proto.Field(
+        proto.ENUM,
+        number=12,
+        enum="RemotePeeringNetworkType",
     )
 
 

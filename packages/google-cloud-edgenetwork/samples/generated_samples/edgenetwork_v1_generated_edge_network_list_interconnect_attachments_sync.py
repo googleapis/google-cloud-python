@@ -50,4 +50,5 @@ def sample_list_interconnect_attachments():
     for response in page_result:
         print(response)
 
+
 # [END edgenetwork_v1_generated_EdgeNetwork_ListInterconnectAttachments_sync]

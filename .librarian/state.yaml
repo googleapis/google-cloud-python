@@ -1816,7 +1816,7 @@ libraries:
     tag_format: '{id}-v{version}'
   - id: google-cloud-edgenetwork
     version: 0.2.0
-    last_generated_commit: 3322511885371d2b2253f209ccc3aa60d4100cfd
+    last_generated_commit: b1a9eefc2e1021fb9465bdac5e2984499451ae34
     apis:
       - path: google/cloud/edgenetwork/v1
         service_config: edgenetwork_v1.yaml
