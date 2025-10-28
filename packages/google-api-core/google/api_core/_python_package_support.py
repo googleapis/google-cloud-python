@@ -16,7 +16,7 @@
 
 import warnings
 import sys
-from typing import Optional
+from typing import Optional, Tuple
 
 from collections import namedtuple
 
@@ -25,7 +25,14 @@ from ._python_version_support import (
     _get_distribution_and_import_packages,
 )
 
-from packaging.version import parse as parse_version
+if sys.version_info >= (3, 8):
+    from importlib import metadata
+else:
+    # TODO(https://github.com/googleapis/python-api-core/issues/835): Remove
+    # this code path once we drop support for Python 3.7
+    import importlib_metadata as metadata
+
+ParsedVersion = Tuple[int, ...]
 
 # Here we list all the packages for which we want to issue warnings
 # about deprecated and unsupported versions.
@@ -48,42 +55,56 @@ DependencyVersion = namedtuple("DependencyVersion", ["version", "version_string"
 UNKNOWN_VERSION_STRING = "--"
 
 
+def parse_version_to_tuple(version_string: str) -> ParsedVersion:
+    """Safely converts a semantic version string to a comparable tuple of integers.
+
+    Example: "4.25.8" -> (4, 25, 8)
+    Ignores non-numeric parts and handles common version formats.
+
+    Args:
+        version_string: Version string in the format "x.y.z" or "x.y.z<suffix>"
+
+    Returns:
+        Tuple of integers for the parsed version string.
+    """
+    parts = []
+    for part in version_string.split("."):
+        try:
+            parts.append(int(part))
+        except ValueError:
+            # If it's a non-numeric part (e.g., '1.0.0b1' -> 'b1'), stop here.
+            # This is a simplification compared to 'packaging.parse_version', but sufficient
+            # for comparing strictly numeric semantic versions.
+            break
+    return tuple(parts)
+
+
 def get_dependency_version(
     dependency_name: str,
 ) -> DependencyVersion:
     """Get the parsed version of an installed package dependency.
 
     This function checks for an installed package and returns its version
-    as a `packaging.version.Version` object for safe comparison. It handles
+    as a comparable tuple of integers object for safe comparison. It handles
     both modern (Python 3.8+) and legacy (Python 3.7) environments.
 
     Args:
         dependency_name: The distribution name of the package (e.g., 'requests').
 
     Returns:
-        A DependencyVersion namedtuple with `version` and
+        A DependencyVersion namedtuple with `version`  (a tuple of integers) and
         `version_string` attributes, or `DependencyVersion(None,
         UNKNOWN_VERSION_STRING)` if the package is not found or
         another error occurs during version discovery.
 
     """
     try:
-        if sys.version_info >= (3, 8):
-            from importlib import metadata
-
-            version_string = metadata.version(dependency_name)
-            return DependencyVersion(parse_version(version_string), version_string)
-
-        # TODO(https://github.com/googleapis/python-api-core/issues/835): Remove
-        # this code path once we drop support for Python 3.7
-        else:  # pragma: NO COVER
-            # Use pkg_resources, which is part of setuptools.
-            import pkg_resources
-
-            version_string = pkg_resources.get_distribution(dependency_name).version
-            return DependencyVersion(parse_version(version_string), version_string)
-
+        version_string: str = metadata.version(dependency_name)
+        parsed_version = parse_version_to_tuple(version_string)
+        return DependencyVersion(parsed_version, version_string)
     except Exception:
+        # Catch exceptions from metadata.version() (e.g., PackageNotFoundError)
+        # or errors during parse_version_to_tuple
         return DependencyVersion(None, UNKNOWN_VERSION_STRING)
 
 
@@ -132,10 +153,14 @@ def warn_deprecation_for_versions_less_than(
         or not minimum_fully_supported_version
     ):  # pragma: NO COVER
         return
+
     dependency_version = get_dependency_version(dependency_import_package)
     if not dependency_version.version:
         return
-    if dependency_version.version < parse_version(minimum_fully_supported_version):
+
+    if dependency_version.version < parse_version_to_tuple(
+        minimum_fully_supported_version
+    ):
         (
             dependency_package,
             dependency_distribution_package,

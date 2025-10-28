@@ -51,6 +51,9 @@ dependencies = [
   "proto-plus >= 1.25.0, < 2.0.0; python_version >= '3.13'",
   "google-auth >= 2.14.1, < 3.0.0",
   "requests >= 2.18.0, < 3.0.0",
+  # TODO(https://github.com/googleapis/python-api-core/issues/835): Remove
+  # `importlib_metadata` once we drop support for Python 3.7
+  "importlib_metadata>=1.4; python_version<'3.8'",
 ]
 dynamic = ["version"]
 

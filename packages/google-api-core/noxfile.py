@@ -127,6 +127,7 @@ def default(session, install_grpc=True, prerelease=False, install_async_rest=Fal
         "mock; python_version=='3.7'",
         "pytest",
         "pytest-cov",
+        "pytest-mock",
         "pytest-xdist",
     )
 
