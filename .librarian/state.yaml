@@ -2174,6 +2174,25 @@ libraries:
     remove_regex:
       - packages/google-cloud-gsuiteaddons
     tag_format: '{id}-v{version}'
+  - id: google-cloud-hypercomputecluster
+    version: 0.0.0
+    last_generated_commit: 72e7439c8e7e9986cf1865e337fc7c64ca5bda1f
+    apis:
+      - path: google/cloud/hypercomputecluster/v1beta
+        service_config: hypercomputecluster_v1beta.yaml
+    source_roots:
+      - packages/google-cloud-hypercomputecluster
+    preserve_regex:
+      - packages/google-cloud-hypercomputecluster/CHANGELOG.md
+      - docs/CHANGELOG.md
+      - docs/README.rst
+      - samples/README.txt
+      - scripts/client-post-processing
+      - samples/snippets/README.rst
+      - tests/system
+    remove_regex:
+      - packages/google-cloud-hypercomputecluster
+    tag_format: '{id}-v{version}'
   - id: google-cloud-iam
     version: 2.20.0
     last_generated_commit: 3322511885371d2b2253f209ccc3aa60d4100cfd
