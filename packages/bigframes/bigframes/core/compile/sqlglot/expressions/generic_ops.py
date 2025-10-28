@@ -159,6 +159,30 @@ def _(*cases_and_outputs: TypedExpr) -> sge.Expression:
     )
 
 
+@register_nary_op(ops.RowKey)
+def _(*values: TypedExpr) -> sge.Expression:
+    # All inputs into hash must be non-null or resulting hash will be null
+    str_values = [_convert_to_nonnull_string_sqlglot(value) for value in values]
+
+    full_row_hash_p1 = sge.func("FARM_FINGERPRINT", sge.Concat(expressions=str_values))
+
+    # By modifying value slightly, we get another hash uncorrelated with the first
+    full_row_hash_p2 = sge.func(
+        "FARM_FINGERPRINT", sge.Concat(expressions=[*str_values, sge.convert("_")])
+    )
+
+    # Used to disambiguate between identical rows (which will have identical hash)
+    random_hash_p3 = sge.func("RAND")
+
+    return sge.Concat(
+        expressions=[
+            sge.Cast(this=full_row_hash_p1, to="STRING"),
+            sge.Cast(this=full_row_hash_p2, to="STRING"),
+            sge.Cast(this=random_hash_p3, to="STRING"),
+        ]
+    )
+
+
 # Helper functions
 def _cast_to_json(expr: TypedExpr, op: ops.AsTypeOp) -> sge.Expression:
     from_type = expr.dtype
@@ -218,3 +242,32 @@ def _cast(expr: sge.Expression, to: str, safe: bool):
         return sge.TryCast(this=expr, to=to)
     else:
         return sge.Cast(this=expr, to=to)
+
+
+def _convert_to_nonnull_string_sqlglot(expr: TypedExpr) -> sge.Expression:
+    col_type = expr.dtype
+    sg_expr = expr.expr
+
+    if col_type == dtypes.STRING_DTYPE:
+        result = sg_expr
+    elif (
+        dtypes.is_numeric(col_type)
+        or dtypes.is_time_or_date_like(col_type)
+        or col_type == dtypes.BYTES_DTYPE
+    ):
+        result = sge.Cast(this=sg_expr, to="STRING")
+    elif col_type == dtypes.GEO_DTYPE:
+        result = sge.func("ST_ASTEXT", sg_expr)
+    else:
+        # TO_JSON_STRING works with all data types, but isn't the most efficient
+        # Needed for JSON, STRUCT and ARRAY datatypes
+        result = sge.func("TO_JSON_STRING", sg_expr)
+
+    # Escape backslashes and use backslash as delineator
+    escaped = sge.func(
+        "REPLACE",
+        sge.func("COALESCE", result, sge.convert("")),
+        sge.convert("\\"),
+        sge.convert("\\\\"),
+    )
+    return sge.Concat(expressions=[sge.convert("\\"), escaped])

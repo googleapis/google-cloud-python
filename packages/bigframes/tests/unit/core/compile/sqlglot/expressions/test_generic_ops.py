@@ -261,6 +261,14 @@ def test_notnull(scalar_types_df: bpd.DataFrame, snapshot):
     snapshot.assert_match(sql, "out.sql")
 
 
+def test_row_key(scalar_types_df: bpd.DataFrame, snapshot):
+    column_ids = (col for col in scalar_types_df._block.expr.column_ids)
+    sql = utils._apply_unary_ops(
+        scalar_types_df, [ops.RowKey().as_expr(*column_ids)], ["row_key"]
+    )
+    snapshot.assert_match(sql, "out.sql")
+
+
 def test_sql_scalar_op(scalar_types_df: bpd.DataFrame, snapshot):
     bf_df = scalar_types_df[["bool_col", "bytes_col"]]
     sql = utils._apply_nary_op(
