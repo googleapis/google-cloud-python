@@ -18,6 +18,7 @@ import hashlib
 import http.client
 import io
 import os
+import sys
 
 import google.auth  # type: ignore
 import google.auth.transport.requests as tr_requests  # type: ignore
@@ -63,7 +64,11 @@ class CorruptingAuthorizedSession(tr_requests.AuthorizedSession):
             constructor.
     """
 
-    EMPTY_MD5 = base64.b64encode(hashlib.md5(b"").digest()).decode("utf-8")
+    EMPTY_MD5 = base64.b64encode(
+        hashlib.md5(
+            b"", **({"usedforsecurity": False} if sys.version_info >= (3, 9) else {})
+        ).digest()
+    ).decode("utf-8")
     crc32c = google_crc32c.Checksum()
     crc32c.update(b"")
     EMPTY_CRC32C = base64.b64encode(crc32c.digest()).decode("utf-8")
