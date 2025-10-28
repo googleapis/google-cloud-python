@@ -993,7 +993,6 @@ libraries:
       - samples/quickstart
       - samples/snippets
       - samples/to_dataframe
-      - samples/noxfile.py
       - scripts/client-post-processing
       - scripts/readme-gen
       - testing/.gitignore
