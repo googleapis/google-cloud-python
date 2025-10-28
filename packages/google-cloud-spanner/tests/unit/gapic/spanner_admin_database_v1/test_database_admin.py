@@ -1136,6 +1136,7 @@ def test_database_admin_client_create_channel_credentials_file(
             options=[
                 ("grpc.max_send_message_length", -1),
                 ("grpc.max_receive_message_length", -1),
+                ("grpc.keepalive_time_ms", 120000),
             ],
         )
 
@@ -23315,6 +23316,7 @@ def test_database_admin_transport_create_channel(transport_class, grpc_helpers):
             options=[
                 ("grpc.max_send_message_length", -1),
                 ("grpc.max_receive_message_length", -1),
+                ("grpc.keepalive_time_ms", 120000),
             ],
         )
 
@@ -23347,6 +23349,7 @@ def test_database_admin_grpc_transport_client_cert_source_for_mtls(transport_cla
             options=[
                 ("grpc.max_send_message_length", -1),
                 ("grpc.max_receive_message_length", -1),
+                ("grpc.keepalive_time_ms", 120000),
             ],
         )
 
@@ -23593,6 +23596,7 @@ def test_database_admin_transport_channel_mtls_with_client_cert_source(transport
                 options=[
                     ("grpc.max_send_message_length", -1),
                     ("grpc.max_receive_message_length", -1),
+                    ("grpc.keepalive_time_ms", 120000),
                 ],
             )
             assert transport.grpc_channel == mock_grpc_channel
@@ -23640,6 +23644,7 @@ def test_database_admin_transport_channel_mtls_with_adc(transport_class):
                 options=[
                     ("grpc.max_send_message_length", -1),
                     ("grpc.max_receive_message_length", -1),
+                    ("grpc.keepalive_time_ms", 120000),
                 ],
             )
             assert transport.grpc_channel == mock_grpc_channel

@@ -17,6 +17,7 @@
 from pathlib import Path
 import shutil
 from typing import List, Optional
+import re
 
 import synthtool as s
 from synthtool import gcp
@@ -185,6 +186,22 @@ from google.cloud.spanner_v1.metrics.metrics_interceptor import MetricsIntercept
         )"""
     )
 
+    count = s.replace(
+        [
+            library / "google/cloud/spanner_v1/services/*/transports/grpc*",
+            library / "tests/unit/gapic/spanner_v1/*",
+        ],
+        "^\s+options=\\[.*?\\]",
+        """options=[
+                    ("grpc.max_send_message_length", -1),
+                    ("grpc.max_receive_message_length", -1),
+                    ("grpc.keepalive_time_ms", 120000),
+                ]""",
+        flags=re.MULTILINE | re.DOTALL,
+    )
+    if count < 1:
+        raise Exception("Expected replacements for gRPC channel options not made.")
+
     s.move(
         library,
         excludes=[
@@ -201,6 +218,21 @@ from google.cloud.spanner_v1.metrics.metrics_interceptor import MetricsIntercept
 for library in get_staging_dirs(
     spanner_admin_instance_default_version, "spanner_admin_instance"
 ):
+    count = s.replace(
+        [
+            library / "google/cloud/spanner_admin_instance_v1/services/*/transports/grpc*",
+            library / "tests/unit/gapic/spanner_admin_instance_v1/*",
+        ],
+        "^\s+options=\\[.*?\\]",
+        """options=[
+                    ("grpc.max_send_message_length", -1),
+                    ("grpc.max_receive_message_length", -1),
+                    ("grpc.keepalive_time_ms", 120000),
+                ]""",
+        flags=re.MULTILINE | re.DOTALL,
+    )
+    if count < 1:
+        raise Exception("Expected replacements for gRPC channel options not made.")
     s.move(
         library,
         excludes=["google/cloud/spanner_admin_instance/**", "*.*", "docs/index.rst", "noxfile.py", "**/gapic_version.py", "testing/constraints-3.7.txt",],
@@ -209,6 +241,21 @@ for library in get_staging_dirs(
 for library in get_staging_dirs(
     spanner_admin_database_default_version, "spanner_admin_database"
 ):
+    count = s.replace(
+        [
+            library / "google/cloud/spanner_admin_database_v1/services/*/transports/grpc*",
+            library / "tests/unit/gapic/spanner_admin_database_v1/*",
+        ],
+        "^\s+options=\\[.*?\\]",
+        """options=[
+                    ("grpc.max_send_message_length", -1),
+                    ("grpc.max_receive_message_length", -1),
+                    ("grpc.keepalive_time_ms", 120000),
+                ]""",
+        flags=re.MULTILINE | re.DOTALL,
+    )
+    if count < 1:
+        raise Exception("Expected replacements for gRPC channel options not made.")
     s.move(
         library,
         excludes=["google/cloud/spanner_admin_database/**", "*.*", "docs/index.rst", "noxfile.py", "**/gapic_version.py", "testing/constraints-3.7.txt",],

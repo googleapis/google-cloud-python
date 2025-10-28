@@ -285,6 +285,7 @@ class InstanceAdminGrpcTransport(InstanceAdminTransport):
                 options=[
                     ("grpc.max_send_message_length", -1),
                     ("grpc.max_receive_message_length", -1),
+                    ("grpc.keepalive_time_ms", 120000),
                 ],
             )
 

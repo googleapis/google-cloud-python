@@ -1702,10 +1702,11 @@ class TestSession(OpenTelemetryBase):
         def _time(_results=[1, 2, 4, 8]):
             return _results.pop(0)
 
-        with mock.patch("time.time", _time):
-            with mock.patch("time.sleep") as sleep_mock:
-                with self.assertRaises(Aborted):
-                    session.run_in_transaction(unit_of_work, timeout_secs=8)
+        with mock.patch("time.time", _time), mock.patch(
+            "google.cloud.spanner_v1._helpers.random.random", return_value=0
+        ), mock.patch("time.sleep") as sleep_mock:
+            with self.assertRaises(Aborted):
+                session.run_in_transaction(unit_of_work, timeout_secs=8)
 
         # unpacking call args into list
         call_args = [call_[0][0] for call_ in sleep_mock.call_args_list]
