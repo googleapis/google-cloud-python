@@ -28,14 +28,15 @@ common = gcp.CommonTemplates()
 templated_files = common.py_library(
     microgenerator=True,
     default_python_version="3.10",
+    unit_test_python_versions=["3.7", "3.8", "3.9", "3.10", "3.11", "3.12", "3.13", "3.14"],
     system_test_python_versions=["3.10"],
 )
 s.move(templated_files, excludes=["docs/multiprocessing.rst", "README.rst"])
 
 s.replace(
-    ".github/workflows/lint.yml",
-    'python-version: "3.8"',
-    'python-version: "3.10"'
+    "noxfile.py",
+    'session.python in \("3.11", "3.12", "3.13"\)',
+    'session.python in ("3.11", "3.12", "3.13", "3.14")'
 )
 
 s.replace(
