@@ -374,6 +374,9 @@ async def test_asyncclient_get_all_read_time():
 
 
 @pytest.mark.asyncio
+@pytest.mark.filterwarnings(
+    "ignore:coroutine method 'aclose' of 'AsyncIter' was never awaited:RuntimeWarning"
+)
 async def test_asyncclient_get_all_unknown_result():
     from google.cloud.firestore_v1.base_client import _BAD_DOC_TEMPLATE
 
