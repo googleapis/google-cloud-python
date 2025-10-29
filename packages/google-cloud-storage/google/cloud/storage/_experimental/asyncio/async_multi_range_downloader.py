@@ -13,6 +13,7 @@
 # limitations under the License.
 
 from __future__ import annotations
+import asyncio
 import google_crc32c
 from google.api_core import exceptions
 from google_crc32c import Checksum
@@ -29,6 +30,7 @@ from google.cloud.storage._experimental.asyncio.async_grpc_client import (
 from io import BytesIO
 from google.cloud import _storage_v2
 from google.cloud.storage.exceptions import DataCorruption
+from google.cloud.storage._helpers import generate_random_56_bit_integer
 
 
 _MAX_READ_RANGES_PER_BIDI_READ_REQUEST = 100
@@ -78,7 +80,7 @@ class AsyncMultiRangeDownloader:
         my_buff2 = BytesIO()
         my_buff3 = BytesIO()
         my_buff4 = any_object_which_provides_BytesIO_like_interface()
-        results_arr = await mrd.download_ranges(
+        await mrd.download_ranges(
             [
                 # (start_byte, bytes_to_read, writeable_buffer)
                 (0, 100, my_buff1),
@@ -88,8 +90,8 @@ class AsyncMultiRangeDownloader:
             ]
         )
 
-        for result in results_arr:
-            print("downloaded bytes", result)
+        # verify data in buffers...
+        assert my_buff2.getbuffer().nbytes == 20
 
 
     """
@@ -175,6 +177,10 @@ class AsyncMultiRangeDownloader:
         self.read_obj_str: Optional[_AsyncReadObjectStream] = None
         self._is_stream_open: bool = False
 
+        self._read_id_to_writable_buffer_dict = {}
+        self._read_id_to_download_ranges_id = {}
+        self._download_ranges_id_to_pending_read_ids = {}
+
     async def open(self) -> None:
         """Opens the bidi-gRPC connection to read from the object.
 
@@ -203,8 +209,8 @@ class AsyncMultiRangeDownloader:
         return
 
     async def download_ranges(
-        self, read_ranges: List[Tuple[int, int, BytesIO]]
-    ) -> List[Result]:
+        self, read_ranges: List[Tuple[int, int, BytesIO]], lock: asyncio.Lock = None
+    ) -> None:
         """Downloads multiple byte ranges from the object into the buffers
         provided by user.
 
@@ -214,9 +220,36 @@ class AsyncMultiRangeDownloader:
             to be provided by the user, and user has to make sure appropriate
             memory is available in the application to avoid out-of-memory crash.
 
-        :rtype: List[:class:`~google.cloud.storage._experimental.asyncio.async_multi_range_downloader.Result`]
-        :returns: A list of ``Result`` objects, where each object corresponds
-                  to a requested range.
+        :type lock: asyncio.Lock
+        :param lock: (Optional) An asyncio lock to synchronize sends and recvs
+            on the underlying bidi-GRPC stream. This is required when multiple
+            coroutines are calling this method concurrently.
+
+            i.e. Example usage with multiple coroutines:
+
+            ```
+            lock = asyncio.Lock()
+            task1 = asyncio.create_task(mrd.download_ranges(ranges1, lock))
+            task2 = asyncio.create_task(mrd.download_ranges(ranges2, lock))
+            await asyncio.gather(task1, task2)
+
+            ```
+
+            If user want to call this method serially from multiple coroutines,
+            then providing a lock is not necessary.
+
+            ```
+            await mrd.download_ranges(ranges1)
+            await mrd.download_ranges(ranges2)
+
+            # ... some other code code...
+
+            ```
+
+
+        :raises ValueError: if the underlying bidi-GRPC stream is not open.
+        :raises ValueError: if the length of read_ranges is more than 1000.
+        :raises DataCorruption: if a checksum mismatch is detected while reading data.
 
         """
 
@@ -228,8 +261,11 @@ class AsyncMultiRangeDownloader:
         if not self._is_stream_open:
             raise ValueError("Underlying bidi-gRPC stream is not open")
 
-        read_id_to_writable_buffer_dict = {}
-        results = []
+        if lock is None:
+            lock = asyncio.Lock()
+
+        _func_id = generate_random_56_bit_integer()
+        read_ids_in_current_func = set()
         for i in range(0, len(read_ranges), _MAX_READ_RANGES_PER_BIDI_READ_REQUEST):
             read_ranges_segment = read_ranges[
                 i : i + _MAX_READ_RANGES_PER_BIDI_READ_REQUEST
@@ -237,10 +273,11 @@ class AsyncMultiRangeDownloader:
 
             read_ranges_for_bidi_req = []
             for j, read_range in enumerate(read_ranges_segment):
-                read_id = i + j
-                read_id_to_writable_buffer_dict[read_id] = read_range[2]
+                read_id = generate_random_56_bit_integer()
+                read_ids_in_current_func.add(read_id)
+                self._read_id_to_download_ranges_id[read_id] = _func_id
+                self._read_id_to_writable_buffer_dict[read_id] = read_range[2]
                 bytes_requested = read_range[1]
-                results.append(Result(bytes_requested))
                 read_ranges_for_bidi_req.append(
                     _storage_v2.ReadRange(
                         read_offset=read_range[0],
@@ -248,12 +285,19 @@ class AsyncMultiRangeDownloader:
                         read_id=read_id,
                     )
                 )
-            await self.read_obj_str.send(
-                _storage_v2.BidiReadObjectRequest(read_ranges=read_ranges_for_bidi_req)
-            )
+            async with lock:
+                await self.read_obj_str.send(
+                    _storage_v2.BidiReadObjectRequest(
+                        read_ranges=read_ranges_for_bidi_req
+                    )
+                )
+        self._download_ranges_id_to_pending_read_ids[
+            _func_id
+        ] = read_ids_in_current_func
 
-        while len(read_id_to_writable_buffer_dict) > 0:
-            response = await self.read_obj_str.recv()
+        while len(self._download_ranges_id_to_pending_read_ids[_func_id]) > 0:
+            async with lock:
+                response = await self.read_obj_str.recv()
 
             if response is None:
                 raise Exception("None response received, something went wrong.")
@@ -277,16 +321,15 @@ class AsyncMultiRangeDownloader:
                     )
 
                 read_id = object_data_range.read_range.read_id
-                buffer = read_id_to_writable_buffer_dict[read_id]
+                buffer = self._read_id_to_writable_buffer_dict[read_id]
                 buffer.write(data)
-                results[read_id].bytes_written += len(data)
 
                 if object_data_range.range_end:
-                    del read_id_to_writable_buffer_dict[
-                        object_data_range.read_range.read_id
-                    ]
-
-        return results
+                    tmp_dn_ranges_id = self._read_id_to_download_ranges_id[read_id]
+                    self._download_ranges_id_to_pending_read_ids[
+                        tmp_dn_ranges_id
+                    ].remove(read_id)
+                    del self._read_id_to_download_ranges_id[read_id]
 
     async def close(self):
         """
