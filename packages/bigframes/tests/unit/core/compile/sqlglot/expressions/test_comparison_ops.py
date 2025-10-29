@@ -110,6 +110,13 @@ def test_le_numeric(scalar_types_df: bpd.DataFrame, snapshot):
     snapshot.assert_match(bf_df.sql, "out.sql")
 
 
+def test_minimum_op(scalar_types_df: bpd.DataFrame, snapshot):
+    bf_df = scalar_types_df[["int64_col", "float64_col"]]
+    sql = utils._apply_binary_op(bf_df, ops.minimum_op, "int64_col", "float64_col")
+
+    snapshot.assert_match(sql, "out.sql")
+
+
 def test_ne_numeric(scalar_types_df: bpd.DataFrame, snapshot):
     bf_df = scalar_types_df[["int64_col", "bool_col"]]
 

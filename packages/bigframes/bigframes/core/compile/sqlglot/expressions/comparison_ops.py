@@ -109,6 +109,11 @@ def _(left: TypedExpr, right: TypedExpr) -> sge.Expression:
     return sge.LTE(this=left_expr, expression=right_expr)
 
 
+@register_binary_op(ops.minimum_op)
+def _(left: TypedExpr, right: TypedExpr) -> sge.Expression:
+    return sge.Least(this=left.expr, expressions=right.expr)
+
+
 @register_binary_op(ops.ne_op)
 def _(left: TypedExpr, right: TypedExpr) -> sge.Expression:
     left_expr = _coerce_bool_to_int(left)
