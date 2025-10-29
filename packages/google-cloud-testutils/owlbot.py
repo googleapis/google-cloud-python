@@ -23,7 +23,11 @@ common = gcp.CommonTemplates()
 # ----------------------------------------------------------------------------
 # Add templated files
 # ----------------------------------------------------------------------------
-templated_files = common.py_library(cov_level=78)
+templated_files = common.py_library(
+    cov_level=78,
+    unit_test_python_versions=["3.7", "3.8", "3.9", "3.10", "3.11", "3.12", "3.13", "3.14"],
+    default_python_version="3.10",
+)
 s.move(
     templated_files,
     excludes=[
@@ -37,6 +41,7 @@ s.move(
         "renovate.json",  # no bundle, ignore test resources
         ".github/workflows/docs.yml",  # no docs to publish
         "README.rst",
+        ".kokoro/presubmit/presubmit.cfg",  # Manually managed
     ],
 )
 
