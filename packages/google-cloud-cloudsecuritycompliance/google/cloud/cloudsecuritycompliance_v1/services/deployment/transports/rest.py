@@ -761,8 +761,7 @@ class DeploymentRestTransport(_BaseDeploymentRestTransport):
 
                 Args:
                     request (~.deployment.CreateFrameworkDeploymentRequest):
-                        The request object. Request message for
-                    CreateFrameworkDeployment API.
+                        The request object. The request message for [CreateFrameworkDeployment][].
                     retry (google.api_core.retry.Retry): Designation of what errors, if any,
                         should be retried.
                     timeout (float): The timeout for this request.
@@ -915,8 +914,7 @@ class DeploymentRestTransport(_BaseDeploymentRestTransport):
 
                 Args:
                     request (~.deployment.DeleteFrameworkDeploymentRequest):
-                        The request object. Request message for
-                    DeleteFrameworkDeployment.
+                        The request object. The request message for [DeleteFrameworkDeployment][].
                     retry (google.api_core.retry.Retry): Designation of what errors, if any,
                         should be retried.
                     timeout (float): The timeout for this request.
@@ -1064,8 +1062,7 @@ class DeploymentRestTransport(_BaseDeploymentRestTransport):
 
                 Args:
                     request (~.deployment.GetCloudControlDeploymentRequest):
-                        The request object. Request message for
-                    GetCloudControlDeployment.
+                        The request object. The request message for [GetCloudControlDeployment][].
                     retry (google.api_core.retry.Retry): Designation of what errors, if any,
                         should be retried.
                     timeout (float): The timeout for this request.
@@ -1076,12 +1073,11 @@ class DeploymentRestTransport(_BaseDeploymentRestTransport):
 
                 Returns:
                     ~.deployment.CloudControlDeployment:
-                        CloudControlDeployment represents
-                    deployment of a CloudControl on a target
-                    resource. Supported target resources are
-                    organizations/{organization},
-                    folders/{folder}, and
-                    projects/{project}.
+                        A cloud control deployment represents the deployment of
+                    a particular cloud control on a target resource.
+                    Supported target resources are
+                    ``organizations/{organizationID}``,
+                    ``folders/{folderID}``, and ``projects/{projectID}``.
 
             """
 
@@ -1219,8 +1215,7 @@ class DeploymentRestTransport(_BaseDeploymentRestTransport):
 
             Args:
                 request (~.deployment.GetFrameworkDeploymentRequest):
-                    The request object. Request message for
-                GetFrameworkDeployment.
+                    The request object. The request message for [GetFrameworkDeployment][].
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -1231,12 +1226,10 @@ class DeploymentRestTransport(_BaseDeploymentRestTransport):
 
             Returns:
                 ~.deployment.FrameworkDeployment:
-                    FrameworkDeployment represents
-                deployment of a Framework on a target
+                    Framework deployments represent the
+                assignment of a framework to a target
                 resource. Supported target resources are
-                organizations/{organization},
-                folders/{folder}, and
-                projects/{project}.
+                organizations, folders, and projects.
 
             """
 
@@ -1374,8 +1367,7 @@ class DeploymentRestTransport(_BaseDeploymentRestTransport):
 
                 Args:
                     request (~.deployment.ListCloudControlDeploymentsRequest):
-                        The request object. Request message for
-                    ListCloudControlDeployments.
+                        The request object. The request message for [ListCloudControlDeployments][].
                     retry (google.api_core.retry.Retry): Designation of what errors, if any,
                         should be retried.
                     timeout (float): The timeout for this request.
@@ -1386,8 +1378,8 @@ class DeploymentRestTransport(_BaseDeploymentRestTransport):
 
                 Returns:
                     ~.deployment.ListCloudControlDeploymentsResponse:
-                        Response message for
-                    ListCloudControlDeployments.
+                        The response message for
+                    [ListCloudControlDeployments][].
 
             """
 
@@ -1531,8 +1523,7 @@ class DeploymentRestTransport(_BaseDeploymentRestTransport):
 
                 Args:
                     request (~.deployment.ListFrameworkDeploymentsRequest):
-                        The request object. Request message for
-                    ListFrameworkDeployments.
+                        The request object. The request message for [ListFrameworkDeployments][].
                     retry (google.api_core.retry.Retry): Designation of what errors, if any,
                         should be retried.
                     timeout (float): The timeout for this request.
@@ -1543,9 +1534,7 @@ class DeploymentRestTransport(_BaseDeploymentRestTransport):
 
                 Returns:
                     ~.deployment.ListFrameworkDeploymentsResponse:
-                        Response message for
-                    ListFrameworkDeployments.
-
+                        The response message for [ListFrameworkDeployments][].
             """
 
             http_options = (

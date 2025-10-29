@@ -5,6 +5,134 @@
   "protoPackage": "google.cloud.cloudsecuritycompliance.v1",
   "schema": "1.0",
   "services": {
+    "Audit": {
+      "clients": {
+        "grpc": {
+          "libraryClient": "AuditClient",
+          "rpcs": {
+            "CreateFrameworkAudit": {
+              "methods": [
+                "create_framework_audit"
+              ]
+            },
+            "GenerateFrameworkAuditScopeReport": {
+              "methods": [
+                "generate_framework_audit_scope_report"
+              ]
+            },
+            "GetFrameworkAudit": {
+              "methods": [
+                "get_framework_audit"
+              ]
+            },
+            "ListFrameworkAudits": {
+              "methods": [
+                "list_framework_audits"
+              ]
+            }
+          }
+        },
+        "grpc-async": {
+          "libraryClient": "AuditAsyncClient",
+          "rpcs": {
+            "CreateFrameworkAudit": {
+              "methods": [
+                "create_framework_audit"
+              ]
+            },
+            "GenerateFrameworkAuditScopeReport": {
+              "methods": [
+                "generate_framework_audit_scope_report"
+              ]
+            },
+            "GetFrameworkAudit": {
+              "methods": [
+                "get_framework_audit"
+              ]
+            },
+            "ListFrameworkAudits": {
+              "methods": [
+                "list_framework_audits"
+              ]
+            }
+          }
+        },
+        "rest": {
+          "libraryClient": "AuditClient",
+          "rpcs": {
+            "CreateFrameworkAudit": {
+              "methods": [
+                "create_framework_audit"
+              ]
+            },
+            "GenerateFrameworkAuditScopeReport": {
+              "methods": [
+                "generate_framework_audit_scope_report"
+              ]
+            },
+            "GetFrameworkAudit": {
+              "methods": [
+                "get_framework_audit"
+              ]
+            },
+            "ListFrameworkAudits": {
+              "methods": [
+                "list_framework_audits"
+              ]
+            }
+          }
+        }
+      }
+    },
+    "CmEnrollmentService": {
+      "clients": {
+        "grpc": {
+          "libraryClient": "CmEnrollmentServiceClient",
+          "rpcs": {
+            "CalculateEffectiveCmEnrollment": {
+              "methods": [
+                "calculate_effective_cm_enrollment"
+              ]
+            },
+            "UpdateCmEnrollment": {
+              "methods": [
+                "update_cm_enrollment"
+              ]
+            }
+          }
+        },
+        "grpc-async": {
+          "libraryClient": "CmEnrollmentServiceAsyncClient",
+          "rpcs": {
+            "CalculateEffectiveCmEnrollment": {
+              "methods": [
+                "calculate_effective_cm_enrollment"
+              ]
+            },
+            "UpdateCmEnrollment": {
+              "methods": [
+                "update_cm_enrollment"
+              ]
+            }
+          }
+        },
+        "rest": {
+          "libraryClient": "CmEnrollmentServiceClient",
+          "rpcs": {
+            "CalculateEffectiveCmEnrollment": {
+              "methods": [
+                "calculate_effective_cm_enrollment"
+              ]
+            },
+            "UpdateCmEnrollment": {
+              "methods": [
+                "update_cm_enrollment"
+              ]
+            }
+          }
+        }
+      }
+    },
     "Config": {
       "clients": {
         "grpc": {

@@ -50,4 +50,5 @@ def sample_list_cloud_control_deployments():
     for response in page_result:
         print(response)
 
+
 # [END cloudsecuritycompliance_v1_generated_Deployment_ListCloudControlDeployments_sync]

@@ -52,4 +52,5 @@ def sample_update_cloud_control():
     # Handle the response
     print(response)
 
+
 # [END cloudsecuritycompliance_v1_generated_Config_UpdateCloudControl_sync]

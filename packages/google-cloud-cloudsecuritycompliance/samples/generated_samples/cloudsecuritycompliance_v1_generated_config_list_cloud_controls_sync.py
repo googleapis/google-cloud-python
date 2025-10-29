@@ -50,4 +50,5 @@ def sample_list_cloud_controls():
     for response in page_result:
         print(response)
 
+
 # [END cloudsecuritycompliance_v1_generated_Config_ListCloudControls_sync]

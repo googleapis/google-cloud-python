@@ -6406,6 +6406,8 @@ def test_get_cloud_control_rest_required_fields(
     unset_fields = transport_class(
         credentials=ga_credentials.AnonymousCredentials()
     ).get_cloud_control._get_unset_required_fields(jsonified_request)
+    # Check that path parameters and body parameters are not mixing in.
+    assert not set(unset_fields) - set(("major_revision_id",))
     jsonified_request.update(unset_fields)
 
     # verify required fields with non-default values are left alone
@@ -6460,7 +6462,7 @@ def test_get_cloud_control_rest_unset_required_fields():
     )
 
     unset_fields = transport.get_cloud_control._get_unset_required_fields({})
-    assert set(unset_fields) == (set(()) & set(("name",)))
+    assert set(unset_fields) == (set(("majorRevisionId",)) & set(("name",)))
 
 
 def test_get_cloud_control_rest_flattened():

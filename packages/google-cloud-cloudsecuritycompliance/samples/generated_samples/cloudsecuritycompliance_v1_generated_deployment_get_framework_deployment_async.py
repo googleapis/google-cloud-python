@@ -49,4 +49,5 @@ async def sample_get_framework_deployment():
     # Handle the response
     print(response)
 
+
 # [END cloudsecuritycompliance_v1_generated_Deployment_GetFrameworkDeployment_async]

@@ -42,13 +42,13 @@ __protobuf__ = proto.module(
 
 
 class ListFrameworksRequest(proto.Message):
-    r"""Request message for listing Frameworks.
+    r"""Request message for [ListFrameworks][].
 
     Attributes:
         parent (str):
             Required. The parent resource name, in the format
-            ``organizations/{organization}/locations/{location}``. Only
-            global location is supported.
+            ``organizations/{organization}/locations/{location}``. The
+            only supported location is ``global``.
         page_size (int):
             Optional. The maximum number of frameworks to return. The
             default value is ``500``.
@@ -76,12 +76,12 @@ class ListFrameworksRequest(proto.Message):
 
 
 class ListFrameworksResponse(proto.Message):
-    r"""Response message for listing Frameworks.
-    Contains a paginated list of Framework resources.
+    r"""The response message for [ListFrameworks][]. Returns a paginated
+    list of Framework resources.
 
     Attributes:
         frameworks (MutableSequence[google.cloud.cloudsecuritycompliance_v1.types.Framework]):
-            The list of Framework resources.
+            The list of framework resources.
         next_page_token (str):
             A pagination token. To retrieve the next page
             of results, call the method again with this
@@ -104,15 +104,17 @@ class ListFrameworksResponse(proto.Message):
 
 
 class GetFrameworkRequest(proto.Message):
-    r"""Request message for getting a Framework.
+    r"""The request message for [GetFramework][].
 
     Attributes:
         name (str):
-            Required. The name of the framework to retrieve. Format:
-            organizations/{organization}/locations/{location}/frameworks/{framework_id}
+            Required. The name of the framework to retrieve, in the
+            format
+            ``organizations/{organization}/locations/{location}/frameworks/{framework_id}``
+            The only supported location is ``global``.
         major_revision_id (int):
-            Optional. The Framework major version to retrieve. If not
-            specified, the most recently updated revision_id is
+            Optional. The framework major version to retrieve. If not
+            specified, the most recently updated ``revision_id`` is
             retrieved.
     """
 
@@ -127,19 +129,20 @@ class GetFrameworkRequest(proto.Message):
 
 
 class CreateFrameworkRequest(proto.Message):
-    r"""Request message for creating a Framework
+    r"""The request message for [CreateFramework][].
 
     Attributes:
         parent (str):
             Required. The parent resource name, in the format
-            ``organizations/{organization}/locations/{location}``.
+            ``organizations/{organization}/locations/{location}``. The
+            only supported location is ``global``.
         framework_id (str):
-            Required. ID of the framework.
-            This is not the full name of the framework.
-            This is the last part of the full name of the
-            framework.
+            Required. The identifier (ID) of the
+            framework. The ID is not the full name of the
+            framework; it's the last part of the full name
+            of the framework.
         framework (google.cloud.cloudsecuritycompliance_v1.types.Framework):
-            Required. The resource being created
+            Required. The resource being created.
     """
 
     parent: str = proto.Field(
@@ -158,18 +161,18 @@ class CreateFrameworkRequest(proto.Message):
 
 
 class UpdateFrameworkRequest(proto.Message):
-    r"""Request message for updating a Framework.
+    r"""The request message for [UpdateFramework][].
 
     Attributes:
         update_mask (google.protobuf.field_mask_pb2.FieldMask):
-            Optional. Field mask is used to specify the fields to be
-            overwritten in the Framework resource by the update. The
-            fields specified in the update_mask are relative to the
-            resource, not the full request. A field will be overwritten
-            if it is in the mask. If the user does not provide a mask
-            then all fields present in the request will be overwritten.
+            Optional. A field mask is used to specify the fields to be
+            overwritten in the framework resource by the update. The
+            fields specified in the ``update_mask`` are relative to the
+            resource, not the full request. A field is overwritten if it
+            is in the mask. If you don't provide a mask then all fields
+            present in the request will be overwritten.
         framework (google.cloud.cloudsecuritycompliance_v1.types.Framework):
-            Required. The resource being updated
+            Required. The resource that is being updated.
         major_revision_id (int):
             Optional. The major version ID of the
             framework to update.
@@ -192,12 +195,13 @@ class UpdateFrameworkRequest(proto.Message):
 
 
 class DeleteFrameworkRequest(proto.Message):
-    r"""Request message for deleting a Framework.
+    r"""Request message for [DeleteFramework][].
 
     Attributes:
         name (str):
-            Required. Name of the resource, in the format
+            Required. The name of the resource, in the format
             ``organizations/{organization}/locations/{location}/frameworks/{framework}``.
+            The only supported location is ``global``.
     """
 
     name: str = proto.Field(
@@ -207,26 +211,27 @@ class DeleteFrameworkRequest(proto.Message):
 
 
 class ListCloudControlsRequest(proto.Message):
-    r"""Request message for listing CloudControls.
+    r"""Request message for [ListCloudControls][].
 
     Attributes:
         parent (str):
             Required. The parent resource name, in the format
-            ``organizations/{organization}/locations/{location}``.
+            ``organizations/{organization}/locations/{location}``. The
+            only supported location is ``global``.
         page_size (int):
-            Optional. The maximum number of CloudControls to return. The
-            default value is ``500``.
+            Optional. The maximum number of cloud controls to return.
+            The default value is ``500``.
 
             If you exceed the maximum value of ``1000``, then the
             service uses the maximum value.
         page_token (str):
-            Optional. A pagination token returned from a
-            previous request to list CloudControls. Provide
-            this token to retrieve the next page of results.
+            Optional. A pagination token that's returned from a previous
+            request to list cloud controls. Provide this token to
+            retrieve the next page of results.
 
-            When paginating, parent provided to
-            ListCloudControls request must match the call
-            that provided the page token.
+            When paginating, the parent that you provide to the
+            [ListCloudControls][google.cloud.cloudsecuritycompliance.v1.Config.ListCloudControls]
+            request must match the call that provided the page token.
     """
 
     parent: str = proto.Field(
@@ -244,7 +249,7 @@ class ListCloudControlsRequest(proto.Message):
 
 
 class ListCloudControlsResponse(proto.Message):
-    r"""Response message for ListCloudControls.
+    r"""The response message for [ListCloudControls][].
 
     Attributes:
         cloud_controls (MutableSequence[google.cloud.cloudsecuritycompliance_v1.types.CloudControl]):
@@ -271,34 +276,45 @@ class ListCloudControlsResponse(proto.Message):
 
 
 class GetCloudControlRequest(proto.Message):
-    r"""Request message for getting a CloudControl.
+    r"""The request message for [GetCloudControl][].
 
     Attributes:
         name (str):
-            Required. The name of the cloudcontrol to retrieve in the
-            format:
-            organizations/{organization}/locations/{location}/cloudControls/{cloud_control}
+            Required. The name of the cloud control to retrieve, in the
+            format
+            ``organizations/{organization}/locations/{location}/cloudControls/{cloud_control}``.
+            The only supported location is ``global``.
+        major_revision_id (int):
+            Optional. The major version of the cloud control to
+            retrieve. If not specified, the most recently updated
+            ``revision_id`` is retrieved.
     """
 
     name: str = proto.Field(
         proto.STRING,
         number=1,
     )
+    major_revision_id: int = proto.Field(
+        proto.INT64,
+        number=2,
+    )
 
 
 class CreateCloudControlRequest(proto.Message):
-    r"""Request message for creating a CloudControl
+    r"""The request message for [CreateCloudControl][].
 
     Attributes:
         parent (str):
             Required. The parent resource name, in the format
-            ``organizations/{organization}/locations/{location}``.
+            ``organizations/{organization}/locations/{location}``. The
+            only supported location is ``global``.
         cloud_control_id (str):
-            Required. ID of the CloudControl. This is the last segment
-            of the CloudControl resource name. Format:
+            Required. The identifier for the cloud control, which is the
+            last segment of the cloud control name. The format is
             ``^[a-zA-Z][a-zA-Z0-9-]{0,61}[a-zA-Z0-9]$``.
         cloud_control (google.cloud.cloudsecuritycompliance_v1.types.CloudControl):
-            Required. The resource being created
+            Required. The cloud control that's being
+            created.
     """
 
     parent: str = proto.Field(
@@ -317,25 +333,27 @@ class CreateCloudControlRequest(proto.Message):
 
 
 class UpdateCloudControlRequest(proto.Message):
-    r"""Request message for UpdateCloudControl.
+    r"""The request message for [UpdateCloudControl][].
 
     Attributes:
         update_mask (google.protobuf.field_mask_pb2.FieldMask):
-            Optional. Field mask is used to specify the fields to be
-            overwritten in the CloudControl resource by the update. The
-            fields specified in the update_mask are relative to the
-            resource, not the full request. A field will be overwritten
-            if it is in the mask. If the user does not provide a mask
-            then all fields present in the request will be overwritten.
-            The fields that can be updated are:
+            Optional. Use a field mask to specify the fields to be
+            overwritten in the cloud control during the update. The
+            fields that you specify in the ``update_mask`` are relative
+            to the cloud control, not the full request. A field is
+            overwritten if it is in the mask. If you don't provide a
+            mask, all fields in the request are updated.
 
-            1. Display_name
-            2. Description
-            3. Parameters
-            4. Rules
-            5. ParameterSpec.
+            You can update the following fields:
+
+            - Display name
+            - Description
+            - Parameters
+            - Rules
+            - Parameter specification
         cloud_control (google.cloud.cloudsecuritycompliance_v1.types.CloudControl):
-            Required. The resource being updated
+            Required. The cloud control that you're
+            updating.
     """
 
     update_mask: field_mask_pb2.FieldMask = proto.Field(
@@ -351,12 +369,14 @@ class UpdateCloudControlRequest(proto.Message):
 
 
 class DeleteCloudControlRequest(proto.Message):
-    r"""Request message for deleting a CloudControl.
+    r"""The request message for [DeleteCloudControl][].
 
     Attributes:
         name (str):
-            Required. Name of the resource, in the format
+            Required. The name of the cloud control to delete, in the
+            format
             ``organizations/{organization}/locations/{location}/CloudControls/{CloudControl}``.
+            The only supported location is ``global``.
     """
 
     name: str = proto.Field(
