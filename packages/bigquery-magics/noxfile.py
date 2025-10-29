@@ -482,7 +482,7 @@ def prerelease_deps(session, protobuf_implementation):
         # TODO(https://github.com/googleapis/python-bigquery-magics/pull/126): Install this again when we relax the pin.
         # "https://github.com/cloudspannerecosystem/spanner-graph-notebook/archive/refs/heads/main.zip",
         "https://github.com/googleapis/python-bigquery/archive/main.zip",
-        "https://github.com/googleapis/python-bigquery-storage/archive/main.zip",
+        "https://github.com/googleapis/google-cloud-python/archive/main.zip#egg=google-cloud-bigquery-storage&subdirectory=packages/google-cloud-bigquery-storage",
     )
     # Print out prerelease package versions
     session.run("pip", "freeze")
