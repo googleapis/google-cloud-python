@@ -193,6 +193,20 @@ class BlobAccessor:
 
         return s
 
+    def _apply_udf_or_raise_error(
+        self, df: bigframes.dataframe.DataFrame, udf, operation_name: str
+    ) -> bigframes.series.Series:
+        """Helper to apply UDF with consistent error handling."""
+        try:
+            res = self._df_apply_udf(df, udf)
+        except Exception as e:
+            raise RuntimeError(f"{operation_name} UDF execution failed: {e}") from e
+
+        if res is None:
+            raise RuntimeError(f"{operation_name} returned None result")
+
+        return res
+
     def read_url(self) -> bigframes.series.Series:
         """Retrieve the read URL of the Blob.
 
@@ -343,6 +357,10 @@ class BlobAccessor:
 
         Returns:
             bigframes.series.Series: JSON series of key-value pairs if verbose=False, or struct with status and content if verbose=True.
+
+        Raises:
+            ValueError: If engine is not 'pillow'.
+            RuntimeError: If EXIF extraction fails or returns invalid structure.
         """
         if engine is None or engine.casefold() != "pillow":
             raise ValueError("Must specify the engine, supported value is 'pillow'.")
@@ -364,22 +382,28 @@ class BlobAccessor:
             container_memory=container_memory,
         ).udf()
 
-        res = self._df_apply_udf(df, exif_udf)
+        res = self._apply_udf_or_raise_error(df, exif_udf, "EXIF extraction")
 
         if verbose:
-            exif_content_series = bbq.parse_json(
-                res._apply_unary_op(ops.JSONValue(json_path="$.content"))
-            ).rename("exif_content")
-            exif_status_series = res._apply_unary_op(
-                ops.JSONValue(json_path="$.status")
-            )
+            try:
+                exif_content_series = bbq.parse_json(
+                    res._apply_unary_op(ops.JSONValue(json_path="$.content"))
+                ).rename("exif_content")
+                exif_status_series = res._apply_unary_op(
+                    ops.JSONValue(json_path="$.status")
+                )
+            except Exception as e:
+                raise RuntimeError(f"Failed to parse EXIF JSON result: {e}") from e
             results_df = bpd.DataFrame(
                 {"status": exif_status_series, "content": exif_content_series}
             )
             results_struct = bbq.struct(results_df).rename("exif_results")
             return results_struct
         else:
-            return bbq.parse_json(res)
+            try:
+                return bbq.parse_json(res)
+            except Exception as e:
+                raise RuntimeError(f"Failed to parse EXIF JSON result: {e}") from e
 
     def image_blur(
         self,
@@ -411,6 +435,10 @@ class BlobAccessor:
 
         Returns:
             bigframes.series.Series: blob Series if destination is GCS. Or bytes Series if destination is BQ. If verbose=True, returns struct with status and content.
+
+        Raises:
+            ValueError: If engine is not 'opencv' or parameters are invalid.
+            RuntimeError: If image blur operation fails.
         """
         if engine is None or engine.casefold() != "opencv":
             raise ValueError("Must specify the engine, supported value is 'opencv'.")
@@ -437,7 +465,7 @@ class BlobAccessor:
             df["ksize_x"], df["ksize_y"] = ksize
             df["ext"] = ext  # type: ignore
             df["verbose"] = verbose
-            res = self._df_apply_udf(df, image_blur_udf)
+            res = self._apply_udf_or_raise_error(df, image_blur_udf, "Image blur")
 
             if verbose:
                 blurred_content_b64_series = res._apply_unary_op(
@@ -486,7 +514,7 @@ class BlobAccessor:
         df["ext"] = ext  # type: ignore
         df["verbose"] = verbose
 
-        res = self._df_apply_udf(df, image_blur_udf)
+        res = self._apply_udf_or_raise_error(df, image_blur_udf, "Image blur")
         res.cache()  # to execute the udf
 
         if verbose:
@@ -540,6 +568,10 @@ class BlobAccessor:
 
         Returns:
             bigframes.series.Series: blob Series if destination is GCS. Or bytes Series if destination is BQ. If verbose=True, returns struct with status and content.
+
+        Raises:
+            ValueError: If engine is not 'opencv' or parameters are invalid.
+            RuntimeError: If image resize operation fails.
         """
         if engine is None or engine.casefold() != "opencv":
             raise ValueError("Must specify the engine, supported value is 'opencv'.")
@@ -570,11 +602,11 @@ class BlobAccessor:
                 container_memory=container_memory,
             ).udf()
 
-            df["dsize_x"], df["dsizye_y"] = dsize
+            df["dsize_x"], df["dsize_y"] = dsize
             df["fx"], df["fy"] = fx, fy
             df["ext"] = ext  # type: ignore
             df["verbose"] = verbose
-            res = self._df_apply_udf(df, image_resize_udf)
+            res = self._apply_udf_or_raise_error(df, image_resize_udf, "Image resize")
 
             if verbose:
                 resized_content_b64_series = res._apply_unary_op(
@@ -620,12 +652,12 @@ class BlobAccessor:
         dst_rt = dst.blob.get_runtime_json_str(mode="RW")
 
         df = df.join(dst_rt, how="outer")
-        df["dsize_x"], df["dsizye_y"] = dsize
+        df["dsize_x"], df["dsize_y"] = dsize
         df["fx"], df["fy"] = fx, fy
         df["ext"] = ext  # type: ignore
         df["verbose"] = verbose
 
-        res = self._df_apply_udf(df, image_resize_udf)
+        res = self._apply_udf_or_raise_error(df, image_resize_udf, "Image resize")
         res.cache()  # to execute the udf
 
         if verbose:
@@ -679,6 +711,10 @@ class BlobAccessor:
 
         Returns:
             bigframes.series.Series: blob Series if destination is GCS. Or bytes Series if destination is BQ. If verbose=True, returns struct with status and content.
+
+        Raises:
+            ValueError: If engine is not 'opencv' or parameters are invalid.
+            RuntimeError: If image normalize operation fails.
         """
         if engine is None or engine.casefold() != "opencv":
             raise ValueError("Must specify the engine, supported value is 'opencv'.")
@@ -707,7 +743,9 @@ class BlobAccessor:
             df["norm_type"] = norm_type
             df["ext"] = ext  # type: ignore
             df["verbose"] = verbose
-            res = self._df_apply_udf(df, image_normalize_udf)
+            res = self._apply_udf_or_raise_error(
+                df, image_normalize_udf, "Image normalize"
+            )
 
             if verbose:
                 normalized_content_b64_series = res._apply_unary_op(
@@ -758,7 +796,7 @@ class BlobAccessor:
         df["ext"] = ext  # type: ignore
         df["verbose"] = verbose
 
-        res = self._df_apply_udf(df, image_normalize_udf)
+        res = self._apply_udf_or_raise_error(df, image_normalize_udf, "Image normalize")
         res.cache()  # to execute the udf
 
         if verbose:
@@ -809,6 +847,10 @@ class BlobAccessor:
                 depend on the "verbose" parameter.
                 Contains the extracted text from the PDF file.
                 Includes error messages if verbosity is enabled.
+
+        Raises:
+            ValueError: If engine is not 'pypdf'.
+            RuntimeError: If PDF extraction fails or returns invalid structure.
         """
         if engine is None or engine.casefold() != "pypdf":
             raise ValueError("Must specify the engine, supported value is 'pypdf'.")
@@ -830,18 +872,29 @@ class BlobAccessor:
 
         df = self.get_runtime_json_str(mode="R").to_frame()
         df["verbose"] = verbose
-        res = self._df_apply_udf(df, pdf_extract_udf)
+
+        res = self._apply_udf_or_raise_error(df, pdf_extract_udf, "PDF extraction")
 
         if verbose:
-            extracted_content_series = res._apply_unary_op(
-                ops.JSONValue(json_path="$.content")
-            )
-            status_series = res._apply_unary_op(ops.JSONValue(json_path="$.status"))
-            results_df = bpd.DataFrame(
-                {"status": status_series, "content": extracted_content_series}
-            )
-            results_struct = bbq.struct(results_df).rename("extracted_results")
-            return results_struct
+            # Extract content with error handling
+            try:
+                content_series = res._apply_unary_op(
+                    ops.JSONValue(json_path="$.content")
+                )
+            except Exception as e:
+                raise RuntimeError(
+                    f"Failed to extract content field from PDF result: {e}"
+                ) from e
+            try:
+                status_series = res._apply_unary_op(ops.JSONValue(json_path="$.status"))
+            except Exception as e:
+                raise RuntimeError(
+                    f"Failed to extract status field from PDF result: {e}"
+                ) from e
+
+            res_df = bpd.DataFrame({"status": status_series, "content": content_series})
+            struct_series = bbq.struct(res_df).rename("extracted_results")
+            return struct_series
         else:
             return res.rename("extracted_content")
 
@@ -884,6 +937,10 @@ class BlobAccessor:
                 depend on the "verbose" parameter.
                 where each string is a chunk of text extracted from PDF.
                 Includes error messages if verbosity is enabled.
+
+        Raises:
+            ValueError: If engine is not 'pypdf'.
+            RuntimeError: If PDF chunking fails or returns invalid structure.
         """
         if engine is None or engine.casefold() != "pypdf":
             raise ValueError("Must specify the engine, supported value is 'pypdf'.")
@@ -915,13 +972,25 @@ class BlobAccessor:
         df["overlap_size"] = overlap_size
         df["verbose"] = verbose
 
-        res = self._df_apply_udf(df, pdf_chunk_udf)
+        res = self._apply_udf_or_raise_error(df, pdf_chunk_udf, "PDF chunking")
+
+        try:
+            content_series = bbq.json_extract_string_array(res, "$.content")
+        except Exception as e:
+            raise RuntimeError(
+                f"Failed to extract content array from PDF chunk result: {e}"
+            ) from e
 
         if verbose:
-            chunked_content_series = bbq.json_extract_string_array(res, "$.content")
-            status_series = res._apply_unary_op(ops.JSONValue(json_path="$.status"))
+            try:
+                status_series = res._apply_unary_op(ops.JSONValue(json_path="$.status"))
+            except Exception as e:
+                raise RuntimeError(
+                    f"Failed to extract status field from PDF chunk result: {e}"
+                ) from e
+
             results_df = bpd.DataFrame(
-                {"status": status_series, "content": chunked_content_series}
+                {"status": status_series, "content": content_series}
             )
             resultes_struct = bbq.struct(results_df).rename("chunked_results")
             return resultes_struct
@@ -962,6 +1031,10 @@ class BlobAccessor:
                 depend on the "verbose" parameter.
                 Contains the transcribed text from the audio file.
                 Includes error messages if verbosity is enabled.
+
+        Raises:
+            ValueError: If engine is not 'bigquery'.
+            RuntimeError: If the transcription result structure is invalid.
         """
         if engine.casefold() != "bigquery":
             raise ValueError("Must specify the engine, supported value is 'bigquery'.")
@@ -983,6 +1056,10 @@ class BlobAccessor:
             endpoint=model_name,
             model_params={"generationConfig": {"temperature": 0.0}},
         )
+
+        # Validate that the result is not None
+        if transcribed_results is None:
+            raise RuntimeError("Transcription returned None result")
 
         transcribed_content_series = transcribed_results.struct.field("result").rename(
             "transcribed_content"
