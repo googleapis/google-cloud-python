@@ -10,7 +10,7 @@ templated_files = common.py_library(
     microgenerator=True,
     cov_level=99,
     unit_test_external_dependencies=["click"],
-    unit_test_python_versions=["3.7", "3.8", "3.9", "3.10", "3.11", "3.12", "3.13"],
+    unit_test_python_versions=["3.7", "3.8", "3.9", "3.10", "3.11", "3.12", "3.13", "3.14"],
     default_python_version="3.10",
 )
 s.move(templated_files, excludes=[
@@ -38,6 +38,13 @@ s.replace(
     "noxfile.py",
     '"--cov=google",',
     '"--cov=google_auth_oauthlib",',
+)
+
+# Skip Cpp Unittest in 3.11, 3.12, 3.13, and 3.14
+s.replace(
+    "noxfile.py",
+    '''session.python in \("3.11", "3.12", "3.13"\)''',
+    '''session.python in ("3.11", "3.12", "3.13", "3.14")'''
 )
 
 s.shell.run(["nox", "-s", "blacken"], hide_output=False)
