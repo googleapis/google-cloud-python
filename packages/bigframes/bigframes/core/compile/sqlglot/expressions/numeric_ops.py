@@ -377,6 +377,14 @@ def _(left: TypedExpr, right: TypedExpr) -> sge.Expression:
         return result
 
 
+@register_binary_op(ops.round_op)
+def _(expr: TypedExpr, n_digits: TypedExpr) -> sge.Expression:
+    rounded = sge.Round(this=expr.expr, decimals=n_digits.expr)
+    if expr.dtype == dtypes.INT_DTYPE:
+        return sge.Cast(this=rounded, to="INT64")
+    return rounded
+
+
 @register_binary_op(ops.sub_op)
 def _(left: TypedExpr, right: TypedExpr) -> sge.Expression:
     if dtypes.is_numeric(left.dtype) and dtypes.is_numeric(right.dtype):

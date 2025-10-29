@@ -167,6 +167,20 @@ def test_pos(scalar_types_df: bpd.DataFrame, snapshot):
     snapshot.assert_match(sql, "out.sql")
 
 
+def test_round(scalar_types_df: bpd.DataFrame, snapshot):
+    bf_df = scalar_types_df[["int64_col", "float64_col"]]
+
+    bf_df["int_round_0"] = bf_df["int64_col"].round(0)
+    bf_df["int_round_1"] = bf_df["int64_col"].round(1)
+    bf_df["int_round_m1"] = bf_df["int64_col"].round(-1)
+
+    bf_df["float_round_0"] = bf_df["float64_col"].round(0)
+    bf_df["float_round_1"] = bf_df["float64_col"].round(1)
+    bf_df["float_round_m1"] = bf_df["float64_col"].round(-1)
+
+    snapshot.assert_match(bf_df.sql, "out.sql")
+
+
 def test_sqrt(scalar_types_df: bpd.DataFrame, snapshot):
     col_name = "float64_col"
     bf_df = scalar_types_df[[col_name]]
