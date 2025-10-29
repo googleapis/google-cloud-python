@@ -63,8 +63,7 @@ class AsyncAggregationQuery(BaseAggregationQuery):
         This sends a ``RunAggregationQuery`` RPC and returns a list of aggregation results in the stream of ``RunAggregationQueryResponse`` messages.
 
         Args:
-            transaction
-                (Optional[:class:`~google.cloud.firestore_v1.transaction.Transaction`]):
+            transaction (Optional[:class:`~google.cloud.firestore_v1.transaction.Transaction`]):
                 An existing transaction that this query will run in.
                 If a ``transaction`` is used and it already has write operations
                 added, this method cannot be used (i.e. read-after-write is not
@@ -73,8 +72,7 @@ class AsyncAggregationQuery(BaseAggregationQuery):
                 should be retried.  Defaults to a system-specified policy.
             timeout (float): The timeout for this request.  Defaults to a
                 system-specified value.
-            explain_options
-                (Optional[:class:`~google.cloud.firestore_v1.query_profile.ExplainOptions`]):
+            explain_options (Optional[:class:`~google.cloud.firestore_v1.query_profile.ExplainOptions`]):
                 Options to enable query profiling for this query. When set,
                 explain_metrics will be available on the returned generator.
             read_time (Optional[datetime.datetime]): If set, reads documents as they were at the given
@@ -134,8 +132,7 @@ class AsyncAggregationQuery(BaseAggregationQuery):
                 system-specified policy.
             timeout (Optional[float]): The timeout for this request. Defaults
                 to a system-specified value.
-            explain_options
-                (Optional[:class:`~google.cloud.firestore_v1.query_profile.ExplainOptions`]):
+            explain_options (Optional[:class:`~google.cloud.firestore_v1.query_profile.ExplainOptions`]):
                 Options to enable query profiling for this query. When set,
                 explain_metrics will be available on the returned generator.
             read_time (Optional[datetime.datetime]): If set, reads documents as they were at the given
@@ -200,8 +197,7 @@ class AsyncAggregationQuery(BaseAggregationQuery):
                 system-specified policy.
             timeout (Optional[float]): The timeout for this request. Defaults
                 to a system-specified value.
-            explain_options
-                (Optional[:class:`~google.cloud.firestore_v1.query_profile.ExplainOptions`]):
+            explain_options (Optional[:class:`~google.cloud.firestore_v1.query_profile.ExplainOptions`]):
                 Options to enable query profiling for this query. When set,
                 explain_metrics will be available on the returned generator.
             read_time (Optional[datetime.datetime]): If set, reads documents as they were at the given
