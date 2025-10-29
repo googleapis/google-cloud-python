@@ -4,6 +4,19 @@
 
 [1]: https://pypi.org/project/google-cloud-core/#history
 
+## [2.5.0](https://github.com/googleapis/python-cloud-core/compare/v2.4.3...v2.5.0) (2025-10-27)
+
+
+### Features
+
+* Add Python 3.14 support ([#333](https://github.com/googleapis/python-cloud-core/issues/333)) ([c26e587](https://github.com/googleapis/python-cloud-core/commit/c26e587a79b1905f4d64e409b853d9e50bbb6c17))
+
+
+### Bug Fixes
+
+* Remove setup.cfg configuration for creating universal wheels ([#332](https://github.com/googleapis/python-cloud-core/issues/332)) ([78ce8a6](https://github.com/googleapis/python-cloud-core/commit/78ce8a6f7c781cf2585131d7961beec9069a206c))
+* Resolve issue where pre-release versions of dependencies are installed ([#329](https://github.com/googleapis/python-cloud-core/issues/329)) ([ab9785d](https://github.com/googleapis/python-cloud-core/commit/ab9785d1bce1d50a03ff41d9b377dc7632772105))
+
 ## [2.4.3](https://github.com/googleapis/python-cloud-core/compare/v2.4.2...v2.4.3) (2025-03-10)
 
 
