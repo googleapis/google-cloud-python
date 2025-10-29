@@ -40,10 +40,16 @@ def sample_create_framework_deployment():
 
     # Initialize request argument(s)
     framework_deployment = cloudsecuritycompliance_v1.FrameworkDeployment()
-    framework_deployment.target_resource_config.existing_target_resource = "existing_target_resource_value"
+    framework_deployment.target_resource_config.existing_target_resource = (
+        "existing_target_resource_value"
+    )
     framework_deployment.framework.framework = "framework_value"
-    framework_deployment.cloud_control_metadata.cloud_control_details.name = "name_value"
-    framework_deployment.cloud_control_metadata.cloud_control_details.major_revision_id = 1811
+    framework_deployment.cloud_control_metadata.cloud_control_details.name = (
+        "name_value"
+    )
+    framework_deployment.cloud_control_metadata.cloud_control_details.major_revision_id = (
+        1811
+    )
     framework_deployment.cloud_control_metadata.enforcement_mode = "AUDIT"
 
     request = cloudsecuritycompliance_v1.CreateFrameworkDeploymentRequest(
@@ -60,5 +66,6 @@ def sample_create_framework_deployment():
 
     # Handle the response
     print(response)
+
 
 # [END cloudsecuritycompliance_v1_generated_Deployment_CreateFrameworkDeployment_sync]

@@ -23,6 +23,7 @@ import proto  # type: ignore
 __protobuf__ = proto.module(
     package="google.cloud.cloudsecuritycompliance.v1",
     manifest={
+        "RegulatoryControlResponsibilityType",
         "EnforcementMode",
         "FrameworkCategory",
         "CloudControlCategory",
@@ -48,25 +49,45 @@ __protobuf__ = proto.module(
         "Rule",
         "CELExpression",
         "OperationMetadata",
+        "ControlFamily",
     },
 )
 
 
+class RegulatoryControlResponsibilityType(proto.Enum):
+    r"""The responsibility type for the regulatory control.
+
+    Values:
+        REGULATORY_CONTROL_RESPONSIBILITY_TYPE_UNSPECIFIED (0):
+            Default value. This value is unused.
+        GOOGLE (1):
+            Google's responsibility.
+        CUSTOMER (2):
+            Your responsibility.
+        SHARED (3):
+            Shared responsibility.
+    """
+    REGULATORY_CONTROL_RESPONSIBILITY_TYPE_UNSPECIFIED = 0
+    GOOGLE = 1
+    CUSTOMER = 2
+    SHARED = 3
+
+
 class EnforcementMode(proto.Enum):
-    r"""The enforcement mode of the cloud control.
+    r"""The enforcement mode for the cloud control.
 
     Values:
         ENFORCEMENT_MODE_UNSPECIFIED (0):
             Default value. This value is unused.
         PREVENTIVE (1):
             The cloud control is enforced to prevent
-            resource non-compliance.
+            non-compliance.
         DETECTIVE (2):
             The cloud control is enforced to detect
-            resource non-compliance.
+            non-compliance.
         AUDIT (3):
-            The cloud control is enforced to audit
-            resource non-compliance.
+            The cloud control is enforced to audit for
+            non-compliance.
     """
     ENFORCEMENT_MODE_UNSPECIFIED = 0
     PREVENTIVE = 1
@@ -75,21 +96,21 @@ class EnforcementMode(proto.Enum):
 
 
 class FrameworkCategory(proto.Enum):
-    r"""The category of the framework.
+    r"""The category for the framework.
 
     Values:
         FRAMEWORK_CATEGORY_UNSPECIFIED (0):
             Default value. This value is unused.
         INDUSTRY_DEFINED_STANDARD (1):
-            Standard framework
+            An industry-defined framework.
         ASSURED_WORKLOADS (2):
-            Assured Workloads framework
+            An Assured Workloads framework.
         DATA_SECURITY (3):
-            Data Security framework
+            A data security posture framework.
         GOOGLE_BEST_PRACTICES (4):
-            Google Best Practices framework
+            A Google's best practices framework.
         CUSTOM_FRAMEWORK (5):
-            User created framework.
+            A user-created framework.
     """
     FRAMEWORK_CATEGORY_UNSPECIFIED = 0
     INDUSTRY_DEFINED_STANDARD = 1
@@ -100,42 +121,44 @@ class FrameworkCategory(proto.Enum):
 
 
 class CloudControlCategory(proto.Enum):
-    r"""The category of the cloud control.
+    r"""The category for the cloud control.
 
     Values:
         CLOUD_CONTROL_CATEGORY_UNSPECIFIED (0):
             Default value. This value is unused.
         CC_CATEGORY_INFRASTRUCTURE (1):
-            Infrastructure
+            The infrastructure security category.
         CC_CATEGORY_ARTIFICIAL_INTELLIGENCE (2):
-            Artificial Intelligence
+            The artificial intelligence category.
         CC_CATEGORY_PHYSICAL_SECURITY (3):
-            Physical Security
+            The physical security category.
         CC_CATEGORY_DATA_SECURITY (4):
-            Data Security
+            The data security category.
         CC_CATEGORY_NETWORK_SECURITY (5):
-            Network Security
+            The network security category.
         CC_CATEGORY_INCIDENT_MANAGEMENT (6):
-            Incident Management
+            The incident management category.
         CC_CATEGORY_IDENTITY_AND_ACCESS_MANAGEMENT (7):
-            Identity & Access Management
+            The identity and access management category.
         CC_CATEGORY_ENCRYPTION (8):
-            Encryption
+            The encryption category.
         CC_CATEGORY_LOGS_MANAGEMENT_AND_INFRASTRUCTURE (9):
-            Logs Management & Infrastructure
+            The logs management and infrastructure
+            category.
         CC_CATEGORY_HR_ADMIN_AND_PROCESSES (10):
-            HR, Admin & Processes
+            The HR, admin, and processes category.
         CC_CATEGORY_THIRD_PARTY_AND_SUB_PROCESSOR_MANAGEMENT (11):
-            Third Party & Sub-Processor Management
+            The third-party and sub-processor management
+            category.
         CC_CATEGORY_LEGAL_AND_DISCLOSURES (12):
-            Legal & Disclosures
+            The legal and disclosures category.
         CC_CATEGORY_VULNERABILITY_MANAGEMENT (13):
-            Vulnerability Management
+            The vulnerability management category.
         CC_CATEGORY_PRIVACY (14):
-            Privacy
+            The privacy category.
         CC_CATEGORY_BCDR (15):
-            BCDR (Business Continuity and Disaster
-            Recovery)
+            The business continuity and disaster recovery
+            (BCDR) category.
     """
     CLOUD_CONTROL_CATEGORY_UNSPECIFIED = 0
     CC_CATEGORY_INFRASTRUCTURE = 1
@@ -156,7 +179,7 @@ class CloudControlCategory(proto.Enum):
 
 
 class CloudProvider(proto.Enum):
-    r"""The cloud platform.
+    r"""The cloud provider that's associated with the cloud control.
 
     Values:
         CLOUD_PROVIDER_UNSPECIFIED (0):
@@ -179,50 +202,38 @@ class Severity(proto.Enum):
 
     Values:
         SEVERITY_UNSPECIFIED (0):
-            This value is used for findings when a source
-            doesn't write a severity value.
+            Default value. This value is unused.
         CRITICAL (1):
-            Vulnerability:
+            A critical vulnerability is easily
+            discoverable by an external actor, exploitable,
+            and results in the direct ability to execute
+            arbitrary code, exfiltrate data, and otherwise
+            gain additional access and privileges to cloud
+            resources and workloads. Examples include
+            publicly accessible unprotected user data and
+            public SSH access with weak or no passwords.
 
-            A critical vulnerability is easily discoverable
-            by an external actor, exploitable, and results
-            in the direct ability to execute arbitrary code,
-            exfiltrate data, and otherwise gain additional
-            access and privileges to cloud resources and
-            workloads. Examples include publicly accessible
-            unprotected user data and public SSH access with
-            weak or no passwords.
-
-            Threat:
-
-            Indicates a threat that is able to access,
+            A critical threat is a threat that can access,
             modify, or delete data or execute unauthorized
             code within existing resources.
         HIGH (2):
-            Vulnerability:
-
-            A high risk vulnerability can be easily
+            A high-risk vulnerability can be easily
             discovered and exploited in combination with
-            other vulnerabilities in order to gain direct
-            access and the ability to execute arbitrary
-            code, exfiltrate data, and otherwise gain
-            additional access and privileges to cloud
-            resources and workloads. An example is a
-            database with weak or no passwords that is only
-            accessible internally. This database could
-            easily be compromised by an actor that had
-            access to the internal network.
+            other vulnerabilities to gain direct access and
+            the ability to execute arbitrary code,
+            exfiltrate data, and otherwise gain additional
+            access and privileges to cloud resources and
+            workloads. An example is a database with weak or
+            no passwords that is only accessible internally.
+            This database could easily be compromised by an
+            actor that had access to the internal network.
 
-            Threat:
-
-            Indicates a threat that is able to create new
-            computational resources in an environment but
-            not able to access data or execute code in
+            A high-risk threat is a threat that can create
+            new computational resources in an environment
+            but can't access data or execute code in
             existing resources.
         MEDIUM (3):
-            Vulnerability:
-
-            A medium risk vulnerability could be used by an
+            A medium-risk vulnerability can be used by an
             actor to gain access to resources or privileges
             that enable them to eventually (through multiple
             steps or a complex exploit) gain access and the
@@ -234,15 +245,11 @@ class Severity(proto.Enum):
             manipulate a project the service account was not
             intended to.
 
-            Threat:
-
-            Indicates a threat that is able to cause
-            operational impact but may not access data or
-            execute unauthorized code.
+            A medium-risk threat can cause operational
+            impact but might not access data or execute
+            unauthorized code.
         LOW (4):
-            Vulnerability:
-
-            A low risk vulnerability hampers a security
+            A low-risk vulnerability hampers a security
             organization's ability to detect vulnerabilities
             or active threats in their deployment, or
             prevents the root cause investigation of
@@ -250,10 +257,8 @@ class Severity(proto.Enum):
             logs being disabled for resource configurations
             and access.
 
-            Threat:
-
-            Indicates a threat that has obtained minimal
-            access to an environment but is not able to
+            A low-risk threat is a threat that has obtained
+            minimal access to an environment but can't
             access data, execute code, or create resources.
     """
     SEVERITY_UNSPECIFIED = 0
@@ -270,11 +275,13 @@ class RuleActionType(proto.Enum):
         RULE_ACTION_TYPE_UNSPECIFIED (0):
             Default value. This value is unused.
         RULE_ACTION_TYPE_PREVENTIVE (1):
-            Preventative action type.
+            The rule is intended to prevent
+            non-compliance.
         RULE_ACTION_TYPE_DETECTIVE (2):
-            Detective action type.
+            The rule is intended to detect
+            non-compliance.
         RULE_ACTION_TYPE_AUDIT (3):
-            Audit action type.
+            The rule is intended to audit non-compliance.
     """
     RULE_ACTION_TYPE_UNSPECIFIED = 0
     RULE_ACTION_TYPE_PREVENTIVE = 1
@@ -283,20 +290,22 @@ class RuleActionType(proto.Enum):
 
 
 class TargetResourceType(proto.Enum):
-    r"""TargetResourceType represents the type of resource that a
-    control or framework can be applied to.
+    r"""The type of resource that a control or framework can be
+    applied to.
 
     Values:
         TARGET_RESOURCE_TYPE_UNSPECIFIED (0):
             Default value. This value is unused.
         TARGET_RESOURCE_CRM_TYPE_ORG (1):
-            Target resource is an Organization.
+            The target resource is a Google Cloud
+            organization.
         TARGET_RESOURCE_CRM_TYPE_FOLDER (2):
-            Target resource is a Folder.
+            The target resource is a folder.
         TARGET_RESOURCE_CRM_TYPE_PROJECT (3):
-            Target resource is a Project.
+            The target resource is a project.
         TARGET_RESOURCE_TYPE_APPLICATION (4):
-            Target resource is an Application.
+            The target resource is an application in App
+            Hub.
     """
     TARGET_RESOURCE_TYPE_UNSPECIFIED = 0
     TARGET_RESOURCE_CRM_TYPE_ORG = 1
@@ -306,56 +315,57 @@ class TargetResourceType(proto.Enum):
 
 
 class Framework(proto.Message):
-    r"""A Framework is a collection of CloudControls to address
-    security and compliance requirements. Frameworks can be used for
-    prevention, detection, and auditing. They can be either
-    built-in, industry-standard frameworks provided by GCP/AZURE/AWS
-    (e.g., NIST, FedRAMP) or custom frameworks created by users.
+    r"""A framework is a collection of cloud controls and regulatory
+    controls that represent security best practices or
+    industry-defined standards such as FedRAMP or NIST.
 
     Attributes:
         name (str):
-            Required. Identifier. The name of the framework. Format:
-            organizations/{organization}/locations/{location}/frameworks/{framework_id}
+            Required. Identifier. The name of the framework, in the
+            format
+            ``organizations/{organization}/locations/{location}/frameworks/{framework_id}``.
+            The only supported location is ``global``.
         major_revision_id (int):
-            Output only. Major revision of the framework
-            incremented in ascending order.
+            Output only. The major version of the
+            framework, which is incremented in ascending
+            order.
         display_name (str):
-            Optional. Display name of the framework. The
-            maximum length is 200 characters.
+            Optional. The friendly name of the framework.
+            The maximum length is 200 characters.
         description (str):
             Optional. The description of the framework.
             The maximum length is 2000 characters.
         type_ (google.cloud.cloudsecuritycompliance_v1.types.Framework.FrameworkType):
-            Output only. The type of the framework. The default is
-            TYPE_CUSTOM.
+            Output only. The type of framework.
         cloud_control_details (MutableSequence[google.cloud.cloudsecuritycompliance_v1.types.CloudControlDetails]):
-            Optional. The details of the cloud controls
+            Optional. The cloud control details that are
             directly added without any grouping in the
             framework.
         category (MutableSequence[google.cloud.cloudsecuritycompliance_v1.types.FrameworkCategory]):
             Optional. The category of the framework.
         supported_cloud_providers (MutableSequence[google.cloud.cloudsecuritycompliance_v1.types.CloudProvider]):
-            Output only. cloud providers supported
+            Output only. The cloud providers that are
+            supported by the framework.
         supported_target_resource_types (MutableSequence[google.cloud.cloudsecuritycompliance_v1.types.TargetResourceType]):
-            Output only. target resource types supported
-            by the Framework.
+            Output only. The target resource types that
+            are supported by the framework.
         supported_enforcement_modes (MutableSequence[google.cloud.cloudsecuritycompliance_v1.types.EnforcementMode]):
             Output only. The supported enforcement modes
             of the framework.
     """
 
     class FrameworkType(proto.Enum):
-        r"""The type of the framework.
+        r"""The type of framework.
 
         Values:
             FRAMEWORK_TYPE_UNSPECIFIED (0):
                 Default value. This value is unused.
             BUILT_IN (1):
-                The framework is a built-in framework if it
-                is created and managed by GCP.
+                A framework that's provided and managed by
+                Google.
             CUSTOM (2):
-                The framework is a custom framework if it is
-                created and managed by the user.
+                A framework that's created and managed by
+                you.
         """
         FRAMEWORK_TYPE_UNSPECIFIED = 0
         BUILT_IN = 1
@@ -414,22 +424,22 @@ class Framework(proto.Message):
 
 
 class CloudControlDetails(proto.Message):
-    r"""CloudControlDetails contains the details of a CloudControl.
+    r"""The details of a cloud control.
 
     Attributes:
         name (str):
-            Required. The name of the CloudControl in the
-            format:
-            “organizations/{organization}/locations/{location}/
-            cloudControls/{cloud-control}”
+            Required. The name of the cloud control, in the format
+            ``organizations/{organization}/locations/{location}/cloudControls/{cloud-control}``.
+            The only supported location is ``global``.
         major_revision_id (int):
-            Required. Major revision of cloudcontrol
+            Required. The major version of the cloud
+            control.
         parameters (MutableSequence[google.cloud.cloudsecuritycompliance_v1.types.Parameter]):
-            Optional. Parameters is a key-value pair that
-            is required by the CloudControl. The
-            specification of these parameters will be
-            present in cloudcontrol.Eg: { "name":
-            "location","value": "us-west-1"}.
+            Optional. Parameters are key-value pairs that let you
+            provide your custom location requirements, environment
+            requirements, or other settings that are relevant to the
+            cloud control. An example parameter is
+            ``{"name": "location","value": "us-west-1"}``.
     """
 
     name: str = proto.Field(
@@ -448,19 +458,22 @@ class CloudControlDetails(proto.Message):
 
 
 class FrameworkReference(proto.Message):
-    r"""FrameworkReference contains the reference of a framework.
+    r"""The reference of a framework, in the format
+    ``organizations/{organization}/locations/{location}/frameworks/{framework}``.
+    The only supported location is ``global``.
+
 
     .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
 
     Attributes:
         framework (str):
-            Required. In the format:
-
-            organizations/{org}/locations/{location}/frameworks/{framework}
+            Required. The major version of the framework.
+            If not specified, the version corresponds to the
+            latest version of the framework.
         major_revision_id (int):
-            Optional. Major revision id of the framework.
-            If not specified, corresponds to the latest
-            revision of the framework.
+            Optional. The major version of the framework.
+            If not specified, the version corresponds to the
+            latest version of the framework.
 
             This field is a member of `oneof`_ ``_major_revision_id``.
     """
@@ -477,13 +490,15 @@ class FrameworkReference(proto.Message):
 
 
 class Parameter(proto.Message):
-    r"""Parameters is a key-value pair.
+    r"""Parameters are key-value pairs that let you provide your
+    custom location requirements, environment requirements, or other
+    settings that are relevant to the cloud control.
 
     Attributes:
         name (str):
-            Required. The name of the parameter.
+            Required. The name or key of the parameter.
         parameter_value (google.cloud.cloudsecuritycompliance_v1.types.ParamValue):
-            Required. The value of the parameter
+            Required. The value of the parameter.
     """
 
     name: str = proto.Field(
@@ -498,63 +513,79 @@ class Parameter(proto.Message):
 
 
 class CloudControl(proto.Message):
-    r"""A CloudControl is the fundamental unit encapsulating the rules to
-    meet a specific security or compliance intent. It can contain
-    various rule types (like Organization Policies, CEL expressions,
-    etc.) enabling different enforcement modes (Preventive, Detective,
-    Audit). CloudControls are often parameterized for reusability and
-    can be either BUILT_IN (provided by Google) or CUSTOM (defined by
-    the user).
+    r"""A cloud control is a set of rules and associated metadata
+    that you can use to define your organization's security or
+    compliance intent.
 
     Attributes:
         name (str):
-            Required. Identifier. The resource name of the cloud
-            control. Format:
-            organizations/{organization}/locations/{location}/cloudControls/{cloud_control_id}
+            Required. Identifier. The name of the cloud control, in the
+            format
+            ``organizations/{organization}/locations/{location}/cloudControls/{cloud_control_id}``.
+            The only supported location is ``global``.
         major_revision_id (int):
-            Output only. Major revision of the cloud
-            control incremented in ascending order.
+            Output only. The major version of the cloud
+            control, which is incremented in ascending
+            order.
         description (str):
             Optional. A description of the cloud control.
             The maximum length is 2000 characters.
         display_name (str):
-            Optional. The display name of the cloud
+            Optional. The friendly name of the cloud
             control. The maximum length is 200 characters.
         supported_enforcement_modes (MutableSequence[google.cloud.cloudsecuritycompliance_v1.types.EnforcementMode]):
-            Output only. The supported enforcement mode
-            of the cloud control. Default is DETECTIVE.
+            Output only. The supported enforcement modes
+            for the cloud control.
         parameter_spec (MutableSequence[google.cloud.cloudsecuritycompliance_v1.types.ParameterSpec]):
-            Optional. The parameter spec of the cloud
-            control.
+            Optional. The parameter specifications for
+            the cloud control.
         rules (MutableSequence[google.cloud.cloudsecuritycompliance_v1.types.Rule]):
-            Optional. The Policy to be enforced to
-            prevent/detect resource non-compliance.
+            Optional. The rules that you can enforce to
+            meet your security or compliance intent.
         severity (google.cloud.cloudsecuritycompliance_v1.types.Severity):
-            Optional. The severity of findings generated
-            by the cloud control.
+            Optional. The severity of the findings that
+            are generated by the cloud control.
         finding_category (str):
-            Optional. The finding_category of the cloud control. The
-            maximum length is 255 characters.
+            Optional. The finding category for the cloud
+            control findings. The maximum length is 255
+            characters.
         supported_cloud_providers (MutableSequence[google.cloud.cloudsecuritycompliance_v1.types.CloudProvider]):
-            Optional. cloud providers supported
+            Optional. The supported cloud providers.
         related_frameworks (MutableSequence[str]):
-            Output only. The Frameworks that include this
-            CloudControl
+            Output only. The frameworks that include this
+            cloud control.
         remediation_steps (str):
-            Optional. The remediation steps for the
-            findings generated by the cloud control. The
-            maximum length is 400 characters.
+            Optional. The remediation steps for the cloud
+            control findings. The maximum length is 400
+            characters.
         categories (MutableSequence[google.cloud.cloudsecuritycompliance_v1.types.CloudControlCategory]):
-            Optional. The categories of the cloud
+            Optional. The categories for the cloud
             control.
         create_time (google.protobuf.timestamp_pb2.Timestamp):
-            Output only. The last updated time of the cloud control. The
-            create_time is used because a new CC is created whenever we
-            update an existing CC.
+            Output only. The time that the cloud control was last
+            updated. ``create_time`` is used because a new cloud control
+            is created whenever an existing cloud control is updated.
         supported_target_resource_types (MutableSequence[google.cloud.cloudsecuritycompliance_v1.types.TargetResourceType]):
-            Optional. target resource types supported by
-            the CloudControl.
+            Optional. The target resource types that are
+            supported by the cloud control.
     """
+
+    class Type(proto.Enum):
+        r"""The type of cloud control.
+
+        Values:
+            TYPE_UNSPECIFIED (0):
+                Default value. This value is unused.
+            CUSTOM (1):
+                A cloud control that's created and managed by
+                you.
+            BUILT_IN (2):
+                A cloud control that's provided and managed
+                by Google.
+        """
+        TYPE_UNSPECIFIED = 0
+        CUSTOM = 1
+        BUILT_IN = 2
 
     name: str = proto.Field(
         proto.STRING,
@@ -631,48 +662,50 @@ class CloudControl(proto.Message):
 
 
 class ParameterSpec(proto.Message):
-    r"""A parameter spec of the cloud control.
+    r"""The parameter specification for the cloud control.
 
     Attributes:
         name (str):
             Required. The name of the parameter.
         display_name (str):
-            Optional. The display name of the parameter.
+            Optional. The friendly name of the parameter.
             The maximum length is 200 characters.
         description (str):
             Optional. The description of the parameter.
             The maximum length is 2000 characters.
         is_required (bool):
-            Required. if the parameter is required
+            Required. Whether the parameter is required.
         value_type (google.cloud.cloudsecuritycompliance_v1.types.ParameterSpec.ValueType):
-            Required. Parameter value type.
+            Required. The parameter value type.
         default_value (google.cloud.cloudsecuritycompliance_v1.types.ParamValue):
             Optional. The default value of the parameter.
         substitution_rules (MutableSequence[google.cloud.cloudsecuritycompliance_v1.types.ParameterSubstitutionRule]):
-            Optional. List of parameter substitutions.
+            Optional. The list of parameter
+            substitutions.
         sub_parameters (MutableSequence[google.cloud.cloudsecuritycompliance_v1.types.ParameterSpec]):
-            Optional. ParameterSpec for oneof attributes.
+            Optional. The parameter specification for ``oneOf``
+            attributes.
         validation (google.cloud.cloudsecuritycompliance_v1.types.Validation):
-            Optional. The allowed set of values for the
+            Optional. The permitted set of values for the
             parameter.
     """
 
     class ValueType(proto.Enum):
-        r"""The type of the parameter value.
+        r"""The type of parameter value.
 
         Values:
             VALUE_TYPE_UNSPECIFIED (0):
                 Default value. This value is unused.
             STRING (3):
-                String value.
+                A string value.
             BOOLEAN (4):
-                Boolean value.
+                A boolean value.
             STRINGLIST (5):
-                String list value.
+                A string list value.
             NUMBER (6):
-                Numeric value.
+                A numeric value.
             ONEOF (7):
-                OneOf value.
+                A oneOf value.
         """
         VALUE_TYPE_UNSPECIFIED = 0
         STRING = 3
@@ -727,7 +760,7 @@ class ParameterSpec(proto.Message):
 
 
 class Validation(proto.Message):
-    r"""Validation of the parameter.
+    r"""The validation of the parameter.
 
     This message has `oneof`_ fields (mutually exclusive fields).
     For each oneof, at most one member field can be set at the same time.
@@ -738,15 +771,16 @@ class Validation(proto.Message):
 
     Attributes:
         allowed_values (google.cloud.cloudsecuritycompliance_v1.types.AllowedValues):
-            Allowed set of values for the parameter.
+            The permitted set of values for the
+            parameter.
 
             This field is a member of `oneof`_ ``constraint``.
         int_range (google.cloud.cloudsecuritycompliance_v1.types.IntRange):
-            Allowed range for numeric parameters.
+            The permitted range for numeric parameters.
 
             This field is a member of `oneof`_ ``constraint``.
         regexp_pattern (google.cloud.cloudsecuritycompliance_v1.types.RegexpPattern):
-            Regular expression for string parameters.
+            The regular expression for string parameters.
 
             This field is a member of `oneof`_ ``constraint``.
     """
@@ -772,11 +806,11 @@ class Validation(proto.Message):
 
 
 class AllowedValues(proto.Message):
-    r"""Allowed set of values for the parameter.
+    r"""The allowed set of values for the parameter.
 
     Attributes:
         values (MutableSequence[google.cloud.cloudsecuritycompliance_v1.types.ParamValue]):
-            Required. List of allowed values for the
+            Required. The list of allowed values for the
             parameter.
     """
 
@@ -788,12 +822,13 @@ class AllowedValues(proto.Message):
 
 
 class RegexpPattern(proto.Message):
-    r"""Regular Expression Validator for parameter values.
+    r"""The regular expression (regex) validator for parameter
+    values.
 
     Attributes:
         pattern (str):
-            Required. Regex Pattern to match the value(s)
-            of parameter.
+            Required. The regex pattern to match the
+            values of the parameter with.
     """
 
     pattern: str = proto.Field(
@@ -803,14 +838,14 @@ class RegexpPattern(proto.Message):
 
 
 class IntRange(proto.Message):
-    r"""Number range for number parameters.
+    r"""The number range for number parameters.
 
     Attributes:
         min_ (int):
-            Required. Minimum allowed value for the
+            Required. The minimum permitted value for the
             numeric parameter (inclusive).
         max_ (int):
-            Required. Maximum allowed value for the
+            Required. The maximum permitted value for the
             numeric parameter (inclusive).
     """
 
@@ -825,7 +860,7 @@ class IntRange(proto.Message):
 
 
 class StringList(proto.Message):
-    r"""A list of strings.
+    r"""A list of strings for the parameter value.
 
     Attributes:
         values (MutableSequence[str]):
@@ -839,7 +874,7 @@ class StringList(proto.Message):
 
 
 class ParamValue(proto.Message):
-    r"""Possible parameter value types.
+    r"""The possible parameter value types.
 
     This message has `oneof`_ fields (mutually exclusive fields).
     For each oneof, at most one member field can be set at the same time.
@@ -850,23 +885,23 @@ class ParamValue(proto.Message):
 
     Attributes:
         string_value (str):
-            Represents a string value.
+            A string value.
 
             This field is a member of `oneof`_ ``kind``.
         bool_value (bool):
-            Represents a boolean value.
+            A boolean value.
 
             This field is a member of `oneof`_ ``kind``.
         string_list_value (google.cloud.cloudsecuritycompliance_v1.types.StringList):
-            Represents a repeated string.
+            A repeated string.
 
             This field is a member of `oneof`_ ``kind``.
         number_value (float):
-            Represents a double value.
+            A double value.
 
             This field is a member of `oneof`_ ``kind``.
         oneof_value (google.cloud.cloudsecuritycompliance_v1.types.Parameter):
-            Represents sub-parameter values.
+            Sub-parameter values.
 
             This field is a member of `oneof`_ ``kind``.
     """
@@ -901,7 +936,7 @@ class ParamValue(proto.Message):
 
 
 class ParameterSubstitutionRule(proto.Message):
-    r"""Parameter substitution rules.
+    r"""The parameter substitution rules.
 
     This message has `oneof`_ fields (mutually exclusive fields).
     For each oneof, at most one member field can be set at the same time.
@@ -912,11 +947,11 @@ class ParameterSubstitutionRule(proto.Message):
 
     Attributes:
         placeholder_substitution_rule (google.cloud.cloudsecuritycompliance_v1.types.PlaceholderSubstitutionRule):
-            Placeholder substitution rule.
+            The placeholder substitution rule.
 
             This field is a member of `oneof`_ ``substitution_type``.
         attribute_substitution_rule (google.cloud.cloudsecuritycompliance_v1.types.AttributeSubstitutionRule):
-            Attribute substitution rule.
+            The attribute substitution rule.
 
             This field is a member of `oneof`_ ``substitution_type``.
     """
@@ -936,12 +971,13 @@ class ParameterSubstitutionRule(proto.Message):
 
 
 class AttributeSubstitutionRule(proto.Message):
-    r"""Attribute at the given path is substituted entirely.
+    r"""The attribute at the given path that's substituted entirely.
 
     Attributes:
         attribute (str):
-            Fully qualified proto attribute path (in dot notation).
-            Example: rules[0].cel_expression.resource_types_values
+            The fully qualified proto attribute path, in dot notation.
+            For example:
+            ``rules[0].cel_expression.resource_types_values``
     """
 
     attribute: str = proto.Field(
@@ -951,12 +987,12 @@ class AttributeSubstitutionRule(proto.Message):
 
 
 class PlaceholderSubstitutionRule(proto.Message):
-    r"""Placeholder is substituted in the rendered string.
+    r"""The placeholder that's substituted in the rendered string.
 
     Attributes:
         attribute (str):
-            Fully qualified proto attribute path (e.g.,
-            dot notation)
+            The fully qualified proto attribute path, in
+            dot notation.
     """
 
     attribute: str = proto.Field(
@@ -966,21 +1002,22 @@ class PlaceholderSubstitutionRule(proto.Message):
 
 
 class Rule(proto.Message):
-    r"""A rule of the cloud control.
+    r"""A rule in the cloud control.
 
     .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
 
     Attributes:
         cel_expression (google.cloud.cloudsecuritycompliance_v1.types.CELExpression):
-            Logic expression in CEL language.
+            The rule's logic expression in Common
+            Expression Language (CEL).
 
             This field is a member of `oneof`_ ``implementation``.
         description (str):
-            Optional. Description of the Rule. The
-            maximum length is 2000 characters.
+            Optional. The rule description. The maximum
+            length is 2000 characters.
         rule_action_types (MutableSequence[google.cloud.cloudsecuritycompliance_v1.types.RuleActionType]):
-            Required. The functionality enabled by the
-            Rule.
+            Required. The functionality that's enabled by
+            the rule.
     """
 
     cel_expression: "CELExpression" = proto.Field(
@@ -1001,8 +1038,8 @@ class Rule(proto.Message):
 
 
 class CELExpression(proto.Message):
-    r"""A `CEL
-    expression <https://cloud.google.com/certificate-authority-service/docs/using-cel>`__.
+    r"""A Common Expression Language (CEL) expression that's used to
+    create a rule.
 
 
     .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
@@ -1010,15 +1047,15 @@ class CELExpression(proto.Message):
     Attributes:
         resource_types_values (google.cloud.cloudsecuritycompliance_v1.types.StringList):
             The resource instance types on which this expression is
-            defined. Format will be of the form :
-            ``<canonical service name>/<type>`` Example:
-            ``compute.googleapis.com/Instance``.
+            defined. The format is ``<SERVICE_NAME>/<type>``. For
+            example: ``compute.googleapis.com/Instance``
 
             This field is a member of `oneof`_ ``criteria``.
         expression (str):
-            Required. Logic expression in CEL language.
-            The max length of the condition is 1000
-            characters.
+            Required. The logical expression in CEL. The maximum length
+            of the condition is 1000 characters. For more information,
+            see `CEL
+            expression <https://cloud.google.com/security-command-center/docs/compliance-manager-write-cel-expressions>`__.
     """
 
     resource_types_values: "StringList" = proto.Field(
@@ -1034,7 +1071,7 @@ class CELExpression(proto.Message):
 
 
 class OperationMetadata(proto.Message):
-    r"""Represents the metadata of the long-running operation.
+    r"""The metadata for the long-running operation.
 
     Attributes:
         create_time (google.protobuf.timestamp_pb2.Timestamp):
@@ -1044,23 +1081,24 @@ class OperationMetadata(proto.Message):
             Output only. The time the operation finished
             running.
         target (str):
-            Output only. Server-defined resource path for
-            the target of the operation.
+            Output only. The server-defined resource path
+            for the target of the operation.
         verb (str):
-            Output only. Name of the verb executed by the
-            operation.
+            Output only. The name of the verb that was
+            executed by the operation.
         status_message (str):
-            Output only. Human-readable status of the
+            Output only. The human-readable status of the
             operation, if any.
         requested_cancellation (bool):
-            Output only. Identifies whether the user has requested
-            cancellation of the operation. Operations that have been
-            cancelled successfully have [Operation.error][] value with a
-            [google.rpc.Status.code][google.rpc.Status.code] of 1,
-            corresponding to ``Code.CANCELLED``.
+            Output only. Identifies whether the user has requested that
+            the operation be cancelled. If an operation was cancelled
+            successfully, then the field
+            [google.longrunning.Operation.error][google.longrunning.Operation.error]
+            contains the value
+            [google.rpc.Code.CANCELLED][google.rpc.Code.CANCELLED].
         api_version (str):
-            Output only. API version used to start the
-            operation.
+            Output only. The API version that was used to
+            start the operation.
     """
 
     create_time: timestamp_pb2.Timestamp = proto.Field(
@@ -1092,6 +1130,28 @@ class OperationMetadata(proto.Message):
     api_version: str = proto.Field(
         proto.STRING,
         number=7,
+    )
+
+
+class ControlFamily(proto.Message):
+    r"""The regulatory family of the control.
+
+    Attributes:
+        family_id (str):
+            The identifier for the regulatory control
+            family.
+        display_name (str):
+            The friendly name for the regulatory control
+            family.
+    """
+
+    family_id: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    display_name: str = proto.Field(
+        proto.STRING,
+        number=2,
     )
 
 

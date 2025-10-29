@@ -54,4 +54,5 @@ def sample_create_framework():
     # Handle the response
     print(response)
 
+
 # [END cloudsecuritycompliance_v1_generated_Config_CreateFramework_sync]

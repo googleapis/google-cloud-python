@@ -349,8 +349,11 @@ class DeploymentGrpcTransport(DeploymentTransport):
     ]:
         r"""Return a callable for the create framework deployment method over gRPC.
 
-        Creates a new FrameworkDeployment in a given parent
-        resource.
+        Creates a framework deployment in a given parent
+        resource. A framework deployment lets you assign a
+        particular framework version to an organization, folder,
+        or project so that you can control and monitor those
+        resources using the framework's cloud controls.
 
         Returns:
             Callable[[~.CreateFrameworkDeploymentRequest],
@@ -380,7 +383,7 @@ class DeploymentGrpcTransport(DeploymentTransport):
     ]:
         r"""Return a callable for the delete framework deployment method over gRPC.
 
-        Deletes a single FrameworkDeployment.
+        Deletes a framework deployment.
 
         Returns:
             Callable[[~.DeleteFrameworkDeploymentRequest],
@@ -410,7 +413,7 @@ class DeploymentGrpcTransport(DeploymentTransport):
     ]:
         r"""Return a callable for the get framework deployment method over gRPC.
 
-        Gets details of a single FrameworkDeployment.
+        Gets details about a framework deployment.
 
         Returns:
             Callable[[~.GetFrameworkDeploymentRequest],
@@ -439,7 +442,7 @@ class DeploymentGrpcTransport(DeploymentTransport):
     ]:
         r"""Return a callable for the list framework deployments method over gRPC.
 
-        Lists FrameworkDeployments in a given parent
+        Lists the framework deployments in a given parent
         resource.
 
         Returns:
@@ -470,7 +473,7 @@ class DeploymentGrpcTransport(DeploymentTransport):
     ]:
         r"""Return a callable for the get cloud control deployment method over gRPC.
 
-        Gets details of a single CloudControlDeployment.
+        Gets details about a cloud control deployment.
 
         Returns:
             Callable[[~.GetCloudControlDeploymentRequest],
@@ -501,7 +504,7 @@ class DeploymentGrpcTransport(DeploymentTransport):
     ]:
         r"""Return a callable for the list cloud control deployments method over gRPC.
 
-        Lists CloudControlDeployments in a given parent
+        Lists the cloud conrol deployments in a given parent
         resource.
 
         Returns:

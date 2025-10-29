@@ -743,10 +743,10 @@ class ConfigClient(metaclass=ConfigClientMeta):
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> pagers.ListFrameworksPager:
-        r"""Lists all Frameworks (both Built-in and Custom)
-        available within a given parent resource. This method
-        supports pagination. The latest major version of each
-        Framework is returned.
+        r"""Lists the frameworks (both built-in and custom) that
+        are available within the parent resource. The latest
+        major version of each framework is returned.
+        This method supports pagination.
 
         .. code-block:: python
 
@@ -777,12 +777,11 @@ class ConfigClient(metaclass=ConfigClientMeta):
 
         Args:
             request (Union[google.cloud.cloudsecuritycompliance_v1.types.ListFrameworksRequest, dict]):
-                The request object. Request message for listing
-                Frameworks.
+                The request object. Request message for [ListFrameworks][].
             parent (str):
                 Required. The parent resource name, in the format
                 ``organizations/{organization}/locations/{location}``.
-                Only global location is supported.
+                The only supported location is ``global``.
 
                 This corresponds to the ``parent`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -797,13 +796,11 @@ class ConfigClient(metaclass=ConfigClientMeta):
 
         Returns:
             google.cloud.cloudsecuritycompliance_v1.services.config.pagers.ListFrameworksPager:
-                Response message for listing
-                Frameworks. Contains a paginated list of
-                Framework resources.
+                The response message for [ListFrameworks][].
+                   Returns a paginated list of Framework resources.
 
-                Iterating over this object will yield
-                results and resolve additional pages
-                automatically.
+                Iterating over this object will yield results and
+                resolve additional pages automatically.
 
         """
         # Create or coerce a protobuf request object.
@@ -872,13 +869,11 @@ class ConfigClient(metaclass=ConfigClientMeta):
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> common.Framework:
-        r"""Gets details of a single Framework. This method retrieves a
-        Framework resource, which can be either Built-in or Custom,
-        identified by its name.
+        r"""Gets details about a framework. This method retrieves the latest
+        major version of the framework.
 
-        By default, the latest major version of the Framework is
-        returned. A specific major version can be retrieved by
-        specifying the ``major_revision_id`` in the request.
+        To retrieve a specific major version, include
+        ``major_revision_id`` in the request.
 
         .. code-block:: python
 
@@ -908,11 +903,12 @@ class ConfigClient(metaclass=ConfigClientMeta):
 
         Args:
             request (Union[google.cloud.cloudsecuritycompliance_v1.types.GetFrameworkRequest, dict]):
-                The request object. Request message for getting a
-                Framework.
+                The request object. The request message for [GetFramework][].
             name (str):
-                Required. The name of the framework to retrieve. Format:
-                organizations/{organization}/locations/{location}/frameworks/{framework_id}
+                Required. The name of the framework to retrieve, in the
+                format
+                ``organizations/{organization}/locations/{location}/frameworks/{framework_id}``
+                The only supported location is ``global``.
 
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -927,14 +923,11 @@ class ConfigClient(metaclass=ConfigClientMeta):
 
         Returns:
             google.cloud.cloudsecuritycompliance_v1.types.Framework:
-                A Framework is a collection of
-                CloudControls to address security and
-                compliance requirements. Frameworks can
-                be used for prevention, detection, and
-                auditing. They can be either built-in,
-                industry-standard frameworks provided by
-                GCP/AZURE/AWS (e.g., NIST, FedRAMP) or
-                custom frameworks created by users.
+                A framework is a collection of cloud
+                controls and regulatory controls that
+                represent security best practices or
+                industry-defined standards such as
+                FedRAMP or NIST.
 
         """
         # Create or coerce a protobuf request object.
@@ -994,9 +987,9 @@ class ConfigClient(metaclass=ConfigClientMeta):
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> common.Framework:
-        r"""Creates a new Framework with type ``Custom`` under a given
-        parent resource. Frameworks with type ``Built-in`` are managed
-        by Google and cannot be created through this API.
+        r"""Creates a custom framework in a given parent
+        resource. You can't create built-in frameworks because
+        those are managed by Google.
 
         .. code-block:: python
 
@@ -1031,25 +1024,25 @@ class ConfigClient(metaclass=ConfigClientMeta):
 
         Args:
             request (Union[google.cloud.cloudsecuritycompliance_v1.types.CreateFrameworkRequest, dict]):
-                The request object. Request message for creating a
-                Framework
+                The request object. The request message for [CreateFramework][].
             parent (str):
                 Required. The parent resource name, in the format
                 ``organizations/{organization}/locations/{location}``.
+                The only supported location is ``global``.
 
                 This corresponds to the ``parent`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
             framework (google.cloud.cloudsecuritycompliance_v1.types.Framework):
-                Required. The resource being created
+                Required. The resource being created.
                 This corresponds to the ``framework`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
             framework_id (str):
-                Required. ID of the framework.
-                This is not the full name of the
-                framework. This is the last part of the
-                full name of the framework.
+                Required. The identifier (ID) of the
+                framework. The ID is not the full name
+                of the framework; it's the last part of
+                the full name of the framework.
 
                 This corresponds to the ``framework_id`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -1064,14 +1057,11 @@ class ConfigClient(metaclass=ConfigClientMeta):
 
         Returns:
             google.cloud.cloudsecuritycompliance_v1.types.Framework:
-                A Framework is a collection of
-                CloudControls to address security and
-                compliance requirements. Frameworks can
-                be used for prevention, detection, and
-                auditing. They can be either built-in,
-                industry-standard frameworks provided by
-                GCP/AZURE/AWS (e.g., NIST, FedRAMP) or
-                custom frameworks created by users.
+                A framework is a collection of cloud
+                controls and regulatory controls that
+                represent security best practices or
+                industry-defined standards such as
+                FedRAMP or NIST.
 
         """
         # Create or coerce a protobuf request object.
@@ -1134,19 +1124,18 @@ class ConfigClient(metaclass=ConfigClientMeta):
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> common.Framework:
-        r"""Updates a single Framework. This method allows for partial
-        updates of a Framework resource. The fields to be updated are
-        specified using the ``update_mask``.
+        r"""Updates a custom framework. This method allows for partial
+        updates of a framework. Use the ``update_mask`` to specify which
+        fields to update. Consider the following:
 
-        - If an ``update_mask`` is provided, only the fields specified
-          in the mask will be updated.
-        - If no ``update_mask`` is provided, all fields present in the
-          request's ``framework`` body will be used to overwrite the
-          existing resource.
+        - If you provide an ``update_mask``, only the fields that are
+          specified in the mask are updated.
+        - If you don't provide an ``update_mask``, all the fields that
+          are present in the request's ``framework`` body are used to
+          overwrite the existing resource.
 
-        This operation can only be performed on Frameworks with type
-        ``CUSTOM``. A successful update will result in a new version of
-        the Framework.
+        You can only update frameworks with the ``CUSTOM`` type. A
+        successful update creates a new version of the framework.
 
         .. code-block:: python
 
@@ -1179,21 +1168,22 @@ class ConfigClient(metaclass=ConfigClientMeta):
 
         Args:
             request (Union[google.cloud.cloudsecuritycompliance_v1.types.UpdateFrameworkRequest, dict]):
-                The request object. Request message for updating a
-                Framework.
+                The request object. The request message for [UpdateFramework][].
             framework (google.cloud.cloudsecuritycompliance_v1.types.Framework):
-                Required. The resource being updated
+                Required. The resource that is being
+                updated.
+
                 This corresponds to the ``framework`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
             update_mask (google.protobuf.field_mask_pb2.FieldMask):
-                Optional. Field mask is used to specify the fields to be
-                overwritten in the Framework resource by the update. The
-                fields specified in the update_mask are relative to the
-                resource, not the full request. A field will be
-                overwritten if it is in the mask. If the user does not
-                provide a mask then all fields present in the request
-                will be overwritten.
+                Optional. A field mask is used to specify the fields to
+                be overwritten in the framework resource by the update.
+                The fields specified in the ``update_mask`` are relative
+                to the resource, not the full request. A field is
+                overwritten if it is in the mask. If you don't provide a
+                mask then all fields present in the request will be
+                overwritten.
 
                 This corresponds to the ``update_mask`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -1208,14 +1198,11 @@ class ConfigClient(metaclass=ConfigClientMeta):
 
         Returns:
             google.cloud.cloudsecuritycompliance_v1.types.Framework:
-                A Framework is a collection of
-                CloudControls to address security and
-                compliance requirements. Frameworks can
-                be used for prevention, detection, and
-                auditing. They can be either built-in,
-                industry-standard frameworks provided by
-                GCP/AZURE/AWS (e.g., NIST, FedRAMP) or
-                custom frameworks created by users.
+                A framework is a collection of cloud
+                controls and regulatory controls that
+                represent security best practices or
+                industry-defined standards such as
+                FedRAMP or NIST.
 
         """
         # Create or coerce a protobuf request object.
@@ -1277,14 +1264,14 @@ class ConfigClient(metaclass=ConfigClientMeta):
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> None:
-        r"""Deletes a single Custom Framework, including all its minor and
-        minor revisions.
+        r"""Deletes a custom framework, including all its major and minor
+        revisions. Consider the following:
 
-        - This operation can only be performed on Frameworks with type
-          ``CUSTOM``. Built-in Frameworks cannot be deleted.
-        - The Framework cannot be deleted if it is currently deployed on
-          any resource.
-        - This action is permanent and cannot be undone.
+        - You can't delete built-in frameworks. You can only delete
+          frameworks with type ``CUSTOM``.
+        - You can't delete frameworks that are deployed to a resource.
+        - You can't restore a deleted framework. This action is
+          permanent.
 
         .. code-block:: python
 
@@ -1311,11 +1298,11 @@ class ConfigClient(metaclass=ConfigClientMeta):
 
         Args:
             request (Union[google.cloud.cloudsecuritycompliance_v1.types.DeleteFrameworkRequest, dict]):
-                The request object. Request message for deleting a
-                Framework.
+                The request object. Request message for [DeleteFramework][].
             name (str):
-                Required. Name of the resource, in the format
+                Required. The name of the resource, in the format
                 ``organizations/{organization}/locations/{location}/frameworks/{framework}``.
+                The only supported location is ``global``.
 
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -1380,10 +1367,10 @@ class ConfigClient(metaclass=ConfigClientMeta):
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> pagers.ListCloudControlsPager:
-        r"""Lists all CloudControls (both Built-in and Custom)
-        available within a given parent resource. This method
-        supports pagination. The latest major version of each
-        CloudControl is returned.
+        r"""Lists the cloud controls (both built-in and custom)
+        that are available in a given parent resource. The
+        latest major version of each cloud control is returned.
+        This method supports pagination.
 
         .. code-block:: python
 
@@ -1414,11 +1401,11 @@ class ConfigClient(metaclass=ConfigClientMeta):
 
         Args:
             request (Union[google.cloud.cloudsecuritycompliance_v1.types.ListCloudControlsRequest, dict]):
-                The request object. Request message for listing
-                CloudControls.
+                The request object. Request message for [ListCloudControls][].
             parent (str):
                 Required. The parent resource name, in the format
                 ``organizations/{organization}/locations/{location}``.
+                The only supported location is ``global``.
 
                 This corresponds to the ``parent`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -1433,11 +1420,10 @@ class ConfigClient(metaclass=ConfigClientMeta):
 
         Returns:
             google.cloud.cloudsecuritycompliance_v1.services.config.pagers.ListCloudControlsPager:
-                Response message for
-                ListCloudControls.
-                Iterating over this object will yield
-                results and resolve additional pages
-                automatically.
+                The response message for [ListCloudControls][].
+
+                Iterating over this object will yield results and
+                resolve additional pages automatically.
 
         """
         # Create or coerce a protobuf request object.
@@ -1506,13 +1492,13 @@ class ConfigClient(metaclass=ConfigClientMeta):
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> common.CloudControl:
-        r"""Gets details of a single CloudControl. This method retrieves a
-        CloudControl resource, which can be either Built-in or Custom,
-        identified by its name.
+        r"""Gets details about a cloud control. This method retrieves the
+        latest major version of a cloud control that you identify by
+        name.
 
-        By default, the latest major version of the CloudControl is
-        returned. A specific major version can be retrieved by
-        specifying the ``major_revision_id`` in the request.
+        By default, the latest major version of the cloud control is
+        returned. To retrieve a specific major version, include
+        ``major_revision_id`` in the request.
 
         .. code-block:: python
 
@@ -1542,12 +1528,12 @@ class ConfigClient(metaclass=ConfigClientMeta):
 
         Args:
             request (Union[google.cloud.cloudsecuritycompliance_v1.types.GetCloudControlRequest, dict]):
-                The request object. Request message for getting a
-                CloudControl.
+                The request object. The request message for [GetCloudControl][].
             name (str):
-                Required. The name of the cloudcontrol to retrieve in
-                the format:
-                organizations/{organization}/locations/{location}/cloudControls/{cloud_control}
+                Required. The name of the cloud control to retrieve, in
+                the format
+                ``organizations/{organization}/locations/{location}/cloudControls/{cloud_control}``.
+                The only supported location is ``global``.
 
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -1562,14 +1548,10 @@ class ConfigClient(metaclass=ConfigClientMeta):
 
         Returns:
             google.cloud.cloudsecuritycompliance_v1.types.CloudControl:
-                A CloudControl is the fundamental unit encapsulating the rules
-                   to meet a specific security or compliance intent. It
-                   can contain various rule types (like Organization
-                   Policies, CEL expressions, etc.) enabling different
-                   enforcement modes (Preventive, Detective, Audit).
-                   CloudControls are often parameterized for reusability
-                   and can be either BUILT_IN (provided by Google) or
-                   CUSTOM (defined by the user).
+                A cloud control is a set of rules and
+                associated metadata that you can use to
+                define your organization's security or
+                compliance intent.
 
         """
         # Create or coerce a protobuf request object.
@@ -1629,9 +1611,10 @@ class ConfigClient(metaclass=ConfigClientMeta):
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> common.CloudControl:
-        r"""Creates a new CloudControl with type ``Custom`` under a given
-        parent resource. ``Built-in`` CloudControls are managed by
-        Google and cannot be created through this API.
+        r"""Creates a custom cloud control in a given parent
+        resource.
+        You can't create built-in cloud controls because those
+        are managed by Google.
 
         .. code-block:: python
 
@@ -1666,24 +1649,26 @@ class ConfigClient(metaclass=ConfigClientMeta):
 
         Args:
             request (Union[google.cloud.cloudsecuritycompliance_v1.types.CreateCloudControlRequest, dict]):
-                The request object. Request message for creating a
-                CloudControl
+                The request object. The request message for [CreateCloudControl][].
             parent (str):
                 Required. The parent resource name, in the format
                 ``organizations/{organization}/locations/{location}``.
+                The only supported location is ``global``.
 
                 This corresponds to the ``parent`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
             cloud_control (google.cloud.cloudsecuritycompliance_v1.types.CloudControl):
-                Required. The resource being created
+                Required. The cloud control that's
+                being created.
+
                 This corresponds to the ``cloud_control`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
             cloud_control_id (str):
-                Required. ID of the CloudControl. This is the last
-                segment of the CloudControl resource name. Format:
-                ``^[a-zA-Z][a-zA-Z0-9-]{0,61}[a-zA-Z0-9]$``.
+                Required. The identifier for the cloud control, which is
+                the last segment of the cloud control name. The format
+                is ``^[a-zA-Z][a-zA-Z0-9-]{0,61}[a-zA-Z0-9]$``.
 
                 This corresponds to the ``cloud_control_id`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -1698,14 +1683,10 @@ class ConfigClient(metaclass=ConfigClientMeta):
 
         Returns:
             google.cloud.cloudsecuritycompliance_v1.types.CloudControl:
-                A CloudControl is the fundamental unit encapsulating the rules
-                   to meet a specific security or compliance intent. It
-                   can contain various rule types (like Organization
-                   Policies, CEL expressions, etc.) enabling different
-                   enforcement modes (Preventive, Detective, Audit).
-                   CloudControls are often parameterized for reusability
-                   and can be either BUILT_IN (provided by Google) or
-                   CUSTOM (defined by the user).
+                A cloud control is a set of rules and
+                associated metadata that you can use to
+                define your organization's security or
+                compliance intent.
 
         """
         # Create or coerce a protobuf request object.
@@ -1768,18 +1749,18 @@ class ConfigClient(metaclass=ConfigClientMeta):
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> common.CloudControl:
-        r"""Updates a single CloudControl. This method allows for partial
-        updates of a Custom CloudControl resource. Built-in
-        CloudControls cannot be updated.
+        r"""Updates a custom cloud control. This method allows for partial
+        updates of a cloud control. Use the ``update_mask`` to specify
+        which fields to update. Consider the following:
 
-        - If an ``update_mask`` is provided, only the fields specified
-          in the mask will be updated.
-        - If no ``update_mask`` is provided, all fields present in the
-          request's ``cloud_control`` body will be used to overwrite the
-          existing resource.
+        - If you provide an ``update_mask``, only the fields that are
+          specified in the mask are updated.
+        - If you don't provide an ``update_mask``, all the fields that
+          are present in the request's ``cloud_control`` body are used
+          to overwrite the existing resource.
 
-        A successful update will result in a new version of the
-        CloudControl.
+        You can only update cloud controls with the ``CUSTOM`` type. A
+        successful update creates a new version of the cloud control.
 
         .. code-block:: python
 
@@ -1812,27 +1793,29 @@ class ConfigClient(metaclass=ConfigClientMeta):
 
         Args:
             request (Union[google.cloud.cloudsecuritycompliance_v1.types.UpdateCloudControlRequest, dict]):
-                The request object. Request message for
-                UpdateCloudControl.
+                The request object. The request message for [UpdateCloudControl][].
             cloud_control (google.cloud.cloudsecuritycompliance_v1.types.CloudControl):
-                Required. The resource being updated
+                Required. The cloud control that
+                you're updating.
+
                 This corresponds to the ``cloud_control`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
             update_mask (google.protobuf.field_mask_pb2.FieldMask):
-                Optional. Field mask is used to specify the fields to be
-                overwritten in the CloudControl resource by the update.
-                The fields specified in the update_mask are relative to
-                the resource, not the full request. A field will be
-                overwritten if it is in the mask. If the user does not
-                provide a mask then all fields present in the request
-                will be overwritten. The fields that can be updated are:
+                Optional. Use a field mask to specify the fields to be
+                overwritten in the cloud control during the update. The
+                fields that you specify in the ``update_mask`` are
+                relative to the cloud control, not the full request. A
+                field is overwritten if it is in the mask. If you don't
+                provide a mask, all fields in the request are updated.
 
-                1. Display_name
-                2. Description
-                3. Parameters
-                4. Rules
-                5. ParameterSpec.
+                You can update the following fields:
+
+                - Display name
+                - Description
+                - Parameters
+                - Rules
+                - Parameter specification
 
                 This corresponds to the ``update_mask`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -1847,14 +1830,10 @@ class ConfigClient(metaclass=ConfigClientMeta):
 
         Returns:
             google.cloud.cloudsecuritycompliance_v1.types.CloudControl:
-                A CloudControl is the fundamental unit encapsulating the rules
-                   to meet a specific security or compliance intent. It
-                   can contain various rule types (like Organization
-                   Policies, CEL expressions, etc.) enabling different
-                   enforcement modes (Preventive, Detective, Audit).
-                   CloudControls are often parameterized for reusability
-                   and can be either BUILT_IN (provided by Google) or
-                   CUSTOM (defined by the user).
+                A cloud control is a set of rules and
+                associated metadata that you can use to
+                define your organization's security or
+                compliance intent.
 
         """
         # Create or coerce a protobuf request object.
@@ -1916,14 +1895,15 @@ class ConfigClient(metaclass=ConfigClientMeta):
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> None:
-        r"""Deletes a single Custom CloudControl, including all its major
-        and minor revisions.
+        r"""Deletes a custom cloud control, including all its major and
+        minor revisions. Consider the following:
 
-        - This operation can only be performed on CloudControls with
-          type ``CUSTOM``. Built-in CloudControls cannot be deleted.
-        - The CloudControl cannot be deleted if any of its revisions are
-          currently referenced by any Framework.
-        - This action is permanent and cannot be undone.
+        - You can't delete built-in cloud controls. You can only delete
+          cloud controls with type ``CUSTOM``.
+        - You can't delete cloud controls if any of the versions are
+          referenced by a framework.
+        - You can't restore a deleted cloud control. This action is
+          permanent.
 
         .. code-block:: python
 
@@ -1950,11 +1930,12 @@ class ConfigClient(metaclass=ConfigClientMeta):
 
         Args:
             request (Union[google.cloud.cloudsecuritycompliance_v1.types.DeleteCloudControlRequest, dict]):
-                The request object. Request message for deleting a
-                CloudControl.
+                The request object. The request message for [DeleteCloudControl][].
             name (str):
-                Required. Name of the resource, in the format
+                Required. The name of the cloud control to delete, in
+                the format
                 ``organizations/{organization}/locations/{location}/CloudControls/{CloudControl}``.
+                The only supported location is ``global``.
 
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this

@@ -52,4 +52,5 @@ def sample_update_framework():
     # Handle the response
     print(response)
 
+
 # [END cloudsecuritycompliance_v1_generated_Config_UpdateFramework_sync]
