@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.7.0](https://github.com/googleapis/python-test-utils/compare/v1.6.4...v1.7.0) (2025-10-29)
+
+
+### Features
+
+* Add Python 3.14 support ([#284](https://github.com/googleapis/python-test-utils/issues/284)) ([3cb8491](https://github.com/googleapis/python-test-utils/commit/3cb8491d67d65d2262aa1b65091ea9b615b583af))
+
 ## [1.6.4](https://github.com/googleapis/python-test-utils/compare/v1.6.3...v1.6.4) (2025-05-19)
 
 
