@@ -33,7 +33,7 @@ import parse_googleapis_content
 
 try:
     import synthtool
-    from synthtool.languages import python_mono_repo
+    from synthtool.languages import python, python_mono_repo
 
     SYNTHTOOL_INSTALLED = True
     SYNTHTOOL_IMPORT_ERROR = None
@@ -316,20 +316,28 @@ def _get_library_id(request_data: Dict) -> str:
     return library_id
 
 
-def _run_post_processor(output: str, library_id: str):
+def _run_post_processor(output: str, library_id: str, is_mono_repo: bool):
     """Runs the synthtool post-processor on the output directory.
 
     Args:
         output(str): Path to the directory in the container where code
             should be generated.
         library_id(str): The library id to be used for post processing.
-
+        is_mono_repo(bool): True if the current repository is a mono-repo.
     """
     os.chdir(output)
     path_to_library = f"packages/{library_id}"
     logger.info("Running Python post-processor...")
     if SYNTHTOOL_INSTALLED:
-        python_mono_repo.owlbot_main(path_to_library)
+        if is_mono_repo:
+            python_mono_repo.owlbot_main(path_to_library)
+        else:
+            # Some repositories have customizations in `owlbot.py`. If this file exists,
+            # run those customizations instead of `owlbot_main`
+            if Path(f"{output}/owlbot.py").exists():
+                subprocess.run(["python3.14", f"{output}/owlbot.py"])
+            else:
+                python.owlbot_main()
     else:
         raise SYNTHTOOL_IMPORT_ERROR  # pragma: NO COVER
 
@@ -342,7 +350,9 @@ def _run_post_processor(output: str, library_id: str):
     logger.info("Python post-processor ran successfully.")
 
 
-def _copy_files_needed_for_post_processing(output: str, input: str, library_id: str):
+def _copy_files_needed_for_post_processing(
+    output: str, input: str, library_id: str, is_mono_repo: bool
+):
     """Copy files to the output directory whcih are needed during the post processing
     step, such as .repo-metadata.json and script/client-post-processing, using
     the input directory as the source.
@@ -353,9 +363,9 @@ def _copy_files_needed_for_post_processing(output: str, input: str, library_id: 
         input(str): The path to the directory in the container
             which contains additional generator input.
         library_id(str): The library id to be used for post processing.
+        is_mono_repo(bool): True if the current repository is a mono-repo.
     """
-
-    path_to_library = f"packages/{library_id}"
+    path_to_library = f"packages/{library_id}" if is_mono_repo else "."
     repo_metadata_path = f"{input}/{path_to_library}/.repo-metadata.json"
 
     # We need to create these directories so that we can copy files necessary for post-processing.
@@ -373,6 +383,20 @@ def _copy_files_needed_for_post_processing(output: str, input: str, library_id: 
             f"{output}/{path_to_library}/.repo-metadata.json",
         )
 
+    if not is_mono_repo:
+        setup_py_path = f"{input}/setup.py"
+        if os.path.exists(setup_py_path):
+            shutil.copy(
+                setup_py_path,
+                f"{output}/setup.py",
+            )
+        owlbot_py_path = f"{input}/owlbot.py"
+        if os.path.exists(owlbot_py_path):
+            shutil.copy(
+                owlbot_py_path,
+                f"{output}/owlbot.py",
+            )
+
     # copy post-procesing files
     for post_processing_file in glob.glob(
         f"{input}/client-post-processing/*.yaml"
@@ -385,7 +409,9 @@ def _copy_files_needed_for_post_processing(output: str, input: str, library_id: 
                 )
 
 
-def _clean_up_files_after_post_processing(output: str, library_id: str):
+def _clean_up_files_after_post_processing(
+    output: str, library_id: str, is_mono_repo: bool
+):
     """
     Clean up files which should not be included in the generated client.
     This function is idempotent and will not fail if files are already removed.
@@ -394,8 +420,9 @@ def _clean_up_files_after_post_processing(output: str, library_id: str):
         output(str): Path to the directory in the container where code
             should be generated.
         library_id(str): The library id to be used for post processing.
+        is_mono_repo(bool): True if the current repository is a mono-repo.
     """
-    path_to_library = f"packages/{library_id}"
+    path_to_library = f"packages/{library_id}" if is_mono_repo else "."
 
     # Safely remove directories, ignoring errors if they don't exist.
     shutil.rmtree(f"{output}/{path_to_library}/.nox", ignore_errors=True)
@@ -486,7 +513,7 @@ def _create_repo_metadata_from_service_config(
 
 
 def _generate_repo_metadata_file(
-    output: str, library_id: str, source: str, apis: List[Dict]
+    output: str, library_id: str, source: str, apis: List[Dict], is_mono_repo: bool
 ):
     """Generates the .repo-metadata.json file from the primary API service config.
 
@@ -495,8 +522,9 @@ def _generate_repo_metadata_file(
         library_id (str): The ID of the library.
         source (str): The path to the source directory.
         apis (List[Dict]): A list of APIs to generate.
+        is_mono_repo(bool): True if the current repository is a mono-repo.
     """
-    path_to_library = f"packages/{library_id}"
+    path_to_library = f"packages/{library_id}" if is_mono_repo else "."
     output_repo_metadata = f"{output}/{path_to_library}/.repo-metadata.json"
 
     # TODO(https://github.com/googleapis/librarian/issues/2334)): If `.repo-metadata.json`
@@ -523,7 +551,7 @@ def _generate_repo_metadata_file(
     _write_json_file(output_repo_metadata, metadata_content)
 
 
-def _copy_readme_to_docs(output: str, library_id: str):
+def _copy_readme_to_docs(output: str, library_id: str, is_mono_repo: bool):
     """Copies the README.rst file for a generated library to docs/README.rst.
 
     This function is robust against various symlink configurations that could
@@ -536,7 +564,7 @@ def _copy_readme_to_docs(output: str, library_id: str):
             should be generated.
         library_id(str): The library id.
     """
-    path_to_library = f"packages/{library_id}"
+    path_to_library = f"packages/{library_id}" if is_mono_repo else "."
     source_path = f"{output}/{path_to_library}/README.rst"
     docs_path = f"{output}/{path_to_library}/docs"
     destination_path = f"{docs_path}/README.rst"
@@ -593,6 +621,7 @@ def handle_generate(
     """
 
     try:
+        is_mono_repo = _is_mono_repo(input)
         # Read a generate-request.json file
         request_data = _read_json_file(f"{librarian}/{GENERATE_REQUEST_FILE}")
         library_id = _get_library_id(request_data)
@@ -601,12 +630,16 @@ def handle_generate(
         for api in apis_to_generate:
             api_path = api.get("path")
             if api_path:
-                _generate_api(api_path, library_id, source, output, version)
-        _copy_files_needed_for_post_processing(output, input, library_id)
-        _generate_repo_metadata_file(output, library_id, source, apis_to_generate)
-        _run_post_processor(output, library_id)
-        _copy_readme_to_docs(output, library_id)
-        _clean_up_files_after_post_processing(output, library_id)
+                _generate_api(
+                    api_path, library_id, source, output, version, is_mono_repo
+                )
+        _copy_files_needed_for_post_processing(output, input, library_id, is_mono_repo)
+        _generate_repo_metadata_file(
+            output, library_id, source, apis_to_generate, is_mono_repo
+        )
+        _run_post_processor(output, library_id, is_mono_repo)
+        _copy_readme_to_docs(output, library_id, is_mono_repo)
+        _clean_up_files_after_post_processing(output, library_id, is_mono_repo)
     except Exception as e:
         raise ValueError("Generation failed.") from e
     logger.info("'generate' command executed.")
@@ -821,7 +854,12 @@ def _stage_gapic_library(tmp_dir: str, staging_dir: str) -> None:
 
 
 def _generate_api(
-    api_path: str, library_id: str, source: str, output: str, gapic_version: str
+    api_path: str,
+    library_id: str,
+    source: str,
+    output: str,
+    gapic_version: str,
+    is_mono_repo: bool,
 ):
     """
     Handles the generation and staging process for a single API path.
@@ -833,6 +871,7 @@ def _generate_api(
         output (str): Path to the output directory where code should be staged.
         gapic_version(str): The desired version number for the GAPIC client library
             in a format which follows PEP-440.
+        is_mono_repo(bool): True if the current repository is a mono-repo.
     """
     py_gapic_config = _read_bazel_build_py_rule(api_path, source)
     is_proto_only_library = len(py_gapic_config) == 0
@@ -854,9 +893,10 @@ def _generate_api(
         staging_child_directory = _get_staging_child_directory(
             api_path, is_proto_only_library
         )
-        staging_dir = os.path.join(
-            output, "owl-bot-staging", library_id, staging_child_directory
-        )
+        staging_dir = os.path.join(output, "owl-bot-staging")
+        if is_mono_repo:
+            staging_dir = os.path.join(staging_dir, library_id)
+        staging_dir = os.path.join(staging_dir, staging_child_directory)
 
         # 4. Stage the generated code
         if is_proto_only_library:

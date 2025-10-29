@@ -456,21 +456,33 @@ def test_get_library_id_empty_id():
         _get_library_id(request_data)
 
 
-def test_run_post_processor_success(mocker, caplog):
+@pytest.mark.parametrize(
+    "is_mono_repo,owlbot_py_exists", [(True, False), (False, False), (False, True)]
+)
+def test_run_post_processor_success(mocker, caplog, is_mono_repo, owlbot_py_exists):
     """
     Tests that the post-processor helper calls the correct command.
     """
     caplog.set_level(logging.INFO)
     mocker.patch("cli.SYNTHTOOL_INSTALLED", return_value=True)
     mock_chdir = mocker.patch("cli.os.chdir")
-    mock_owlbot_main = mocker.patch(
-        "cli.synthtool.languages.python_mono_repo.owlbot_main"
-    )
-    _run_post_processor("output", "google-cloud-language")
+    mocker.patch("pathlib.Path.exists", return_value=owlbot_py_exists)
+
+    if is_mono_repo:
+        mock_owlbot = mocker.patch(
+            "cli.synthtool.languages.python_mono_repo.owlbot_main"
+        )
+    elif not owlbot_py_exists:
+        mock_owlbot = mocker.patch("cli.synthtool.languages.python.owlbot_main")
+    _run_post_processor("output", "google-cloud-language", is_mono_repo)
 
     mock_chdir.assert_called_once()
 
-    mock_owlbot_main.assert_called_once_with("packages/google-cloud-language")
+    if is_mono_repo:
+        mock_owlbot.assert_called_once_with("packages/google-cloud-language")
+    elif not owlbot_py_exists:
+        mock_owlbot.assert_called_once_with()
+
     assert "Python post-processor ran successfully." in caplog.text
 
 
@@ -602,7 +614,8 @@ def test_run_protoc_command_failure(mocker):
         _run_protoc_command(command, source)
 
 
-def test_generate_api_success_py_gapic(mocker, caplog):
+@pytest.mark.parametrize("is_mono_repo", [False, True])
+def test_generate_api_success_py_gapic(mocker, caplog, is_mono_repo):
     caplog.set_level(logging.INFO)
 
     API_PATH = "google/cloud/language/v1"
@@ -622,14 +635,15 @@ def test_generate_api_success_py_gapic(mocker, caplog):
     mock_run_protoc_command = mocker.patch("cli._run_protoc_command")
     mock_shutil_copytree = mocker.patch("shutil.copytree")
 
-    _generate_api(API_PATH, LIBRARY_ID, SOURCE, OUTPUT, gapic_version)
+    _generate_api(API_PATH, LIBRARY_ID, SOURCE, OUTPUT, gapic_version, is_mono_repo)
 
     mock_read_bazel_build_py_rule.assert_called_once()
     mock_run_protoc_command.assert_called_once()
     mock_shutil_copytree.assert_called_once()
 
 
-def test_generate_api_success_py_proto(mocker, caplog):
+@pytest.mark.parametrize("is_mono_repo", [False, True])
+def test_generate_api_success_py_proto(mocker, caplog, is_mono_repo):
     caplog.set_level(logging.INFO)
 
     API_PATH = "google/cloud/language/v1"
@@ -644,15 +658,16 @@ def test_generate_api_success_py_proto(mocker, caplog):
     mock_run_protoc_command = mocker.patch("cli._run_protoc_command")
     mock_shutil_copytree = mocker.patch("shutil.copytree")
 
-    _generate_api(API_PATH, LIBRARY_ID, SOURCE, OUTPUT, gapic_version)
+    _generate_api(API_PATH, LIBRARY_ID, SOURCE, OUTPUT, gapic_version, is_mono_repo)
 
     mock_read_bazel_build_py_rule.assert_called_once()
     mock_run_protoc_command.assert_called_once()
     mock_shutil_copytree.assert_called_once()
 
 
+@pytest.mark.parametrize("is_mono_repo", [False, True])
 def test_handle_generate_success(
-    caplog, mock_generate_request_file, mock_build_bazel_file, mocker
+    caplog, mock_generate_request_file, mock_build_bazel_file, mocker, is_mono_repo
 ):
     """
     Tests the successful execution path of handle_generate.
@@ -668,15 +683,18 @@ def test_handle_generate_success(
         "cli._clean_up_files_after_post_processing"
     )
     mocker.patch("cli._generate_repo_metadata_file")
+    mocker.patch("pathlib.Path.exists", return_value=is_mono_repo)
 
     handle_generate()
 
-    mock_run_post_processor.assert_called_once_with("output", "google-cloud-language")
+    mock_run_post_processor.assert_called_once_with(
+        "output", "google-cloud-language", is_mono_repo
+    )
     mock_copy_files_needed_for_post_processing.assert_called_once_with(
-        "output", "input", "google-cloud-language"
+        "output", "input", "google-cloud-language", is_mono_repo
     )
     mock_clean_up_files_after_post_processing.assert_called_once_with(
-        "output", "google-cloud-language"
+        "output", "google-cloud-language", is_mono_repo
     )
     mock_generate_api.assert_called_once()
 
@@ -831,34 +849,45 @@ def test_invalid_json(mocker):
         _read_json_file("fake/path.json")
 
 
-def test_copy_files_needed_for_post_processing_copies_metadata_if_exists(mocker):
+@pytest.mark.parametrize("is_mono_repo", [False, True])
+def test_copy_files_needed_for_post_processing_copies_metadata_if_exists(
+    mocker, is_mono_repo
+):
     """Tests that .repo-metadata.json is copied if it exists."""
     mock_makedirs = mocker.patch("os.makedirs")
     mock_shutil_copy = mocker.patch("shutil.copy")
     mocker.patch("os.path.exists", return_value=True)
 
-    _copy_files_needed_for_post_processing("output", "input", "library_id")
+    _copy_files_needed_for_post_processing(
+        "output", "input", "library_id", is_mono_repo
+    )
 
-    mock_shutil_copy.assert_called_once()
+    mock_shutil_copy.assert_called()
     mock_makedirs.assert_called()
 
 
-def test_copy_files_needed_for_post_processing_skips_metadata_if_not_exists(mocker):
+@pytest.mark.parametrize("is_mono_repo", [False, True])
+def test_copy_files_needed_for_post_processing_skips_metadata_if_not_exists(
+    mocker, is_mono_repo
+):
     """Tests that .repo-metadata.json is not copied if it does not exist."""
     mock_makedirs = mocker.patch("os.makedirs")
     mock_shutil_copy = mocker.patch("shutil.copy")
     mocker.patch("os.path.exists", return_value=False)
 
-    _copy_files_needed_for_post_processing("output", "input", "library_id")
+    _copy_files_needed_for_post_processing(
+        "output", "input", "library_id", is_mono_repo
+    )
 
     mock_shutil_copy.assert_not_called()
     mock_makedirs.assert_called()
 
 
-def test_clean_up_files_after_post_processing_success(mocker):
+@pytest.mark.parametrize("is_mono_repo", [False, True])
+def test_clean_up_files_after_post_processing_success(mocker, is_mono_repo):
     mock_shutil_rmtree = mocker.patch("shutil.rmtree")
     mock_os_remove = mocker.patch("os.remove")
-    _clean_up_files_after_post_processing("output", "library_id")
+    _clean_up_files_after_post_processing("output", "library_id", is_mono_repo)
 
 
 def test_get_libraries_to_prepare_for_release(mock_release_init_request_file):
@@ -1377,7 +1406,8 @@ def test_create_repo_metadata_from_service_config(mocker):
     assert metadata["default_version"] == "v1"
 
 
-def test_generate_repo_metadata_file(mocker):
+@pytest.mark.parametrize("is_mono_repo", [False, True])
+def test_generate_repo_metadata_file(mocker, is_mono_repo):
     """Tests the generation of the .repo-metadata.json file."""
     mock_write_json = mocker.patch("cli._write_json_file")
     mock_create_metadata = mocker.patch(
@@ -1396,24 +1426,26 @@ def test_generate_repo_metadata_file(mocker):
         }
     ]
 
-    _generate_repo_metadata_file(output, library_id, source, apis)
+    _generate_repo_metadata_file(output, library_id, source, apis, is_mono_repo)
 
     mock_create_metadata.assert_called_once_with(
         "service_config.yaml", "google/cloud/language/v1", source, library_id
     )
+    path_to_library = f"packages/{library_id}" if is_mono_repo else "."
     mock_write_json.assert_called_once_with(
-        f"{output}/packages/{library_id}/.repo-metadata.json",
+        f"{output}/{path_to_library}/.repo-metadata.json",
         {"repo": "googleapis/google-cloud-python"},
     )
 
 
-def test_generate_repo_metadata_file_skips_if_exists(mocker):
+@pytest.mark.parametrize("is_mono_repo", [False, True])
+def test_generate_repo_metadata_file_skips_if_exists(mocker, is_mono_repo):
     """Tests that the generation of the .repo-metadata.json file is skipped if it already exists."""
     mock_write_json = mocker.patch("cli._write_json_file")
     mock_create_metadata = mocker.patch("cli._create_repo_metadata_from_service_config")
     mocker.patch("os.path.exists", return_value=True)
 
-    _generate_repo_metadata_file("output", "library_id", "source", [])
+    _generate_repo_metadata_file("output", "library_id", "source", [], is_mono_repo)
 
     mock_create_metadata.assert_not_called()
     mock_write_json.assert_not_called()
@@ -1616,7 +1648,8 @@ def test_stage_gapic_library(mocker):
     )
 
 
-def test_copy_readme_to_docs(mocker):
+@pytest.mark.parametrize("is_mono_repo", [False, True])
+def test_copy_readme_to_docs(mocker, is_mono_repo):
     """Tests that the README.rst is copied to the docs directory, handling symlinks."""
     mock_makedirs = mocker.patch("os.makedirs")
     mock_shutil_copy = mocker.patch("shutil.copy")
@@ -1629,11 +1662,12 @@ def test_copy_readme_to_docs(mocker):
 
     output = "output"
     library_id = "google-cloud-language"
-    _copy_readme_to_docs(output, library_id)
+    _copy_readme_to_docs(output, library_id, is_mono_repo)
 
-    expected_source = "output/packages/google-cloud-language/README.rst"
-    expected_docs_path = "output/packages/google-cloud-language/docs"
-    expected_destination = "output/packages/google-cloud-language/docs/README.rst"
+    path_to_library = f"packages/{library_id}" if is_mono_repo else "."
+    expected_source = f"output/{path_to_library}/README.rst"
+    expected_docs_path = f"output/{path_to_library}/docs"
+    expected_destination = f"output/{path_to_library}/docs/README.rst"
 
     mock_os_lexists.assert_called_once_with(expected_source)
     mock_open.assert_any_call(expected_source, "r")
@@ -1645,7 +1679,8 @@ def test_copy_readme_to_docs(mocker):
     mock_open().write.assert_called_once_with("dummy content")
 
 
-def test_copy_readme_to_docs_handles_symlink(mocker):
+@pytest.mark.parametrize("is_mono_repo", [False, True])
+def test_copy_readme_to_docs_handles_symlink(mocker, is_mono_repo):
     """Tests that the README.rst is copied to the docs directory, handling symlinks."""
     mock_makedirs = mocker.patch("os.makedirs")
     mock_shutil_copy = mocker.patch("shutil.copy")
@@ -1664,11 +1699,12 @@ def test_copy_readme_to_docs_handles_symlink(mocker):
 
     output = "output"
     library_id = "google-cloud-language"
-    _copy_readme_to_docs(output, library_id)
+    _copy_readme_to_docs(output, library_id, is_mono_repo)
 
-    expected_source = "output/packages/google-cloud-language/README.rst"
-    expected_docs_path = "output/packages/google-cloud-language/docs"
-    expected_destination = "output/packages/google-cloud-language/docs/README.rst"
+    path_to_library = f"packages/{library_id}" if is_mono_repo else "."
+    expected_source = f"output/{path_to_library}/README.rst"
+    expected_docs_path = f"output/{path_to_library}/docs"
+    expected_destination = f"output/{path_to_library}/docs/README.rst"
 
     mock_os_lexists.assert_called_once_with(expected_source)
     mock_open.assert_any_call(expected_source, "r")
@@ -1680,7 +1716,8 @@ def test_copy_readme_to_docs_handles_symlink(mocker):
     mock_open().write.assert_called_once_with("dummy content")
 
 
-def test_copy_readme_to_docs_destination_path_is_symlink(mocker):
+@pytest.mark.parametrize("is_mono_repo", [False, True])
+def test_copy_readme_to_docs_destination_path_is_symlink(mocker, is_mono_repo):
     """Tests that the README.rst is copied to the docs directory, handling destination_path being a symlink."""
     mock_makedirs = mocker.patch("os.makedirs")
     mock_shutil_copy = mocker.patch("shutil.copy")
@@ -1693,14 +1730,17 @@ def test_copy_readme_to_docs_destination_path_is_symlink(mocker):
 
     output = "output"
     library_id = "google-cloud-language"
-    _copy_readme_to_docs(output, library_id)
+    _copy_readme_to_docs(output, library_id, is_mono_repo)
 
-    expected_destination = "output/packages/google-cloud-language/docs/README.rst"
+    path_to_library = f"packages/{library_id}" if is_mono_repo else "."
+    expected_destination = f"output/{path_to_library}/docs/README.rst"
     mock_os_remove.assert_called_once_with(expected_destination)
 
 
-def test_copy_readme_to_docs_source_not_exists(mocker):
+@pytest.mark.parametrize("is_mono_repo", [False, True])
+def test_copy_readme_to_docs_source_not_exists(mocker, is_mono_repo):
     """Tests that the function returns early if the source README.rst does not exist."""
+
     mock_makedirs = mocker.patch("os.makedirs")
     mock_shutil_copy = mocker.patch("shutil.copy")
     mock_os_islink = mocker.patch("os.path.islink")
@@ -1712,9 +1752,10 @@ def test_copy_readme_to_docs_source_not_exists(mocker):
 
     output = "output"
     library_id = "google-cloud-language"
-    _copy_readme_to_docs(output, library_id)
+    _copy_readme_to_docs(output, library_id, is_mono_repo)
 
-    expected_source = "output/packages/google-cloud-language/README.rst"
+    path_to_library = f"packages/{library_id}" if is_mono_repo else "."
+    expected_source = f"output/{path_to_library}/README.rst"
 
     mock_os_lexists.assert_called_once_with(expected_source)
     mock_open.assert_not_called()
