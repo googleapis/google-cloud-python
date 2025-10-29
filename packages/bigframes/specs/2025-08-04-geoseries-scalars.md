@@ -267,11 +267,14 @@ Raster functions: Functions for analyzing geospatial rasters using geographies.
 - [ ] **Export the new operation:**
     - [ ] In `bigframes/operations/__init__.py`, import your new operation dataclass and add it to the `__all__` list.
 - [ ] **Implement the compilation logic:**
-    - [ ] In `bigframes/core/compile/scalar_op_compiler.py`:
-    - [ ] If the BigQuery function has a direct equivalent in Ibis, you can often reuse an existing Ibis method.
-    - [ ] If not, define a new Ibis UDF using `@ibis_udf.scalar.builtin` to map to the specific BigQuery function signature.
-    - [ ] Create a new compiler implementation function (e.g., `geo_length_op_impl`).
-    - [ ] Register this function to your operation dataclass using `@scalar_op_compiler.register_unary_op` or `@scalar_op_compiler.register_binary_op`.
+    - [ ] In `bigframes/core/compile/ibis_compiler/operations/geo_ops.py`:
+        - [ ] If the BigQuery function has a direct equivalent in Ibis, you can often reuse an existing Ibis method.
+        - [ ] If not, define a new Ibis UDF using `@ibis_udf.scalar.builtin` to map to the specific BigQuery function signature.
+        - [ ] Create a new compiler implementation function (e.g., `geo_length_op_impl`).
+        - [ ] Register this function to your operation dataclass using `@register_unary_op` or `@register_binary_op`.
+    - [ ] In `bigframes/core/compile/sqlglot/expressions/geo_ops.py`:
+        - [ ] Create a new compiler implementation function that generates the appropriate `sqlglot.exp` expression.
+        - [ ] Register this function to your operation dataclass using `@register_unary_op` or `@register_binary_op`.
 - [ ] **Implement the user-facing function or property:**
     - [ ] For a `bigframes.bigquery` function:
         - [ ] In `bigframes/bigquery/_operations/geo.py`, create the user-facing function (e.g., `st_length`).

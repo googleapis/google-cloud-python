@@ -837,98 +837,6 @@ def normalize_op_impl(x: ibis_types.Value):
     return result.cast(result_type)
 
 
-# Geo Ops
-@scalar_op_compiler.register_unary_op(ops.geo_area_op)
-def geo_area_op_impl(x: ibis_types.Value):
-    return typing.cast(ibis_types.GeoSpatialValue, x).area()
-
-
-@scalar_op_compiler.register_unary_op(ops.geo_st_astext_op)
-def geo_st_astext_op_impl(x: ibis_types.Value):
-    return typing.cast(ibis_types.GeoSpatialValue, x).as_text()
-
-
-@scalar_op_compiler.register_unary_op(ops.geo_st_boundary_op, pass_op=False)
-def geo_st_boundary_op_impl(x: ibis_types.Value):
-    return st_boundary(x)
-
-
-@scalar_op_compiler.register_unary_op(ops.GeoStBufferOp, pass_op=True)
-def geo_st_buffer_op_impl(x: ibis_types.Value, op: ops.GeoStBufferOp):
-    return st_buffer(
-        x,
-        op.buffer_radius,
-        op.num_seg_quarter_circle,
-        op.use_spheroid,
-    )
-
-
-@scalar_op_compiler.register_unary_op(ops.geo_st_centroid_op, pass_op=False)
-def geo_st_centroid_op_impl(x: ibis_types.Value):
-    return typing.cast(ibis_types.GeoSpatialValue, x).centroid()
-
-
-@scalar_op_compiler.register_unary_op(ops.geo_st_convexhull_op, pass_op=False)
-def geo_st_convexhull_op_impl(x: ibis_types.Value):
-    return st_convexhull(x)
-
-
-@scalar_op_compiler.register_binary_op(ops.geo_st_difference_op, pass_op=False)
-def geo_st_difference_op_impl(x: ibis_types.Value, y: ibis_types.Value):
-    return typing.cast(ibis_types.GeoSpatialValue, x).difference(
-        typing.cast(ibis_types.GeoSpatialValue, y)
-    )
-
-
-@scalar_op_compiler.register_binary_op(ops.GeoStDistanceOp, pass_op=True)
-def geo_st_distance_op_impl(
-    x: ibis_types.Value, y: ibis_types.Value, op: ops.GeoStDistanceOp
-):
-    return st_distance(x, y, op.use_spheroid)
-
-
-@scalar_op_compiler.register_unary_op(ops.geo_st_geogfromtext_op)
-def geo_st_geogfromtext_op_impl(x: ibis_types.Value):
-    # Ibis doesn't seem to provide a dedicated method to cast from string to geography,
-    # so we use a BigQuery scalar function, st_geogfromtext(), directly.
-    return st_geogfromtext(x)
-
-
-@scalar_op_compiler.register_binary_op(ops.geo_st_geogpoint_op, pass_op=False)
-def geo_st_geogpoint_op_impl(x: ibis_types.Value, y: ibis_types.Value):
-    return typing.cast(ibis_types.NumericValue, x).point(
-        typing.cast(ibis_types.NumericValue, y)
-    )
-
-
-@scalar_op_compiler.register_binary_op(ops.geo_st_intersection_op, pass_op=False)
-def geo_st_intersection_op_impl(x: ibis_types.Value, y: ibis_types.Value):
-    return typing.cast(ibis_types.GeoSpatialValue, x).intersection(
-        typing.cast(ibis_types.GeoSpatialValue, y)
-    )
-
-
-@scalar_op_compiler.register_unary_op(ops.geo_st_isclosed_op, pass_op=False)
-def geo_st_isclosed_op_impl(x: ibis_types.Value):
-    return st_isclosed(x)
-
-
-@scalar_op_compiler.register_unary_op(ops.geo_x_op)
-def geo_x_op_impl(x: ibis_types.Value):
-    return typing.cast(ibis_types.GeoSpatialValue, x).x()
-
-
-@scalar_op_compiler.register_unary_op(ops.GeoStLengthOp, pass_op=True)
-def geo_length_op_impl(x: ibis_types.Value, op: ops.GeoStLengthOp):
-    # Call the st_length UDF defined in this file (or imported)
-    return st_length(x, op.use_spheroid)
-
-
-@scalar_op_compiler.register_unary_op(ops.geo_y_op)
-def geo_y_op_impl(x: ibis_types.Value):
-    return typing.cast(ibis_types.GeoSpatialValue, x).y()
-
-
 # Parameterized ops
 @scalar_op_compiler.register_unary_op(ops.StructFieldOp, pass_op=True)
 def struct_field_op_impl(x: ibis_types.Value, op: ops.StructFieldOp):
@@ -2093,17 +2001,6 @@ def _ibis_num(number: float):
 
 
 @ibis_udf.scalar.builtin
-def st_convexhull(x: ibis_dtypes.geography) -> ibis_dtypes.geography:  # type: ignore
-    """ST_CONVEXHULL"""
-    ...
-
-
-@ibis_udf.scalar.builtin
-def st_geogfromtext(a: str) -> ibis_dtypes.geography:  # type: ignore
-    """Convert string to geography."""
-
-
-@ibis_udf.scalar.builtin
 def timestamp(a: str) -> ibis_dtypes.timestamp:  # type: ignore
     """Convert string to timestamp."""
 
@@ -2111,32 +2008,6 @@ def timestamp(a: str) -> ibis_dtypes.timestamp:  # type: ignore
 @ibis_udf.scalar.builtin
 def unix_millis(a: ibis_dtypes.timestamp) -> int:  # type: ignore
     """Convert a timestamp to milliseconds"""
-
-
-@ibis_udf.scalar.builtin
-def st_boundary(a: ibis_dtypes.geography) -> ibis_dtypes.geography:  # type: ignore
-    """Find the boundary of a geography."""
-
-
-@ibis_udf.scalar.builtin
-def st_buffer(
-    geography: ibis_dtypes.geography,  # type: ignore
-    buffer_radius: ibis_dtypes.Float64,
-    num_seg_quarter_circle: ibis_dtypes.Float64,
-    use_spheroid: ibis_dtypes.Boolean,
-) -> ibis_dtypes.geography:  # type: ignore
-    ...
-
-
-@ibis_udf.scalar.builtin
-def st_distance(a: ibis_dtypes.geography, b: ibis_dtypes.geography, use_spheroid: bool) -> ibis_dtypes.float:  # type: ignore
-    """Convert string to geography."""
-
-
-@ibis_udf.scalar.builtin
-def st_length(geog: ibis_dtypes.geography, use_spheroid: bool) -> ibis_dtypes.float:  # type: ignore
-    """ST_LENGTH BQ builtin. This body is never executed."""
-    pass
 
 
 @ibis_udf.scalar.builtin
@@ -2270,11 +2141,6 @@ def str_lstrip_op(  # type: ignore[empty-body]
     x: ibis_dtypes.String, to_strip: ibis_dtypes.String
 ) -> ibis_dtypes.String:
     """Remove leading and trailing characters."""
-
-
-@ibis_udf.scalar.builtin
-def st_isclosed(a: ibis_dtypes.geography) -> ibis_dtypes.boolean:  # type: ignore
-    """Checks if a geography is closed."""
 
 
 @ibis_udf.scalar.builtin(name="rtrim")
