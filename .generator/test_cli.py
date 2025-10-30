@@ -853,36 +853,18 @@ def test_invalid_json(mocker):
 
 
 @pytest.mark.parametrize("is_mono_repo", [False, True])
-def test_copy_files_needed_for_post_processing_copies_metadata_if_exists(
+def test_copy_files_needed_for_post_processing_copies_files_from_generator_input(
     mocker, is_mono_repo
 ):
     """Tests that .repo-metadata.json is copied if it exists."""
     mock_makedirs = mocker.patch("os.makedirs")
-    mock_shutil_copy = mocker.patch("shutil.copy")
-    mocker.patch("os.path.exists", return_value=True)
+    mock_shutil_copytree = mocker.patch("shutil.copytree")
 
     _copy_files_needed_for_post_processing(
         "output", "input", "library_id", is_mono_repo
     )
 
-    mock_shutil_copy.assert_called()
-    mock_makedirs.assert_called()
-
-
-@pytest.mark.parametrize("is_mono_repo", [False, True])
-def test_copy_files_needed_for_post_processing_skips_metadata_if_not_exists(
-    mocker, is_mono_repo
-):
-    """Tests that .repo-metadata.json is not copied if it does not exist."""
-    mock_makedirs = mocker.patch("os.makedirs")
-    mock_shutil_copy = mocker.patch("shutil.copy")
-    mocker.patch("os.path.exists", return_value=False)
-
-    _copy_files_needed_for_post_processing(
-        "output", "input", "library_id", is_mono_repo
-    )
-
-    mock_shutil_copy.assert_not_called()
+    mock_shutil_copytree.assert_called()
     mock_makedirs.assert_called()
 
 

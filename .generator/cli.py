@@ -365,37 +365,21 @@ def _copy_files_needed_for_post_processing(
         library_id(str): The library id to be used for post processing.
         is_mono_repo(bool): True if the current repository is a mono-repo.
     """
+
     path_to_library = f"packages/{library_id}" if is_mono_repo else "."
-    repo_metadata_path = f"{input}/{path_to_library}/.repo-metadata.json"
+    source_dir = f"{input}/{path_to_library}"
+
+    shutil.copytree(
+        source_dir,
+        output,
+        dirs_exist_ok=True,
+        ignore=shutil.ignore_patterns("client-post-processing"),
+    )
 
     # We need to create these directories so that we can copy files necessary for post-processing.
     os.makedirs(
         f"{output}/{path_to_library}/scripts/client-post-processing", exist_ok=True
     )
-    # TODO(https://github.com/googleapis/librarian/issues/2334):
-    # if `.repo-metadata.json` for a library exists in
-    # `.librarian/generator-input`, then we override the generated `.repo-metadata.json`
-    # with what we have in `generator-input`. Remove this logic once the
-    # generated `.repo-metadata.json` file is completely backfilled.
-    if os.path.exists(repo_metadata_path):
-        shutil.copy(
-            repo_metadata_path,
-            f"{output}/{path_to_library}/.repo-metadata.json",
-        )
-
-    if not is_mono_repo:
-        setup_py_path = f"{input}/setup.py"
-        if os.path.exists(setup_py_path):
-            shutil.copy(
-                setup_py_path,
-                f"{output}/setup.py",
-            )
-        owlbot_py_path = f"{input}/owlbot.py"
-        if os.path.exists(owlbot_py_path):
-            shutil.copy(
-                owlbot_py_path,
-                f"{output}/owlbot.py",
-            )
 
     # copy post-procesing files
     for post_processing_file in glob.glob(
