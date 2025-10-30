@@ -74,6 +74,7 @@ SYSTEM_TEST_STANDARD_DEPENDENCIES: List[str] = [
     "mock",
     "pytest",
     "google-cloud-testutils",
+    "psutil",
 ]
 SYSTEM_TEST_EXTERNAL_DEPENDENCIES: List[str] = []
 SYSTEM_TEST_LOCAL_DEPENDENCIES: List[str] = []
