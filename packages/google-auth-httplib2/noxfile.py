@@ -32,7 +32,7 @@ BLACK_VERSION = "black[jupyter]==23.7.0"
 ISORT_VERSION = "isort==5.11.0"
 LINT_PATHS = ["docs", "google_auth_httplib2.py", "tests", "noxfile.py", "setup.py"]
 
-DEFAULT_PYTHON_VERSION = "3.8"
+DEFAULT_PYTHON_VERSION = "3.9"
 
 UNIT_TEST_PYTHON_VERSIONS: List[str] = [
     "3.7",
@@ -59,7 +59,7 @@ UNIT_TEST_DEPENDENCIES: List[str] = []
 UNIT_TEST_EXTRAS: List[str] = []
 UNIT_TEST_EXTRAS_BY_PYTHON: Dict[str, List[str]] = {}
 
-SYSTEM_TEST_PYTHON_VERSIONS: List[str] = ["3.8"]
+SYSTEM_TEST_PYTHON_VERSIONS: List[str] = ["3.9"]
 SYSTEM_TEST_STANDARD_DEPENDENCIES: List[str] = [
     "mock",
     "pytest",
@@ -74,7 +74,11 @@ SYSTEM_TEST_EXTRAS_BY_PYTHON: Dict[str, List[str]] = {}
 CURRENT_DIRECTORY = pathlib.Path(__file__).parent.absolute()
 
 nox.options.sessions = [
-    "unit",
+    "unit-3.9",
+    "unit-3.10",
+    "unit-3.11",
+    "unit-3.12",
+    "unit-3.13",
     "system",
     "cover",
     "lint",
