@@ -281,11 +281,11 @@ class BidiRpc(BidiRpcBase):
 
     def close(self):
         """Closes the stream."""
-        if self.call is None:
-            return
+        if self.call is not None:
+            self.call.cancel()
 
+        # Put None in request queue to signal termination.
         self._request_queue.put(None)
-        self.call.cancel()
         self._request_generator = None
         self._initial_request = None
         self._callbacks = []

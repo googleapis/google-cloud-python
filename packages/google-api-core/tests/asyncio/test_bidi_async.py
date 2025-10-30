@@ -256,6 +256,21 @@ class TestAsyncBidiRpc:
         assert not bidi_rpc._callbacks
 
     @pytest.mark.asyncio
+    async def test_close_with_no_rpc(self):
+        bidi_rpc = bidi_async.AsyncBidiRpc(None)
+
+        await bidi_rpc.close()
+
+        assert bidi_rpc.call is None
+        assert bidi_rpc.is_active is False
+        # ensure the request queue was signaled to stop.
+        assert bidi_rpc.pending_requests == 1
+        assert await bidi_rpc._request_queue.get() is None
+        # ensure request and callbacks are cleaned up
+        assert bidi_rpc._initial_request is None
+        assert not bidi_rpc._callbacks
+
+    @pytest.mark.asyncio
     async def test_close_no_rpc(self):
         bidi_rpc = bidi_async.AsyncBidiRpc(None)
         await bidi_rpc.close()

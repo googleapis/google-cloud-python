@@ -301,9 +301,18 @@ class TestBidiRpc(object):
         assert bidi_rpc._initial_request is None
         assert not bidi_rpc._callbacks
 
-    def test_close_no_rpc(self):
+    def test_close_with_no_rpc(self):
         bidi_rpc = bidi.BidiRpc(None)
         bidi_rpc.close()
+
+        assert bidi_rpc.call is None
+        assert bidi_rpc.is_active is False
+        # ensure the request queue was signaled to stop.
+        assert bidi_rpc.pending_requests == 1
+        assert bidi_rpc._request_queue.get() is None
+        # ensure request and callbacks are cleaned up
+        assert bidi_rpc._initial_request is None
+        assert not bidi_rpc._callbacks
 
     def test_send(self):
         rpc, call = make_rpc()
