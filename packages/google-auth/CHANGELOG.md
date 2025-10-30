@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-auth/#history
 
+## [2.42.1](https://github.com/googleapis/google-auth-library-python/compare/v2.42.0...v2.42.1) (2025-10-30)
+
+
+### Bug Fixes
+
+* Catch ValueError for json.loads() ([#1842](https://github.com/googleapis/google-auth-library-python/issues/1842)) ([b074cad](https://github.com/googleapis/google-auth-library-python/commit/b074cad460589633adfc6744c01726ae86f2aa2b))
+
 ## [2.42.0](https://github.com/googleapis/google-auth-library-python/compare/v2.41.1...v2.42.0) (2025-10-24)
 
 
