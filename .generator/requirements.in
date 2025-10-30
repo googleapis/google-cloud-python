@@ -5,3 +5,6 @@ starlark-pyo3>=2025.1
 build
 black==23.7.0
 isort==5.11.0
+# Temporarily pin google-api-core until we can bump the runtime here to 3.11
+# https://github.com/googleapis/google-cloud-python/blob/c0baa3211766aec17b25450bbbafff61cb9e236c/.generator/Dockerfile#L61-L62
+google-api-core<2.28.0
