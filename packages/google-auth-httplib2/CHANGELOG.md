@@ -1,5 +1,15 @@
 # Changelog
 
+## [0.2.1](https://github.com/googleapis/google-auth-library-python-httplib2/compare/v0.2.0...v0.2.1) (2025-10-30)
+
+
+### Bug Fixes
+
+* **deps:** Require google-auth &gt;= 1.32.0,&lt;3.0.0 ([a69b725](https://github.com/googleapis/google-auth-library-python-httplib2/commit/a69b725eb2f0f4538824ea2bb76581ee37ba3bd9))
+* **deps:** Require httplib2 &gt;= 0.19.0,&lt;1.0.0 ([a69b725](https://github.com/googleapis/google-auth-library-python-httplib2/commit/a69b725eb2f0f4538824ea2bb76581ee37ba3bd9))
+* Drop python 3.6; require python 3.7+ ([a69b725](https://github.com/googleapis/google-auth-library-python-httplib2/commit/a69b725eb2f0f4538824ea2bb76581ee37ba3bd9))
+* Remove setup.cfg configuration for creating universal wheels ([#191](https://github.com/googleapis/google-auth-library-python-httplib2/issues/191)) ([c2be0ae](https://github.com/googleapis/google-auth-library-python-httplib2/commit/c2be0ae5537d15f20a6c81d1e51408a11ecda22e))
+
 ## [0.2.0](https://github.com/googleapis/google-auth-library-python-httplib2/compare/v0.1.1...v0.2.0) (2023-12-12)
 
 
