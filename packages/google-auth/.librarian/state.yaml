@@ -1,0 +1,11 @@
+image: us-central1-docker.pkg.dev/cloud-sdk-librarian-prod/images-prod/python-librarian-generator:latest
+libraries:
+  - id: google-auth
+    version: 2.41.1
+    last_generated_commit: 102d9f92ac6ed649a61efd9b208e4d1de278e9bb
+    apis: []
+    source_roots:
+      - .
+    preserve_regex: []
+    remove_regex: []
+    tag_format: v{version}
