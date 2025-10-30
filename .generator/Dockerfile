@@ -73,8 +73,8 @@ RUN wget https://github.com/jgm/pandoc/releases/download/${PANDOC_VERSION}/pando
 RUN tar -xvf pandoc-${PANDOC_VERSION}-linux-amd64.tar.gz -C pandoc-binary --strip-components=1
 
 # Pin synthtool for a more hermetic build
-RUN git clone https://github.com/googleapis/synthtool.git synthtool
-RUN cd synthtool && git checkout 35313ccd8cdd2d12d2447ccdc497a7919aae1e3e
+RUN git clone https://github.com/googleapis/synthtool.git synthtool2
+RUN cd synthtool2 && git checkout 35313ccd8cdd2d12d2447ccdc497a7919aae1e3e
 
 # --- Final Stage ---
 # This stage creates the lightweight final image, copying only the
@@ -89,6 +89,9 @@ ENV SYNTHTOOL_TEMPLATES="/synthtool/synthtool/gcp/templates"
 # These are the non "-dev" versions of the libraries used in the builder.
 RUN apt-get update && \
     apt-get install -y --no-install-recommends \
+    # Temporarily include git and ca-certificates to download gapic-generator from Github
+    ca-certificates \
+    git \
     # This is needed to avoid the following error:
     # `ImportError: libsqlite3.so.0: cannot open shared object file: No such file or directory`.
     # `libsqlite3-0` is used by the `coverage` PyPI package which is used when testing libraries
@@ -102,7 +105,7 @@ COPY --from=builder protoc/bin /usr/local/bin
 COPY --from=builder protoc/include /usr/local/include
 
 COPY --from=builder pandoc-binary/bin /usr/local/bin
-COPY --from=builder synthtool /synthtool
+COPY --from=builder synthtool2 /synthtool
 
 # Copy all Python interpreters, their pip executables, and their standard libraries from the builder.
 COPY --from=builder /usr/local/bin/python3.9 /usr/local/bin/

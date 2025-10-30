@@ -1,7 +1,10 @@
 click
-gapic-generator==1.28.3 # format generated samples
+# Temporarily use a patched version of the generator to avoid getting
+# new features/fixes for GAPIC libraries for the purposes of onboarding to librarian
+gapic-generator @ git+https://github.com/googleapis/gapic-generator-python@34a97e0fdfd7c77db59c2c07a8142937055c43bf
 nox
 starlark-pyo3>=2025.1
 build
 black==23.7.0
 isort==5.11.0
+google-api-core<2.28.0
