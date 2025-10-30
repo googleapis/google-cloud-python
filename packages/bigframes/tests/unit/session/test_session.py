@@ -242,7 +242,7 @@ def test_read_gbq_cached_table():
     table._properties["numRows"] = "1000000000"
     table._properties["location"] = session._location
     table._properties["type"] = "TABLE"
-    session._loader._df_snapshot[table_ref] = (
+    session._loader._df_snapshot[str(table_ref)] = (
         datetime.datetime(1999, 1, 2, 3, 4, 5, 678901, tzinfo=datetime.timezone.utc),
         table,
     )
@@ -273,7 +273,7 @@ def test_read_gbq_cached_table_doesnt_warn_for_anonymous_tables_and_doesnt_inclu
     table._properties["numRows"] = "1000000000"
     table._properties["location"] = session._location
     table._properties["type"] = "TABLE"
-    session._loader._df_snapshot[table_ref] = (
+    session._loader._df_snapshot[str(table_ref)] = (
         datetime.datetime(1999, 1, 2, 3, 4, 5, 678901, tzinfo=datetime.timezone.utc),
         table,
     )

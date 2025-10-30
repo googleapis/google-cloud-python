@@ -28,6 +28,7 @@ import google.api_core.exceptions
 import google.cloud.bigquery as bigquery
 import google.cloud.bigquery.table
 
+import bigframes.core
 import bigframes.core.events
 import bigframes.exceptions as bfe
 import bigframes.session._io.bigquery
@@ -37,18 +38,79 @@ if typing.TYPE_CHECKING:
     import bigframes.session
 
 
+def _convert_information_schema_table_id_to_table_reference(
+    table_id: str,
+    default_project: Optional[str],
+) -> bigquery.TableReference:
+    """Squeeze an INFORMATION_SCHEMA reference into a TableReference.
+    This is kind-of a hack. INFORMATION_SCHEMA is a view that isn't available
+    via the tables.get REST API.
+    """
+    parts = table_id.split(".")
+    parts_casefold = [part.casefold() for part in parts]
+    dataset_index = parts_casefold.index("INFORMATION_SCHEMA".casefold())
+
+    if dataset_index == 0:
+        project = default_project
+    else:
+        project = ".".join(parts[:dataset_index])
+
+    if project is None:
+        message = (
+            "Could not determine project ID. "
+            "Please provide a project or region in your INFORMATION_SCHEMA table ID, "
+            "For example, 'region-REGION_NAME.INFORMATION_SCHEMA.JOBS'."
+        )
+        raise ValueError(message)
+
+    dataset = "INFORMATION_SCHEMA"
+    table_id_short = ".".join(parts[dataset_index + 1 :])
+    return bigquery.TableReference(
+        bigquery.DatasetReference(project, dataset),
+        table_id_short,
+    )
+
+
+def get_information_schema_metadata(
+    bqclient: bigquery.Client,
+    table_id: str,
+    default_project: Optional[str],
+) -> bigquery.Table:
+    job_config = bigquery.QueryJobConfig(dry_run=True)
+    job = bqclient.query(
+        f"SELECT * FROM `{table_id}`",
+        job_config=job_config,
+    )
+    table_ref = _convert_information_schema_table_id_to_table_reference(
+        table_id=table_id,
+        default_project=default_project,
+    )
+    table = bigquery.Table.from_api_repr(
+        {
+            "tableReference": table_ref.to_api_repr(),
+            "location": job.location,
+            # Prevent ourselves from trying to read the table with the BQ
+            # Storage API.
+            "type": "VIEW",
+        }
+    )
+    table.schema = job.schema
+    return table
+
+
 def get_table_metadata(
     bqclient: bigquery.Client,
-    table_ref: google.cloud.bigquery.table.TableReference,
-    bq_time: datetime.datetime,
     *,
-    cache: Dict[bigquery.TableReference, Tuple[datetime.datetime, bigquery.Table]],
+    table_id: str,
+    default_project: Optional[str],
+    bq_time: datetime.datetime,
+    cache: Dict[str, Tuple[datetime.datetime, bigquery.Table]],
     use_cache: bool = True,
     publisher: bigframes.core.events.Publisher,
 ) -> Tuple[datetime.datetime, google.cloud.bigquery.table.Table]:
     """Get the table metadata, either from cache or via REST API."""
 
-    cached_table = cache.get(table_ref)
+    cached_table = cache.get(table_id)
     if use_cache and cached_table is not None:
         snapshot_timestamp, table = cached_table
 
@@ -90,7 +152,16 @@ def get_table_metadata(
 
         return cached_table
 
-    table = bqclient.get_table(table_ref)
+    if is_information_schema(table_id):
+        table = get_information_schema_metadata(
+            bqclient=bqclient, table_id=table_id, default_project=default_project
+        )
+    else:
+        table_ref = google.cloud.bigquery.table.TableReference.from_string(
+            table_id, default_project=default_project
+        )
+        table = bqclient.get_table(table_ref)
+
     # local time will lag a little bit do to network latency
     # make sure it is at least table creation time.
     # This is relevant if the table was created immediately before loading it here.
@@ -98,8 +169,19 @@ def get_table_metadata(
         bq_time = table.created
 
     cached_table = (bq_time, table)
-    cache[table_ref] = cached_table
+    cache[table_id] = cached_table
     return cached_table
+
+
+def is_information_schema(table_id: str):
+    table_id_casefold = table_id.casefold()
+    # Include the "."s to ensure we don't have false positives for some user
+    # defined dataset like MY_INFORMATION_SCHEMA or tables called
+    # INFORMATION_SCHEMA.
+    return (
+        ".INFORMATION_SCHEMA.".casefold() in table_id_casefold
+        or table_id_casefold.startswith("INFORMATION_SCHEMA.".casefold())
+    )
 
 
 def is_time_travel_eligible(
@@ -167,6 +249,8 @@ def is_time_travel_eligible(
                 warnings.warn(
                     msg, category=bfe.TimeTravelDisabledWarning, stacklevel=stacklevel
                 )
+            return False
+        elif table.table_type == "VIEW":
             return False
 
     # table might support time travel, lets do a dry-run query with time travel

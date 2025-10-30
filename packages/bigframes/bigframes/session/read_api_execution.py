@@ -46,6 +46,9 @@ class ReadApiSemiExecutor(semi_executor.SemiExecutor):
         if node.explicitly_ordered and ordered:
             return None
 
+        if not node.source.table.is_physically_stored:
+            return None
+
         if limit is not None:
             if peek is None or limit < peek:
                 peek = limit
