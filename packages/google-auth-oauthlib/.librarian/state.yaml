@@ -1,0 +1,10 @@
+image: us-central1-docker.pkg.dev/cloud-sdk-librarian-prod/images-prod/python-librarian-generator:latest
+libraries:
+  - id: google-auth-oauthlib
+    version: 1.2.3
+    apis: []
+    source_roots:
+      - .
+    preserve_regex: []
+    remove_regex: []
+    tag_format: v{version}
