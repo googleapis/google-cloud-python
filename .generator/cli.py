@@ -332,7 +332,7 @@ def _run_post_processor(output: str, library_id: str, is_mono_repo: str):
         if is_mono_repo:
             python_mono_repo.owlbot_main(path_to_library)
         else:
-            python.owlbot_main()
+            subprocess.run(["python3.9", f"{output}/owlbot.py"])
     else:
         raise SYNTHTOOL_IMPORT_ERROR  # pragma: NO COVER
 
@@ -381,6 +381,12 @@ def _copy_files_needed_for_post_processing(output: str, input: str, library_id: 
             shutil.copy(
                 setup_py_path,
                 f"{output}/setup.py",
+            )
+        owlbot_py_path = f"{input}/owlbot.py"
+        if os.path.exists(owlbot_py_path):
+            shutil.copy(
+                owlbot_py_path,
+                f"{output}/owlbot.py",
             )
 
     # copy post-procesing files
