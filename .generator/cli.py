@@ -326,7 +326,7 @@ def _run_post_processor(output: str, library_id: str, is_mono_repo: bool):
         is_mono_repo(bool): True if the current repository is a mono-repo.
     """
     os.chdir(output)
-    path_to_library = f"packages/{library_id}"
+    path_to_library = f"packages/{library_id}" if is_mono_repo else "."
     logger.info("Running Python post-processor...")
     if SYNTHTOOL_INSTALLED:
         if is_mono_repo:
@@ -1488,10 +1488,7 @@ def handle_release_init(
                     f"{library_id} version: {previous_version}\n"
                 )
 
-            if is_mono_repo:
-                path_to_library = f"packages/{library_id}"
-            else:
-                path_to_library = "."
+            path_to_library = f"packages/{library_id}" if is_mono_repo else "."
 
             _update_version_for_library(repo, output, path_to_library, version)
             _update_changelog_for_library(
