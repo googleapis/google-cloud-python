@@ -467,6 +467,9 @@ def test_run_post_processor_success(mocker, caplog, is_mono_repo, owlbot_py_exis
     mocker.patch("cli.SYNTHTOOL_INSTALLED", return_value=True)
     mock_chdir = mocker.patch("cli.os.chdir")
     mocker.patch("pathlib.Path.exists", return_value=owlbot_py_exists)
+    mocker.patch(
+        "cli.subprocess.run", return_value=MagicMock(stdout="ok", stderr="", check=True)
+    )
 
     if is_mono_repo:
         mock_owlbot = mocker.patch(
