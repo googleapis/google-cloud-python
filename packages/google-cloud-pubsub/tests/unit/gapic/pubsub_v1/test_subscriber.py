@@ -13208,9 +13208,38 @@ def test_subscriber_transport_channel_mtls_with_adc(transport_class):
             assert transport.grpc_channel == mock_grpc_channel
 
 
-def test_snapshot_path():
+def test_listing_path():
     project = "squid"
-    snapshot = "clam"
+    location = "clam"
+    data_exchange = "whelk"
+    listing = "octopus"
+    expected = "projects/{project}/locations/{location}/dataExchanges/{data_exchange}/listings/{listing}".format(
+        project=project,
+        location=location,
+        data_exchange=data_exchange,
+        listing=listing,
+    )
+    actual = SubscriberClient.listing_path(project, location, data_exchange, listing)
+    assert expected == actual
+
+
+def test_parse_listing_path():
+    expected = {
+        "project": "oyster",
+        "location": "nudibranch",
+        "data_exchange": "cuttlefish",
+        "listing": "mussel",
+    }
+    path = SubscriberClient.listing_path(**expected)
+
+    # Check that the path construction is reversible.
+    actual = SubscriberClient.parse_listing_path(path)
+    assert expected == actual
+
+
+def test_snapshot_path():
+    project = "winkle"
+    snapshot = "nautilus"
     expected = "projects/{project}/snapshots/{snapshot}".format(
         project=project,
         snapshot=snapshot,
@@ -13221,8 +13250,8 @@ def test_snapshot_path():
 
 def test_parse_snapshot_path():
     expected = {
-        "project": "whelk",
-        "snapshot": "octopus",
+        "project": "scallop",
+        "snapshot": "abalone",
     }
     path = SubscriberClient.snapshot_path(**expected)
 
@@ -13232,8 +13261,8 @@ def test_parse_snapshot_path():
 
 
 def test_subscription_path():
-    project = "oyster"
-    subscription = "nudibranch"
+    project = "squid"
+    subscription = "clam"
     expected = "projects/{project}/subscriptions/{subscription}".format(
         project=project,
         subscription=subscription,
@@ -13244,8 +13273,8 @@ def test_subscription_path():
 
 def test_parse_subscription_path():
     expected = {
-        "project": "cuttlefish",
-        "subscription": "mussel",
+        "project": "whelk",
+        "subscription": "octopus",
     }
     path = SubscriberClient.subscription_path(**expected)
 
@@ -13255,8 +13284,8 @@ def test_parse_subscription_path():
 
 
 def test_topic_path():
-    project = "winkle"
-    topic = "nautilus"
+    project = "oyster"
+    topic = "nudibranch"
     expected = "projects/{project}/topics/{topic}".format(
         project=project,
         topic=topic,
@@ -13267,8 +13296,8 @@ def test_topic_path():
 
 def test_parse_topic_path():
     expected = {
-        "project": "scallop",
-        "topic": "abalone",
+        "project": "cuttlefish",
+        "topic": "mussel",
     }
     path = SubscriberClient.topic_path(**expected)
 
@@ -13278,7 +13307,7 @@ def test_parse_topic_path():
 
 
 def test_common_billing_account_path():
-    billing_account = "squid"
+    billing_account = "winkle"
     expected = "billingAccounts/{billing_account}".format(
         billing_account=billing_account,
     )
@@ -13288,7 +13317,7 @@ def test_common_billing_account_path():
 
 def test_parse_common_billing_account_path():
     expected = {
-        "billing_account": "clam",
+        "billing_account": "nautilus",
     }
     path = SubscriberClient.common_billing_account_path(**expected)
 
@@ -13298,7 +13327,7 @@ def test_parse_common_billing_account_path():
 
 
 def test_common_folder_path():
-    folder = "whelk"
+    folder = "scallop"
     expected = "folders/{folder}".format(
         folder=folder,
     )
@@ -13308,7 +13337,7 @@ def test_common_folder_path():
 
 def test_parse_common_folder_path():
     expected = {
-        "folder": "octopus",
+        "folder": "abalone",
     }
     path = SubscriberClient.common_folder_path(**expected)
 
@@ -13318,7 +13347,7 @@ def test_parse_common_folder_path():
 
 
 def test_common_organization_path():
-    organization = "oyster"
+    organization = "squid"
     expected = "organizations/{organization}".format(
         organization=organization,
     )
@@ -13328,7 +13357,7 @@ def test_common_organization_path():
 
 def test_parse_common_organization_path():
     expected = {
-        "organization": "nudibranch",
+        "organization": "clam",
     }
     path = SubscriberClient.common_organization_path(**expected)
 
@@ -13338,7 +13367,7 @@ def test_parse_common_organization_path():
 
 
 def test_common_project_path():
-    project = "cuttlefish"
+    project = "whelk"
     expected = "projects/{project}".format(
         project=project,
     )
@@ -13348,7 +13377,7 @@ def test_common_project_path():
 
 def test_parse_common_project_path():
     expected = {
-        "project": "mussel",
+        "project": "octopus",
     }
     path = SubscriberClient.common_project_path(**expected)
 
@@ -13358,8 +13387,8 @@ def test_parse_common_project_path():
 
 
 def test_common_location_path():
-    project = "winkle"
-    location = "nautilus"
+    project = "oyster"
+    location = "nudibranch"
     expected = "projects/{project}/locations/{location}".format(
         project=project,
         location=location,
@@ -13370,8 +13399,8 @@ def test_common_location_path():
 
 def test_parse_common_location_path():
     expected = {
-        "project": "scallop",
-        "location": "abalone",
+        "project": "cuttlefish",
+        "location": "mussel",
     }
     path = SubscriberClient.common_location_path(**expected)
 

@@ -8898,9 +8898,38 @@ def test_publisher_transport_channel_mtls_with_adc(transport_class):
             assert transport.grpc_channel == mock_grpc_channel
 
 
-def test_schema_path():
+def test_crypto_key_path():
     project = "squid"
-    schema = "clam"
+    location = "clam"
+    key_ring = "whelk"
+    crypto_key = "octopus"
+    expected = "projects/{project}/locations/{location}/keyRings/{key_ring}/cryptoKeys/{crypto_key}".format(
+        project=project,
+        location=location,
+        key_ring=key_ring,
+        crypto_key=crypto_key,
+    )
+    actual = PublisherClient.crypto_key_path(project, location, key_ring, crypto_key)
+    assert expected == actual
+
+
+def test_parse_crypto_key_path():
+    expected = {
+        "project": "oyster",
+        "location": "nudibranch",
+        "key_ring": "cuttlefish",
+        "crypto_key": "mussel",
+    }
+    path = PublisherClient.crypto_key_path(**expected)
+
+    # Check that the path construction is reversible.
+    actual = PublisherClient.parse_crypto_key_path(path)
+    assert expected == actual
+
+
+def test_schema_path():
+    project = "winkle"
+    schema = "nautilus"
     expected = "projects/{project}/schemas/{schema}".format(
         project=project,
         schema=schema,
@@ -8911,13 +8940,36 @@ def test_schema_path():
 
 def test_parse_schema_path():
     expected = {
-        "project": "whelk",
-        "schema": "octopus",
+        "project": "scallop",
+        "schema": "abalone",
     }
     path = PublisherClient.schema_path(**expected)
 
     # Check that the path construction is reversible.
     actual = PublisherClient.parse_schema_path(path)
+    assert expected == actual
+
+
+def test_snapshot_path():
+    project = "squid"
+    snapshot = "clam"
+    expected = "projects/{project}/snapshots/{snapshot}".format(
+        project=project,
+        snapshot=snapshot,
+    )
+    actual = PublisherClient.snapshot_path(project, snapshot)
+    assert expected == actual
+
+
+def test_parse_snapshot_path():
+    expected = {
+        "project": "whelk",
+        "snapshot": "octopus",
+    }
+    path = PublisherClient.snapshot_path(**expected)
+
+    # Check that the path construction is reversible.
+    actual = PublisherClient.parse_snapshot_path(path)
     assert expected == actual
 
 

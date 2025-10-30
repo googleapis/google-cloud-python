@@ -220,6 +220,30 @@ class SubscriberClient(metaclass=SubscriberClientMeta):
         return self._transport
 
     @staticmethod
+    def listing_path(
+        project: str,
+        location: str,
+        data_exchange: str,
+        listing: str,
+    ) -> str:
+        """Returns a fully-qualified listing string."""
+        return "projects/{project}/locations/{location}/dataExchanges/{data_exchange}/listings/{listing}".format(
+            project=project,
+            location=location,
+            data_exchange=data_exchange,
+            listing=listing,
+        )
+
+    @staticmethod
+    def parse_listing_path(path: str) -> Dict[str, str]:
+        """Parses a listing path into its component segments."""
+        m = re.match(
+            r"^projects/(?P<project>.+?)/locations/(?P<location>.+?)/dataExchanges/(?P<data_exchange>.+?)/listings/(?P<listing>.+?)$",
+            path,
+        )
+        return m.groupdict() if m else {}
+
+    @staticmethod
     def snapshot_path(
         project: str,
         snapshot: str,

@@ -80,8 +80,12 @@ class PublisherAsyncClient:
     _DEFAULT_ENDPOINT_TEMPLATE = PublisherClient._DEFAULT_ENDPOINT_TEMPLATE
     _DEFAULT_UNIVERSE = PublisherClient._DEFAULT_UNIVERSE
 
+    crypto_key_path = staticmethod(PublisherClient.crypto_key_path)
+    parse_crypto_key_path = staticmethod(PublisherClient.parse_crypto_key_path)
     schema_path = staticmethod(PublisherClient.schema_path)
     parse_schema_path = staticmethod(PublisherClient.parse_schema_path)
+    snapshot_path = staticmethod(PublisherClient.snapshot_path)
+    parse_snapshot_path = staticmethod(PublisherClient.parse_snapshot_path)
     subscription_path = staticmethod(PublisherClient.subscription_path)
     parse_subscription_path = staticmethod(PublisherClient.parse_subscription_path)
     topic_path = staticmethod(PublisherClient.topic_path)

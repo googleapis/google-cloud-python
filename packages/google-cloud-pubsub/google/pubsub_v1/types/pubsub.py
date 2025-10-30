@@ -1211,6 +1211,13 @@ class IngestionFailureEvent(proto.Message):
                 message transformation to the Pub/Sub message.
 
                 This field is a member of `oneof`_ ``reason``.
+            api_violation_reason (google.pubsub_v1.types.IngestionFailureEvent.ApiViolationReason):
+                Optional. The message failed to be published
+                due to an API violation. This is only set when
+                the size of the data field of the Kinesis record
+                is zero.
+
+                This field is a member of `oneof`_ ``reason``.
         """
 
         stream_arn: str = proto.Field(
@@ -1238,6 +1245,12 @@ class IngestionFailureEvent(proto.Message):
             number=5,
             oneof="reason",
             message="IngestionFailureEvent.MessageTransformationFailureReason",
+        )
+        api_violation_reason: "IngestionFailureEvent.ApiViolationReason" = proto.Field(
+            proto.MESSAGE,
+            number=6,
+            oneof="reason",
+            message="IngestionFailureEvent.ApiViolationReason",
         )
 
     topic: str = proto.Field(
@@ -1423,6 +1436,13 @@ class Topic(proto.Message):
             Optional. Transforms to be applied to
             messages published to the topic. Transforms are
             applied in the order specified.
+        tags (MutableMapping[str, str]):
+            Optional. Input only. Immutable. Tag
+            keys/values directly bound to this resource. For
+            example:
+
+              "123/environment": "production",
+              "123/costCenter": "marketing".
     """
 
     class State(proto.Enum):
@@ -1490,6 +1510,11 @@ class Topic(proto.Message):
         proto.MESSAGE,
         number=13,
         message="MessageTransform",
+    )
+    tags: MutableMapping[str, str] = proto.MapField(
+        proto.STRING,
+        proto.STRING,
+        number=14,
     )
 
 
@@ -2024,6 +2049,13 @@ class Subscription(proto.Message):
             messages before they are delivered to
             subscribers. Transforms are applied in the order
             specified.
+        tags (MutableMapping[str, str]):
+            Optional. Input only. Immutable. Tag
+            keys/values directly bound to this resource. For
+            example:
+
+              "123/environment": "production",
+              "123/costCenter": "marketing".
     """
 
     class State(proto.Enum):
@@ -2161,6 +2193,11 @@ class Subscription(proto.Message):
         proto.MESSAGE,
         number=25,
         message="MessageTransform",
+    )
+    tags: MutableMapping[str, str] = proto.MapField(
+        proto.STRING,
+        proto.STRING,
+        number=26,
     )
 
 
@@ -3161,8 +3198,7 @@ class StreamingPullResponse(proto.Message):
 
     Attributes:
         received_messages (MutableSequence[google.pubsub_v1.types.ReceivedMessage]):
-            Optional. Received Pub/Sub messages. This
-            will not be empty.
+            Optional. Received Pub/Sub messages.
         acknowledge_confirmation (google.pubsub_v1.types.StreamingPullResponse.AcknowledgeConfirmation):
             Optional. This field will only be set if
             ``enable_exactly_once_delivery`` is set to ``true`` and is
@@ -3312,6 +3348,13 @@ class CreateSnapshotRequest(proto.Message):
         labels (MutableMapping[str, str]):
             Optional. See `Creating and managing
             labels <https://cloud.google.com/pubsub/docs/labels>`__.
+        tags (MutableMapping[str, str]):
+            Optional. Input only. Immutable. Tag
+            keys/values directly bound to this resource. For
+            example:
+
+              "123/environment": "production",
+              "123/costCenter": "marketing".
     """
 
     name: str = proto.Field(
@@ -3326,6 +3369,11 @@ class CreateSnapshotRequest(proto.Message):
         proto.STRING,
         proto.STRING,
         number=3,
+    )
+    tags: MutableMapping[str, str] = proto.MapField(
+        proto.STRING,
+        proto.STRING,
+        number=4,
     )
 
 

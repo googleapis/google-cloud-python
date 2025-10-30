@@ -86,6 +86,8 @@ class SubscriberAsyncClient:
     _DEFAULT_ENDPOINT_TEMPLATE = SubscriberClient._DEFAULT_ENDPOINT_TEMPLATE
     _DEFAULT_UNIVERSE = SubscriberClient._DEFAULT_UNIVERSE
 
+    listing_path = staticmethod(SubscriberClient.listing_path)
+    parse_listing_path = staticmethod(SubscriberClient.parse_listing_path)
     snapshot_path = staticmethod(SubscriberClient.snapshot_path)
     parse_snapshot_path = staticmethod(SubscriberClient.parse_snapshot_path)
     subscription_path = staticmethod(SubscriberClient.subscription_path)
