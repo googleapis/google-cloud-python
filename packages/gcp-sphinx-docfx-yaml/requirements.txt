@@ -7,5 +7,5 @@ mock
 pytest
 
 # Other dependencies
-black==24.3.0
+black==25.9.0
 parameterized==0.8.1
