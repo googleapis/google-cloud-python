@@ -369,12 +369,13 @@ def _copy_files_needed_for_post_processing(
     path_to_library = f"packages/{library_id}" if is_mono_repo else "."
     source_dir = f"{input}/{path_to_library}"
 
-    shutil.copytree(
-        source_dir,
-        output,
-        dirs_exist_ok=True,
-        ignore=shutil.ignore_patterns("client-post-processing"),
-    )
+    if Path(source_dir).exists():
+        shutil.copytree(
+            source_dir,
+            output,
+            dirs_exist_ok=True,
+            ignore=shutil.ignore_patterns("client-post-processing"),
+        )
 
     # We need to create these directories so that we can copy files necessary for post-processing.
     os.makedirs(
