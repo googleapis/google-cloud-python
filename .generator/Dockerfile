@@ -36,30 +36,26 @@ RUN apt-get update && \
     && apt-get clean && \
     rm -rf /var/lib/apt/lists/*
 
-# Install multiple Python versions from source. `make altinstall` is used to
-# prevent replacing the system's default python binary.
-# TODO(http://github.com/googleapis/gapic-generator-python/issues/2435): Remove `3.10.18` when the linked issue is resolved.
-RUN for PYTHON_VERSION in 3.9.23 3.10.18 3.13.7 3.14.0; do \
-    wget https://www.python.org/ftp/python/${PYTHON_VERSION}/Python-${PYTHON_VERSION}.tgz && \
-    tar -xvf Python-${PYTHON_VERSION}.tgz && \
-    cd Python-${PYTHON_VERSION} && \
+ENV PYTHON_VERSION=3.14
+
+# The full Python version, including the minor version, is needed for download/install
+ENV PYTHON_VERSION_WITH_MINOR=3.14.0
+
+# `make altinstall` is used to prevent replacing the system's default python binary.
+RUN wget https://www.python.org/ftp/python/${PYTHON_VERSION_WITH_MINOR}/Python-${PYTHON_VERSION_WITH_MINOR}.tgz && \
+    tar -xvf Python-${PYTHON_VERSION_WITH_MINOR}.tgz && \
+    cd Python-${PYTHON_VERSION_WITH_MINOR} && \
     ./configure --enable-optimizations --prefix=/usr/local && \
     make -j$(nproc) && \
     make altinstall && \
     cd / && \
-    rm -rf Python-${PYTHON_VERSION}* \
-    ; done
+    rm -rf Python-${PYTHON_VERSION_WITH_MINOR}*
 
 # Install pip for each python version
 # TODO(http://github.com/googleapis/gapic-generator-python/issues/2435): Remove `3.10` when the linked issue is resolved.
 RUN wget --no-check-certificate -O /tmp/get-pip.py 'https://bootstrap.pypa.io/get-pip.py' && \
-    for PYTHON_VERSION in 3.9 3.10 3.13 3.14; do \
-        python${PYTHON_VERSION} /tmp/get-pip.py; \
-    done && \
+    python${PYTHON_VERSION} /tmp/get-pip.py && \
     rm /tmp/get-pip.py
-
-RUN /usr/local/bin/python3.9 -m venv bazel_env
-RUN . bazel_env/bin/activate
 
 # Download/extract protoc
 RUN wget https://github.com/protocolbuffers/protobuf/releases/download/v25.3/protoc-25.3-linux-x86_64.zip
@@ -85,6 +81,8 @@ FROM marketplace.gcr.io/google/ubuntu2404
 # the live repo.
 ENV SYNTHTOOL_TEMPLATES="/synthtool/synthtool/gcp/templates"
 
+ENV PYTHON_VERSION=3.14
+
 # Install only the essential runtime libraries for Python.
 # These are the non "-dev" versions of the libraries used in the builder.
 RUN apt-get update && \
@@ -104,19 +102,8 @@ COPY --from=builder protoc/include /usr/local/include
 COPY --from=builder pandoc-binary/bin /usr/local/bin
 COPY --from=builder synthtool /synthtool
 
-# Copy all Python interpreters, their pip executables, and their standard libraries from the builder.
-COPY --from=builder /usr/local/bin/python3.9 /usr/local/bin/
-COPY --from=builder /usr/local/lib/python3.9 /usr/local/lib/python3.9
-
-# TODO(http://github.com/googleapis/gapic-generator-python/issues/2435): Remove `3.10` when the linked issue is resolved.
-COPY --from=builder /usr/local/bin/python3.10 /usr/local/bin/
-COPY --from=builder /usr/local/lib/python3.10 /usr/local/lib/python3.10
-
-COPY --from=builder /usr/local/bin/python3.13 /usr/local/bin/
-COPY --from=builder /usr/local/lib/python3.13 /usr/local/lib/python3.13
-
-COPY --from=builder /usr/local/bin/python3.14 /usr/local/bin/
-COPY --from=builder /usr/local/lib/python3.14 /usr/local/lib/python3.14
+COPY --from=builder /usr/local/bin/python${PYTHON_VERSION}  /usr/local/bin/
+COPY --from=builder /usr/local/lib/python${PYTHON_VERSION}  /usr/local/lib/python${PYTHON_VERSION}
 
 # Set the working directory in the container.
 WORKDIR /app
@@ -126,12 +113,12 @@ WORKDIR /app
 # Install nox which is used for running client library tests.
 # Install starlark-pyo3 which is used to parse BUILD.bazel files.
 COPY .generator/requirements.in .
-RUN python3.9 -m pip install -r requirements.in
-RUN python3.9 -m pip install /synthtool
+RUN python${PYTHON_VERSION} -m pip install -r requirements.in
+RUN python${PYTHON_VERSION} -m pip install /synthtool
 
 # Install build which is used to get the metadata of package config files.
 COPY .generator/requirements.in .
-RUN python3.9 -m pip install -r requirements.in
+RUN python${PYTHON_VERSION} -m pip install -r requirements.in
 
 # Copy the CLI script into the container.
 COPY .generator/cli.py .
@@ -141,4 +128,4 @@ RUN chmod a+rx ./cli.py
 COPY .generator/parse_googleapis_content.py .
 RUN chmod a+rx ./parse_googleapis_content.py
 
-ENTRYPOINT ["python3.9", "./cli.py"]
+ENTRYPOINT ["python3.14", "./cli.py"]
