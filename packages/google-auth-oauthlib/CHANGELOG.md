@@ -4,6 +4,15 @@
 
 [1]: https://pypi.org/project/google-auth-oauthlib/#history
 
+## [1.2.3](https://github.com/googleapis/google-auth-library-python-oauthlib/compare/v1.2.2...v1.2.3) (2025-10-30)
+
+
+### Bug Fixes
+
+* Add upper-bound to google-auth dependency ([#423](https://github.com/googleapis/google-auth-library-python-oauthlib/issues/423)) ([d7921f9](https://github.com/googleapis/google-auth-library-python-oauthlib/commit/d7921f9929a42e4b748850ecf8d8d28473b6cd42))
+* Drop support for Python 3.6 ([4b1a5f3](https://github.com/googleapis/google-auth-library-python-oauthlib/commit/4b1a5f33f282af79999d7ed80d11a246a7e301a2))
+* Explicitly declare Python 3.13 support ([4b1a5f3](https://github.com/googleapis/google-auth-library-python-oauthlib/commit/4b1a5f33f282af79999d7ed80d11a246a7e301a2))
+
 ## [1.2.2](https://github.com/googleapis/google-auth-library-python-oauthlib/compare/v1.2.1...v1.2.2) (2025-04-01)
 
 
