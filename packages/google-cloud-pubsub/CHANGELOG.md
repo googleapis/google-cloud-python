@@ -5,6 +5,25 @@
 [1]: https://pypi.org/project/google-cloud-pubsub/#history
 
 
+## [2.33.0](https://github.com/googleapis/python-pubsub/compare/v2.32.0...v2.33.0) (2025-10-30)
+
+
+### Features
+
+* Add AwsKinesisFailureReason.ApiViolationReason ([ac68093](https://github.com/googleapis/python-pubsub/commit/ac6809350758306f28fa1ab46939bc438b5a5e19))
+* Add tags to Subscription, Topic, and CreateSnapshotRequest messages for use in CreateSubscription, CreateTopic, and CreateSnapshot requests respectively ([ac68093](https://github.com/googleapis/python-pubsub/commit/ac6809350758306f28fa1ab46939bc438b5a5e19))
+* Annotate some resource fields with their corresponding API types ([ac68093](https://github.com/googleapis/python-pubsub/commit/ac6809350758306f28fa1ab46939bc438b5a5e19))
+
+
+### Bug Fixes
+
+* Deprecate credentials_file argument ([ac68093](https://github.com/googleapis/python-pubsub/commit/ac6809350758306f28fa1ab46939bc438b5a5e19))
+
+
+### Documentation
+
+* A comment for field `received_messages` in message `.google.pubsub.v1.StreamingPullResponse` is changed ([ac68093](https://github.com/googleapis/python-pubsub/commit/ac6809350758306f28fa1ab46939bc438b5a5e19))
+
 ## [2.32.0](https://github.com/googleapis/python-pubsub/compare/v2.31.1...v2.32.0) (2025-10-28)
 
 
