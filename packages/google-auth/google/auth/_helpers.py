@@ -489,7 +489,7 @@ def _parse_request_body(body: Optional[bytes], content_type: str = "") -> Any:
     if not content_type or "application/json" in content_type:
         try:
             return json.loads(body_str)
-        except (json.JSONDecodeError, TypeError):
+        except (TypeError, ValueError):
             return body_str
     if "application/x-www-form-urlencoded" in content_type:
         parsed_query = urllib.parse.parse_qs(body_str)

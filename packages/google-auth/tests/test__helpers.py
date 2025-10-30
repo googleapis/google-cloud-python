@@ -623,6 +623,34 @@ def test_parse_request_body_other_type():
     assert _helpers._parse_request_body("string") is None
 
 
+def test_parse_request_body_json_type_error():
+    body = b'{"key": "value"}'
+    with mock.patch("json.loads", side_effect=TypeError):
+        # json.loads should raise a TypeError, and the function should return the
+        # original string
+        assert _helpers._parse_request_body(body, "application/json") == body.decode(
+            "utf-8"
+        )
+
+
+def test_parse_request_body_json_value_error():
+    body = b'{"key": "value"}'
+    content_type = "application/json"
+    with mock.patch("json.loads", side_effect=ValueError):
+        # json.loads should raise a ValueError, and the function should return the
+        # original string
+        assert _helpers._parse_request_body(body, content_type) == body.decode("utf-8")
+
+
+def test_parse_request_body_json_decode_error():
+    body = b'{"key": "value"}'
+    content_type = "application/json"
+    with mock.patch("json.loads", side_effect=json.JSONDecodeError("msg", "doc", 0)):
+        # json.loads should raise a JSONDecodeError, and the function should return the
+        # original string
+        assert _helpers._parse_request_body(body, content_type) == body.decode("utf-8")
+
+
 def test_parse_response_json_valid():
     class MockResponse:
         def json(self):
