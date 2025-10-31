@@ -25,7 +25,7 @@ pytest.importorskip("pytest_snapshot")
 def test_date(scalar_types_df: bpd.DataFrame, snapshot):
     col_name = "timestamp_col"
     bf_df = scalar_types_df[[col_name]]
-    sql = utils._apply_unary_ops(bf_df, [ops.date_op.as_expr(col_name)], [col_name])
+    sql = utils._apply_ops_to_sql(bf_df, [ops.date_op.as_expr(col_name)], [col_name])
 
     snapshot.assert_match(sql, "out.sql")
 
@@ -33,7 +33,7 @@ def test_date(scalar_types_df: bpd.DataFrame, snapshot):
 def test_day(scalar_types_df: bpd.DataFrame, snapshot):
     col_name = "timestamp_col"
     bf_df = scalar_types_df[[col_name]]
-    sql = utils._apply_unary_ops(bf_df, [ops.day_op.as_expr(col_name)], [col_name])
+    sql = utils._apply_ops_to_sql(bf_df, [ops.day_op.as_expr(col_name)], [col_name])
 
     snapshot.assert_match(sql, "out.sql")
 
@@ -43,14 +43,14 @@ def test_dayofweek(scalar_types_df: bpd.DataFrame, snapshot):
     bf_df = scalar_types_df[col_names]
     ops_map = {col_name: ops.dayofweek_op.as_expr(col_name) for col_name in col_names}
 
-    sql = utils._apply_unary_ops(bf_df, list(ops_map.values()), list(ops_map.keys()))
+    sql = utils._apply_ops_to_sql(bf_df, list(ops_map.values()), list(ops_map.keys()))
     snapshot.assert_match(sql, "out.sql")
 
 
 def test_dayofyear(scalar_types_df: bpd.DataFrame, snapshot):
     col_name = "timestamp_col"
     bf_df = scalar_types_df[[col_name]]
-    sql = utils._apply_unary_ops(
+    sql = utils._apply_ops_to_sql(
         bf_df, [ops.dayofyear_op.as_expr(col_name)], [col_name]
     )
 
@@ -75,7 +75,7 @@ def test_floor_dt(scalar_types_df: bpd.DataFrame, snapshot):
         "datetime_col_us": ops.FloorDtOp("us").as_expr("datetime_col"),
     }
 
-    sql = utils._apply_unary_ops(bf_df, list(ops_map.values()), list(ops_map.keys()))
+    sql = utils._apply_ops_to_sql(bf_df, list(ops_map.values()), list(ops_map.keys()))
     snapshot.assert_match(sql, "out.sql")
 
 
@@ -85,7 +85,7 @@ def test_floor_dt_op_invalid_freq(scalar_types_df: bpd.DataFrame):
     with pytest.raises(
         NotImplementedError, match="Unsupported freq paramater: invalid"
     ):
-        utils._apply_unary_ops(
+        utils._apply_ops_to_sql(
             bf_df,
             [ops.FloorDtOp(freq="invalid").as_expr(col_name)],  # type:ignore
             [col_name],
@@ -95,7 +95,7 @@ def test_floor_dt_op_invalid_freq(scalar_types_df: bpd.DataFrame):
 def test_hour(scalar_types_df: bpd.DataFrame, snapshot):
     col_name = "timestamp_col"
     bf_df = scalar_types_df[[col_name]]
-    sql = utils._apply_unary_ops(bf_df, [ops.hour_op.as_expr(col_name)], [col_name])
+    sql = utils._apply_ops_to_sql(bf_df, [ops.hour_op.as_expr(col_name)], [col_name])
 
     snapshot.assert_match(sql, "out.sql")
 
@@ -103,7 +103,7 @@ def test_hour(scalar_types_df: bpd.DataFrame, snapshot):
 def test_minute(scalar_types_df: bpd.DataFrame, snapshot):
     col_name = "timestamp_col"
     bf_df = scalar_types_df[[col_name]]
-    sql = utils._apply_unary_ops(bf_df, [ops.minute_op.as_expr(col_name)], [col_name])
+    sql = utils._apply_ops_to_sql(bf_df, [ops.minute_op.as_expr(col_name)], [col_name])
 
     snapshot.assert_match(sql, "out.sql")
 
@@ -111,7 +111,7 @@ def test_minute(scalar_types_df: bpd.DataFrame, snapshot):
 def test_month(scalar_types_df: bpd.DataFrame, snapshot):
     col_name = "timestamp_col"
     bf_df = scalar_types_df[[col_name]]
-    sql = utils._apply_unary_ops(bf_df, [ops.month_op.as_expr(col_name)], [col_name])
+    sql = utils._apply_ops_to_sql(bf_df, [ops.month_op.as_expr(col_name)], [col_name])
 
     snapshot.assert_match(sql, "out.sql")
 
@@ -119,7 +119,7 @@ def test_month(scalar_types_df: bpd.DataFrame, snapshot):
 def test_normalize(scalar_types_df: bpd.DataFrame, snapshot):
     col_name = "timestamp_col"
     bf_df = scalar_types_df[[col_name]]
-    sql = utils._apply_unary_ops(
+    sql = utils._apply_ops_to_sql(
         bf_df, [ops.normalize_op.as_expr(col_name)], [col_name]
     )
 
@@ -129,7 +129,7 @@ def test_normalize(scalar_types_df: bpd.DataFrame, snapshot):
 def test_quarter(scalar_types_df: bpd.DataFrame, snapshot):
     col_name = "timestamp_col"
     bf_df = scalar_types_df[[col_name]]
-    sql = utils._apply_unary_ops(bf_df, [ops.quarter_op.as_expr(col_name)], [col_name])
+    sql = utils._apply_ops_to_sql(bf_df, [ops.quarter_op.as_expr(col_name)], [col_name])
 
     snapshot.assert_match(sql, "out.sql")
 
@@ -137,7 +137,7 @@ def test_quarter(scalar_types_df: bpd.DataFrame, snapshot):
 def test_second(scalar_types_df: bpd.DataFrame, snapshot):
     col_name = "timestamp_col"
     bf_df = scalar_types_df[[col_name]]
-    sql = utils._apply_unary_ops(bf_df, [ops.second_op.as_expr(col_name)], [col_name])
+    sql = utils._apply_ops_to_sql(bf_df, [ops.second_op.as_expr(col_name)], [col_name])
 
     snapshot.assert_match(sql, "out.sql")
 
@@ -145,7 +145,7 @@ def test_second(scalar_types_df: bpd.DataFrame, snapshot):
 def test_strftime(scalar_types_df: bpd.DataFrame, snapshot):
     col_name = "timestamp_col"
     bf_df = scalar_types_df[[col_name]]
-    sql = utils._apply_unary_ops(
+    sql = utils._apply_ops_to_sql(
         bf_df, [ops.StrftimeOp("%Y-%m-%d").as_expr(col_name)], [col_name]
     )
 
@@ -155,7 +155,7 @@ def test_strftime(scalar_types_df: bpd.DataFrame, snapshot):
 def test_time(scalar_types_df: bpd.DataFrame, snapshot):
     col_name = "timestamp_col"
     bf_df = scalar_types_df[[col_name]]
-    sql = utils._apply_unary_ops(bf_df, [ops.time_op.as_expr(col_name)], [col_name])
+    sql = utils._apply_ops_to_sql(bf_df, [ops.time_op.as_expr(col_name)], [col_name])
 
     snapshot.assert_match(sql, "out.sql")
 
@@ -163,7 +163,7 @@ def test_time(scalar_types_df: bpd.DataFrame, snapshot):
 def test_to_datetime(scalar_types_df: bpd.DataFrame, snapshot):
     col_name = "int64_col"
     bf_df = scalar_types_df[[col_name]]
-    sql = utils._apply_unary_ops(
+    sql = utils._apply_ops_to_sql(
         bf_df, [ops.ToDatetimeOp().as_expr(col_name)], [col_name]
     )
 
@@ -173,7 +173,7 @@ def test_to_datetime(scalar_types_df: bpd.DataFrame, snapshot):
 def test_to_timestamp(scalar_types_df: bpd.DataFrame, snapshot):
     col_name = "int64_col"
     bf_df = scalar_types_df[[col_name]]
-    sql = utils._apply_unary_ops(
+    sql = utils._apply_ops_to_sql(
         bf_df, [ops.ToTimestampOp().as_expr(col_name)], [col_name]
     )
 
@@ -183,7 +183,7 @@ def test_to_timestamp(scalar_types_df: bpd.DataFrame, snapshot):
 def test_unix_micros(scalar_types_df: bpd.DataFrame, snapshot):
     col_name = "timestamp_col"
     bf_df = scalar_types_df[[col_name]]
-    sql = utils._apply_unary_ops(
+    sql = utils._apply_ops_to_sql(
         bf_df, [ops.UnixMicros().as_expr(col_name)], [col_name]
     )
 
@@ -193,7 +193,7 @@ def test_unix_micros(scalar_types_df: bpd.DataFrame, snapshot):
 def test_unix_millis(scalar_types_df: bpd.DataFrame, snapshot):
     col_name = "timestamp_col"
     bf_df = scalar_types_df[[col_name]]
-    sql = utils._apply_unary_ops(
+    sql = utils._apply_ops_to_sql(
         bf_df, [ops.UnixMillis().as_expr(col_name)], [col_name]
     )
 
@@ -203,7 +203,7 @@ def test_unix_millis(scalar_types_df: bpd.DataFrame, snapshot):
 def test_unix_seconds(scalar_types_df: bpd.DataFrame, snapshot):
     col_name = "timestamp_col"
     bf_df = scalar_types_df[[col_name]]
-    sql = utils._apply_unary_ops(
+    sql = utils._apply_ops_to_sql(
         bf_df, [ops.UnixSeconds().as_expr(col_name)], [col_name]
     )
 
@@ -213,7 +213,7 @@ def test_unix_seconds(scalar_types_df: bpd.DataFrame, snapshot):
 def test_year(scalar_types_df: bpd.DataFrame, snapshot):
     col_name = "timestamp_col"
     bf_df = scalar_types_df[[col_name]]
-    sql = utils._apply_unary_ops(bf_df, [ops.year_op.as_expr(col_name)], [col_name])
+    sql = utils._apply_ops_to_sql(bf_df, [ops.year_op.as_expr(col_name)], [col_name])
 
     snapshot.assert_match(sql, "out.sql")
 
@@ -221,7 +221,7 @@ def test_year(scalar_types_df: bpd.DataFrame, snapshot):
 def test_iso_day(scalar_types_df: bpd.DataFrame, snapshot):
     col_name = "timestamp_col"
     bf_df = scalar_types_df[[col_name]]
-    sql = utils._apply_unary_ops(bf_df, [ops.iso_day_op.as_expr(col_name)], [col_name])
+    sql = utils._apply_ops_to_sql(bf_df, [ops.iso_day_op.as_expr(col_name)], [col_name])
 
     snapshot.assert_match(sql, "out.sql")
 
@@ -229,7 +229,9 @@ def test_iso_day(scalar_types_df: bpd.DataFrame, snapshot):
 def test_iso_week(scalar_types_df: bpd.DataFrame, snapshot):
     col_name = "timestamp_col"
     bf_df = scalar_types_df[[col_name]]
-    sql = utils._apply_unary_ops(bf_df, [ops.iso_week_op.as_expr(col_name)], [col_name])
+    sql = utils._apply_ops_to_sql(
+        bf_df, [ops.iso_week_op.as_expr(col_name)], [col_name]
+    )
 
     snapshot.assert_match(sql, "out.sql")
 
@@ -237,7 +239,9 @@ def test_iso_week(scalar_types_df: bpd.DataFrame, snapshot):
 def test_iso_year(scalar_types_df: bpd.DataFrame, snapshot):
     col_name = "timestamp_col"
     bf_df = scalar_types_df[[col_name]]
-    sql = utils._apply_unary_ops(bf_df, [ops.iso_year_op.as_expr(col_name)], [col_name])
+    sql = utils._apply_ops_to_sql(
+        bf_df, [ops.iso_year_op.as_expr(col_name)], [col_name]
+    )
 
     snapshot.assert_match(sql, "out.sql")
 

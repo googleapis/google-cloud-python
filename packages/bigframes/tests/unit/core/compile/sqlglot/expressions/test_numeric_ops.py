@@ -26,7 +26,7 @@ pytest.importorskip("pytest_snapshot")
 def test_arccosh(scalar_types_df: bpd.DataFrame, snapshot):
     col_name = "float64_col"
     bf_df = scalar_types_df[[col_name]]
-    sql = utils._apply_unary_ops(bf_df, [ops.arccosh_op.as_expr(col_name)], [col_name])
+    sql = utils._apply_ops_to_sql(bf_df, [ops.arccosh_op.as_expr(col_name)], [col_name])
 
     snapshot.assert_match(sql, "out.sql")
 
@@ -34,7 +34,7 @@ def test_arccosh(scalar_types_df: bpd.DataFrame, snapshot):
 def test_arccos(scalar_types_df: bpd.DataFrame, snapshot):
     col_name = "float64_col"
     bf_df = scalar_types_df[[col_name]]
-    sql = utils._apply_unary_ops(bf_df, [ops.arccos_op.as_expr(col_name)], [col_name])
+    sql = utils._apply_ops_to_sql(bf_df, [ops.arccos_op.as_expr(col_name)], [col_name])
 
     snapshot.assert_match(sql, "out.sql")
 
@@ -42,7 +42,7 @@ def test_arccos(scalar_types_df: bpd.DataFrame, snapshot):
 def test_arcsin(scalar_types_df: bpd.DataFrame, snapshot):
     col_name = "float64_col"
     bf_df = scalar_types_df[[col_name]]
-    sql = utils._apply_unary_ops(bf_df, [ops.arcsin_op.as_expr(col_name)], [col_name])
+    sql = utils._apply_ops_to_sql(bf_df, [ops.arcsin_op.as_expr(col_name)], [col_name])
 
     snapshot.assert_match(sql, "out.sql")
 
@@ -50,7 +50,7 @@ def test_arcsin(scalar_types_df: bpd.DataFrame, snapshot):
 def test_arcsinh(scalar_types_df: bpd.DataFrame, snapshot):
     col_name = "float64_col"
     bf_df = scalar_types_df[[col_name]]
-    sql = utils._apply_unary_ops(bf_df, [ops.arcsinh_op.as_expr(col_name)], [col_name])
+    sql = utils._apply_ops_to_sql(bf_df, [ops.arcsinh_op.as_expr(col_name)], [col_name])
 
     snapshot.assert_match(sql, "out.sql")
 
@@ -58,7 +58,7 @@ def test_arcsinh(scalar_types_df: bpd.DataFrame, snapshot):
 def test_arctan(scalar_types_df: bpd.DataFrame, snapshot):
     col_name = "float64_col"
     bf_df = scalar_types_df[[col_name]]
-    sql = utils._apply_unary_ops(bf_df, [ops.arctan_op.as_expr(col_name)], [col_name])
+    sql = utils._apply_ops_to_sql(bf_df, [ops.arctan_op.as_expr(col_name)], [col_name])
 
     snapshot.assert_match(sql, "out.sql")
 
@@ -66,7 +66,7 @@ def test_arctan(scalar_types_df: bpd.DataFrame, snapshot):
 def test_arctanh(scalar_types_df: bpd.DataFrame, snapshot):
     col_name = "float64_col"
     bf_df = scalar_types_df[[col_name]]
-    sql = utils._apply_unary_ops(bf_df, [ops.arctanh_op.as_expr(col_name)], [col_name])
+    sql = utils._apply_ops_to_sql(bf_df, [ops.arctanh_op.as_expr(col_name)], [col_name])
 
     snapshot.assert_match(sql, "out.sql")
 
@@ -74,7 +74,7 @@ def test_arctanh(scalar_types_df: bpd.DataFrame, snapshot):
 def test_abs(scalar_types_df: bpd.DataFrame, snapshot):
     col_name = "float64_col"
     bf_df = scalar_types_df[[col_name]]
-    sql = utils._apply_unary_ops(bf_df, [ops.abs_op.as_expr(col_name)], [col_name])
+    sql = utils._apply_ops_to_sql(bf_df, [ops.abs_op.as_expr(col_name)], [col_name])
 
     snapshot.assert_match(sql, "out.sql")
 
@@ -82,7 +82,7 @@ def test_abs(scalar_types_df: bpd.DataFrame, snapshot):
 def test_ceil(scalar_types_df: bpd.DataFrame, snapshot):
     col_name = "float64_col"
     bf_df = scalar_types_df[[col_name]]
-    sql = utils._apply_unary_ops(bf_df, [ops.ceil_op.as_expr(col_name)], [col_name])
+    sql = utils._apply_ops_to_sql(bf_df, [ops.ceil_op.as_expr(col_name)], [col_name])
 
     snapshot.assert_match(sql, "out.sql")
 
@@ -90,7 +90,7 @@ def test_ceil(scalar_types_df: bpd.DataFrame, snapshot):
 def test_cos(scalar_types_df: bpd.DataFrame, snapshot):
     col_name = "float64_col"
     bf_df = scalar_types_df[[col_name]]
-    sql = utils._apply_unary_ops(bf_df, [ops.cos_op.as_expr(col_name)], [col_name])
+    sql = utils._apply_ops_to_sql(bf_df, [ops.cos_op.as_expr(col_name)], [col_name])
 
     snapshot.assert_match(sql, "out.sql")
 
@@ -98,7 +98,7 @@ def test_cos(scalar_types_df: bpd.DataFrame, snapshot):
 def test_cosh(scalar_types_df: bpd.DataFrame, snapshot):
     col_name = "float64_col"
     bf_df = scalar_types_df[[col_name]]
-    sql = utils._apply_unary_ops(bf_df, [ops.cosh_op.as_expr(col_name)], [col_name])
+    sql = utils._apply_ops_to_sql(bf_df, [ops.cosh_op.as_expr(col_name)], [col_name])
 
     snapshot.assert_match(sql, "out.sql")
 
@@ -106,7 +106,7 @@ def test_cosh(scalar_types_df: bpd.DataFrame, snapshot):
 def test_exp(scalar_types_df: bpd.DataFrame, snapshot):
     col_name = "float64_col"
     bf_df = scalar_types_df[[col_name]]
-    sql = utils._apply_unary_ops(bf_df, [ops.exp_op.as_expr(col_name)], [col_name])
+    sql = utils._apply_ops_to_sql(bf_df, [ops.exp_op.as_expr(col_name)], [col_name])
 
     snapshot.assert_match(sql, "out.sql")
 
@@ -114,7 +114,7 @@ def test_exp(scalar_types_df: bpd.DataFrame, snapshot):
 def test_expm1(scalar_types_df: bpd.DataFrame, snapshot):
     col_name = "float64_col"
     bf_df = scalar_types_df[[col_name]]
-    sql = utils._apply_unary_ops(bf_df, [ops.expm1_op.as_expr(col_name)], [col_name])
+    sql = utils._apply_ops_to_sql(bf_df, [ops.expm1_op.as_expr(col_name)], [col_name])
 
     snapshot.assert_match(sql, "out.sql")
 
@@ -122,7 +122,7 @@ def test_expm1(scalar_types_df: bpd.DataFrame, snapshot):
 def test_floor(scalar_types_df: bpd.DataFrame, snapshot):
     col_name = "float64_col"
     bf_df = scalar_types_df[[col_name]]
-    sql = utils._apply_unary_ops(bf_df, [ops.floor_op.as_expr(col_name)], [col_name])
+    sql = utils._apply_ops_to_sql(bf_df, [ops.floor_op.as_expr(col_name)], [col_name])
 
     snapshot.assert_match(sql, "out.sql")
 
@@ -130,7 +130,7 @@ def test_floor(scalar_types_df: bpd.DataFrame, snapshot):
 def test_ln(scalar_types_df: bpd.DataFrame, snapshot):
     col_name = "float64_col"
     bf_df = scalar_types_df[[col_name]]
-    sql = utils._apply_unary_ops(bf_df, [ops.ln_op.as_expr(col_name)], [col_name])
+    sql = utils._apply_ops_to_sql(bf_df, [ops.ln_op.as_expr(col_name)], [col_name])
 
     snapshot.assert_match(sql, "out.sql")
 
@@ -138,7 +138,7 @@ def test_ln(scalar_types_df: bpd.DataFrame, snapshot):
 def test_log10(scalar_types_df: bpd.DataFrame, snapshot):
     col_name = "float64_col"
     bf_df = scalar_types_df[[col_name]]
-    sql = utils._apply_unary_ops(bf_df, [ops.log10_op.as_expr(col_name)], [col_name])
+    sql = utils._apply_ops_to_sql(bf_df, [ops.log10_op.as_expr(col_name)], [col_name])
 
     snapshot.assert_match(sql, "out.sql")
 
@@ -146,7 +146,7 @@ def test_log10(scalar_types_df: bpd.DataFrame, snapshot):
 def test_log1p(scalar_types_df: bpd.DataFrame, snapshot):
     col_name = "float64_col"
     bf_df = scalar_types_df[[col_name]]
-    sql = utils._apply_unary_ops(bf_df, [ops.log1p_op.as_expr(col_name)], [col_name])
+    sql = utils._apply_ops_to_sql(bf_df, [ops.log1p_op.as_expr(col_name)], [col_name])
 
     snapshot.assert_match(sql, "out.sql")
 
@@ -154,7 +154,7 @@ def test_log1p(scalar_types_df: bpd.DataFrame, snapshot):
 def test_neg(scalar_types_df: bpd.DataFrame, snapshot):
     col_name = "float64_col"
     bf_df = scalar_types_df[[col_name]]
-    sql = utils._apply_unary_ops(bf_df, [ops.neg_op.as_expr(col_name)], [col_name])
+    sql = utils._apply_ops_to_sql(bf_df, [ops.neg_op.as_expr(col_name)], [col_name])
 
     snapshot.assert_match(sql, "out.sql")
 
@@ -162,7 +162,7 @@ def test_neg(scalar_types_df: bpd.DataFrame, snapshot):
 def test_pos(scalar_types_df: bpd.DataFrame, snapshot):
     col_name = "float64_col"
     bf_df = scalar_types_df[[col_name]]
-    sql = utils._apply_unary_ops(bf_df, [ops.pos_op.as_expr(col_name)], [col_name])
+    sql = utils._apply_ops_to_sql(bf_df, [ops.pos_op.as_expr(col_name)], [col_name])
 
     snapshot.assert_match(sql, "out.sql")
 
@@ -184,7 +184,7 @@ def test_round(scalar_types_df: bpd.DataFrame, snapshot):
 def test_sqrt(scalar_types_df: bpd.DataFrame, snapshot):
     col_name = "float64_col"
     bf_df = scalar_types_df[[col_name]]
-    sql = utils._apply_unary_ops(bf_df, [ops.sqrt_op.as_expr(col_name)], [col_name])
+    sql = utils._apply_ops_to_sql(bf_df, [ops.sqrt_op.as_expr(col_name)], [col_name])
 
     snapshot.assert_match(sql, "out.sql")
 
@@ -192,7 +192,7 @@ def test_sqrt(scalar_types_df: bpd.DataFrame, snapshot):
 def test_sin(scalar_types_df: bpd.DataFrame, snapshot):
     col_name = "float64_col"
     bf_df = scalar_types_df[[col_name]]
-    sql = utils._apply_unary_ops(bf_df, [ops.sin_op.as_expr(col_name)], [col_name])
+    sql = utils._apply_ops_to_sql(bf_df, [ops.sin_op.as_expr(col_name)], [col_name])
 
     snapshot.assert_match(sql, "out.sql")
 
@@ -200,7 +200,7 @@ def test_sin(scalar_types_df: bpd.DataFrame, snapshot):
 def test_sinh(scalar_types_df: bpd.DataFrame, snapshot):
     col_name = "float64_col"
     bf_df = scalar_types_df[[col_name]]
-    sql = utils._apply_unary_ops(bf_df, [ops.sinh_op.as_expr(col_name)], [col_name])
+    sql = utils._apply_ops_to_sql(bf_df, [ops.sinh_op.as_expr(col_name)], [col_name])
 
     snapshot.assert_match(sql, "out.sql")
 
@@ -208,7 +208,7 @@ def test_sinh(scalar_types_df: bpd.DataFrame, snapshot):
 def test_tan(scalar_types_df: bpd.DataFrame, snapshot):
     col_name = "float64_col"
     bf_df = scalar_types_df[[col_name]]
-    sql = utils._apply_unary_ops(bf_df, [ops.tan_op.as_expr(col_name)], [col_name])
+    sql = utils._apply_ops_to_sql(bf_df, [ops.tan_op.as_expr(col_name)], [col_name])
 
     snapshot.assert_match(sql, "out.sql")
 
@@ -216,7 +216,7 @@ def test_tan(scalar_types_df: bpd.DataFrame, snapshot):
 def test_tanh(scalar_types_df: bpd.DataFrame, snapshot):
     col_name = "float64_col"
     bf_df = scalar_types_df[[col_name]]
-    sql = utils._apply_unary_ops(bf_df, [ops.tanh_op.as_expr(col_name)], [col_name])
+    sql = utils._apply_ops_to_sql(bf_df, [ops.tanh_op.as_expr(col_name)], [col_name])
 
     snapshot.assert_match(sql, "out.sql")
 

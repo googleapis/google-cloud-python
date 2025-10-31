@@ -25,7 +25,7 @@ pytest.importorskip("pytest_snapshot")
 def test_json_extract(json_types_df: bpd.DataFrame, snapshot):
     col_name = "json_col"
     bf_df = json_types_df[[col_name]]
-    sql = utils._apply_unary_ops(
+    sql = utils._apply_ops_to_sql(
         bf_df, [ops.JSONExtract(json_path="$").as_expr(col_name)], [col_name]
     )
 
@@ -35,7 +35,7 @@ def test_json_extract(json_types_df: bpd.DataFrame, snapshot):
 def test_json_extract_array(json_types_df: bpd.DataFrame, snapshot):
     col_name = "json_col"
     bf_df = json_types_df[[col_name]]
-    sql = utils._apply_unary_ops(
+    sql = utils._apply_ops_to_sql(
         bf_df, [ops.JSONExtractArray(json_path="$").as_expr(col_name)], [col_name]
     )
 
@@ -45,7 +45,7 @@ def test_json_extract_array(json_types_df: bpd.DataFrame, snapshot):
 def test_json_extract_string_array(json_types_df: bpd.DataFrame, snapshot):
     col_name = "json_col"
     bf_df = json_types_df[[col_name]]
-    sql = utils._apply_unary_ops(
+    sql = utils._apply_ops_to_sql(
         bf_df, [ops.JSONExtractStringArray(json_path="$").as_expr(col_name)], [col_name]
     )
 
@@ -55,7 +55,7 @@ def test_json_extract_string_array(json_types_df: bpd.DataFrame, snapshot):
 def test_json_query(json_types_df: bpd.DataFrame, snapshot):
     col_name = "json_col"
     bf_df = json_types_df[[col_name]]
-    sql = utils._apply_unary_ops(
+    sql = utils._apply_ops_to_sql(
         bf_df, [ops.JSONQuery(json_path="$").as_expr(col_name)], [col_name]
     )
 
@@ -65,7 +65,7 @@ def test_json_query(json_types_df: bpd.DataFrame, snapshot):
 def test_json_query_array(json_types_df: bpd.DataFrame, snapshot):
     col_name = "json_col"
     bf_df = json_types_df[[col_name]]
-    sql = utils._apply_unary_ops(
+    sql = utils._apply_ops_to_sql(
         bf_df, [ops.JSONQueryArray(json_path="$").as_expr(col_name)], [col_name]
     )
 
@@ -75,7 +75,7 @@ def test_json_query_array(json_types_df: bpd.DataFrame, snapshot):
 def test_json_value(json_types_df: bpd.DataFrame, snapshot):
     col_name = "json_col"
     bf_df = json_types_df[[col_name]]
-    sql = utils._apply_unary_ops(
+    sql = utils._apply_ops_to_sql(
         bf_df, [ops.JSONValue(json_path="$").as_expr(col_name)], [col_name]
     )
 
@@ -85,7 +85,9 @@ def test_json_value(json_types_df: bpd.DataFrame, snapshot):
 def test_parse_json(scalar_types_df: bpd.DataFrame, snapshot):
     col_name = "string_col"
     bf_df = scalar_types_df[[col_name]]
-    sql = utils._apply_unary_ops(bf_df, [ops.ParseJSON().as_expr(col_name)], [col_name])
+    sql = utils._apply_ops_to_sql(
+        bf_df, [ops.ParseJSON().as_expr(col_name)], [col_name]
+    )
 
     snapshot.assert_match(sql, "out.sql")
 
@@ -93,7 +95,7 @@ def test_parse_json(scalar_types_df: bpd.DataFrame, snapshot):
 def test_to_json_string(json_types_df: bpd.DataFrame, snapshot):
     col_name = "json_col"
     bf_df = json_types_df[[col_name]]
-    sql = utils._apply_unary_ops(
+    sql = utils._apply_ops_to_sql(
         bf_df, [ops.ToJSONString().as_expr(col_name)], [col_name]
     )
 

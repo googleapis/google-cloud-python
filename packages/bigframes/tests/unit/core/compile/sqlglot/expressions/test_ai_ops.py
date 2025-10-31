@@ -39,7 +39,7 @@ def test_ai_generate(scalar_types_df: dataframe.DataFrame, snapshot):
         output_schema=None,
     )
 
-    sql = utils._apply_unary_ops(
+    sql = utils._apply_ops_to_sql(
         scalar_types_df, [op.as_expr(col_name, col_name)], ["result"]
     )
 
@@ -58,7 +58,7 @@ def test_ai_generate_with_output_schema(scalar_types_df: dataframe.DataFrame, sn
         output_schema="x INT64, y FLOAT64",
     )
 
-    sql = utils._apply_unary_ops(
+    sql = utils._apply_ops_to_sql(
         scalar_types_df, [op.as_expr(col_name, col_name)], ["result"]
     )
 
@@ -82,7 +82,7 @@ def test_ai_generate_with_model_param(scalar_types_df: dataframe.DataFrame, snap
         output_schema=None,
     )
 
-    sql = utils._apply_unary_ops(
+    sql = utils._apply_ops_to_sql(
         scalar_types_df, [op.as_expr(col_name, col_name)], ["result"]
     )
 
@@ -100,7 +100,7 @@ def test_ai_generate_bool(scalar_types_df: dataframe.DataFrame, snapshot):
         model_params=None,
     )
 
-    sql = utils._apply_unary_ops(
+    sql = utils._apply_ops_to_sql(
         scalar_types_df, [op.as_expr(col_name, col_name)], ["result"]
     )
 
@@ -125,7 +125,7 @@ def test_ai_generate_bool_with_model_param(
         model_params=json.dumps(dict()),
     )
 
-    sql = utils._apply_unary_ops(
+    sql = utils._apply_ops_to_sql(
         scalar_types_df, [op.as_expr(col_name, col_name)], ["result"]
     )
 
@@ -144,7 +144,7 @@ def test_ai_generate_int(scalar_types_df: dataframe.DataFrame, snapshot):
         model_params=None,
     )
 
-    sql = utils._apply_unary_ops(
+    sql = utils._apply_ops_to_sql(
         scalar_types_df, [op.as_expr(col_name, col_name)], ["result"]
     )
 
@@ -170,7 +170,7 @@ def test_ai_generate_int_with_model_param(
         model_params=json.dumps(dict()),
     )
 
-    sql = utils._apply_unary_ops(
+    sql = utils._apply_ops_to_sql(
         scalar_types_df, [op.as_expr(col_name, col_name)], ["result"]
     )
 
@@ -189,7 +189,7 @@ def test_ai_generate_double(scalar_types_df: dataframe.DataFrame, snapshot):
         model_params=None,
     )
 
-    sql = utils._apply_unary_ops(
+    sql = utils._apply_ops_to_sql(
         scalar_types_df, [op.as_expr(col_name, col_name)], ["result"]
     )
 
@@ -215,7 +215,7 @@ def test_ai_generate_double_with_model_param(
         model_params=json.dumps(dict()),
     )
 
-    sql = utils._apply_unary_ops(
+    sql = utils._apply_ops_to_sql(
         scalar_types_df, [op.as_expr(col_name, col_name)], ["result"]
     )
 
@@ -230,7 +230,7 @@ def test_ai_if(scalar_types_df: dataframe.DataFrame, snapshot):
         connection_id=CONNECTION_ID,
     )
 
-    sql = utils._apply_unary_ops(
+    sql = utils._apply_ops_to_sql(
         scalar_types_df, [op.as_expr(col_name, col_name)], ["result"]
     )
 
@@ -246,7 +246,7 @@ def test_ai_classify(scalar_types_df: dataframe.DataFrame, snapshot):
         connection_id=CONNECTION_ID,
     )
 
-    sql = utils._apply_unary_ops(scalar_types_df, [op.as_expr(col_name)], ["result"])
+    sql = utils._apply_ops_to_sql(scalar_types_df, [op.as_expr(col_name)], ["result"])
 
     snapshot.assert_match(sql, "out.sql")
 
@@ -259,7 +259,7 @@ def test_ai_score(scalar_types_df: dataframe.DataFrame, snapshot):
         connection_id=CONNECTION_ID,
     )
 
-    sql = utils._apply_unary_ops(
+    sql = utils._apply_ops_to_sql(
         scalar_types_df, [op.as_expr(col_name, col_name)], ["result"]
     )
 

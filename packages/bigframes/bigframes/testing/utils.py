@@ -448,12 +448,12 @@ def get_function_name(func, package_requirements=None, is_row_processor=False):
     return f"bigframes_{function_hash}"
 
 
-def _apply_unary_ops(
+def _apply_ops_to_sql(
     obj: bpd.DataFrame,
     ops_list: Sequence[ex.Expression],
     new_names: Sequence[str],
 ) -> str:
-    """Applies a list of unary ops to the given DataFrame and returns the SQL
+    """Applies a list of ops to the given DataFrame and returns the SQL
     representing the resulting DataFrame."""
     array_value = obj._block.expr
     result, old_names = array_value.compute_values(ops_list)
@@ -485,13 +485,6 @@ def _apply_nary_op(
 ) -> str:
     """Applies a nary op to the given DataFrame and return the SQL representing
     the resulting DataFrame."""
-    array_value = obj._block.expr
     op_expr = op.as_expr(*args)
-    result, col_ids = array_value.compute_values([op_expr])
-
-    # Rename columns for deterministic golden SQL results.
-    assert len(col_ids) == 1
-    result = result.rename_columns({col_ids[0]: args[0]}).select_columns([args[0]])
-
-    sql = result.session._executor.to_sql(result, enable_cache=False)
+    sql = _apply_ops_to_sql(obj, [op_expr], [args[0]])  # type: ignore
     return sql

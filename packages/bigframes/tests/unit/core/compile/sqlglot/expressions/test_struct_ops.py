@@ -55,7 +55,7 @@ def test_struct_field(nested_structs_types_df: bpd.DataFrame, snapshot):
         # When an index integer is provided.
         "int": ops.StructFieldOp(0).as_expr(col_name),
     }
-    sql = utils._apply_unary_ops(bf_df, list(ops_map.values()), list(ops_map.keys()))
+    sql = utils._apply_ops_to_sql(bf_df, list(ops_map.values()), list(ops_map.keys()))
 
     snapshot.assert_match(sql, "out.sql")
 

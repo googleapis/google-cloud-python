@@ -25,7 +25,7 @@ pytest.importorskip("pytest_snapshot")
 def test_array_to_string(repeated_types_df: bpd.DataFrame, snapshot):
     col_name = "string_list_col"
     bf_df = repeated_types_df[[col_name]]
-    sql = utils._apply_unary_ops(
+    sql = utils._apply_ops_to_sql(
         bf_df, [ops.ArrayToStringOp(delimiter=".").as_expr(col_name)], [col_name]
     )
 
@@ -35,7 +35,7 @@ def test_array_to_string(repeated_types_df: bpd.DataFrame, snapshot):
 def test_array_index(repeated_types_df: bpd.DataFrame, snapshot):
     col_name = "string_list_col"
     bf_df = repeated_types_df[[col_name]]
-    sql = utils._apply_unary_ops(
+    sql = utils._apply_ops_to_sql(
         bf_df, [convert_index(1).as_expr(col_name)], [col_name]
     )
 
@@ -45,7 +45,7 @@ def test_array_index(repeated_types_df: bpd.DataFrame, snapshot):
 def test_array_slice_with_only_start(repeated_types_df: bpd.DataFrame, snapshot):
     col_name = "string_list_col"
     bf_df = repeated_types_df[[col_name]]
-    sql = utils._apply_unary_ops(
+    sql = utils._apply_ops_to_sql(
         bf_df, [convert_slice(slice(1, None)).as_expr(col_name)], [col_name]
     )
 
@@ -55,7 +55,7 @@ def test_array_slice_with_only_start(repeated_types_df: bpd.DataFrame, snapshot)
 def test_array_slice_with_start_and_stop(repeated_types_df: bpd.DataFrame, snapshot):
     col_name = "string_list_col"
     bf_df = repeated_types_df[[col_name]]
-    sql = utils._apply_unary_ops(
+    sql = utils._apply_ops_to_sql(
         bf_df, [convert_slice(slice(1, 5)).as_expr(col_name)], [col_name]
     )
 
