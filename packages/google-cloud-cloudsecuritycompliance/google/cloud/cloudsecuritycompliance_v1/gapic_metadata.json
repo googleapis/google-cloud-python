@@ -410,6 +410,100 @@
           }
         }
       }
+    },
+    "Monitoring": {
+      "clients": {
+        "grpc": {
+          "libraryClient": "MonitoringClient",
+          "rpcs": {
+            "AggregateFrameworkComplianceReport": {
+              "methods": [
+                "aggregate_framework_compliance_report"
+              ]
+            },
+            "FetchFrameworkComplianceReport": {
+              "methods": [
+                "fetch_framework_compliance_report"
+              ]
+            },
+            "ListControlComplianceSummaries": {
+              "methods": [
+                "list_control_compliance_summaries"
+              ]
+            },
+            "ListFindingSummaries": {
+              "methods": [
+                "list_finding_summaries"
+              ]
+            },
+            "ListFrameworkComplianceSummaries": {
+              "methods": [
+                "list_framework_compliance_summaries"
+              ]
+            }
+          }
+        },
+        "grpc-async": {
+          "libraryClient": "MonitoringAsyncClient",
+          "rpcs": {
+            "AggregateFrameworkComplianceReport": {
+              "methods": [
+                "aggregate_framework_compliance_report"
+              ]
+            },
+            "FetchFrameworkComplianceReport": {
+              "methods": [
+                "fetch_framework_compliance_report"
+              ]
+            },
+            "ListControlComplianceSummaries": {
+              "methods": [
+                "list_control_compliance_summaries"
+              ]
+            },
+            "ListFindingSummaries": {
+              "methods": [
+                "list_finding_summaries"
+              ]
+            },
+            "ListFrameworkComplianceSummaries": {
+              "methods": [
+                "list_framework_compliance_summaries"
+              ]
+            }
+          }
+        },
+        "rest": {
+          "libraryClient": "MonitoringClient",
+          "rpcs": {
+            "AggregateFrameworkComplianceReport": {
+              "methods": [
+                "aggregate_framework_compliance_report"
+              ]
+            },
+            "FetchFrameworkComplianceReport": {
+              "methods": [
+                "fetch_framework_compliance_report"
+              ]
+            },
+            "ListControlComplianceSummaries": {
+              "methods": [
+                "list_control_compliance_summaries"
+              ]
+            },
+            "ListFindingSummaries": {
+              "methods": [
+                "list_finding_summaries"
+              ]
+            },
+            "ListFrameworkComplianceSummaries": {
+              "methods": [
+                "list_framework_compliance_summaries"
+              ]
+            }
+          }
+        }
+      }
     }
   }
 }
