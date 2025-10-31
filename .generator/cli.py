@@ -374,7 +374,6 @@ def _copy_files_needed_for_post_processing(
             source_dir,
             output,
             dirs_exist_ok=True,
-            ignore=shutil.ignore_patterns("client-post-processing"),
         )
 
     # We need to create these directories so that we can copy files necessary for post-processing.
