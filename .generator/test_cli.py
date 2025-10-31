@@ -858,6 +858,7 @@ def test_copy_files_needed_for_post_processing_copies_files_from_generator_input
 ):
     """Tests that .repo-metadata.json is copied if it exists."""
     mock_makedirs = mocker.patch("os.makedirs")
+    mock_shutil_copy = mocker.patch("shutil.copy")
     mock_shutil_copytree = mocker.patch("shutil.copytree")
     mocker.patch("pathlib.Path.exists", return_value=True)
 
@@ -865,6 +866,7 @@ def test_copy_files_needed_for_post_processing_copies_files_from_generator_input
         "output", "input", "library_id", is_mono_repo
     )
 
+    mock_shutil_copy.assert_called()
     mock_shutil_copytree.assert_called()
     mock_makedirs.assert_called()
 

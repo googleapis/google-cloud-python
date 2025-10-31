@@ -382,7 +382,7 @@ def _copy_files_needed_for_post_processing(
     # `.librarian/generator-input`, then we override the generated `.repo-metadata.json`
     # with what we have in `generator-input`. Remove this logic once the
     # generated `.repo-metadata.json` file is completely backfilled.
-    if os.path.exists(repo_metadata_path):
+    if Path(repo_metadata_path).exists():
         shutil.copy(
             repo_metadata_path,
             f"{output}/{path_to_library}/.repo-metadata.json",
