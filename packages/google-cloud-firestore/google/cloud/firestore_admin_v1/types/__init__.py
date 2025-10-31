@@ -25,6 +25,7 @@ from .field import (
 from .firestore_admin import (
     BulkDeleteDocumentsRequest,
     BulkDeleteDocumentsResponse,
+    CloneDatabaseRequest,
     CreateBackupScheduleRequest,
     CreateDatabaseMetadata,
     CreateDatabaseRequest,
@@ -73,6 +74,7 @@ from .location import (
 )
 from .operation import (
     BulkDeleteDocumentsMetadata,
+    CloneDatabaseMetadata,
     ExportDocumentsMetadata,
     ExportDocumentsResponse,
     FieldOperationMetadata,
@@ -87,6 +89,9 @@ from .schedule import (
     DailyRecurrence,
     WeeklyRecurrence,
 )
+from .snapshot import (
+    PitrSnapshot,
+)
 from .user_creds import (
     UserCreds,
 )
@@ -97,6 +102,7 @@ __all__ = (
     "Field",
     "BulkDeleteDocumentsRequest",
     "BulkDeleteDocumentsResponse",
+    "CloneDatabaseRequest",
     "CreateBackupScheduleRequest",
     "CreateDatabaseMetadata",
     "CreateDatabaseRequest",
@@ -139,6 +145,7 @@ __all__ = (
     "Index",
     "LocationMetadata",
     "BulkDeleteDocumentsMetadata",
+    "CloneDatabaseMetadata",
     "ExportDocumentsMetadata",
     "ExportDocumentsResponse",
     "FieldOperationMetadata",
@@ -150,5 +157,6 @@ __all__ = (
     "BackupSchedule",
     "DailyRecurrence",
     "WeeklyRecurrence",
+    "PitrSnapshot",
     "UserCreds",
 )

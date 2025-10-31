@@ -46,6 +46,7 @@ class firestore_adminCallTransformer(cst.CSTTransformer):
     CTRL_PARAMS: Tuple[str] = ('retry', 'timeout', 'metadata')
     METHOD_TO_PARAMS: Dict[str, Tuple[str]] = {
         'bulk_delete_documents': ('name', 'collection_ids', 'namespace_ids', ),
+        'clone_database': ('parent', 'database_id', 'pitr_snapshot', 'encryption_config', 'tags', ),
         'create_backup_schedule': ('parent', 'backup_schedule', ),
         'create_database': ('parent', 'database', 'database_id', ),
         'create_index': ('parent', 'index', ),

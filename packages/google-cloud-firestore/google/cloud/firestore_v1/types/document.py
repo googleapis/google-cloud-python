@@ -72,7 +72,7 @@ class Document(proto.Message):
             may contain any character. Some characters, including
             :literal:`\``, must be escaped using a ``\``. For example,
             :literal:`\`x&y\`` represents ``x&y`` and
-            :literal:`\`bak\`tik\`` represents :literal:`bak`tik`.
+            :literal:`\`bak\\`tik\`` represents :literal:`bak`tik`.
         create_time (google.protobuf.timestamp_pb2.Timestamp):
             Output only. The time at which the document was created.
 

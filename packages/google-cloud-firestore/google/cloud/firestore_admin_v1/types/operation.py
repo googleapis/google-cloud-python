@@ -20,6 +20,7 @@ from typing import MutableMapping, MutableSequence
 import proto  # type: ignore
 
 from google.cloud.firestore_admin_v1.types import index as gfa_index
+from google.cloud.firestore_admin_v1.types import snapshot
 from google.protobuf import timestamp_pb2  # type: ignore
 
 
@@ -34,6 +35,7 @@ __protobuf__ = proto.module(
         "BulkDeleteDocumentsMetadata",
         "ExportDocumentsResponse",
         "RestoreDatabaseMetadata",
+        "CloneDatabaseMetadata",
         "Progress",
     },
 )
@@ -554,6 +556,60 @@ class RestoreDatabaseMetadata(proto.Message):
     progress_percentage: "Progress" = proto.Field(
         proto.MESSAGE,
         number=8,
+        message="Progress",
+    )
+
+
+class CloneDatabaseMetadata(proto.Message):
+    r"""Metadata for the [long-running
+    operation][google.longrunning.Operation] from the
+    [CloneDatabase][google.firestore.admin.v1.CloneDatabase] request.
+
+    Attributes:
+        start_time (google.protobuf.timestamp_pb2.Timestamp):
+            The time the clone was started.
+        end_time (google.protobuf.timestamp_pb2.Timestamp):
+            The time the clone finished, unset for
+            ongoing clones.
+        operation_state (google.cloud.firestore_admin_v1.types.OperationState):
+            The operation state of the clone.
+        database (str):
+            The name of the database being cloned to.
+        pitr_snapshot (google.cloud.firestore_admin_v1.types.PitrSnapshot):
+            The snapshot from which this database was
+            cloned.
+        progress_percentage (google.cloud.firestore_admin_v1.types.Progress):
+            How far along the clone is as an estimated
+            percentage of remaining time.
+    """
+
+    start_time: timestamp_pb2.Timestamp = proto.Field(
+        proto.MESSAGE,
+        number=1,
+        message=timestamp_pb2.Timestamp,
+    )
+    end_time: timestamp_pb2.Timestamp = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        message=timestamp_pb2.Timestamp,
+    )
+    operation_state: "OperationState" = proto.Field(
+        proto.ENUM,
+        number=3,
+        enum="OperationState",
+    )
+    database: str = proto.Field(
+        proto.STRING,
+        number=4,
+    )
+    pitr_snapshot: snapshot.PitrSnapshot = proto.Field(
+        proto.MESSAGE,
+        number=7,
+        message=snapshot.PitrSnapshot,
+    )
+    progress_percentage: "Progress" = proto.Field(
+        proto.MESSAGE,
+        number=6,
         message="Progress",
     )
 

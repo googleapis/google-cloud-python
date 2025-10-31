@@ -1017,8 +1017,8 @@ class PartitionQueryRequest(proto.Message):
             For example, two subsequent calls using a page_token may
             return:
 
-            -  cursor B, cursor M, cursor Q
-            -  cursor A, cursor U, cursor W
+            - cursor B, cursor M, cursor Q
+            - cursor A, cursor U, cursor W
 
             To obtain a complete result set ordered with respect to the
             results of the query supplied to PartitionQuery, the results
@@ -1092,9 +1092,9 @@ class PartitionQueryResponse(proto.Message):
             cursors A and B, running the following three queries will
             return the entire result set of the original query:
 
-            -  query, end_at A
-            -  query, start_at A, end_at B
-            -  query, start_at B
+            - query, end_at A
+            - query, start_at A, end_at B
+            - query, start_at B
 
             An empty result may indicate that the query has too few
             results to be partitioned, or that the query is not yet

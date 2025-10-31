@@ -97,6 +97,14 @@ class FirestoreAdminRestInterceptor:
                 logging.log(f"Received response: {response}")
                 return response
 
+            def pre_clone_database(self, request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_clone_database(self, response):
+                logging.log(f"Received response: {response}")
+                return response
+
             def pre_create_backup_schedule(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
@@ -373,6 +381,54 @@ class FirestoreAdminRestInterceptor:
         `post_bulk_delete_documents` interceptor. The (possibly modified) response returned by
         `post_bulk_delete_documents` will be passed to
         `post_bulk_delete_documents_with_metadata`.
+        """
+        return response, metadata
+
+    def pre_clone_database(
+        self,
+        request: firestore_admin.CloneDatabaseRequest,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        firestore_admin.CloneDatabaseRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
+        """Pre-rpc interceptor for clone_database
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the FirestoreAdmin server.
+        """
+        return request, metadata
+
+    def post_clone_database(
+        self, response: operations_pb2.Operation
+    ) -> operations_pb2.Operation:
+        """Post-rpc interceptor for clone_database
+
+        DEPRECATED. Please use the `post_clone_database_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
+        after it is returned by the FirestoreAdmin server but before
+        it is returned to user code. This `post_clone_database` interceptor runs
+        before the `post_clone_database_with_metadata` interceptor.
+        """
+        return response
+
+    def post_clone_database_with_metadata(
+        self,
+        response: operations_pb2.Operation,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for clone_database
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the FirestoreAdmin server but before it is returned to user code.
+
+        We recommend only using this `post_clone_database_with_metadata`
+        interceptor in new development instead of the `post_clone_database` interceptor.
+        When both interceptors are used, this `post_clone_database_with_metadata` interceptor runs after the
+        `post_clone_database` interceptor. The (possibly modified) response returned by
+        `post_clone_database` will be passed to
+        `post_clone_database_with_metadata`.
         """
         return response, metadata
 
@@ -1857,9 +1913,10 @@ class FirestoreAdminRestTransport(_BaseFirestoreAdminRestTransport):
                 are specified, the client will attempt to ascertain the
                 credentials from the environment.
 
-            credentials_file (Optional[str]): A file with credentials that can
+            credentials_file (Optional[str]): Deprecated. A file with credentials that can
                 be loaded with :func:`google.auth.load_credentials_from_file`.
-                This argument is ignored if ``channel`` is provided.
+                This argument is ignored if ``channel`` is provided. This argument will be
+                removed in the next major version of this library.
             scopes (Optional(Sequence[str])): A list of scopes. This argument is
                 ignored if ``channel`` is provided.
             client_cert_source_for_mtls (Callable[[], Tuple[bytes, bytes]]): Client
@@ -2109,6 +2166,158 @@ class FirestoreAdminRestTransport(_BaseFirestoreAdminRestTransport):
                     extra={
                         "serviceName": "google.firestore.admin.v1.FirestoreAdmin",
                         "rpcName": "BulkDeleteDocuments",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
+            return resp
+
+    class _CloneDatabase(
+        _BaseFirestoreAdminRestTransport._BaseCloneDatabase, FirestoreAdminRestStub
+    ):
+        def __hash__(self):
+            return hash("FirestoreAdminRestTransport.CloneDatabase")
+
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+            return response
+
+        def __call__(
+            self,
+            request: firestore_admin.CloneDatabaseRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+        ) -> operations_pb2.Operation:
+            r"""Call the clone database method over HTTP.
+
+            Args:
+                request (~.firestore_admin.CloneDatabaseRequest):
+                    The request object. The request message for
+                [FirestoreAdmin.CloneDatabase][google.firestore.admin.v1.FirestoreAdmin.CloneDatabase].
+                retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                    should be retried.
+                timeout (float): The timeout for this request.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
+
+            Returns:
+                ~.operations_pb2.Operation:
+                    This resource represents a
+                long-running operation that is the
+                result of a network API call.
+
+            """
+
+            http_options = (
+                _BaseFirestoreAdminRestTransport._BaseCloneDatabase._get_http_options()
+            )
+
+            request, metadata = self._interceptor.pre_clone_database(request, metadata)
+            transcoded_request = _BaseFirestoreAdminRestTransport._BaseCloneDatabase._get_transcoded_request(
+                http_options, request
+            )
+
+            body = _BaseFirestoreAdminRestTransport._BaseCloneDatabase._get_request_body_json(
+                transcoded_request
+            )
+
+            # Jsonify the query params
+            query_params = _BaseFirestoreAdminRestTransport._BaseCloneDatabase._get_query_params_json(
+                transcoded_request
+            )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.firestore.admin_v1.FirestoreAdminClient.CloneDatabase",
+                    extra={
+                        "serviceName": "google.firestore.admin.v1.FirestoreAdmin",
+                        "rpcName": "CloneDatabase",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
+
+            # Send the request
+            response = FirestoreAdminRestTransport._CloneDatabase._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+                body,
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+
+            # Return the response
+            resp = operations_pb2.Operation()
+            json_format.Parse(response.content, resp, ignore_unknown_fields=True)
+
+            resp = self._interceptor.post_clone_database(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_clone_database_with_metadata(
+                resp, response_metadata
+            )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.firestore.admin_v1.FirestoreAdminClient.clone_database",
+                    extra={
+                        "serviceName": "google.firestore.admin.v1.FirestoreAdmin",
+                        "rpcName": "CloneDatabase",
                         "metadata": http_response["headers"],
                         "httpResponse": http_response,
                     },
@@ -6506,6 +6715,14 @@ class FirestoreAdminRestTransport(_BaseFirestoreAdminRestTransport):
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._BulkDeleteDocuments(self._session, self._host, self._interceptor)  # type: ignore
+
+    @property
+    def clone_database(
+        self,
+    ) -> Callable[[firestore_admin.CloneDatabaseRequest], operations_pb2.Operation]:
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return self._CloneDatabase(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
     def create_backup_schedule(

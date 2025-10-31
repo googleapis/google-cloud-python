@@ -15,6 +15,11 @@
                 "bulk_delete_documents"
               ]
             },
+            "CloneDatabase": {
+              "methods": [
+                "clone_database"
+              ]
+            },
             "CreateBackupSchedule": {
               "methods": [
                 "create_backup_schedule"
@@ -175,6 +180,11 @@
                 "bulk_delete_documents"
               ]
             },
+            "CloneDatabase": {
+              "methods": [
+                "clone_database"
+              ]
+            },
             "CreateBackupSchedule": {
               "methods": [
                 "create_backup_schedule"
@@ -333,6 +343,11 @@
             "BulkDeleteDocuments": {
               "methods": [
                 "bulk_delete_documents"
+              ]
+            },
+            "CloneDatabase": {
+              "methods": [
+                "clone_database"
               ]
             },
             "CreateBackupSchedule": {

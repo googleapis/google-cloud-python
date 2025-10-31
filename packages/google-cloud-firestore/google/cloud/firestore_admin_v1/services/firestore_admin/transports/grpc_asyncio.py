@@ -189,8 +189,9 @@ class FirestoreAdminGrpcAsyncIOTransport(FirestoreAdminTransport):
                 credentials identify this application to the service. If
                 none are specified, the client will attempt to ascertain
                 the credentials from the environment.
-            credentials_file (Optional[str]): A file with credentials that can
-                be loaded with :func:`google.auth.load_credentials_from_file`.
+            credentials_file (Optional[str]): Deprecated. A file with credentials that can
+                be loaded with :func:`google.auth.load_credentials_from_file`. This argument will be
+                removed in the next major version of this library.
             scopes (Optional[Sequence[str]]): A optional list of scopes needed for this
                 service. These are only used when credentials are not specified and
                 are passed to :func:`google.auth.default`.
@@ -241,9 +242,10 @@ class FirestoreAdminGrpcAsyncIOTransport(FirestoreAdminTransport):
                 are specified, the client will attempt to ascertain the
                 credentials from the environment.
                 This argument is ignored if a ``channel`` instance is provided.
-            credentials_file (Optional[str]): A file with credentials that can
+            credentials_file (Optional[str]): Deprecated. A file with credentials that can
                 be loaded with :func:`google.auth.load_credentials_from_file`.
                 This argument is ignored if a ``channel`` instance is provided.
+                This argument will be removed in the next major version of this library.
             scopes (Optional[Sequence[str]]): A optional list of scopes needed for this
                 service. These are only used when credentials are not specified and
                 are passed to :func:`google.auth.default`.
@@ -1331,6 +1333,52 @@ class FirestoreAdminGrpcAsyncIOTransport(FirestoreAdminTransport):
             )
         return self._stubs["delete_backup_schedule"]
 
+    @property
+    def clone_database(
+        self,
+    ) -> Callable[
+        [firestore_admin.CloneDatabaseRequest], Awaitable[operations_pb2.Operation]
+    ]:
+        r"""Return a callable for the clone database method over gRPC.
+
+        Creates a new database by cloning an existing one.
+
+        The new database must be in the same cloud region or
+        multi-region location as the existing database. This behaves
+        similar to
+        [FirestoreAdmin.CreateDatabase][google.firestore.admin.v1.FirestoreAdmin.CreateDatabase]
+        except instead of creating a new empty database, a new database
+        is created with the database type, index configuration, and
+        documents from an existing database.
+
+        The [long-running operation][google.longrunning.Operation] can
+        be used to track the progress of the clone, with the Operation's
+        [metadata][google.longrunning.Operation.metadata] field type
+        being the
+        [CloneDatabaseMetadata][google.firestore.admin.v1.CloneDatabaseMetadata].
+        The [response][google.longrunning.Operation.response] type is
+        the [Database][google.firestore.admin.v1.Database] if the clone
+        was successful. The new database is not readable or writeable
+        until the LRO has completed.
+
+        Returns:
+            Callable[[~.CloneDatabaseRequest],
+                    Awaitable[~.Operation]]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "clone_database" not in self._stubs:
+            self._stubs["clone_database"] = self._logged_channel.unary_unary(
+                "/google.firestore.admin.v1.FirestoreAdmin/CloneDatabase",
+                request_serializer=firestore_admin.CloneDatabaseRequest.serialize,
+                response_deserializer=operations_pb2.Operation.FromString,
+            )
+        return self._stubs["clone_database"]
+
     def _prep_wrapped_messages(self, client_info):
         """Precompute the wrapped methods, overriding the base class method to use async wrappers."""
         self._wrapped_methods = {
@@ -1542,6 +1590,11 @@ class FirestoreAdminGrpcAsyncIOTransport(FirestoreAdminTransport):
             self.delete_backup_schedule: self._wrap_method(
                 self.delete_backup_schedule,
                 default_timeout=None,
+                client_info=client_info,
+            ),
+            self.clone_database: self._wrap_method(
+                self.clone_database,
+                default_timeout=120.0,
                 client_info=client_info,
             ),
             self.cancel_operation: self._wrap_method(

@@ -4111,6 +4111,143 @@ class FirestoreAdminAsyncClient:
             metadata=metadata,
         )
 
+    async def clone_database(
+        self,
+        request: Optional[Union[firestore_admin.CloneDatabaseRequest, dict]] = None,
+        *,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+    ) -> operation_async.AsyncOperation:
+        r"""Creates a new database by cloning an existing one.
+
+        The new database must be in the same cloud region or
+        multi-region location as the existing database. This behaves
+        similar to
+        [FirestoreAdmin.CreateDatabase][google.firestore.admin.v1.FirestoreAdmin.CreateDatabase]
+        except instead of creating a new empty database, a new database
+        is created with the database type, index configuration, and
+        documents from an existing database.
+
+        The [long-running operation][google.longrunning.Operation] can
+        be used to track the progress of the clone, with the Operation's
+        [metadata][google.longrunning.Operation.metadata] field type
+        being the
+        [CloneDatabaseMetadata][google.firestore.admin.v1.CloneDatabaseMetadata].
+        The [response][google.longrunning.Operation.response] type is
+        the [Database][google.firestore.admin.v1.Database] if the clone
+        was successful. The new database is not readable or writeable
+        until the LRO has completed.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import firestore_admin_v1
+
+            async def sample_clone_database():
+                # Create a client
+                client = firestore_admin_v1.FirestoreAdminAsyncClient()
+
+                # Initialize request argument(s)
+                pitr_snapshot = firestore_admin_v1.PitrSnapshot()
+                pitr_snapshot.database = "database_value"
+
+                request = firestore_admin_v1.CloneDatabaseRequest(
+                    parent="parent_value",
+                    database_id="database_id_value",
+                    pitr_snapshot=pitr_snapshot,
+                )
+
+                # Make the request
+                operation = client.clone_database(request=request)
+
+                print("Waiting for operation to complete...")
+
+                response = (await operation).result()
+
+                # Handle the response
+                print(response)
+
+        Args:
+            request (Optional[Union[google.cloud.firestore_admin_v1.types.CloneDatabaseRequest, dict]]):
+                The request object. The request message for
+                [FirestoreAdmin.CloneDatabase][google.firestore.admin.v1.FirestoreAdmin.CloneDatabase].
+            retry (google.api_core.retry_async.AsyncRetry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                sent along with the request as metadata. Normally, each value must be of type `str`,
+                but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                be of type `bytes`.
+
+        Returns:
+            google.api_core.operation_async.AsyncOperation:
+                An object representing a long-running operation.
+
+                The result type for the operation will be
+                :class:`google.cloud.firestore_admin_v1.types.Database`
+                A Cloud Firestore Database.
+
+        """
+        # Create or coerce a protobuf request object.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, firestore_admin.CloneDatabaseRequest):
+            request = firestore_admin.CloneDatabaseRequest(request)
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.clone_database
+        ]
+
+        header_params = {}
+
+        routing_param_regex = re.compile("^projects/(?P<project_id>[^/]+)(?:/.*)?$")
+        regex_match = routing_param_regex.match(request.pitr_snapshot.database)
+        if regex_match and regex_match.group("project_id"):
+            header_params["project_id"] = regex_match.group("project_id")
+
+        routing_param_regex = re.compile(
+            "^projects/[^/]+/databases/(?P<database_id>[^/]+)(?:/.*)?$"
+        )
+        regex_match = routing_param_regex.match(request.pitr_snapshot.database)
+        if regex_match and regex_match.group("database_id"):
+            header_params["database_id"] = regex_match.group("database_id")
+
+        if header_params:
+            metadata = tuple(metadata) + (
+                gapic_v1.routing_header.to_grpc_metadata(header_params),
+            )
+
+        # Validate the universe domain.
+        self._client._validate_universe_domain()
+
+        # Send the request.
+        response = await rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # Wrap the response in an operation future.
+        response = operation_async.from_gapic(
+            response,
+            self._client._transport.operations_client,
+            database.Database,
+            metadata_type=gfa_operation.CloneDatabaseMetadata,
+        )
+
+        # Done; return the response.
+        return response
+
     async def list_operations(
         self,
         request: Optional[operations_pb2.ListOperationsRequest] = None,

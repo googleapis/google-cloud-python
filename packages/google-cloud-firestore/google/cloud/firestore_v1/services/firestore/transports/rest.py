@@ -945,9 +945,10 @@ class FirestoreRestTransport(_BaseFirestoreRestTransport):
                 are specified, the client will attempt to ascertain the
                 credentials from the environment.
 
-            credentials_file (Optional[str]): A file with credentials that can
+            credentials_file (Optional[str]): Deprecated. A file with credentials that can
                 be loaded with :func:`google.auth.load_credentials_from_file`.
-                This argument is ignored if ``channel`` is provided.
+                This argument is ignored if ``channel`` is provided. This argument will be
+                removed in the next major version of this library.
             scopes (Optional(Sequence[str])): A list of scopes. This argument is
                 ignored if ``channel`` is provided.
             client_cert_source_for_mtls (Callable[[], Tuple[bytes, bytes]]): Client
@@ -1118,6 +1119,22 @@ class FirestoreRestTransport(_BaseFirestoreRestTransport):
             resp, _ = self._interceptor.post_batch_get_documents_with_metadata(
                 resp, response_metadata
             )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                http_response = {
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.firestore_v1.FirestoreClient.batch_get_documents",
+                    extra={
+                        "serviceName": "google.firestore.v1.Firestore",
+                        "rpcName": "BatchGetDocuments",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _BatchWrite(_BaseFirestoreRestTransport._BaseBatchWrite, FirestoreRestStub):
@@ -2736,6 +2753,22 @@ class FirestoreRestTransport(_BaseFirestoreRestTransport):
             resp, _ = self._interceptor.post_run_aggregation_query_with_metadata(
                 resp, response_metadata
             )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                http_response = {
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.firestore_v1.FirestoreClient.run_aggregation_query",
+                    extra={
+                        "serviceName": "google.firestore.v1.Firestore",
+                        "rpcName": "RunAggregationQuery",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _RunQuery(_BaseFirestoreRestTransport._BaseRunQuery, FirestoreRestStub):
@@ -2866,6 +2899,22 @@ class FirestoreRestTransport(_BaseFirestoreRestTransport):
             resp, _ = self._interceptor.post_run_query_with_metadata(
                 resp, response_metadata
             )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                http_response = {
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.firestore_v1.FirestoreClient.run_query",
+                    extra={
+                        "serviceName": "google.firestore.v1.Firestore",
+                        "rpcName": "RunQuery",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _UpdateDocument(

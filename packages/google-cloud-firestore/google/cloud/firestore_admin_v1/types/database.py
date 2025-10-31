@@ -213,9 +213,9 @@ class Database(proto.Message):
                 Reads are supported on selected versions of the data from
                 within the past 7 days:
 
-                -  Reads against any timestamp within the past hour
-                -  Reads against 1-minute snapshots beyond 1 hour and within
-                   7 days
+                - Reads against any timestamp within the past hour
+                - Reads against 1-minute snapshots beyond 1 hour and within
+                  7 days
 
                 ``version_retention_period`` and ``earliest_version_time``
                 can be used to determine the supported versions.

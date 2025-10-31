@@ -66,25 +66,25 @@ class StructuredQuery(proto.Message):
             Firestore guarantees a stable ordering through the following
             rules:
 
-            -  The ``order_by`` is required to reference all fields used
-               with an inequality filter.
-            -  All fields that are required to be in the ``order_by``
-               but are not already present are appended in
-               lexicographical ordering of the field name.
-            -  If an order on ``__name__`` is not specified, it is
-               appended by default.
+            - The ``order_by`` is required to reference all fields used
+              with an inequality filter.
+            - All fields that are required to be in the ``order_by`` but
+              are not already present are appended in lexicographical
+              ordering of the field name.
+            - If an order on ``__name__`` is not specified, it is
+              appended by default.
 
             Fields are appended with the same sort direction as the last
             order specified, or 'ASCENDING' if no order was specified.
             For example:
 
-            -  ``ORDER BY a`` becomes ``ORDER BY a ASC, __name__ ASC``
-            -  ``ORDER BY a DESC`` becomes
-               ``ORDER BY a DESC, __name__ DESC``
-            -  ``WHERE a > 1`` becomes
-               ``WHERE a > 1 ORDER BY a ASC, __name__ ASC``
-            -  ``WHERE __name__ > ... AND a > 1`` becomes
-               ``WHERE __name__ > ... AND a > 1 ORDER BY a ASC, __name__ ASC``
+            - ``ORDER BY a`` becomes ``ORDER BY a ASC, __name__ ASC``
+            - ``ORDER BY a DESC`` becomes
+              ``ORDER BY a DESC, __name__ DESC``
+            - ``WHERE a > 1`` becomes
+              ``WHERE a > 1 ORDER BY a ASC, __name__ ASC``
+            - ``WHERE __name__ > ... AND a > 1`` becomes
+              ``WHERE __name__ > ... AND a > 1 ORDER BY a ASC, __name__ ASC``
         start_at (google.cloud.firestore_v1.types.Cursor):
             A potential prefix of a position in the result set to start
             the query at.
@@ -106,10 +106,10 @@ class StructuredQuery(proto.Message):
             Continuing off the example above, attaching the following
             start cursors will have varying impact:
 
-            -  ``START BEFORE (2, /k/123)``: start the query right
-               before ``a = 1 AND b > 2 AND __name__ > /k/123``.
-            -  ``START AFTER (10)``: start the query right after
-               ``a = 1 AND b > 10``.
+            - ``START BEFORE (2, /k/123)``: start the query right before
+              ``a = 1 AND b > 2 AND __name__ > /k/123``.
+            - ``START AFTER (10)``: start the query right after
+              ``a = 1 AND b > 10``.
 
             Unlike ``OFFSET`` which requires scanning over the first N
             results to skip, a start cursor allows the query to begin at
@@ -119,8 +119,8 @@ class StructuredQuery(proto.Message):
 
             Requires:
 
-            -  The number of values cannot be greater than the number of
-               fields specified in the ``ORDER BY`` clause.
+            - The number of values cannot be greater than the number of
+              fields specified in the ``ORDER BY`` clause.
         end_at (google.cloud.firestore_v1.types.Cursor):
             A potential prefix of a position in the result set to end
             the query at.
@@ -130,8 +130,8 @@ class StructuredQuery(proto.Message):
 
             Requires:
 
-            -  The number of values cannot be greater than the number of
-               fields specified in the ``ORDER BY`` clause.
+            - The number of values cannot be greater than the number of
+              fields specified in the ``ORDER BY`` clause.
         offset (int):
             The number of documents to skip before returning the first
             result.
@@ -142,8 +142,8 @@ class StructuredQuery(proto.Message):
 
             Requires:
 
-            -  The value must be greater than or equal to zero if
-               specified.
+            - The value must be greater than or equal to zero if
+              specified.
         limit (google.protobuf.wrappers_pb2.Int32Value):
             The maximum number of results to return.
 
@@ -151,8 +151,8 @@ class StructuredQuery(proto.Message):
 
             Requires:
 
-            -  The value must be greater than or equal to zero if
-               specified.
+            - The value must be greater than or equal to zero if
+              specified.
         find_nearest (google.cloud.firestore_v1.types.StructuredQuery.FindNearest):
             Optional. A potential nearest neighbors
             search.
@@ -256,7 +256,7 @@ class StructuredQuery(proto.Message):
 
                 Requires:
 
-                -  At least one filter is present.
+                - At least one filter is present.
         """
 
         class Operator(proto.Enum):
@@ -310,27 +310,27 @@ class StructuredQuery(proto.Message):
 
                     Requires:
 
-                    -  That ``field`` come first in ``order_by``.
+                    - That ``field`` come first in ``order_by``.
                 LESS_THAN_OR_EQUAL (2):
                     The given ``field`` is less than or equal to the given
                     ``value``.
 
                     Requires:
 
-                    -  That ``field`` come first in ``order_by``.
+                    - That ``field`` come first in ``order_by``.
                 GREATER_THAN (3):
                     The given ``field`` is greater than the given ``value``.
 
                     Requires:
 
-                    -  That ``field`` come first in ``order_by``.
+                    - That ``field`` come first in ``order_by``.
                 GREATER_THAN_OR_EQUAL (4):
                     The given ``field`` is greater than or equal to the given
                     ``value``.
 
                     Requires:
 
-                    -  That ``field`` come first in ``order_by``.
+                    - That ``field`` come first in ``order_by``.
                 EQUAL (5):
                     The given ``field`` is equal to the given ``value``.
                 NOT_EQUAL (6):
@@ -338,9 +338,9 @@ class StructuredQuery(proto.Message):
 
                     Requires:
 
-                    -  No other ``NOT_EQUAL``, ``NOT_IN``, ``IS_NOT_NULL``, or
-                       ``IS_NOT_NAN``.
-                    -  That ``field`` comes first in the ``order_by``.
+                    - No other ``NOT_EQUAL``, ``NOT_IN``, ``IS_NOT_NULL``, or
+                      ``IS_NOT_NAN``.
+                    - That ``field`` comes first in the ``order_by``.
                 ARRAY_CONTAINS (7):
                     The given ``field`` is an array that contains the given
                     ``value``.
@@ -350,31 +350,31 @@ class StructuredQuery(proto.Message):
 
                     Requires:
 
-                    -  That ``value`` is a non-empty ``ArrayValue``, subject to
-                       disjunction limits.
-                    -  No ``NOT_IN`` filters in the same query.
+                    - That ``value`` is a non-empty ``ArrayValue``, subject to
+                      disjunction limits.
+                    - No ``NOT_IN`` filters in the same query.
                 ARRAY_CONTAINS_ANY (9):
                     The given ``field`` is an array that contains any of the
                     values in the given array.
 
                     Requires:
 
-                    -  That ``value`` is a non-empty ``ArrayValue``, subject to
-                       disjunction limits.
-                    -  No other ``ARRAY_CONTAINS_ANY`` filters within the same
-                       disjunction.
-                    -  No ``NOT_IN`` filters in the same query.
+                    - That ``value`` is a non-empty ``ArrayValue``, subject to
+                      disjunction limits.
+                    - No other ``ARRAY_CONTAINS_ANY`` filters within the same
+                      disjunction.
+                    - No ``NOT_IN`` filters in the same query.
                 NOT_IN (10):
                     The value of the ``field`` is not in the given array.
 
                     Requires:
 
-                    -  That ``value`` is a non-empty ``ArrayValue`` with at most
-                       10 values.
-                    -  No other ``OR``, ``IN``, ``ARRAY_CONTAINS_ANY``,
-                       ``NOT_IN``, ``NOT_EQUAL``, ``IS_NOT_NULL``, or
-                       ``IS_NOT_NAN``.
-                    -  That ``field`` comes first in the ``order_by``.
+                    - That ``value`` is a non-empty ``ArrayValue`` with at most
+                      10 values.
+                    - No other ``OR``, ``IN``, ``ARRAY_CONTAINS_ANY``,
+                      ``NOT_IN``, ``NOT_EQUAL``, ``IS_NOT_NULL``, or
+                      ``IS_NOT_NAN``.
+                    - That ``field`` comes first in the ``order_by``.
             """
             OPERATOR_UNSPECIFIED = 0
             LESS_THAN = 1
@@ -433,17 +433,17 @@ class StructuredQuery(proto.Message):
 
                     Requires:
 
-                    -  No other ``NOT_EQUAL``, ``NOT_IN``, ``IS_NOT_NULL``, or
-                       ``IS_NOT_NAN``.
-                    -  That ``field`` comes first in the ``order_by``.
+                    - No other ``NOT_EQUAL``, ``NOT_IN``, ``IS_NOT_NULL``, or
+                      ``IS_NOT_NAN``.
+                    - That ``field`` comes first in the ``order_by``.
                 IS_NOT_NULL (5):
                     The given ``field`` is not equal to ``NULL``.
 
                     Requires:
 
-                    -  A single ``NOT_EQUAL``, ``NOT_IN``, ``IS_NOT_NULL``, or
-                       ``IS_NOT_NAN``.
-                    -  That ``field`` comes first in the ``order_by``.
+                    - A single ``NOT_EQUAL``, ``NOT_IN``, ``IS_NOT_NULL``, or
+                      ``IS_NOT_NAN``.
+                    - That ``field`` comes first in the ``order_by``.
             """
             OPERATOR_UNSPECIFIED = 0
             IS_NAN = 2
@@ -493,9 +493,9 @@ class StructuredQuery(proto.Message):
 
                 Requires:
 
-                -  MUST be a dot-delimited (``.``) string of segments, where
-                   each segment conforms to [document field
-                   name][google.firestore.v1.Document.fields] limitations.
+                - MUST be a dot-delimited (``.``) string of segments, where
+                  each segment conforms to [document field
+                  name][google.firestore.v1.Document.fields] limitations.
         """
 
         field_path: str = proto.Field(
@@ -555,9 +555,9 @@ class StructuredQuery(proto.Message):
                 when the vectors are more similar, the comparison is
                 inverted.
 
-                -  For EUCLIDEAN, COSINE: WHERE distance <=
-                   distance_threshold
-                -  For DOT_PRODUCT: WHERE distance >= distance_threshold
+                - For EUCLIDEAN, COSINE: WHERE distance <=
+                  distance_threshold
+                - For DOT_PRODUCT: WHERE distance >= distance_threshold
         """
 
         class DistanceMeasure(proto.Enum):
@@ -688,8 +688,8 @@ class StructuredAggregationQuery(proto.Message):
 
             Requires:
 
-            -  A minimum of one and maximum of five aggregations per
-               query.
+            - A minimum of one and maximum of five aggregations per
+              query.
     """
 
     class Aggregation(proto.Message):
@@ -749,9 +749,9 @@ class StructuredAggregationQuery(proto.Message):
 
                 Requires:
 
-                -  Must be unique across all aggregation aliases.
-                -  Conform to [document field
-                   name][google.firestore.v1.Document.fields] limitations.
+                - Must be unique across all aggregation aliases.
+                - Conform to [document field
+                  name][google.firestore.v1.Document.fields] limitations.
         """
 
         class Count(proto.Message):
@@ -778,7 +778,7 @@ class StructuredAggregationQuery(proto.Message):
 
                     Requires:
 
-                    -  Must be greater than zero when present.
+                    - Must be greater than zero when present.
             """
 
             up_to: wrappers_pb2.Int64Value = proto.Field(
@@ -790,26 +790,26 @@ class StructuredAggregationQuery(proto.Message):
         class Sum(proto.Message):
             r"""Sum of the values of the requested field.
 
-            -  Only numeric values will be aggregated. All non-numeric values
-               including ``NULL`` are skipped.
+            - Only numeric values will be aggregated. All non-numeric values
+              including ``NULL`` are skipped.
 
-            -  If the aggregated values contain ``NaN``, returns ``NaN``.
-               Infinity math follows IEEE-754 standards.
+            - If the aggregated values contain ``NaN``, returns ``NaN``.
+              Infinity math follows IEEE-754 standards.
 
-            -  If the aggregated value set is empty, returns 0.
+            - If the aggregated value set is empty, returns 0.
 
-            -  Returns a 64-bit integer if all aggregated numbers are integers
-               and the sum result does not overflow. Otherwise, the result is
-               returned as a double. Note that even if all the aggregated values
-               are integers, the result is returned as a double if it cannot fit
-               within a 64-bit signed integer. When this occurs, the returned
-               value will lose precision.
+            - Returns a 64-bit integer if all aggregated numbers are integers
+              and the sum result does not overflow. Otherwise, the result is
+              returned as a double. Note that even if all the aggregated values
+              are integers, the result is returned as a double if it cannot fit
+              within a 64-bit signed integer. When this occurs, the returned
+              value will lose precision.
 
-            -  When underflow occurs, floating-point aggregation is
-               non-deterministic. This means that running the same query
-               repeatedly without any changes to the underlying values could
-               produce slightly different results each time. In those cases,
-               values should be stored as integers over floating-point numbers.
+            - When underflow occurs, floating-point aggregation is
+              non-deterministic. This means that running the same query
+              repeatedly without any changes to the underlying values could
+              produce slightly different results each time. In those cases,
+              values should be stored as integers over floating-point numbers.
 
             Attributes:
                 field (google.cloud.firestore_v1.types.StructuredQuery.FieldReference):
@@ -825,15 +825,15 @@ class StructuredAggregationQuery(proto.Message):
         class Avg(proto.Message):
             r"""Average of the values of the requested field.
 
-            -  Only numeric values will be aggregated. All non-numeric values
-               including ``NULL`` are skipped.
+            - Only numeric values will be aggregated. All non-numeric values
+              including ``NULL`` are skipped.
 
-            -  If the aggregated values contain ``NaN``, returns ``NaN``.
-               Infinity math follows IEEE-754 standards.
+            - If the aggregated values contain ``NaN``, returns ``NaN``.
+              Infinity math follows IEEE-754 standards.
 
-            -  If the aggregated value set is empty, returns ``NULL``.
+            - If the aggregated value set is empty, returns ``NULL``.
 
-            -  Always returns the result as a double.
+            - Always returns the result as a double.
 
             Attributes:
                 field (google.cloud.firestore_v1.types.StructuredQuery.FieldReference):

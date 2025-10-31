@@ -24,6 +24,7 @@ from google.cloud.firestore_admin_v1.types import database as gfa_database
 from google.cloud.firestore_admin_v1.types import field as gfa_field
 from google.cloud.firestore_admin_v1.types import index as gfa_index
 from google.cloud.firestore_admin_v1.types import schedule
+from google.cloud.firestore_admin_v1.types import snapshot
 from google.cloud.firestore_admin_v1.types import user_creds as gfa_user_creds
 from google.protobuf import field_mask_pb2  # type: ignore
 from google.protobuf import timestamp_pb2  # type: ignore
@@ -73,6 +74,7 @@ __protobuf__ = proto.module(
         "ListBackupsResponse",
         "DeleteBackupRequest",
         "RestoreDatabaseRequest",
+        "CloneDatabaseRequest",
     },
 )
 
@@ -951,7 +953,7 @@ class ListBackupsRequest(proto.Message):
             [Backup][google.firestore.admin.v1.Backup] are eligible for
             filtering:
 
-            -  ``database_uid`` (supports ``=`` only)
+            - ``database_uid`` (supports ``=`` only)
     """
 
     parent: str = proto.Field(
@@ -1076,6 +1078,72 @@ class RestoreDatabaseRequest(proto.Message):
         proto.STRING,
         proto.STRING,
         number=10,
+    )
+
+
+class CloneDatabaseRequest(proto.Message):
+    r"""The request message for
+    [FirestoreAdmin.CloneDatabase][google.firestore.admin.v1.FirestoreAdmin.CloneDatabase].
+
+    Attributes:
+        parent (str):
+            Required. The project to clone the database in. Format is
+            ``projects/{project_id}``.
+        database_id (str):
+            Required. The ID to use for the database, which will become
+            the final component of the database's resource name. This
+            database ID must not be associated with an existing
+            database.
+
+            This value should be 4-63 characters. Valid characters are
+            /[a-z][0-9]-/ with first character a letter and the last a
+            letter or a number. Must not be UUID-like
+            /[0-9a-f]{8}(-[0-9a-f]{4}){3}-[0-9a-f]{12}/.
+
+            "(default)" database ID is also valid.
+        pitr_snapshot (google.cloud.firestore_admin_v1.types.PitrSnapshot):
+            Required. Specification of the PITR data to
+            clone from. The source database must exist.
+
+            The cloned database will be created in the same
+            location as the source database.
+        encryption_config (google.cloud.firestore_admin_v1.types.Database.EncryptionConfig):
+            Optional. Encryption configuration for the cloned database.
+
+            If this field is not specified, the cloned database will use
+            the same encryption configuration as the source database,
+            namely
+            [use_source_encryption][google.firestore.admin.v1.Database.EncryptionConfig.use_source_encryption].
+        tags (MutableMapping[str, str]):
+            Optional. Immutable. Tags to be bound to the cloned
+            database.
+
+            The tags should be provided in the format of
+            ``tagKeys/{tag_key_id} -> tagValues/{tag_value_id}``.
+    """
+
+    parent: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    database_id: str = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+    pitr_snapshot: snapshot.PitrSnapshot = proto.Field(
+        proto.MESSAGE,
+        number=6,
+        message=snapshot.PitrSnapshot,
+    )
+    encryption_config: gfa_database.Database.EncryptionConfig = proto.Field(
+        proto.MESSAGE,
+        number=4,
+        message=gfa_database.Database.EncryptionConfig,
+    )
+    tags: MutableMapping[str, str] = proto.MapField(
+        proto.STRING,
+        proto.STRING,
+        number=5,
     )
 
 
