@@ -1136,7 +1136,7 @@ def upload_chunks_concurrently(
                     end=end,
                     part_number=part_number,
                     checksum=checksum,
-                    headers=headers,
+                    headers=headers.copy(),
                     retry=retry,
                 )
             )
