@@ -133,3 +133,12 @@ class GeoStLengthOp(base_ops.UnaryOp):
 
     def output_type(self, *input_types: dtypes.ExpressionType) -> dtypes.ExpressionType:
         return dtypes.FLOAT_DTYPE
+
+
+@dataclasses.dataclass(frozen=True)
+class GeoStSimplifyOp(base_ops.UnaryOp):
+    name = "st_simplify"
+    tolerance_meters: float
+
+    def output_type(self, *input_types: dtypes.ExpressionType) -> dtypes.ExpressionType:
+        return dtypes.GEO_DTYPE

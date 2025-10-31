@@ -480,3 +480,12 @@ def test_st_buffer(session):
     result = bbq.st_buffer(geoseries, 1000).to_pandas()
     assert result.iloc[0].geom_type == "Polygon"
     assert result.iloc[1].geom_type == "Polygon"
+
+
+def test_st_simplify(session):
+    geoseries = bigframes.geopandas.GeoSeries(
+        [LineString([(0, 0), (1, 1), (2, 0)])], session=session
+    )
+    result = bbq.st_simplify(geoseries, 100000).to_pandas()
+    assert len(result.index) == 1
+    assert result.isna().sum() == 0

@@ -496,3 +496,31 @@ class GeoSeries:
                 ``bigframes.bigquery.st_isclosed(series)``, instead.
         """
         raise NotImplementedError(constants.ABSTRACT_METHOD_ERROR_MESSAGE)
+
+    def simplify(self, tolerance: float, preserve_topology: bool = True) -> bigframes.series.Series:  # type: ignore
+        """[Not Implemented] Use ``bigframes.bigquery.st_simplify(series, tolerance_meters)``,
+        instead to set the tolerance in meters.
+
+        In GeoPandas, this returns a GeoSeries containing a simplified
+        representation of each geometry.
+
+        Args:
+            tolerance (float):
+                All parts of a simplified geometry will be no more than
+                tolerance distance from the original. It has the same units as
+                the coordinate reference system of the GeoSeries. For example,
+                using tolerance=100 in a projected CRS with meters as units
+                means a distance of 100 meters in reality.
+            preserve_topology (bool):
+                Default True. False uses a quicker algorithm, but may produce
+                self-intersecting or otherwise invalid geometries.
+
+        Returns:
+            bigframes.geopandas.GeoSeries:
+                Series of simplified geometries.
+
+        Raises:
+            NotImplementedError:
+                GeoSeries.simplify is not supported. Use bigframes.bigquery.st_simplify(series, tolerance_meters), instead.
+        """
+        raise NotImplementedError(constants.ABSTRACT_METHOD_ERROR_MESSAGE)

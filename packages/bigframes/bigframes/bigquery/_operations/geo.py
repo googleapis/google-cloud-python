@@ -675,3 +675,23 @@ def st_length(
     series = series._apply_unary_op(ops.GeoStLengthOp(use_spheroid=use_spheroid))
     series.name = None
     return series
+
+
+def st_simplify(
+    geography: "bigframes.series.Series",
+    tolerance_meters: float,
+) -> "bigframes.series.Series":
+    """Returns a simplified version of the input geography.
+
+    Args:
+        geography (bigframes.series.Series):
+            A Series containing GEOGRAPHY data.
+        tolerance_meters (float):
+            A float64 value indicating the tolerance in meters.
+
+    Returns:
+        a Series containing the simplified GEOGRAPHY data.
+    """
+    return geography._apply_unary_op(
+        ops.GeoStSimplifyOp(tolerance_meters=tolerance_meters)
+    )

@@ -123,3 +123,8 @@ class GeoSeries(vendored_geoseries.GeoSeries, bigframes.series.Series):
 
     def intersection(self: GeoSeries, other: GeoSeries) -> bigframes.series.Series:  # type: ignore
         return self._apply_binary_op(other, ops.geo_st_intersection_op)
+
+    def simplify(self, tolerance, preserve_topology=True):
+        raise NotImplementedError(
+            f"GeoSeries.simplify is not supported. Use bigframes.bigquery.st_simplify(series, tolerance_meters), instead. {constants.FEEDBACK_LINK}"
+        )

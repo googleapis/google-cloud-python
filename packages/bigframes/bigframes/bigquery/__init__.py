@@ -40,6 +40,7 @@ from bigframes.bigquery._operations.geo import (
     st_intersection,
     st_isclosed,
     st_length,
+    st_simplify,
 )
 from bigframes.bigquery._operations.json import (
     json_extract,
@@ -80,6 +81,7 @@ _functions = [
     st_intersection,
     st_isclosed,
     st_length,
+    st_simplify,
     # json ops
     json_extract,
     json_extract_array,

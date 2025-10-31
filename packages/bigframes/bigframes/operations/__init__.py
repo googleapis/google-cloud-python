@@ -121,6 +121,7 @@ from bigframes.operations.geo_ops import (
     GeoStBufferOp,
     GeoStDistanceOp,
     GeoStLengthOp,
+    GeoStSimplifyOp,
 )
 from bigframes.operations.json_ops import (
     JSONExtract,
@@ -416,6 +417,7 @@ __all__ = [
     "geo_st_isclosed_op",
     "GeoStBufferOp",
     "GeoStLengthOp",
+    "GeoStSimplifyOp",
     "geo_x_op",
     "geo_y_op",
     "GeoStDistanceOp",

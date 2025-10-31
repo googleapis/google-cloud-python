@@ -101,6 +101,12 @@ def geo_st_isclosed_op_impl(x: ibis_types.Value):
     return st_isclosed(x)
 
 
+@register_unary_op(ops.GeoStSimplifyOp, pass_op=True)
+def st_simplify_op_impl(x: ibis_types.Value, op: ops.GeoStSimplifyOp):
+    x = cast(ibis_types.GeoSpatialValue, x)
+    return st_simplify(x, op.tolerance_meters)
+
+
 @register_unary_op(ops.geo_x_op)
 def geo_x_op_impl(x: ibis_types.Value):
     return cast(ibis_types.GeoSpatialValue, x).x()
@@ -157,3 +163,11 @@ def st_length(geog: ibis_dtypes.geography, use_spheroid: bool) -> ibis_dtypes.fl
 @ibis_udf.scalar.builtin
 def st_isclosed(a: ibis_dtypes.geography) -> ibis_dtypes.boolean:  # type: ignore
     """Checks if a geography is closed."""
+
+
+@ibis_udf.scalar.builtin
+def st_simplify(
+    geography: ibis_dtypes.geography,  # type: ignore
+    tolerance_meters: ibis_dtypes.float,  # type: ignore
+) -> ibis_dtypes.geography:  # type: ignore
+    ...
