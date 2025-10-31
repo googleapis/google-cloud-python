@@ -271,3 +271,56 @@ def test_create_user_agent_jupyter_extension():
             create_user_agent()
             == f"pandas-{pd.__version__} jupyter bigquery_jupyter_plugin"
         )
+
+
+def test_to_gbq_with_clustering(mock_bigquery_client):
+    mock_bigquery_client.get_table.side_effect = google.api_core.exceptions.NotFound(
+        "my_table"
+    )
+    gbq.to_gbq(
+        DataFrame([[1]]),
+        "my_dataset.my_table",
+        project_id="1234",
+        clustering_columns=["col_a", "col_b"],
+    )
+    mock_bigquery_client.create_table.assert_called_with(mock.ANY)
+    table = mock_bigquery_client.create_table.call_args[0][0]
+    assert table.clustering_fields == ["col_a", "col_b"]
+
+
+def test_to_gbq_with_time_partitioning(mock_bigquery_client):
+    mock_bigquery_client.get_table.side_effect = google.api_core.exceptions.NotFound(
+        "my_table"
+    )
+    gbq.to_gbq(
+        DataFrame([[1]]),
+        "my_dataset.my_table",
+        project_id="1234",
+        time_partitioning_column="time_col",
+        time_partitioning_type="DAY",
+        time_partitioning_expiration_ms=100,
+    )
+    mock_bigquery_client.create_table.assert_called_with(mock.ANY)
+    table = mock_bigquery_client.create_table.call_args[0][0]
+    assert table.time_partitioning.type_ == "DAY"
+    assert table.time_partitioning.field == "time_col"
+    assert table.time_partitioning.expiration_ms == 100
+
+
+def test_to_gbq_with_range_partitioning(mock_bigquery_client):
+    mock_bigquery_client.get_table.side_effect = google.api_core.exceptions.NotFound(
+        "my_table"
+    )
+    gbq.to_gbq(
+        DataFrame([[1]]),
+        "my_dataset.my_table",
+        project_id="1234",
+        range_partitioning_column="range_col",
+        range_partitioning_range={"start": 0, "end": 100, "interval": 10},
+    )
+    mock_bigquery_client.create_table.assert_called_with(mock.ANY)
+    table = mock_bigquery_client.create_table.call_args[0][0]
+    assert table.range_partitioning.field == "range_col"
+    assert table.range_partitioning.range_.start == 0
+    assert table.range_partitioning.range_.end == 100
+    assert table.range_partitioning.range_.interval == 10
