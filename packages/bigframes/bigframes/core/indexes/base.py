@@ -297,9 +297,13 @@ class Index(vendored_pandas_index.Index):
         count_agg = ex_types.UnaryAggregation(agg_ops.count_op, ex.deref(offsets_id))
         count_result = filtered_block._expr.aggregate([(count_agg, "count")])
 
-        count_scalar = self._block.session._executor.execute(
-            count_result, ex_spec.ExecutionSpec(promise_under_10gb=True)
-        ).to_py_scalar()
+        count_scalar = (
+            self._block.session._executor.execute(
+                count_result, ex_spec.ExecutionSpec(promise_under_10gb=True)
+            )
+            .batches()
+            .to_py_scalar()
+        )
 
         if count_scalar == 0:
             raise KeyError(f"'{key}' is not in index")
@@ -308,9 +312,13 @@ class Index(vendored_pandas_index.Index):
         if count_scalar == 1:
             min_agg = ex_types.UnaryAggregation(agg_ops.min_op, ex.deref(offsets_id))
             position_result = filtered_block._expr.aggregate([(min_agg, "position")])
-            position_scalar = self._block.session._executor.execute(
-                position_result, ex_spec.ExecutionSpec(promise_under_10gb=True)
-            ).to_py_scalar()
+            position_scalar = (
+                self._block.session._executor.execute(
+                    position_result, ex_spec.ExecutionSpec(promise_under_10gb=True)
+                )
+                .batches()
+                .to_py_scalar()
+            )
             return int(position_scalar)
 
         # Handle multiple matches based on index monotonicity
@@ -342,10 +350,14 @@ class Index(vendored_pandas_index.Index):
         combined_result = filtered_block._expr.aggregate(min_max_aggs)
 
         # Execute query and extract positions
-        result_df = self._block.session._executor.execute(
-            combined_result,
-            execution_spec=ex_spec.ExecutionSpec(promise_under_10gb=True),
-        ).to_pandas()
+        result_df = (
+            self._block.session._executor.execute(
+                combined_result,
+                execution_spec=ex_spec.ExecutionSpec(promise_under_10gb=True),
+            )
+            .batches()
+            .to_pandas()
+        )
         min_pos = int(result_df["min_pos"].iloc[0])
         max_pos = int(result_df["max_pos"].iloc[0])
 

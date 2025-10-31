@@ -122,7 +122,7 @@ def test_read_gbq_tokyo(
     assert exec_result.query_job is not None
     assert exec_result.query_job.location == tokyo_location
 
-    assert len(expected) == exec_result.total_rows
+    assert len(expected) == exec_result.batches().approx_total_rows
 
 
 @pytest.mark.parametrize(
@@ -951,7 +951,7 @@ def test_read_pandas_tokyo(
     assert result.query_job is not None
     assert result.query_job.location == tokyo_location
 
-    assert len(expected) == result.total_rows
+    assert len(expected) == result.batches().approx_total_rows
 
 
 @all_write_engines

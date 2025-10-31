@@ -117,15 +117,30 @@ def mock_execute_result_with_params(
     """
     Mocks an execution result with configurable total_rows and arrow_batches.
     """
-    from bigframes.session.executor import ExecuteResult
-
-    return ExecuteResult(
-        iter(arrow_batches_val),
-        schema=schema,
-        query_job=None,
-        total_bytes=None,
-        total_rows=total_rows_val,
+    from bigframes.session.executor import (
+        ExecuteResult,
+        ExecutionMetadata,
+        ResultsIterator,
     )
+
+    class MockExecuteResult(ExecuteResult):
+        @property
+        def execution_metadata(self) -> ExecutionMetadata:
+            return ExecutionMetadata()
+
+        @property
+        def schema(self):
+            return schema
+
+        def batches(self) -> ResultsIterator:
+            return ResultsIterator(
+                arrow_batches_val,
+                self.schema,
+                total_rows_val,
+                None,
+            )
+
+    return MockExecuteResult()
 
 
 def _assert_html_matches_pandas_slice(

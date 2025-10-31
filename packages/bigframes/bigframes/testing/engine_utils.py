@@ -29,6 +29,6 @@ def assert_equivalence_execution(
     assert e2_result is not None
     # Convert to pandas, as pandas has better comparison utils than arrow
     assert e1_result.schema == e2_result.schema
-    e1_table = e1_result.to_pandas()
-    e2_table = e2_result.to_pandas()
+    e1_table = e1_result.batches().to_pandas()
+    e2_table = e2_result.batches().to_pandas()
     pandas.testing.assert_frame_equal(e1_table, e2_table, rtol=1e-5)

@@ -553,6 +553,24 @@ def bigframes_dtype_to_arrow_dtype(
         )
 
 
+def to_storage_type(
+    arrow_type: pa.DataType,
+):
+    """Some pyarrow versions don't support extension types fully, such as for empty table generation."""
+    if isinstance(arrow_type, pa.ExtensionType):
+        return arrow_type.storage_type
+    if pa.types.is_list(arrow_type):
+        assert isinstance(arrow_type, pa.ListType)
+        return pa.list_(to_storage_type(arrow_type.value_type))
+    if pa.types.is_struct(arrow_type):
+        assert isinstance(arrow_type, pa.StructType)
+        return pa.struct(
+            field.with_type(to_storage_type(field.type))
+            for field in bigframes.core.backports.pyarrow_struct_type_fields(arrow_type)
+        )
+    return arrow_type
+
+
 def arrow_type_to_literal(
     arrow_type: pa.DataType,
 ) -> Any:

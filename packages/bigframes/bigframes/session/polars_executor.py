@@ -16,14 +16,11 @@ from __future__ import annotations
 import itertools
 from typing import Optional, TYPE_CHECKING
 
-import pyarrow as pa
-
 from bigframes.core import (
     agg_expressions,
     array_value,
     bigframe_node,
     expression,
-    local_data,
     nodes,
 )
 import bigframes.operations
@@ -153,23 +150,10 @@ class PolarsExecutor(semi_executor.SemiExecutor):
         if peek is not None:
             lazy_frame = lazy_frame.limit(peek)
         pa_table = lazy_frame.collect().to_arrow()
-        return executor.ExecuteResult(
-            _arrow_batches=iter(map(self._adapt_batch, pa_table.to_batches())),
-            schema=plan.schema,
-            total_bytes=pa_table.nbytes,
-            total_rows=pa_table.num_rows,
+        return executor.LocalExecuteResult(
+            data=pa_table,
+            bf_schema=plan.schema,
         )
 
     def _can_execute(self, plan: bigframe_node.BigFrameNode):
         return all(_is_node_polars_executable(node) for node in plan.unique_nodes())
-
-    def _adapt_array(self, array: pa.Array) -> pa.Array:
-        target_type = local_data.logical_type_replacements(array.type)
-        if target_type != array.type:
-            # Safe is false to handle weird polars decimal scaling
-            return array.cast(target_type, safe=False)
-        return array
-
-    def _adapt_batch(self, batch: pa.RecordBatch) -> pa.RecordBatch:
-        new_arrays = [self._adapt_array(arr) for arr in batch.columns]
-        return pa.RecordBatch.from_arrays(new_arrays, names=batch.column_names)

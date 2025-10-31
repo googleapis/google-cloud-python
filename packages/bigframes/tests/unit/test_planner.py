@@ -39,7 +39,6 @@ type(FAKE_SESSION)._strictly_ordered = mock.PropertyMock(return_value=True)
 LEAF: core.ArrayValue = core.ArrayValue.from_table(
     session=FAKE_SESSION,
     table=TABLE,
-    schema=bigframes.core.schema.ArraySchema.from_bq_table(TABLE),
 )
 
 

@@ -16,7 +16,6 @@ from __future__ import annotations
 
 import abc
 import dataclasses
-import datetime
 import functools
 import itertools
 import typing
@@ -31,9 +30,7 @@ from typing import (
     Tuple,
 )
 
-import google.cloud.bigquery as bq
-
-from bigframes.core import agg_expressions, identifiers, local_data, sequences
+from bigframes.core import agg_expressions, bq_data, identifiers, local_data, sequences
 from bigframes.core.bigframe_node import BigFrameNode, COLUMN_SET
 import bigframes.core.expression as ex
 from bigframes.core.field import Field
@@ -599,14 +596,13 @@ class LeafNode(BigFrameNode):
 
 class ScanItem(typing.NamedTuple):
     id: identifiers.ColumnId
-    dtype: bigframes.dtypes.Dtype  # Might be multiple logical types for a given physical source type
     source_id: str  # Flexible enough for both local data and bq data
 
     def with_id(self, id: identifiers.ColumnId) -> ScanItem:
-        return ScanItem(id, self.dtype, self.source_id)
+        return ScanItem(id, self.source_id)
 
     def with_source_id(self, source_id: str) -> ScanItem:
-        return ScanItem(self.id, self.dtype, source_id)
+        return ScanItem(self.id, source_id)
 
 
 @dataclasses.dataclass(frozen=True)
@@ -661,7 +657,7 @@ class ScanList:
     def append(
         self, source_id: str, dtype: bigframes.dtypes.Dtype, id: identifiers.ColumnId
     ) -> ScanList:
-        return ScanList((*self.items, ScanItem(id, dtype, source_id)))
+        return ScanList((*self.items, ScanItem(id, source_id)))
 
 
 @dataclasses.dataclass(frozen=True, eq=False)
@@ -677,8 +673,10 @@ class ReadLocalNode(LeafNode):
     @property
     def fields(self) -> Sequence[Field]:
         fields = tuple(
-            Field(col_id, dtype) for col_id, dtype, _ in self.scan_list.items
+            Field(col_id, self.local_data_source.schema.get_type(source_id))
+            for col_id, source_id in self.scan_list.items
         )
+
         if self.offsets_col is not None:
             return tuple(
                 itertools.chain(
@@ -726,7 +724,7 @@ class ReadLocalNode(LeafNode):
     ) -> ReadLocalNode:
         new_scan_list = ScanList(
             tuple(
-                ScanItem(mappings.get(item.id, item.id), item.dtype, item.source_id)
+                ScanItem(mappings.get(item.id, item.id), item.source_id)
                 for item in self.scan_list.items
             )
         )
@@ -745,64 +743,9 @@ class ReadLocalNode(LeafNode):
         return self
 
 
-@dataclasses.dataclass(frozen=True)
-class GbqTable:
-    project_id: str = dataclasses.field()
-    dataset_id: str = dataclasses.field()
-    table_id: str = dataclasses.field()
-    physical_schema: Tuple[bq.SchemaField, ...] = dataclasses.field()
-    is_physically_stored: bool = dataclasses.field()
-    cluster_cols: typing.Optional[Tuple[str, ...]]
-
-    @staticmethod
-    def from_table(table: bq.Table, columns: Sequence[str] = ()) -> GbqTable:
-        # Subsetting fields with columns can reduce cost of row-hash default ordering
-        if columns:
-            schema = tuple(item for item in table.schema if item.name in columns)
-        else:
-            schema = tuple(table.schema)
-        return GbqTable(
-            project_id=table.project,
-            dataset_id=table.dataset_id,
-            table_id=table.table_id,
-            physical_schema=schema,
-            is_physically_stored=(table.table_type in ["TABLE", "MATERIALIZED_VIEW"]),
-            cluster_cols=None
-            if table.clustering_fields is None
-            else tuple(table.clustering_fields),
-        )
-
-    def get_table_ref(self) -> bq.TableReference:
-        return bq.TableReference(
-            bq.DatasetReference(self.project_id, self.dataset_id), self.table_id
-        )
-
-    @property
-    @functools.cache
-    def schema_by_id(self):
-        return {col.name: col for col in self.physical_schema}
-
-
-@dataclasses.dataclass(frozen=True)
-class BigqueryDataSource:
-    """
-    Google BigQuery Data source.
-
-    This should not be modified once defined, as all attributes contribute to the default ordering.
-    """
-
-    table: GbqTable
-    at_time: typing.Optional[datetime.datetime] = None
-    # Added for backwards compatibility, not validated
-    sql_predicate: typing.Optional[str] = None
-    ordering: typing.Optional[orderings.RowOrdering] = None
-    n_rows: Optional[int] = None
-
-
-## Put ordering in here or just add order_by node above?
 @dataclasses.dataclass(frozen=True, eq=False)
 class ReadTableNode(LeafNode):
-    source: BigqueryDataSource
+    source: bq_data.BigqueryDataSource
     # Subset of physical schema column
     # Mapping of table schema ids to bfet id.
     scan_list: ScanList
@@ -826,8 +769,12 @@ class ReadTableNode(LeafNode):
     @property
     def fields(self) -> Sequence[Field]:
         return tuple(
-            Field(col_id, dtype, self.source.table.schema_by_id[source_id].is_nullable)
-            for col_id, dtype, source_id in self.scan_list.items
+            Field(
+                col_id,
+                self.source.schema.get_type(source_id),
+                self.source.table.schema_by_id[source_id].is_nullable,
+            )
+            for col_id, source_id in self.scan_list.items
         )
 
     @property
@@ -886,7 +833,7 @@ class ReadTableNode(LeafNode):
     ) -> ReadTableNode:
         new_scan_list = ScanList(
             tuple(
-                ScanItem(mappings.get(item.id, item.id), item.dtype, item.source_id)
+                ScanItem(mappings.get(item.id, item.id), item.source_id)
                 for item in self.scan_list.items
             )
         )
@@ -907,7 +854,6 @@ class ReadTableNode(LeafNode):
         new_scan_cols = [
             ScanItem(
                 identifiers.ColumnId.unique(),
-                dtype=bigframes.dtypes.convert_schema_field(field)[1],
                 source_id=field.name,
             )
             for field in self.source.table.physical_schema

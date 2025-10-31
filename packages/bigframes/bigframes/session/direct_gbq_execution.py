@@ -64,12 +64,13 @@ class DirectGbqExecutor(semi_executor.SemiExecutor):
             sql=compiled.sql,
         )
 
-        return executor.ExecuteResult(
-            _arrow_batches=iterator.to_arrow_iterable(),
-            schema=plan.schema,
-            query_job=query_job,
-            total_rows=iterator.total_rows,
-            total_bytes_processed=iterator.total_bytes_processed,
+        # just immediately downlaod everything for simplicity
+        return executor.LocalExecuteResult(
+            data=iterator.to_arrow(),
+            bf_schema=plan.schema,
+            execution_metadata=executor.ExecutionMetadata.from_iterator_and_job(
+                iterator, query_job
+            ),
         )
 
     def _run_execute_query(

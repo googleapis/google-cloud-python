@@ -15,10 +15,8 @@
 from __future__ import annotations
 
 import math
-import os
 import threading
 from typing import Literal, Mapping, Optional, Sequence, Tuple
-import warnings
 import weakref
 
 import google.api_core.exceptions
@@ -31,13 +29,12 @@ import bigframes
 from bigframes import exceptions as bfe
 import bigframes.constants
 import bigframes.core
-from bigframes.core import compile, local_data, rewrite
+from bigframes.core import bq_data, compile, local_data, rewrite
 import bigframes.core.compile.sqlglot.sqlglot_ir as sqlglot_ir
 import bigframes.core.events
 import bigframes.core.guid
 import bigframes.core.identifiers
 import bigframes.core.nodes as nodes
-import bigframes.core.ordering as order
 import bigframes.core.schema as schemata
 import bigframes.core.tree_properties as tree_properties
 import bigframes.dtypes
@@ -60,7 +57,6 @@ QUERY_COMPLEXITY_LIMIT = 1e7
 MAX_SUBTREE_FACTORINGS = 5
 _MAX_CLUSTER_COLUMNS = 4
 MAX_SMALL_RESULT_BYTES = 10 * 1024 * 1024 * 1024  # 10G
-_MAX_READ_STREAMS = os.cpu_count()
 
 SourceIdMapping = Mapping[str, str]
 
@@ -74,7 +70,7 @@ class ExecutionCache:
         ] = weakref.WeakKeyDictionary()
         self._uploaded_local_data: weakref.WeakKeyDictionary[
             local_data.ManagedArrowTable,
-            tuple[nodes.BigqueryDataSource, SourceIdMapping],
+            tuple[bq_data.BigqueryDataSource, SourceIdMapping],
         ] = weakref.WeakKeyDictionary()
 
     @property
@@ -84,23 +80,16 @@ class ExecutionCache:
     def cache_results_table(
         self,
         original_root: nodes.BigFrameNode,
-        table: bigquery.Table,
-        ordering: order.RowOrdering,
-        num_rows: Optional[int] = None,
+        data: bq_data.BigqueryDataSource,
     ):
         # Assumption: GBQ cached table uses field name as bq column name
         scan_list = nodes.ScanList(
             tuple(
-                nodes.ScanItem(field.id, field.dtype, field.id.sql)
-                for field in original_root.fields
+                nodes.ScanItem(field.id, field.id.sql) for field in original_root.fields
             )
         )
         cached_replacement = nodes.CachedTableNode(
-            source=nodes.BigqueryDataSource(
-                nodes.GbqTable.from_table(table),
-                ordering=ordering,
-                n_rows=num_rows,
-            ),
+            source=data,
             scan_list=scan_list,
             table_session=original_root.session,
             original_node=original_root,
@@ -111,7 +100,7 @@ class ExecutionCache:
     def cache_remote_replacement(
         self,
         local_data: local_data.ManagedArrowTable,
-        bq_data: nodes.BigqueryDataSource,
+        bq_data: bq_data.BigqueryDataSource,
     ):
         # bq table has one extra column for offsets, those are implicit for local data
         assert len(local_data.schema.items) + 1 == len(bq_data.table.physical_schema)
@@ -331,7 +320,7 @@ class BigQueryCachingExecutor(executor.Executor):
 
         # TODO(swast): plumb through the api_name of the user-facing api that
         # caused this query.
-        row_iter, query_job = self._run_execute_query(
+        iterator, job = self._run_execute_query(
             sql=sql,
             job_config=job_config,
         )
@@ -347,14 +336,11 @@ class BigQueryCachingExecutor(executor.Executor):
             table.schema = array_value.schema.to_bigquery()
             self.bqclient.update_table(table, ["schema"])
 
-        return executor.ExecuteResult(
-            row_iter.to_arrow_iterable(
-                bqstorage_client=self.bqstoragereadclient,
-                max_stream_count=_MAX_READ_STREAMS,
+        return executor.EmptyExecuteResult(
+            bf_schema=array_value.schema,
+            execution_metadata=executor.ExecutionMetadata.from_iterator_and_job(
+                iterator, job
             ),
-            array_value.schema,
-            query_job,
-            total_bytes_processed=row_iter.total_bytes_processed,
         )
 
     def dry_run(
@@ -637,6 +623,7 @@ class BigQueryCachingExecutor(executor.Executor):
 
             create_table = True
             if not cache_spec.cluster_cols:
+
                 offsets_id = bigframes.core.identifiers.ColumnId(
                     bigframes.core.guid.generate_guid()
                 )
@@ -676,41 +663,62 @@ class BigQueryCachingExecutor(executor.Executor):
             query_with_job=(destination_table is not None),
         )
 
-        table_info: Optional[bigquery.Table] = None
-        if query_job and query_job.destination:
-            table_info = self.bqclient.get_table(query_job.destination)
-            size_bytes = table_info.num_bytes
-        else:
-            size_bytes = None
-
         # we could actually cache even when caching is not explicitly requested, but being conservative for now
+        result_bq_data = None
+        if query_job and query_job.destination:
+            # we might add extra sql columns in compilation, esp if caching w ordering, infer a bigframes type for them
+            result_bf_schema = _result_schema(og_schema, list(compiled.sql_schema))
+            dst = query_job.destination
+            result_bq_data = bq_data.BigqueryDataSource(
+                table=bq_data.GbqTable(
+                    dst.project,
+                    dst.dataset_id,
+                    dst.table_id,
+                    tuple(compiled_schema),
+                    is_physically_stored=True,
+                    cluster_cols=tuple(cluster_cols),
+                ),
+                schema=result_bf_schema,
+                ordering=compiled.row_order,
+                n_rows=iterator.total_rows,
+            )
+
         if cache_spec is not None:
-            assert table_info is not None
+            assert result_bq_data is not None
             assert compiled.row_order is not None
-            self.cache.cache_results_table(
-                og_plan, table_info, compiled.row_order, num_rows=table_info.num_rows
-            )
+            self.cache.cache_results_table(og_plan, result_bq_data)
 
-        if size_bytes is not None and size_bytes >= MAX_SMALL_RESULT_BYTES:
-            msg = bfe.format_message(
-                "The query result size has exceeded 10 GB. In BigFrames 2.0 and "
-                "later, you might need to manually set `allow_large_results=True` in "
-                "the IO method or adjust the BigFrames option: "
-                "`bigframes.options.compute.allow_large_results=True`."
-            )
-            warnings.warn(msg, FutureWarning)
-
-        return executor.ExecuteResult(
-            _arrow_batches=iterator.to_arrow_iterable(
-                bqstorage_client=self.bqstoragereadclient,
-                max_stream_count=_MAX_READ_STREAMS,
-            ),
-            schema=og_schema,
-            query_job=query_job,
-            total_bytes=size_bytes,
-            total_rows=iterator.total_rows,
-            total_bytes_processed=iterator.total_bytes_processed,
+        execution_metadata = executor.ExecutionMetadata.from_iterator_and_job(
+            iterator, query_job
         )
+        result_mostly_cached = (
+            hasattr(iterator, "_is_almost_completely_cached")
+            and iterator._is_almost_completely_cached()
+        )
+        if result_bq_data is not None and not result_mostly_cached:
+            return executor.BQTableExecuteResult(
+                data=result_bq_data,
+                project_id=self.bqclient.project,
+                storage_client=self.bqstoragereadclient,
+                execution_metadata=execution_metadata,
+                selected_fields=tuple((col, col) for col in og_schema.names),
+            )
+        else:
+            return executor.LocalExecuteResult(
+                data=iterator.to_arrow().select(og_schema.names),
+                bf_schema=plan.schema,
+                execution_metadata=execution_metadata,
+            )
+
+
+def _result_schema(
+    logical_schema: schemata.ArraySchema, sql_schema: list[bigquery.SchemaField]
+) -> schemata.ArraySchema:
+    inferred_schema = bigframes.dtypes.bf_type_from_type_kind(sql_schema)
+    inferred_schema.update(logical_schema._mapping)
+    return schemata.ArraySchema(
+        tuple(schemata.SchemaItem(col, dtype) for col, dtype in inferred_schema.items())
+    )
 
 
 def _if_schema_match(

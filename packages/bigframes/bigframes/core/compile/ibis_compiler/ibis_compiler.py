@@ -24,7 +24,7 @@ import bigframes_vendored.ibis.expr.datatypes as ibis_dtypes
 import bigframes_vendored.ibis.expr.types as ibis_types
 
 from bigframes import dtypes, operations
-from bigframes.core import expression, pyarrow_utils
+from bigframes.core import bq_data, expression, pyarrow_utils
 import bigframes.core.compile.compiled as compiled
 import bigframes.core.compile.concat as concat_impl
 import bigframes.core.compile.configs as configs
@@ -186,7 +186,7 @@ def compile_readtable(node: nodes.ReadTableNode, *args):
     # TODO(b/395912450): Remove workaround solution once b/374784249 got resolved.
     for scan_item in node.scan_list.items:
         if (
-            scan_item.dtype == dtypes.JSON_DTYPE
+            node.source.schema.get_type(scan_item.source_id) == dtypes.JSON_DTYPE
             and ibis_table[scan_item.source_id].type() == ibis_dtypes.string
         ):
             json_column = scalar_op_registry.parse_json(
@@ -204,7 +204,7 @@ def compile_readtable(node: nodes.ReadTableNode, *args):
 
 
 def _table_to_ibis(
-    source: nodes.BigqueryDataSource,
+    source: bq_data.BigqueryDataSource,
     scan_cols: typing.Sequence[str],
 ) -> ibis_types.Table:
     full_table_name = (

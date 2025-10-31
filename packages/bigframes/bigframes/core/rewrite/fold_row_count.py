@@ -15,7 +15,6 @@ from __future__ import annotations
 
 import pyarrow as pa
 
-from bigframes import dtypes
 from bigframes.core import local_data, nodes
 from bigframes.operations import aggregations
 
@@ -34,10 +33,7 @@ def fold_row_counts(node: nodes.BigFrameNode) -> nodes.BigFrameNode:
         pa.table({"count": pa.array([node.child.row_count], type=pa.int64())})
     )
     scan_list = nodes.ScanList(
-        tuple(
-            nodes.ScanItem(out_id, dtypes.INT_DTYPE, "count")
-            for _, out_id in node.aggregations
-        )
+        tuple(nodes.ScanItem(out_id, "count") for _, out_id in node.aggregations)
     )
     return nodes.ReadLocalNode(
         local_data_source=local_data_source, scan_list=scan_list, session=node.session

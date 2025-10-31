@@ -37,7 +37,6 @@ from typing import (
     Optional,
     Sequence,
     Tuple,
-    TYPE_CHECKING,
     Union,
 )
 import warnings
@@ -70,9 +69,6 @@ import bigframes.operations.aggregations as agg_ops
 from bigframes.session import dry_runs, execution_spec
 from bigframes.session import executor as executors
 
-if TYPE_CHECKING:
-    from bigframes.session.executor import ExecuteResult
-
 # Type constraint for wherever column labels are used
 Label = typing.Hashable
 
@@ -98,7 +94,6 @@ LevelType = typing.Hashable
 LevelsType = typing.Union[LevelType, typing.Sequence[LevelType]]
 
 
-@dataclasses.dataclass
 class PandasBatches(Iterator[pd.DataFrame]):
     """Interface for mutable objects with state represented by a block value object."""
 
@@ -271,10 +266,14 @@ class Block:
             except Exception:
                 pass
 
-        row_count = self.session._executor.execute(
-            self.expr.row_count(),
-            execution_spec.ExecutionSpec(promise_under_10gb=True, ordered=False),
-        ).to_py_scalar()
+        row_count = (
+            self.session._executor.execute(
+                self.expr.row_count(),
+                execution_spec.ExecutionSpec(promise_under_10gb=True, ordered=False),
+            )
+            .batches()
+            .to_py_scalar()
+        )
         return (row_count, len(self.value_columns))
 
     @property
@@ -584,7 +583,7 @@ class Block:
                 ordered=ordered,
             ),
         )
-        pa_table = execute_result.to_arrow_table()
+        pa_table = execute_result.batches().to_arrow_table()
 
         pa_index_labels = []
         for index_level, index_label in enumerate(self._index_labels):
@@ -636,17 +635,13 @@ class Block:
             max_download_size, sampling_method, random_state
         )
 
-        ex_result = self._materialize_local(
+        return self._materialize_local(
             materialize_options=MaterializationOptions(
                 downsampling=sampling,
                 allow_large_results=allow_large_results,
                 ordered=ordered,
             )
         )
-        df = ex_result.to_pandas()
-        df = self._copy_index_to_pandas(df)
-        df.set_axis(self.column_labels, axis=1, copy=False)
-        return df, ex_result.query_job
 
     def _get_sampling_option(
         self,
@@ -683,7 +678,7 @@ class Block:
                 self.expr,
                 execution_spec.ExecutionSpec(promise_under_10gb=under_10gb, peek=n),
             )
-            df = result.to_pandas()
+            df = result.batches().to_pandas()
             return self._copy_index_to_pandas(df)
         else:
             return None
@@ -704,13 +699,14 @@ class Block:
             if (allow_large_results is not None)
             else not bigframes.options._allow_large_results
         )
-        execute_result = self.session._executor.execute(
+        execution_result = self.session._executor.execute(
             self.expr,
             execution_spec.ExecutionSpec(
                 promise_under_10gb=under_10gb,
                 ordered=True,
             ),
         )
+        result_batches = execution_result.batches()
 
         # To reduce the number of edge cases to consider when working with the
         # results of this, always return at least one DataFrame. See:
@@ -724,19 +720,21 @@ class Block:
         dfs = map(
             lambda a: a[0],
             itertools.zip_longest(
-                execute_result.to_pandas_batches(page_size, max_results),
+                result_batches.to_pandas_batches(page_size, max_results),
                 [0],
                 fillvalue=empty_val,
             ),
         )
         dfs = iter(map(self._copy_index_to_pandas, dfs))
 
-        total_rows = execute_result.total_rows
+        total_rows = result_batches.approx_total_rows
         if (total_rows is not None) and (max_results is not None):
             total_rows = min(total_rows, max_results)
 
         return PandasBatches(
-            dfs, total_rows, total_bytes_processed=execute_result.total_bytes_processed
+            dfs,
+            total_rows,
+            total_bytes_processed=execution_result.total_bytes_processed,
         )
 
     def _copy_index_to_pandas(self, df: pd.DataFrame) -> pd.DataFrame:
@@ -754,7 +752,7 @@ class Block:
 
     def _materialize_local(
         self, materialize_options: MaterializationOptions = MaterializationOptions()
-    ) -> ExecuteResult:
+    ) -> tuple[pd.DataFrame, Optional[bigquery.QueryJob]]:
         """Run query and download results as a pandas DataFrame. Return the total number of results as well."""
         # TODO(swast): Allow for dry run and timeout.
         under_10gb = (
@@ -769,9 +767,11 @@ class Block:
                 ordered=materialize_options.ordered,
             ),
         )
+        result_batches = execute_result.batches()
+
         sample_config = materialize_options.downsampling
-        if execute_result.total_bytes is not None:
-            table_mb = execute_result.total_bytes / _BYTES_TO_MEGABYTES
+        if result_batches.approx_total_bytes is not None:
+            table_mb = result_batches.approx_total_bytes / _BYTES_TO_MEGABYTES
             max_download_size = sample_config.max_download_size
             fraction = (
                 max_download_size / table_mb
@@ -792,7 +792,7 @@ class Block:
 
         # TODO: Maybe materialize before downsampling
         # Some downsampling methods
-        if fraction < 1 and (execute_result.total_rows is not None):
+        if fraction < 1 and (result_batches.approx_total_rows is not None):
             if not sample_config.enable_downsampling:
                 raise RuntimeError(
                     f"The data size ({table_mb:.2f} MB) exceeds the maximum download limit of "
@@ -811,7 +811,7 @@ class Block:
                 "the downloading limit."
             )
             warnings.warn(msg, category=UserWarning)
-            total_rows = execute_result.total_rows
+            total_rows = result_batches.approx_total_rows
             # Remove downsampling config from subsequent invocations, as otherwise could result in many
             # iterations if downsampling undershoots
             return self._downsample(
@@ -823,7 +823,10 @@ class Block:
                 MaterializationOptions(ordered=materialize_options.ordered)
             )
         else:
-            return execute_result
+            df = result_batches.to_pandas()
+            df = self._copy_index_to_pandas(df)
+            df.set_axis(self.column_labels, axis=1, copy=False)
+            return df, execute_result.query_job
 
     def _downsample(
         self, total_rows: int, sampling_method: str, fraction: float, random_state
@@ -1662,15 +1665,19 @@ class Block:
                 ordered=True,
             ),
         )
-        row_count = self.session._executor.execute(
-            self.expr.row_count(),
-            execution_spec.ExecutionSpec(
-                promise_under_10gb=True,
-                ordered=False,
-            ),
-        ).to_py_scalar()
+        row_count = (
+            self.session._executor.execute(
+                self.expr.row_count(),
+                execution_spec.ExecutionSpec(
+                    promise_under_10gb=True,
+                    ordered=False,
+                ),
+            )
+            .batches()
+            .to_py_scalar()
+        )
 
-        head_df = head_result.to_pandas()
+        head_df = head_result.batches().to_pandas()
         return self._copy_index_to_pandas(head_df), row_count, head_result.query_job
 
     def promote_offsets(self, label: Label = None) -> typing.Tuple[Block, str]:

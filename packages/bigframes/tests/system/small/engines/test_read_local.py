@@ -31,7 +31,7 @@ def test_engines_read_local(
     engine,
 ):
     scan_list = nodes.ScanList.from_items(
-        nodes.ScanItem(identifiers.ColumnId(item.column), item.dtype, item.column)
+        nodes.ScanItem(identifiers.ColumnId(item.column), item.column)
         for item in managed_data_source.schema.items
     )
     local_node = nodes.ReadLocalNode(
@@ -46,7 +46,7 @@ def test_engines_read_local_w_offsets(
     engine,
 ):
     scan_list = nodes.ScanList.from_items(
-        nodes.ScanItem(identifiers.ColumnId(item.column), item.dtype, item.column)
+        nodes.ScanItem(identifiers.ColumnId(item.column), item.column)
         for item in managed_data_source.schema.items
     )
     local_node = nodes.ReadLocalNode(
@@ -64,7 +64,7 @@ def test_engines_read_local_w_col_subset(
     engine,
 ):
     scan_list = nodes.ScanList.from_items(
-        nodes.ScanItem(identifiers.ColumnId(item.column), item.dtype, item.column)
+        nodes.ScanItem(identifiers.ColumnId(item.column), item.column)
         for item in managed_data_source.schema.items[::-2]
     )
     local_node = nodes.ReadLocalNode(
@@ -79,7 +79,7 @@ def test_engines_read_local_w_zero_row_source(
     engine,
 ):
     scan_list = nodes.ScanList.from_items(
-        nodes.ScanItem(identifiers.ColumnId(item.column), item.dtype, item.column)
+        nodes.ScanItem(identifiers.ColumnId(item.column), item.column)
         for item in zero_row_source.schema.items
     )
     local_node = nodes.ReadLocalNode(
@@ -96,7 +96,7 @@ def test_engines_read_local_w_nested_source(
     engine,
 ):
     scan_list = nodes.ScanList.from_items(
-        nodes.ScanItem(identifiers.ColumnId(item.column), item.dtype, item.column)
+        nodes.ScanItem(identifiers.ColumnId(item.column), item.column)
         for item in nested_data_source.schema.items
     )
     local_node = nodes.ReadLocalNode(
@@ -111,7 +111,7 @@ def test_engines_read_local_w_repeated_source(
     engine,
 ):
     scan_list = nodes.ScanList.from_items(
-        nodes.ScanItem(identifiers.ColumnId(item.column), item.dtype, item.column)
+        nodes.ScanItem(identifiers.ColumnId(item.column), item.column)
         for item in repeated_data_source.schema.items
     )
     local_node = nodes.ReadLocalNode(

@@ -23,7 +23,7 @@ import google.cloud.bigquery
 import pandas
 import pyarrow as pa
 
-from bigframes.core import agg_expressions
+from bigframes.core import agg_expressions, bq_data
 import bigframes.core.expression as ex
 import bigframes.core.guid
 import bigframes.core.identifiers as ids
@@ -63,7 +63,7 @@ class ArrayValue:
     def from_managed(cls, source: local_data.ManagedArrowTable, session: Session):
         scan_list = nodes.ScanList(
             tuple(
-                nodes.ScanItem(ids.ColumnId(item.column), item.dtype, item.column)
+                nodes.ScanItem(ids.ColumnId(item.column), item.column)
                 for item in source.schema.items
             )
         )
@@ -88,9 +88,9 @@ class ArrayValue:
     def from_table(
         cls,
         table: google.cloud.bigquery.Table,
-        schema: schemata.ArraySchema,
         session: Session,
         *,
+        columns: Optional[Sequence[str]] = None,
         predicate: Optional[str] = None,
         at_time: Optional[datetime.datetime] = None,
         primary_key: Sequence[str] = (),
@@ -100,7 +100,7 @@ class ArrayValue:
         if offsets_col and primary_key:
             raise ValueError("must set at most one of 'offests', 'primary_key'")
         # define data source only for needed columns, this makes row-hashing cheaper
-        table_def = nodes.GbqTable.from_table(table, columns=schema.names)
+        table_def = bq_data.GbqTable.from_table(table, columns=columns or ())
 
         # create ordering from info
         ordering = None
@@ -111,15 +111,17 @@ class ArrayValue:
                 [ids.ColumnId(key_part) for key_part in primary_key]
             )
 
+        bf_schema = schemata.ArraySchema.from_bq_table(table, columns=columns)
         # Scan all columns by default, we define this list as it can be pruned while preserving source_def
         scan_list = nodes.ScanList(
             tuple(
-                nodes.ScanItem(ids.ColumnId(item.column), item.dtype, item.column)
-                for item in schema.items
+                nodes.ScanItem(ids.ColumnId(item.column), item.column)
+                for item in bf_schema.items
             )
         )
-        source_def = nodes.BigqueryDataSource(
+        source_def = bq_data.BigqueryDataSource(
             table=table_def,
+            schema=bf_schema,
             at_time=at_time,
             sql_predicate=predicate,
             ordering=ordering,
@@ -130,7 +132,7 @@ class ArrayValue:
     @classmethod
     def from_bq_data_source(
         cls,
-        source: nodes.BigqueryDataSource,
+        source: bq_data.BigqueryDataSource,
         scan_list: nodes.ScanList,
         session: Session,
     ):

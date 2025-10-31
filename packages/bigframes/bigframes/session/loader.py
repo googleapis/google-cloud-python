@@ -49,7 +49,15 @@ import pyarrow as pa
 
 import bigframes._tools
 import bigframes._tools.strings
-from bigframes.core import guid, identifiers, local_data, nodes, ordering, utils
+from bigframes.core import (
+    bq_data,
+    guid,
+    identifiers,
+    local_data,
+    nodes,
+    ordering,
+    utils,
+)
 import bigframes.core as core
 import bigframes.core.blocks as blocks
 import bigframes.core.events
@@ -324,9 +332,7 @@ class GbqDataLoader:
             source=gbq_source,
             scan_list=nodes.ScanList(
                 tuple(
-                    nodes.ScanItem(
-                        identifiers.ColumnId(item.column), item.dtype, item.column
-                    )
+                    nodes.ScanItem(identifiers.ColumnId(item.column), item.column)
                     for item in data.schema.items
                 )
             ),
@@ -337,7 +343,7 @@ class GbqDataLoader:
         self,
         data: local_data.ManagedArrowTable,
         offsets_col: str,
-    ) -> nodes.BigqueryDataSource:
+    ) -> bq_data.BigqueryDataSource:
         """Load managed data into bigquery"""
 
         # JSON support incomplete
@@ -379,8 +385,9 @@ class GbqDataLoader:
         self._start_generic_job(load_job)
         # must get table metadata after load job for accurate metadata
         destination_table = self._bqclient.get_table(load_table_destination)
-        return nodes.BigqueryDataSource(
-            nodes.GbqTable.from_table(destination_table),
+        return bq_data.BigqueryDataSource(
+            bq_data.GbqTable.from_table(destination_table),
+            schema=schema_w_offsets,
             ordering=ordering.TotalOrdering.from_offset_col(offsets_col),
             n_rows=data.metadata.row_count,
         )
@@ -389,7 +396,7 @@ class GbqDataLoader:
         self,
         data: local_data.ManagedArrowTable,
         offsets_col: str,
-    ) -> nodes.BigqueryDataSource:
+    ) -> bq_data.BigqueryDataSource:
         """Load managed data into bigquery"""
         schema_w_offsets = data.schema.append(
             schemata.SchemaItem(offsets_col, bigframes.dtypes.INT_DTYPE)
@@ -415,8 +422,9 @@ class GbqDataLoader:
                     f"Problem loading at least one row from DataFrame: {errors}. {constants.FEEDBACK_LINK}"
                 )
         destination_table = self._bqclient.get_table(load_table_destination)
-        return nodes.BigqueryDataSource(
-            nodes.GbqTable.from_table(destination_table),
+        return bq_data.BigqueryDataSource(
+            bq_data.GbqTable.from_table(destination_table),
+            schema=schema_w_offsets,
             ordering=ordering.TotalOrdering.from_offset_col(offsets_col),
             n_rows=data.metadata.row_count,
         )
@@ -425,7 +433,7 @@ class GbqDataLoader:
         self,
         data: local_data.ManagedArrowTable,
         offsets_col: str,
-    ) -> nodes.BigqueryDataSource:
+    ) -> bq_data.BigqueryDataSource:
         """Load managed data into bigquery"""
         schema_w_offsets = data.schema.append(
             schemata.SchemaItem(offsets_col, bigframes.dtypes.INT_DTYPE)
@@ -469,8 +477,9 @@ class GbqDataLoader:
         assert response.row_count == data.data.num_rows
 
         destination_table = self._bqclient.get_table(bq_table_ref)
-        return nodes.BigqueryDataSource(
-            nodes.GbqTable.from_table(destination_table),
+        return bq_data.BigqueryDataSource(
+            bq_data.GbqTable.from_table(destination_table),
+            schema=schema_w_offsets,
             ordering=ordering.TotalOrdering.from_offset_col(offsets_col),
             n_rows=data.metadata.row_count,
         )
@@ -804,12 +813,10 @@ class GbqDataLoader:
                     bigframes.core.events.ExecutionFinished(),
                 )
 
-        schema = schemata.ArraySchema.from_bq_table(table)
-        if not include_all_columns:
-            schema = schema.select(index_cols + columns)
+        selected_cols = None if include_all_columns else index_cols + columns
         array_value = core.ArrayValue.from_table(
             table,
-            schema=schema,
+            columns=selected_cols,
             predicate=filter_str,
             at_time=time_travel_timestamp if enable_snapshot else None,
             primary_key=primary_key,

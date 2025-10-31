@@ -16,7 +16,6 @@ from __future__ import annotations
 import pyarrow
 import pytest
 
-from bigframes import dtypes
 from bigframes.core import identifiers, local_data, nodes
 from bigframes.session import local_scan_executor
 from bigframes.testing import mocks
@@ -37,9 +36,6 @@ def create_read_local_node(arrow_table: pyarrow.Table):
             items=tuple(
                 nodes.ScanItem(
                     id=identifiers.ColumnId(column_name),
-                    dtype=dtypes.arrow_dtype_to_bigframes_dtype(
-                        arrow_table.field(column_name).type
-                    ),
                     source_id=column_name,
                 )
                 for column_name in arrow_table.column_names
@@ -77,7 +73,7 @@ def test_local_scan_executor_with_slice(start, stop, expected_rows, object_under
     )
 
     result = object_under_test.execute(plan, ordered=True)
-    result_table = pyarrow.Table.from_batches(result.arrow_batches)
+    result_table = pyarrow.Table.from_batches(result.batches().arrow_batches)
     assert result_table.num_rows == expected_rows
 
 

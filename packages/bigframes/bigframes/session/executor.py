@@ -18,16 +18,19 @@ import abc
 import dataclasses
 import functools
 import itertools
-from typing import Iterator, Literal, Optional, Union
+from typing import Iterator, Literal, Optional, Sequence, Union
 
-from google.cloud import bigquery
+from google.cloud import bigquery, bigquery_storage_v1
+import google.cloud.bigquery.table as bq_table
 import pandas as pd
 import pyarrow
+import pyarrow as pa
 
 import bigframes
 import bigframes.core
-from bigframes.core import pyarrow_utils
+from bigframes.core import bq_data, local_data, pyarrow_utils
 import bigframes.core.schema
+import bigframes.dtypes
 import bigframes.session._io.pandas as io_pandas
 import bigframes.session.execution_spec as ex_spec
 
@@ -38,21 +41,39 @@ _ROW_LIMIT_EXCEEDED_TEMPLATE = (
 )
 
 
-@dataclasses.dataclass(frozen=True)
-class ExecuteResult:
-    _arrow_batches: Iterator[pyarrow.RecordBatch]
-    schema: bigframes.core.schema.ArraySchema
-    query_job: Optional[bigquery.QueryJob] = None
-    total_bytes: Optional[int] = None
-    total_rows: Optional[int] = None
-    total_bytes_processed: Optional[int] = None
+class ResultsIterator(Iterator[pa.RecordBatch]):
+    """
+    Iterator for query results, with some extra metadata attached.
+    """
+
+    def __init__(
+        self,
+        batches: Iterator[pa.RecordBatch],
+        schema: bigframes.core.schema.ArraySchema,
+        total_rows: Optional[int] = 0,
+        total_bytes: Optional[int] = 0,
+    ):
+        self._batches = batches
+        self._schema = schema
+        self._total_rows = total_rows
+        self._total_bytes = total_bytes
+
+    @property
+    def approx_total_rows(self) -> Optional[int]:
+        return self._total_rows
+
+    @property
+    def approx_total_bytes(self) -> Optional[int]:
+        return self._total_bytes
+
+    def __next__(self) -> pa.RecordBatch:
+        return next(self._batches)
 
     @property
     def arrow_batches(self) -> Iterator[pyarrow.RecordBatch]:
         result_rows = 0
 
-        for batch in self._arrow_batches:
-            batch = pyarrow_utils.cast_batch(batch, self.schema.to_pyarrow())
+        for batch in self._batches:
             result_rows += batch.num_rows
 
             maximum_result_rows = bigframes.options.compute.maximum_result_rows
@@ -80,10 +101,14 @@ class ExecuteResult:
                 itertools.chain(peek_value, batches),  # reconstruct
             )
         else:
-            return self.schema.to_pyarrow().empty_table()
+            try:
+                return self._schema.to_pyarrow().empty_table()
+            except pa.ArrowNotImplementedError:
+                # Bug with some pyarrow versions, empty_table only supports base storage types, not extension types.
+                return self._schema.to_pyarrow(use_storage_types=True).empty_table()
 
     def to_pandas(self) -> pd.DataFrame:
-        return io_pandas.arrow_to_pandas(self.to_arrow_table(), self.schema)
+        return io_pandas.arrow_to_pandas(self.to_arrow_table(), self._schema)
 
     def to_pandas_batches(
         self, page_size: Optional[int] = None, max_results: Optional[int] = None
@@ -105,7 +130,7 @@ class ExecuteResult:
             )
 
         yield from map(
-            functools.partial(io_pandas.arrow_to_pandas, schema=self.schema),
+            functools.partial(io_pandas.arrow_to_pandas, schema=self._schema),
             batch_iter,
         )
 
@@ -119,6 +144,150 @@ class ExecuteResult:
         if len(column) != 1:
             raise ValueError(f"Expected single row result, got {len(column)} rows.")
         return column[0]
+
+
+class ExecuteResult(abc.ABC):
+    @property
+    @abc.abstractmethod
+    def execution_metadata(self) -> ExecutionMetadata:
+        ...
+
+    @property
+    @abc.abstractmethod
+    def schema(self) -> bigframes.core.schema.ArraySchema:
+        ...
+
+    @abc.abstractmethod
+    def batches(self) -> ResultsIterator:
+        ...
+
+    @property
+    def query_job(self) -> Optional[bigquery.QueryJob]:
+        return self.execution_metadata.query_job
+
+    @property
+    def total_bytes_processed(self) -> Optional[int]:
+        return self.execution_metadata.bytes_processed
+
+
+@dataclasses.dataclass(frozen=True)
+class ExecutionMetadata:
+    query_job: Optional[bigquery.QueryJob] = None
+    bytes_processed: Optional[int] = None
+
+    @classmethod
+    def from_iterator_and_job(
+        cls, iterator: bq_table.RowIterator, job: Optional[bigquery.QueryJob]
+    ) -> ExecutionMetadata:
+        return cls(query_job=job, bytes_processed=iterator.total_bytes_processed)
+
+
+class LocalExecuteResult(ExecuteResult):
+    def __init__(
+        self,
+        data: pa.Table,
+        bf_schema: bigframes.core.schema.ArraySchema,
+        execution_metadata: ExecutionMetadata = ExecutionMetadata(),
+    ):
+        self._data = local_data.ManagedArrowTable.from_pyarrow(data, bf_schema)
+        self._execution_metadata = execution_metadata
+
+    @property
+    def execution_metadata(self) -> ExecutionMetadata:
+        return self._execution_metadata
+
+    @property
+    def schema(self) -> bigframes.core.schema.ArraySchema:
+        return self._data.schema
+
+    def batches(self) -> ResultsIterator:
+        return ResultsIterator(
+            iter(self._data.to_arrow()[1]),
+            self.schema,
+            self._data.metadata.row_count,
+            self._data.metadata.total_bytes,
+        )
+
+
+class EmptyExecuteResult(ExecuteResult):
+    def __init__(
+        self,
+        bf_schema: bigframes.core.schema.ArraySchema,
+        execution_metadata: ExecutionMetadata = ExecutionMetadata(),
+    ):
+        self._schema = bf_schema
+        self._execution_metadata = execution_metadata
+
+    @property
+    def execution_metadata(self) -> ExecutionMetadata:
+        return self._execution_metadata
+
+    @property
+    def schema(self) -> bigframes.core.schema.ArraySchema:
+        return self._schema
+
+    def batches(self) -> ResultsIterator:
+        return ResultsIterator(iter([]), self.schema, 0, 0)
+
+
+class BQTableExecuteResult(ExecuteResult):
+    def __init__(
+        self,
+        data: bq_data.BigqueryDataSource,
+        storage_client: bigquery_storage_v1.BigQueryReadClient,
+        project_id: str,
+        *,
+        execution_metadata: ExecutionMetadata = ExecutionMetadata(),
+        limit: Optional[int] = None,
+        selected_fields: Optional[Sequence[tuple[str, str]]] = None,
+    ):
+        self._data = data
+        self._project_id = project_id
+        self._execution_metadata = execution_metadata
+        self._storage_client = storage_client
+        self._limit = limit
+        self._selected_fields = selected_fields or [
+            (name, name) for name in data.schema.names
+        ]
+
+    @property
+    def execution_metadata(self) -> ExecutionMetadata:
+        return self._execution_metadata
+
+    @property
+    @functools.cache
+    def schema(self) -> bigframes.core.schema.ArraySchema:
+        source_ids = [selection[0] for selection in self._selected_fields]
+        return self._data.schema.select(source_ids).rename(dict(self._selected_fields))
+
+    def batches(self) -> ResultsIterator:
+        read_batches = bq_data.get_arrow_batches(
+            self._data,
+            [x[0] for x in self._selected_fields],
+            self._storage_client,
+            self._project_id,
+        )
+        arrow_batches: Iterator[pa.RecordBatch] = map(
+            functools.partial(
+                pyarrow_utils.rename_batch, names=list(self.schema.names)
+            ),
+            read_batches.iter,
+        )
+        approx_bytes: Optional[int] = read_batches.approx_bytes
+        approx_rows: Optional[int] = self._data.n_rows or read_batches.approx_rows
+
+        if self._limit is not None:
+            if approx_rows is not None:
+                approx_rows = min(approx_rows, self._limit)
+            arrow_batches = pyarrow_utils.truncate_pyarrow_iterable(
+                arrow_batches, self._limit
+            )
+
+        if self._data.sql_predicate:
+            approx_bytes = None
+            approx_rows = None
+
+        return ResultsIterator(arrow_batches, self.schema, approx_rows, approx_bytes)
 
 
 @dataclasses.dataclass(frozen=True)

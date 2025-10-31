@@ -83,20 +83,39 @@ class ManagedArrowTable:
         return mat
 
     @classmethod
-    def from_pyarrow(self, table: pa.Table) -> ManagedArrowTable:
-        columns: list[pa.ChunkedArray] = []
-        fields: list[schemata.SchemaItem] = []
-        for name, arr in zip(table.column_names, table.columns):
-            new_arr, bf_type = _adapt_chunked_array(arr)
-            columns.append(new_arr)
-            fields.append(schemata.SchemaItem(name, bf_type))
+    def from_pyarrow(
+        cls, table: pa.Table, schema: Optional[schemata.ArraySchema] = None
+    ) -> ManagedArrowTable:
+        if schema is not None:
+            pa_fields = []
+            for item in schema.items:
+                pa_type = _get_managed_storage_type(item.dtype)
+                pa_fields.append(
+                    pyarrow.field(
+                        item.column,
+                        pa_type,
+                        nullable=not pyarrow.types.is_list(pa_type),
+                    )
+                )
+            pa_schema = pyarrow.schema(pa_fields)
+            # assumption: needed transformations can be handled by simple cast.
+            mat = ManagedArrowTable(table.cast(pa_schema), schema)
+            mat.validate()
+            return mat
+        else:  # infer bigframes schema
+            columns: list[pa.ChunkedArray] = []
+            fields: list[schemata.SchemaItem] = []
+            for name, arr in zip(table.column_names, table.columns):
+                new_arr, bf_type = _adapt_chunked_array(arr)
+                columns.append(new_arr)
+                fields.append(schemata.SchemaItem(name, bf_type))
 
-        mat = ManagedArrowTable(
-            pa.table(columns, names=table.column_names),
-            schemata.ArraySchema(tuple(fields)),
-        )
-        mat.validate()
-        return mat
+            mat = ManagedArrowTable(
+                pa.table(columns, names=table.column_names),
+                schemata.ArraySchema(tuple(fields)),
+            )
+            mat.validate()
+            return mat
 
     def to_arrow(
         self,

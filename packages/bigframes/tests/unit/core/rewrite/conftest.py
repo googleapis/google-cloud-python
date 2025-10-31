@@ -72,7 +72,6 @@ def leaf(fake_session, table):
     return core.ArrayValue.from_table(
         session=fake_session,
         table=table,
-        schema=bigframes.core.schema.ArraySchema.from_bq_table(table),
     ).node
 
 
@@ -81,5 +80,4 @@ def leaf_too(fake_session, table_too):
     return core.ArrayValue.from_table(
         session=fake_session,
         table=table_too,
-        schema=bigframes.core.schema.ArraySchema.from_bq_table(table_too),
     ).node

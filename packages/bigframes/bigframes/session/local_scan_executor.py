@@ -57,10 +57,7 @@ class LocalScanExecutor(semi_executor.SemiExecutor):
         if (peek is not None) and (total_rows is not None):
             total_rows = min(peek, total_rows)
 
-        return executor.ExecuteResult(
-            _arrow_batches=arrow_table.to_batches(),
-            schema=plan.schema,
-            query_job=None,
-            total_bytes=None,
-            total_rows=total_rows,
+        return executor.LocalExecuteResult(
+            data=arrow_table,
+            bf_schema=plan.schema,
         )

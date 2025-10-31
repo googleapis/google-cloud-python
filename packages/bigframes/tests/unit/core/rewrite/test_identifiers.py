@@ -56,7 +56,6 @@ def test_remap_variables_nested_join_stability(leaf, fake_session, table):
     leaf2_uncached = core.ArrayValue.from_table(
         session=fake_session,
         table=table,
-        schema=leaf.schema,
     ).node
     leaf2 = leaf2_uncached.remap_vars(
         {
@@ -67,7 +66,6 @@ def test_remap_variables_nested_join_stability(leaf, fake_session, table):
     leaf3_uncached = core.ArrayValue.from_table(
         session=fake_session,
         table=table,
-        schema=leaf.schema,
     ).node
     leaf3 = leaf3_uncached.remap_vars(
         {

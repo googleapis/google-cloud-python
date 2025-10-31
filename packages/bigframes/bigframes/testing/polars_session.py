@@ -51,11 +51,9 @@ class TestExecutor(bigframes.session.executor.Executor):
         pa_table = lazy_frame.collect().to_arrow()
         # Currently, pyarrow types might not quite be exactly the ones in the bigframes schema.
         # Nullability may be different, and might use large versions of list, string datatypes.
-        return bigframes.session.executor.ExecuteResult(
-            _arrow_batches=pa_table.to_batches(),
-            schema=array_value.schema,
-            total_bytes=pa_table.nbytes,
-            total_rows=pa_table.num_rows,
+        return bigframes.session.executor.LocalExecuteResult(
+            data=pa_table,
+            bf_schema=array_value.schema,
         )
 
     def cached(

@@ -84,6 +84,13 @@ def cast_batch(batch: pa.RecordBatch, schema: pa.Schema) -> pa.RecordBatch:
     )
 
 
+def rename_batch(batch: pa.RecordBatch, names: list[str]) -> pa.RecordBatch:
+    if batch.schema.names == names:
+        return batch
+    # TODO: Use RecordBatch.rename_columns once min pyarrow>=16.0
+    return pa.RecordBatch.from_arrays(batch.columns, names)
+
+
 def truncate_pyarrow_iterable(
     batches: Iterable[pa.RecordBatch], max_results: int
 ) -> Iterator[pa.RecordBatch]:
