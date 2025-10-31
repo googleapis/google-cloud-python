@@ -368,6 +368,25 @@ def _copy_files_needed_for_post_processing(
 
     path_to_library = f"packages/{library_id}" if is_mono_repo else "."
     source_dir = f"{input}/{path_to_library}"
+    repo_metadata_path = f"{source_dir}/.repo-metadata.json"
+
+    # We need to create these directories so that we can copy files necessary for post-processing.
+    os.makedirs(
+        f"{output}/{path_to_library}/scripts/client-post-processing", exist_ok=True
+    )
+
+    # `shutil.copytree` does not copy hidden files in sub-directories.
+    # We need to use `shutil.copy` to explicitly copy the file we want
+    # TODO(https://github.com/googleapis/librarian/issues/2334):
+    # if `.repo-metadata.json` for a library exists in
+    # `.librarian/generator-input`, then we override the generated `.repo-metadata.json`
+    # with what we have in `generator-input`. Remove this logic once the
+    # generated `.repo-metadata.json` file is completely backfilled.
+    if os.path.exists(repo_metadata_path):
+        shutil.copy(
+            repo_metadata_path,
+            f"{output}/{path_to_library}/.repo-metadata.json",
+        )
 
     if Path(source_dir).exists():
         shutil.copytree(
