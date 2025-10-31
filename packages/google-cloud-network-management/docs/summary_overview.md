@@ -5,18 +5,18 @@ reverted. Instead, if you want to place additional content, create an
 pick up on the content and merge the content.
 ]: #
 
-# Network Management API
+# Network Management API API
 
-Overview of the APIs available for Network Management API.
+Overview of the APIs available for Network Management API API.
 
 ## All entries
 
 Classes, methods and properties & attributes for
-Network Management API.
+Network Management API API.
 
-[classes](https://cloud.google.com/python/docs/reference/networkmanagement/latest/summary_class.html)
+[classes](https://cloud.google.com/python/docs/reference/google-cloud-network-management/latest/summary_class.html)
 
-[methods](https://cloud.google.com/python/docs/reference/networkmanagement/latest/summary_method.html)
+[methods](https://cloud.google.com/python/docs/reference/google-cloud-network-management/latest/summary_method.html)
 
 [properties and
-attributes](https://cloud.google.com/python/docs/reference/networkmanagement/latest/summary_property.html)
+attributes](https://cloud.google.com/python/docs/reference/google-cloud-network-management/latest/summary_property.html)

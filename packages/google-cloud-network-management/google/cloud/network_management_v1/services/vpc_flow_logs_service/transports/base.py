@@ -162,6 +162,16 @@ class VpcFlowLogsServiceTransport(abc.ABC):
                 default_timeout=None,
                 client_info=client_info,
             ),
+            self.query_org_vpc_flow_logs_configs: gapic_v1.method.wrap_method(
+                self.query_org_vpc_flow_logs_configs,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.show_effective_flow_logs_configs: gapic_v1.method.wrap_method(
+                self.show_effective_flow_logs_configs,
+                default_timeout=None,
+                client_info=client_info,
+            ),
             self.get_location: gapic_v1.method.wrap_method(
                 self.get_location,
                 default_timeout=None,
@@ -271,6 +281,30 @@ class VpcFlowLogsServiceTransport(abc.ABC):
     ) -> Callable[
         [vpc_flow_logs.DeleteVpcFlowLogsConfigRequest],
         Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def query_org_vpc_flow_logs_configs(
+        self,
+    ) -> Callable[
+        [vpc_flow_logs.QueryOrgVpcFlowLogsConfigsRequest],
+        Union[
+            vpc_flow_logs.QueryOrgVpcFlowLogsConfigsResponse,
+            Awaitable[vpc_flow_logs.QueryOrgVpcFlowLogsConfigsResponse],
+        ],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def show_effective_flow_logs_configs(
+        self,
+    ) -> Callable[
+        [vpc_flow_logs.ShowEffectiveFlowLogsConfigsRequest],
+        Union[
+            vpc_flow_logs.ShowEffectiveFlowLogsConfigsResponse,
+            Awaitable[vpc_flow_logs.ShowEffectiveFlowLogsConfigsResponse],
+        ],
     ]:
         raise NotImplementedError()
 

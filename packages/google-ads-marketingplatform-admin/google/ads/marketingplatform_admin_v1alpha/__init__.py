@@ -23,29 +23,47 @@ from .services.marketingplatform_admin_service import (
     MarketingplatformAdminServiceClient,
 )
 from .types.marketingplatform_admin import (
-    AnalyticsServiceLevel,
     CreateAnalyticsAccountLinkRequest,
     DeleteAnalyticsAccountLinkRequest,
+    FindSalesPartnerManagedClientsRequest,
+    FindSalesPartnerManagedClientsResponse,
     GetOrganizationRequest,
     ListAnalyticsAccountLinksRequest,
     ListAnalyticsAccountLinksResponse,
+    ListOrganizationsRequest,
+    ListOrganizationsResponse,
+    ReportPropertyUsageRequest,
+    ReportPropertyUsageResponse,
     SetPropertyServiceLevelRequest,
     SetPropertyServiceLevelResponse,
 )
-from .types.resources import AnalyticsAccountLink, LinkVerificationState, Organization
+from .types.resources import (
+    AnalyticsAccountLink,
+    AnalyticsPropertyType,
+    AnalyticsServiceLevel,
+    LinkVerificationState,
+    Organization,
+)
 
 __all__ = (
     "MarketingplatformAdminServiceAsyncClient",
     "AnalyticsAccountLink",
+    "AnalyticsPropertyType",
     "AnalyticsServiceLevel",
     "CreateAnalyticsAccountLinkRequest",
     "DeleteAnalyticsAccountLinkRequest",
+    "FindSalesPartnerManagedClientsRequest",
+    "FindSalesPartnerManagedClientsResponse",
     "GetOrganizationRequest",
     "LinkVerificationState",
     "ListAnalyticsAccountLinksRequest",
     "ListAnalyticsAccountLinksResponse",
+    "ListOrganizationsRequest",
+    "ListOrganizationsResponse",
     "MarketingplatformAdminServiceClient",
     "Organization",
+    "ReportPropertyUsageRequest",
+    "ReportPropertyUsageResponse",
     "SetPropertyServiceLevelRequest",
     "SetPropertyServiceLevelResponse",
 )

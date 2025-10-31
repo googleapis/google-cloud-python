@@ -39,6 +39,7 @@ def partition(
 class cloudsecuritycomplianceCallTransformer(cst.CSTTransformer):
     CTRL_PARAMS: Tuple[str] = ('retry', 'timeout', 'metadata')
     METHOD_TO_PARAMS: Dict[str, Tuple[str]] = {
+        'aggregate_framework_compliance_report': ('name', 'interval', 'filter', ),
         'calculate_effective_cm_enrollment': ('name', ),
         'create_cloud_control': ('parent', 'cloud_control_id', 'cloud_control', ),
         'create_framework': ('parent', 'framework_id', 'framework', ),
@@ -47,6 +48,7 @@ class cloudsecuritycomplianceCallTransformer(cst.CSTTransformer):
         'delete_cloud_control': ('name', ),
         'delete_framework': ('name', ),
         'delete_framework_deployment': ('name', 'etag', ),
+        'fetch_framework_compliance_report': ('name', 'end_time', ),
         'generate_framework_audit_scope_report': ('scope', 'report_format', 'compliance_framework', ),
         'get_cloud_control': ('name', 'major_revision_id', ),
         'get_cloud_control_deployment': ('name', ),
@@ -55,7 +57,10 @@ class cloudsecuritycomplianceCallTransformer(cst.CSTTransformer):
         'get_framework_deployment': ('name', ),
         'list_cloud_control_deployments': ('parent', 'page_size', 'page_token', 'filter', 'order_by', ),
         'list_cloud_controls': ('parent', 'page_size', 'page_token', ),
+        'list_control_compliance_summaries': ('parent', 'end_time', 'page_size', 'page_token', 'filter', ),
+        'list_finding_summaries': ('parent', 'page_size', 'page_token', 'filter', 'end_time', ),
         'list_framework_audits': ('parent', 'page_size', 'page_token', 'filter', ),
+        'list_framework_compliance_summaries': ('parent', 'page_size', 'page_token', 'filter', ),
         'list_framework_deployments': ('parent', 'page_size', 'page_token', 'filter', 'order_by', ),
         'list_frameworks': ('parent', 'page_size', 'page_token', ),
         'update_cloud_control': ('cloud_control', 'update_mask', ),

@@ -41,8 +41,11 @@ class marketingplatform_adminCallTransformer(cst.CSTTransformer):
     METHOD_TO_PARAMS: Dict[str, Tuple[str]] = {
         'create_analytics_account_link': ('parent', 'analytics_account_link', ),
         'delete_analytics_account_link': ('name', ),
+        'find_sales_partner_managed_clients': ('organization', 'is_active', ),
         'get_organization': ('name', ),
         'list_analytics_account_links': ('parent', 'page_size', 'page_token', ),
+        'list_organizations': ('page_size', 'page_token', ),
+        'report_property_usage': ('organization', 'month', ),
         'set_property_service_level': ('analytics_account_link', 'analytics_property', 'service_level', ),
     }
 

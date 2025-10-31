@@ -1,7 +1,7 @@
 {
   "name": "google-cloud-cloudsecuritycompliance",
   "name_pretty": "Cloud Security Compliance API",
-  "api_description": "null ",
+  "api_description": "",
   "product_documentation": "https://cloud.google.com/security-command-center/docs/compliance-manager-overview",
   "client_documentation": "https://cloud.google.com/python/docs/reference/google-cloud-cloudsecuritycompliance/latest",
   "issue_tracker": "https://issuetracker.google.com/issues/new?component=1761967&template=0",

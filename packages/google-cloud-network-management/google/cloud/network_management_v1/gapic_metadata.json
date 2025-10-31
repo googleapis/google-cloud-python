@@ -5,6 +5,100 @@
   "protoPackage": "google.cloud.networkmanagement.v1",
   "schema": "1.0",
   "services": {
+    "OrganizationVpcFlowLogsService": {
+      "clients": {
+        "grpc": {
+          "libraryClient": "OrganizationVpcFlowLogsServiceClient",
+          "rpcs": {
+            "CreateVpcFlowLogsConfig": {
+              "methods": [
+                "create_vpc_flow_logs_config"
+              ]
+            },
+            "DeleteVpcFlowLogsConfig": {
+              "methods": [
+                "delete_vpc_flow_logs_config"
+              ]
+            },
+            "GetVpcFlowLogsConfig": {
+              "methods": [
+                "get_vpc_flow_logs_config"
+              ]
+            },
+            "ListVpcFlowLogsConfigs": {
+              "methods": [
+                "list_vpc_flow_logs_configs"
+              ]
+            },
+            "UpdateVpcFlowLogsConfig": {
+              "methods": [
+                "update_vpc_flow_logs_config"
+              ]
+            }
+          }
+        },
+        "grpc-async": {
+          "libraryClient": "OrganizationVpcFlowLogsServiceAsyncClient",
+          "rpcs": {
+            "CreateVpcFlowLogsConfig": {
+              "methods": [
+                "create_vpc_flow_logs_config"
+              ]
+            },
+            "DeleteVpcFlowLogsConfig": {
+              "methods": [
+                "delete_vpc_flow_logs_config"
+              ]
+            },
+            "GetVpcFlowLogsConfig": {
+              "methods": [
+                "get_vpc_flow_logs_config"
+              ]
+            },
+            "ListVpcFlowLogsConfigs": {
+              "methods": [
+                "list_vpc_flow_logs_configs"
+              ]
+            },
+            "UpdateVpcFlowLogsConfig": {
+              "methods": [
+                "update_vpc_flow_logs_config"
+              ]
+            }
+          }
+        },
+        "rest": {
+          "libraryClient": "OrganizationVpcFlowLogsServiceClient",
+          "rpcs": {
+            "CreateVpcFlowLogsConfig": {
+              "methods": [
+                "create_vpc_flow_logs_config"
+              ]
+            },
+            "DeleteVpcFlowLogsConfig": {
+              "methods": [
+                "delete_vpc_flow_logs_config"
+              ]
+            },
+            "GetVpcFlowLogsConfig": {
+              "methods": [
+                "get_vpc_flow_logs_config"
+              ]
+            },
+            "ListVpcFlowLogsConfigs": {
+              "methods": [
+                "list_vpc_flow_logs_configs"
+              ]
+            },
+            "UpdateVpcFlowLogsConfig": {
+              "methods": [
+                "update_vpc_flow_logs_config"
+              ]
+            }
+          }
+        }
+      }
+    },
     "ReachabilityService": {
       "clients": {
         "grpc": {
@@ -139,6 +233,16 @@
                 "list_vpc_flow_logs_configs"
               ]
             },
+            "QueryOrgVpcFlowLogsConfigs": {
+              "methods": [
+                "query_org_vpc_flow_logs_configs"
+              ]
+            },
+            "ShowEffectiveFlowLogsConfigs": {
+              "methods": [
+                "show_effective_flow_logs_configs"
+              ]
+            },
             "UpdateVpcFlowLogsConfig": {
               "methods": [
                 "update_vpc_flow_logs_config"
@@ -169,6 +273,16 @@
                 "list_vpc_flow_logs_configs"
               ]
             },
+            "QueryOrgVpcFlowLogsConfigs": {
+              "methods": [
+                "query_org_vpc_flow_logs_configs"
+              ]
+            },
+            "ShowEffectiveFlowLogsConfigs": {
+              "methods": [
+                "show_effective_flow_logs_configs"
+              ]
+            },
             "UpdateVpcFlowLogsConfig": {
               "methods": [
                 "update_vpc_flow_logs_config"
@@ -197,6 +311,16 @@
             "ListVpcFlowLogsConfigs": {
               "methods": [
                 "list_vpc_flow_logs_configs"
+              ]
+            },
+            "QueryOrgVpcFlowLogsConfigs": {
+              "methods": [
+                "query_org_vpc_flow_logs_configs"
+              ]
+            },
+            "ShowEffectiveFlowLogsConfigs": {
+              "methods": [
+                "show_effective_flow_logs_configs"
               ]
             },
             "UpdateVpcFlowLogsConfig": {
