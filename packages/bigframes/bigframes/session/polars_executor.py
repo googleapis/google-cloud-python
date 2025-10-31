@@ -103,6 +103,9 @@ _COMPATIBLE_AGG_OPS = (
     agg_ops.SumOp,
     agg_ops.MeanOp,
     agg_ops.CountOp,
+    agg_ops.VarOp,
+    agg_ops.PopVarOp,
+    agg_ops.StdOp,
 )
 
 

@@ -535,9 +535,11 @@ if polars_installed:
             if isinstance(op, agg_ops.StdOp):
                 return pl.std(inputs[0])
             if isinstance(op, agg_ops.VarOp):
-                return pl.var(inputs[0])
+                # polars var doesnt' support decimal, so use std instead
+                return pl.std(inputs[0]).pow(2)
             if isinstance(op, agg_ops.PopVarOp):
-                return pl.var(inputs[0], ddof=0)
+                # polars var doesnt' support decimal, so use std instead
+                return pl.std(inputs[0], ddof=0).pow(2)
             if isinstance(op, agg_ops.FirstNonNullOp):
                 return pl.col(*inputs).drop_nulls().first()
             if isinstance(op, agg_ops.LastNonNullOp):

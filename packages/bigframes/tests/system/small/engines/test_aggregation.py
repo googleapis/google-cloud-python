@@ -111,6 +111,20 @@ def test_engines_unary_aggregates(
     assert_equivalence_execution(node, REFERENCE_ENGINE, engine)
 
 
+@pytest.mark.parametrize("engine", ["polars", "bq"], indirect=True)
+@pytest.mark.parametrize(
+    "op",
+    [agg_ops.std_op, agg_ops.var_op, agg_ops.PopVarOp()],
+)
+def test_engines_unary_variance_aggregates(
+    scalars_array_value: array_value.ArrayValue,
+    engine,
+    op,
+):
+    node = apply_agg_to_all_valid(scalars_array_value, op).node
+    assert_equivalence_execution(node, REFERENCE_ENGINE, engine)
+
+
 def test_sql_engines_median_op_aggregates(
     scalars_array_value: array_value.ArrayValue,
     bigquery_client: bigquery.Client,
