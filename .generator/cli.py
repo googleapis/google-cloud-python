@@ -396,11 +396,6 @@ def _copy_files_needed_for_post_processing(
             ignore=shutil.ignore_patterns("client-post-processing"),
         )
 
-    # We need to create these directories so that we can copy files necessary for post-processing.
-    os.makedirs(
-        f"{output}/{path_to_library}/scripts/client-post-processing", exist_ok=True
-    )
-
     # copy post-procesing files
     for post_processing_file in glob.glob(
         f"{input}/client-post-processing/*.yaml"
