@@ -92,6 +92,30 @@ class DatetimeProperties:
         raise NotImplementedError(constants.ABSTRACT_METHOD_ERROR_MESSAGE)
 
     @property
+    def day_name(self):
+        """
+        Return the day names in english.
+
+        **Examples:**
+            >>> s = bpd.Series(pd.date_range(start="2018-01-01", freq="D", periods=3))
+            >>> s
+            0    2018-01-01 00:00:00
+            1    2018-01-02 00:00:00
+            2    2018-01-03 00:00:00
+            dtype: timestamp[us][pyarrow]
+            >>> s.dt.day_name()
+            0       Monday
+            1      Tuesday
+            2    Wednesday
+            dtype: string
+
+        Returns:
+            Series: Series of day names.
+
+        """
+        raise NotImplementedError(constants.ABSTRACT_METHOD_ERROR_MESSAGE)
+
+    @property
     def dayofyear(self):
         """The ordinal day of the year.
 

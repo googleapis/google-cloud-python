@@ -148,6 +148,9 @@ class DatetimeMethods(
         # Assumption: pyarrow dtype
         return self._data._dtype.pyarrow_dtype.unit
 
+    def day_name(self) -> series.Series:
+        return self.strftime("%A")
+
     def strftime(self, date_format: str) -> series.Series:
         return self._data._apply_unary_op(ops.StrftimeOp(date_format=date_format))
 
