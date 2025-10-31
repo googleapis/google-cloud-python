@@ -3,7 +3,7 @@ Python Client for Cloud Security Compliance API
 
 |preview| |pypi| |versions|
 
-`Cloud Security Compliance API`_: null 
+`Cloud Security Compliance API`_: 
 
 - `Client Library Documentation`_
 - `Product Documentation`_

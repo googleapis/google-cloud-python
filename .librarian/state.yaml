@@ -1182,7 +1182,7 @@ libraries:
     tag_format: '{id}-v{version}'
   - id: google-cloud-cloudsecuritycompliance
     version: 0.3.0
-    last_generated_commit: 72e7439c8e7e9986cf1865e337fc7c64ca5bda1f
+    last_generated_commit: 97763d6efb2d35474e0363c254ee6994837a08fa
     apis:
       - path: google/cloud/cloudsecuritycompliance/v1
         service_config: cloudsecuritycompliance_v1.yaml
