@@ -372,7 +372,7 @@ def _copy_files_needed_for_post_processing(
     if Path(source_dir).exists():
         shutil.copytree(
             source_dir,
-            output,
+            output/{path_to_library},
             dirs_exist_ok=True,
         )
 
