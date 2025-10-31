@@ -3653,92 +3653,18 @@ class DataFrame(vendored_pandas_frame.DataFrame):
         sort: bool = False,
         suffixes: tuple[str, str] = ("_x", "_y"),
     ) -> DataFrame:
-        if how == "cross":
-            if on is not None:
-                raise ValueError("'on' is not supported for cross join.")
-            result_block = self._block.merge(
-                right._block,
-                left_join_ids=[],
-                right_join_ids=[],
-                suffixes=suffixes,
-                how=how,
-                sort=True,
-            )
-            return DataFrame(result_block)
+        from bigframes.core.reshape import merge
 
-        left_on, right_on = self._validate_left_right_on(
-            right, on, left_on=left_on, right_on=right_on
-        )
-
-        if utils.is_list_like(left_on):
-            left_on = list(left_on)  # type: ignore
-        else:
-            left_on = [left_on]
-
-        if utils.is_list_like(right_on):
-            right_on = list(right_on)  # type: ignore
-        else:
-            right_on = [right_on]
-
-        left_join_ids = []
-        for label in left_on:  # type: ignore
-            left_col_id = self._resolve_label_exact(label)
-            # 0 elements already throws an exception
-            if not left_col_id:
-                raise ValueError(f"No column {label} found in self.")
-            left_join_ids.append(left_col_id)
-
-        right_join_ids = []
-        for label in right_on:  # type: ignore
-            right_col_id = right._resolve_label_exact(label)
-            if not right_col_id:
-                raise ValueError(f"No column {label} found in other.")
-            right_join_ids.append(right_col_id)
-
-        block = self._block.merge(
-            right._block,
+        return merge.merge(
+            self,
+            right,
             how,
-            left_join_ids,
-            right_join_ids,
+            on,
+            left_on=left_on,
+            right_on=right_on,
             sort=sort,
             suffixes=suffixes,
         )
-        return DataFrame(block)
-
-    def _validate_left_right_on(
-        self,
-        right: DataFrame,
-        on: Union[blocks.Label, Sequence[blocks.Label], None] = None,
-        *,
-        left_on: Union[blocks.Label, Sequence[blocks.Label], None] = None,
-        right_on: Union[blocks.Label, Sequence[blocks.Label], None] = None,
-    ):
-        if on is not None:
-            if left_on is not None or right_on is not None:
-                raise ValueError(
-                    "Can not pass both `on` and `left_on` + `right_on` params."
-                )
-            return on, on
-
-        if left_on is not None and right_on is not None:
-            return left_on, right_on
-
-        left_cols = self.columns
-        right_cols = right.columns
-        common_cols = left_cols.intersection(right_cols)
-        if len(common_cols) == 0:
-            raise ValueError(
-                "No common columns to perform merge on."
-                f"Merge options: left_on={left_on}, "
-                f"right_on={right_on}, "
-            )
-        if (
-            not left_cols.join(common_cols, how="inner").is_unique
-            or not right_cols.join(common_cols, how="inner").is_unique
-        ):
-            raise ValueError(f"Data columns not unique: {repr(common_cols)}")
-
-        return common_cols, common_cols
 
     def join(
         self,
