@@ -297,6 +297,18 @@ class Client(ClientWithProject):
     def api_endpoint(self):
         return self._connection.API_BASE_URL
 
+    def update_user_agent(self, user_agent):
+        """Update the user-agent string for this client.
+
+        :type user_agent: str
+        :param user_agent: The string to add to the user-agent.
+        """
+        existing_user_agent = self._connection._client_info.user_agent
+        if existing_user_agent is None:
+            self._connection.user_agent = user_agent
+        else:
+            self._connection.user_agent = f"{user_agent} {existing_user_agent}"
+
     @property
     def _connection(self):
         """Get connection or batch on the client.

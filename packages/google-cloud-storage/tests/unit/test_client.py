@@ -1528,6 +1528,34 @@ class TestClient(unittest.TestCase):
             _target_object=mock.ANY,
         )
 
+    def test_update_user_agent_when_default_clientinfo_provided(self):
+        from google.cloud._http import ClientInfo
+
+        client_info = ClientInfo()
+
+        client = self._make_one(project=None, client_info=client_info)
+        self.assertGreater(len(client._connection.user_agent), 0)
+
+        client.update_user_agent("my-test-agent/1.0")
+        self.assertIn("my-test-agent/1.0", client._connection.user_agent)
+
+    def test_update_user_agent_when_none_clientinfo_provided(self):
+        client = self._make_one(project=None)
+        client.update_user_agent("my-test-agent/1.0")
+
+        self.assertIn("my-test-agent/1.0", client._connection.user_agent)
+
+    def test_update_user_agent_with_existing_user_agent(self):
+        from google.cloud._http import ClientInfo
+
+        client_info = ClientInfo(user_agent="existing-agent/2.0")
+        client = self._make_one(project=None, client_info=client_info)
+        client.update_user_agent("my-test-agent/1.0")
+
+        self.assertIn(
+            "my-test-agent/1.0 existing-agent/2.0", client._connection.user_agent
+        )
+
     @mock.patch("warnings.warn")
     def test_create_bucket_w_requester_pays_deprecated(self, mock_warn):
         from google.cloud.storage.bucket import Bucket
