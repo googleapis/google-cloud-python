@@ -29,7 +29,7 @@ description = "Google Cloud Storage API client library"
 release_status = "Development Status :: 5 - Production/Stable"
 dependencies = [
     "google-auth >= 2.26.1, < 3.0.0",
-    "google-api-core >= 2.15.0, < 3.0.0",
+    "google-api-core >= 2.27.0, < 3.0.0",
     "google-cloud-core >= 2.4.2, < 3.0.0",
     # The dependency "google-resumable-media" is no longer used. However, the
     # dependency is still included here to accommodate users who may be

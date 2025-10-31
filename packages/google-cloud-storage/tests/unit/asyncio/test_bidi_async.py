@@ -30,7 +30,7 @@ try:
 except ImportError:  # pragma: NO COVER
     pytest.skip("No GRPC", allow_module_level=True)
 
-from google.cloud.storage._experimental.asyncio import bidi_async
+from google.api_core import bidi_async
 from google.api_core import exceptions
 
 
