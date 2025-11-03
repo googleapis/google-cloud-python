@@ -372,9 +372,8 @@ def _copy_files_needed_for_post_processing(
     if Path(source_dir).exists():
         shutil.copytree(
             source_dir,
-            output,
+            f"{output}/{path_to_library}",
             dirs_exist_ok=True,
-            ignore=shutil.ignore_patterns("client-post-processing"),
         )
 
     # We need to create these directories so that we can copy files necessary for post-processing.
