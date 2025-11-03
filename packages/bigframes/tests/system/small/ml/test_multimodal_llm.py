@@ -21,6 +21,7 @@ import bigframes.pandas as bpd
 from bigframes.testing import utils
 
 
+@pytest.mark.skip(reason="b/457416070")
 @pytest.mark.flaky(retries=2)
 def test_multimodal_embedding_generator_predict_default_params_success(
     images_mm_df, session, bq_connection

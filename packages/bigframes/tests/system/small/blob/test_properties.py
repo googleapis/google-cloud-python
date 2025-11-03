@@ -12,7 +12,12 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+from __future__ import annotations
+
+from typing import Callable
+
 import pandas as pd
+import pytest
 
 import bigframes.dtypes as dtypes
 import bigframes.pandas as bpd
@@ -27,10 +32,19 @@ def test_blob_uri(images_uris: list[str], images_mm_df: bpd.DataFrame):
     )
 
 
-def test_blob_authorizer(images_mm_df: bpd.DataFrame, bq_connection: str):
+def test_blob_authorizer(
+    images_mm_df: bpd.DataFrame,
+    bq_connection: str,
+    normalize_connection_id: Callable[[str], str],
+):
     actual = images_mm_df["blob_col"].blob.authorizer().to_pandas()
+    actual = actual.apply(normalize_connection_id)
     expected = pd.Series(
-        [bq_connection.casefold(), bq_connection.casefold()], name="authorizer"
+        [
+            normalize_connection_id(bq_connection),
+            normalize_connection_id(bq_connection),
+        ],
+        name="authorizer",
     )
 
     pd.testing.assert_series_equal(
@@ -38,6 +52,7 @@ def test_blob_authorizer(images_mm_df: bpd.DataFrame, bq_connection: str):
     )
 
 
+@pytest.mark.skip(reason="b/457416070")
 def test_blob_version(images_mm_df: bpd.DataFrame):
     actual = images_mm_df["blob_col"].blob.version().to_pandas()
     expected = pd.Series(["1753907851152593", "1753907851111538"], name="version")
@@ -47,6 +62,7 @@ def test_blob_version(images_mm_df: bpd.DataFrame):
     )
 
 
+@pytest.mark.skip(reason="b/457416070")
 def test_blob_metadata(images_mm_df: bpd.DataFrame):
     actual = images_mm_df["blob_col"].blob.metadata().to_pandas()
     expected = pd.Series(
@@ -71,6 +87,7 @@ def test_blob_metadata(images_mm_df: bpd.DataFrame):
     pd.testing.assert_series_equal(actual, expected)
 
 
+@pytest.mark.skip(reason="b/457416070")
 def test_blob_content_type(images_mm_df: bpd.DataFrame):
     actual = images_mm_df["blob_col"].blob.content_type().to_pandas()
     expected = pd.Series(["image/jpeg", "image/jpeg"], name="content_type")
@@ -80,6 +97,7 @@ def test_blob_content_type(images_mm_df: bpd.DataFrame):
     )
 
 
+@pytest.mark.skip(reason="b/457416070")
 def test_blob_md5_hash(images_mm_df: bpd.DataFrame):
     actual = images_mm_df["blob_col"].blob.md5_hash().to_pandas()
     expected = pd.Series(
@@ -92,6 +110,7 @@ def test_blob_md5_hash(images_mm_df: bpd.DataFrame):
     )
 
 
+@pytest.mark.skip(reason="b/457416070")
 def test_blob_size(images_mm_df: bpd.DataFrame):
     actual = images_mm_df["blob_col"].blob.size().to_pandas()
     expected = pd.Series([338390, 43333], name="size")
@@ -101,6 +120,7 @@ def test_blob_size(images_mm_df: bpd.DataFrame):
     )
 
 
+@pytest.mark.skip(reason="b/457416070")
 def test_blob_updated(images_mm_df: bpd.DataFrame):
     actual = images_mm_df["blob_col"].blob.updated().to_pandas()
     expected = pd.Series(

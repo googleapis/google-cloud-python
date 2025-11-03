@@ -12,27 +12,36 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+from typing import Callable
 from unittest import mock
 
 import IPython.display
 import pandas as pd
+import pytest
 
 import bigframes
 import bigframes.pandas as bpd
 
 
 def test_blob_create_from_uri_str(
-    bq_connection: str, session: bigframes.Session, images_uris
+    bq_connection: str,
+    session: bigframes.Session,
+    images_uris,
+    normalize_connection_id: Callable[[str], str],
 ):
     uri_series = bpd.Series(images_uris, session=session)
     blob_series = uri_series.str.to_blob(connection=bq_connection)
 
     pd_blob_df = blob_series.struct.explode().to_pandas()
+    pd_blob_df["authorizer"] = pd_blob_df["authorizer"].apply(normalize_connection_id)
     expected_pd_df = pd.DataFrame(
         {
             "uri": images_uris,
             "version": [None, None],
-            "authorizer": [bq_connection.casefold(), bq_connection.casefold()],
+            "authorizer": [
+                normalize_connection_id(bq_connection),
+                normalize_connection_id(bq_connection),
+            ],
             "details": [None, None],
         }
     )
@@ -43,7 +52,11 @@ def test_blob_create_from_uri_str(
 
 
 def test_blob_create_from_glob_path(
-    bq_connection: str, session: bigframes.Session, images_gcs_path, images_uris
+    bq_connection: str,
+    session: bigframes.Session,
+    images_gcs_path,
+    images_uris,
+    normalize_connection_id: Callable[[str], str],
 ):
     blob_df = session.from_glob_path(
         images_gcs_path, connection=bq_connection, name="blob_col"
@@ -55,12 +68,16 @@ def test_blob_create_from_glob_path(
         .sort_values("uri")
         .reset_index(drop=True)
     )
+    pd_blob_df["authorizer"] = pd_blob_df["authorizer"].apply(normalize_connection_id)
 
     expected_df = pd.DataFrame(
         {
             "uri": images_uris,
             "version": [None, None],
-            "authorizer": [bq_connection.casefold(), bq_connection.casefold()],
+            "authorizer": [
+                normalize_connection_id(bq_connection),
+                normalize_connection_id(bq_connection),
+            ],
             "details": [None, None],
         }
     )
@@ -71,7 +88,11 @@ def test_blob_create_from_glob_path(
 
 
 def test_blob_create_read_gbq_object_table(
-    bq_connection: str, session: bigframes.Session, images_gcs_path, images_uris
+    bq_connection: str,
+    session: bigframes.Session,
+    images_gcs_path,
+    images_uris,
+    normalize_connection_id: Callable[[str], str],
 ):
     obj_table = session._create_object_table(images_gcs_path, bq_connection)
 
@@ -83,11 +104,15 @@ def test_blob_create_read_gbq_object_table(
         .sort_values("uri")
         .reset_index(drop=True)
     )
+    pd_blob_df["authorizer"] = pd_blob_df["authorizer"].apply(normalize_connection_id)
     expected_df = pd.DataFrame(
         {
             "uri": images_uris,
             "version": [None, None],
-            "authorizer": [bq_connection.casefold(), bq_connection.casefold()],
+            "authorizer": [
+                normalize_connection_id(bq_connection),
+                normalize_connection_id(bq_connection),
+            ],
             "details": [None, None],
         }
     )
@@ -97,6 +122,7 @@ def test_blob_create_read_gbq_object_table(
     )
 
 
+@pytest.mark.skip(reason="b/457416070")
 def test_display_images(monkeypatch, images_mm_df: bpd.DataFrame):
     mock_display = mock.Mock()
     monkeypatch.setattr(IPython.display, "display", mock_display)

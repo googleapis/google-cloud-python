@@ -71,6 +71,23 @@ def _hash_digest_file(hasher, filepath):
 
 
 @pytest.fixture(scope="session")
+def normalize_connection_id():
+    """Normalizes the connection ID by casefolding only the LOCATION component.
+
+    Connection format: PROJECT.LOCATION.CONNECTION_NAME
+    Only LOCATION is case-insensitive; PROJECT and CONNECTION_NAME must be lowercase.
+    """
+
+    def normalize(connection_id: str) -> str:
+        parts = connection_id.split(".")
+        if len(parts) == 3:
+            return f"{parts[0]}.{parts[1].casefold()}.{parts[2]}"
+        return connection_id  # Return unchanged if invalid format
+
+    return normalize
+
+
+@pytest.fixture(scope="session")
 def tokyo_location() -> str:
     return TOKYO_LOCATION
 
