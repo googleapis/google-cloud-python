@@ -1,5 +1,13 @@
 # Changelog
 
+## [0.30.0](https://github.com/googleapis/python-bigquery-pandas/compare/v0.29.2...v0.30.0) (2025-10-31)
+
+
+### Features
+
+* Add partitioning and clustering parameters to the `to_gbq` function ([#949](https://github.com/googleapis/python-bigquery-pandas/issues/949)) ([e7213c7](https://github.com/googleapis/python-bigquery-pandas/commit/e7213c7760582a58b03d75886e5754fd3083e622))
+* Allow loading a DataFrame even if the provided BigQuery schema includes columns not in the DataFrame ([#953](https://github.com/googleapis/python-bigquery-pandas/issues/953)) ([a529505](https://github.com/googleapis/python-bigquery-pandas/commit/a5295056f3a22d60ed0d375cc4d23469a0ccea95))
+
 ## [0.29.2](https://github.com/googleapis/python-bigquery-pandas/compare/v0.29.1...v0.29.2) (2025-07-10)
 
 
