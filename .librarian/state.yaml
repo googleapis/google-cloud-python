@@ -19,6 +19,25 @@ libraries:
     remove_regex:
       - packages/google-ads-admanager/
     tag_format: '{id}-v{version}'
+  - id: google-ads-datamanager
+    version: 0.0.0
+    last_generated_commit: faa7932e61d781ccb0647d4b25c2b452cb206af4
+    apis:
+      - path: google/ads/datamanager/v1
+        service_config: datamanager_v1.yaml
+    source_roots:
+      - packages/google-ads-datamanager
+    preserve_regex:
+      - packages/google-ads-datamanager/CHANGELOG.md
+      - docs/CHANGELOG.md
+      - docs/README.rst
+      - samples/README.txt
+      - scripts/client-post-processing
+      - samples/snippets/README.rst
+      - tests/system
+    remove_regex:
+      - packages/google-ads-datamanager
+    tag_format: '{id}-v{version}'
   - id: google-ads-marketingplatform-admin
     version: 0.2.0
     last_generated_commit: 3322511885371d2b2253f209ccc3aa60d4100cfd

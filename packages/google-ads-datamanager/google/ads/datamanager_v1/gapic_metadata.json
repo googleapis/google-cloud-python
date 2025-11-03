@@ -1,0 +1,88 @@
+ {
+  "comment": "This file maps proto services/RPCs to the corresponding library clients/methods",
+  "language": "python",
+  "libraryPackage": "google.ads.datamanager_v1",
+  "protoPackage": "google.ads.datamanager.v1",
+  "schema": "1.0",
+  "services": {
+    "IngestionService": {
+      "clients": {
+        "grpc": {
+          "libraryClient": "IngestionServiceClient",
+          "rpcs": {
+            "IngestAudienceMembers": {
+              "methods": [
+                "ingest_audience_members"
+              ]
+            },
+            "IngestEvents": {
+              "methods": [
+                "ingest_events"
+              ]
+            },
+            "RemoveAudienceMembers": {
+              "methods": [
+                "remove_audience_members"
+              ]
+            },
+            "RetrieveRequestStatus": {
+              "methods": [
+                "retrieve_request_status"
+              ]
+            }
+          }
+        },
+        "grpc-async": {
+          "libraryClient": "IngestionServiceAsyncClient",
+          "rpcs": {
+            "IngestAudienceMembers": {
+              "methods": [
+                "ingest_audience_members"
+              ]
+            },
+            "IngestEvents": {
+              "methods": [
+                "ingest_events"
+              ]
+            },
+            "RemoveAudienceMembers": {
+              "methods": [
+                "remove_audience_members"
+              ]
+            },
+            "RetrieveRequestStatus": {
+              "methods": [
+                "retrieve_request_status"
+              ]
+            }
+          }
+        },
+        "rest": {
+          "libraryClient": "IngestionServiceClient",
+          "rpcs": {
+            "IngestAudienceMembers": {
+              "methods": [
+                "ingest_audience_members"
+              ]
+            },
+            "IngestEvents": {
+              "methods": [
+                "ingest_events"
+              ]
+            },
+            "RemoveAudienceMembers": {
+              "methods": [
+                "remove_audience_members"
+              ]
+            },
+            "RetrieveRequestStatus": {
+              "methods": [
+                "retrieve_request_status"
+              ]
+            }
+          }
+        }
+      }
+    }
+  }
+}
