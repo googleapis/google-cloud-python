@@ -33,8 +33,10 @@ __protobuf__ = proto.module(
         "ForwardingRuleInfo",
         "LoadBalancerInfo",
         "LoadBalancerBackend",
+        "HybridSubnetInfo",
         "VpnGatewayInfo",
         "VpnTunnelInfo",
+        "InterconnectAttachmentInfo",
         "EndpointInfo",
         "DeliverInfo",
         "ForwardInfo",
@@ -216,6 +218,10 @@ class Step(proto.Message):
             forwarding rule.
 
             This field is a member of `oneof`_ ``step_info``.
+        hybrid_subnet (google.cloud.network_management_v1.types.HybridSubnetInfo):
+            Display information of a hybrid subnet.
+
+            This field is a member of `oneof`_ ``step_info``.
         vpn_gateway (google.cloud.network_management_v1.types.VpnGatewayInfo):
             Display information of a Compute Engine VPN
             gateway.
@@ -224,6 +230,11 @@ class Step(proto.Message):
         vpn_tunnel (google.cloud.network_management_v1.types.VpnTunnelInfo):
             Display information of a Compute Engine VPN
             tunnel.
+
+            This field is a member of `oneof`_ ``step_info``.
+        interconnect_attachment (google.cloud.network_management_v1.types.InterconnectAttachmentInfo):
+            Display information of an interconnect
+            attachment.
 
             This field is a member of `oneof`_ ``step_info``.
         vpc_connector (google.cloud.network_management_v1.types.VpcConnectorInfo):
@@ -411,21 +422,24 @@ class Step(proto.Message):
                 Forwarding state: arriving at a Compute
                 Engine instance.
             ARRIVE_AT_INTERNAL_LOAD_BALANCER (10):
-                Forwarding state: arriving at a Compute Engine internal load
-                balancer. Deprecated in favor of the
-                ``ANALYZE_LOAD_BALANCER_BACKEND`` state, not used in new
-                tests.
+                Forwarding state: arriving at a Compute
+                Engine internal load balancer.
             ARRIVE_AT_EXTERNAL_LOAD_BALANCER (11):
-                Forwarding state: arriving at a Compute Engine external load
-                balancer. Deprecated in favor of the
-                ``ANALYZE_LOAD_BALANCER_BACKEND`` state, not used in new
-                tests.
+                Forwarding state: arriving at a Compute
+                Engine external load balancer.
+            ARRIVE_AT_HYBRID_SUBNET (38):
+                Forwarding state: arriving at a hybrid
+                subnet. Appropriate routing configuration will
+                be determined here.
             ARRIVE_AT_VPN_GATEWAY (12):
                 Forwarding state: arriving at a Cloud VPN
                 gateway.
             ARRIVE_AT_VPN_TUNNEL (13):
                 Forwarding state: arriving at a Cloud VPN
                 tunnel.
+            ARRIVE_AT_INTERCONNECT_ATTACHMENT (37):
+                Forwarding state: arriving at an interconnect
+                attachment.
             ARRIVE_AT_VPC_CONNECTOR (24):
                 Forwarding state: arriving at a VPC
                 connector.
@@ -438,7 +452,8 @@ class Step(proto.Message):
                 from a serverless endpoint forwarded through
                 public (external) connectivity.
             NAT (14):
-                Transition state: packet header translated.
+                Transition state: packet header translated. The ``nat``
+                field is populated with the translation information.
             PROXY_CONNECTION (15):
                 Transition state: original connection is
                 terminated and a new proxied connection is
@@ -481,8 +496,10 @@ class Step(proto.Message):
         ARRIVE_AT_INSTANCE = 9
         ARRIVE_AT_INTERNAL_LOAD_BALANCER = 10
         ARRIVE_AT_EXTERNAL_LOAD_BALANCER = 11
+        ARRIVE_AT_HYBRID_SUBNET = 38
         ARRIVE_AT_VPN_GATEWAY = 12
         ARRIVE_AT_VPN_TUNNEL = 13
+        ARRIVE_AT_INTERCONNECT_ATTACHMENT = 37
         ARRIVE_AT_VPC_CONNECTOR = 24
         DIRECT_VPC_EGRESS_CONNECTION = 35
         SERVERLESS_EXTERNAL_CONNECTION = 36
@@ -547,6 +564,12 @@ class Step(proto.Message):
         oneof="step_info",
         message="ForwardingRuleInfo",
     )
+    hybrid_subnet: "HybridSubnetInfo" = proto.Field(
+        proto.MESSAGE,
+        number=36,
+        oneof="step_info",
+        message="HybridSubnetInfo",
+    )
     vpn_gateway: "VpnGatewayInfo" = proto.Field(
         proto.MESSAGE,
         number=10,
@@ -558,6 +581,12 @@ class Step(proto.Message):
         number=11,
         oneof="step_info",
         message="VpnTunnelInfo",
+    )
+    interconnect_attachment: "InterconnectAttachmentInfo" = proto.Field(
+        proto.MESSAGE,
+        number=35,
+        oneof="step_info",
+        message="InterconnectAttachmentInfo",
     )
     vpc_connector: "VpcConnectorInfo" = proto.Field(
         proto.MESSAGE,
@@ -712,7 +741,29 @@ class InstanceInfo(proto.Message):
         psc_network_attachment_uri (str):
             URI of the PSC network attachment the NIC is
             attached to (if relevant).
+        running (bool):
+            Indicates whether the Compute Engine instance is running.
+            Deprecated: use the ``status`` field instead.
+        status (google.cloud.network_management_v1.types.InstanceInfo.Status):
+            The status of the instance.
     """
+
+    class Status(proto.Enum):
+        r"""The status of the instance. We treat all states other than
+        "RUNNING" as not running.
+
+        Values:
+            STATUS_UNSPECIFIED (0):
+                Default unspecified value.
+            RUNNING (1):
+                The instance is running.
+            NOT_RUNNING (2):
+                The instance has any status other than
+                "RUNNING".
+        """
+        STATUS_UNSPECIFIED = 0
+        RUNNING = 1
+        NOT_RUNNING = 2
 
     display_name: str = proto.Field(
         proto.STRING,
@@ -750,11 +801,20 @@ class InstanceInfo(proto.Message):
         proto.STRING,
         number=9,
     )
+    running: bool = proto.Field(
+        proto.BOOL,
+        number=10,
+    )
+    status: Status = proto.Field(
+        proto.ENUM,
+        number=11,
+        enum=Status,
+    )
 
 
 class NetworkInfo(proto.Message):
     r"""For display only. Metadata associated with a Compute Engine
-    network. Next ID: 7
+    network.
 
     Attributes:
         display_name (str):
@@ -835,6 +895,13 @@ class FirewallInfo(proto.Message):
             rules.
         firewall_rule_type (google.cloud.network_management_v1.types.FirewallInfo.FirewallRuleType):
             The firewall rule's type.
+        policy_priority (int):
+            The priority of the firewall policy that this
+            rule is associated with. This field is not
+            applicable to VPC firewall rules and implied VPC
+            firewall rules.
+        target_type (google.cloud.network_management_v1.types.FirewallInfo.TargetType):
+            Target type of the firewall rule.
     """
 
     class FirewallRuleType(proto.Enum):
@@ -894,6 +961,24 @@ class FirewallInfo(proto.Message):
         TRACKING_STATE = 101
         ANALYSIS_SKIPPED = 102
 
+    class TargetType(proto.Enum):
+        r"""Target type of the firewall rule.
+
+        Values:
+            TARGET_TYPE_UNSPECIFIED (0):
+                Target type is not specified. In this case we
+                treat the rule as applying to INSTANCES target
+                type.
+            INSTANCES (1):
+                Firewall rule applies to instances.
+            INTERNAL_MANAGED_LB (2):
+                Firewall rule applies to internal managed
+                load balancers.
+        """
+        TARGET_TYPE_UNSPECIFIED = 0
+        INSTANCES = 1
+        INTERNAL_MANAGED_LB = 2
+
     display_name: str = proto.Field(
         proto.STRING,
         number=1,
@@ -938,6 +1023,15 @@ class FirewallInfo(proto.Message):
         proto.ENUM,
         number=10,
         enum=FirewallRuleType,
+    )
+    policy_priority: int = proto.Field(
+        proto.INT32,
+        number=12,
+    )
+    target_type: TargetType = proto.Field(
+        proto.ENUM,
+        number=13,
+        enum=TargetType,
     )
 
 
@@ -1116,6 +1210,8 @@ class RouteInfo(proto.Message):
                 happens when the user doesn't have permissions
                 to the project where the next hop resource is
                 located.
+            SECURE_WEB_PROXY_GATEWAY (13):
+                Next hop is Secure Web Proxy Gateway.
         """
         NEXT_HOP_TYPE_UNSPECIFIED = 0
         NEXT_HOP_IP = 1
@@ -1130,6 +1226,7 @@ class RouteInfo(proto.Message):
         NEXT_HOP_ILB = 10
         NEXT_HOP_ROUTER_APPLIANCE = 11
         NEXT_HOP_NCC_HUB = 12
+        SECURE_WEB_PROXY_GATEWAY = 13
 
     class RouteScope(proto.Enum):
         r"""Indicates where routes are applicable.
@@ -1561,6 +1658,33 @@ class LoadBalancerBackend(proto.Message):
     )
 
 
+class HybridSubnetInfo(proto.Message):
+    r"""For display only. Metadata associated with a hybrid subnet.
+
+    Attributes:
+        display_name (str):
+            Name of a hybrid subnet.
+        uri (str):
+            URI of a hybrid subnet.
+        region (str):
+            Name of a Google Cloud region where the
+            hybrid subnet is configured.
+    """
+
+    display_name: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    uri: str = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+    region: str = proto.Field(
+        proto.STRING,
+        number=3,
+    )
+
+
 class VpnGatewayInfo(proto.Message):
     r"""For display only. Metadata associated with a Compute Engine
     VPN gateway.
@@ -1699,6 +1823,86 @@ class VpnTunnelInfo(proto.Message):
     )
 
 
+class InterconnectAttachmentInfo(proto.Message):
+    r"""For display only. Metadata associated with an Interconnect
+    attachment.
+
+    Attributes:
+        display_name (str):
+            Name of an Interconnect attachment.
+        uri (str):
+            URI of an Interconnect attachment.
+        interconnect_uri (str):
+            URI of the Interconnect where the
+            Interconnect attachment is configured.
+        region (str):
+            Name of a Google Cloud region where the
+            Interconnect attachment is configured.
+        cloud_router_uri (str):
+            URI of the Cloud Router to be used for
+            dynamic routing.
+        type_ (google.cloud.network_management_v1.types.InterconnectAttachmentInfo.Type):
+            The type of interconnect attachment this is.
+        l2_attachment_matched_ip_address (str):
+            Appliance IP address that was matched for L2_DEDICATED
+            attachments.
+    """
+
+    class Type(proto.Enum):
+        r"""What type of interconnect attachment this is.
+
+        Values:
+            TYPE_UNSPECIFIED (0):
+                Unspecified type.
+            DEDICATED (1):
+                Attachment to a dedicated interconnect.
+            PARTNER (2):
+                Attachment to a partner interconnect, created
+                by the customer.
+            PARTNER_PROVIDER (3):
+                Attachment to a partner interconnect, created
+                by the partner.
+            L2_DEDICATED (4):
+                Attachment to a L2 interconnect, created by
+                the customer.
+        """
+        TYPE_UNSPECIFIED = 0
+        DEDICATED = 1
+        PARTNER = 2
+        PARTNER_PROVIDER = 3
+        L2_DEDICATED = 4
+
+    display_name: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    uri: str = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+    interconnect_uri: str = proto.Field(
+        proto.STRING,
+        number=3,
+    )
+    region: str = proto.Field(
+        proto.STRING,
+        number=4,
+    )
+    cloud_router_uri: str = proto.Field(
+        proto.STRING,
+        number=5,
+    )
+    type_: Type = proto.Field(
+        proto.ENUM,
+        number=6,
+        enum=Type,
+    )
+    l2_attachment_matched_ip_address: str = proto.Field(
+        proto.STRING,
+        number=7,
+    )
+
+
 class EndpointInfo(proto.Message):
     r"""For display only. The specification of the endpoints for the
     test. EndpointInfo is derived from source and destination
@@ -1780,6 +1984,9 @@ class DeliverInfo(proto.Message):
         psc_google_api_target (str):
             PSC Google API target the packet is delivered
             to (if applicable).
+        google_service_type (google.cloud.network_management_v1.types.DeliverInfo.GoogleServiceType):
+            Recognized type of a Google Service the
+            packet is delivered to (if applicable).
     """
 
     class Target(proto.Enum):
@@ -1852,6 +2059,43 @@ class DeliverInfo(proto.Message):
         REDIS_INSTANCE = 16
         REDIS_CLUSTER = 17
 
+    class GoogleServiceType(proto.Enum):
+        r"""Recognized type of a Google Service.
+
+        Values:
+            GOOGLE_SERVICE_TYPE_UNSPECIFIED (0):
+                Unspecified Google Service.
+            IAP (1):
+                Identity aware proxy.
+                https://cloud.google.com/iap/docs/using-tcp-forwarding
+            GFE_PROXY_OR_HEALTH_CHECK_PROBER (2):
+                One of two services sharing IP ranges:
+
+                - Load Balancer proxy
+                - Centralized Health Check prober
+                  https://cloud.google.com/load-balancing/docs/firewall-rules
+            CLOUD_DNS (3):
+                Connectivity from Cloud DNS to forwarding
+                targets or alternate name servers that use
+                private routing.
+                https://cloud.google.com/dns/docs/zones/forwarding-zones#firewall-rules
+                https://cloud.google.com/dns/docs/policies#firewall-rules
+            PRIVATE_GOOGLE_ACCESS (4):
+                private.googleapis.com and
+                restricted.googleapis.com
+            SERVERLESS_VPC_ACCESS (5):
+                Google API via Private Service Connect.
+                https://cloud.google.com/vpc/docs/configure-private-service-connect-apis
+                Google API via Serverless VPC Access.
+                https://cloud.google.com/vpc/docs/serverless-vpc-access
+        """
+        GOOGLE_SERVICE_TYPE_UNSPECIFIED = 0
+        IAP = 1
+        GFE_PROXY_OR_HEALTH_CHECK_PROBER = 2
+        CLOUD_DNS = 3
+        PRIVATE_GOOGLE_ACCESS = 4
+        SERVERLESS_VPC_ACCESS = 5
+
     target: Target = proto.Field(
         proto.ENUM,
         number=1,
@@ -1872,6 +2116,11 @@ class DeliverInfo(proto.Message):
     psc_google_api_target: str = proto.Field(
         proto.STRING,
         number=5,
+    )
+    google_service_type: GoogleServiceType = proto.Field(
+        proto.ENUM,
+        number=6,
+        enum=GoogleServiceType,
     )
 
 
@@ -1916,6 +2165,8 @@ class ForwardInfo(proto.Message):
                 Forwarded to an NCC Hub.
             ROUTER_APPLIANCE (9):
                 Forwarded to a router appliance.
+            SECURE_WEB_PROXY_GATEWAY (10):
+                Forwarded to a Secure Web Proxy Gateway.
         """
         TARGET_UNSPECIFIED = 0
         PEERING_VPC = 1
@@ -1927,6 +2178,7 @@ class ForwardInfo(proto.Message):
         ANOTHER_PROJECT = 7
         NCC_HUB = 8
         ROUTER_APPLIANCE = 9
+        SECURE_WEB_PROXY_GATEWAY = 10
 
     target: Target = proto.Field(
         proto.ENUM,
@@ -2072,9 +2324,13 @@ class AbortInfo(proto.Message):
                 Aborted because expected route configuration
                 was missing.
             GOOGLE_MANAGED_SERVICE_AMBIGUOUS_PSC_ENDPOINT (19):
-                Aborted because a PSC endpoint selection for
+                Aborted because PSC endpoint selection for
                 the Google-managed service is ambiguous (several
                 PSC endpoints satisfy test input).
+            GOOGLE_MANAGED_SERVICE_AMBIGUOUS_ENDPOINT (39):
+                Aborted because endpoint selection for the
+                Google-managed service is ambiguous (several
+                endpoints satisfy test input).
             SOURCE_PSC_CLOUD_SQL_UNSUPPORTED (20):
                 Aborted because tests with a PSC-based Cloud
                 SQL instance as a source are not supported.
@@ -2102,6 +2358,9 @@ class AbortInfo(proto.Message):
                 Cloud Run revision with direct VPC access
                 enabled, but there are no reserved serverless IP
                 ranges.
+            IP_VERSION_PROTOCOL_MISMATCH (40):
+                Aborted because the used protocol is not
+                supported for the used IP version.
         """
         CAUSE_UNSPECIFIED = 0
         UNKNOWN_NETWORK = 1
@@ -2132,6 +2391,7 @@ class AbortInfo(proto.Message):
         FIREWALL_CONFIG_NOT_FOUND = 26
         ROUTE_CONFIG_NOT_FOUND = 27
         GOOGLE_MANAGED_SERVICE_AMBIGUOUS_PSC_ENDPOINT = 19
+        GOOGLE_MANAGED_SERVICE_AMBIGUOUS_ENDPOINT = 39
         SOURCE_PSC_CLOUD_SQL_UNSUPPORTED = 20
         SOURCE_REDIS_CLUSTER_UNSUPPORTED = 34
         SOURCE_REDIS_INSTANCE_UNSUPPORTED = 35
@@ -2140,6 +2400,7 @@ class AbortInfo(proto.Message):
         UNKNOWN_ISSUE_IN_GOOGLE_MANAGED_PROJECT = 30
         UNSUPPORTED_GOOGLE_MANAGED_PROJECT_CONFIG = 31
         NO_SERVERLESS_IP_RANGES = 37
+        IP_VERSION_PROTOCOL_MISMATCH = 40
 
     cause: Cause = proto.Field(
         proto.ENUM,
@@ -2176,6 +2437,12 @@ class DropInfo(proto.Message):
             (if relevant).
         region (str):
             Region of the dropped packet (if relevant).
+        source_geolocation_code (str):
+            Geolocation (region code) of the source IP
+            address (if relevant).
+        destination_geolocation_code (str):
+            Geolocation (region code) of the destination
+            IP address (if relevant).
     """
 
     class Cause(proto.Enum):
@@ -2228,8 +2495,12 @@ class DropInfo(proto.Message):
                 invalid (it's not a forwarding rule of the
                 internal passthrough load balancer).
             NO_ROUTE_FROM_INTERNET_TO_PRIVATE_IPV6_ADDRESS (44):
-                Packet is sent from the Internet to the
-                private IPv6 address.
+                Packet is sent from the Internet or Google
+                service to the private IPv6 address.
+            NO_ROUTE_FROM_EXTERNAL_IPV6_SOURCE_TO_PRIVATE_IPV6_ADDRESS (98):
+                Packet is sent from the external IPv6 source
+                address of an instance to the private IPv6
+                address of an instance.
             VPN_TUNNEL_LOCAL_SELECTOR_MISMATCH (45):
                 The packet does not match a policy-based VPN
                 tunnel local selector.
@@ -2240,20 +2511,19 @@ class DropInfo(proto.Message):
                 Packet with internal destination address sent
                 to the internet gateway.
             PRIVATE_GOOGLE_ACCESS_DISALLOWED (8):
-                Instance with only an internal IP address
+                Endpoint with only an internal IP address
                 tries to access Google API and services, but
-                private Google access is not enabled in the
-                subnet.
+                Private Google Access is not enabled in the
+                subnet or is not applicable.
             PRIVATE_GOOGLE_ACCESS_VIA_VPN_TUNNEL_UNSUPPORTED (47):
                 Source endpoint tries to access Google API
                 and services through the VPN tunnel to another
                 network, but Private Google Access needs to be
                 enabled in the source endpoint network.
             NO_EXTERNAL_ADDRESS (9):
-                Instance with only an internal IP address
-                tries to access external hosts, but Cloud NAT is
-                not enabled in the subnet, unless special
-                configurations on a VM allow this connection.
+                Endpoint with only an internal IP address
+                tries to access external hosts, but there is no
+                matching Cloud NAT gateway in the subnet.
             UNKNOWN_INTERNAL_ADDRESS (10):
                 Destination internal address cannot be
                 resolved to a known target. If this is a shared
@@ -2516,6 +2786,46 @@ class DropInfo(proto.Message):
                 Packet with destination IP address within the
                 reserved NAT64 range is dropped due to matching
                 a route of an unsupported type.
+            TRAFFIC_FROM_HYBRID_ENDPOINT_TO_INTERNET_DISALLOWED (89):
+                Packet could be dropped because hybrid
+                endpoint like a VPN gateway or Interconnect is
+                not allowed to send traffic to the Internet.
+            NO_MATCHING_NAT64_GATEWAY (90):
+                Packet with destination IP address within the
+                reserved NAT64 range is dropped due to no
+                matching NAT gateway in the subnet.
+            LOAD_BALANCER_BACKEND_IP_VERSION_MISMATCH (96):
+                Packet is dropped due to being sent to a
+                backend of a passthrough load balancer that
+                doesn't use the same IP version as the frontend.
+            NO_KNOWN_ROUTE_FROM_NCC_NETWORK_TO_DESTINATION (97):
+                Packet from the unknown NCC network is
+                dropped due to no known route from the source
+                network to the destination IP address.
+            CLOUD_NAT_PROTOCOL_UNSUPPORTED (99):
+                Packet is dropped by Cloud NAT due to using
+                an unsupported protocol.
+            L2_INTERCONNECT_UNSUPPORTED_PROTOCOL (100):
+                Packet is dropped due to using an unsupported
+                protocol (any other than UDP) for L2
+                Interconnect.
+            L2_INTERCONNECT_UNSUPPORTED_PORT (101):
+                Packet is dropped due to using an unsupported
+                port (any other than 6081) for L2 Interconnect.
+            L2_INTERCONNECT_DESTINATION_IP_MISMATCH (102):
+                Packet is dropped due to destination IP not
+                matching the appliance mapping IPs configured on
+                the L2 Interconnect attachment.
+            NCC_ROUTE_WITHIN_HYBRID_SUBNET_UNSUPPORTED (104):
+                Packet could be dropped because it matches a
+                route associated with an NCC spoke in the hybrid
+                subnet context, but such a configuration is not
+                supported.
+            HYBRID_SUBNET_REGION_MISMATCH (105):
+                Packet is dropped because the region of the
+                hybrid subnet is different from the region of
+                the next hop of the route matched within this
+                hybrid subnet.
         """
         CAUSE_UNSPECIFIED = 0
         UNKNOWN_EXTERNAL_ADDRESS = 1
@@ -2532,6 +2842,7 @@ class DropInfo(proto.Message):
         ROUTE_NEXT_HOP_VPN_TUNNEL_NOT_ESTABLISHED = 52
         ROUTE_NEXT_HOP_FORWARDING_RULE_TYPE_INVALID = 53
         NO_ROUTE_FROM_INTERNET_TO_PRIVATE_IPV6_ADDRESS = 44
+        NO_ROUTE_FROM_EXTERNAL_IPV6_SOURCE_TO_PRIVATE_IPV6_ADDRESS = 98
         VPN_TUNNEL_LOCAL_SELECTOR_MISMATCH = 45
         VPN_TUNNEL_REMOTE_SELECTOR_MISMATCH = 46
         PRIVATE_TRAFFIC_TO_INTERNET = 7
@@ -2605,6 +2916,16 @@ class DropInfo(proto.Message):
         PSC_PORT_MAPPING_PORT_MISMATCH = 86
         PSC_PORT_MAPPING_WITHOUT_PSC_CONNECTION_UNSUPPORTED = 87
         UNSUPPORTED_ROUTE_MATCHED_FOR_NAT64_DESTINATION = 88
+        TRAFFIC_FROM_HYBRID_ENDPOINT_TO_INTERNET_DISALLOWED = 89
+        NO_MATCHING_NAT64_GATEWAY = 90
+        LOAD_BALANCER_BACKEND_IP_VERSION_MISMATCH = 96
+        NO_KNOWN_ROUTE_FROM_NCC_NETWORK_TO_DESTINATION = 97
+        CLOUD_NAT_PROTOCOL_UNSUPPORTED = 99
+        L2_INTERCONNECT_UNSUPPORTED_PROTOCOL = 100
+        L2_INTERCONNECT_UNSUPPORTED_PORT = 101
+        L2_INTERCONNECT_DESTINATION_IP_MISMATCH = 102
+        NCC_ROUTE_WITHIN_HYBRID_SUBNET_UNSUPPORTED = 104
+        HYBRID_SUBNET_REGION_MISMATCH = 105
 
     cause: Cause = proto.Field(
         proto.ENUM,
@@ -2626,6 +2947,14 @@ class DropInfo(proto.Message):
     region: str = proto.Field(
         proto.STRING,
         number=5,
+    )
+    source_geolocation_code: str = proto.Field(
+        proto.STRING,
+        number=6,
+    )
+    destination_geolocation_code: str = proto.Field(
+        proto.STRING,
+        number=7,
     )
 
 
@@ -3056,12 +3385,15 @@ class NatInfo(proto.Message):
                 Cloud NAT Gateway.
             PRIVATE_SERVICE_CONNECT (4):
                 Private service connect NAT.
+            GKE_POD_IP_MASQUERADING (5):
+                GKE Pod IP address masquerading.
         """
         TYPE_UNSPECIFIED = 0
         INTERNAL_TO_EXTERNAL = 1
         EXTERNAL_TO_INTERNAL = 2
         CLOUD_NAT = 3
         PRIVATE_SERVICE_CONNECT = 4
+        GKE_POD_IP_MASQUERADING = 5
 
     type_: Type = proto.Field(
         proto.ENUM,

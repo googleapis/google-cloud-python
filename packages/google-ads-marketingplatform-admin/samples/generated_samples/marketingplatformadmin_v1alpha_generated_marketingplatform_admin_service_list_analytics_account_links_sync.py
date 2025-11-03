@@ -50,4 +50,5 @@ def sample_list_analytics_account_links():
     for response in page_result:
         print(response)
 
+
 # [END marketingplatformadmin_v1alpha_generated_MarketingplatformAdminService_ListAnalyticsAccountLinks_sync]

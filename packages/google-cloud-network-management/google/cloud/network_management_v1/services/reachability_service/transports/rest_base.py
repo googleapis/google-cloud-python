@@ -418,6 +418,10 @@ class _BaseReachabilityServiceRestTransport(ReachabilityServiceTransport):
                     "method": "get",
                     "uri": "/v1/{name=projects/*/locations/*}",
                 },
+                {
+                    "method": "get",
+                    "uri": "/v1/{name=organizations/*/locations/*}",
+                },
             ]
             return http_options
 
@@ -442,6 +446,10 @@ class _BaseReachabilityServiceRestTransport(ReachabilityServiceTransport):
                 {
                     "method": "get",
                     "uri": "/v1/{name=projects/*}/locations",
+                },
+                {
+                    "method": "get",
+                    "uri": "/v1/{name=organizations/*}/locations",
                 },
             ]
             return http_options
@@ -556,6 +564,11 @@ class _BaseReachabilityServiceRestTransport(ReachabilityServiceTransport):
                     "uri": "/v1/{name=projects/*/locations/global/operations/*}:cancel",
                     "body": "*",
                 },
+                {
+                    "method": "post",
+                    "uri": "/v1/{name=organizations/*/locations/*/operations/*}:cancel",
+                    "body": "*",
+                },
             ]
             return http_options
 
@@ -586,6 +599,10 @@ class _BaseReachabilityServiceRestTransport(ReachabilityServiceTransport):
                     "method": "delete",
                     "uri": "/v1/{name=projects/*/locations/global/operations/*}",
                 },
+                {
+                    "method": "delete",
+                    "uri": "/v1/{name=organizations/*/locations/*/operations/*}",
+                },
             ]
             return http_options
 
@@ -611,6 +628,10 @@ class _BaseReachabilityServiceRestTransport(ReachabilityServiceTransport):
                     "method": "get",
                     "uri": "/v1/{name=projects/*/locations/global/operations/*}",
                 },
+                {
+                    "method": "get",
+                    "uri": "/v1/{name=organizations/*/locations/*/operations/*}",
+                },
             ]
             return http_options
 
@@ -635,6 +656,10 @@ class _BaseReachabilityServiceRestTransport(ReachabilityServiceTransport):
                 {
                     "method": "get",
                     "uri": "/v1/{name=projects/*/locations/global}/operations",
+                },
+                {
+                    "method": "get",
+                    "uri": "/v1/{name=organizations/*/locations/*}/operations",
                 },
             ]
             return http_options

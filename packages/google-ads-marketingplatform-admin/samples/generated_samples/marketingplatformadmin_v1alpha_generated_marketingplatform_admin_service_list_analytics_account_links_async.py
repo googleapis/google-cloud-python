@@ -50,4 +50,5 @@ async def sample_list_analytics_account_links():
     async for response in page_result:
         print(response)
 
+
 # [END marketingplatformadmin_v1alpha_generated_MarketingplatformAdminService_ListAnalyticsAccountLinks_async]

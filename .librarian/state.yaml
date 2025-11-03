@@ -21,7 +21,7 @@ libraries:
     tag_format: '{id}-v{version}'
   - id: google-ads-marketingplatform-admin
     version: 0.2.0
-    last_generated_commit: 3322511885371d2b2253f209ccc3aa60d4100cfd
+    last_generated_commit: 97763d6efb2d35474e0363c254ee6994837a08fa
     apis:
       - path: google/marketingplatform/admin/v1alpha
         service_config: marketingplatformadmin_v1alpha.yaml
@@ -1182,7 +1182,7 @@ libraries:
     tag_format: '{id}-v{version}'
   - id: google-cloud-cloudsecuritycompliance
     version: 0.3.0
-    last_generated_commit: 72e7439c8e7e9986cf1865e337fc7c64ca5bda1f
+    last_generated_commit: 97763d6efb2d35474e0363c254ee6994837a08fa
     apis:
       - path: google/cloud/cloudsecuritycompliance/v1
         service_config: cloudsecuritycompliance_v1.yaml
@@ -2700,7 +2700,7 @@ libraries:
     tag_format: '{id}-v{version}'
   - id: google-cloud-network-management
     version: 1.29.0
-    last_generated_commit: 3322511885371d2b2253f209ccc3aa60d4100cfd
+    last_generated_commit: 97763d6efb2d35474e0363c254ee6994837a08fa
     apis:
       - path: google/cloud/networkmanagement/v1
         service_config: networkmanagement_v1.yaml
@@ -4385,7 +4385,7 @@ libraries:
     tag_format: '{id}-v{version}'
   - id: google-shopping-merchant-datasources
     version: 1.1.0
-    last_generated_commit: 3322511885371d2b2253f209ccc3aa60d4100cfd
+    last_generated_commit: 97763d6efb2d35474e0363c254ee6994837a08fa
     apis:
       - path: google/shopping/merchant/datasources/v1
         service_config: merchantapi_v1.yaml

@@ -52,4 +52,5 @@ def sample_update_data_source():
     # Handle the response
     print(response)
 
+
 # [END merchantapi_v1beta_generated_DataSourcesService_UpdateDataSource_sync]

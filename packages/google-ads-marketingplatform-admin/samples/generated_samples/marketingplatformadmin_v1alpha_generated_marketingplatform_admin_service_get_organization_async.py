@@ -49,4 +49,5 @@ async def sample_get_organization():
     # Handle the response
     print(response)
 
+
 # [END marketingplatformadmin_v1alpha_generated_MarketingplatformAdminService_GetOrganization_async]

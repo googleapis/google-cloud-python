@@ -1,21 +1,21 @@
 Python Client for Merchant API
 ==============================
 
-|stable| |pypi| |versions|
+|preview| |pypi| |versions|
 
-`Merchant API`_: Programmatically manage your Merchant Center accounts.
+`Merchant API`_: Programmatically manage your Merchant Center Accounts.
 
 - `Client Library Documentation`_
 - `Product Documentation`_
 
-.. |stable| image:: https://img.shields.io/badge/support-stable-gold.svg
+.. |preview| image:: https://img.shields.io/badge/support-preview-orange.svg
    :target: https://github.com/googleapis/google-cloud-python/blob/main/README.rst#stability-levels
 .. |pypi| image:: https://img.shields.io/pypi/v/google-shopping-merchant-datasources.svg
    :target: https://pypi.org/project/google-shopping-merchant-datasources/
 .. |versions| image:: https://img.shields.io/pypi/pyversions/google-shopping-merchant-datasources.svg
    :target: https://pypi.org/project/google-shopping-merchant-datasources/
 .. _Merchant API: https://developers.google.com/merchant/api
-.. _Client Library Documentation: https://googleapis.dev/python/google-shopping-merchant-datasources/latest
+.. _Client Library Documentation: https://cloud.google.com/python/docs/reference/google-shopping-merchant-datasources/latest
 .. _Product Documentation:  https://developers.google.com/merchant/api
 
 Quick Start

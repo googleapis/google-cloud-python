@@ -5446,6 +5446,8 @@ def test_create_connectivity_test_rest_call_success(request_type):
                                 ],
                                 "service_account": "service_account_value",
                                 "psc_network_attachment_uri": "psc_network_attachment_uri_value",
+                                "running": True,
+                                "status": 1,
                             },
                             "firewall": {
                                 "display_name": "display_name_value",
@@ -5465,6 +5467,8 @@ def test_create_connectivity_test_rest_call_success(request_type):
                                 "policy": "policy_value",
                                 "policy_uri": "policy_uri_value",
                                 "firewall_rule_type": 1,
+                                "policy_priority": 1649,
+                                "target_type": 1,
                             },
                             "route": {
                                 "route_type": 1,
@@ -5519,6 +5523,11 @@ def test_create_connectivity_test_rest_call_success(request_type):
                                 "psc_service_attachment_uri": "psc_service_attachment_uri_value",
                                 "psc_google_api_target": "psc_google_api_target_value",
                             },
+                            "hybrid_subnet": {
+                                "display_name": "display_name_value",
+                                "uri": "uri_value",
+                                "region": "region_value",
+                            },
                             "vpn_gateway": {
                                 "display_name": "display_name_value",
                                 "uri": "uri_value",
@@ -5537,6 +5546,15 @@ def test_create_connectivity_test_rest_call_success(request_type):
                                 "network_uri": "network_uri_value",
                                 "region": "region_value",
                                 "routing_type": 1,
+                            },
+                            "interconnect_attachment": {
+                                "display_name": "display_name_value",
+                                "uri": "uri_value",
+                                "interconnect_uri": "interconnect_uri_value",
+                                "region": "region_value",
+                                "cloud_router_uri": "cloud_router_uri_value",
+                                "type_": 1,
+                                "l2_attachment_matched_ip_address": "l2_attachment_matched_ip_address_value",
                             },
                             "vpc_connector": {
                                 "display_name": "display_name_value",
@@ -5559,6 +5577,7 @@ def test_create_connectivity_test_rest_call_success(request_type):
                                 "ip_address": "ip_address_value",
                                 "storage_bucket": "storage_bucket_value",
                                 "psc_google_api_target": "psc_google_api_target_value",
+                                "google_service_type": 1,
                             },
                             "forward": {
                                 "target": 1,
@@ -5580,6 +5599,8 @@ def test_create_connectivity_test_rest_call_success(request_type):
                                 "source_ip": "source_ip_value",
                                 "destination_ip": "destination_ip_value",
                                 "region": "region_value",
+                                "source_geolocation_code": "source_geolocation_code_value",
+                                "destination_geolocation_code": "destination_geolocation_code_value",
                             },
                             "load_balancer": {
                                 "load_balancer_type": 1,
@@ -5720,6 +5741,17 @@ def test_create_connectivity_test_rest_call_success(request_type):
             "destination_egress_location": {
                 "metropolitan_area": "metropolitan_area_value"
             },
+            "edge_responses": [
+                {
+                    "result": 1,
+                    "sent_probe_count": 1721,
+                    "successful_probe_count": 2367,
+                    "probing_latency": {},
+                    "destination_egress_location": {},
+                    "destination_router": "destination_router_value",
+                }
+            ],
+            "probed_all_devices": True,
         },
         "round_trip": True,
         "return_reachability_details": {},
@@ -6001,6 +6033,8 @@ def test_update_connectivity_test_rest_call_success(request_type):
                                 ],
                                 "service_account": "service_account_value",
                                 "psc_network_attachment_uri": "psc_network_attachment_uri_value",
+                                "running": True,
+                                "status": 1,
                             },
                             "firewall": {
                                 "display_name": "display_name_value",
@@ -6020,6 +6054,8 @@ def test_update_connectivity_test_rest_call_success(request_type):
                                 "policy": "policy_value",
                                 "policy_uri": "policy_uri_value",
                                 "firewall_rule_type": 1,
+                                "policy_priority": 1649,
+                                "target_type": 1,
                             },
                             "route": {
                                 "route_type": 1,
@@ -6074,6 +6110,11 @@ def test_update_connectivity_test_rest_call_success(request_type):
                                 "psc_service_attachment_uri": "psc_service_attachment_uri_value",
                                 "psc_google_api_target": "psc_google_api_target_value",
                             },
+                            "hybrid_subnet": {
+                                "display_name": "display_name_value",
+                                "uri": "uri_value",
+                                "region": "region_value",
+                            },
                             "vpn_gateway": {
                                 "display_name": "display_name_value",
                                 "uri": "uri_value",
@@ -6092,6 +6133,15 @@ def test_update_connectivity_test_rest_call_success(request_type):
                                 "network_uri": "network_uri_value",
                                 "region": "region_value",
                                 "routing_type": 1,
+                            },
+                            "interconnect_attachment": {
+                                "display_name": "display_name_value",
+                                "uri": "uri_value",
+                                "interconnect_uri": "interconnect_uri_value",
+                                "region": "region_value",
+                                "cloud_router_uri": "cloud_router_uri_value",
+                                "type_": 1,
+                                "l2_attachment_matched_ip_address": "l2_attachment_matched_ip_address_value",
                             },
                             "vpc_connector": {
                                 "display_name": "display_name_value",
@@ -6114,6 +6164,7 @@ def test_update_connectivity_test_rest_call_success(request_type):
                                 "ip_address": "ip_address_value",
                                 "storage_bucket": "storage_bucket_value",
                                 "psc_google_api_target": "psc_google_api_target_value",
+                                "google_service_type": 1,
                             },
                             "forward": {
                                 "target": 1,
@@ -6135,6 +6186,8 @@ def test_update_connectivity_test_rest_call_success(request_type):
                                 "source_ip": "source_ip_value",
                                 "destination_ip": "destination_ip_value",
                                 "region": "region_value",
+                                "source_geolocation_code": "source_geolocation_code_value",
+                                "destination_geolocation_code": "destination_geolocation_code_value",
                             },
                             "load_balancer": {
                                 "load_balancer_type": 1,
@@ -6275,6 +6328,17 @@ def test_update_connectivity_test_rest_call_success(request_type):
             "destination_egress_location": {
                 "metropolitan_area": "metropolitan_area_value"
             },
+            "edge_responses": [
+                {
+                    "result": 1,
+                    "sent_probe_count": 1721,
+                    "successful_probe_count": 2367,
+                    "probing_latency": {},
+                    "destination_egress_location": {},
+                    "destination_router": "destination_router_value",
+                }
+            ],
+            "probed_all_devices": True,
         },
         "round_trip": True,
         "return_reachability_details": {},

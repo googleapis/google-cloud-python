@@ -18,6 +18,10 @@ from google.cloud.network_management_v1 import gapic_version as package_version
 __version__ = package_version.__version__
 
 
+from .services.organization_vpc_flow_logs_service import (
+    OrganizationVpcFlowLogsServiceAsyncClient,
+    OrganizationVpcFlowLogsServiceClient,
+)
 from .services.reachability_service import (
     ReachabilityServiceAsyncClient,
     ReachabilityServiceClient,
@@ -59,7 +63,9 @@ from .types.trace import (
     ForwardingRuleInfo,
     GKEMasterInfo,
     GoogleServiceInfo,
+    HybridSubnetInfo,
     InstanceInfo,
+    InterconnectAttachmentInfo,
     LoadBalancerBackend,
     LoadBalancerBackendInfo,
     LoadBalancerInfo,
@@ -85,11 +91,16 @@ from .types.vpc_flow_logs import (
     GetVpcFlowLogsConfigRequest,
     ListVpcFlowLogsConfigsRequest,
     ListVpcFlowLogsConfigsResponse,
+    QueryOrgVpcFlowLogsConfigsRequest,
+    QueryOrgVpcFlowLogsConfigsResponse,
+    ShowEffectiveFlowLogsConfigsRequest,
+    ShowEffectiveFlowLogsConfigsResponse,
     UpdateVpcFlowLogsConfigRequest,
 )
-from .types.vpc_flow_logs_config import VpcFlowLogsConfig
+from .types.vpc_flow_logs_config import EffectiveVpcFlowLogsConfig, VpcFlowLogsConfig
 
 __all__ = (
+    "OrganizationVpcFlowLogsServiceAsyncClient",
     "ReachabilityServiceAsyncClient",
     "VpcFlowLogsServiceAsyncClient",
     "AbortInfo",
@@ -105,6 +116,7 @@ __all__ = (
     "DeliverInfo",
     "DirectVpcEgressConnectionInfo",
     "DropInfo",
+    "EffectiveVpcFlowLogsConfig",
     "Endpoint",
     "EndpointInfo",
     "FirewallInfo",
@@ -114,7 +126,9 @@ __all__ = (
     "GetConnectivityTestRequest",
     "GetVpcFlowLogsConfigRequest",
     "GoogleServiceInfo",
+    "HybridSubnetInfo",
     "InstanceInfo",
+    "InterconnectAttachmentInfo",
     "LatencyDistribution",
     "LatencyPercentile",
     "ListConnectivityTestsRequest",
@@ -128,8 +142,11 @@ __all__ = (
     "NatInfo",
     "NetworkInfo",
     "OperationMetadata",
+    "OrganizationVpcFlowLogsServiceClient",
     "ProbingDetails",
     "ProxyConnectionInfo",
+    "QueryOrgVpcFlowLogsConfigsRequest",
+    "QueryOrgVpcFlowLogsConfigsResponse",
     "ReachabilityDetails",
     "ReachabilityServiceClient",
     "RedisClusterInfo",
@@ -138,6 +155,8 @@ __all__ = (
     "RouteInfo",
     "ServerlessExternalConnectionInfo",
     "ServerlessNegInfo",
+    "ShowEffectiveFlowLogsConfigsRequest",
+    "ShowEffectiveFlowLogsConfigsResponse",
     "Step",
     "StorageBucketInfo",
     "Trace",

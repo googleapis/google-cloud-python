@@ -38,6 +38,12 @@ from google.cloud.cloudsecuritycompliance_v1.services.deployment.async_client im
 from google.cloud.cloudsecuritycompliance_v1.services.deployment.client import (
     DeploymentClient,
 )
+from google.cloud.cloudsecuritycompliance_v1.services.monitoring.async_client import (
+    MonitoringAsyncClient,
+)
+from google.cloud.cloudsecuritycompliance_v1.services.monitoring.client import (
+    MonitoringClient,
+)
 from google.cloud.cloudsecuritycompliance_v1.types.audit import (
     BucketDestination,
     CloudControlAuditDetails,
@@ -126,6 +132,30 @@ from google.cloud.cloudsecuritycompliance_v1.types.deployment import (
     TargetResourceConfig,
     TargetResourceCreationConfig,
 )
+from google.cloud.cloudsecuritycompliance_v1.types.monitoring import (
+    AggregatedComplianceReport,
+    AggregateFrameworkComplianceReportRequest,
+    AggregateFrameworkComplianceReportResponse,
+    CloudControlAssessmentDetails,
+    CloudControlReport,
+    ControlAssessmentDetails,
+    ControlComplianceSummary,
+    EvaluationState,
+    FetchFrameworkComplianceReportRequest,
+    FindingClass,
+    FindingSummary,
+    FrameworkComplianceReport,
+    FrameworkComplianceSummary,
+    ListControlComplianceSummariesRequest,
+    ListControlComplianceSummariesResponse,
+    ListFindingSummariesRequest,
+    ListFindingSummariesResponse,
+    ListFrameworkComplianceSummariesRequest,
+    ListFrameworkComplianceSummariesResponse,
+    ManualCloudControlAssessmentDetails,
+    SimilarControls,
+    TargetResourceDetails,
+)
 
 __all__ = (
     "AuditClient",
@@ -136,6 +166,8 @@ __all__ = (
     "ConfigAsyncClient",
     "DeploymentClient",
     "DeploymentAsyncClient",
+    "MonitoringClient",
+    "MonitoringAsyncClient",
     "BucketDestination",
     "CloudControlAuditDetails",
     "CloudControlGroupAuditDetails",
@@ -214,4 +246,26 @@ __all__ = (
     "TargetResourceConfig",
     "TargetResourceCreationConfig",
     "DeploymentState",
+    "AggregatedComplianceReport",
+    "AggregateFrameworkComplianceReportRequest",
+    "AggregateFrameworkComplianceReportResponse",
+    "CloudControlAssessmentDetails",
+    "CloudControlReport",
+    "ControlAssessmentDetails",
+    "ControlComplianceSummary",
+    "FetchFrameworkComplianceReportRequest",
+    "FindingSummary",
+    "FrameworkComplianceReport",
+    "FrameworkComplianceSummary",
+    "ListControlComplianceSummariesRequest",
+    "ListControlComplianceSummariesResponse",
+    "ListFindingSummariesRequest",
+    "ListFindingSummariesResponse",
+    "ListFrameworkComplianceSummariesRequest",
+    "ListFrameworkComplianceSummariesResponse",
+    "ManualCloudControlAssessmentDetails",
+    "SimilarControls",
+    "TargetResourceDetails",
+    "EvaluationState",
+    "FindingClass",
 )

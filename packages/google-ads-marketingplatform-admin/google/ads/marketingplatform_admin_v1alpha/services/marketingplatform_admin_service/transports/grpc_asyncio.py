@@ -366,6 +366,71 @@ class MarketingplatformAdminServiceGrpcAsyncIOTransport(
         return self._stubs["get_organization"]
 
     @property
+    def list_organizations(
+        self,
+    ) -> Callable[
+        [marketingplatform_admin.ListOrganizationsRequest],
+        Awaitable[marketingplatform_admin.ListOrganizationsResponse],
+    ]:
+        r"""Return a callable for the list organizations method over gRPC.
+
+        Returns a list of organizations that the user has
+        access to.
+
+        Returns:
+            Callable[[~.ListOrganizationsRequest],
+                    Awaitable[~.ListOrganizationsResponse]]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "list_organizations" not in self._stubs:
+            self._stubs["list_organizations"] = self._logged_channel.unary_unary(
+                "/google.marketingplatform.admin.v1alpha.MarketingplatformAdminService/ListOrganizations",
+                request_serializer=marketingplatform_admin.ListOrganizationsRequest.serialize,
+                response_deserializer=marketingplatform_admin.ListOrganizationsResponse.deserialize,
+            )
+        return self._stubs["list_organizations"]
+
+    @property
+    def find_sales_partner_managed_clients(
+        self,
+    ) -> Callable[
+        [marketingplatform_admin.FindSalesPartnerManagedClientsRequest],
+        Awaitable[marketingplatform_admin.FindSalesPartnerManagedClientsResponse],
+    ]:
+        r"""Return a callable for the find sales partner managed
+        clients method over gRPC.
+
+        Returns a list of clients managed by the sales
+        partner organization.
+        User needs to be an OrgAdmin/BillingAdmin on the sales
+        partner organization in order to view the end clients.
+
+        Returns:
+            Callable[[~.FindSalesPartnerManagedClientsRequest],
+                    Awaitable[~.FindSalesPartnerManagedClientsResponse]]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "find_sales_partner_managed_clients" not in self._stubs:
+            self._stubs[
+                "find_sales_partner_managed_clients"
+            ] = self._logged_channel.unary_unary(
+                "/google.marketingplatform.admin.v1alpha.MarketingplatformAdminService/FindSalesPartnerManagedClients",
+                request_serializer=marketingplatform_admin.FindSalesPartnerManagedClientsRequest.serialize,
+                response_deserializer=marketingplatform_admin.FindSalesPartnerManagedClientsResponse.deserialize,
+            )
+        return self._stubs["find_sales_partner_managed_clients"]
+
+    @property
     def list_analytics_account_links(
         self,
     ) -> Callable[
@@ -502,11 +567,61 @@ class MarketingplatformAdminServiceGrpcAsyncIOTransport(
             )
         return self._stubs["set_property_service_level"]
 
+    @property
+    def report_property_usage(
+        self,
+    ) -> Callable[
+        [marketingplatform_admin.ReportPropertyUsageRequest],
+        Awaitable[marketingplatform_admin.ReportPropertyUsageResponse],
+    ]:
+        r"""Return a callable for the report property usage method over gRPC.
+
+        Get the usage and billing data for properties within
+        the organization for the specified month.
+
+        Per direct client org, user needs to be
+        OrgAdmin/BillingAdmin on the organization in order to
+        view the billing and usage data.
+
+        Per sales partner client org, user needs to be
+        OrgAdmin/BillingAdmin on the sales partner org in order
+        to view the billing and usage data, or
+        OrgAdmin/BillingAdmin on the sales partner client org in
+        order to view the usage data only.
+
+        Returns:
+            Callable[[~.ReportPropertyUsageRequest],
+                    Awaitable[~.ReportPropertyUsageResponse]]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "report_property_usage" not in self._stubs:
+            self._stubs["report_property_usage"] = self._logged_channel.unary_unary(
+                "/google.marketingplatform.admin.v1alpha.MarketingplatformAdminService/ReportPropertyUsage",
+                request_serializer=marketingplatform_admin.ReportPropertyUsageRequest.serialize,
+                response_deserializer=marketingplatform_admin.ReportPropertyUsageResponse.deserialize,
+            )
+        return self._stubs["report_property_usage"]
+
     def _prep_wrapped_messages(self, client_info):
         """Precompute the wrapped methods, overriding the base class method to use async wrappers."""
         self._wrapped_methods = {
             self.get_organization: self._wrap_method(
                 self.get_organization,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.list_organizations: self._wrap_method(
+                self.list_organizations,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.find_sales_partner_managed_clients: self._wrap_method(
+                self.find_sales_partner_managed_clients,
                 default_timeout=None,
                 client_info=client_info,
             ),
@@ -527,6 +642,11 @@ class MarketingplatformAdminServiceGrpcAsyncIOTransport(
             ),
             self.set_property_service_level: self._wrap_method(
                 self.set_property_service_level,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.report_property_usage: self._wrap_method(
+                self.report_property_usage,
                 default_timeout=None,
                 client_info=client_info,
             ),

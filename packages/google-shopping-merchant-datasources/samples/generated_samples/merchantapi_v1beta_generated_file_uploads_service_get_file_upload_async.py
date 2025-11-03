@@ -49,4 +49,5 @@ async def sample_get_file_upload():
     # Handle the response
     print(response)
 
+
 # [END merchantapi_v1beta_generated_FileUploadsService_GetFileUpload_async]

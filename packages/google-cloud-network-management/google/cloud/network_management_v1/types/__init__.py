@@ -46,7 +46,9 @@ from .trace import (
     ForwardingRuleInfo,
     GKEMasterInfo,
     GoogleServiceInfo,
+    HybridSubnetInfo,
     InstanceInfo,
+    InterconnectAttachmentInfo,
     LoadBalancerBackend,
     LoadBalancerBackendInfo,
     LoadBalancerInfo,
@@ -72,9 +74,13 @@ from .vpc_flow_logs import (
     GetVpcFlowLogsConfigRequest,
     ListVpcFlowLogsConfigsRequest,
     ListVpcFlowLogsConfigsResponse,
+    QueryOrgVpcFlowLogsConfigsRequest,
+    QueryOrgVpcFlowLogsConfigsResponse,
+    ShowEffectiveFlowLogsConfigsRequest,
+    ShowEffectiveFlowLogsConfigsResponse,
     UpdateVpcFlowLogsConfigRequest,
 )
-from .vpc_flow_logs_config import VpcFlowLogsConfig
+from .vpc_flow_logs_config import EffectiveVpcFlowLogsConfig, VpcFlowLogsConfig
 
 __all__ = (
     "ConnectivityTest",
@@ -105,7 +111,9 @@ __all__ = (
     "ForwardingRuleInfo",
     "GKEMasterInfo",
     "GoogleServiceInfo",
+    "HybridSubnetInfo",
     "InstanceInfo",
+    "InterconnectAttachmentInfo",
     "LoadBalancerBackend",
     "LoadBalancerBackendInfo",
     "LoadBalancerInfo",
@@ -129,6 +137,11 @@ __all__ = (
     "GetVpcFlowLogsConfigRequest",
     "ListVpcFlowLogsConfigsRequest",
     "ListVpcFlowLogsConfigsResponse",
+    "QueryOrgVpcFlowLogsConfigsRequest",
+    "QueryOrgVpcFlowLogsConfigsResponse",
+    "ShowEffectiveFlowLogsConfigsRequest",
+    "ShowEffectiveFlowLogsConfigsResponse",
     "UpdateVpcFlowLogsConfigRequest",
+    "EffectiveVpcFlowLogsConfig",
     "VpcFlowLogsConfig",
 )
