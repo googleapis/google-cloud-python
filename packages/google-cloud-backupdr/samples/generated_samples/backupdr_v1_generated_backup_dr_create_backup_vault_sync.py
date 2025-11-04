@@ -54,4 +54,5 @@ def sample_create_backup_vault():
     # Handle the response
     print(response)
 
+
 # [END backupdr_v1_generated_BackupDR_CreateBackupVault_sync]

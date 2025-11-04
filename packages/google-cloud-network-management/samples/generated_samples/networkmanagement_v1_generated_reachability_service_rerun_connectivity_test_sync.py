@@ -53,4 +53,5 @@ def sample_rerun_connectivity_test():
     # Handle the response
     print(response)
 
+
 # [END networkmanagement_v1_generated_ReachabilityService_RerunConnectivityTest_sync]

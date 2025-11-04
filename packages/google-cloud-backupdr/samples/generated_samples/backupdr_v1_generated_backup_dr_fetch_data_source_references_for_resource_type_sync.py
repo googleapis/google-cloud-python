@@ -51,4 +51,5 @@ def sample_fetch_data_source_references_for_resource_type():
     for response in page_result:
         print(response)
 
+
 # [END backupdr_v1_generated_BackupDR_FetchDataSourceReferencesForResourceType_sync]

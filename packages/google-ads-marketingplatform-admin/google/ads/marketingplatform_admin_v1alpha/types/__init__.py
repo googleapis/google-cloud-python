@@ -14,27 +14,45 @@
 # limitations under the License.
 #
 from .marketingplatform_admin import (
-    AnalyticsServiceLevel,
     CreateAnalyticsAccountLinkRequest,
     DeleteAnalyticsAccountLinkRequest,
+    FindSalesPartnerManagedClientsRequest,
+    FindSalesPartnerManagedClientsResponse,
     GetOrganizationRequest,
     ListAnalyticsAccountLinksRequest,
     ListAnalyticsAccountLinksResponse,
+    ListOrganizationsRequest,
+    ListOrganizationsResponse,
+    ReportPropertyUsageRequest,
+    ReportPropertyUsageResponse,
     SetPropertyServiceLevelRequest,
     SetPropertyServiceLevelResponse,
 )
-from .resources import AnalyticsAccountLink, LinkVerificationState, Organization
+from .resources import (
+    AnalyticsAccountLink,
+    AnalyticsPropertyType,
+    AnalyticsServiceLevel,
+    LinkVerificationState,
+    Organization,
+)
 
 __all__ = (
     "CreateAnalyticsAccountLinkRequest",
     "DeleteAnalyticsAccountLinkRequest",
+    "FindSalesPartnerManagedClientsRequest",
+    "FindSalesPartnerManagedClientsResponse",
     "GetOrganizationRequest",
     "ListAnalyticsAccountLinksRequest",
     "ListAnalyticsAccountLinksResponse",
+    "ListOrganizationsRequest",
+    "ListOrganizationsResponse",
+    "ReportPropertyUsageRequest",
+    "ReportPropertyUsageResponse",
     "SetPropertyServiceLevelRequest",
     "SetPropertyServiceLevelResponse",
-    "AnalyticsServiceLevel",
     "AnalyticsAccountLink",
     "Organization",
+    "AnalyticsPropertyType",
+    "AnalyticsServiceLevel",
     "LinkVerificationState",
 )

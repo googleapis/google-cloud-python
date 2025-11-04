@@ -50,4 +50,5 @@ def sample_list_gateways():
     for response in page_result:
         print(response)
 
+
 # [END networkservices_v1_generated_NetworkServices_ListGateways_sync]

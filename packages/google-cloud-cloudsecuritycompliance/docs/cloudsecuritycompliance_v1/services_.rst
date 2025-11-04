@@ -7,3 +7,4 @@ Services for Google Cloud Cloudsecuritycompliance v1 API
     cm_enrollment_service
     config
     deployment
+    monitoring

@@ -39,8 +39,7 @@ async def sample_update_backup():
     client = backupdr_v1.BackupDRAsyncClient()
 
     # Initialize request argument(s)
-    request = backupdr_v1.UpdateBackupRequest(
-    )
+    request = backupdr_v1.UpdateBackupRequest()
 
     # Make the request
     operation = client.update_backup(request=request)
@@ -51,5 +50,6 @@ async def sample_update_backup():
 
     # Handle the response
     print(response)
+
 
 # [END backupdr_v1_generated_BackupDR_UpdateBackup_async]

@@ -39,8 +39,7 @@ def sample_update_mesh():
     client = network_services_v1.NetworkServicesClient()
 
     # Initialize request argument(s)
-    request = network_services_v1.UpdateMeshRequest(
-    )
+    request = network_services_v1.UpdateMeshRequest()
 
     # Make the request
     operation = client.update_mesh(request=request)
@@ -51,5 +50,6 @@ def sample_update_mesh():
 
     # Handle the response
     print(response)
+
 
 # [END networkservices_v1_generated_NetworkServices_UpdateMesh_sync]

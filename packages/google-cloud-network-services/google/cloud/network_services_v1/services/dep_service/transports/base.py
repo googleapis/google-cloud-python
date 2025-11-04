@@ -187,6 +187,31 @@ class DepServiceTransport(abc.ABC):
                 default_timeout=None,
                 client_info=client_info,
             ),
+            self.list_lb_edge_extensions: gapic_v1.method.wrap_method(
+                self.list_lb_edge_extensions,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.get_lb_edge_extension: gapic_v1.method.wrap_method(
+                self.get_lb_edge_extension,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.create_lb_edge_extension: gapic_v1.method.wrap_method(
+                self.create_lb_edge_extension,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.update_lb_edge_extension: gapic_v1.method.wrap_method(
+                self.update_lb_edge_extension,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.delete_lb_edge_extension: gapic_v1.method.wrap_method(
+                self.delete_lb_edge_extension,
+                default_timeout=None,
+                client_info=client_info,
+            ),
             self.list_authz_extensions: gapic_v1.method.wrap_method(
                 self.list_authz_extensions,
                 default_timeout=None,
@@ -365,6 +390,54 @@ class DepServiceTransport(abc.ABC):
         self,
     ) -> Callable[
         [dep.DeleteLbRouteExtensionRequest],
+        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def list_lb_edge_extensions(
+        self,
+    ) -> Callable[
+        [dep.ListLbEdgeExtensionsRequest],
+        Union[
+            dep.ListLbEdgeExtensionsResponse,
+            Awaitable[dep.ListLbEdgeExtensionsResponse],
+        ],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def get_lb_edge_extension(
+        self,
+    ) -> Callable[
+        [dep.GetLbEdgeExtensionRequest],
+        Union[dep.LbEdgeExtension, Awaitable[dep.LbEdgeExtension]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def create_lb_edge_extension(
+        self,
+    ) -> Callable[
+        [dep.CreateLbEdgeExtensionRequest],
+        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def update_lb_edge_extension(
+        self,
+    ) -> Callable[
+        [dep.UpdateLbEdgeExtensionRequest],
+        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def delete_lb_edge_extension(
+        self,
+    ) -> Callable[
+        [dep.DeleteLbEdgeExtensionRequest],
         Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
     ]:
         raise NotImplementedError()

@@ -40,7 +40,7 @@ def sample_create_wasm_plugin_version():
 
     # Initialize request argument(s)
     wasm_plugin_version = network_services_v1.WasmPluginVersion()
-    wasm_plugin_version.plugin_config_data = b'plugin_config_data_blob'
+    wasm_plugin_version.plugin_config_data = b"plugin_config_data_blob"
 
     request = network_services_v1.CreateWasmPluginVersionRequest(
         parent="parent_value",
@@ -57,5 +57,6 @@ def sample_create_wasm_plugin_version():
 
     # Handle the response
     print(response)
+
 
 # [END networkservices_v1_generated_NetworkServices_CreateWasmPluginVersion_sync]

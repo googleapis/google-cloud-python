@@ -49,4 +49,5 @@ async def sample_get_vpc_flow_logs_config():
     # Handle the response
     print(response)
 
+
 # [END networkmanagement_v1_generated_VpcFlowLogsService_GetVpcFlowLogsConfig_async]

@@ -357,6 +357,71 @@ class MarketingplatformAdminServiceGrpcTransport(
         return self._stubs["get_organization"]
 
     @property
+    def list_organizations(
+        self,
+    ) -> Callable[
+        [marketingplatform_admin.ListOrganizationsRequest],
+        marketingplatform_admin.ListOrganizationsResponse,
+    ]:
+        r"""Return a callable for the list organizations method over gRPC.
+
+        Returns a list of organizations that the user has
+        access to.
+
+        Returns:
+            Callable[[~.ListOrganizationsRequest],
+                    ~.ListOrganizationsResponse]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "list_organizations" not in self._stubs:
+            self._stubs["list_organizations"] = self._logged_channel.unary_unary(
+                "/google.marketingplatform.admin.v1alpha.MarketingplatformAdminService/ListOrganizations",
+                request_serializer=marketingplatform_admin.ListOrganizationsRequest.serialize,
+                response_deserializer=marketingplatform_admin.ListOrganizationsResponse.deserialize,
+            )
+        return self._stubs["list_organizations"]
+
+    @property
+    def find_sales_partner_managed_clients(
+        self,
+    ) -> Callable[
+        [marketingplatform_admin.FindSalesPartnerManagedClientsRequest],
+        marketingplatform_admin.FindSalesPartnerManagedClientsResponse,
+    ]:
+        r"""Return a callable for the find sales partner managed
+        clients method over gRPC.
+
+        Returns a list of clients managed by the sales
+        partner organization.
+        User needs to be an OrgAdmin/BillingAdmin on the sales
+        partner organization in order to view the end clients.
+
+        Returns:
+            Callable[[~.FindSalesPartnerManagedClientsRequest],
+                    ~.FindSalesPartnerManagedClientsResponse]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "find_sales_partner_managed_clients" not in self._stubs:
+            self._stubs[
+                "find_sales_partner_managed_clients"
+            ] = self._logged_channel.unary_unary(
+                "/google.marketingplatform.admin.v1alpha.MarketingplatformAdminService/FindSalesPartnerManagedClients",
+                request_serializer=marketingplatform_admin.FindSalesPartnerManagedClientsRequest.serialize,
+                response_deserializer=marketingplatform_admin.FindSalesPartnerManagedClientsResponse.deserialize,
+            )
+        return self._stubs["find_sales_partner_managed_clients"]
+
+    @property
     def list_analytics_account_links(
         self,
     ) -> Callable[
@@ -491,6 +556,46 @@ class MarketingplatformAdminServiceGrpcTransport(
                 response_deserializer=marketingplatform_admin.SetPropertyServiceLevelResponse.deserialize,
             )
         return self._stubs["set_property_service_level"]
+
+    @property
+    def report_property_usage(
+        self,
+    ) -> Callable[
+        [marketingplatform_admin.ReportPropertyUsageRequest],
+        marketingplatform_admin.ReportPropertyUsageResponse,
+    ]:
+        r"""Return a callable for the report property usage method over gRPC.
+
+        Get the usage and billing data for properties within
+        the organization for the specified month.
+
+        Per direct client org, user needs to be
+        OrgAdmin/BillingAdmin on the organization in order to
+        view the billing and usage data.
+
+        Per sales partner client org, user needs to be
+        OrgAdmin/BillingAdmin on the sales partner org in order
+        to view the billing and usage data, or
+        OrgAdmin/BillingAdmin on the sales partner client org in
+        order to view the usage data only.
+
+        Returns:
+            Callable[[~.ReportPropertyUsageRequest],
+                    ~.ReportPropertyUsageResponse]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "report_property_usage" not in self._stubs:
+            self._stubs["report_property_usage"] = self._logged_channel.unary_unary(
+                "/google.marketingplatform.admin.v1alpha.MarketingplatformAdminService/ReportPropertyUsage",
+                request_serializer=marketingplatform_admin.ReportPropertyUsageRequest.serialize,
+                response_deserializer=marketingplatform_admin.ReportPropertyUsageResponse.deserialize,
+            )
+        return self._stubs["report_property_usage"]
 
     def close(self):
         self._logged_channel.close()

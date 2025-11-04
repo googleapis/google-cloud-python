@@ -53,4 +53,5 @@ def sample_delete_gateway():
     # Handle the response
     print(response)
 
+
 # [END networkservices_v1_generated_NetworkServices_DeleteGateway_sync]

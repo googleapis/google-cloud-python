@@ -56,4 +56,5 @@ def sample_update_gateway():
     # Handle the response
     print(response)
 
+
 # [END networkservices_v1_generated_NetworkServices_UpdateGateway_sync]

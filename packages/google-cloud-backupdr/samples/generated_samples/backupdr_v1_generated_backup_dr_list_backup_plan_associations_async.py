@@ -50,4 +50,5 @@ async def sample_list_backup_plan_associations():
     async for response in page_result:
         print(response)
 
+
 # [END backupdr_v1_generated_BackupDR_ListBackupPlanAssociations_async]

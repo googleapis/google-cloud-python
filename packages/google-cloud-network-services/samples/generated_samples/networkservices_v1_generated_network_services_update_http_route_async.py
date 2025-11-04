@@ -40,7 +40,7 @@ async def sample_update_http_route():
 
     # Initialize request argument(s)
     http_route = network_services_v1.HttpRoute()
-    http_route.hostnames = ['hostnames_value1', 'hostnames_value2']
+    http_route.hostnames = ["hostnames_value1", "hostnames_value2"]
 
     request = network_services_v1.UpdateHttpRouteRequest(
         http_route=http_route,
@@ -55,5 +55,6 @@ async def sample_update_http_route():
 
     # Handle the response
     print(response)
+
 
 # [END networkservices_v1_generated_NetworkServices_UpdateHttpRoute_async]

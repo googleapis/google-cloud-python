@@ -108,6 +108,22 @@ class VpcFlowLogsServiceRestInterceptor:
                 logging.log(f"Received response: {response}")
                 return response
 
+            def pre_query_org_vpc_flow_logs_configs(self, request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_query_org_vpc_flow_logs_configs(self, response):
+                logging.log(f"Received response: {response}")
+                return response
+
+            def pre_show_effective_flow_logs_configs(self, request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_show_effective_flow_logs_configs(self, response):
+                logging.log(f"Received response: {response}")
+                return response
+
             def pre_update_vpc_flow_logs_config(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
@@ -320,6 +336,110 @@ class VpcFlowLogsServiceRestInterceptor:
         `post_list_vpc_flow_logs_configs` interceptor. The (possibly modified) response returned by
         `post_list_vpc_flow_logs_configs` will be passed to
         `post_list_vpc_flow_logs_configs_with_metadata`.
+        """
+        return response, metadata
+
+    def pre_query_org_vpc_flow_logs_configs(
+        self,
+        request: vpc_flow_logs.QueryOrgVpcFlowLogsConfigsRequest,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        vpc_flow_logs.QueryOrgVpcFlowLogsConfigsRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
+        """Pre-rpc interceptor for query_org_vpc_flow_logs_configs
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the VpcFlowLogsService server.
+        """
+        return request, metadata
+
+    def post_query_org_vpc_flow_logs_configs(
+        self, response: vpc_flow_logs.QueryOrgVpcFlowLogsConfigsResponse
+    ) -> vpc_flow_logs.QueryOrgVpcFlowLogsConfigsResponse:
+        """Post-rpc interceptor for query_org_vpc_flow_logs_configs
+
+        DEPRECATED. Please use the `post_query_org_vpc_flow_logs_configs_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
+        after it is returned by the VpcFlowLogsService server but before
+        it is returned to user code. This `post_query_org_vpc_flow_logs_configs` interceptor runs
+        before the `post_query_org_vpc_flow_logs_configs_with_metadata` interceptor.
+        """
+        return response
+
+    def post_query_org_vpc_flow_logs_configs_with_metadata(
+        self,
+        response: vpc_flow_logs.QueryOrgVpcFlowLogsConfigsResponse,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        vpc_flow_logs.QueryOrgVpcFlowLogsConfigsResponse,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
+        """Post-rpc interceptor for query_org_vpc_flow_logs_configs
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the VpcFlowLogsService server but before it is returned to user code.
+
+        We recommend only using this `post_query_org_vpc_flow_logs_configs_with_metadata`
+        interceptor in new development instead of the `post_query_org_vpc_flow_logs_configs` interceptor.
+        When both interceptors are used, this `post_query_org_vpc_flow_logs_configs_with_metadata` interceptor runs after the
+        `post_query_org_vpc_flow_logs_configs` interceptor. The (possibly modified) response returned by
+        `post_query_org_vpc_flow_logs_configs` will be passed to
+        `post_query_org_vpc_flow_logs_configs_with_metadata`.
+        """
+        return response, metadata
+
+    def pre_show_effective_flow_logs_configs(
+        self,
+        request: vpc_flow_logs.ShowEffectiveFlowLogsConfigsRequest,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        vpc_flow_logs.ShowEffectiveFlowLogsConfigsRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
+        """Pre-rpc interceptor for show_effective_flow_logs_configs
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the VpcFlowLogsService server.
+        """
+        return request, metadata
+
+    def post_show_effective_flow_logs_configs(
+        self, response: vpc_flow_logs.ShowEffectiveFlowLogsConfigsResponse
+    ) -> vpc_flow_logs.ShowEffectiveFlowLogsConfigsResponse:
+        """Post-rpc interceptor for show_effective_flow_logs_configs
+
+        DEPRECATED. Please use the `post_show_effective_flow_logs_configs_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
+        after it is returned by the VpcFlowLogsService server but before
+        it is returned to user code. This `post_show_effective_flow_logs_configs` interceptor runs
+        before the `post_show_effective_flow_logs_configs_with_metadata` interceptor.
+        """
+        return response
+
+    def post_show_effective_flow_logs_configs_with_metadata(
+        self,
+        response: vpc_flow_logs.ShowEffectiveFlowLogsConfigsResponse,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        vpc_flow_logs.ShowEffectiveFlowLogsConfigsResponse,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
+        """Post-rpc interceptor for show_effective_flow_logs_configs
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the VpcFlowLogsService server but before it is returned to user code.
+
+        We recommend only using this `post_show_effective_flow_logs_configs_with_metadata`
+        interceptor in new development instead of the `post_show_effective_flow_logs_configs` interceptor.
+        When both interceptors are used, this `post_show_effective_flow_logs_configs_with_metadata` interceptor runs after the
+        `post_show_effective_flow_logs_configs` interceptor. The (possibly modified) response returned by
+        `post_show_effective_flow_logs_configs` will be passed to
+        `post_show_effective_flow_logs_configs_with_metadata`.
         """
         return response, metadata
 
@@ -698,11 +818,20 @@ class VpcFlowLogsServiceRestTransport(_BaseVpcFlowLogsServiceRestTransport):
                         "uri": "/v1/{name=projects/*/locations/global/operations/*}:cancel",
                         "body": "*",
                     },
+                    {
+                        "method": "post",
+                        "uri": "/v1/{name=organizations/*/locations/*/operations/*}:cancel",
+                        "body": "*",
+                    },
                 ],
                 "google.longrunning.Operations.DeleteOperation": [
                     {
                         "method": "delete",
                         "uri": "/v1/{name=projects/*/locations/global/operations/*}",
+                    },
+                    {
+                        "method": "delete",
+                        "uri": "/v1/{name=organizations/*/locations/*/operations/*}",
                     },
                 ],
                 "google.longrunning.Operations.GetOperation": [
@@ -710,11 +839,19 @@ class VpcFlowLogsServiceRestTransport(_BaseVpcFlowLogsServiceRestTransport):
                         "method": "get",
                         "uri": "/v1/{name=projects/*/locations/global/operations/*}",
                     },
+                    {
+                        "method": "get",
+                        "uri": "/v1/{name=organizations/*/locations/*/operations/*}",
+                    },
                 ],
                 "google.longrunning.Operations.ListOperations": [
                     {
                         "method": "get",
                         "uri": "/v1/{name=projects/*/locations/global}/operations",
+                    },
+                    {
+                        "method": "get",
+                        "uri": "/v1/{name=organizations/*/locations/*}/operations",
                     },
                 ],
             }
@@ -1348,6 +1485,318 @@ class VpcFlowLogsServiceRestTransport(_BaseVpcFlowLogsServiceRestTransport):
                 )
             return resp
 
+    class _QueryOrgVpcFlowLogsConfigs(
+        _BaseVpcFlowLogsServiceRestTransport._BaseQueryOrgVpcFlowLogsConfigs,
+        VpcFlowLogsServiceRestStub,
+    ):
+        def __hash__(self):
+            return hash("VpcFlowLogsServiceRestTransport.QueryOrgVpcFlowLogsConfigs")
+
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
+
+        def __call__(
+            self,
+            request: vpc_flow_logs.QueryOrgVpcFlowLogsConfigsRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+        ) -> vpc_flow_logs.QueryOrgVpcFlowLogsConfigsResponse:
+            r"""Call the query org vpc flow logs
+            configs method over HTTP.
+
+                Args:
+                    request (~.vpc_flow_logs.QueryOrgVpcFlowLogsConfigsRequest):
+                        The request object. Request for the ``QueryOrgVpcFlowLogsConfigs`` method.
+                    retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                        should be retried.
+                    timeout (float): The timeout for this request.
+                    metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                        sent along with the request as metadata. Normally, each value must be of type `str`,
+                        but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                        be of type `bytes`.
+
+                Returns:
+                    ~.vpc_flow_logs.QueryOrgVpcFlowLogsConfigsResponse:
+                        Response for the ``QueryVpcFlowLogsConfigs`` method.
+            """
+
+            http_options = (
+                _BaseVpcFlowLogsServiceRestTransport._BaseQueryOrgVpcFlowLogsConfigs._get_http_options()
+            )
+
+            request, metadata = self._interceptor.pre_query_org_vpc_flow_logs_configs(
+                request, metadata
+            )
+            transcoded_request = _BaseVpcFlowLogsServiceRestTransport._BaseQueryOrgVpcFlowLogsConfigs._get_transcoded_request(
+                http_options, request
+            )
+
+            # Jsonify the query params
+            query_params = _BaseVpcFlowLogsServiceRestTransport._BaseQueryOrgVpcFlowLogsConfigs._get_query_params_json(
+                transcoded_request
+            )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.networkmanagement_v1.VpcFlowLogsServiceClient.QueryOrgVpcFlowLogsConfigs",
+                    extra={
+                        "serviceName": "google.cloud.networkmanagement.v1.VpcFlowLogsService",
+                        "rpcName": "QueryOrgVpcFlowLogsConfigs",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
+
+            # Send the request
+            response = VpcFlowLogsServiceRestTransport._QueryOrgVpcFlowLogsConfigs._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+
+            # Return the response
+            resp = vpc_flow_logs.QueryOrgVpcFlowLogsConfigsResponse()
+            pb_resp = vpc_flow_logs.QueryOrgVpcFlowLogsConfigsResponse.pb(resp)
+
+            json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
+            resp = self._interceptor.post_query_org_vpc_flow_logs_configs(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            (
+                resp,
+                _,
+            ) = self._interceptor.post_query_org_vpc_flow_logs_configs_with_metadata(
+                resp, response_metadata
+            )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = (
+                        vpc_flow_logs.QueryOrgVpcFlowLogsConfigsResponse.to_json(
+                            response
+                        )
+                    )
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.networkmanagement_v1.VpcFlowLogsServiceClient.query_org_vpc_flow_logs_configs",
+                    extra={
+                        "serviceName": "google.cloud.networkmanagement.v1.VpcFlowLogsService",
+                        "rpcName": "QueryOrgVpcFlowLogsConfigs",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
+            return resp
+
+    class _ShowEffectiveFlowLogsConfigs(
+        _BaseVpcFlowLogsServiceRestTransport._BaseShowEffectiveFlowLogsConfigs,
+        VpcFlowLogsServiceRestStub,
+    ):
+        def __hash__(self):
+            return hash("VpcFlowLogsServiceRestTransport.ShowEffectiveFlowLogsConfigs")
+
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
+
+        def __call__(
+            self,
+            request: vpc_flow_logs.ShowEffectiveFlowLogsConfigsRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+        ) -> vpc_flow_logs.ShowEffectiveFlowLogsConfigsResponse:
+            r"""Call the show effective flow logs
+            configs method over HTTP.
+
+                Args:
+                    request (~.vpc_flow_logs.ShowEffectiveFlowLogsConfigsRequest):
+                        The request object. Request for the ``ShowEffectiveFlowLogsConfigs`` method.
+                    retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                        should be retried.
+                    timeout (float): The timeout for this request.
+                    metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                        sent along with the request as metadata. Normally, each value must be of type `str`,
+                        but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                        be of type `bytes`.
+
+                Returns:
+                    ~.vpc_flow_logs.ShowEffectiveFlowLogsConfigsResponse:
+                        Response for the ``ShowEffectiveFlowLogsConfigs``
+                    method.
+
+            """
+
+            http_options = (
+                _BaseVpcFlowLogsServiceRestTransport._BaseShowEffectiveFlowLogsConfigs._get_http_options()
+            )
+
+            request, metadata = self._interceptor.pre_show_effective_flow_logs_configs(
+                request, metadata
+            )
+            transcoded_request = _BaseVpcFlowLogsServiceRestTransport._BaseShowEffectiveFlowLogsConfigs._get_transcoded_request(
+                http_options, request
+            )
+
+            # Jsonify the query params
+            query_params = _BaseVpcFlowLogsServiceRestTransport._BaseShowEffectiveFlowLogsConfigs._get_query_params_json(
+                transcoded_request
+            )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.networkmanagement_v1.VpcFlowLogsServiceClient.ShowEffectiveFlowLogsConfigs",
+                    extra={
+                        "serviceName": "google.cloud.networkmanagement.v1.VpcFlowLogsService",
+                        "rpcName": "ShowEffectiveFlowLogsConfigs",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
+
+            # Send the request
+            response = VpcFlowLogsServiceRestTransport._ShowEffectiveFlowLogsConfigs._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+
+            # Return the response
+            resp = vpc_flow_logs.ShowEffectiveFlowLogsConfigsResponse()
+            pb_resp = vpc_flow_logs.ShowEffectiveFlowLogsConfigsResponse.pb(resp)
+
+            json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
+            resp = self._interceptor.post_show_effective_flow_logs_configs(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            (
+                resp,
+                _,
+            ) = self._interceptor.post_show_effective_flow_logs_configs_with_metadata(
+                resp, response_metadata
+            )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = (
+                        vpc_flow_logs.ShowEffectiveFlowLogsConfigsResponse.to_json(
+                            response
+                        )
+                    )
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.networkmanagement_v1.VpcFlowLogsServiceClient.show_effective_flow_logs_configs",
+                    extra={
+                        "serviceName": "google.cloud.networkmanagement.v1.VpcFlowLogsService",
+                        "rpcName": "ShowEffectiveFlowLogsConfigs",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
+            return resp
+
     class _UpdateVpcFlowLogsConfig(
         _BaseVpcFlowLogsServiceRestTransport._BaseUpdateVpcFlowLogsConfig,
         VpcFlowLogsServiceRestStub,
@@ -1546,6 +1995,28 @@ class VpcFlowLogsServiceRestTransport(_BaseVpcFlowLogsServiceRestTransport):
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._ListVpcFlowLogsConfigs(self._session, self._host, self._interceptor)  # type: ignore
+
+    @property
+    def query_org_vpc_flow_logs_configs(
+        self,
+    ) -> Callable[
+        [vpc_flow_logs.QueryOrgVpcFlowLogsConfigsRequest],
+        vpc_flow_logs.QueryOrgVpcFlowLogsConfigsResponse,
+    ]:
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return self._QueryOrgVpcFlowLogsConfigs(self._session, self._host, self._interceptor)  # type: ignore
+
+    @property
+    def show_effective_flow_logs_configs(
+        self,
+    ) -> Callable[
+        [vpc_flow_logs.ShowEffectiveFlowLogsConfigsRequest],
+        vpc_flow_logs.ShowEffectiveFlowLogsConfigsResponse,
+    ]:
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return self._ShowEffectiveFlowLogsConfigs(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
     def update_vpc_flow_logs_config(

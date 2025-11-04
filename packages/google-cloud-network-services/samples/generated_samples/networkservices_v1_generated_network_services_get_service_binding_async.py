@@ -49,4 +49,5 @@ async def sample_get_service_binding():
     # Handle the response
     print(response)
 
+
 # [END networkservices_v1_generated_NetworkServices_GetServiceBinding_async]

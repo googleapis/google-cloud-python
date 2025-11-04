@@ -49,4 +49,5 @@ def sample_get_tls_route():
     # Handle the response
     print(response)
 
+
 # [END networkservices_v1_generated_NetworkServices_GetTlsRoute_sync]

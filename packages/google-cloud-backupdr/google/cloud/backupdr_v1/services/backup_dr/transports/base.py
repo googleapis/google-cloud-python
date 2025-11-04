@@ -303,6 +303,11 @@ class BackupDRTransport(abc.ABC):
                 default_timeout=60.0,
                 client_info=client_info,
             ),
+            self.fetch_backups_for_resource_type: gapic_v1.method.wrap_method(
+                self.fetch_backups_for_resource_type,
+                default_timeout=None,
+                client_info=client_info,
+            ),
             self.get_backup: gapic_v1.method.wrap_method(
                 self.get_backup,
                 default_retry=retries.Retry(
@@ -404,6 +409,11 @@ class BackupDRTransport(abc.ABC):
             ),
             self.get_data_source_reference: gapic_v1.method.wrap_method(
                 self.get_data_source_reference,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.list_data_source_references: gapic_v1.method.wrap_method(
+                self.list_data_source_references,
                 default_timeout=None,
                 client_info=client_info,
             ),
@@ -628,6 +638,18 @@ class BackupDRTransport(abc.ABC):
         raise NotImplementedError()
 
     @property
+    def fetch_backups_for_resource_type(
+        self,
+    ) -> Callable[
+        [backupvault.FetchBackupsForResourceTypeRequest],
+        Union[
+            backupvault.FetchBackupsForResourceTypeResponse,
+            Awaitable[backupvault.FetchBackupsForResourceTypeResponse],
+        ],
+    ]:
+        raise NotImplementedError()
+
+    @property
     def get_backup(
         self,
     ) -> Callable[
@@ -814,6 +836,18 @@ class BackupDRTransport(abc.ABC):
         Union[
             datasourcereference.DataSourceReference,
             Awaitable[datasourcereference.DataSourceReference],
+        ],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def list_data_source_references(
+        self,
+    ) -> Callable[
+        [datasourcereference.ListDataSourceReferencesRequest],
+        Union[
+            datasourcereference.ListDataSourceReferencesResponse,
+            Awaitable[datasourcereference.ListDataSourceReferencesResponse],
         ],
     ]:
         raise NotImplementedError()

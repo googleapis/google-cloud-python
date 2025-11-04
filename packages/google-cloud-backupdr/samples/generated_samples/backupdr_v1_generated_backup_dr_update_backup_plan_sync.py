@@ -63,4 +63,5 @@ def sample_update_backup_plan():
     # Handle the response
     print(response)
 
+
 # [END backupdr_v1_generated_BackupDR_UpdateBackupPlan_sync]

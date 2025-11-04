@@ -64,6 +64,7 @@ from .backupvault import (
     BackupApplianceLockInfo,
     BackupConfigInfo,
     BackupConfigState,
+    BackupGcpResource,
     BackupLock,
     BackupVault,
     BackupVaultView,
@@ -74,6 +75,8 @@ from .backupvault import (
     DataSourceGcpResource,
     DeleteBackupRequest,
     DeleteBackupVaultRequest,
+    FetchBackupsForResourceTypeRequest,
+    FetchBackupsForResourceTypeResponse,
     FetchUsableBackupVaultsRequest,
     FetchUsableBackupVaultsResponse,
     GcpBackupConfig,
@@ -143,6 +146,8 @@ from .datasourcereference import (
     FetchDataSourceReferencesForResourceTypeRequest,
     FetchDataSourceReferencesForResourceTypeResponse,
     GetDataSourceReferenceRequest,
+    ListDataSourceReferencesRequest,
+    ListDataSourceReferencesResponse,
 )
 
 __all__ = (
@@ -189,6 +194,7 @@ __all__ = (
     "BackupApplianceBackupConfig",
     "BackupApplianceLockInfo",
     "BackupConfigInfo",
+    "BackupGcpResource",
     "BackupLock",
     "BackupVault",
     "CreateBackupVaultRequest",
@@ -197,6 +203,8 @@ __all__ = (
     "DataSourceGcpResource",
     "DeleteBackupRequest",
     "DeleteBackupVaultRequest",
+    "FetchBackupsForResourceTypeRequest",
+    "FetchBackupsForResourceTypeResponse",
     "FetchUsableBackupVaultsRequest",
     "FetchUsableBackupVaultsResponse",
     "GcpBackupConfig",
@@ -261,4 +269,6 @@ __all__ = (
     "FetchDataSourceReferencesForResourceTypeRequest",
     "FetchDataSourceReferencesForResourceTypeResponse",
     "GetDataSourceReferenceRequest",
+    "ListDataSourceReferencesRequest",
+    "ListDataSourceReferencesResponse",
 )

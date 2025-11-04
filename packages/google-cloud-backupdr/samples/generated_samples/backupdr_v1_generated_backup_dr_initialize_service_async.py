@@ -39,7 +39,9 @@ async def sample_initialize_service():
     client = backupdr_v1.BackupDRAsyncClient()
 
     # Initialize request argument(s)
-    cloud_sql_instance_initialization_config = backupdr_v1.CloudSqlInstanceInitializationConfig()
+    cloud_sql_instance_initialization_config = (
+        backupdr_v1.CloudSqlInstanceInitializationConfig()
+    )
     cloud_sql_instance_initialization_config.edition = "ENTERPRISE_PLUS"
 
     request = backupdr_v1.InitializeServiceRequest(
@@ -57,5 +59,6 @@ async def sample_initialize_service():
 
     # Handle the response
     print(response)
+
 
 # [END backupdr_v1_generated_BackupDR_InitializeService_async]

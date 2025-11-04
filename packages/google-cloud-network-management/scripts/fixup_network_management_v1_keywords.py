@@ -47,7 +47,9 @@ class network_managementCallTransformer(cst.CSTTransformer):
         'get_vpc_flow_logs_config': ('name', ),
         'list_connectivity_tests': ('parent', 'page_size', 'page_token', 'filter', 'order_by', ),
         'list_vpc_flow_logs_configs': ('parent', 'page_size', 'page_token', 'filter', 'order_by', ),
+        'query_org_vpc_flow_logs_configs': ('parent', 'page_size', 'page_token', 'filter', ),
         'rerun_connectivity_test': ('name', ),
+        'show_effective_flow_logs_configs': ('parent', 'resource', 'page_size', 'page_token', 'filter', ),
         'update_connectivity_test': ('update_mask', 'resource', ),
         'update_vpc_flow_logs_config': ('update_mask', 'vpc_flow_logs_config', ),
     }

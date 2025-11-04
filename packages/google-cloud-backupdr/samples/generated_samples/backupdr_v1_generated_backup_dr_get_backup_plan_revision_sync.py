@@ -49,4 +49,5 @@ def sample_get_backup_plan_revision():
     # Handle the response
     print(response)
 
+
 # [END backupdr_v1_generated_BackupDR_GetBackupPlanRevision_sync]

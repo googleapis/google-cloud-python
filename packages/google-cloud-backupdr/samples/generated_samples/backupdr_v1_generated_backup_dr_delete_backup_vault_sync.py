@@ -53,4 +53,5 @@ def sample_delete_backup_vault():
     # Handle the response
     print(response)
 
+
 # [END backupdr_v1_generated_BackupDR_DeleteBackupVault_sync]

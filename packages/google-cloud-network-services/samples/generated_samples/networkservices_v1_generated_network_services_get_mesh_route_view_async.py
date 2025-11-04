@@ -49,4 +49,5 @@ async def sample_get_mesh_route_view():
     # Handle the response
     print(response)
 
+
 # [END networkservices_v1_generated_NetworkServices_GetMeshRouteView_async]
