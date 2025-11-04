@@ -16,10 +16,14 @@
 
 import datetime
 import enum
+import logging
 import warnings
 import sys
 import textwrap
 from typing import Any, List, NamedTuple, Optional, Dict, Tuple
+
+
+_LOGGER = logging.getLogger(__name__)
 
 
 class PythonVersionStatus(enum.Enum):
@@ -168,11 +172,14 @@ else:
             if module_name in module_to_distributions:  # pragma: NO COVER
                 # The value is a list of distribution names, take the first one
                 return module_to_distributions[module_name][0]
-            else:
-                return None  # Module not found in the mapping
         except Exception as e:
-            print(f"An error occurred: {e}")
-            return None
+            _LOGGER.info(
+                "An error occurred while determining PyPI package name for %s: %s",
+                module_name,
+                e,
+            )
+
+        return None
 
 
 def _get_distribution_and_import_packages(import_package: str) -> Tuple[str, Any]:
