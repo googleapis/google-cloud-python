@@ -109,6 +109,11 @@ def _(left: TypedExpr, right: TypedExpr) -> sge.Expression:
     return sge.LTE(this=left_expr, expression=right_expr)
 
 
+@register_binary_op(ops.maximum_op)
+def _(left: TypedExpr, right: TypedExpr) -> sge.Expression:
+    return sge.Greatest(expressions=[left.expr, right.expr])
+
+
 @register_binary_op(ops.minimum_op)
 def _(left: TypedExpr, right: TypedExpr) -> sge.Expression:
     return sge.Least(this=left.expr, expressions=right.expr)
