@@ -1075,6 +1075,12 @@ Libraries
      - `API Issues <https://issuetracker.google.com/issues?q=componentid:1387895>`_
      - `File an API Issue <https://issuetracker.google.com/issues/new?component=1387895>`_
      - `Client Library Issues <https://github.com/googleapis/google-cloud-python/issues>`_
+   * - `Cluster Director API <https://github.com/googleapis/google-cloud-python/tree/main/packages/google-cloud-hypercomputecluster>`_
+     - preview
+     - |PyPI-google-cloud-hypercomputecluster|
+     - `API Issues <https://issuetracker.google.com/issues?q=componentid:1907878>`_
+     - `File an API Issue <https://issuetracker.google.com/issues/new?component=1907878&template=2195617>`_
+     - `Client Library Issues <https://github.com/googleapis/google-cloud-python/issues>`_
    * - `Commerce Consumer Procurement API <https://github.com/googleapis/google-cloud-python/tree/main/packages/google-cloud-commerce-consumer-procurement>`_
      - preview
      - |PyPI-google-cloud-commerce-consumer-procurement|
@@ -1122,6 +1128,12 @@ Libraries
      - |PyPI-google-cloud-datacatalog-lineage|
      -
      -
+     - `Client Library Issues <https://github.com/googleapis/google-cloud-python/issues>`_
+   * - `Data Manager API <https://github.com/googleapis/google-cloud-python/tree/main/packages/google-ads-datamanager>`_
+     - preview
+     - |PyPI-google-ads-datamanager|
+     - `API Issues <https://issuetracker.google.com/issues?q=componentid:1812065>`_
+     - `File an API Issue <https://issuetracker.google.com/issues/new?component=1812065>`_
      - `Client Library Issues <https://github.com/googleapis/google-cloud-python/issues>`_
    * - `Data QnA <https://github.com/googleapis/google-cloud-python/tree/main/packages/google-cloud-data-qna>`_
      - preview
@@ -1920,6 +1932,8 @@ Libraries
      :target: https://pypi.org/project/google-apps-chat
 .. |PyPI-google-cloud-chronicle| image:: https://img.shields.io/pypi/v/google-cloud-chronicle.svg
      :target: https://pypi.org/project/google-cloud-chronicle
+.. |PyPI-google-cloud-hypercomputecluster| image:: https://img.shields.io/pypi/v/google-cloud-hypercomputecluster.svg
+     :target: https://pypi.org/project/google-cloud-hypercomputecluster
 .. |PyPI-google-cloud-commerce-consumer-procurement| image:: https://img.shields.io/pypi/v/google-cloud-commerce-consumer-procurement.svg
      :target: https://pypi.org/project/google-cloud-commerce-consumer-procurement
 .. |PyPI-google-cloud-confidentialcomputing| image:: https://img.shields.io/pypi/v/google-cloud-confidentialcomputing.svg
@@ -1936,6 +1950,8 @@ Libraries
      :target: https://pypi.org/project/google-cloud-datalabeling
 .. |PyPI-google-cloud-datacatalog-lineage| image:: https://img.shields.io/pypi/v/google-cloud-datacatalog-lineage.svg
      :target: https://pypi.org/project/google-cloud-datacatalog-lineage
+.. |PyPI-google-ads-datamanager| image:: https://img.shields.io/pypi/v/google-ads-datamanager.svg
+     :target: https://pypi.org/project/google-ads-datamanager
 .. |PyPI-google-cloud-data-qna| image:: https://img.shields.io/pypi/v/google-cloud-data-qna.svg
      :target: https://pypi.org/project/google-cloud-data-qna
 .. |PyPI-google-cloud-dataflow-client| image:: https://img.shields.io/pypi/v/google-cloud-dataflow-client.svg
