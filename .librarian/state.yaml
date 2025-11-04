@@ -4674,7 +4674,7 @@ libraries:
     tag_format: '{id}-v{version}'
   - id: googleapis-common-protos
     version: 1.71.0
-    last_generated_commit: e8365a7f88fabe8717cb8322b8ce784b03b6daea
+    last_generated_commit: 91361b6b2df5f7f3bfc0858be061e31fd2b7be98
     apis:
       - path: google/api
         service_config: serviceconfig.yaml
