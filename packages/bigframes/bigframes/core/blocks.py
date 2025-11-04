@@ -68,6 +68,7 @@ import bigframes.operations as ops
 import bigframes.operations.aggregations as agg_ops
 from bigframes.session import dry_runs, execution_spec
 from bigframes.session import executor as executors
+from bigframes.session._io import pandas as io_pandas
 
 # Type constraint for wherever column labels are used
 Label = typing.Hashable
@@ -711,12 +712,15 @@ class Block:
         # To reduce the number of edge cases to consider when working with the
         # results of this, always return at least one DataFrame. See:
         # b/428918844.
-        empty_val = pd.DataFrame(
-            {
-                col: pd.Series([], dtype=self.expr.get_column_type(col))
-                for col in itertools.chain(self.value_columns, self.index_columns)
-            }
-        )
+        try:
+            empty_arrow_table = self.expr.schema.to_pyarrow().empty_table()
+        except pa.ArrowNotImplementedError:
+            # Bug with some pyarrow versions(https://github.com/apache/arrow/issues/45262),
+            # empty_table only supports base storage types, not extension types.
+            empty_arrow_table = self.expr.schema.to_pyarrow(
+                use_storage_types=True
+            ).empty_table()
+        empty_val = io_pandas.arrow_to_pandas(empty_arrow_table, self.expr.schema)
         dfs = map(
             lambda a: a[0],
             itertools.zip_longest(

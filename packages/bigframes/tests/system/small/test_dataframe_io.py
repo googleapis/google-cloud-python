@@ -376,6 +376,92 @@ def test_to_pandas_batches_w_empty_dataframe(session):
     pandas.testing.assert_series_equal(results[0].dtypes, empty.dtypes)
 
 
+@pytest.mark.skipif(
+    bigframes.features.PANDAS_VERSIONS.is_arrow_list_dtype_usable,
+    reason="Test for pandas 1.x behavior only",
+)
+def test_to_pandas_batches_preserves_dtypes_for_populated_nested_json_pandas1(session):
+    """Verifies to_pandas_batches() preserves dtypes for nested JSON in pandas 1.x."""
+    sql = """
+        SELECT
+            0 AS id,
+            [JSON '{"a":1}', JSON '{"b":2}'] AS json_array,
+            STRUCT(JSON '{"x":1}' AS json_field, 'test' AS str_field) AS json_struct
+    """
+    df = session.read_gbq(sql, index_col="id")
+    batches = list(df.to_pandas_batches())
+
+    assert batches[0].dtypes["json_array"] == "object"
+    assert isinstance(batches[0].dtypes["json_struct"], pd.ArrowDtype)
+
+
+@pytest.mark.skipif(
+    not bigframes.features.PANDAS_VERSIONS.is_arrow_list_dtype_usable,
+    reason="Test for pandas 2.x behavior only",
+)
+def test_to_pandas_batches_preserves_dtypes_for_populated_nested_json_pandas2(session):
+    """Verifies to_pandas_batches() preserves dtypes for nested JSON in pandas 2.x."""
+    sql = """
+        SELECT
+            0 AS id,
+            [JSON '{"a":1}', JSON '{"b":2}'] AS json_array,
+            STRUCT(JSON '{"x":1}' AS json_field, 'test' AS str_field) AS json_struct
+    """
+    df = session.read_gbq(sql, index_col="id")
+    batches = list(df.to_pandas_batches())
+
+    assert isinstance(batches[0].dtypes["json_array"], pd.ArrowDtype)
+    assert isinstance(batches[0].dtypes["json_array"].pyarrow_dtype, pa.ListType)
+    assert isinstance(batches[0].dtypes["json_struct"], pd.ArrowDtype)
+
+
+@pytest.mark.skipif(
+    bigframes.features.PANDAS_VERSIONS.is_arrow_list_dtype_usable,
+    reason="Test for pandas 1.x behavior only",
+)
+def test_to_pandas_batches_should_not_error_on_empty_nested_json_pandas1(session):
+    """Verify to_pandas_batches() works with empty nested JSON types in pandas 1.x."""
+
+    sql = """
+        SELECT
+            1 AS id,
+            [] AS json_array,
+            STRUCT(NULL AS json_field, 'test2' AS str_field) AS json_struct
+    """
+    df = session.read_gbq(sql, index_col="id")
+
+    # The main point: this should not raise an error
+    batches = list(df.to_pandas_batches())
+    assert sum(len(b) for b in batches) == 1
+
+    assert batches[0].dtypes["json_array"] == "object"
+    assert isinstance(batches[0].dtypes["json_struct"], pd.ArrowDtype)
+
+
+@pytest.mark.skipif(
+    not bigframes.features.PANDAS_VERSIONS.is_arrow_list_dtype_usable,
+    reason="Test for pandas 2.x behavior only",
+)
+def test_to_pandas_batches_should_not_error_on_empty_nested_json_pandas2(session):
+    """Verify to_pandas_batches() works with empty nested JSON types in pandas 2.x."""
+
+    sql = """
+        SELECT
+            1 AS id,
+            [] AS json_array,
+            STRUCT(NULL AS json_field, 'test2' AS str_field) AS json_struct
+    """
+    df = session.read_gbq(sql, index_col="id")
+
+    # The main point: this should not raise an error
+    batches = list(df.to_pandas_batches())
+    assert sum(len(b) for b in batches) == 1
+
+    assert isinstance(batches[0].dtypes["json_array"], pd.ArrowDtype)
+    assert isinstance(batches[0].dtypes["json_struct"], pd.ArrowDtype)
+    assert isinstance(batches[0].dtypes["json_struct"].pyarrow_dtype, pa.StructType)
+
+
 @pytest.mark.parametrize("allow_large_results", (True, False))
 def test_to_pandas_batches_w_page_size_and_max_results(session, allow_large_results):
     """Verify to_pandas_batches() APIs returns the expected page size.
