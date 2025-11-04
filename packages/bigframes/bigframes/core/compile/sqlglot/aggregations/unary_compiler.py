@@ -239,6 +239,20 @@ def _(
     return apply_window_if_present(sge.func("MIN", column.expr), window)
 
 
+@UNARY_OP_REGISTRATION.register(agg_ops.PopVarOp)
+def _(
+    op: agg_ops.PopVarOp,
+    column: typed_expr.TypedExpr,
+    window: typing.Optional[window_spec.WindowSpec] = None,
+) -> sge.Expression:
+    expr = column.expr
+    if column.dtype == dtypes.BOOL_DTYPE:
+        expr = sge.Cast(this=expr, to="INT64")
+
+    expr = sge.func("VAR_POP", expr)
+    return apply_window_if_present(expr, window)
+
+
 @UNARY_OP_REGISTRATION.register(agg_ops.QuantileOp)
 def _(
     op: agg_ops.QuantileOp,
@@ -276,6 +290,22 @@ def _(
     window: typing.Optional[window_spec.WindowSpec] = None,
 ) -> sge.Expression:
     return apply_window_if_present(sge.func("COUNT", sge.convert(1)), window)
+
+
+@UNARY_OP_REGISTRATION.register(agg_ops.StdOp)
+def _(
+    op: agg_ops.StdOp,
+    column: typed_expr.TypedExpr,
+    window: typing.Optional[window_spec.WindowSpec] = None,
+) -> sge.Expression:
+    expr = column.expr
+    if column.dtype == dtypes.BOOL_DTYPE:
+        expr = sge.Cast(this=expr, to="INT64")
+
+    expr = sge.func("STDDEV", expr)
+    if op.should_floor_result or column.dtype == dtypes.TIMEDELTA_DTYPE:
+        expr = sge.Cast(this=sge.func("FLOOR", expr), to="INT64")
+    return apply_window_if_present(expr, window)
 
 
 @UNARY_OP_REGISTRATION.register(agg_ops.ShiftOp)
@@ -331,3 +361,17 @@ def _(
         expression=shifted,
         unit=sge.Identifier(this="MICROSECOND"),
     )
+
+
+@UNARY_OP_REGISTRATION.register(agg_ops.VarOp)
+def _(
+    op: agg_ops.VarOp,
+    column: typed_expr.TypedExpr,
+    window: typing.Optional[window_spec.WindowSpec] = None,
+) -> sge.Expression:
+    expr = column.expr
+    if column.dtype == dtypes.BOOL_DTYPE:
+        expr = sge.Cast(this=expr, to="INT64")
+
+    expr = sge.func("VAR_SAMP", expr)
+    return apply_window_if_present(expr, window)

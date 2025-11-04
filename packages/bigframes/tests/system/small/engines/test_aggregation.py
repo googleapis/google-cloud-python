@@ -111,7 +111,7 @@ def test_engines_unary_aggregates(
     assert_equivalence_execution(node, REFERENCE_ENGINE, engine)
 
 
-@pytest.mark.parametrize("engine", ["polars", "bq"], indirect=True)
+@pytest.mark.parametrize("engine", ["polars", "bq", "bq-sqlglot"], indirect=True)
 @pytest.mark.parametrize(
     "op",
     [agg_ops.std_op, agg_ops.var_op, agg_ops.PopVarOp()],

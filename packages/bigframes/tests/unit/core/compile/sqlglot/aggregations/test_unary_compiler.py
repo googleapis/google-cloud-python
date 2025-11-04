@@ -370,6 +370,28 @@ def test_min(scalar_types_df: bpd.DataFrame, snapshot):
     snapshot.assert_match(sql_window_partition, "window_partition_out.sql")
 
 
+def test_pop_var(scalar_types_df: bpd.DataFrame, snapshot):
+    col_names = ["int64_col", "bool_col"]
+    bf_df = scalar_types_df[col_names]
+
+    agg_ops_map = {
+        "int64_col": agg_ops.PopVarOp().as_expr("int64_col"),
+        "bool_col": agg_ops.PopVarOp().as_expr("bool_col"),
+    }
+    sql = _apply_unary_agg_ops(
+        bf_df, list(agg_ops_map.values()), list(agg_ops_map.keys())
+    )
+    snapshot.assert_match(sql, "out.sql")
+
+    # Window tests
+    col_name = "int64_col"
+    bf_df_int = scalar_types_df[[col_name]]
+    agg_expr = agg_ops.PopVarOp().as_expr(col_name)
+    window = window_spec.WindowSpec(ordering=(ordering.descending_over(col_name),))
+    sql_window = _apply_unary_window_op(bf_df_int, agg_expr, window, "agg_int64")
+    snapshot.assert_match(sql_window, "window_out.sql")
+
+
 def test_quantile(scalar_types_df: bpd.DataFrame, snapshot):
     col_name = "int64_col"
     bf_df = scalar_types_df[[col_name]]
@@ -428,6 +450,40 @@ def test_shift(scalar_types_df: bpd.DataFrame, snapshot):
     snapshot.assert_match(noop_sql, "noop.sql")
 
 
+def test_std(scalar_types_df: bpd.DataFrame, snapshot):
+    col_names = ["int64_col", "bool_col", "duration_col"]
+    bf_df = scalar_types_df[col_names]
+    bf_df["duration_col"] = bpd.to_timedelta(bf_df["duration_col"], unit="us")
+
+    # The `to_timedelta` creates a new mapping for the column id.
+    col_names.insert(0, "rowindex")
+    name2id = {
+        col_name: col_id
+        for col_name, col_id in zip(col_names, bf_df._block.expr.column_ids)
+    }
+
+    agg_ops_map = {
+        "int64_col": agg_ops.StdOp().as_expr(name2id["int64_col"]),
+        "bool_col": agg_ops.StdOp().as_expr(name2id["bool_col"]),
+        "duration_col": agg_ops.StdOp().as_expr(name2id["duration_col"]),
+        "int64_col_w_floor": agg_ops.StdOp(should_floor_result=True).as_expr(
+            name2id["int64_col"]
+        ),
+    }
+    sql = _apply_unary_agg_ops(
+        bf_df, list(agg_ops_map.values()), list(agg_ops_map.keys())
+    )
+    snapshot.assert_match(sql, "out.sql")
+
+    # Window tests
+    col_name = "int64_col"
+    bf_df_int = scalar_types_df[[col_name]]
+    agg_expr = agg_ops.StdOp().as_expr(col_name)
+    window = window_spec.WindowSpec(ordering=(ordering.descending_over(col_name),))
+    sql_window = _apply_unary_window_op(bf_df_int, agg_expr, window, "agg_int64")
+    snapshot.assert_match(sql_window, "window_out.sql")
+
+
 def test_sum(scalar_types_df: bpd.DataFrame, snapshot):
     bf_df = scalar_types_df[["int64_col", "bool_col"]]
     agg_ops_map = {
@@ -468,3 +524,25 @@ def test_time_series_diff(scalar_types_df: bpd.DataFrame, snapshot):
     )
     sql = _apply_unary_window_op(bf_df, op, window, "diff_time")
     snapshot.assert_match(sql, "out.sql")
+
+
+def test_var(scalar_types_df: bpd.DataFrame, snapshot):
+    col_names = ["int64_col", "bool_col"]
+    bf_df = scalar_types_df[col_names]
+
+    agg_ops_map = {
+        "int64_col": agg_ops.VarOp().as_expr("int64_col"),
+        "bool_col": agg_ops.VarOp().as_expr("bool_col"),
+    }
+    sql = _apply_unary_agg_ops(
+        bf_df, list(agg_ops_map.values()), list(agg_ops_map.keys())
+    )
+    snapshot.assert_match(sql, "out.sql")
+
+    # Window tests
+    col_name = "int64_col"
+    bf_df_int = scalar_types_df[[col_name]]
+    agg_expr = agg_ops.VarOp().as_expr(col_name)
+    window = window_spec.WindowSpec(ordering=(ordering.descending_over(col_name),))
+    sql_window = _apply_unary_window_op(bf_df_int, agg_expr, window, "agg_int64")
+    snapshot.assert_match(sql_window, "window_out.sql")

@@ -52,5 +52,5 @@ class OpRegistration:
     def __getitem__(self, op: str | agg_ops.WindowOp) -> CompilationFunc:
         key = op if isinstance(op, type) else type(op)
         if str(key) not in self._registered_ops:
-            raise ValueError(f"{key} is already not registered")
+            raise ValueError(f"{key} is not registered")
         return self._registered_ops[str(key)]
