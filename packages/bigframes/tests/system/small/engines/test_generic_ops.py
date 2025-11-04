@@ -329,7 +329,7 @@ def test_engines_where_op(scalars_array_value: array_value.ArrayValue, engine):
     assert_equivalence_execution(arr.node, REFERENCE_ENGINE, engine)
 
 
-@pytest.mark.parametrize("engine", ["polars", "bq"], indirect=True)
+@pytest.mark.parametrize("engine", ["polars", "bq", "bq-sqlglot"], indirect=True)
 def test_engines_coalesce_op(scalars_array_value: array_value.ArrayValue, engine):
     arr, _ = scalars_array_value.compute_values(
         [

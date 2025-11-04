@@ -209,6 +209,20 @@ def test_case_when_op(scalar_types_df: bpd.DataFrame, snapshot):
     snapshot.assert_match(sql, "out.sql")
 
 
+def test_coalesce(scalar_types_df: bpd.DataFrame, snapshot):
+    bf_df = scalar_types_df[["int64_col", "int64_too"]]
+
+    sql = utils._apply_ops_to_sql(
+        bf_df,
+        [
+            ops.coalesce_op.as_expr("int64_col", "int64_col"),
+            ops.coalesce_op.as_expr("int64_too", "int64_col"),
+        ],
+        ["int64_col", "int64_too"],
+    )
+    snapshot.assert_match(sql, "out.sql")
+
+
 def test_clip(scalar_types_df: bpd.DataFrame, snapshot):
     op_expr = ops.clip_op.as_expr("rowindex", "int64_col", "int64_too")
 

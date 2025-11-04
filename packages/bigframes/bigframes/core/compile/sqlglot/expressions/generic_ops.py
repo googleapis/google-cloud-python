@@ -24,6 +24,7 @@ from bigframes.core.compile.sqlglot.expressions.typed_expr import TypedExpr
 import bigframes.core.compile.sqlglot.scalar_compiler as scalar_compiler
 
 register_unary_op = scalar_compiler.scalar_op_compiler.register_unary_op
+register_binary_op = scalar_compiler.scalar_op_compiler.register_binary_op
 register_nary_op = scalar_compiler.scalar_op_compiler.register_nary_op
 register_ternary_op = scalar_compiler.scalar_op_compiler.register_ternary_op
 
@@ -157,6 +158,13 @@ def _(*cases_and_outputs: TypedExpr) -> sge.Expression:
             for predicate, output in zip(cases_and_outputs[::2], result_values)
         ],
     )
+
+
+@register_binary_op(ops.coalesce_op)
+def _(left: TypedExpr, right: TypedExpr) -> sge.Expression:
+    if left.expr == right.expr:
+        return left.expr
+    return sge.Coalesce(this=left.expr, expressions=[right.expr])
 
 
 @register_nary_op(ops.RowKey)
