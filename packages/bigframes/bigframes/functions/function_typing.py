@@ -60,8 +60,22 @@ class UnsupportedTypeError(ValueError):
     def __init__(self, type_, supported_types):
         self.type = type_
         self.supported_types = supported_types
+
+        types_to_format = supported_types
+        if isinstance(supported_types, dict):
+            types_to_format = supported_types.keys()
+
+        supported_types_str = ", ".join(
+            sorted(
+                [
+                    getattr(supported, "__name__", supported)
+                    for supported in types_to_format
+                ]
+            )
+        )
+
         super().__init__(
-            f"'{type_}' must be one of the supported types ({supported_types}) "
+            f"'{getattr(type_, '__name__', type_)}' must be one of the supported types ({supported_types_str}) "
             "or a list of one of those types."
         )
 

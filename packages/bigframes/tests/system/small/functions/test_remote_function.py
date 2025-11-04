@@ -1646,7 +1646,7 @@ def test_remote_function_unsupported_type(
 
     with pytest.raises(
         ValueError,
-        match=r"'typing\.Sequence\[int\]' must be one of the supported types",
+        match=r"must be one of the supported types",
     ):
         bff.remote_function(
             input_types=int,
