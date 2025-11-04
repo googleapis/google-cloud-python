@@ -45,7 +45,6 @@ import google.cloud.bigquery as bigquery
 import google.cloud.bigquery.table
 from google.cloud.bigquery_storage_v1 import types as bq_storage_types
 import pandas
-import pyarrow as pa
 
 import bigframes._tools
 import bigframes._tools.strings
@@ -1307,22 +1306,6 @@ def _transform_read_gbq_configuration(configuration: Optional[dict]) -> dict:
     return configuration
 
 
-def _has_json_arrow_type(arrow_type: pa.DataType) -> bool:
-    """
-    Searches recursively for JSON array type within a PyArrow DataType.
-    """
-    if arrow_type == bigframes.dtypes.JSON_ARROW_TYPE:
-        return True
-    if pa.types.is_list(arrow_type):
-        return _has_json_arrow_type(arrow_type.value_type)
-    if pa.types.is_struct(arrow_type):
-        for i in range(arrow_type.num_fields):
-            if _has_json_arrow_type(arrow_type.field(i).type):
-                return True
-        return False
-    return False
-
-
 def _validate_dtype_can_load(name: str, column_type: bigframes.dtypes.Dtype):
     """
     Determines whether a datatype is supported by bq load jobs.
@@ -1339,7 +1322,9 @@ def _validate_dtype_can_load(name: str, column_type: bigframes.dtypes.Dtype):
     if column_type == bigframes.dtypes.JSON_DTYPE:
         return
 
-    if isinstance(column_type, pandas.ArrowDtype) and _has_json_arrow_type(
+    if isinstance(
+        column_type, pandas.ArrowDtype
+    ) and bigframes.dtypes.contains_db_dtypes_json_arrow_type(
         column_type.pyarrow_dtype
     ):
         raise NotImplementedError(
