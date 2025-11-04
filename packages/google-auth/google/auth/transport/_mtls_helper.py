@@ -16,7 +16,7 @@
 
 import json
 import logging
-from os import environ, path
+from os import environ, getenv, path
 import re
 import subprocess
 
@@ -405,3 +405,47 @@ def decrypt_private_key(key, passphrase):
 
     # Then dump the decrypted key bytes
     return crypto.dump_privatekey(crypto.FILETYPE_PEM, pkey)
+
+
+def check_use_client_cert():
+    """Returns the value of the GOOGLE_API_USE_CLIENT_CERTIFICATE variable,
+    or an inferred value('true' or 'false') if unset.
+
+    This value is meant to be interpreted as a "true" or "false" value
+    representing whether the client certificate should be used, but could be any
+    arbitrary string.
+
+    If GOOGLE_API_USE_CLIENT_CERTIFICATE is unset, the value value will be
+    inferred by reading a file pointed at by GOOGLE_API_CERTIFICATE_CONFIG, and
+    verifying it contains a "workload" section. If so, the function will return
+    "true", otherwise "false".
+
+    Returns:
+        str: The value of GOOGLE_API_USE_CLIENT_CERTIFICATE, or an inferred value
+        ("true" or "false") if unset. This string should contain a value, but may
+        be an any arbitrary string read from the user's set
+        GOOGLE_API_USE_CLIENT_CERTIFICATE.
+    """
+    use_client_cert = getenv("GOOGLE_API_USE_CLIENT_CERTIFICATE")
+    # Check if the value of GOOGLE_API_USE_CLIENT_CERTIFICATE is set.
+    if use_client_cert:
+        return use_client_cert.lower()
+    else:
+        # Check if the value of GOOGLE_API_CERTIFICATE_CONFIG is set.
+        cert_path = getenv("GOOGLE_API_CERTIFICATE_CONFIG")
+        if cert_path:
+            try:
+                with open(cert_path, "r") as f:
+                    content = json.load(f)
+                    # verify json has workload key
+                    content["cert_configs"]["workload"]
+                    return "true"
+            except (
+                FileNotFoundError,
+                OSError,
+                KeyError,
+                TypeError,
+                json.JSONDecodeError,
+            ) as e:
+                _LOGGER.debug("error decoding certificate: %s", e)
+        return "false"

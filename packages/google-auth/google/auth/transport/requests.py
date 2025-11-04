@@ -19,7 +19,6 @@ from __future__ import absolute_import
 import functools
 import logging
 import numbers
-import os
 import time
 
 try:
@@ -35,7 +34,6 @@ from requests.packages.urllib3.util.ssl_ import (  # type: ignore
 )  # pylint: disable=ungrouped-imports
 
 from google.auth import _helpers
-from google.auth import environment_vars
 from google.auth import exceptions
 from google.auth import transport
 import google.auth.transport._mtls_helper
@@ -444,13 +442,10 @@ class AuthorizedSession(requests.Session):
             google.auth.exceptions.MutualTLSChannelError: If mutual TLS channel
                 creation failed for any reason.
         """
-        use_client_cert = os.getenv(
-            environment_vars.GOOGLE_API_USE_CLIENT_CERTIFICATE, "false"
-        )
+        use_client_cert = google.auth.transport._mtls_helper.check_use_client_cert()
         if use_client_cert != "true":
             self._is_mtls = False
             return
-
         try:
             import OpenSSL
         except ImportError as caught_exc:

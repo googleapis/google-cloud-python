@@ -17,9 +17,7 @@
 from __future__ import absolute_import
 
 import logging
-import os
 
-from google.auth import environment_vars
 from google.auth import exceptions
 from google.auth.transport import _mtls_helper
 from google.oauth2 import service_account
@@ -256,9 +254,7 @@ def secure_authorized_channel(
 
     # If SSL credentials are not explicitly set, try client_cert_callback and ADC.
     if not ssl_credentials:
-        use_client_cert = os.getenv(
-            environment_vars.GOOGLE_API_USE_CLIENT_CERTIFICATE, "false"
-        )
+        use_client_cert = _mtls_helper.check_use_client_cert()
         if use_client_cert == "true" and client_cert_callback:
             # Use the callback if provided.
             cert, key = client_cert_callback()
@@ -295,9 +291,7 @@ class SslCredentials:
     """
 
     def __init__(self):
-        use_client_cert = os.getenv(
-            environment_vars.GOOGLE_API_USE_CLIENT_CERTIFICATE, "false"
-        )
+        use_client_cert = _mtls_helper.check_use_client_cert()
         if use_client_cert != "true":
             self._is_mtls = False
         else:
