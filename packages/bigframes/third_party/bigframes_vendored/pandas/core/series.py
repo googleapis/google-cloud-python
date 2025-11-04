@@ -3,6 +3,7 @@ Data structure for 1-dimensional cross-sectional and time series data
 """
 from __future__ import annotations
 
+import datetime
 from typing import (
     Hashable,
     IO,
@@ -19,6 +20,7 @@ from typing import (
 from bigframes_vendored.pandas.core.generic import NDFrame
 import numpy
 import numpy as np
+import pandas as pd
 from pandas._typing import Axis, FilePath, NaPosition, WriteBuffer
 from pandas.api import extensions as pd_ext
 
@@ -2499,6 +2501,68 @@ class Series(NDFrame):  # type: ignore[misc]
                 * When replacing multiple ``bool`` or ``datetime64`` objects and
                   the arguments to `to_replace` does not match the type of the
                   value being replaced
+        """
+        raise NotImplementedError(constants.ABSTRACT_METHOD_ERROR_MESSAGE)
+
+    def resample(
+        self,
+        rule: str,
+        *,
+        closed: Optional[Literal["right", "left"]] = None,
+        label: Optional[Literal["right", "left"]] = None,
+        level=None,
+        origin: Union[
+            Union[pd.Timestamp, datetime.datetime, numpy.datetime64, int, float, str],
+            Literal["epoch", "start", "start_day", "end", "end_day"],
+        ] = "start_day",
+    ):
+        """Resample time-series data.
+
+        **Examples:**
+
+            >>> import bigframes.pandas as bpd
+            >>> data = {
+            ...     "timestamp_col": pd.date_range(
+            ...         start="2021-01-01 13:00:00", periods=30, freq="1s"
+            ...     ),
+            ...     "int64_col": range(30),
+            ... }
+            >>> s = bpd.DataFrame(data).set_index("timestamp_col")
+            >>> s.resample(rule="7s", origin="epoch").min()
+                                int64_col
+            2021-01-01 12:59:56          0
+            2021-01-01 13:00:03          3
+            2021-01-01 13:00:10         10
+            2021-01-01 13:00:17         17
+            2021-01-01 13:00:24         24
+            <BLANKLINE>
+            [5 rows x 1 columns]
+
+        Args:
+            rule (str):
+                The offset string representing target conversion.
+                Offsets 'ME', 'YE', 'QE', 'BME', 'BA', 'BQE', and 'W' are *not*
+                supported.
+            closed (Literal['left'] | None):
+                Which side of bin interval is closed. The default is 'left' for
+                all supported frequency offsets.
+            label (Literal['right'] | Literal['left'] | None):
+                Which bin edge label to label bucket with. The default is 'left'
+                for all supported frequency offsets.
+            on (str, default None):
+                For a DataFrame, column to use instead of index for resampling. Column
+                must be datetime-like.
+            level (str or int, default None):
+                For a MultiIndex, level (name or number) to use for resampling.
+                level must be datetime-like.
+            origin(str, default 'start_day'):
+                The timestamp on which to adjust the grouping. Must be one of the following:
+                'epoch': origin is 1970-01-01
+                'start': origin is the first value of the timeseries
+                'start_day': origin is the first day at midnight of the timeseries
+                Origin values 'end' and 'end_day' are *not* supported.
+        Returns:
+            SeriesGroupBy: SeriesGroupBy object.
         """
         raise NotImplementedError(constants.ABSTRACT_METHOD_ERROR_MESSAGE)
 

@@ -248,7 +248,7 @@ def test_unordered_mode_no_ambiguity_warning(unordered_session):
         ),
     ],
 )
-def test__resample_with_index(unordered_session, rule, origin, data):
+def test_resample_with_index(unordered_session, rule, origin, data):
     # TODO: supply a reason why this isn't compatible with pandas 1.x
     pytest.importorskip("pandas", minversion="2.0.0")
     col = "timestamp_col"
@@ -256,12 +256,16 @@ def test__resample_with_index(unordered_session, rule, origin, data):
     scalars_pandas_df_index = pd.DataFrame(data).set_index(col)
     scalars_pandas_df_index.index.name = None
 
-    bf_result = scalars_df_index._resample(rule=rule, origin=origin).min().to_pandas()
-
+    bf_result = scalars_df_index.resample(rule=rule, origin=origin).min()
     pd_result = scalars_pandas_df_index.resample(rule=rule, origin=origin).min()
 
+    assert isinstance(bf_result.index, bpd.DatetimeIndex)
+    assert isinstance(pd_result.index, pd.DatetimeIndex)
     pd.testing.assert_frame_equal(
-        bf_result, pd_result, check_dtype=False, check_index_type=False
+        bf_result.to_pandas(),
+        pd_result,
+        check_index_type=False,
+        check_dtype=False,
     )
 
 

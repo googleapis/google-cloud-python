@@ -4856,14 +4856,14 @@ def test_series_explode_null(data):
         pytest.param(True, "timestamp_col", "timestamp_col", "1YE"),
     ],
 )
-def test__resample(scalars_df_index, scalars_pandas_df_index, append, level, col, rule):
+def test_resample(scalars_df_index, scalars_pandas_df_index, append, level, col, rule):
     # TODO: supply a reason why this isn't compatible with pandas 1.x
     pytest.importorskip("pandas", minversion="2.0.0")
     scalars_df_index = scalars_df_index.set_index(col, append=append)["int64_col"]
     scalars_pandas_df_index = scalars_pandas_df_index.set_index(col, append=append)[
         "int64_col"
     ]
-    bf_result = scalars_df_index._resample(rule=rule, level=level).min().to_pandas()
+    bf_result = scalars_df_index.resample(rule=rule, level=level).min().to_pandas()
     pd_result = scalars_pandas_df_index.resample(rule=rule, level=level).min()
     pd.testing.assert_series_equal(bf_result, pd_result)
 

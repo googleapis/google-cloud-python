@@ -11,6 +11,7 @@ labeling information
 """
 from __future__ import annotations
 
+import datetime
 from typing import Hashable, Iterable, Literal, Optional, Sequence, Union
 
 from bigframes_vendored import constants
@@ -4731,6 +4732,86 @@ class DataFrame(generic.NDFrame):
                 If no column with the provided label is found in ``self`` for left join.
             ValueError:
                 If no column with the provided label is found in ``self`` for right join.
+        """
+        raise NotImplementedError(constants.ABSTRACT_METHOD_ERROR_MESSAGE)
+
+    def resample(
+        self,
+        rule: str,
+        *,
+        closed: Optional[Literal["right", "left"]] = None,
+        label: Optional[Literal["right", "left"]] = None,
+        on=None,
+        level=None,
+        origin: Union[
+            Union[pd.Timestamp, datetime.datetime, np.datetime64, int, float, str],
+            Literal["epoch", "start", "start_day", "end", "end_day"],
+        ] = "start_day",
+    ):
+        """Resample time-series data.
+
+        **Examples:**
+
+            >>> import bigframes.pandas as bpd
+            >>> data = {
+            ...     "timestamp_col": pd.date_range(
+            ...         start="2021-01-01 13:00:00", periods=30, freq="1s"
+            ...     ),
+            ...     "int64_col": range(30),
+            ...     "int64_too": range(10, 40),
+            ... }
+
+        Resample on a DataFrame with index:
+
+            >>> df = bpd.DataFrame(data).set_index("timestamp_col")
+            >>> df.resample(rule="7s").min()
+                                int64_col  int64_too
+            2021-01-01 12:59:55          0         10
+            2021-01-01 13:00:02          2         12
+            2021-01-01 13:00:09          9         19
+            2021-01-01 13:00:16         16         26
+            2021-01-01 13:00:23         23         33
+            <BLANKLINE>
+            [5 rows x 2 columns]
+
+        Resample with column and origin set to 'start':
+
+            >>> df = bpd.DataFrame(data)
+            >>> df.resample(rule="7s", on = "timestamp_col", origin="start").min()
+                                int64_col  int64_too
+            2021-01-01 13:00:00          0         10
+            2021-01-01 13:00:07          7         17
+            2021-01-01 13:00:14         14         24
+            2021-01-01 13:00:21         21         31
+            2021-01-01 13:00:28         28         38
+            <BLANKLINE>
+            [5 rows x 2 columns]
+
+        Args:
+            rule (str):
+                The offset string representing target conversion.
+                Offsets 'ME', 'YE', 'QE', 'BME', 'BA', 'BQE', and 'W' are *not*
+                supported.
+            closed (Literal['left'] | None):
+                Which side of bin interval is closed. The default is 'left' for
+                all supported frequency offsets.
+            label (Literal['right'] | Literal['left'] | None):
+                Which bin edge label to label bucket with. The default is 'left'
+                for all supported frequency offsets.
+            on (str, default None):
+                For a DataFrame, column to use instead of index for resampling. Column
+                must be datetime-like.
+            level (str or int, default None):
+                For a MultiIndex, level (name or number) to use for resampling.
+                level must be datetime-like.
+            origin(str, default 'start_day'):
+                The timestamp on which to adjust the grouping. Must be one of the following:
+                'epoch': origin is 1970-01-01
+                'start': origin is the first value of the timeseries
+                'start_day': origin is the first day at midnight of the timeseries
+                Origin values 'end' and 'end_day' are *not* supported.
+        Returns:
+            DataFrameGroupBy: DataFrameGroupBy object.
         """
         raise NotImplementedError(constants.ABSTRACT_METHOD_ERROR_MESSAGE)
 

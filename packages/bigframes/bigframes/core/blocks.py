@@ -1996,6 +1996,31 @@ class Block:
             Literal["epoch", "start", "start_day", "end", "end_day"],
         ] = "start_day",
     ) -> Block:
+        if not isinstance(rule, str):
+            raise NotImplementedError(
+                f"Only offset strings are currently supported for rule, but got {repr(rule)}. {constants.FEEDBACK_LINK}"
+            )
+
+        if rule in ("ME", "YE", "QE", "BME", "BA", "BQE", "W"):
+            raise NotImplementedError(
+                f"Offset strings 'ME', 'YE', 'QE', 'BME', 'BA', 'BQE', 'W' are not currently supported for rule, but got {repr(rule)}. {constants.FEEDBACK_LINK}"
+            )
+
+        if closed == "right":
+            raise NotImplementedError(
+                f"Only closed='left' is currently supported. {constants.FEEDBACK_LINK}",
+            )
+
+        if label == "right":
+            raise NotImplementedError(
+                f"Only label='left' is currently supported. {constants.FEEDBACK_LINK}",
+            )
+
+        if origin not in ("epoch", "start", "start_day"):
+            raise NotImplementedError(
+                f"Only origin='epoch', 'start', 'start_day' are currently supported, but got {repr(origin)}. {constants.FEEDBACK_LINK}"
+            )
+
         # Validate and resolve the index or column to use for grouping
         if on is None:
             if len(self.index_columns) == 0:

@@ -2505,7 +2505,7 @@ class Series(vendored_pandas_series.Series):
         )
 
     @validations.requires_ordering()
-    def _resample(
+    def resample(
         self,
         rule: str,
         *,
@@ -2519,43 +2519,6 @@ class Series(vendored_pandas_series.Series):
             Literal["epoch", "start", "start_day", "end", "end_day"],
         ] = "start_day",
     ) -> bigframes.core.groupby.SeriesGroupBy:
-        """Internal function to support resample. Resample time-series data.
-
-        **Examples:**
-
-        >>> import bigframes.pandas as bpd
-        >>> data = {
-        ...     "timestamp_col": pd.date_range(
-        ...         start="2021-01-01 13:00:00", periods=30, freq="1s"
-        ...     ),
-        ...     "int64_col": range(30),
-        ... }
-        >>> s = bpd.DataFrame(data).set_index("timestamp_col")
-        >>> s._resample(rule="7s", origin="epoch").min()
-                             int64_col
-        2021-01-01 12:59:56          0
-        2021-01-01 13:00:03          3
-        2021-01-01 13:00:10         10
-        2021-01-01 13:00:17         17
-        2021-01-01 13:00:24         24
-        <BLANKLINE>
-        [5 rows x 1 columns]
-
-
-        Args:
-            rule (str):
-                The offset string representing target conversion.
-            level (str or int, default None):
-                For a MultiIndex, level (name or number) to use for resampling.
-                level must be datetime-like.
-            origin(str, default 'start_day'):
-                The timestamp on which to adjust the grouping. Must be one of the following:
-                'epoch': origin is 1970-01-01
-                'start': origin is the first value of the timeseries
-                'start_day': origin is the first day at midnight of the timeseries
-        Returns:
-            SeriesGroupBy: SeriesGroupBy object.
-        """
         block = self._block._generate_resample_label(
             rule=rule,
             closed=closed,

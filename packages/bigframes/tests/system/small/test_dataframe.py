@@ -5915,21 +5915,15 @@ def test_dataframe_explode_xfail(col_names):
         pytest.param("datetime_col", "5M", "epoch"),
         pytest.param("datetime_col", "3Q", "start_day"),
         pytest.param("datetime_col", "3YE", "start"),
-        pytest.param(
-            "int64_col", "100D", "start", marks=pytest.mark.xfail(raises=TypeError)
-        ),
-        pytest.param(
-            "datetime_col", "100D", "end", marks=pytest.mark.xfail(raises=ValueError)
-        ),
     ],
 )
-def test__resample_with_column(
+def test_resample_with_column(
     scalars_df_index, scalars_pandas_df_index, on, rule, origin
 ):
     # TODO: supply a reason why this isn't compatible with pandas 1.x
     pytest.importorskip("pandas", minversion="2.0.0")
     bf_result = (
-        scalars_df_index._resample(rule=rule, on=on, origin=origin)[
+        scalars_df_index.resample(rule=rule, on=on, origin=origin)[
             ["int64_col", "int64_too"]
         ]
         .max()
@@ -5943,30 +5937,54 @@ def test__resample_with_column(
     )
 
 
+@pytest.mark.parametrize("index_col", ["timestamp_col", "datetime_col"])
 @pytest.mark.parametrize(
-    ("append", "level", "col", "rule"),
+    ("index_append", "level"),
+    [(True, 1), (False, None), (False, 0)],
+)
+@pytest.mark.parametrize(
+    "rule",
     [
-        pytest.param(False, None, "timestamp_col", "100d"),
-        pytest.param(True, 1, "timestamp_col", "1200h"),
-        pytest.param(False, None, "datetime_col", "100d"),
+        # TODO(tswast): support timedeltas and dataoffsets.
+        # TODO(tswast): support bins that default to "right".
+        "100d",
+        "1200h",
     ],
 )
-def test__resample_with_index(
-    scalars_df_index, scalars_pandas_df_index, append, level, col, rule
+# TODO(tswast): support "right"
+@pytest.mark.parametrize("closed", ["left", None])
+# TODO(tswast): support "right"
+@pytest.mark.parametrize("label", ["left", None])
+@pytest.mark.parametrize(
+    "origin",
+    ["epoch", "start", "start_day"],  # TODO(tswast): support end, end_day.
+)
+def test_resample_with_index(
+    scalars_df_index,
+    scalars_pandas_df_index,
+    index_append,
+    level,
+    index_col,
+    rule,
+    closed,
+    origin,
+    label,
 ):
     # TODO: supply a reason why this isn't compatible with pandas 1.x
     pytest.importorskip("pandas", minversion="2.0.0")
-    scalars_df_index = scalars_df_index.set_index(col, append=append)
-    scalars_pandas_df_index = scalars_pandas_df_index.set_index(col, append=append)
+    scalars_df_index = scalars_df_index.set_index(index_col, append=index_append)
+    scalars_pandas_df_index = scalars_pandas_df_index.set_index(
+        index_col, append=index_append
+    )
     bf_result = (
         scalars_df_index[["int64_col", "int64_too"]]
-        ._resample(rule=rule, level=level)
+        .resample(rule=rule, level=level, closed=closed, origin=origin, label=label)
         .min()
         .to_pandas()
     )
     pd_result = (
         scalars_pandas_df_index[["int64_col", "int64_too"]]
-        .resample(rule=rule, level=level)
+        .resample(rule=rule, level=level, closed=closed, origin=origin, label=label)
         .min()
     )
     assert_pandas_df_equal(bf_result, pd_result)
@@ -6010,7 +6028,7 @@ def test__resample_with_index(
         ),
     ],
 )
-def test__resample_start_time(rule, origin, data):
+def test_resample_start_time(rule, origin, data):
     # TODO: supply a reason why this isn't compatible with pandas 1.x
     pytest.importorskip("pandas", minversion="2.0.0")
     col = "timestamp_col"
@@ -6018,7 +6036,7 @@ def test__resample_start_time(rule, origin, data):
     scalars_pandas_df_index = pd.DataFrame(data).set_index(col)
     scalars_pandas_df_index.index.name = None
 
-    bf_result = scalars_df_index._resample(rule=rule, origin=origin).min().to_pandas()
+    bf_result = scalars_df_index.resample(rule=rule, origin=origin).min().to_pandas()
 
     pd_result = scalars_pandas_df_index.resample(rule=rule, origin=origin).min()
 
