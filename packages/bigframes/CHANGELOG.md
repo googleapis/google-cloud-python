@@ -4,6 +4,29 @@
 
 [1]: https://pypi.org/project/bigframes/#history
 
+## [2.28.0](https://github.com/googleapis/python-bigquery-dataframes/compare/v2.27.0...v2.28.0) (2025-11-03)
+
+
+### Features
+
+* Add bigframes.bigquery.st_simplify ([#2210](https://github.com/googleapis/python-bigquery-dataframes/issues/2210)) ([ecee2bc](https://github.com/googleapis/python-bigquery-dataframes/commit/ecee2bc6ada0bc968fc56ed7194dc8c043547e93))
+* Add Series.dt.day_name ([#2218](https://github.com/googleapis/python-bigquery-dataframes/issues/2218)) ([5e006e4](https://github.com/googleapis/python-bigquery-dataframes/commit/5e006e404b65c32e5b1d342ebfcfce59ee592c8c))
+* Polars engine supports std, var ([#2215](https://github.com/googleapis/python-bigquery-dataframes/issues/2215)) ([ef5e83a](https://github.com/googleapis/python-bigquery-dataframes/commit/ef5e83acedf005cbe1e6ad174bec523ac50517d7))
+* Support INFORMATION_SCHEMA views in `read_gbq` ([#1895](https://github.com/googleapis/python-bigquery-dataframes/issues/1895)) ([d97cafc](https://github.com/googleapis/python-bigquery-dataframes/commit/d97cafcb5921fca2351b18011b0e54e2631cc53d))
+* Support some python standard lib callables in apply/combine ([#2187](https://github.com/googleapis/python-bigquery-dataframes/issues/2187)) ([86a2756](https://github.com/googleapis/python-bigquery-dataframes/commit/86a27564b48b854a32b3d11cd2105aa0fa496279))
+
+
+### Bug Fixes
+
+* Correct connection normalization in blob system tests ([#2222](https://github.com/googleapis/python-bigquery-dataframes/issues/2222)) ([a0e1e50](https://github.com/googleapis/python-bigquery-dataframes/commit/a0e1e50e47c758bdceb54d04180ed36b35cf2e35))
+* Improve error handling in blob operations ([#2194](https://github.com/googleapis/python-bigquery-dataframes/issues/2194)) ([d410046](https://github.com/googleapis/python-bigquery-dataframes/commit/d4100466612df0523d01ed01ca1e115dabd6ef45))
+* Resolve AttributeError in TableWidget and improve initialization ([#1937](https://github.com/googleapis/python-bigquery-dataframes/issues/1937)) ([4c4c9b1](https://github.com/googleapis/python-bigquery-dataframes/commit/4c4c9b14657b7cda1940ef39e7d4db20a9ff5308))
+
+
+### Documentation
+
+* Update bq_dataframes_llm_output_schema.ipynb ([#2004](https://github.com/googleapis/python-bigquery-dataframes/issues/2004)) ([316ba9f](https://github.com/googleapis/python-bigquery-dataframes/commit/316ba9f557d792117d5a7845d7567498f78dd513))
+
 ## [2.27.0](https://github.com/googleapis/python-bigquery-dataframes/compare/v2.26.0...v2.27.0) (2025-10-24)
 
 
