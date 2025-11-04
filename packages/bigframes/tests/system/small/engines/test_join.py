@@ -55,7 +55,7 @@ def test_engines_join_on_coerced_key(
     assert_equivalence_execution(result.node, REFERENCE_ENGINE, engine)
 
 
-@pytest.mark.parametrize("engine", ["polars", "bq"], indirect=True)
+@pytest.mark.parametrize("engine", ["polars", "bq", "bq-sqlglot"], indirect=True)
 @pytest.mark.parametrize("join_type", ["left", "inner", "right", "outer"])
 def test_engines_join_multi_key(
     scalars_array_value: array_value.ArrayValue,
@@ -90,7 +90,7 @@ def test_engines_cross_join(
     assert_equivalence_execution(result.node, REFERENCE_ENGINE, engine)
 
 
-@pytest.mark.parametrize("engine", ["polars", "bq"], indirect=True)
+@pytest.mark.parametrize("engine", ["polars", "bq", "bq-sqlglot"], indirect=True)
 @pytest.mark.parametrize(
     ("left_key", "right_key"),
     [

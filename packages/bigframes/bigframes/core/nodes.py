@@ -1627,7 +1627,7 @@ class ResultNode(UnaryNode):
     # TODO: CTE definitions
 
     def _validate(self):
-        for ref, name in self.output_cols:
+        for ref, _ in self.output_cols:
             assert ref.id in self.child.ids
 
     @property

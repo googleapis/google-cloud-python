@@ -57,8 +57,10 @@ def remap_variables(
     new_root = root.transform_children(lambda node: remapped_children[node])
 
     # Step 3: Transform the current node using the mappings from its children.
+    # "reversed" is required for InNode so that in case of a duplicate column ID,
+    # the left child's mapping is the one that's kept.
     downstream_mappings: dict[identifiers.ColumnId, identifiers.ColumnId] = {
-        k: v for mapping in new_child_mappings for k, v in mapping.items()
+        k: v for mapping in reversed(new_child_mappings) for k, v in mapping.items()
     }
     if isinstance(new_root, nodes.InNode):
         new_root = typing.cast(nodes.InNode, new_root)
