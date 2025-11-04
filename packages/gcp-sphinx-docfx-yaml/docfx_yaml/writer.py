@@ -581,8 +581,8 @@ class MarkdownTranslator(nodes.NodeVisitor):
         colwidths = self.table[0]
         realwidths = colwidths[:]
         separator = 0
-        self.add_text('<!-- {} -->'.format(node.tagname))
-        # self.add_text('<!-- {} -->'.format(json.dumps(self.table)))
+        self.add_text(f'<!-- {node.tagname} -->')
+        # self.add_text(f'<!-- {json.dumps(self.table)} -->')
 
         # don't allow paragraphs in table cells for now
         # for line in lines:
@@ -642,13 +642,13 @@ class MarkdownTranslator(nodes.NodeVisitor):
         try:
             image_name = '/'.join(node.attributes['uri'].split('/')[node.attributes['uri'].split('/').index('_static')-1:])
         except ValueError as e:
-            print("Image not found where expected {}".format(node.attributes['uri']))
+            print(f"Image not found where expected {node.attributes['uri']}")
             raise nodes.SkipNode
         image_name = ''.join(image_name.split())
         self.new_state(0)
         if 'alt' in node.attributes:
-            self.add_text('![{}]({})'.format(node['alt'], image_name) + self.nl)
-        self.add_text('![image]({})'.format(image_name) + self.nl)
+            self.add_text(f'![{node["alt"]}]({image_name})' + self.nl)
+        self.add_text(f'![image]({image_name})' + self.nl)
         self.end_state(False)
         raise nodes.SkipNode
 
@@ -793,7 +793,7 @@ class MarkdownTranslator(nodes.NodeVisitor):
             self.clear_last_state()
             MarkdownTranslator.resolve_reference_in_node(node)
             lines = node.astext().split('\n')
-            quoteLines = ['> {0}\n>'.format(line) for line in lines]
+            quoteLines = [f'> {line}\n>' for line in lines]
             mdStr = '\n> [!{0}]\n{1}'.format(name, '\n'.join(quoteLines))
             self.add_text(mdStr)
         return depart_alert_box
@@ -849,18 +849,18 @@ class MarkdownTranslator(nodes.NodeVisitor):
             include_language = (('-' + include_language) if (include_language is not None) else '')
             include_caption = (('"' + include_caption + '"') if (include_caption is not None) else '')
 
-            self.add_text('<!--[!code{}[Main]({} {})]-->'.format(include_language, relative_path, include_caption))
+            self.add_text(f'<!--[!code{include_language}[Main]({relative_path} {include_caption})]-->')
         except KeyError as e:
             pass
         except ValueError as e:
             pass
 
         self.new_state(0)
-        self.add_text('<!-- {} {} -->'.format(node.tagname, json.dumps(node.attributes)))
+        self.add_text(f'<!-- {node.tagname} {json.dumps(node.attributes)} -->')
         self.end_state(wrap=False)
 
         if 'language' in node.attributes:
-            self.add_text('````{}'.format(node.attributes['language']))
+            self.add_text(f'````{node.attributes["language"]}')
         else:
             self.add_text('````')
         self.new_state()
@@ -919,7 +919,7 @@ class MarkdownTranslator(nodes.NodeVisitor):
     def visit_target(self, node):
         if node.hasattr('refid'):
             self.new_state(0)
-            self.add_text('<a name={}></a>'.format(node.attributes['refid']))
+            self.add_text(f'<a name={node.attributes["refid"]}></a>')
             self.end_state()
         raise nodes.SkipNode
 
@@ -934,7 +934,7 @@ class MarkdownTranslator(nodes.NodeVisitor):
 
     def visit_pending_xref(self, node):
         if 'refdomain' in node.attributes and node.attributes['refdomain'] == 'py':
-            self.add_text('<xref:{}>'.format(node.attributes['reftarget']))
+            self.add_text(f'<xref:{node.attributes["reftarget"]}>')
         raise nodes.SkipNode
 
     def depart_pending_xref(self, node):
@@ -946,10 +946,10 @@ class MarkdownTranslator(nodes.NodeVisitor):
         raw_ref_tilde_template = ":class:`~{0}`"
         raw_ref_template = ":class:`{0}`"
         if 'refid' in node.attributes:
-            ref_string = cls.xref_template.format(node.attributes['refid'])
+            ref_string = f'<xref:{node.attributes["refid"]}>'
         elif 'refuri' in node.attributes:
             if 'http' in node.attributes['refuri'] or node.attributes['refuri'][0] == '/':
-                ref_string = '[{}]({})'.format(node.astext(), node.attributes['refuri'])
+                ref_string = f'[{node.astext()}]({node.attributes["refuri"]})'
             else:
                 # only use id in class and func refuri if its id exists
                 # otherwise, remove '.html#' in refuri
@@ -971,7 +971,7 @@ class MarkdownTranslator(nodes.NodeVisitor):
                 else:
                     ref_string = cls.xref_template.format(node.attributes['refuri'])
         else:
-            ref_string = '{}<!-- {} -->'.format(node.tagname, json.dumps(node.attributes))
+            ref_string = f'{node.tagname}<!-- {json.dumps(node.attributes)} -->'
 
         return ref_string
 

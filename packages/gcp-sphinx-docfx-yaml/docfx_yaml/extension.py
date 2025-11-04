@@ -355,7 +355,7 @@ def _resolve_reference_in_module_summary(pattern, lines):
 
             # Check to see if we should create an xref for it.
             if 'google.cloud' in matched_str:
-                new_line = new_line.replace(matched_str, '<xref uid=\"{}\">{}</xref>'.format(xref, ref_name))
+                new_line = new_line.replace(matched_str, f'<xref uid="{xref}">{ref_name}</xref>')
             # If it not a Cloud library, don't create xref for it.
             else:
                 # Carefully extract the original uid
@@ -364,7 +364,7 @@ def _resolve_reference_in_module_summary(pattern, lines):
                     ref_name = matched_str[index+1:-1]
                 else:
                     ref_name = matched_str[1:]
-                new_line = new_line.replace(matched_str, '`{}`'.format(ref_name))
+                new_line = new_line.replace(matched_str, f'`{ref_name}`')
 
         new_lines.append(new_line)
     return new_lines, xrefs
@@ -602,8 +602,7 @@ def _parse_docstring_summary(
 
             # Extracts the notice content and format it.
             elif keyword and keyword in NOTICES:
-                summary_parts.append(notice_open_tag.format(
-                    notice_tag=keyword, notice_name=NOTICES[keyword]))
+                summary_parts.append(f'<aside class="{keyword}">\n<b>{NOTICES[keyword]}:</b>')
                 tab_space = -1
                 notice_body = []
                 parts = [split_part for split_part in part.split("\n") if split_part][1:]
@@ -1019,12 +1018,12 @@ def _create_datam(app, cls, module, name, _type, obj, lines=None):
                     lines = inspect.getdoc(obj)
                     lines = lines.split("\n") if lines else []
             except TypeError as e:
-                print("couldn't getdoc from method, function: {}".format(e))
+                print(f"couldn't getdoc from method, function: {e}")
         elif _type in [PROPERTY]:
             lines = inspect.getdoc(obj)
             lines = lines.split("\n") if lines else []
     except TypeError as e:
-        print("Can't get argspec for {}: {}. {}".format(type(obj), name, e))
+        print(f"Can't get argspec for {type(obj)}: {name}. {e}")
 
     if name in app.env.docfx_signature_funcs_methods:
         sig = app.env.docfx_signature_funcs_methods[name]
@@ -1064,9 +1063,9 @@ def _create_datam(app, cls, module, name, _type, obj, lines=None):
     except (TypeError, OSError):
         # TODO: remove this once there is full handler for property
         if _type in [PROPERTY]:
-            print("Skip inspecting for property: {}".format(name))
+            print(f"Skip inspecting for property: {name}")
         else:
-            print("Can't inspect type {}: {}".format(type(obj), name))
+            print(f"Can't inspect type {type(obj)}: {name}")
         path = None
         start_line = None
 
@@ -1246,11 +1245,11 @@ def process_docstring(app, _type, name, obj, options, lines):
 
     if _type == FUNCTION and app.config.autodoc_functions:
         if datam['uid'] is None:
-            raise ValueError("Issue with {0} (name={1})".format(datam, name))
+            raise ValueError(f"Issue with {datam} (name={name})")
         if cls is None:
             cls = name
         if cls is None:
-            raise ValueError("cls is None for name='{1}' {0}".format(datam, name))
+            raise ValueError(f"cls is None for name='{name}' {datam}")
         if cls not in app.env.docfx_yaml_functions:
             app.env.docfx_yaml_functions[cls] = [datam]
         else:
