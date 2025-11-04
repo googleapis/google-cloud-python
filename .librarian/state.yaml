@@ -4680,8 +4680,6 @@ libraries:
         service_config: serviceconfig.yaml
       - path: google/cloud/location
         service_config: cloud.yaml
-      - path: google/gapic/metadata
-        service_config: ""
       - path: google/logging/type
         service_config: ""
       - path: google/rpc
@@ -4694,7 +4692,7 @@ libraries:
       - packages/googleapis-common-protos
     preserve_regex: []
     remove_regex:
-      - ^packages/googleapis-common-protos/google/(?:api|cloud|gapic|rpc|type)/.*/.*_pb2\.(?:py|pyi)$/
+      - ^packages/googleapis-common-protos/google/(?:api|cloud|rpc|type)/.*/.*_pb2\.(?:py|pyi)$/
     tag_format: '{id}-v{version}'
   - id: grafeas
     version: 1.16.0
