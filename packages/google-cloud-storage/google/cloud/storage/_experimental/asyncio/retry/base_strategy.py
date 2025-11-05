@@ -1,6 +1,7 @@
 import abc
 from typing import Any, Iterable
 
+
 class _BaseResumptionStrategy(abc.ABC):
     """Abstract base class defining the interface for a bidi stream resumption strategy.
 

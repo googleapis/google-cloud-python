@@ -107,7 +107,9 @@ class TestReadResumptionStrategy(unittest.TestCase):
         response = storage_v2.BidiReadObjectResponse(
             object_data_ranges=[
                 storage_v2.types.ObjectRangeData(
-                    read_range=storage_v2.ReadRange(read_id=_READ_ID, read_offset=0, read_length=len(data)),
+                    read_range=storage_v2.ReadRange(
+                        read_id=_READ_ID, read_offset=0, read_length=len(data)
+                    ),
                     checksummed_data=storage_v2.ChecksummedData(content=data),
                 )
             ]
@@ -130,7 +132,9 @@ class TestReadResumptionStrategy(unittest.TestCase):
         response = storage_v2.BidiReadObjectResponse(
             object_data_ranges=[
                 storage_v2.types.ObjectRangeData(
-                    read_range=storage_v2.ReadRange(read_id=_READ_ID, read_offset=0, read_length=4),
+                    read_range=storage_v2.ReadRange(
+                        read_id=_READ_ID, read_offset=0, read_length=4
+                    ),
                     checksummed_data=storage_v2.ChecksummedData(content=b"data"),
                 )
             ]
@@ -149,7 +153,9 @@ class TestReadResumptionStrategy(unittest.TestCase):
         response = storage_v2.BidiReadObjectResponse(
             object_data_ranges=[
                 storage_v2.types.ObjectRangeData(
-                    read_range=storage_v2.ReadRange(read_id=_READ_ID, read_offset=0, read_length=4),
+                    read_range=storage_v2.ReadRange(
+                        read_id=_READ_ID, read_offset=0, read_length=4
+                    ),
                     checksummed_data=storage_v2.ChecksummedData(content=b"data"),
                     range_end=True,
                 )
@@ -171,7 +177,9 @@ class TestReadResumptionStrategy(unittest.TestCase):
         response = storage_v2.BidiReadObjectResponse(
             object_data_ranges=[
                 storage_v2.types.ObjectRangeData(
-                    read_range=storage_v2.ReadRange(read_id=_READ_ID, read_offset=0, read_length=len(data)),
+                    read_range=storage_v2.ReadRange(
+                        read_id=_READ_ID, read_offset=0, read_length=len(data)
+                    ),
                     checksummed_data=storage_v2.ChecksummedData(content=data),
                     range_end=True,
                 )
@@ -195,7 +203,9 @@ class TestReadResumptionStrategy(unittest.TestCase):
         response = storage_v2.BidiReadObjectResponse(
             object_data_ranges=[
                 storage_v2.types.ObjectRangeData(
-                    read_range=storage_v2.ReadRange(read_id=_READ_ID, read_offset=0, read_length=len(data)),
+                    read_range=storage_v2.ReadRange(
+                        read_id=_READ_ID, read_offset=0, read_length=len(data)
+                    ),
                     checksummed_data=storage_v2.ChecksummedData(content=data),
                     range_end=True,
                 )
@@ -215,9 +225,7 @@ class TestReadResumptionStrategy(unittest.TestCase):
         self.assertIsNone(state.get("routing_token"))
 
         dummy_token = "dummy-routing-token"
-        redirect_error = BidiReadObjectRedirectedError(
-            routing_token=dummy_token
-        )
+        redirect_error = BidiReadObjectRedirectedError(routing_token=dummy_token)
 
         final_error = exceptions.RetryError("Retry failed", cause=redirect_error)
 

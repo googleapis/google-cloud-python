@@ -7,9 +7,13 @@ from google.cloud.storage._experimental.asyncio.retry.base_strategy import (
 )
 from google.cloud._storage_v2.types.storage import BidiReadObjectRedirectedError
 
+
 class _DownloadState:
     """A helper class to track the state of a single range download."""
-    def __init__(self, initial_offset: int, initial_length: int, user_buffer: IO[bytes]):
+
+    def __init__(
+        self, initial_offset: int, initial_length: int, user_buffer: IO[bytes]
+    ):
         self.initial_offset = initial_offset
         self.initial_length = initial_length
         self.user_buffer = user_buffer
@@ -42,7 +46,9 @@ class _ReadResumptionStrategy(_BaseResumptionStrategy):
                 pending_requests.append(new_request)
         return pending_requests
 
-    def update_state_from_response(self, response: storage_v2.BidiReadObjectResponse, state: dict) -> None:
+    def update_state_from_response(
+        self, response: storage_v2.BidiReadObjectResponse, state: dict
+    ) -> None:
         """Processes a server response, performs integrity checks, and updates state."""
         for object_data_range in response.object_data_ranges:
             read_id = object_data_range.read_range.read_id
@@ -62,8 +68,13 @@ class _ReadResumptionStrategy(_BaseResumptionStrategy):
             # Final Byte Count Verification
             if object_data_range.range_end:
                 read_state.is_complete = True
-                if read_state.initial_length != 0 and read_state.bytes_written != read_state.initial_length:
-                    raise DataCorruption(response, f"Byte count mismatch for read_id {read_id}")
+                if (
+                    read_state.initial_length != 0
+                    and read_state.bytes_written != read_state.initial_length
+                ):
+                    raise DataCorruption(
+                        response, f"Byte count mismatch for read_id {read_id}"
+                    )
 
     async def recover_state_on_failure(self, error: Exception, state: Any) -> None:
         """Handles BidiReadObjectRedirectedError for reads."""
@@ -71,4 +82,4 @@ class _ReadResumptionStrategy(_BaseResumptionStrategy):
         # and store it on the shared state object.
         cause = getattr(error, "cause", error)
         if isinstance(cause, BidiReadObjectRedirectedError):
-            state['routing_token'] = cause.routing_token
+            state["routing_token"] = cause.routing_token
