@@ -29,7 +29,7 @@ from cli import (
     GENERATE_REQUEST_FILE,
     BUILD_REQUEST_FILE,
     CONFIGURE_REQUEST_FILE,
-    RELEASE_INIT_REQUEST_FILE,
+    RELEASE_STAGE_REQUEST_FILE,
     SOURCE_DIR,
     STATE_YAML_FILE,
     LIBRARIAN_DIR,
@@ -75,7 +75,7 @@ from cli import (
     handle_build,
     handle_configure,
     handle_generate,
-    handle_release_init,
+    handle_release_stage,
 )
 
 
@@ -235,10 +235,10 @@ def mock_generate_request_data_for_nox():
 
 
 @pytest.fixture
-def mock_release_init_request_file(tmp_path, monkeypatch):
+def mock_release_stage_request_file(tmp_path, monkeypatch):
     """Creates the mock request file at the correct path inside a temp dir."""
     # Create the path as expected by the script: .librarian/release-request.json
-    request_path = f"{LIBRARIAN_DIR}/{RELEASE_INIT_REQUEST_FILE}"
+    request_path = f"{LIBRARIAN_DIR}/{RELEASE_STAGE_REQUEST_FILE}"
     request_dir = tmp_path / os.path.dirname(request_path)
     request_dir.mkdir()
     request_file = request_dir / os.path.basename(request_path)
@@ -876,34 +876,34 @@ def test_clean_up_files_after_post_processing_success(mocker, is_mono_repo):
     _clean_up_files_after_post_processing("output", "library_id", is_mono_repo)
 
 
-def test_get_libraries_to_prepare_for_release(mock_release_init_request_file):
+def test_get_libraries_to_prepare_for_release(mock_release_stage_request_file):
     """
     Tests that only libraries with the `release_triggered` field set to `True` are
     returned.
     """
-    request_data = _read_json_file(f"{LIBRARIAN_DIR}/{RELEASE_INIT_REQUEST_FILE}")
+    request_data = _read_json_file(f"{LIBRARIAN_DIR}/{RELEASE_STAGE_REQUEST_FILE}")
     libraries_to_prep_for_release = _get_libraries_to_prepare_for_release(request_data)
     assert len(libraries_to_prep_for_release) == 1
     assert "google-cloud-language" in libraries_to_prep_for_release[0]["id"]
     assert libraries_to_prep_for_release[0]["release_triggered"]
 
 
-def test_handle_release_init_success(mocker, mock_release_init_request_file):
+def test_handle_release_stage_success(mocker, mock_release_stage_request_file):
     """
-    Simply tests that `handle_release_init` runs without errors.
+    Simply tests that `handle_release_stage` runs without errors.
     """
     mocker.patch("cli._update_global_changelog", return_value=None)
     mocker.patch("cli._update_version_for_library", return_value=None)
     mocker.patch("cli._get_previous_version", return_value=None)
     mocker.patch("cli._update_changelog_for_library", return_value=None)
-    handle_release_init()
+    handle_release_stage()
 
 
-def test_handle_release_init_is_generated_success(
-    mocker, mock_release_init_request_file
+def test_handle_release_stage_is_generated_success(
+    mocker, mock_release_stage_request_file
 ):
     """
-    Tests that `handle_release_init` calls `_update_global_changelog` when the
+    Tests that `handle_release_stage` calls `_update_global_changelog` when the
     `packages` directory exists.
     """
     mocker.patch("pathlib.Path.exists", return_value=True)
@@ -912,23 +912,23 @@ def test_handle_release_init_is_generated_success(
     mocker.patch("cli._get_previous_version", return_value="1.2.2")
     mocker.patch("cli._update_changelog_for_library")
 
-    handle_release_init()
+    handle_release_stage()
 
     mock_update_global_changelog.assert_called_once()
 
 
-def test_handle_release_init_fail_value_error_file():
+def test_handle_release_stage_fail_value_error_file():
     """
-    Tests that handle_release_init fails to read `librarian/release-init-request.json`.
+    Tests that handle_release_stage fails to read `librarian/release-stage-request.json`.
     """
     with pytest.raises(ValueError, match="No such file or directory"):
-        handle_release_init()
+        handle_release_stage()
 
 
-def test_handle_release_init_fail_value_error_version(mocker):
+def test_handle_release_stage_fail_value_error_version(mocker):
     m = mock_open()
 
-    mock_release_init_request_content = {
+    mock_release_stage_request_content = {
         "libraries": [
             {
                 "id": "google-cloud-language",
@@ -942,17 +942,17 @@ def test_handle_release_init_fail_value_error_version(mocker):
     with unittest.mock.patch("cli.open", m):
         mocker.patch(
             "cli._get_libraries_to_prepare_for_release",
-            return_value=mock_release_init_request_content["libraries"],
+            return_value=mock_release_stage_request_content["libraries"],
         )
         mocker.patch("cli._get_previous_version", return_value="1.2.2")
         mocker.patch("cli._process_changelog", return_value=None)
         mocker.patch(
-            "cli._read_json_file", return_value=mock_release_init_request_content
+            "cli._read_json_file", return_value=mock_release_stage_request_content
         )
         with pytest.raises(
             ValueError, match="is the same as the version in state.yaml"
         ):
-            handle_release_init()
+            handle_release_stage()
 
 
 def test_read_valid_text_file(mocker):
@@ -1009,13 +1009,13 @@ def test_write_json_file():
         assert written_content == expected_output
 
 
-def test_update_global_changelog(mocker, mock_release_init_request_file):
+def test_update_global_changelog(mocker, mock_release_stage_request_file):
     """Tests that the global changelog is updated
     with the new version for a given library.
     See https://docs.python.org/3/library/unittest.mock.html#mock-open
     """
     m = mock_open()
-    request_data = _read_json_file(f"{LIBRARIAN_DIR}/{RELEASE_INIT_REQUEST_FILE}")
+    request_data = _read_json_file(f"{LIBRARIAN_DIR}/{RELEASE_STAGE_REQUEST_FILE}")
     libraries = _get_libraries_to_prepare_for_release(request_data)
 
     with unittest.mock.patch("cli.open", m):
