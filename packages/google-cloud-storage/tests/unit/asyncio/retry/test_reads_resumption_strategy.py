@@ -16,12 +16,14 @@ import io
 import unittest
 import pytest
 from google.cloud.storage.exceptions import DataCorruption
+from google.api_core import exceptions
 
 from google.cloud import _storage_v2 as storage_v2
 from google.cloud.storage._experimental.asyncio.retry.reads_resumption_strategy import (
     _DownloadState,
     _ReadResumptionStrategy,
 )
+from google.cloud._storage_v2.types.storage import BidiReadObjectRedirectedError
 
 _READ_ID = 1
 
@@ -204,3 +206,21 @@ class TestReadResumptionStrategy(unittest.TestCase):
 
         self.assertTrue(read_state.is_complete)
         self.assertEqual(read_state.bytes_written, len(data))
+
+    async def test_recover_state_on_failure_handles_redirect(self):
+        """Verify recover_state_on_failure correctly extracts routing_token."""
+        strategy = _ReadResumptionStrategy()
+
+        state = {}
+        self.assertIsNone(state.get("routing_token"))
+
+        dummy_token = "dummy-routing-token"
+        redirect_error = BidiReadObjectRedirectedError(
+            routing_token=dummy_token
+        )
+
+        final_error = exceptions.RetryError("Retry failed", cause=redirect_error)
+
+        await strategy.recover_state_on_failure(final_error, state)
+
+        self.assertEqual(state.get("routing_token"), dummy_token)
