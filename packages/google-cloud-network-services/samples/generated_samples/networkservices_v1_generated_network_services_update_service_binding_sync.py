@@ -39,8 +39,7 @@ def sample_update_service_binding():
     client = network_services_v1.NetworkServicesClient()
 
     # Initialize request argument(s)
-    request = network_services_v1.UpdateServiceBindingRequest(
-    )
+    request = network_services_v1.UpdateServiceBindingRequest()
 
     # Make the request
     operation = client.update_service_binding(request=request)
@@ -51,5 +50,6 @@ def sample_update_service_binding():
 
     # Handle the response
     print(response)
+
 
 # [END networkservices_v1_generated_NetworkServices_UpdateServiceBinding_sync]

@@ -53,4 +53,5 @@ def sample_delete_connectivity_test():
     # Handle the response
     print(response)
 
+
 # [END networkmanagement_v1_generated_ReachabilityService_DeleteConnectivityTest_sync]

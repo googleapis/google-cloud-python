@@ -52,4 +52,5 @@ async def sample_update_listing():
     # Handle the response
     print(response)
 
+
 # [END analyticshub_v1_generated_AnalyticsHubService_UpdateListing_async]

@@ -53,4 +53,5 @@ def sample_delete_lb_route_extension():
     # Handle the response
     print(response)
 
+
 # [END networkservices_v1_generated_DepService_DeleteLbRouteExtension_sync]

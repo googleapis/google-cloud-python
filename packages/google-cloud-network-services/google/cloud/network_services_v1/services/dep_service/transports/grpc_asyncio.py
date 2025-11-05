@@ -644,6 +644,147 @@ class DepServiceGrpcAsyncIOTransport(DepServiceTransport):
         return self._stubs["delete_lb_route_extension"]
 
     @property
+    def list_lb_edge_extensions(
+        self,
+    ) -> Callable[
+        [dep.ListLbEdgeExtensionsRequest], Awaitable[dep.ListLbEdgeExtensionsResponse]
+    ]:
+        r"""Return a callable for the list lb edge extensions method over gRPC.
+
+        Lists ``LbEdgeExtension`` resources in a given project and
+        location.
+
+        Returns:
+            Callable[[~.ListLbEdgeExtensionsRequest],
+                    Awaitable[~.ListLbEdgeExtensionsResponse]]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "list_lb_edge_extensions" not in self._stubs:
+            self._stubs["list_lb_edge_extensions"] = self._logged_channel.unary_unary(
+                "/google.cloud.networkservices.v1.DepService/ListLbEdgeExtensions",
+                request_serializer=dep.ListLbEdgeExtensionsRequest.serialize,
+                response_deserializer=dep.ListLbEdgeExtensionsResponse.deserialize,
+            )
+        return self._stubs["list_lb_edge_extensions"]
+
+    @property
+    def get_lb_edge_extension(
+        self,
+    ) -> Callable[[dep.GetLbEdgeExtensionRequest], Awaitable[dep.LbEdgeExtension]]:
+        r"""Return a callable for the get lb edge extension method over gRPC.
+
+        Gets details of the specified ``LbEdgeExtension`` resource.
+
+        Returns:
+            Callable[[~.GetLbEdgeExtensionRequest],
+                    Awaitable[~.LbEdgeExtension]]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "get_lb_edge_extension" not in self._stubs:
+            self._stubs["get_lb_edge_extension"] = self._logged_channel.unary_unary(
+                "/google.cloud.networkservices.v1.DepService/GetLbEdgeExtension",
+                request_serializer=dep.GetLbEdgeExtensionRequest.serialize,
+                response_deserializer=dep.LbEdgeExtension.deserialize,
+            )
+        return self._stubs["get_lb_edge_extension"]
+
+    @property
+    def create_lb_edge_extension(
+        self,
+    ) -> Callable[
+        [dep.CreateLbEdgeExtensionRequest], Awaitable[operations_pb2.Operation]
+    ]:
+        r"""Return a callable for the create lb edge extension method over gRPC.
+
+        Creates a new ``LbEdgeExtension`` resource in a given project
+        and location.
+
+        Returns:
+            Callable[[~.CreateLbEdgeExtensionRequest],
+                    Awaitable[~.Operation]]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "create_lb_edge_extension" not in self._stubs:
+            self._stubs["create_lb_edge_extension"] = self._logged_channel.unary_unary(
+                "/google.cloud.networkservices.v1.DepService/CreateLbEdgeExtension",
+                request_serializer=dep.CreateLbEdgeExtensionRequest.serialize,
+                response_deserializer=operations_pb2.Operation.FromString,
+            )
+        return self._stubs["create_lb_edge_extension"]
+
+    @property
+    def update_lb_edge_extension(
+        self,
+    ) -> Callable[
+        [dep.UpdateLbEdgeExtensionRequest], Awaitable[operations_pb2.Operation]
+    ]:
+        r"""Return a callable for the update lb edge extension method over gRPC.
+
+        Updates the parameters of the specified ``LbEdgeExtension``
+        resource.
+
+        Returns:
+            Callable[[~.UpdateLbEdgeExtensionRequest],
+                    Awaitable[~.Operation]]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "update_lb_edge_extension" not in self._stubs:
+            self._stubs["update_lb_edge_extension"] = self._logged_channel.unary_unary(
+                "/google.cloud.networkservices.v1.DepService/UpdateLbEdgeExtension",
+                request_serializer=dep.UpdateLbEdgeExtensionRequest.serialize,
+                response_deserializer=operations_pb2.Operation.FromString,
+            )
+        return self._stubs["update_lb_edge_extension"]
+
+    @property
+    def delete_lb_edge_extension(
+        self,
+    ) -> Callable[
+        [dep.DeleteLbEdgeExtensionRequest], Awaitable[operations_pb2.Operation]
+    ]:
+        r"""Return a callable for the delete lb edge extension method over gRPC.
+
+        Deletes the specified ``LbEdgeExtension`` resource.
+
+        Returns:
+            Callable[[~.DeleteLbEdgeExtensionRequest],
+                    Awaitable[~.Operation]]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "delete_lb_edge_extension" not in self._stubs:
+            self._stubs["delete_lb_edge_extension"] = self._logged_channel.unary_unary(
+                "/google.cloud.networkservices.v1.DepService/DeleteLbEdgeExtension",
+                request_serializer=dep.DeleteLbEdgeExtensionRequest.serialize,
+                response_deserializer=operations_pb2.Operation.FromString,
+            )
+        return self._stubs["delete_lb_edge_extension"]
+
+    @property
     def list_authz_extensions(
         self,
     ) -> Callable[
@@ -834,6 +975,31 @@ class DepServiceGrpcAsyncIOTransport(DepServiceTransport):
             ),
             self.delete_lb_route_extension: self._wrap_method(
                 self.delete_lb_route_extension,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.list_lb_edge_extensions: self._wrap_method(
+                self.list_lb_edge_extensions,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.get_lb_edge_extension: self._wrap_method(
+                self.get_lb_edge_extension,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.create_lb_edge_extension: self._wrap_method(
+                self.create_lb_edge_extension,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.update_lb_edge_extension: self._wrap_method(
+                self.update_lb_edge_extension,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.delete_lb_edge_extension: self._wrap_method(
+                self.delete_lb_edge_extension,
                 default_timeout=None,
                 client_info=client_info,
             ),

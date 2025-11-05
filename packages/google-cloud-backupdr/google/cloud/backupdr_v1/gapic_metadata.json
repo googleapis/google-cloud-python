@@ -60,6 +60,11 @@
                 "fetch_backup_plan_associations_for_resource_type"
               ]
             },
+            "FetchBackupsForResourceType": {
+              "methods": [
+                "fetch_backups_for_resource_type"
+              ]
+            },
             "FetchDataSourceReferencesForResourceType": {
               "methods": [
                 "fetch_data_source_references_for_resource_type"
@@ -138,6 +143,11 @@
             "ListBackups": {
               "methods": [
                 "list_backups"
+              ]
+            },
+            "ListDataSourceReferences": {
+              "methods": [
+                "list_data_source_references"
               ]
             },
             "ListDataSources": {
@@ -240,6 +250,11 @@
                 "fetch_backup_plan_associations_for_resource_type"
               ]
             },
+            "FetchBackupsForResourceType": {
+              "methods": [
+                "fetch_backups_for_resource_type"
+              ]
+            },
             "FetchDataSourceReferencesForResourceType": {
               "methods": [
                 "fetch_data_source_references_for_resource_type"
@@ -318,6 +333,11 @@
             "ListBackups": {
               "methods": [
                 "list_backups"
+              ]
+            },
+            "ListDataSourceReferences": {
+              "methods": [
+                "list_data_source_references"
               ]
             },
             "ListDataSources": {
@@ -420,6 +440,11 @@
                 "fetch_backup_plan_associations_for_resource_type"
               ]
             },
+            "FetchBackupsForResourceType": {
+              "methods": [
+                "fetch_backups_for_resource_type"
+              ]
+            },
             "FetchDataSourceReferencesForResourceType": {
               "methods": [
                 "fetch_data_source_references_for_resource_type"
@@ -498,6 +523,11 @@
             "ListBackups": {
               "methods": [
                 "list_backups"
+              ]
+            },
+            "ListDataSourceReferences": {
+              "methods": [
+                "list_data_source_references"
               ]
             },
             "ListDataSources": {

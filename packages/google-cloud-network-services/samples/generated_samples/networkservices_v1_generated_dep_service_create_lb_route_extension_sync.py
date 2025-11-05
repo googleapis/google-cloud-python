@@ -41,9 +41,14 @@ def sample_create_lb_route_extension():
     # Initialize request argument(s)
     lb_route_extension = network_services_v1.LbRouteExtension()
     lb_route_extension.name = "name_value"
-    lb_route_extension.forwarding_rules = ['forwarding_rules_value1', 'forwarding_rules_value2']
+    lb_route_extension.forwarding_rules = [
+        "forwarding_rules_value1",
+        "forwarding_rules_value2",
+    ]
     lb_route_extension.extension_chains.name = "name_value"
-    lb_route_extension.extension_chains.match_condition.cel_expression = "cel_expression_value"
+    lb_route_extension.extension_chains.match_condition.cel_expression = (
+        "cel_expression_value"
+    )
     lb_route_extension.extension_chains.extensions.name = "name_value"
     lb_route_extension.extension_chains.extensions.service = "service_value"
     lb_route_extension.load_balancing_scheme = "EXTERNAL_MANAGED"
@@ -63,5 +68,6 @@ def sample_create_lb_route_extension():
 
     # Handle the response
     print(response)
+
 
 # [END networkservices_v1_generated_DepService_CreateLbRouteExtension_sync]

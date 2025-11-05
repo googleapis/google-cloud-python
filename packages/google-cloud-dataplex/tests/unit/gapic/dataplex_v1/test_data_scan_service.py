@@ -7133,6 +7133,7 @@ def test_create_data_scan_rest_call_success(request_type):
                 "field_names": ["field_names_value1", "field_names_value2"]
             },
             "exclude_fields": {},
+            "catalog_publishing_enabled": True,
         },
         "data_discovery_spec": {
             "bigquery_publishing_config": {
@@ -7250,6 +7251,7 @@ def test_create_data_scan_rest_call_success(request_type):
             "post_scan_actions_result": {
                 "bigquery_export_result": {"state": 1, "message": "message_value"}
             },
+            "catalog_publishing_status": {},
         },
         "data_discovery_result": {
             "bigquery_publishing": {
@@ -7558,6 +7560,7 @@ def test_update_data_scan_rest_call_success(request_type):
                 "field_names": ["field_names_value1", "field_names_value2"]
             },
             "exclude_fields": {},
+            "catalog_publishing_enabled": True,
         },
         "data_discovery_spec": {
             "bigquery_publishing_config": {
@@ -7675,6 +7678,7 @@ def test_update_data_scan_rest_call_success(request_type):
             "post_scan_actions_result": {
                 "bigquery_export_result": {"state": 1, "message": "message_value"}
             },
+            "catalog_publishing_status": {},
         },
         "data_discovery_result": {
             "bigquery_publishing": {

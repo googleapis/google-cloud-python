@@ -54,4 +54,5 @@ async def sample_create_service_binding():
     # Handle the response
     print(response)
 
+
 # [END networkservices_v1_generated_NetworkServices_CreateServiceBinding_async]

@@ -42,7 +42,7 @@ def sample_adaptive_mt_translate():
     request = translate_v3.AdaptiveMtTranslateRequest(
         parent="parent_value",
         dataset="dataset_value",
-        content=['content_value1', 'content_value2'],
+        content=["content_value1", "content_value2"],
     )
 
     # Make the request
@@ -50,5 +50,6 @@ def sample_adaptive_mt_translate():
 
     # Handle the response
     print(response)
+
 
 # [END translate_v3_generated_TranslationService_AdaptiveMtTranslate_sync]

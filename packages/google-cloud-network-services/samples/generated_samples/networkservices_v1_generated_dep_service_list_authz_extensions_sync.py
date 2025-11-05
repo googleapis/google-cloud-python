@@ -50,4 +50,5 @@ def sample_list_authz_extensions():
     for response in page_result:
         print(response)
 
+
 # [END networkservices_v1_generated_DepService_ListAuthzExtensions_sync]

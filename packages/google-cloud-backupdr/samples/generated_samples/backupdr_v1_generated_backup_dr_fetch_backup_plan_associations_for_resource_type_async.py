@@ -45,10 +45,13 @@ async def sample_fetch_backup_plan_associations_for_resource_type():
     )
 
     # Make the request
-    page_result = client.fetch_backup_plan_associations_for_resource_type(request=request)
+    page_result = client.fetch_backup_plan_associations_for_resource_type(
+        request=request
+    )
 
     # Handle the response
     async for response in page_result:
         print(response)
+
 
 # [END backupdr_v1_generated_BackupDR_FetchBackupPlanAssociationsForResourceType_async]

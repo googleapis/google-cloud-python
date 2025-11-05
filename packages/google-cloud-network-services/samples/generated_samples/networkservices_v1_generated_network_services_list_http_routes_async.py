@@ -50,4 +50,5 @@ async def sample_list_http_routes():
     async for response in page_result:
         print(response)
 
+
 # [END networkservices_v1_generated_NetworkServices_ListHttpRoutes_async]

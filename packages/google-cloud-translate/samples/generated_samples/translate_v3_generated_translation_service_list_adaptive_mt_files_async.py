@@ -50,4 +50,5 @@ async def sample_list_adaptive_mt_files():
     async for response in page_result:
         print(response)
 
+
 # [END translate_v3_generated_TranslationService_ListAdaptiveMtFiles_async]

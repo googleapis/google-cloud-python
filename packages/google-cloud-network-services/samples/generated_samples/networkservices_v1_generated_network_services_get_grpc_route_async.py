@@ -49,4 +49,5 @@ async def sample_get_grpc_route():
     # Handle the response
     print(response)
 
+
 # [END networkservices_v1_generated_NetworkServices_GetGrpcRoute_async]

@@ -50,4 +50,5 @@ async def sample_list_gateway_route_views():
     async for response in page_result:
         print(response)
 
+
 # [END networkservices_v1_generated_NetworkServices_ListGatewayRouteViews_async]

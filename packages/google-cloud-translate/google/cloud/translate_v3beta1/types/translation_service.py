@@ -60,6 +60,9 @@ __protobuf__ = proto.module(
         "BatchDocumentOutputConfig",
         "BatchTranslateDocumentResponse",
         "BatchTranslateDocumentMetadata",
+        "RefinementEntry",
+        "RefineTextRequest",
+        "RefineTextResponse",
     },
 )
 
@@ -76,6 +79,9 @@ class TranslateTextGlossaryConfig(proto.Message):
             Optional. Indicates match is
             case-insensitive. Default value is false if
             missing.
+        contextual_translation_enabled (bool):
+            Optional. If set to true, the glossary will
+            be used for contextual translation.
     """
 
     glossary: str = proto.Field(
@@ -85,6 +91,10 @@ class TranslateTextGlossaryConfig(proto.Message):
     ignore_case: bool = proto.Field(
         proto.BOOL,
         number=2,
+    )
+    contextual_translation_enabled: bool = proto.Field(
+        proto.BOOL,
+        number=4,
     )
 
 
@@ -1817,6 +1827,9 @@ class BatchTranslateDocumentRequest(proto.Message):
         enable_rotation_correction (bool):
             Optional. If true, enable auto rotation
             correction in DVS.
+        pdf_native_only (bool):
+            Optional. If true, only native pdf pages will
+            be translated.
     """
 
     parent: str = proto.Field(
@@ -1868,6 +1881,10 @@ class BatchTranslateDocumentRequest(proto.Message):
     enable_rotation_correction: bool = proto.Field(
         proto.BOOL,
         number=12,
+    )
+    pdf_native_only: bool = proto.Field(
+        proto.BOOL,
+        number=13,
     )
 
 
@@ -2181,6 +2198,87 @@ class BatchTranslateDocumentMetadata(proto.Message):
         proto.MESSAGE,
         number=10,
         message=timestamp_pb2.Timestamp,
+    )
+
+
+class RefinementEntry(proto.Message):
+    r"""A single refinement entry for RefineTextRequest.
+
+    Attributes:
+        source_text (str):
+            Required. The source text to be refined.
+        original_translation (str):
+            Required. The original translation of the
+            source text.
+    """
+
+    source_text: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    original_translation: str = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+
+
+class RefineTextRequest(proto.Message):
+    r"""Request message for RefineText.
+
+    Attributes:
+        parent (str):
+            Required. Project or location to make a call. Must refer to
+            a caller's project.
+
+            Format:
+            ``projects/{project-number-or-id}/locations/{location-id}``.
+
+            For global calls, use
+            ``projects/{project-number-or-id}/locations/global`` or
+            ``projects/{project-number-or-id}``.
+        refinement_entries (MutableSequence[google.cloud.translate_v3beta1.types.RefinementEntry]):
+            Required. The source texts and original
+            translations in the source and target languages.
+        source_language_code (str):
+            Required. The BCP-47 language code of the
+            source text in the request, for example,
+            "en-US".
+        target_language_code (str):
+            Required. The BCP-47 language code for
+            translation output, for example, "zh-CN".
+    """
+
+    parent: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    refinement_entries: MutableSequence["RefinementEntry"] = proto.RepeatedField(
+        proto.MESSAGE,
+        number=2,
+        message="RefinementEntry",
+    )
+    source_language_code: str = proto.Field(
+        proto.STRING,
+        number=4,
+    )
+    target_language_code: str = proto.Field(
+        proto.STRING,
+        number=5,
+    )
+
+
+class RefineTextResponse(proto.Message):
+    r"""Response message for RefineText.
+
+    Attributes:
+        refined_translations (MutableSequence[str]):
+            The refined translations obtained from the
+            original translations.
+    """
+
+    refined_translations: MutableSequence[str] = proto.RepeatedField(
+        proto.STRING,
+        number=1,
     )
 
 

@@ -50,6 +50,11 @@
                 "list_glossaries"
               ]
             },
+            "RefineText": {
+              "methods": [
+                "refine_text"
+              ]
+            },
             "TranslateDocument": {
               "methods": [
                 "translate_document"
@@ -105,6 +110,11 @@
                 "list_glossaries"
               ]
             },
+            "RefineText": {
+              "methods": [
+                "refine_text"
+              ]
+            },
             "TranslateDocument": {
               "methods": [
                 "translate_document"
@@ -158,6 +168,11 @@
             "ListGlossaries": {
               "methods": [
                 "list_glossaries"
+              ]
+            },
+            "RefineText": {
+              "methods": [
+                "refine_text"
               ]
             },
             "TranslateDocument": {

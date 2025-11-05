@@ -52,6 +52,8 @@ __protobuf__ = proto.module(
         "ListBackupVaultsResponse",
         "FetchUsableBackupVaultsRequest",
         "FetchUsableBackupVaultsResponse",
+        "FetchBackupsForResourceTypeRequest",
+        "FetchBackupsForResourceTypeResponse",
         "GetBackupVaultRequest",
         "UpdateBackupVaultRequest",
         "DeleteBackupVaultRequest",
@@ -68,6 +70,7 @@ __protobuf__ = proto.module(
         "RestoreBackupResponse",
         "TargetResource",
         "GcpResource",
+        "BackupGcpResource",
     },
 )
 
@@ -1078,6 +1081,11 @@ class Backup(proto.Message):
             use.
 
             This field is a member of `oneof`_ ``_satisfies_pzi``.
+        gcp_resource (google.cloud.backupdr_v1.types.BackupGcpResource):
+            Output only. Unique identifier of the GCP
+            resource that is being backed up.
+
+            This field is a member of `oneof`_ ``source_resource``.
     """
 
     class State(proto.Enum):
@@ -1280,6 +1288,12 @@ class Backup(proto.Message):
         proto.BOOL,
         number=25,
         optional=True,
+    )
+    gcp_resource: "BackupGcpResource" = proto.Field(
+        proto.MESSAGE,
+        number=31,
+        oneof="source_resource",
+        message="BackupGcpResource",
     )
 
 
@@ -1524,6 +1538,106 @@ class FetchUsableBackupVaultsResponse(proto.Message):
     unreachable: MutableSequence[str] = proto.RepeatedField(
         proto.STRING,
         number=3,
+    )
+
+
+class FetchBackupsForResourceTypeRequest(proto.Message):
+    r"""Request for the FetchBackupsForResourceType method.
+
+    Attributes:
+        parent (str):
+            Required. Datasources are the parent resource
+            for the backups. Format:
+
+            projects/{project}/locations/{location}/backupVaults/{backupVaultId}/dataSources/{datasourceId}
+        resource_type (str):
+            Required. The type of the GCP resource.
+            Ex: sqladmin.googleapis.com/Instance
+        page_size (int):
+            Optional. The maximum number of Backups to
+            return. The service may return fewer than this
+            value. If unspecified, at most 50 Backups will
+            be returned. The maximum value is 100; values
+            above 100 will be coerced to 100.
+        page_token (str):
+            Optional. A page token, received from a previous call of
+            ``FetchBackupsForResourceType``. Provide this to retrieve
+            the subsequent page.
+
+            When paginating, all other parameters provided to
+            ``FetchBackupsForResourceType`` must match the call that
+            provided the page token.
+        filter (str):
+            Optional. A filter expression that filters
+            the results fetched in the response. The
+            expression must specify the field name, a
+            comparison operator, and the value that you want
+            to use for filtering. Supported fields:
+        order_by (str):
+            Optional. A comma-separated list of fields to
+            order by, sorted in ascending order. Use "desc"
+            after a field name for descending.
+        view (google.cloud.backupdr_v1.types.BackupView):
+            Optional. This parameter is used to specify
+            the view of the backup. If not specified, the
+            default view is BASIC.
+    """
+
+    parent: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    resource_type: str = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+    page_size: int = proto.Field(
+        proto.INT32,
+        number=3,
+    )
+    page_token: str = proto.Field(
+        proto.STRING,
+        number=4,
+    )
+    filter: str = proto.Field(
+        proto.STRING,
+        number=5,
+    )
+    order_by: str = proto.Field(
+        proto.STRING,
+        number=6,
+    )
+    view: "BackupView" = proto.Field(
+        proto.ENUM,
+        number=7,
+        enum="BackupView",
+    )
+
+
+class FetchBackupsForResourceTypeResponse(proto.Message):
+    r"""Response for the FetchBackupsForResourceType method.
+
+    Attributes:
+        backups (MutableSequence[google.cloud.backupdr_v1.types.Backup]):
+            The Backups from the specified parent.
+        next_page_token (str):
+            A token, which can be sent as ``page_token`` to retrieve the
+            next page. If this field is omitted, there are no subsequent
+            pages.
+    """
+
+    @property
+    def raw_page(self):
+        return self
+
+    backups: MutableSequence["Backup"] = proto.RepeatedField(
+        proto.MESSAGE,
+        number=1,
+        message="Backup",
+    )
+    next_page_token: str = proto.Field(
+        proto.STRING,
+        number=2,
     )
 
 
@@ -2219,6 +2333,36 @@ class TargetResource(proto.Message):
 
 class GcpResource(proto.Message):
     r"""Minimum details to identify a Google Cloud resource
+
+    Attributes:
+        gcp_resourcename (str):
+            Name of the Google Cloud resource.
+        location (str):
+            Location of the resource:
+            <region>/<zone>/"global"/"unspecified".
+        type_ (str):
+            Type of the resource. Use the Unified
+            Resource Type, eg.
+            compute.googleapis.com/Instance.
+    """
+
+    gcp_resourcename: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    location: str = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+    type_: str = proto.Field(
+        proto.STRING,
+        number=3,
+    )
+
+
+class BackupGcpResource(proto.Message):
+    r"""Minimum details to identify a Google Cloud resource for a
+    backup.
 
     Attributes:
         gcp_resourcename (str):

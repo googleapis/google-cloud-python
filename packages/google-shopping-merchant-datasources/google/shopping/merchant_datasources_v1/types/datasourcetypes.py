@@ -87,11 +87,6 @@ class PrimaryProductDataSource(proto.Message):
             Optional. Default rule management of the data
             source. If set, the linked data sources will be
             replaced.
-        contains_custom_rules (bool):
-            Output only. The existing data source setup contains at
-            least one custom (non-default) rule and therefore its
-            management through the ``default_rule_data_sources`` field
-            should be treated with caution.
         destinations (MutableSequence[google.shopping.merchant_datasources_v1.types.PrimaryProductDataSource.Destination]):
             Optional. A list of destinations describing
             where products of the data source can be shown.
@@ -217,10 +212,6 @@ class PrimaryProductDataSource(proto.Message):
         proto.MESSAGE,
         number=7,
         message=DefaultRule,
-    )
-    contains_custom_rules: bool = proto.Field(
-        proto.BOOL,
-        number=9,
     )
     destinations: MutableSequence[Destination] = proto.RepeatedField(
         proto.MESSAGE,

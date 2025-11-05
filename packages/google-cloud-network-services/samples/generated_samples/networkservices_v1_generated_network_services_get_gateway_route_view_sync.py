@@ -49,4 +49,5 @@ def sample_get_gateway_route_view():
     # Handle the response
     print(response)
 
+
 # [END networkservices_v1_generated_NetworkServices_GetGatewayRouteView_sync]

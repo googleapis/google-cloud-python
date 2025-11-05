@@ -50,4 +50,5 @@ def sample_list_subscriptions():
     for response in page_result:
         print(response)
 
+
 # [END analyticshub_v1_generated_AnalyticsHubService_ListSubscriptions_sync]

@@ -362,11 +362,12 @@ class Endpoint(proto.Message):
                 A `Cloud Run <https://cloud.google.com/run>`__
                 `revision <https://cloud.google.com/run/docs/reference/rest/v1/namespaces.revisions/get>`__
                 URI. The format is:
-                ``projects/{project}/locations/{location}/revisions/{revision}``
+                projects/{project}/locations/{location}/revisions/{revision}
             service_uri (str):
-                Output only. The URI of the Cloud Run service that the
-                revision belongs to. The format is:
-                ``projects/{project}/locations/{location}/services/{service}``
+                Output only. The URI of the Cloud Run service
+                that the revision belongs to. The format is:
+
+                projects/{project}/locations/{location}/services/{service}
         """
 
         uri: str = proto.Field(
@@ -616,13 +617,17 @@ class ProbingDetails(proto.Message):
             direction: from the source to the destination
             endpoint.
         destination_egress_location (google.cloud.network_management_v1.types.ProbingDetails.EdgeLocation):
-            The EdgeLocation from which a packet destined
-            for/originating from the internet will egress/ingress the
-            Google network. This will only be populated for a
-            connectivity test which has an internet destination/source
-            address. The absence of this field *must not* be used as an
-            indication that the destination/source is part of the Google
-            network.
+            The EdgeLocation from which a packet, destined to the
+            internet, will egress the Google network. This will only be
+            populated for a connectivity test which has an internet
+            destination address. The absence of this field *must not* be
+            used as an indication that the destination is part of the
+            Google network.
+        edge_responses (MutableSequence[google.cloud.network_management_v1.types.ProbingDetails.SingleEdgeResponse]):
+            Probing results for all edge devices.
+        probed_all_devices (bool):
+            Whether all relevant edge devices were
+            probed.
     """
 
     class ProbingResult(proto.Enum):
@@ -685,6 +690,63 @@ class ProbingDetails(proto.Message):
             number=1,
         )
 
+    class SingleEdgeResponse(proto.Message):
+        r"""Probing results for a single edge device.
+
+        Attributes:
+            result (google.cloud.network_management_v1.types.ProbingDetails.ProbingResult):
+                The overall result of active probing for this
+                egress device.
+            sent_probe_count (int):
+                Number of probes sent.
+            successful_probe_count (int):
+                Number of probes that reached the
+                destination.
+            probing_latency (google.cloud.network_management_v1.types.LatencyDistribution):
+                Latency as measured by active probing in one
+                direction: from the source to the destination
+                endpoint.
+            destination_egress_location (google.cloud.network_management_v1.types.ProbingDetails.EdgeLocation):
+                The EdgeLocation from which a packet, destined to the
+                internet, will egress the Google network. This will only be
+                populated for a connectivity test which has an internet
+                destination address. The absence of this field *must not* be
+                used as an indication that the destination is part of the
+                Google network.
+            destination_router (str):
+                Router name in the format
+                '{router}.{metroshard}'. For example:
+                pf01.aaa01, pr02.aaa01.
+        """
+
+        result: "ProbingDetails.ProbingResult" = proto.Field(
+            proto.ENUM,
+            number=1,
+            enum="ProbingDetails.ProbingResult",
+        )
+        sent_probe_count: int = proto.Field(
+            proto.INT32,
+            number=2,
+        )
+        successful_probe_count: int = proto.Field(
+            proto.INT32,
+            number=3,
+        )
+        probing_latency: "LatencyDistribution" = proto.Field(
+            proto.MESSAGE,
+            number=4,
+            message="LatencyDistribution",
+        )
+        destination_egress_location: "ProbingDetails.EdgeLocation" = proto.Field(
+            proto.MESSAGE,
+            number=5,
+            message="ProbingDetails.EdgeLocation",
+        )
+        destination_router: str = proto.Field(
+            proto.STRING,
+            number=6,
+        )
+
     result: ProbingResult = proto.Field(
         proto.ENUM,
         number=1,
@@ -727,6 +789,15 @@ class ProbingDetails(proto.Message):
         proto.MESSAGE,
         number=9,
         message=EdgeLocation,
+    )
+    edge_responses: MutableSequence[SingleEdgeResponse] = proto.RepeatedField(
+        proto.MESSAGE,
+        number=10,
+        message=SingleEdgeResponse,
+    )
+    probed_all_devices: bool = proto.Field(
+        proto.BOOL,
+        number=11,
     )
 
 

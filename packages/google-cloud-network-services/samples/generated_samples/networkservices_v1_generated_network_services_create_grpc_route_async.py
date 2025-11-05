@@ -40,7 +40,7 @@ async def sample_create_grpc_route():
 
     # Initialize request argument(s)
     grpc_route = network_services_v1.GrpcRoute()
-    grpc_route.hostnames = ['hostnames_value1', 'hostnames_value2']
+    grpc_route.hostnames = ["hostnames_value1", "hostnames_value2"]
 
     request = network_services_v1.CreateGrpcRouteRequest(
         parent="parent_value",
@@ -57,5 +57,6 @@ async def sample_create_grpc_route():
 
     # Handle the response
     print(response)
+
 
 # [END networkservices_v1_generated_NetworkServices_CreateGrpcRoute_async]

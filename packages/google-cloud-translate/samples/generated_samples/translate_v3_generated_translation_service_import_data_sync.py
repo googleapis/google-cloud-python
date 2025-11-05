@@ -53,4 +53,5 @@ def sample_import_data():
     # Handle the response
     print(response)
 
+
 # [END translate_v3_generated_TranslationService_ImportData_sync]

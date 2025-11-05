@@ -49,4 +49,5 @@ async def sample_get_data_source():
     # Handle the response
     print(response)
 
+
 # [END merchantapi_v1_generated_DataSourcesService_GetDataSource_async]

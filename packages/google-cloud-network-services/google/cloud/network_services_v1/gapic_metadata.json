@@ -15,6 +15,11 @@
                 "create_authz_extension"
               ]
             },
+            "CreateLbEdgeExtension": {
+              "methods": [
+                "create_lb_edge_extension"
+              ]
+            },
             "CreateLbRouteExtension": {
               "methods": [
                 "create_lb_route_extension"
@@ -28,6 +33,11 @@
             "DeleteAuthzExtension": {
               "methods": [
                 "delete_authz_extension"
+              ]
+            },
+            "DeleteLbEdgeExtension": {
+              "methods": [
+                "delete_lb_edge_extension"
               ]
             },
             "DeleteLbRouteExtension": {
@@ -45,6 +55,11 @@
                 "get_authz_extension"
               ]
             },
+            "GetLbEdgeExtension": {
+              "methods": [
+                "get_lb_edge_extension"
+              ]
+            },
             "GetLbRouteExtension": {
               "methods": [
                 "get_lb_route_extension"
@@ -60,6 +75,11 @@
                 "list_authz_extensions"
               ]
             },
+            "ListLbEdgeExtensions": {
+              "methods": [
+                "list_lb_edge_extensions"
+              ]
+            },
             "ListLbRouteExtensions": {
               "methods": [
                 "list_lb_route_extensions"
@@ -73,6 +93,11 @@
             "UpdateAuthzExtension": {
               "methods": [
                 "update_authz_extension"
+              ]
+            },
+            "UpdateLbEdgeExtension": {
+              "methods": [
+                "update_lb_edge_extension"
               ]
             },
             "UpdateLbRouteExtension": {
@@ -95,6 +120,11 @@
                 "create_authz_extension"
               ]
             },
+            "CreateLbEdgeExtension": {
+              "methods": [
+                "create_lb_edge_extension"
+              ]
+            },
             "CreateLbRouteExtension": {
               "methods": [
                 "create_lb_route_extension"
@@ -108,6 +138,11 @@
             "DeleteAuthzExtension": {
               "methods": [
                 "delete_authz_extension"
+              ]
+            },
+            "DeleteLbEdgeExtension": {
+              "methods": [
+                "delete_lb_edge_extension"
               ]
             },
             "DeleteLbRouteExtension": {
@@ -125,6 +160,11 @@
                 "get_authz_extension"
               ]
             },
+            "GetLbEdgeExtension": {
+              "methods": [
+                "get_lb_edge_extension"
+              ]
+            },
             "GetLbRouteExtension": {
               "methods": [
                 "get_lb_route_extension"
@@ -140,6 +180,11 @@
                 "list_authz_extensions"
               ]
             },
+            "ListLbEdgeExtensions": {
+              "methods": [
+                "list_lb_edge_extensions"
+              ]
+            },
             "ListLbRouteExtensions": {
               "methods": [
                 "list_lb_route_extensions"
@@ -153,6 +198,11 @@
             "UpdateAuthzExtension": {
               "methods": [
                 "update_authz_extension"
+              ]
+            },
+            "UpdateLbEdgeExtension": {
+              "methods": [
+                "update_lb_edge_extension"
               ]
             },
             "UpdateLbRouteExtension": {
@@ -175,6 +225,11 @@
                 "create_authz_extension"
               ]
             },
+            "CreateLbEdgeExtension": {
+              "methods": [
+                "create_lb_edge_extension"
+              ]
+            },
             "CreateLbRouteExtension": {
               "methods": [
                 "create_lb_route_extension"
@@ -188,6 +243,11 @@
             "DeleteAuthzExtension": {
               "methods": [
                 "delete_authz_extension"
+              ]
+            },
+            "DeleteLbEdgeExtension": {
+              "methods": [
+                "delete_lb_edge_extension"
               ]
             },
             "DeleteLbRouteExtension": {
@@ -205,6 +265,11 @@
                 "get_authz_extension"
               ]
             },
+            "GetLbEdgeExtension": {
+              "methods": [
+                "get_lb_edge_extension"
+              ]
+            },
             "GetLbRouteExtension": {
               "methods": [
                 "get_lb_route_extension"
@@ -220,6 +285,11 @@
                 "list_authz_extensions"
               ]
             },
+            "ListLbEdgeExtensions": {
+              "methods": [
+                "list_lb_edge_extensions"
+              ]
+            },
             "ListLbRouteExtensions": {
               "methods": [
                 "list_lb_route_extensions"
@@ -233,6 +303,11 @@
             "UpdateAuthzExtension": {
               "methods": [
                 "update_authz_extension"
+              ]
+            },
+            "UpdateLbEdgeExtension": {
+              "methods": [
+                "update_lb_edge_extension"
               ]
             },
             "UpdateLbRouteExtension": {

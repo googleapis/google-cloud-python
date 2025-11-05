@@ -1676,6 +1676,97 @@ class TranslationServiceAsyncClient:
         # Done; return the response.
         return response
 
+    async def refine_text(
+        self,
+        request: Optional[Union[translation_service.RefineTextRequest, dict]] = None,
+        *,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+    ) -> translation_service.RefineTextResponse:
+        r"""Refines the input translated text to improve the
+        quality.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import translate_v3beta1
+
+            async def sample_refine_text():
+                # Create a client
+                client = translate_v3beta1.TranslationServiceAsyncClient()
+
+                # Initialize request argument(s)
+                refinement_entries = translate_v3beta1.RefinementEntry()
+                refinement_entries.source_text = "source_text_value"
+                refinement_entries.original_translation = "original_translation_value"
+
+                request = translate_v3beta1.RefineTextRequest(
+                    parent="parent_value",
+                    refinement_entries=refinement_entries,
+                    source_language_code="source_language_code_value",
+                    target_language_code="target_language_code_value",
+                )
+
+                # Make the request
+                response = await client.refine_text(request=request)
+
+                # Handle the response
+                print(response)
+
+        Args:
+            request (Optional[Union[google.cloud.translate_v3beta1.types.RefineTextRequest, dict]]):
+                The request object. Request message for RefineText.
+            retry (google.api_core.retry_async.AsyncRetry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                sent along with the request as metadata. Normally, each value must be of type `str`,
+                but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                be of type `bytes`.
+
+        Returns:
+            google.cloud.translate_v3beta1.types.RefineTextResponse:
+                Response message for RefineText.
+        """
+        # Create or coerce a protobuf request object.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, translation_service.RefineTextRequest):
+            request = translation_service.RefineTextRequest(request)
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.refine_text
+        ]
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
+        )
+
+        # Validate the universe domain.
+        self._client._validate_universe_domain()
+
+        # Send the request.
+        response = await rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # Done; return the response.
+        return response
+
     async def list_operations(
         self,
         request: Optional[operations_pb2.ListOperationsRequest] = None,

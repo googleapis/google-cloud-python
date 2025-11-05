@@ -230,6 +230,11 @@ class TranslationServiceTransport(abc.ABC):
                 default_timeout=600.0,
                 client_info=client_info,
             ),
+            self.refine_text: gapic_v1.method.wrap_method(
+                self.refine_text,
+                default_timeout=None,
+                client_info=client_info,
+            ),
             self.get_location: gapic_v1.method.wrap_method(
                 self.get_location,
                 default_timeout=None,
@@ -383,6 +388,18 @@ class TranslationServiceTransport(abc.ABC):
     ) -> Callable[
         [translation_service.DeleteGlossaryRequest],
         Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def refine_text(
+        self,
+    ) -> Callable[
+        [translation_service.RefineTextRequest],
+        Union[
+            translation_service.RefineTextResponse,
+            Awaitable[translation_service.RefineTextResponse],
+        ],
     ]:
         raise NotImplementedError()
 

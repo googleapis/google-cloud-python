@@ -56,4 +56,5 @@ def sample_update_endpoint_policy():
     # Handle the response
     print(response)
 
+
 # [END networkservices_v1_generated_NetworkServices_UpdateEndpointPolicy_sync]

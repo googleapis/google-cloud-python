@@ -50,4 +50,5 @@ async def sample_list_data_sources():
     async for response in page_result:
         print(response)
 
+
 # [END merchantapi_v1beta_generated_DataSourcesService_ListDataSources_async]

@@ -52,4 +52,5 @@ async def sample_update_query_template():
     # Handle the response
     print(response)
 
+
 # [END analyticshub_v1_generated_AnalyticsHubService_UpdateQueryTemplate_async]

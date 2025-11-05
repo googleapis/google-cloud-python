@@ -39,8 +39,7 @@ async def sample_update_wasm_plugin():
     client = network_services_v1.NetworkServicesAsyncClient()
 
     # Initialize request argument(s)
-    request = network_services_v1.UpdateWasmPluginRequest(
-    )
+    request = network_services_v1.UpdateWasmPluginRequest()
 
     # Make the request
     operation = client.update_wasm_plugin(request=request)
@@ -51,5 +50,6 @@ async def sample_update_wasm_plugin():
 
     # Handle the response
     print(response)
+
 
 # [END networkservices_v1_generated_NetworkServices_UpdateWasmPlugin_async]

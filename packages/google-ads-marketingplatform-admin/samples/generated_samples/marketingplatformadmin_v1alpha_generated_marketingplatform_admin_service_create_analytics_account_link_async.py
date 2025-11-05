@@ -53,4 +53,5 @@ async def sample_create_analytics_account_link():
     # Handle the response
     print(response)
 
+
 # [END marketingplatformadmin_v1alpha_generated_MarketingplatformAdminService_CreateAnalyticsAccountLink_async]

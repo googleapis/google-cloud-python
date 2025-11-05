@@ -162,6 +162,14 @@ class BackupDRRestInterceptor:
                 logging.log(f"Received response: {response}")
                 return response
 
+            def pre_fetch_backups_for_resource_type(self, request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_fetch_backups_for_resource_type(self, response):
+                logging.log(f"Received response: {response}")
+                return response
+
             def pre_fetch_data_source_references_for_resource_type(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
@@ -287,6 +295,14 @@ class BackupDRRestInterceptor:
                 return request, metadata
 
             def post_list_backup_vaults(self, response):
+                logging.log(f"Received response: {response}")
+                return response
+
+            def pre_list_data_source_references(self, request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_list_data_source_references(self, response):
                 logging.log(f"Received response: {response}")
                 return response
 
@@ -852,6 +868,58 @@ class BackupDRRestInterceptor:
         `post_fetch_backup_plan_associations_for_resource_type` interceptor. The (possibly modified) response returned by
         `post_fetch_backup_plan_associations_for_resource_type` will be passed to
         `post_fetch_backup_plan_associations_for_resource_type_with_metadata`.
+        """
+        return response, metadata
+
+    def pre_fetch_backups_for_resource_type(
+        self,
+        request: backupvault.FetchBackupsForResourceTypeRequest,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        backupvault.FetchBackupsForResourceTypeRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
+        """Pre-rpc interceptor for fetch_backups_for_resource_type
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the BackupDR server.
+        """
+        return request, metadata
+
+    def post_fetch_backups_for_resource_type(
+        self, response: backupvault.FetchBackupsForResourceTypeResponse
+    ) -> backupvault.FetchBackupsForResourceTypeResponse:
+        """Post-rpc interceptor for fetch_backups_for_resource_type
+
+        DEPRECATED. Please use the `post_fetch_backups_for_resource_type_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
+        after it is returned by the BackupDR server but before
+        it is returned to user code. This `post_fetch_backups_for_resource_type` interceptor runs
+        before the `post_fetch_backups_for_resource_type_with_metadata` interceptor.
+        """
+        return response
+
+    def post_fetch_backups_for_resource_type_with_metadata(
+        self,
+        response: backupvault.FetchBackupsForResourceTypeResponse,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        backupvault.FetchBackupsForResourceTypeResponse,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
+        """Post-rpc interceptor for fetch_backups_for_resource_type
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the BackupDR server but before it is returned to user code.
+
+        We recommend only using this `post_fetch_backups_for_resource_type_with_metadata`
+        interceptor in new development instead of the `post_fetch_backups_for_resource_type` interceptor.
+        When both interceptors are used, this `post_fetch_backups_for_resource_type_with_metadata` interceptor runs after the
+        `post_fetch_backups_for_resource_type` interceptor. The (possibly modified) response returned by
+        `post_fetch_backups_for_resource_type` will be passed to
+        `post_fetch_backups_for_resource_type_with_metadata`.
         """
         return response, metadata
 
@@ -1644,6 +1712,58 @@ class BackupDRRestInterceptor:
         `post_list_backup_vaults` interceptor. The (possibly modified) response returned by
         `post_list_backup_vaults` will be passed to
         `post_list_backup_vaults_with_metadata`.
+        """
+        return response, metadata
+
+    def pre_list_data_source_references(
+        self,
+        request: datasourcereference.ListDataSourceReferencesRequest,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        datasourcereference.ListDataSourceReferencesRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
+        """Pre-rpc interceptor for list_data_source_references
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the BackupDR server.
+        """
+        return request, metadata
+
+    def post_list_data_source_references(
+        self, response: datasourcereference.ListDataSourceReferencesResponse
+    ) -> datasourcereference.ListDataSourceReferencesResponse:
+        """Post-rpc interceptor for list_data_source_references
+
+        DEPRECATED. Please use the `post_list_data_source_references_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
+        after it is returned by the BackupDR server but before
+        it is returned to user code. This `post_list_data_source_references` interceptor runs
+        before the `post_list_data_source_references_with_metadata` interceptor.
+        """
+        return response
+
+    def post_list_data_source_references_with_metadata(
+        self,
+        response: datasourcereference.ListDataSourceReferencesResponse,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        datasourcereference.ListDataSourceReferencesResponse,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
+        """Post-rpc interceptor for list_data_source_references
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the BackupDR server but before it is returned to user code.
+
+        We recommend only using this `post_list_data_source_references_with_metadata`
+        interceptor in new development instead of the `post_list_data_source_references` interceptor.
+        When both interceptors are used, this `post_list_data_source_references_with_metadata` interceptor runs after the
+        `post_list_data_source_references` interceptor. The (possibly modified) response returned by
+        `post_list_data_source_references` will be passed to
+        `post_list_data_source_references_with_metadata`.
         """
         return response, metadata
 
@@ -3975,6 +4095,163 @@ class BackupDRRestTransport(_BaseBackupDRRestTransport):
                     extra={
                         "serviceName": "google.cloud.backupdr.v1.BackupDR",
                         "rpcName": "FetchBackupPlanAssociationsForResourceType",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
+            return resp
+
+    class _FetchBackupsForResourceType(
+        _BaseBackupDRRestTransport._BaseFetchBackupsForResourceType, BackupDRRestStub
+    ):
+        def __hash__(self):
+            return hash("BackupDRRestTransport.FetchBackupsForResourceType")
+
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
+
+        def __call__(
+            self,
+            request: backupvault.FetchBackupsForResourceTypeRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+        ) -> backupvault.FetchBackupsForResourceTypeResponse:
+            r"""Call the fetch backups for
+            resource type method over HTTP.
+
+                Args:
+                    request (~.backupvault.FetchBackupsForResourceTypeRequest):
+                        The request object. Request for the
+                    FetchBackupsForResourceType method.
+                    retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                        should be retried.
+                    timeout (float): The timeout for this request.
+                    metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                        sent along with the request as metadata. Normally, each value must be of type `str`,
+                        but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                        be of type `bytes`.
+
+                Returns:
+                    ~.backupvault.FetchBackupsForResourceTypeResponse:
+                        Response for the
+                    FetchBackupsForResourceType method.
+
+            """
+
+            http_options = (
+                _BaseBackupDRRestTransport._BaseFetchBackupsForResourceType._get_http_options()
+            )
+
+            request, metadata = self._interceptor.pre_fetch_backups_for_resource_type(
+                request, metadata
+            )
+            transcoded_request = _BaseBackupDRRestTransport._BaseFetchBackupsForResourceType._get_transcoded_request(
+                http_options, request
+            )
+
+            # Jsonify the query params
+            query_params = _BaseBackupDRRestTransport._BaseFetchBackupsForResourceType._get_query_params_json(
+                transcoded_request
+            )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.backupdr_v1.BackupDRClient.FetchBackupsForResourceType",
+                    extra={
+                        "serviceName": "google.cloud.backupdr.v1.BackupDR",
+                        "rpcName": "FetchBackupsForResourceType",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
+
+            # Send the request
+            response = BackupDRRestTransport._FetchBackupsForResourceType._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+
+            # Return the response
+            resp = backupvault.FetchBackupsForResourceTypeResponse()
+            pb_resp = backupvault.FetchBackupsForResourceTypeResponse.pb(resp)
+
+            json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
+            resp = self._interceptor.post_fetch_backups_for_resource_type(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            (
+                resp,
+                _,
+            ) = self._interceptor.post_fetch_backups_for_resource_type_with_metadata(
+                resp, response_metadata
+            )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = (
+                        backupvault.FetchBackupsForResourceTypeResponse.to_json(
+                            response
+                        )
+                    )
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.backupdr_v1.BackupDRClient.fetch_backups_for_resource_type",
+                    extra={
+                        "serviceName": "google.cloud.backupdr.v1.BackupDR",
+                        "rpcName": "FetchBackupsForResourceType",
                         "metadata": http_response["headers"],
                         "httpResponse": http_response,
                     },
@@ -6426,6 +6703,160 @@ class BackupDRRestTransport(_BaseBackupDRRestTransport):
                 )
             return resp
 
+    class _ListDataSourceReferences(
+        _BaseBackupDRRestTransport._BaseListDataSourceReferences, BackupDRRestStub
+    ):
+        def __hash__(self):
+            return hash("BackupDRRestTransport.ListDataSourceReferences")
+
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
+
+        def __call__(
+            self,
+            request: datasourcereference.ListDataSourceReferencesRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+        ) -> datasourcereference.ListDataSourceReferencesResponse:
+            r"""Call the list data source
+            references method over HTTP.
+
+                Args:
+                    request (~.datasourcereference.ListDataSourceReferencesRequest):
+                        The request object. Request for the
+                    ListDataSourceReferences method.
+                    retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                        should be retried.
+                    timeout (float): The timeout for this request.
+                    metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                        sent along with the request as metadata. Normally, each value must be of type `str`,
+                        but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                        be of type `bytes`.
+
+                Returns:
+                    ~.datasourcereference.ListDataSourceReferencesResponse:
+                        Response for the
+                    ListDataSourceReferences method.
+
+            """
+
+            http_options = (
+                _BaseBackupDRRestTransport._BaseListDataSourceReferences._get_http_options()
+            )
+
+            request, metadata = self._interceptor.pre_list_data_source_references(
+                request, metadata
+            )
+            transcoded_request = _BaseBackupDRRestTransport._BaseListDataSourceReferences._get_transcoded_request(
+                http_options, request
+            )
+
+            # Jsonify the query params
+            query_params = _BaseBackupDRRestTransport._BaseListDataSourceReferences._get_query_params_json(
+                transcoded_request
+            )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.backupdr_v1.BackupDRClient.ListDataSourceReferences",
+                    extra={
+                        "serviceName": "google.cloud.backupdr.v1.BackupDR",
+                        "rpcName": "ListDataSourceReferences",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
+
+            # Send the request
+            response = BackupDRRestTransport._ListDataSourceReferences._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+
+            # Return the response
+            resp = datasourcereference.ListDataSourceReferencesResponse()
+            pb_resp = datasourcereference.ListDataSourceReferencesResponse.pb(resp)
+
+            json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
+            resp = self._interceptor.post_list_data_source_references(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_list_data_source_references_with_metadata(
+                resp, response_metadata
+            )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = (
+                        datasourcereference.ListDataSourceReferencesResponse.to_json(
+                            response
+                        )
+                    )
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.backupdr_v1.BackupDRClient.list_data_source_references",
+                    extra={
+                        "serviceName": "google.cloud.backupdr.v1.BackupDR",
+                        "rpcName": "ListDataSourceReferences",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
+            return resp
+
     class _ListDataSources(
         _BaseBackupDRRestTransport._BaseListDataSources, BackupDRRestStub
     ):
@@ -7916,6 +8347,17 @@ class BackupDRRestTransport(_BaseBackupDRRestTransport):
         return self._FetchBackupPlanAssociationsForResourceType(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
+    def fetch_backups_for_resource_type(
+        self,
+    ) -> Callable[
+        [backupvault.FetchBackupsForResourceTypeRequest],
+        backupvault.FetchBackupsForResourceTypeResponse,
+    ]:
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return self._FetchBackupsForResourceType(self._session, self._host, self._interceptor)  # type: ignore
+
+    @property
     def fetch_data_source_references_for_resource_type(
         self,
     ) -> Callable[
@@ -8066,6 +8508,17 @@ class BackupDRRestTransport(_BaseBackupDRRestTransport):
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._ListBackupVaults(self._session, self._host, self._interceptor)  # type: ignore
+
+    @property
+    def list_data_source_references(
+        self,
+    ) -> Callable[
+        [datasourcereference.ListDataSourceReferencesRequest],
+        datasourcereference.ListDataSourceReferencesResponse,
+    ]:
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return self._ListDataSourceReferences(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
     def list_data_sources(

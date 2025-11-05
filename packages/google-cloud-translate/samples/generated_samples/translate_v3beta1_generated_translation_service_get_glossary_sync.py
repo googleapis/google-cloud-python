@@ -49,4 +49,5 @@ def sample_get_glossary():
     # Handle the response
     print(response)
 
+
 # [END translate_v3beta1_generated_TranslationService_GetGlossary_sync]

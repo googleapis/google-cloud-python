@@ -49,4 +49,5 @@ def sample_get_lb_traffic_extension():
     # Handle the response
     print(response)
 
+
 # [END networkservices_v1_generated_DepService_GetLbTrafficExtension_sync]

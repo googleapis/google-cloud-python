@@ -417,11 +417,11 @@ class VpcFlowLogsServiceGrpcTransport(VpcFlowLogsServiceTransport):
         exact same settings already exists (even if the ID is
         different), the creation fails. Notes:
 
-        1. Creating a configuration with state=DISABLED will fail
-        2. The following fields are not considered as ``settings`` for
-           the purpose of the check mentioned above, therefore -
-           creating another configuration with the same fields but
-           different values for the following fields will fail as well:
+        1. Creating a configuration with ``state=DISABLED`` will fail
+        2. The following fields are not considered as settings for the
+           purpose of the check mentioned above, therefore - creating
+           another configuration with the same fields but different
+           values for the following fields will fail as well:
 
            - name
            - create_time
@@ -461,11 +461,11 @@ class VpcFlowLogsServiceGrpcTransport(VpcFlowLogsServiceTransport):
         with the exact same settings already exists (even if the ID is
         different), the creation fails. Notes:
 
-        1. Updating a configuration with state=DISABLED will fail.
-        2. The following fields are not considered as ``settings`` for
-           the purpose of the check mentioned above, therefore -
-           updating another configuration with the same fields but
-           different values for the following fields will fail as well:
+        1. Updating a configuration with ``state=DISABLED`` will fail.
+        2. The following fields are not considered as settings for the
+           purpose of the check mentioned above, therefore - updating
+           another configuration with the same fields but different
+           values for the following fields will fail as well:
 
            - name
            - create_time
@@ -522,6 +522,74 @@ class VpcFlowLogsServiceGrpcTransport(VpcFlowLogsServiceTransport):
                 response_deserializer=operations_pb2.Operation.FromString,
             )
         return self._stubs["delete_vpc_flow_logs_config"]
+
+    @property
+    def query_org_vpc_flow_logs_configs(
+        self,
+    ) -> Callable[
+        [vpc_flow_logs.QueryOrgVpcFlowLogsConfigsRequest],
+        vpc_flow_logs.QueryOrgVpcFlowLogsConfigsResponse,
+    ]:
+        r"""Return a callable for the query org vpc flow logs
+        configs method over gRPC.
+
+        QueryOrgVpcFlowLogsConfigs returns a list of all
+        organization-level VPC Flow Logs configurations
+        applicable to the specified project.
+
+        Returns:
+            Callable[[~.QueryOrgVpcFlowLogsConfigsRequest],
+                    ~.QueryOrgVpcFlowLogsConfigsResponse]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "query_org_vpc_flow_logs_configs" not in self._stubs:
+            self._stubs[
+                "query_org_vpc_flow_logs_configs"
+            ] = self._logged_channel.unary_unary(
+                "/google.cloud.networkmanagement.v1.VpcFlowLogsService/QueryOrgVpcFlowLogsConfigs",
+                request_serializer=vpc_flow_logs.QueryOrgVpcFlowLogsConfigsRequest.serialize,
+                response_deserializer=vpc_flow_logs.QueryOrgVpcFlowLogsConfigsResponse.deserialize,
+            )
+        return self._stubs["query_org_vpc_flow_logs_configs"]
+
+    @property
+    def show_effective_flow_logs_configs(
+        self,
+    ) -> Callable[
+        [vpc_flow_logs.ShowEffectiveFlowLogsConfigsRequest],
+        vpc_flow_logs.ShowEffectiveFlowLogsConfigsResponse,
+    ]:
+        r"""Return a callable for the show effective flow logs
+        configs method over gRPC.
+
+        ShowEffectiveFlowLogsConfigs returns a list of all
+        VPC Flow Logs configurations applicable to a specified
+        resource.
+
+        Returns:
+            Callable[[~.ShowEffectiveFlowLogsConfigsRequest],
+                    ~.ShowEffectiveFlowLogsConfigsResponse]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "show_effective_flow_logs_configs" not in self._stubs:
+            self._stubs[
+                "show_effective_flow_logs_configs"
+            ] = self._logged_channel.unary_unary(
+                "/google.cloud.networkmanagement.v1.VpcFlowLogsService/ShowEffectiveFlowLogsConfigs",
+                request_serializer=vpc_flow_logs.ShowEffectiveFlowLogsConfigsRequest.serialize,
+                response_deserializer=vpc_flow_logs.ShowEffectiveFlowLogsConfigsResponse.deserialize,
+            )
+        return self._stubs["show_effective_flow_logs_configs"]
 
     def close(self):
         self._logged_channel.close()

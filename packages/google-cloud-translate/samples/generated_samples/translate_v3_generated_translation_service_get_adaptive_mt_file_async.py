@@ -49,4 +49,5 @@ async def sample_get_adaptive_mt_file():
     # Handle the response
     print(response)
 
+
 # [END translate_v3_generated_TranslationService_GetAdaptiveMtFile_async]

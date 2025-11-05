@@ -53,4 +53,5 @@ def sample_delete_wasm_plugin_version():
     # Handle the response
     print(response)
 
+
 # [END networkservices_v1_generated_NetworkServices_DeleteWasmPluginVersion_sync]

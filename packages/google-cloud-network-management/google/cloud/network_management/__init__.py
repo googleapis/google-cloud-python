@@ -18,6 +18,12 @@ from google.cloud.network_management import gapic_version as package_version
 __version__ = package_version.__version__
 
 
+from google.cloud.network_management_v1.services.organization_vpc_flow_logs_service.async_client import (
+    OrganizationVpcFlowLogsServiceAsyncClient,
+)
+from google.cloud.network_management_v1.services.organization_vpc_flow_logs_service.client import (
+    OrganizationVpcFlowLogsServiceClient,
+)
 from google.cloud.network_management_v1.services.reachability_service.async_client import (
     ReachabilityServiceAsyncClient,
 )
@@ -63,7 +69,9 @@ from google.cloud.network_management_v1.types.trace import (
     ForwardingRuleInfo,
     GKEMasterInfo,
     GoogleServiceInfo,
+    HybridSubnetInfo,
     InstanceInfo,
+    InterconnectAttachmentInfo,
     LoadBalancerBackend,
     LoadBalancerBackendInfo,
     LoadBalancerInfo,
@@ -89,13 +97,20 @@ from google.cloud.network_management_v1.types.vpc_flow_logs import (
     GetVpcFlowLogsConfigRequest,
     ListVpcFlowLogsConfigsRequest,
     ListVpcFlowLogsConfigsResponse,
+    QueryOrgVpcFlowLogsConfigsRequest,
+    QueryOrgVpcFlowLogsConfigsResponse,
+    ShowEffectiveFlowLogsConfigsRequest,
+    ShowEffectiveFlowLogsConfigsResponse,
     UpdateVpcFlowLogsConfigRequest,
 )
 from google.cloud.network_management_v1.types.vpc_flow_logs_config import (
+    EffectiveVpcFlowLogsConfig,
     VpcFlowLogsConfig,
 )
 
 __all__ = (
+    "OrganizationVpcFlowLogsServiceClient",
+    "OrganizationVpcFlowLogsServiceAsyncClient",
     "ReachabilityServiceClient",
     "ReachabilityServiceAsyncClient",
     "VpcFlowLogsServiceClient",
@@ -128,7 +143,9 @@ __all__ = (
     "ForwardingRuleInfo",
     "GKEMasterInfo",
     "GoogleServiceInfo",
+    "HybridSubnetInfo",
     "InstanceInfo",
+    "InterconnectAttachmentInfo",
     "LoadBalancerBackend",
     "LoadBalancerBackendInfo",
     "LoadBalancerInfo",
@@ -152,6 +169,11 @@ __all__ = (
     "GetVpcFlowLogsConfigRequest",
     "ListVpcFlowLogsConfigsRequest",
     "ListVpcFlowLogsConfigsResponse",
+    "QueryOrgVpcFlowLogsConfigsRequest",
+    "QueryOrgVpcFlowLogsConfigsResponse",
+    "ShowEffectiveFlowLogsConfigsRequest",
+    "ShowEffectiveFlowLogsConfigsResponse",
     "UpdateVpcFlowLogsConfigRequest",
+    "EffectiveVpcFlowLogsConfig",
     "VpcFlowLogsConfig",
 )
