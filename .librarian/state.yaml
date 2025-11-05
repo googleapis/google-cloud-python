@@ -4447,11 +4447,12 @@ libraries:
     tag_format: '{id}-v{version}'
   - id: googleapis-common-protos
     version: 1.71.0
-    last_generated_commit: 91361b6b2df5f7f3bfc0858be061e31fd2b7be98
+    last_generated_commit: 53af3b727f84acc34e31c23f3b6e7b8aa4b7e837
     apis:
       - path: google/api
         service_config: serviceconfig.yaml
       - path: google/cloud
+        service_config: ""
       - path: google/cloud/location
         service_config: cloud.yaml
       - path: google/logging/type
