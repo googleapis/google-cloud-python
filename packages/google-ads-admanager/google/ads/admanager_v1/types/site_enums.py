@@ -81,7 +81,7 @@ class SiteApprovalStatusEnum(proto.Message):
             UNCHECKED (5):
                 Once the site is submitted for approval, its
                 status changes from draft to unchecked. It will
-                be reviwed with an estimated turn-around time of
+                be reviewed with an estimated turn-around time of
                 24h. Such a site cannot serve ads.
         """
         SITE_APPROVAL_STATUS_UNSPECIFIED = 0
