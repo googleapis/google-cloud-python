@@ -22,12 +22,21 @@ from sphinx import directives, addnodes
 from sphinx import addnodes
 
 from sphinx.addnodes import desc, desc_signature
+from typing import Any
 from .utils import transform_node as _transform_node
 from .nodes import remarks
+import sphinx.application
 
 TYPE_SEP_PATTERN = r'(\[|\]|, |\(|\))'
 
-def _get_desc_data(node):
+def _get_desc_data(node: nodes.Node) -> tuple[str | None, str | None]:
+    """Gets the description data from a node.
+    Args:
+        node (nodes.Node): The node to get the description data from.
+    Returns:
+        tuple[str | None, str | None]: A tuple containing the full name
+            and uid of the node.
+    """
     assert node.tagname == 'desc'
     if node.attributes['domain'] != 'py':
         print(
@@ -49,8 +58,14 @@ def _get_desc_data(node):
         print('Non-standard id: %s' % uid)
     return full_name, uid
 
-
-def _is_desc_of_enum_class(node):
+def _is_desc_of_enum_class(node: nodes.Node) -> bool:
+    """Checks if the node is a description of an enum class.
+    Args:
+        node (nodes.Node): The node to check.
+    Returns:
+        bool: True if the node is a description of an enum class,
+            False otherwise.
+    """
     assert node.tagname == 'desc_content'
     if node[0] and node[0].tagname == 'paragraph' and node[0].astext() == 'Bases: enum.Enum':
         return True
@@ -58,7 +73,7 @@ def _is_desc_of_enum_class(node):
     return False
 
 
-def _hacked_transform(typemap, node):
+def _hacked_transform(typemap: dict, node: nodes.Node) -> tuple[list, dict]:
     """
     Taken from docfields.py from sphinx.
 
@@ -144,7 +159,7 @@ def _hacked_transform(typemap, node):
     return (entries, types)
 
 
-def patch_docfields(app):
+def patch_docfields(app: sphinx.application.Sphinx) -> None:
     """
     Grab syntax data from the Sphinx info fields.
 
@@ -161,7 +176,7 @@ def patch_docfields(app):
 
     transform_node = partial(_transform_node, app)
 
-    def get_data_structure(entries, types, field_object):
+    def get_data_structure(entries: list, types: dict, field_object: nodes.Node) -> dict:
         """
         Get a proper docfx YAML data structure from the entries & types
         """
@@ -334,7 +349,13 @@ def patch_docfields(app):
     class PatchedDocFieldTransformer(docfields.DocFieldTransformer):
 
         @staticmethod
-        def type_mapping(type_name):
+        def type_mapping(type_name: str) -> str:
+            """Maps a type name to a docfx type name.
+            Args:
+                type_name (str): The type name to map.
+            Returns:
+                str: The mapped type name.
+            """
             mapping = {
                 "staticmethod": "method",
                 "classmethod": "method",
@@ -343,11 +364,15 @@ def patch_docfields(app):
 
             return mapping[type_name] if type_name in mapping else type_name
 
-        def __init__(self, directive):
+        def __init__(self, directive: Any):
+            """Initializes the transformer.
+            Args:
+                directive (Any): The directive.
+            """
             self.directive = directive
             super(PatchedDocFieldTransformer, self).__init__(directive)
 
-        def transform_all(self, node):
+        def transform_all(self, node: nodes.Node) -> None:
             """Transform all field list children of a node."""
             # don't traverse, only handle field lists that are immediate children
             summary = []

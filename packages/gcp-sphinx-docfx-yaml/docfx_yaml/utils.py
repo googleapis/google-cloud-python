@@ -18,23 +18,41 @@ from docutils.utils import new_document
 from docutils import nodes
 from inspect import signature
 from collections import namedtuple
+from sphinx.application import Sphinx
+
 
 from .writer import MarkdownWriter as Writer
 
 
-def slugify(value):
-    """
-    Converts to lowercase, removes non-word characters (alphanumerics and
+def slugify(value: str) -> str:
+    """Converts to lowercase, removes non-word characters.
+
+    Converts non-word characters (alphanumerics and
     underscores) and converts spaces to hyphens. Also strips leading and
     trailing whitespace.
 
-    # From Django
+    Args:
+        value (str): The string to convert.
+
+    Returns:
+        str: The converted string.
     """
     value = re.sub(r'[^\w\s-]', '', value).strip()
     return re.sub(r'[-\s]+', '-', value)
 
 
-def transform_string(app, string):
+def transform_string(app: Sphinx, string: str) -> str:
+    """Transforms a string by parsing it and then writing it out.
+
+    This is useful for resolving references in the string.
+
+    Args:
+        app (Sphinx): The sphinx application.
+        string (str): The string to transform.
+
+    Returns:
+        str: The transformed string.
+    """
     ret = []
     for para in string.split('\n\n'):
         tmp = nodes.paragraph(para, para)
@@ -42,7 +60,16 @@ def transform_string(app, string):
     return '\n\n'.join(ret)
 
 
-def transform_node(app, node):
+def transform_node(app: Sphinx, node: nodes.Node) -> str:
+    """Transforms a docutils node to a string.
+
+    Args:
+        app (Sphinx): The sphinx application.
+        node (nodes.Node): The node to transform.
+
+    Returns:
+        str: The transformed node as a string.
+    """
     destination = StringOutput(encoding='utf-8')
     doc = new_document(b'<partial node>')
     doc.append(node)

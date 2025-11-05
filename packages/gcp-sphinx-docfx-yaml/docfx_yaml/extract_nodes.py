@@ -26,10 +26,10 @@ a bit more work needs to be done to pull docstrings in raw format.
 """
 
 from docutils import nodes
+from sphinx.application import Sphinx
 from sphinx.util.console import bold, red
 from sphinx.util.docfields import _is_single_paragraph
 from sphinx import addnodes
-
 from .utils import _get_desc_data
 
 TITLE_MAP = {
@@ -40,9 +40,14 @@ TITLE_MAP = {
 }
 
 
-def doctree_resolved(app, doctree, docname):
+def doctree_resolved(app: Sphinx, doctree: nodes.document, docname: str) -> None:
     """
     Render out the YAML from the Sphinx domain objects
+
+    Args:
+        app (Sphinx): The sphinx application.
+        doctree (nodes.document): The doctree.
+        docname (str): The name of the document.
     """
     yaml_data, yaml_modules = extract_yaml(app, doctree, ignore_patterns=None)
     extract_info_lists(app, doctree)
@@ -53,7 +58,15 @@ def doctree_resolved(app, doctree, docname):
     #         app.env.docfx_yaml_modules[module] = yaml_modules[module]
 
 
-def _get_full_data(node):
+def _get_full_data(node: nodes.Node) -> dict:
+    """Extracts data from a field list node.
+
+    Args:
+        node (nodes.Node): The field list node.
+
+    Returns:
+        dict: The extracted data.
+    """
     data = {}
     parent_desc = node.parent.parent
     name, uid = _get_desc_data(parent_desc)
@@ -89,7 +102,13 @@ def _get_full_data(node):
     return data
 
 
-def extract_info_lists(app, doctree):
+def extract_info_lists(app: Sphinx, doctree: nodes.document) -> None:
+    """Extracts info lists from the doctree.
+
+    Args:
+        app (Sphinx): The sphinx application.
+        doctree (nodes.document): The doctree.
+    """
     data = []
 
     for node in doctree.traverse(nodes.field_list):
@@ -98,9 +117,17 @@ def extract_info_lists(app, doctree):
     print(data)
 
 
-def extract_yaml(app, doctree, ignore_patterns):
-    """
-    Iterate over all Python domain objects and output YAML
+def extract_yaml(app: Sphinx, doctree: nodes.document, ignore_patterns: list[str]) -> tuple[list[dict], dict]:
+    """Iterate over all Python domain objects and output YAML.
+
+    Args:
+        app (Sphinx): The sphinx application.
+        doctree (nodes.document): The doctree.
+        ignore_patterns (list[str]): A list of patterns to ignore.
+
+    Returns:
+        tuple[list[dict], dict]: A tuple containing the list of items and
+            a dictionary of modules.
     """
     items = []
     modules = {}

@@ -16,9 +16,22 @@ import pytest
 
 
 def pytest_addoption(parser):
+    """Adds a command line option to pytest.
+
+    Args:
+        parser: The pytest parser.
+    """
     parser.addoption("--update-goldens", action="store", default=False)
 
 
 @pytest.fixture
 def update_goldens(request):
+    """Returns the value of the --update-goldens command line option.
+
+    Args:
+        request: The pytest request object.
+
+    Returns:
+        The value of the --update-goldens command line option.
+    """
     return request.config.getoption("--update-goldens")

@@ -21,14 +21,14 @@ This module is used to add extra supported nodes to sphinx.
 from docutils import nodes
 
 class remarks(nodes.paragraph, nodes.Element):
-    """
-    New node for remarks messages.
-    """
+    """A docutils node for 'remarks' messages."""
 
     @staticmethod
-    def visit_remarks(self, node):
+    def visit_remarks(self, node: nodes.Node) -> None:
+        """Visit a 'remarks' node."""
         self.visit_paragraph(node)
 
     @staticmethod
-    def depart_remarks(self, node):
+    def depart_remarks(self, node: nodes.Node) -> None:
+        """Depart a 'remarks' node."""
         self.depart_paragraph(node)

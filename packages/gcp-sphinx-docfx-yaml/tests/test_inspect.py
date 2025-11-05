@@ -29,7 +29,7 @@ class TestGenerate(unittest.TestCase):
         [
             # Test for forward reference.
             Optional["ForwardClass"],
-            'typing.Optional[ForwardClass]'
+            'typing.Optional[ForwardClass]',
         ],
         [
             # Test for multiple forward references.

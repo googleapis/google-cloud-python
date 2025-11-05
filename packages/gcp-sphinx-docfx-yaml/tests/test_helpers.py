@@ -8,6 +8,7 @@ from yaml import load, Loader
 import tempfile
 
 class TestGenerate(unittest.TestCase):
+    """Tests for the extension."""
     code_testdata = [
         # Check that the code indents to left based on first line.
         [

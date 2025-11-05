@@ -21,14 +21,21 @@ import os
 from pathlib import Path
 import re
 import shutil
-from typing import Iterable, List, Optional
+from typing import Iterable
 
 from docuploader import shell
 import sphinx.application
 
 
 def _reformat_codeblocks(content: str) -> str:
-    """Formats codeblocks from ``` to <pre>."""
+    """Formats codeblocks from ``` to <pre>.
+
+    Args:
+        content (str): The string to reformat.
+
+    Returns:
+        str: The reformatted string.
+    """
     triple_backtick = '```'
     current_tag = '<pre>'
     next_tag = '</pre>'
@@ -45,7 +52,14 @@ def _reformat_codeblocks(content: str) -> str:
 
 
 def _reformat_code(content: str) -> str:
-    """Formats code from ` to <code>."""
+    """Formats code from ` to <code>.
+
+    Args:
+        content (str): The string to reformat.
+
+    Returns:
+        str: The reformatted string.
+    """
     reformatted_lines = []
 
     code_pattern = '`[^`\n]+`'
@@ -146,7 +160,11 @@ def _extract_header_from_markdown(mdfile: Iterable[str]) -> str:
 
 
 def _remove_license(mdfile_path: str) -> None:
-    """Removes any licenses in markdown files."""
+    """Removes any licenses in markdown files.
+
+    Args:
+        mdfile_path (str): The path to the markdown file.
+    """
 
     comment_tag_begin = "<!--"
     comment_tag_end = "-->"
@@ -173,7 +191,11 @@ def _remove_license(mdfile_path: str) -> None:
 
 
 def _highlight_md_codeblocks(mdfile_path: str) -> None:
-    """Adds syntax highlighting to code blocks for a given markdown file."""
+    """Adds syntax highlighting to code blocks for a given markdown file.
+
+    Args:
+        mdfile_path (str): The path to the markdown file.
+    """
     fence = '```'
     fence_with_python = '```python'
     new_lines = []
@@ -219,7 +241,11 @@ def _highlight_md_codeblocks(mdfile_path: str) -> None:
 
 
 def _clean_image_links(mdfile_path: str) -> None:
-    """Cleans extra whitespace that breaks image links in index.html file."""
+    """Cleans extra whitespace that breaks image links in index.html file.
+
+    Args:
+        mdfile_path (str): The path to the markdown file.
+    """
     image_link_pattern=r'\[\s*!\[image\]\(.*\)\s*\]\(.*\)'
     new_lines = []
     with open(mdfile_path) as mdfile:
@@ -297,7 +323,7 @@ def _merge_markdown_content(
 def move_markdown_pages(
     app: sphinx.application,
     outdir: Path,
-    cwd: Optional[List[str]] = [],
+    cwd: list[str] | None = [],
 ) -> None:
     """Moves markdown pages to be added to the generated reference documentation.
 
@@ -486,7 +512,11 @@ def remove_unused_pages(
 
 
 def run_sphinx_markdown(app: sphinx.application) -> None:
-    """Runs sphinx-build with Markdown builder in the plugin."""
+    """Runs sphinx-build with Markdown builder in the plugin.
+
+    Args:
+        app (sphinx.application): The sphinx application.
+    """
     cwd = os.getcwd()
     relative_srcdir = app.srcdir.removeprefix(f"{cwd}/")
     relative_outdir = app.outdir.removeprefix(f"{cwd}/").removesuffix("/html")

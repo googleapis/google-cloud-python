@@ -26,21 +26,17 @@ from .nodes import remarks
 
 
 class RemarksDirective(BaseAdmonition):
-    """
-    Class to enable remarks directive.
-    """
+    """A directive to handle 'remarks' blocks."""
     node_class = remarks
 
 class TodoDirective(Directive):
-    """
-    Class to ignore todo directive.
-    """
+    """A directive to ignore 'todo' blocks."""
 
     # Enable content in the directive
     has_content = True
 
-    # Directive class must override run function.
-    def run(self):
+    def run(self) -> list[nodes.Node]:
+        """This directive is ignored, so return empty list."""
         return_nodes = []
 
         return return_nodes
