@@ -26,7 +26,6 @@
     ".OwlBot.yaml",
     "packages/google-cloud-language/CHANGELOG.md",
     "docs/CHANGELOG.md",
-    "docs/README.rst",
     "samples/README.txt",
     "tar.gz",
     "scripts/client-post-processing"

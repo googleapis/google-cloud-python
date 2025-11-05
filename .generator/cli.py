@@ -138,7 +138,6 @@ def _add_new_library_preserve_regex(library_config: Dict, library_id: str) -> No
         library_config["preserve_regex"] = [
             f"packages/{library_id}/CHANGELOG.md",
             "docs/CHANGELOG.md",
-            "docs/README.rst",
             "samples/README.txt",
             "scripts/client-post-processing",
             "samples/snippets/README.rst",
