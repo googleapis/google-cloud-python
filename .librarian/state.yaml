@@ -11,7 +11,6 @@ libraries:
     preserve_regex:
       - packages/google-ads-admanager/CHANGELOG.md
       - docs/CHANGELOG.md
-      - docs/README.rst
       - samples/README.txt
       - scripts/client-post-processing
       - samples/snippets/README.rst
@@ -30,7 +29,6 @@ libraries:
     preserve_regex:
       - packages/google-ads-datamanager/CHANGELOG.md
       - docs/CHANGELOG.md
-      - docs/README.rst
       - samples/README.txt
       - scripts/client-post-processing
       - samples/snippets/README.rst
@@ -49,7 +47,6 @@ libraries:
     preserve_regex:
       - packages/google-ads-marketingplatform-admin/CHANGELOG.md
       - docs/CHANGELOG.md
-      - docs/README.rst
       - samples/README.txt
       - scripts/client-post-processing
       - samples/snippets/README.rst
@@ -76,7 +73,6 @@ libraries:
     preserve_regex:
       - packages/google-ai-generativelanguage/CHANGELOG.md
       - docs/CHANGELOG.md
-      - docs/README.rst
       - samples/README.txt
       - scripts/client-post-processing
       - samples/snippets/README.rst
@@ -97,7 +93,6 @@ libraries:
     preserve_regex:
       - packages/google-analytics-admin/CHANGELOG.md
       - docs/CHANGELOG.md
-      - docs/README.rst
       - samples/README.txt
       - scripts/client-post-processing
       - samples/snippets/README.rst
@@ -118,7 +113,6 @@ libraries:
     preserve_regex:
       - packages/google-analytics-data/CHANGELOG.md
       - docs/CHANGELOG.md
-      - docs/README.rst
       - samples/README.txt
       - scripts/client-post-processing
       - samples/snippets/README.rst
@@ -137,7 +131,6 @@ libraries:
     preserve_regex:
       - packages/google-apps-card/CHANGELOG.md
       - docs/CHANGELOG.md
-      - docs/README.rst
       - samples/README.txt
       - scripts/client-post-processing
       - samples/snippets/README.rst
@@ -157,7 +150,6 @@ libraries:
     preserve_regex:
       - packages/google-apps-chat/CHANGELOG.md
       - docs/CHANGELOG.md
-      - docs/README.rst
       - samples/README.txt
       - scripts/client-post-processing
       - samples/snippets/README.rst
@@ -178,7 +170,6 @@ libraries:
     preserve_regex:
       - packages/google-apps-events-subscriptions/CHANGELOG.md
       - docs/CHANGELOG.md
-      - docs/README.rst
       - samples/README.txt
       - scripts/client-post-processing
       - samples/snippets/README.rst
@@ -199,7 +190,6 @@ libraries:
     preserve_regex:
       - packages/google-apps-meet/CHANGELOG.md
       - docs/CHANGELOG.md
-      - docs/README.rst
       - samples/README.txt
       - scripts/client-post-processing
       - samples/snippets/README.rst
@@ -230,7 +220,6 @@ libraries:
     preserve_regex:
       - packages/google-apps-script-type/CHANGELOG.md
       - docs/CHANGELOG.md
-      - docs/README.rst
       - samples/README.txt
       - scripts/client-post-processing
       - samples/snippets/README.rst
@@ -256,7 +245,6 @@ libraries:
     preserve_regex:
       - packages/google-area120-tables/CHANGELOG.md
       - docs/CHANGELOG.md
-      - docs/README.rst
       - samples/README.txt
       - scripts/client-post-processing
       - samples/snippets/README.rst
@@ -275,7 +263,6 @@ libraries:
     preserve_regex:
       - packages/google-cloud-access-approval/CHANGELOG.md
       - docs/CHANGELOG.md
-      - docs/README.rst
       - samples/README.txt
       - scripts/client-post-processing
       - samples/snippets/README.rst
@@ -308,7 +295,6 @@ libraries:
     preserve_regex:
       - packages/google-cloud-advisorynotifications/CHANGELOG.md
       - docs/CHANGELOG.md
-      - docs/README.rst
       - samples/README.txt
       - scripts/client-post-processing
       - samples/snippets/README.rst
@@ -331,7 +317,6 @@ libraries:
     preserve_regex:
       - packages/google-cloud-alloydb/CHANGELOG.md
       - docs/CHANGELOG.md
-      - docs/README.rst
       - samples/README.txt
       - scripts/client-post-processing
       - samples/snippets/README.rst
@@ -354,7 +339,6 @@ libraries:
     preserve_regex:
       - packages/google-cloud-alloydb-connectors/CHANGELOG.md
       - docs/CHANGELOG.md
-      - docs/README.rst
       - samples/README.txt
       - scripts/client-post-processing
       - samples/snippets/README.rst
@@ -374,7 +358,6 @@ libraries:
     preserve_regex:
       - packages/google-cloud-api-gateway/CHANGELOG.md
       - docs/CHANGELOG.md
-      - docs/README.rst
       - samples/README.txt
       - scripts/client-post-processing
       - samples/snippets/README.rst
@@ -393,7 +376,6 @@ libraries:
     preserve_regex:
       - packages/google-cloud-api-keys/CHANGELOG.md
       - docs/CHANGELOG.md
-      - docs/README.rst
       - samples/README.txt
       - scripts/client-post-processing
       - samples/snippets/README.rst
@@ -412,7 +394,6 @@ libraries:
     preserve_regex:
       - packages/google-cloud-apigee-connect/CHANGELOG.md
       - docs/CHANGELOG.md
-      - docs/README.rst
       - samples/README.txt
       - scripts/client-post-processing
       - samples/snippets/README.rst
@@ -431,7 +412,6 @@ libraries:
     preserve_regex:
       - packages/google-cloud-apigee-registry/CHANGELOG.md
       - docs/CHANGELOG.md
-      - docs/README.rst
       - samples/README.txt
       - scripts/client-post-processing
       - samples/snippets/README.rst
@@ -450,7 +430,6 @@ libraries:
     preserve_regex:
       - packages/google-cloud-apihub/CHANGELOG.md
       - docs/CHANGELOG.md
-      - docs/README.rst
       - samples/README.txt
       - scripts/client-post-processing
       - samples/snippets/README.rst
@@ -469,7 +448,6 @@ libraries:
     preserve_regex:
       - packages/google-cloud-appengine-admin/CHANGELOG.md
       - docs/CHANGELOG.md
-      - docs/README.rst
       - samples/README.txt
       - scripts/client-post-processing
       - samples/snippets/README.rst
@@ -488,7 +466,6 @@ libraries:
     preserve_regex:
       - packages/google-cloud-appengine-logging/CHANGELOG.md
       - docs/CHANGELOG.md
-      - docs/README.rst
       - samples/README.txt
       - scripts/client-post-processing
       - samples/snippets/README.rst
@@ -508,7 +485,6 @@ libraries:
     preserve_regex:
       - packages/google-cloud-apphub/CHANGELOG.md
       - docs/CHANGELOG.md
-      - docs/README.rst
       - samples/README.txt
       - scripts/client-post-processing
       - samples/snippets/README.rst
@@ -529,7 +505,6 @@ libraries:
     preserve_regex:
       - packages/google-cloud-artifact-registry/CHANGELOG.md
       - docs/CHANGELOG.md
-      - docs/README.rst
       - samples/README.txt
       - scripts/client-post-processing
       - samples/snippets/README.rst
@@ -554,7 +529,6 @@ libraries:
     preserve_regex:
       - packages/google-cloud-asset/CHANGELOG.md
       - docs/CHANGELOG.md
-      - docs/README.rst
       - samples/README.txt
       - scripts/client-post-processing
       - samples/snippets/README.rst
@@ -575,7 +549,6 @@ libraries:
     preserve_regex:
       - packages/google-cloud-assured-workloads/CHANGELOG.md
       - docs/CHANGELOG.md
-      - docs/README.rst
       - samples/README.txt
       - scripts/client-post-processing
       - samples/snippets/README.rst
@@ -608,7 +581,6 @@ libraries:
     preserve_regex:
       - packages/google-cloud-automl/CHANGELOG.md
       - docs/CHANGELOG.md
-      - docs/README.rst
       - samples/README.txt
       - scripts/client-post-processing
       - samples/snippets/README.rst
@@ -632,7 +604,6 @@ libraries:
     preserve_regex:
       - packages/google-cloud-backupdr/CHANGELOG.md
       - docs/CHANGELOG.md
-      - docs/README.rst
       - samples/README.txt
       - scripts/client-post-processing
       - samples/snippets/README.rst
@@ -651,7 +622,6 @@ libraries:
     preserve_regex:
       - packages/google-cloud-bare-metal-solution/CHANGELOG.md
       - docs/CHANGELOG.md
-      - docs/README.rst
       - samples/README.txt
       - scripts/client-post-processing
       - samples/snippets/README.rst
@@ -672,7 +642,6 @@ libraries:
     preserve_regex:
       - packages/google-cloud-batch/CHANGELOG.md
       - docs/CHANGELOG.md
-      - docs/README.rst
       - samples/README.txt
       - scripts/client-post-processing
       - samples/snippets/README.rst
@@ -691,7 +660,6 @@ libraries:
     preserve_regex:
       - packages/google-cloud-beyondcorp-appconnections/CHANGELOG.md
       - docs/CHANGELOG.md
-      - docs/README.rst
       - samples/README.txt
       - scripts/client-post-processing
       - samples/snippets/README.rst
@@ -710,7 +678,6 @@ libraries:
     preserve_regex:
       - packages/google-cloud-beyondcorp-appconnectors/CHANGELOG.md
       - docs/CHANGELOG.md
-      - docs/README.rst
       - samples/README.txt
       - scripts/client-post-processing
       - samples/snippets/README.rst
@@ -729,7 +696,6 @@ libraries:
     preserve_regex:
       - packages/google-cloud-beyondcorp-appgateways/CHANGELOG.md
       - docs/CHANGELOG.md
-      - docs/README.rst
       - samples/README.txt
       - scripts/client-post-processing
       - samples/snippets/README.rst
@@ -748,7 +714,6 @@ libraries:
     preserve_regex:
       - packages/google-cloud-beyondcorp-clientconnectorservices/CHANGELOG.md
       - docs/CHANGELOG.md
-      - docs/README.rst
       - samples/README.txt
       - scripts/client-post-processing
       - samples/snippets/README.rst
@@ -767,7 +732,6 @@ libraries:
     preserve_regex:
       - packages/google-cloud-beyondcorp-clientgateways/CHANGELOG.md
       - docs/CHANGELOG.md
-      - docs/README.rst
       - samples/README.txt
       - scripts/client-post-processing
       - samples/snippets/README.rst
@@ -786,7 +750,6 @@ libraries:
     preserve_regex:
       - packages/google-cloud-biglake/CHANGELOG.md
       - docs/CHANGELOG.md
-      - docs/README.rst
       - samples/README.txt
       - scripts/client-post-processing
       - samples/snippets/README.rst
@@ -805,7 +768,6 @@ libraries:
     preserve_regex:
       - packages/google-cloud-bigquery-analyticshub/CHANGELOG.md
       - docs/CHANGELOG.md
-      - docs/README.rst
       - samples/README.txt
       - scripts/client-post-processing
       - samples/snippets/README.rst
@@ -826,7 +788,6 @@ libraries:
     preserve_regex:
       - packages/google-cloud-bigquery-biglake/CHANGELOG.md
       - docs/CHANGELOG.md
-      - docs/README.rst
       - samples/README.txt
       - scripts/client-post-processing
       - samples/snippets/README.rst
@@ -845,7 +806,6 @@ libraries:
     preserve_regex:
       - packages/google-cloud-bigquery-connection/CHANGELOG.md
       - docs/CHANGELOG.md
-      - docs/README.rst
       - samples/README.txt
       - scripts/client-post-processing
       - samples/snippets/README.rst
@@ -864,7 +824,6 @@ libraries:
     preserve_regex:
       - packages/google-cloud-bigquery-data-exchange/CHANGELOG.md
       - docs/CHANGELOG.md
-      - docs/README.rst
       - samples/README.txt
       - scripts/client-post-processing
       - samples/snippets/README.rst
@@ -889,7 +848,6 @@ libraries:
     preserve_regex:
       - packages/google-cloud-bigquery-datapolicies/CHANGELOG.md
       - docs/CHANGELOG.md
-      - docs/README.rst
       - samples/README.txt
       - scripts/client-post-processing
       - samples/snippets/README.rst
@@ -908,7 +866,6 @@ libraries:
     preserve_regex:
       - packages/google-cloud-bigquery-datatransfer/CHANGELOG.md
       - docs/CHANGELOG.md
-      - docs/README.rst
       - samples/README.txt
       - scripts/client-post-processing
       - samples/snippets/README.rst
@@ -927,7 +884,6 @@ libraries:
     preserve_regex:
       - packages/google-cloud-bigquery-logging/CHANGELOG.md
       - docs/CHANGELOG.md
-      - docs/README.rst
       - samples/README.txt
       - scripts/client-post-processing
       - samples/snippets/README.rst
@@ -949,7 +905,6 @@ libraries:
     preserve_regex:
       - packages/google-cloud-bigquery-migration/CHANGELOG.md
       - docs/CHANGELOG.md
-      - docs/README.rst
       - samples/README.txt
       - scripts/client-post-processing
       - samples/snippets/README.rst
@@ -968,7 +923,6 @@ libraries:
     preserve_regex:
       - packages/google-cloud-bigquery-reservation/CHANGELOG.md
       - docs/CHANGELOG.md
-      - docs/README.rst
       - samples/README.txt
       - scripts/client-post-processing
       - samples/snippets/README.rst
@@ -994,7 +948,6 @@ libraries:
       - docs/.*/library.rst
       - docs/samples
       - docs/CHANGELOG.md
-      - docs/README.rst
       - google/cloud/bigquery_storage_v1/client.py
       - google/cloud/bigquery_storage_v1/exceptions.py
       - google/cloud/bigquery_storage_v1/gapic_types.py
@@ -1031,7 +984,6 @@ libraries:
     preserve_regex:
       - packages/google-cloud-billing/CHANGELOG.md
       - docs/CHANGELOG.md
-      - docs/README.rst
       - samples/README.txt
       - scripts/client-post-processing
       - samples/snippets/README.rst
@@ -1052,7 +1004,6 @@ libraries:
     preserve_regex:
       - packages/google-cloud-billing-budgets/CHANGELOG.md
       - docs/CHANGELOG.md
-      - docs/README.rst
       - samples/README.txt
       - scripts/client-post-processing
       - samples/snippets/README.rst
@@ -1073,7 +1024,6 @@ libraries:
     preserve_regex:
       - packages/google-cloud-binary-authorization/CHANGELOG.md
       - docs/CHANGELOG.md
-      - docs/README.rst
       - samples/README.txt
       - scripts/client-post-processing
       - samples/snippets/README.rst
@@ -1094,7 +1044,6 @@ libraries:
     preserve_regex:
       - packages/google-cloud-build/CHANGELOG.md
       - docs/CHANGELOG.md
-      - docs/README.rst
       - samples/README.txt
       - scripts/client-post-processing
       - samples/snippets/README.rst
@@ -1113,7 +1062,6 @@ libraries:
     preserve_regex:
       - packages/google-cloud-capacityplanner/CHANGELOG.md
       - docs/CHANGELOG.md
-      - docs/README.rst
       - samples/README.txt
       - scripts/client-post-processing
       - samples/snippets/README.rst
@@ -1132,7 +1080,6 @@ libraries:
     preserve_regex:
       - packages/google-cloud-certificate-manager/CHANGELOG.md
       - docs/CHANGELOG.md
-      - docs/README.rst
       - samples/README.txt
       - scripts/client-post-processing
       - samples/snippets/README.rst
@@ -1151,7 +1098,6 @@ libraries:
     preserve_regex:
       - packages/google-cloud-channel/CHANGELOG.md
       - docs/CHANGELOG.md
-      - docs/README.rst
       - samples/README.txt
       - scripts/client-post-processing
       - samples/snippets/README.rst
@@ -1170,7 +1116,6 @@ libraries:
     preserve_regex:
       - packages/google-cloud-chronicle/CHANGELOG.md
       - docs/CHANGELOG.md
-      - docs/README.rst
       - samples/README.txt
       - scripts/client-post-processing
       - samples/snippets/README.rst
@@ -1191,7 +1136,6 @@ libraries:
     preserve_regex:
       - packages/google-cloud-cloudcontrolspartner/CHANGELOG.md
       - docs/CHANGELOG.md
-      - docs/README.rst
       - samples/README.txt
       - scripts/client-post-processing
       - samples/snippets/README.rst
@@ -1210,7 +1154,6 @@ libraries:
     preserve_regex:
       - packages/google-cloud-cloudsecuritycompliance/CHANGELOG.md
       - docs/CHANGELOG.md
-      - docs/README.rst
       - samples/README.txt
       - scripts/client-post-processing
       - samples/snippets/README.rst
@@ -1231,7 +1174,6 @@ libraries:
     preserve_regex:
       - packages/google-cloud-commerce-consumer-procurement/CHANGELOG.md
       - docs/CHANGELOG.md
-      - docs/README.rst
       - samples/README.txt
       - scripts/client-post-processing
       - samples/snippets/README.rst
@@ -1250,7 +1192,6 @@ libraries:
     preserve_regex:
       - packages/google-cloud-common/CHANGELOG.md
       - docs/CHANGELOG.md
-      - docs/README.rst
       - samples/README.txt
       - scripts/client-post-processing
       - samples/snippets/README.rst
@@ -1270,7 +1211,6 @@ libraries:
     preserve_regex:
       - packages/google-cloud-compute/CHANGELOG.md
       - docs/CHANGELOG.md
-      - docs/README.rst
       - samples/README.txt
       - scripts/client-post-processing
       - samples/snippets/README.rst
@@ -1289,7 +1229,6 @@ libraries:
     preserve_regex:
       - packages/google-cloud-compute-v1beta/CHANGELOG.md
       - docs/CHANGELOG.md
-      - docs/README.rst
       - samples/README.txt
       - scripts/client-post-processing
       - samples/snippets/README.rst
@@ -1308,7 +1247,6 @@ libraries:
     preserve_regex:
       - packages/google-cloud-confidentialcomputing/CHANGELOG.md
       - docs/CHANGELOG.md
-      - docs/README.rst
       - samples/README.txt
       - scripts/client-post-processing
       - samples/snippets/README.rst
@@ -1327,7 +1265,6 @@ libraries:
     preserve_regex:
       - packages/google-cloud-config/CHANGELOG.md
       - docs/CHANGELOG.md
-      - docs/README.rst
       - samples/README.txt
       - scripts/client-post-processing
       - samples/snippets/README.rst
@@ -1350,7 +1287,6 @@ libraries:
     preserve_regex:
       - packages/google-cloud-configdelivery/CHANGELOG.md
       - docs/CHANGELOG.md
-      - docs/README.rst
       - samples/README.txt
       - scripts/client-post-processing
       - samples/snippets/README.rst
@@ -1369,7 +1305,6 @@ libraries:
     preserve_regex:
       - packages/google-cloud-contact-center-insights/CHANGELOG.md
       - docs/CHANGELOG.md
-      - docs/README.rst
       - samples/README.txt
       - scripts/client-post-processing
       - samples/snippets/README.rst
@@ -1390,7 +1325,6 @@ libraries:
     preserve_regex:
       - packages/google-cloud-container/CHANGELOG.md
       - docs/CHANGELOG.md
-      - docs/README.rst
       - samples/README.txt
       - scripts/client-post-processing
       - samples/snippets/README.rst
@@ -1409,7 +1343,6 @@ libraries:
     preserve_regex:
       - packages/google-cloud-containeranalysis/CHANGELOG.md
       - docs/CHANGELOG.md
-      - docs/README.rst
       - samples/README.txt
       - scripts/client-post-processing
       - samples/snippets/README.rst
@@ -1429,7 +1362,6 @@ libraries:
     preserve_regex:
       - packages/google-cloud-contentwarehouse/CHANGELOG.md
       - docs/CHANGELOG.md
-      - docs/README.rst
       - samples/README.txt
       - scripts/client-post-processing
       - samples/snippets/README.rst
@@ -1448,7 +1380,6 @@ libraries:
     preserve_regex:
       - packages/google-cloud-data-fusion/CHANGELOG.md
       - docs/CHANGELOG.md
-      - docs/README.rst
       - samples/README.txt
       - scripts/client-post-processing
       - samples/snippets/README.rst
@@ -1467,7 +1398,6 @@ libraries:
     preserve_regex:
       - packages/google-cloud-data-qna/CHANGELOG.md
       - docs/CHANGELOG.md
-      - docs/README.rst
       - samples/README.txt
       - scripts/client-post-processing
       - samples/snippets/README.rst
@@ -1488,7 +1418,6 @@ libraries:
     preserve_regex:
       - packages/google-cloud-datacatalog/CHANGELOG.md
       - docs/CHANGELOG.md
-      - docs/README.rst
       - samples/README.txt
       - scripts/client-post-processing
       - samples/snippets/README.rst
@@ -1507,7 +1436,6 @@ libraries:
     preserve_regex:
       - packages/google-cloud-datacatalog-lineage/CHANGELOG.md
       - docs/CHANGELOG.md
-      - docs/README.rst
       - samples/README.txt
       - scripts/client-post-processing
       - samples/snippets/README.rst
@@ -1526,7 +1454,6 @@ libraries:
     preserve_regex:
       - packages/google-cloud-dataflow-client/CHANGELOG.md
       - docs/CHANGELOG.md
-      - docs/README.rst
       - samples/README.txt
       - scripts/client-post-processing
       - samples/snippets/README.rst
@@ -1547,7 +1474,6 @@ libraries:
     preserve_regex:
       - packages/google-cloud-dataform/CHANGELOG.md
       - docs/CHANGELOG.md
-      - docs/README.rst
       - samples/README.txt
       - scripts/client-post-processing
       - samples/snippets/README.rst
@@ -1566,7 +1492,6 @@ libraries:
     preserve_regex:
       - packages/google-cloud-datalabeling/CHANGELOG.md
       - docs/CHANGELOG.md
-      - docs/README.rst
       - samples/README.txt
       - scripts/client-post-processing
       - samples/snippets/README.rst
@@ -1585,7 +1510,6 @@ libraries:
     preserve_regex:
       - packages/google-cloud-dataplex/CHANGELOG.md
       - docs/CHANGELOG.md
-      - docs/README.rst
       - samples/README.txt
       - scripts/client-post-processing
       - samples/snippets/README.rst
@@ -1604,7 +1528,6 @@ libraries:
     preserve_regex:
       - packages/google-cloud-dataproc/CHANGELOG.md
       - docs/CHANGELOG.md
-      - docs/README.rst
       - samples/README.txt
       - scripts/client-post-processing
       - samples/snippets/README.rst
@@ -1627,7 +1550,6 @@ libraries:
     preserve_regex:
       - packages/google-cloud-dataproc-metastore/CHANGELOG.md
       - docs/CHANGELOG.md
-      - docs/README.rst
       - samples/README.txt
       - scripts/client-post-processing
       - samples/snippets/README.rst
@@ -1648,7 +1570,6 @@ libraries:
     preserve_regex:
       - packages/google-cloud-datastream/CHANGELOG.md
       - docs/CHANGELOG.md
-      - docs/README.rst
       - samples/README.txt
       - scripts/client-post-processing
       - samples/snippets/README.rst
@@ -1667,7 +1588,6 @@ libraries:
     preserve_regex:
       - packages/google-cloud-deploy/CHANGELOG.md
       - docs/CHANGELOG.md
-      - docs/README.rst
       - samples/README.txt
       - scripts/client-post-processing
       - samples/snippets/README.rst
@@ -1686,7 +1606,6 @@ libraries:
     preserve_regex:
       - packages/google-cloud-developerconnect/CHANGELOG.md
       - docs/CHANGELOG.md
-      - docs/README.rst
       - samples/README.txt
       - scripts/client-post-processing
       - samples/snippets/README.rst
@@ -1705,7 +1624,6 @@ libraries:
     preserve_regex:
       - packages/google-cloud-devicestreaming/CHANGELOG.md
       - docs/CHANGELOG.md
-      - docs/README.rst
       - samples/README.txt
       - scripts/client-post-processing
       - samples/snippets/README.rst
@@ -1726,7 +1644,6 @@ libraries:
     preserve_regex:
       - packages/google-cloud-dialogflow/CHANGELOG.md
       - docs/CHANGELOG.md
-      - docs/README.rst
       - samples/README.txt
       - scripts/client-post-processing
       - samples/snippets/README.rst
@@ -1747,7 +1664,6 @@ libraries:
     preserve_regex:
       - packages/google-cloud-dialogflow-cx/CHANGELOG.md
       - docs/CHANGELOG.md
-      - docs/README.rst
       - samples/README.txt
       - scripts/client-post-processing
       - samples/snippets/README.rst
@@ -1770,7 +1686,6 @@ libraries:
     preserve_regex:
       - packages/google-cloud-discoveryengine/CHANGELOG.md
       - docs/CHANGELOG.md
-      - docs/README.rst
       - samples/README.txt
       - scripts/client-post-processing
       - samples/snippets/README.rst
@@ -1789,7 +1704,6 @@ libraries:
     preserve_regex:
       - packages/google-cloud-dlp/CHANGELOG.md
       - docs/CHANGELOG.md
-      - docs/README.rst
       - samples/README.txt
       - scripts/client-post-processing
       - samples/snippets/README.rst
@@ -1808,7 +1722,6 @@ libraries:
     preserve_regex:
       - packages/google-cloud-dms/CHANGELOG.md
       - docs/CHANGELOG.md
-      - docs/README.rst
       - samples/README.txt
       - scripts/client-post-processing
       - samples/snippets/README.rst
@@ -1829,7 +1742,6 @@ libraries:
     preserve_regex:
       - packages/google-cloud-documentai/CHANGELOG.md
       - docs/CHANGELOG.md
-      - docs/README.rst
       - samples/README.txt
       - scripts/client-post-processing
       - samples/snippets/README.rst
@@ -1850,7 +1762,6 @@ libraries:
     preserve_regex:
       - packages/google-cloud-domains/CHANGELOG.md
       - docs/CHANGELOG.md
-      - docs/README.rst
       - samples/README.txt
       - scripts/client-post-processing
       - samples/snippets/README.rst
@@ -1869,7 +1780,6 @@ libraries:
     preserve_regex:
       - packages/google-cloud-edgecontainer/CHANGELOG.md
       - docs/CHANGELOG.md
-      - docs/README.rst
       - samples/README.txt
       - scripts/client-post-processing
       - samples/snippets/README.rst
@@ -1888,7 +1798,6 @@ libraries:
     preserve_regex:
       - packages/google-cloud-edgenetwork/CHANGELOG.md
       - docs/CHANGELOG.md
-      - docs/README.rst
       - samples/README.txt
       - scripts/client-post-processing
       - samples/snippets/README.rst
@@ -1907,7 +1816,6 @@ libraries:
     preserve_regex:
       - packages/google-cloud-enterpriseknowledgegraph/CHANGELOG.md
       - docs/CHANGELOG.md
-      - docs/README.rst
       - samples/README.txt
       - scripts/client-post-processing
       - samples/snippets/README.rst
@@ -1926,7 +1834,6 @@ libraries:
     preserve_regex:
       - packages/google-cloud-essential-contacts/CHANGELOG.md
       - docs/CHANGELOG.md
-      - docs/README.rst
       - samples/README.txt
       - scripts/client-post-processing
       - samples/snippets/README.rst
@@ -1945,7 +1852,6 @@ libraries:
     preserve_regex:
       - packages/google-cloud-eventarc/CHANGELOG.md
       - docs/CHANGELOG.md
-      - docs/README.rst
       - samples/README.txt
       - scripts/client-post-processing
       - samples/snippets/README.rst
@@ -1964,7 +1870,6 @@ libraries:
     preserve_regex:
       - packages/google-cloud-eventarc-publishing/CHANGELOG.md
       - docs/CHANGELOG.md
-      - docs/README.rst
       - samples/README.txt
       - scripts/client-post-processing
       - samples/snippets/README.rst
@@ -1983,7 +1888,6 @@ libraries:
     preserve_regex:
       - packages/google-cloud-filestore/CHANGELOG.md
       - docs/CHANGELOG.md
-      - docs/README.rst
       - samples/README.txt
       - scripts/client-post-processing
       - samples/snippets/README.rst
@@ -2002,7 +1906,6 @@ libraries:
     preserve_regex:
       - packages/google-cloud-financialservices/CHANGELOG.md
       - docs/CHANGELOG.md
-      - docs/README.rst
       - samples/README.txt
       - scripts/client-post-processing
       - samples/snippets/README.rst
@@ -2023,7 +1926,6 @@ libraries:
     preserve_regex:
       - packages/google-cloud-functions/CHANGELOG.md
       - docs/CHANGELOG.md
-      - docs/README.rst
       - samples/README.txt
       - scripts/client-post-processing
       - samples/snippets/README.rst
@@ -2042,7 +1944,6 @@ libraries:
     preserve_regex:
       - packages/google-cloud-gdchardwaremanagement/CHANGELOG.md
       - docs/CHANGELOG.md
-      - docs/README.rst
       - samples/README.txt
       - scripts/client-post-processing
       - samples/snippets/README.rst
@@ -2063,7 +1964,6 @@ libraries:
     preserve_regex:
       - packages/google-cloud-geminidataanalytics/CHANGELOG.md
       - docs/CHANGELOG.md
-      - docs/README.rst
       - samples/README.txt
       - scripts/client-post-processing
       - samples/snippets/README.rst
@@ -2082,7 +1982,6 @@ libraries:
     preserve_regex:
       - packages/google-cloud-gke-backup/CHANGELOG.md
       - docs/CHANGELOG.md
-      - docs/README.rst
       - samples/README.txt
       - scripts/client-post-processing
       - samples/snippets/README.rst
@@ -2103,7 +2002,6 @@ libraries:
     preserve_regex:
       - packages/google-cloud-gke-connect-gateway/CHANGELOG.md
       - docs/CHANGELOG.md
-      - docs/README.rst
       - samples/README.txt
       - scripts/client-post-processing
       - samples/snippets/README.rst
@@ -2124,7 +2022,6 @@ libraries:
     preserve_regex:
       - packages/google-cloud-gke-hub/CHANGELOG.md
       - docs/CHANGELOG.md
-      - docs/README.rst
       - samples/README.txt
       - scripts/client-post-processing
       - samples/snippets/README.rst
@@ -2147,7 +2044,6 @@ libraries:
     preserve_regex:
       - packages/google-cloud-gke-multicloud/CHANGELOG.md
       - docs/CHANGELOG.md
-      - docs/README.rst
       - samples/README.txt
       - scripts/client-post-processing
       - samples/snippets/README.rst
@@ -2166,7 +2062,6 @@ libraries:
     preserve_regex:
       - packages/google-cloud-gkerecommender/CHANGELOG.md
       - docs/CHANGELOG.md
-      - docs/README.rst
       - samples/README.txt
       - scripts/client-post-processing
       - samples/snippets/README.rst
@@ -2185,7 +2080,6 @@ libraries:
     preserve_regex:
       - packages/google-cloud-gsuiteaddons/CHANGELOG.md
       - docs/CHANGELOG.md
-      - docs/README.rst
       - samples/README.txt
       - scripts/client-post-processing
       - samples/snippets/README.rst
@@ -2204,7 +2098,6 @@ libraries:
     preserve_regex:
       - packages/google-cloud-hypercomputecluster/CHANGELOG.md
       - docs/CHANGELOG.md
-      - docs/README.rst
       - samples/README.txt
       - scripts/client-post-processing
       - samples/snippets/README.rst
@@ -2233,7 +2126,6 @@ libraries:
     preserve_regex:
       - packages/google-cloud-iam/CHANGELOG.md
       - docs/CHANGELOG.md
-      - docs/README.rst
       - samples/README.txt
       - scripts/client-post-processing
       - samples/snippets/README.rst
@@ -2252,7 +2144,6 @@ libraries:
     preserve_regex:
       - packages/google-cloud-iam-logging/CHANGELOG.md
       - docs/CHANGELOG.md
-      - docs/README.rst
       - samples/README.txt
       - scripts/client-post-processing
       - samples/snippets/README.rst
@@ -2272,7 +2163,6 @@ libraries:
     preserve_regex:
       - packages/google-cloud-iap/CHANGELOG.md
       - docs/CHANGELOG.md
-      - docs/README.rst
       - samples/README.txt
       - scripts/client-post-processing
       - samples/snippets/README.rst
@@ -2291,7 +2181,6 @@ libraries:
     preserve_regex:
       - packages/google-cloud-ids/CHANGELOG.md
       - docs/CHANGELOG.md
-      - docs/README.rst
       - samples/README.txt
       - scripts/client-post-processing
       - samples/snippets/README.rst
@@ -2310,7 +2199,6 @@ libraries:
     preserve_regex:
       - packages/google-cloud-kms/CHANGELOG.md
       - docs/CHANGELOG.md
-      - docs/README.rst
       - samples/README.txt
       - scripts/client-post-processing
       - samples/snippets/README.rst
@@ -2329,7 +2217,6 @@ libraries:
     preserve_regex:
       - packages/google-cloud-kms-inventory/CHANGELOG.md
       - docs/CHANGELOG.md
-      - docs/README.rst
       - samples/README.txt
       - scripts/client-post-processing
       - samples/snippets/README.rst
@@ -2352,7 +2239,6 @@ libraries:
     preserve_regex:
       - packages/google-cloud-language/CHANGELOG.md
       - docs/CHANGELOG.md
-      - docs/README.rst
       - samples/README.txt
       - scripts/client-post-processing
       - samples/snippets/README.rst
@@ -2371,7 +2257,6 @@ libraries:
     preserve_regex:
       - packages/google-cloud-licensemanager/CHANGELOG.md
       - docs/CHANGELOG.md
-      - docs/README.rst
       - samples/README.txt
       - scripts/client-post-processing
       - samples/snippets/README.rst
@@ -2390,7 +2275,6 @@ libraries:
     preserve_regex:
       - packages/google-cloud-life-sciences/CHANGELOG.md
       - docs/CHANGELOG.md
-      - docs/README.rst
       - samples/README.txt
       - scripts/client-post-processing
       - samples/snippets/README.rst
@@ -2409,7 +2293,6 @@ libraries:
     preserve_regex:
       - packages/google-cloud-locationfinder/CHANGELOG.md
       - docs/CHANGELOG.md
-      - docs/README.rst
       - samples/README.txt
       - scripts/client-post-processing
       - samples/snippets/README.rst
@@ -2428,7 +2311,6 @@ libraries:
     preserve_regex:
       - packages/google-cloud-lustre/CHANGELOG.md
       - docs/CHANGELOG.md
-      - docs/README.rst
       - samples/README.txt
       - scripts/client-post-processing
       - samples/snippets/README.rst
@@ -2447,7 +2329,6 @@ libraries:
     preserve_regex:
       - packages/google-cloud-maintenance-api/CHANGELOG.md
       - docs/CHANGELOG.md
-      - docs/README.rst
       - samples/README.txt
       - scripts/client-post-processing
       - samples/snippets/README.rst
@@ -2466,7 +2347,6 @@ libraries:
     preserve_regex:
       - packages/google-cloud-managed-identities/CHANGELOG.md
       - docs/CHANGELOG.md
-      - docs/README.rst
       - samples/README.txt
       - scripts/client-post-processing
       - samples/snippets/README.rst
@@ -2485,7 +2365,6 @@ libraries:
     preserve_regex:
       - packages/google-cloud-managedkafka/CHANGELOG.md
       - docs/CHANGELOG.md
-      - docs/README.rst
       - samples/README.txt
       - scripts/client-post-processing
       - samples/snippets/README.rst
@@ -2504,7 +2383,6 @@ libraries:
     preserve_regex:
       - packages/google-cloud-managedkafka-schemaregistry/CHANGELOG.md
       - docs/CHANGELOG.md
-      - docs/README.rst
       - samples/README.txt
       - scripts/client-post-processing
       - samples/snippets/README.rst
@@ -2523,7 +2401,6 @@ libraries:
     preserve_regex:
       - packages/google-cloud-media-translation/CHANGELOG.md
       - docs/CHANGELOG.md
-      - docs/README.rst
       - samples/README.txt
       - scripts/client-post-processing
       - samples/snippets/README.rst
@@ -2544,7 +2421,6 @@ libraries:
     preserve_regex:
       - packages/google-cloud-memcache/CHANGELOG.md
       - docs/CHANGELOG.md
-      - docs/README.rst
       - samples/README.txt
       - scripts/client-post-processing
       - samples/snippets/README.rst
@@ -2565,7 +2441,6 @@ libraries:
     preserve_regex:
       - packages/google-cloud-memorystore/CHANGELOG.md
       - docs/CHANGELOG.md
-      - docs/README.rst
       - samples/README.txt
       - scripts/client-post-processing
       - samples/snippets/README.rst
@@ -2584,7 +2459,6 @@ libraries:
     preserve_regex:
       - packages/google-cloud-migrationcenter/CHANGELOG.md
       - docs/CHANGELOG.md
-      - docs/README.rst
       - samples/README.txt
       - scripts/client-post-processing
       - samples/snippets/README.rst
@@ -2605,7 +2479,6 @@ libraries:
     preserve_regex:
       - packages/google-cloud-modelarmor/CHANGELOG.md
       - docs/CHANGELOG.md
-      - docs/README.rst
       - samples/README.txt
       - scripts/client-post-processing
       - samples/snippets/README.rst
@@ -2624,7 +2497,6 @@ libraries:
     preserve_regex:
       - packages/google-cloud-monitoring/CHANGELOG.md
       - docs/CHANGELOG.md
-      - docs/README.rst
       - docs/query.rst
       - packages/google-cloud-monitoring/google/cloud/monitoring_v3/_dataframe.py
       - packages/google-cloud-monitoring/google/cloud/monitoring_v3/query.py
@@ -2648,7 +2520,6 @@ libraries:
     preserve_regex:
       - packages/google-cloud-monitoring-dashboards/CHANGELOG.md
       - docs/CHANGELOG.md
-      - docs/README.rst
       - samples/README.txt
       - scripts/client-post-processing
       - samples/snippets/README.rst
@@ -2669,7 +2540,6 @@ libraries:
     preserve_regex:
       - packages/google-cloud-monitoring-metrics-scopes/CHANGELOG.md
       - docs/CHANGELOG.md
-      - docs/README.rst
       - samples/README.txt
       - scripts/client-post-processing
       - samples/snippets/README.rst
@@ -2688,7 +2558,6 @@ libraries:
     preserve_regex:
       - packages/google-cloud-netapp/CHANGELOG.md
       - docs/CHANGELOG.md
-      - docs/README.rst
       - samples/README.txt
       - scripts/client-post-processing
       - samples/snippets/README.rst
@@ -2709,7 +2578,6 @@ libraries:
     preserve_regex:
       - packages/google-cloud-network-connectivity/CHANGELOG.md
       - docs/CHANGELOG.md
-      - docs/README.rst
       - samples/README.txt
       - scripts/client-post-processing
       - samples/snippets/README.rst
@@ -2728,7 +2596,6 @@ libraries:
     preserve_regex:
       - packages/google-cloud-network-management/CHANGELOG.md
       - docs/CHANGELOG.md
-      - docs/README.rst
       - samples/README.txt
       - scripts/client-post-processing
       - samples/snippets/README.rst
@@ -2751,7 +2618,6 @@ libraries:
     preserve_regex:
       - packages/google-cloud-network-security/CHANGELOG.md
       - docs/CHANGELOG.md
-      - docs/README.rst
       - samples/README.txt
       - scripts/client-post-processing
       - samples/snippets/README.rst
@@ -2770,7 +2636,6 @@ libraries:
     preserve_regex:
       - packages/google-cloud-network-services/CHANGELOG.md
       - docs/CHANGELOG.md
-      - docs/README.rst
       - samples/README.txt
       - scripts/client-post-processing
       - samples/snippets/README.rst
@@ -2793,7 +2658,6 @@ libraries:
     preserve_regex:
       - packages/google-cloud-notebooks/CHANGELOG.md
       - docs/CHANGELOG.md
-      - docs/README.rst
       - samples/README.txt
       - scripts/client-post-processing
       - samples/snippets/README.rst
@@ -2812,7 +2676,6 @@ libraries:
     preserve_regex:
       - packages/google-cloud-optimization/CHANGELOG.md
       - docs/CHANGELOG.md
-      - docs/README.rst
       - samples/README.txt
       - scripts/client-post-processing
       - samples/snippets/README.rst
@@ -2831,7 +2694,6 @@ libraries:
     preserve_regex:
       - packages/google-cloud-oracledatabase/CHANGELOG.md
       - docs/CHANGELOG.md
-      - docs/README.rst
       - samples/README.txt
       - scripts/client-post-processing
       - samples/snippets/README.rst
@@ -2852,7 +2714,6 @@ libraries:
     preserve_regex:
       - packages/google-cloud-orchestration-airflow/CHANGELOG.md
       - docs/CHANGELOG.md
-      - docs/README.rst
       - samples/README.txt
       - scripts/client-post-processing
       - samples/snippets/README.rst
@@ -2875,7 +2736,6 @@ libraries:
       - packages/google-cloud-org-policy/CHANGELOG.md
       - google/cloud/orgpolicy/v1/__init__.py
       - docs/CHANGELOG.md
-      - docs/README.rst
       - samples/README.txt
       - scripts/client-post-processing
       - samples/snippets/README.rst
@@ -2897,7 +2757,6 @@ libraries:
     preserve_regex:
       - packages/google-cloud-os-config/CHANGELOG.md
       - docs/CHANGELOG.md
-      - docs/README.rst
       - samples/README.txt
       - scripts/client-post-processing
       - samples/snippets/README.rst
@@ -2916,7 +2775,6 @@ libraries:
     preserve_regex:
       - packages/google-cloud-os-login/CHANGELOG.md
       - docs/CHANGELOG.md
-      - docs/README.rst
       - samples/README.txt
       - scripts/client-post-processing
       - samples/snippets/README.rst
@@ -2939,7 +2797,6 @@ libraries:
     preserve_regex:
       - packages/google-cloud-parallelstore/CHANGELOG.md
       - docs/CHANGELOG.md
-      - docs/README.rst
       - samples/README.txt
       - scripts/client-post-processing
       - samples/snippets/README.rst
@@ -2958,7 +2815,6 @@ libraries:
     preserve_regex:
       - packages/google-cloud-parametermanager/CHANGELOG.md
       - docs/CHANGELOG.md
-      - docs/README.rst
       - samples/README.txt
       - scripts/client-post-processing
       - samples/snippets/README.rst
@@ -2977,7 +2833,6 @@ libraries:
     preserve_regex:
       - packages/google-cloud-phishing-protection/CHANGELOG.md
       - docs/CHANGELOG.md
-      - docs/README.rst
       - samples/README.txt
       - scripts/client-post-processing
       - samples/snippets/README.rst
@@ -2996,7 +2851,6 @@ libraries:
     preserve_regex:
       - packages/google-cloud-policy-troubleshooter/CHANGELOG.md
       - docs/CHANGELOG.md
-      - docs/README.rst
       - samples/README.txt
       - scripts/client-post-processing
       - samples/snippets/README.rst
@@ -3015,7 +2869,6 @@ libraries:
     preserve_regex:
       - packages/google-cloud-policysimulator/CHANGELOG.md
       - docs/CHANGELOG.md
-      - docs/README.rst
       - samples/README.txt
       - scripts/client-post-processing
       - samples/snippets/README.rst
@@ -3034,7 +2887,6 @@ libraries:
     preserve_regex:
       - packages/google-cloud-policytroubleshooter-iam/CHANGELOG.md
       - docs/CHANGELOG.md
-      - docs/README.rst
       - samples/README.txt
       - scripts/client-post-processing
       - samples/snippets/README.rst
@@ -3055,7 +2907,6 @@ libraries:
     preserve_regex:
       - packages/google-cloud-private-ca/CHANGELOG.md
       - docs/CHANGELOG.md
-      - docs/README.rst
       - samples/README.txt
       - scripts/client-post-processing
       - samples/snippets/README.rst
@@ -3074,7 +2925,6 @@ libraries:
     preserve_regex:
       - packages/google-cloud-private-catalog/CHANGELOG.md
       - docs/CHANGELOG.md
-      - docs/README.rst
       - samples/README.txt
       - scripts/client-post-processing
       - samples/snippets/README.rst
@@ -3093,7 +2943,6 @@ libraries:
     preserve_regex:
       - packages/google-cloud-privilegedaccessmanager/CHANGELOG.md
       - docs/CHANGELOG.md
-      - docs/README.rst
       - samples/README.txt
       - scripts/client-post-processing
       - samples/snippets/README.rst
@@ -3114,7 +2963,6 @@ libraries:
     preserve_regex:
       - packages/google-cloud-quotas/CHANGELOG.md
       - docs/CHANGELOG.md
-      - docs/README.rst
       - samples/README.txt
       - scripts/client-post-processing
       - samples/snippets/README.rst
@@ -3133,7 +2981,6 @@ libraries:
     preserve_regex:
       - packages/google-cloud-rapidmigrationassessment/CHANGELOG.md
       - docs/CHANGELOG.md
-      - docs/README.rst
       - samples/README.txt
       - scripts/client-post-processing
       - samples/snippets/README.rst
@@ -3152,7 +2999,6 @@ libraries:
     preserve_regex:
       - packages/google-cloud-recaptcha-enterprise/CHANGELOG.md
       - docs/CHANGELOG.md
-      - docs/README.rst
       - samples/README.txt
       - scripts/client-post-processing
       - samples/snippets/README.rst
@@ -3171,7 +3017,6 @@ libraries:
     preserve_regex:
       - packages/google-cloud-recommendations-ai/CHANGELOG.md
       - docs/CHANGELOG.md
-      - docs/README.rst
       - samples/README.txt
       - scripts/client-post-processing
       - samples/snippets/README.rst
@@ -3192,7 +3037,6 @@ libraries:
     preserve_regex:
       - packages/google-cloud-recommender/CHANGELOG.md
       - docs/CHANGELOG.md
-      - docs/README.rst
       - samples/README.txt
       - scripts/client-post-processing
       - samples/snippets/README.rst
@@ -3213,7 +3057,6 @@ libraries:
     preserve_regex:
       - packages/google-cloud-redis/CHANGELOG.md
       - docs/CHANGELOG.md
-      - docs/README.rst
       - samples/README.txt
       - scripts/client-post-processing
       - samples/snippets/README.rst
@@ -3234,7 +3077,6 @@ libraries:
     preserve_regex:
       - packages/google-cloud-redis-cluster/CHANGELOG.md
       - docs/CHANGELOG.md
-      - docs/README.rst
       - samples/README.txt
       - scripts/client-post-processing
       - samples/snippets/README.rst
@@ -3253,7 +3095,6 @@ libraries:
     preserve_regex:
       - packages/google-cloud-resource-manager/CHANGELOG.md
       - docs/CHANGELOG.md
-      - docs/README.rst
       - samples/README.txt
       - scripts/client-post-processing
       - samples/snippets/README.rst
@@ -3276,7 +3117,6 @@ libraries:
     preserve_regex:
       - packages/google-cloud-retail/CHANGELOG.md
       - docs/CHANGELOG.md
-      - docs/README.rst
       - samples/README.txt
       - scripts/client-post-processing
       - samples/snippets/README.rst
@@ -3295,7 +3135,6 @@ libraries:
     preserve_regex:
       - packages/google-cloud-run/CHANGELOG.md
       - docs/CHANGELOG.md
-      - docs/README.rst
       - samples/README.txt
       - scripts/client-post-processing
       - samples/snippets/README.rst
@@ -3314,7 +3153,6 @@ libraries:
     preserve_regex:
       - packages/google-cloud-saasplatform-saasservicemgmt/CHANGELOG.md
       - docs/CHANGELOG.md
-      - docs/README.rst
       - samples/README.txt
       - scripts/client-post-processing
       - samples/snippets/README.rst
@@ -3335,7 +3173,6 @@ libraries:
     preserve_regex:
       - packages/google-cloud-scheduler/CHANGELOG.md
       - docs/CHANGELOG.md
-      - docs/README.rst
       - samples/README.txt
       - scripts/client-post-processing
       - samples/snippets/README.rst
@@ -3358,7 +3195,6 @@ libraries:
     preserve_regex:
       - packages/google-cloud-secret-manager/CHANGELOG.md
       - docs/CHANGELOG.md
-      - docs/README.rst
       - samples/README.txt
       - scripts/client-post-processing
       - samples/snippets/README.rst
@@ -3377,7 +3213,6 @@ libraries:
     preserve_regex:
       - packages/google-cloud-securesourcemanager/CHANGELOG.md
       - docs/CHANGELOG.md
-      - docs/README.rst
       - samples/README.txt
       - scripts/client-post-processing
       - samples/snippets/README.rst
@@ -3398,7 +3233,6 @@ libraries:
     preserve_regex:
       - packages/google-cloud-security-publicca/CHANGELOG.md
       - docs/CHANGELOG.md
-      - docs/README.rst
       - samples/README.txt
       - scripts/client-post-processing
       - samples/snippets/README.rst
@@ -3423,7 +3257,6 @@ libraries:
     preserve_regex:
       - packages/google-cloud-securitycenter/CHANGELOG.md
       - docs/CHANGELOG.md
-      - docs/README.rst
       - samples/README.txt
       - scripts/client-post-processing
       - samples/snippets/README.rst
@@ -3442,7 +3275,6 @@ libraries:
     preserve_regex:
       - packages/google-cloud-securitycentermanagement/CHANGELOG.md
       - docs/CHANGELOG.md
-      - docs/README.rst
       - samples/README.txt
       - scripts/client-post-processing
       - samples/snippets/README.rst
@@ -3463,7 +3295,6 @@ libraries:
     preserve_regex:
       - packages/google-cloud-service-control/CHANGELOG.md
       - docs/CHANGELOG.md
-      - docs/README.rst
       - samples/README.txt
       - scripts/client-post-processing
       - samples/snippets/README.rst
@@ -3484,7 +3315,6 @@ libraries:
     preserve_regex:
       - packages/google-cloud-service-directory/CHANGELOG.md
       - docs/CHANGELOG.md
-      - docs/README.rst
       - samples/README.txt
       - scripts/client-post-processing
       - samples/snippets/README.rst
@@ -3503,7 +3333,6 @@ libraries:
     preserve_regex:
       - packages/google-cloud-service-management/CHANGELOG.md
       - docs/CHANGELOG.md
-      - docs/README.rst
       - samples/README.txt
       - scripts/client-post-processing
       - samples/snippets/README.rst
@@ -3522,7 +3351,6 @@ libraries:
     preserve_regex:
       - packages/google-cloud-service-usage/CHANGELOG.md
       - docs/CHANGELOG.md
-      - docs/README.rst
       - samples/README.txt
       - scripts/client-post-processing
       - samples/snippets/README.rst
@@ -3541,7 +3369,6 @@ libraries:
     preserve_regex:
       - packages/google-cloud-servicehealth/CHANGELOG.md
       - docs/CHANGELOG.md
-      - docs/README.rst
       - samples/README.txt
       - scripts/client-post-processing
       - samples/snippets/README.rst
@@ -3560,7 +3387,6 @@ libraries:
     preserve_regex:
       - packages/google-cloud-shell/CHANGELOG.md
       - docs/CHANGELOG.md
-      - docs/README.rst
       - samples/README.txt
       - scripts/client-post-processing
       - samples/snippets/README.rst
@@ -3579,7 +3405,6 @@ libraries:
     preserve_regex:
       - packages/google-cloud-source-context/CHANGELOG.md
       - docs/CHANGELOG.md
-      - docs/README.rst
       - samples/README.txt
       - scripts/client-post-processing
       - samples/snippets/README.rst
@@ -3603,7 +3428,6 @@ libraries:
     preserve_regex:
       - packages/google-cloud-speech/CHANGELOG.md
       - docs/CHANGELOG.md
-      - docs/README.rst
       - google/cloud/speech_v1/helpers.py
       - samples/README.txt
       - scripts/client-post-processing
@@ -3624,7 +3448,6 @@ libraries:
     preserve_regex:
       - packages/google-cloud-storage-control/CHANGELOG.md
       - docs/CHANGELOG.md
-      - docs/README.rst
       - samples/README.txt
       - scripts/client-post-processing
       - samples/snippets/README.rst
@@ -3643,7 +3466,6 @@ libraries:
     preserve_regex:
       - packages/google-cloud-storage-transfer/CHANGELOG.md
       - docs/CHANGELOG.md
-      - docs/README.rst
       - samples/README.txt
       - scripts/client-post-processing
       - samples/snippets/README.rst
@@ -3662,7 +3484,6 @@ libraries:
     preserve_regex:
       - packages/google-cloud-storagebatchoperations/CHANGELOG.md
       - docs/CHANGELOG.md
-      - docs/README.rst
       - samples/README.txt
       - scripts/client-post-processing
       - samples/snippets/README.rst
@@ -3681,7 +3502,6 @@ libraries:
     preserve_regex:
       - packages/google-cloud-storageinsights/CHANGELOG.md
       - docs/CHANGELOG.md
-      - docs/README.rst
       - samples/README.txt
       - scripts/client-post-processing
       - samples/snippets/README.rst
@@ -3702,7 +3522,6 @@ libraries:
     preserve_regex:
       - packages/google-cloud-support/CHANGELOG.md
       - docs/CHANGELOG.md
-      - docs/README.rst
       - samples/README.txt
       - scripts/client-post-processing
       - samples/snippets/README.rst
@@ -3723,7 +3542,6 @@ libraries:
     preserve_regex:
       - packages/google-cloud-talent/CHANGELOG.md
       - docs/CHANGELOG.md
-      - docs/README.rst
       - samples/README.txt
       - scripts/client-post-processing
       - samples/snippets/README.rst
@@ -3746,7 +3564,6 @@ libraries:
     preserve_regex:
       - packages/google-cloud-tasks/CHANGELOG.md
       - docs/CHANGELOG.md
-      - docs/README.rst
       - samples/README.txt
       - scripts/client-post-processing
       - samples/snippets/README.rst
@@ -3768,7 +3585,6 @@ libraries:
     preserve_regex:
       - packages/google-cloud-telcoautomation/CHANGELOG.md
       - docs/CHANGELOG.md
-      - docs/README.rst
       - samples/README.txt
       - scripts/client-post-processing
       - samples/snippets/README.rst
@@ -3790,7 +3606,6 @@ libraries:
     preserve_regex:
       - packages/google-cloud-texttospeech/CHANGELOG.md
       - docs/CHANGELOG.md
-      - docs/README.rst
       - samples/README.txt
       - scripts/client-post-processing
       - samples/snippets/README.rst
@@ -3813,7 +3628,6 @@ libraries:
     preserve_regex:
       - packages/google-cloud-tpu/CHANGELOG.md
       - docs/CHANGELOG.md
-      - docs/README.rst
       - samples/README.txt
       - scripts/client-post-processing
       - samples/snippets/README.rst
@@ -3834,7 +3648,6 @@ libraries:
     preserve_regex:
       - packages/google-cloud-trace/CHANGELOG.md
       - docs/CHANGELOG.md
-      - docs/README.rst
       - samples/README.txt
       - scripts/client-post-processing
       - samples/snippets/README.rst
@@ -3855,7 +3668,6 @@ libraries:
     preserve_regex:
       - packages/google-cloud-translate/CHANGELOG.md
       - docs/CHANGELOG.md
-      - docs/README.rst
       - docs/client.rst
       - docs/v2.rst
       - google/cloud/translate_v2
@@ -3878,7 +3690,6 @@ libraries:
     preserve_regex:
       - packages/google-cloud-video-live-stream/CHANGELOG.md
       - docs/CHANGELOG.md
-      - docs/README.rst
       - samples/README.txt
       - scripts/client-post-processing
       - samples/snippets/README.rst
@@ -3897,7 +3708,6 @@ libraries:
     preserve_regex:
       - packages/google-cloud-video-stitcher/CHANGELOG.md
       - docs/CHANGELOG.md
-      - docs/README.rst
       - samples/README.txt
       - scripts/client-post-processing
       - samples/snippets/README.rst
@@ -3916,7 +3726,6 @@ libraries:
     preserve_regex:
       - packages/google-cloud-video-transcoder/CHANGELOG.md
       - docs/CHANGELOG.md
-      - docs/README.rst
       - samples/README.txt
       - scripts/client-post-processing
       - samples/snippets/README.rst
@@ -3943,7 +3752,6 @@ libraries:
     preserve_regex:
       - packages/google-cloud-videointelligence/CHANGELOG.md
       - docs/CHANGELOG.md
-      - docs/README.rst
       - samples/README.txt
       - scripts/client-post-processing
       - samples/snippets/README.rst
@@ -3970,7 +3778,6 @@ libraries:
     preserve_regex:
       - packages/google-cloud-vision/CHANGELOG.md
       - docs/CHANGELOG.md
-      - docs/README.rst
       - google/cloud/vision_helpers
       - samples/README.txt
       - scripts/client-post-processing
@@ -3994,7 +3801,6 @@ libraries:
     preserve_regex:
       - packages/google-cloud-visionai/CHANGELOG.md
       - docs/CHANGELOG.md
-      - docs/README.rst
       - samples/README.txt
       - scripts/client-post-processing
       - samples/snippets/README.rst
@@ -4013,7 +3819,6 @@ libraries:
     preserve_regex:
       - packages/google-cloud-vm-migration/CHANGELOG.md
       - docs/CHANGELOG.md
-      - docs/README.rst
       - samples/README.txt
       - scripts/client-post-processing
       - samples/snippets/README.rst
@@ -4032,7 +3837,6 @@ libraries:
     preserve_regex:
       - packages/google-cloud-vmwareengine/CHANGELOG.md
       - docs/CHANGELOG.md
-      - docs/README.rst
       - samples/README.txt
       - scripts/client-post-processing
       - samples/snippets/README.rst
@@ -4051,7 +3855,6 @@ libraries:
     preserve_regex:
       - packages/google-cloud-vpc-access/CHANGELOG.md
       - docs/CHANGELOG.md
-      - docs/README.rst
       - samples/README.txt
       - scripts/client-post-processing
       - samples/snippets/README.rst
@@ -4072,7 +3875,6 @@ libraries:
     preserve_regex:
       - packages/google-cloud-webrisk/CHANGELOG.md
       - docs/CHANGELOG.md
-      - docs/README.rst
       - samples/README.txt
       - scripts/client-post-processing
       - samples/snippets/README.rst
@@ -4095,7 +3897,6 @@ libraries:
     preserve_regex:
       - packages/google-cloud-websecurityscanner/CHANGELOG.md
       - docs/CHANGELOG.md
-      - docs/README.rst
       - samples/README.txt
       - scripts/client-post-processing
       - samples/snippets/README.rst
@@ -4120,7 +3921,6 @@ libraries:
     preserve_regex:
       - packages/google-cloud-workflows/CHANGELOG.md
       - docs/CHANGELOG.md
-      - docs/README.rst
       - samples/README.txt
       - scripts/client-post-processing
       - samples/snippets/README.rst
@@ -4141,7 +3941,6 @@ libraries:
     preserve_regex:
       - packages/google-cloud-workstations/CHANGELOG.md
       - docs/CHANGELOG.md
-      - docs/README.rst
       - samples/README.txt
       - scripts/client-post-processing
       - samples/snippets/README.rst
@@ -4160,7 +3959,6 @@ libraries:
     preserve_regex:
       - packages/google-geo-type/CHANGELOG.md
       - docs/CHANGELOG.md
-      - docs/README.rst
       - samples/README.txt
       - scripts/client-post-processing
       - samples/snippets/README.rst
@@ -4180,7 +3978,6 @@ libraries:
     preserve_regex:
       - packages/google-maps-addressvalidation/CHANGELOG.md
       - docs/CHANGELOG.md
-      - docs/README.rst
       - samples/README.txt
       - scripts/client-post-processing
       - samples/snippets/README.rst
@@ -4199,7 +3996,6 @@ libraries:
     preserve_regex:
       - packages/google-maps-areainsights/CHANGELOG.md
       - docs/CHANGELOG.md
-      - docs/README.rst
       - samples/README.txt
       - scripts/client-post-processing
       - samples/snippets/README.rst
@@ -4218,7 +4014,6 @@ libraries:
     preserve_regex:
       - packages/google-maps-fleetengine/CHANGELOG.md
       - docs/CHANGELOG.md
-      - docs/README.rst
       - samples/README.txt
       - scripts/client-post-processing
       - samples/snippets/README.rst
@@ -4237,7 +4032,6 @@ libraries:
     preserve_regex:
       - packages/google-maps-fleetengine-delivery/CHANGELOG.md
       - docs/CHANGELOG.md
-      - docs/README.rst
       - samples/README.txt
       - scripts/client-post-processing
       - samples/snippets/README.rst
@@ -4256,7 +4050,6 @@ libraries:
     preserve_regex:
       - packages/google-maps-mapsplatformdatasets/CHANGELOG.md
       - docs/CHANGELOG.md
-      - docs/README.rst
       - samples/README.txt
       - scripts/client-post-processing
       - samples/snippets/README.rst
@@ -4275,7 +4068,6 @@ libraries:
     preserve_regex:
       - packages/google-maps-places/CHANGELOG.md
       - docs/CHANGELOG.md
-      - docs/README.rst
       - samples/README.txt
       - scripts/client-post-processing
       - samples/snippets/README.rst
@@ -4294,7 +4086,6 @@ libraries:
     preserve_regex:
       - packages/google-maps-routeoptimization/CHANGELOG.md
       - docs/CHANGELOG.md
-      - docs/README.rst
       - samples/README.txt
       - samples/README.rst
       - scripts/client-post-processing
@@ -4314,7 +4105,6 @@ libraries:
     preserve_regex:
       - packages/google-maps-routing/CHANGELOG.md
       - docs/CHANGELOG.md
-      - docs/README.rst
       - samples/README.txt
       - scripts/client-post-processing
       - samples/snippets/README.rst
@@ -4333,7 +4123,6 @@ libraries:
     preserve_regex:
       - packages/google-maps-solar/CHANGELOG.md
       - docs/CHANGELOG.md
-      - docs/README.rst
       - samples/README.txt
       - scripts/client-post-processing
       - samples/snippets/README.rst
@@ -4352,7 +4141,6 @@ libraries:
     preserve_regex:
       - packages/google-shopping-css/CHANGELOG.md
       - docs/CHANGELOG.md
-      - docs/README.rst
       - samples/README.txt
       - scripts/client-post-processing
       - samples/snippets/README.rst
@@ -4373,7 +4161,6 @@ libraries:
     preserve_regex:
       - packages/google-shopping-merchant-accounts/CHANGELOG.md
       - docs/CHANGELOG.md
-      - docs/README.rst
       - samples/README.txt
       - scripts/client-post-processing
       - samples/snippets/README.rst
@@ -4394,7 +4181,6 @@ libraries:
     preserve_regex:
       - packages/google-shopping-merchant-conversions/CHANGELOG.md
       - docs/CHANGELOG.md
-      - docs/README.rst
       - samples/README.txt
       - scripts/client-post-processing
       - samples/snippets/README.rst
@@ -4415,7 +4201,6 @@ libraries:
     preserve_regex:
       - packages/google-shopping-merchant-datasources/CHANGELOG.md
       - docs/CHANGELOG.md
-      - docs/README.rst
       - samples/README.txt
       - scripts/client-post-processing
       - samples/snippets/README.rst
@@ -4436,7 +4221,6 @@ libraries:
     preserve_regex:
       - packages/google-shopping-merchant-inventories/CHANGELOG.md
       - docs/CHANGELOG.md
-      - docs/README.rst
       - samples/README.txt
       - scripts/client-post-processing
       - samples/snippets/README.rst
@@ -4457,7 +4241,6 @@ libraries:
     preserve_regex:
       - packages/google-shopping-merchant-issueresolution/CHANGELOG.md
       - docs/CHANGELOG.md
-      - docs/README.rst
       - samples/README.txt
       - scripts/client-post-processing
       - samples/snippets/README.rst
@@ -4478,7 +4261,6 @@ libraries:
     preserve_regex:
       - packages/google-shopping-merchant-lfp/CHANGELOG.md
       - docs/CHANGELOG.md
-      - docs/README.rst
       - samples/README.txt
       - scripts/client-post-processing
       - samples/snippets/README.rst
@@ -4499,7 +4281,6 @@ libraries:
     preserve_regex:
       - packages/google-shopping-merchant-notifications/CHANGELOG.md
       - docs/CHANGELOG.md
-      - docs/README.rst
       - samples/README.txt
       - scripts/client-post-processing
       - samples/snippets/README.rst
@@ -4520,7 +4301,6 @@ libraries:
     preserve_regex:
       - packages/google-shopping-merchant-ordertracking/CHANGELOG.md
       - docs/CHANGELOG.md
-      - docs/README.rst
       - samples/README.txt
       - scripts/client-post-processing
       - samples/snippets/README.rst
@@ -4541,7 +4321,6 @@ libraries:
     preserve_regex:
       - packages/google-shopping-merchant-products/CHANGELOG.md
       - docs/CHANGELOG.md
-      - docs/README.rst
       - samples/README.txt
       - scripts/client-post-processing
       - samples/snippets/README.rst
@@ -4560,7 +4339,6 @@ libraries:
     preserve_regex:
       - packages/google-shopping-merchant-productstudio/CHANGELOG.md
       - docs/CHANGELOG.md
-      - docs/README.rst
       - samples/README.txt
       - scripts/client-post-processing
       - samples/snippets/README.rst
@@ -4581,7 +4359,6 @@ libraries:
     preserve_regex:
       - packages/google-shopping-merchant-promotions/CHANGELOG.md
       - docs/CHANGELOG.md
-      - docs/README.rst
       - samples/README.txt
       - scripts/client-post-processing
       - samples/snippets/README.rst
@@ -4602,7 +4379,6 @@ libraries:
     preserve_regex:
       - packages/google-shopping-merchant-quota/CHANGELOG.md
       - docs/CHANGELOG.md
-      - docs/README.rst
       - samples/README.txt
       - scripts/client-post-processing
       - samples/snippets/README.rst
@@ -4625,7 +4401,6 @@ libraries:
     preserve_regex:
       - packages/google-shopping-merchant-reports/CHANGELOG.md
       - docs/CHANGELOG.md
-      - docs/README.rst
       - samples/README.txt
       - scripts/client-post-processing
       - samples/snippets/README.rst
@@ -4644,7 +4419,6 @@ libraries:
     preserve_regex:
       - packages/google-shopping-merchant-reviews/CHANGELOG.md
       - docs/CHANGELOG.md
-      - docs/README.rst
       - samples/README.txt
       - scripts/client-post-processing
       - samples/snippets/README.rst
@@ -4663,7 +4437,6 @@ libraries:
     preserve_regex:
       - packages/google-shopping-type/CHANGELOG.md
       - docs/CHANGELOG.md
-      - docs/README.rst
       - samples/README.txt
       - scripts/client-post-processing
       - samples/snippets/README.rst
@@ -4705,7 +4478,6 @@ libraries:
     preserve_regex:
       - packages/grafeas/CHANGELOG.md
       - docs/CHANGELOG.md
-      - docs/README.rst
       - samples/README.txt
       - scripts/client-post-processing
       - samples/snippets/README.rst
