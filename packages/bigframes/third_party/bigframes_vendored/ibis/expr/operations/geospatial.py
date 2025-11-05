@@ -344,6 +344,28 @@ class GeoNRings(GeoSpatialUnOp):
 
 
 @public
+class GeoRegionStats(GeoSpatialUnOp):
+    """Returns results of ST_REGIONSTATS."""
+
+    raster_id: Value[dt.String]
+    band: Value[dt.String]
+    include: Value[dt.String]
+    options: Value[dt.JSON]
+
+    dtype = dt.Struct(
+        fields={
+            "count": dt.int64,
+            "min": dt.float64,
+            "max": dt.float64,
+            "stdDev": dt.float64,
+            "sum": dt.float64,
+            "mean": dt.float64,
+            "area": dt.float64,
+        }
+    )
+
+
+@public
 class GeoSRID(GeoSpatialUnOp):
     """Returns the spatial reference identifier for the ST_Geometry."""
 

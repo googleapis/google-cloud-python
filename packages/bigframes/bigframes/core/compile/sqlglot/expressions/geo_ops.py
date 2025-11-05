@@ -74,6 +74,32 @@ def _(expr: TypedExpr, op: ops.GeoStLengthOp) -> sge.Expression:
     return sge.func("ST_LENGTH", expr.expr)
 
 
+@register_unary_op(ops.GeoStRegionStatsOp, pass_op=True)
+def _(
+    geography: TypedExpr,
+    op: ops.GeoStRegionStatsOp,
+):
+    args = [geography.expr, sge.convert(op.raster_id)]
+    if op.band:
+        args.append(sge.Kwarg(this="band", expression=sge.convert(op.band)))
+    if op.include:
+        args.append(sge.Kwarg(this="include", expression=sge.convert(op.include)))
+    if op.options:
+        args.append(
+            sge.Kwarg(this="options", expression=sge.JSON(this=sge.convert(op.options)))
+        )
+    return sge.func("ST_REGIONSTATS", *args)
+
+
+@register_unary_op(ops.GeoStSimplifyOp, pass_op=True)
+def _(expr: TypedExpr, op: ops.GeoStSimplifyOp) -> sge.Expression:
+    return sge.func(
+        "ST_SIMPLIFY",
+        expr.expr,
+        sge.convert(op.tolerance_meters),
+    )
+
+
 @register_unary_op(ops.geo_x_op)
 def _(expr: TypedExpr) -> sge.Expression:
     return sge.func("SAFE.ST_X", expr.expr)

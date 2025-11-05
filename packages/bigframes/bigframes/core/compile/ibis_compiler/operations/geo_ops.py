@@ -16,8 +16,10 @@ from __future__ import annotations
 
 from typing import cast
 
+from bigframes_vendored import ibis
 from bigframes_vendored.ibis.expr import types as ibis_types
 import bigframes_vendored.ibis.expr.datatypes as ibis_dtypes
+import bigframes_vendored.ibis.expr.operations.geospatial as ibis_geo
 import bigframes_vendored.ibis.expr.operations.udf as ibis_udf
 
 from bigframes.core.compile.ibis_compiler import scalar_op_compiler
@@ -99,6 +101,35 @@ def geo_st_intersection_op_impl(x: ibis_types.Value, y: ibis_types.Value):
 @register_unary_op(ops.geo_st_isclosed_op, pass_op=False)
 def geo_st_isclosed_op_impl(x: ibis_types.Value):
     return st_isclosed(x)
+
+
+@register_unary_op(ops.GeoStRegionStatsOp, pass_op=True)
+def geo_st_regionstats_op_impl(
+    geography: ibis_types.Value,
+    op: ops.GeoStRegionStatsOp,
+):
+    if op.band:
+        band = ibis.literal(op.band, type=ibis_dtypes.string())
+    else:
+        band = None
+
+    if op.include:
+        include = ibis.literal(op.include, type=ibis_dtypes.string())
+    else:
+        include = None
+
+    if op.options:
+        options = ibis.literal(op.options, type=ibis_dtypes.json())
+    else:
+        options = None
+
+    return ibis_geo.GeoRegionStats(
+        arg=geography,  # type: ignore
+        raster_id=ibis.literal(op.raster_id, type=ibis_dtypes.string()),  # type: ignore
+        band=band,  # type: ignore
+        include=include,  # type: ignore
+        options=options,  # type: ignore
+    ).to_expr()
 
 
 @register_unary_op(ops.GeoStSimplifyOp, pass_op=True)

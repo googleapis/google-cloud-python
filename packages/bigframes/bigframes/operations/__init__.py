@@ -121,6 +121,7 @@ from bigframes.operations.geo_ops import (
     GeoStBufferOp,
     GeoStDistanceOp,
     GeoStLengthOp,
+    GeoStRegionStatsOp,
     GeoStSimplifyOp,
 )
 from bigframes.operations.json_ops import (
@@ -415,12 +416,13 @@ __all__ = [
     "geo_st_geogpoint_op",
     "geo_st_intersection_op",
     "geo_st_isclosed_op",
-    "GeoStBufferOp",
-    "GeoStLengthOp",
-    "GeoStSimplifyOp",
     "geo_x_op",
     "geo_y_op",
+    "GeoStBufferOp",
     "GeoStDistanceOp",
+    "GeoStLengthOp",
+    "GeoStRegionStatsOp",
+    "GeoStSimplifyOp",
     # AI ops
     "AIClassify",
     "AIGenerate",

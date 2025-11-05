@@ -811,7 +811,7 @@ class SQLGlotCompiler(abc.ABC):
         elif dtype.is_uuid():
             return self.cast(str(value), dtype)
         elif dtype.is_json():
-            return sge.ParseJSON(this=sge.convert(str(value)))
+            return sge.JSON(this=sge.convert(str(value)))
         elif dtype.is_geospatial():
             wkt = value if isinstance(value, str) else value.wkt
             return self.f.st_geogfromtext(wkt)

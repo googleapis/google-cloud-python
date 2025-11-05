@@ -54,7 +54,8 @@ dependencies = [
     "pydata-google-auth >=1.8.2",
     "requests >=2.27.1",
     "shapely >=1.8.5",
-    "sqlglot >=23.6.3",
+    # 25.20.0 introduces this fix https://github.com/TobikoData/sqlmesh/issues/3095 for rtrim/ltrim.
+    "sqlglot >=25.20.0",
     "tabulate >=0.9",
     "ipywidgets >=7.7.1",
     "humanize >=4.6.0",

@@ -261,6 +261,16 @@ class BigQueryCompiler(SQLGlotCompiler):
 
     visit_GeoXMax = visit_GeoXMin = visit_GeoYMax = visit_GeoYMin = visit_BoundingBox
 
+    def visit_GeoRegionStats(self, op, *, arg, raster_id, band, include, options):
+        args = [arg, raster_id]
+        if op.band:
+            args.append(sge.Kwarg(this="band", expression=band))
+        if op.include:
+            args.append(sge.Kwarg(this="include", expression=include))
+        if op.options:
+            args.append(sge.Kwarg(this="options", expression=options))
+        return sge.func("ST_REGIONSTATS", *args)
+
     def visit_GeoSimplify(self, op, *, arg, tolerance, preserve_collapsed):
         if (
             not isinstance(op.preserve_collapsed, ops.Literal)

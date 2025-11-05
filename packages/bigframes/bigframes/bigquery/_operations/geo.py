@@ -14,11 +14,13 @@
 
 from __future__ import annotations
 
-from typing import Union
+import json
+from typing import Mapping, Optional, Union
 
 import shapely  # type: ignore
 
 from bigframes import operations as ops
+import bigframes.dataframe
 import bigframes.geopandas
 import bigframes.series
 
@@ -675,6 +677,65 @@ def st_length(
     series = series._apply_unary_op(ops.GeoStLengthOp(use_spheroid=use_spheroid))
     series.name = None
     return series
+
+
+def st_regionstats(
+    geography: Union[bigframes.series.Series, bigframes.geopandas.GeoSeries],
+    raster_id: str,
+    band: Optional[str] = None,
+    include: Optional[str] = None,
+    options: Optional[Mapping[str, Union[str, int, float]]] = None,
+) -> bigframes.series.Series:
+    """Returns statistics summarizing the pixel values of the raster image
+    referenced by raster_id that intersect with geography.
+
+    The statistics include the count, minimum, maximum, sum, standard
+    deviation, mean, and area of the valid pixels of the raster band named
+    band_name. Google Earth Engine computes the results of the function call.
+
+    See: https://cloud.google.com/bigquery/docs/reference/standard-sql/geography_functions#st_regionstats
+
+    Args:
+        geography (bigframes.series.Series | bigframes.geopandas.GeoSeries):
+            A series of geography objects to intersect with the raster image.
+        raster_id (str):
+            A string that identifies a raster image. The following formats are
+            supported. A URI from an image table provided by Google Earth Engine
+            in BigQuery sharing (formerly Analytics Hub). A URI for a readable
+            GeoTIFF raster file. A Google Earth Engine asset path that
+            references public catalog data or project-owned assets with read
+            access.
+        band (Optional[str]):
+            A string in one of the following formats:
+            A single band within the raster image specified by raster_id. A
+            formula to compute a value from the available bands in the raster
+            image. The formula uses the Google Earth Engine image expression
+            syntax. Bands can be referenced by their name, band_name, in
+            expressions. If you don't specify a band, the first band of the
+            image is used.
+        include (Optional[str]):
+            An optional string formula that uses the Google Earth Engine image
+            expression syntax to compute a pixel weight. The formula should
+            return values from 0 to 1. Values outside this range are set to the
+            nearest limit, either 0 or 1. A value of 0 means that the pixel is
+            invalid and it's excluded from analysis. A positive value means that
+            a pixel is valid. Values between 0 and 1 represent proportional
+            weights for calculations, such as weighted means.
+        options (Mapping[str, Union[str, int, float]], optional):
+            A dictionary of options to pass to the function. See the BigQuery
+            documentation for a list of available options.
+
+    Returns:
+        bigframes.pandas.Series:
+            A STRUCT Series containing the computed statistics.
+    """
+    op = ops.GeoStRegionStatsOp(
+        raster_id=raster_id,
+        band=band,
+        include=include,
+        options=json.dumps(options) if options else None,
+    )
+    return geography._apply_unary_op(op)
 
 
 def st_simplify(
