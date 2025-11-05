@@ -643,7 +643,7 @@ class TestDecryptPrivateKey(object):
     def test_check_use_client_cert(self, monkeypatch):
         monkeypatch.setenv("GOOGLE_API_USE_CLIENT_CERTIFICATE", "true")
         use_client_cert = _mtls_helper.check_use_client_cert()
-        assert use_client_cert == "true"
+        assert use_client_cert is True
 
     def test_check_use_client_cert_for_workload_with_config_file(self, monkeypatch):
         config_data = {
@@ -663,19 +663,24 @@ class TestDecryptPrivateKey(object):
         mock_file_handle = mock.mock_open(read_data=config_file_content)
         with mock.patch("builtins.open", mock_file_handle):
             use_client_cert = _mtls_helper.check_use_client_cert()
-            assert use_client_cert == "true"
+            assert use_client_cert is True
 
     def test_check_use_client_cert_false(self, monkeypatch):
         monkeypatch.setenv("GOOGLE_API_USE_CLIENT_CERTIFICATE", "false")
         use_client_cert = _mtls_helper.check_use_client_cert()
-        assert use_client_cert == "false"
+        assert use_client_cert is False
+
+    def test_check_use_client_cert_unsupported_value(self, monkeypatch):
+        monkeypatch.setenv("GOOGLE_API_USE_CLIENT_CERTIFICATE", "dummy")
+        use_client_cert = _mtls_helper.check_use_client_cert()
+        assert use_client_cert is False
 
     def test_check_use_client_cert_for_workload_with_config_file_not_found(
         self, monkeypatch
     ):
         monkeypatch.setenv("GOOGLE_API_USE_CLIENT_CERTIFICATE", "")
         use_client_cert = _mtls_helper.check_use_client_cert()
-        assert use_client_cert == "false"
+        assert use_client_cert is False
 
     def test_check_use_client_cert_for_workload_with_config_file_not_json(
         self, monkeypatch
@@ -688,7 +693,7 @@ class TestDecryptPrivateKey(object):
         mock_file_handle = mock.mock_open(read_data=config_file_content)
         with mock.patch("builtins.open", mock_file_handle):
             use_client_cert = _mtls_helper.check_use_client_cert()
-            assert use_client_cert == "false"
+            assert use_client_cert is False
 
     def test_check_use_client_cert_for_workload_with_config_file_no_workload(
         self, monkeypatch
@@ -702,11 +707,11 @@ class TestDecryptPrivateKey(object):
         mock_file_handle = mock.mock_open(read_data=config_file_content)
         with mock.patch("builtins.open", mock_file_handle):
             use_client_cert = _mtls_helper.check_use_client_cert()
-            assert use_client_cert == "false"
+            assert use_client_cert is False
 
     def test_check_use_client_cert_when_file_does_not_exist(self, monkeypatch):
         config_filename = "mock_certificate_config.json"
         monkeypatch.setenv("GOOGLE_API_CERTIFICATE_CONFIG", config_filename)
         monkeypatch.setenv("GOOGLE_API_USE_CLIENT_CERTIFICATE", "")
         use_client_cert = _mtls_helper.check_use_client_cert()
-        assert use_client_cert == "false"
+        assert use_client_cert is False

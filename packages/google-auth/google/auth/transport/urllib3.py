@@ -334,7 +334,7 @@ class AuthorizedHttp(RequestMethods):  # type: ignore
                 creation failed for any reason.
         """
         use_client_cert = transport._mtls_helper.check_use_client_cert()
-        if use_client_cert != "true":
+        if not use_client_cert:
             return False
         try:
             import OpenSSL

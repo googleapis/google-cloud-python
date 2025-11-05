@@ -443,7 +443,7 @@ class AuthorizedSession(requests.Session):
                 creation failed for any reason.
         """
         use_client_cert = google.auth.transport._mtls_helper.check_use_client_cert()
-        if use_client_cert != "true":
+        if not use_client_cert:
             self._is_mtls = False
             return
         try:

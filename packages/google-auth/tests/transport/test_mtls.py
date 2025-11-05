@@ -94,3 +94,12 @@ def test_default_client_encrypted_cert_source(
     callback = mtls.default_client_encrypted_cert_source("cert_path", "key_path")
     with pytest.raises(exceptions.MutualTLSChannelError):
         callback()
+
+
+@mock.patch("google.auth.transport._mtls_helper.check_use_client_cert", autospec=True)
+def test_should_use_client_cert(check_use_client_cert):
+    check_use_client_cert.return_value = mock.Mock()
+    assert mtls.should_use_client_cert()
+
+    check_use_client_cert.return_value = False
+    assert not mtls.should_use_client_cert()
