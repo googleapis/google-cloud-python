@@ -20,7 +20,7 @@ import re
 import subprocess
 import yaml
 import unittest.mock
-from datetime import datetime
+from datetime import date, datetime
 from pathlib import Path
 from unittest.mock import MagicMock, mock_open
 
@@ -1093,6 +1093,44 @@ def test_update_version_for_library_success_proto_only_setup_py(mocker):
 
         handle = m()
         assert handle.write.call_args_list[0].args[0] == 'version = "1.2.3"'
+        # Get all the arguments passed to the mock's write method
+        # and join them into a single string.
+        written_content = "".join(
+            [call.args[0] for call in handle.write.call_args_list[1:]]
+        )
+        # Create the expected output string with the correct formatting.
+        assert (
+            written_content
+            == '{\n  "clientLibrary": {\n    "version": "1.2.3"\n  }\n}\n'
+        )
+
+
+def test_update_version_for_library_success_with_date_string(mocker):
+    m = mock_open()
+
+    mock_rglob = mocker.patch("pathlib.Path.rglob")
+    mock_rglob.side_effect = [
+        [],
+        [pathlib.Path("repo/setup.py")],
+        [pathlib.Path("repo/samples/snippet_metadata.json")],
+    ]
+    mock_shutil_copy = mocker.patch("shutil.copy")
+    mock_content = 'version = "1.2.2"\n__release_date__ = "2025-11-03"'
+    mock_json_metadata = {"clientLibrary": {"version": "0.1.0"}}
+    today_iso = date.today().isoformat()
+
+    with unittest.mock.patch("cli.open", m):
+        mocker.patch("cli._read_text_file", return_value=mock_content)
+        mocker.patch("cli._read_json_file", return_value=mock_json_metadata)
+        _update_version_for_library(
+            "repo", "output", "packages/google-cloud-language", "1.2.3"
+        )
+
+        handle = m()
+        assert (
+            handle.write.call_args_list[0].args[0]
+            == f'version = "1.2.3"\n__release_date__ = "{today_iso}"'
+        )
         # Get all the arguments passed to the mock's write method
         # and join them into a single string.
         written_content = "".join(
