@@ -4,6 +4,42 @@
 
 [1]: https://pypi.org/project/google-auth/#history
 
+## [2.43.0](https://github.com/googleapis/google-cloud-python/compare/google-auth-v2.42.1...google-auth-v2.43.0) (2025-11-05)
+
+
+### Features
+
+* Add public wrapper for _mtls_helper.check_use_client_cert which enables mTLS if GOOGLE_API_USE_CLIENT_CERTIFICATE is not set, when the MWID/X.509 cert sources detected (#1859) Add public wrapper for check_use_client_cert which enables mTLS if
+GOOGLE_API_USE_CLIENT_CERTIFICATE is not set, when the MWID/X.509 cert
+sources detected. Also, fix check_use_client_cert to return boolean
+value.
+Change #1848 added the check_use_client_cert method that helps know if
+client cert should be used for mTLS connection. However, that was in a
+private class, thus, created a public wrapper of the same function so
+that it can be used by python Client Libraries. Also, updated
+check_use_client_cert to return a boolean value instead of existing
+string value for better readability and future scope.
+--------- ([1535eccbff0ad8f3fd6a9775316ac8b77dca66ba](https://github.com/googleapis/google-cloud-python/commit/1535eccbff0ad8f3fd6a9775316ac8b77dca66ba))
+* Enable mTLS if GOOGLE_API_USE_CLIENT_CERTIFICATE  is not set, if the MWID/X.509 cert sources detected (#1848) The Python SDK will use a hybrid approach for mTLS enablement:
+- If the GOOGLE_API_USE_CLIENT_CERTIFICATE environment variable is set
+(either true or false), the SDK will respect that setting. This is
+necessary for test scenarios and users who need to explicitly control
+mTLS behavior.
+- If the GOOGLE_API_USE_CLIENT_CERTIFICATE environment variable is not
+set, the SDK will automatically enable mTLS only if it detects Managed
+Workload Identity (MWID) or X.509 Workforce Identity Federation (WIF)
+certificate sources. In other cases where the variable is not set, mTLS
+will remain disabled.
+** This change also adds the helper method `check_use_client_cert` and
+it's unit test, which will be used for checking the criteria for setting
+the mTLS to true
+** This change is only for Auth-Library, other changes will be created
+for Client-Library use-cases.
+--------- ([395e405b64b56ddb82ee639958c2e8056ad2e82b](https://github.com/googleapis/google-cloud-python/commit/395e405b64b56ddb82ee639958c2e8056ad2e82b))
+* onboard `google-auth` to librarian (#1838) This PR onboards `google-auth` library to the Librarian system.
+Wait for
+https://github.com/googleapis/google-auth-library-python/pull/1819. ([c503eaa511357d7a76cc1e1f1d3a3be2dabd5bca](https://github.com/googleapis/google-cloud-python/commit/c503eaa511357d7a76cc1e1f1d3a3be2dabd5bca))
+
 ## [2.42.1](https://github.com/googleapis/google-auth-library-python/compare/v2.42.0...v2.42.1) (2025-10-30)
 
 
