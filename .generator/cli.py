@@ -24,7 +24,7 @@ import subprocess
 import sys
 import tempfile
 import yaml
-from datetime import datetime
+from datetime import date, datetime
 from pathlib import Path
 from typing import Dict, List
 import build.util
@@ -1169,6 +1169,12 @@ def _process_version_file(content, version, version_path) -> str:
         raise ValueError(
             f"Could not find version string in {version_path}. File was not modified."
         )
+
+    # Optionally update the `__release_date__` date string, if it exists, in the format YYYY-MM-DD
+    date_pattern = r"(__release_date__\s*=\s*[\"'])([^\"']+)([\"'].*)"
+    today_iso = date.today().isoformat()  # Get today's date in YYYY-MM-DD format
+    date_replacement_string = f"\\g<1>{today_iso}\\g<3>"
+    new_content, _ = re.subn(date_pattern, date_replacement_string, new_content)
     return new_content
 
 
