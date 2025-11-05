@@ -31,12 +31,15 @@ class _BaseResumptionStrategy(abc.ABC):
         pass
 
     @abc.abstractmethod
-    def update_state_from_response(self, state: Any) -> None:
+    def update_state_from_response(self, response: Any, state: Any) -> None:
         """Updates the state based on a successful server response.
 
         This method is called for every message received from the server. It is
         responsible for processing the response and updating the shared state
         object.
+
+        :type response: Any
+        :param response: The response message received from the server.
 
         :type state: Any
         :param state: The shared state object for the operation, which will be
