@@ -4451,6 +4451,7 @@ libraries:
     apis:
       - path: google/api
         service_config: serviceconfig.yaml
+      - path: google/cloud
       - path: google/cloud/location
         service_config: cloud.yaml
       - path: google/logging/type
