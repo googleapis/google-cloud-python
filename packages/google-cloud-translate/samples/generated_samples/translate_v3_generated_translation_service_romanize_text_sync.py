@@ -41,7 +41,7 @@ def sample_romanize_text():
     # Initialize request argument(s)
     request = translate_v3.RomanizeTextRequest(
         parent="parent_value",
-        contents=['contents_value1', 'contents_value2'],
+        contents=["contents_value1", "contents_value2"],
     )
 
     # Make the request
@@ -49,5 +49,6 @@ def sample_romanize_text():
 
     # Handle the response
     print(response)
+
 
 # [END translate_v3_generated_TranslationService_RomanizeText_sync]

@@ -44,6 +44,13 @@ __protobuf__ = proto.module(
         "CreateLbRouteExtensionRequest",
         "UpdateLbRouteExtensionRequest",
         "DeleteLbRouteExtensionRequest",
+        "LbEdgeExtension",
+        "ListLbEdgeExtensionsRequest",
+        "ListLbEdgeExtensionsResponse",
+        "GetLbEdgeExtensionRequest",
+        "CreateLbEdgeExtensionRequest",
+        "UpdateLbEdgeExtensionRequest",
+        "DeleteLbEdgeExtensionRequest",
         "AuthzExtension",
         "ListAuthzExtensionsRequest",
         "ListAuthzExtensionsResponse",
@@ -1017,6 +1024,324 @@ class DeleteLbRouteExtensionRequest(proto.Message):
             Required. The name of the ``LbRouteExtension`` resource to
             delete. Must be in the format
             ``projects/{project}/locations/{location}/lbRouteExtensions/{lb_route_extension}``.
+        request_id (str):
+            Optional. An optional request ID to identify
+            requests. Specify a unique request ID so that if
+            you must retry your request, the server can
+            ignore the request if it has already been
+            completed. The server guarantees that for 60
+            minutes after the first request.
+
+            For example, consider a situation where you make
+            an initial request and the request times out. If
+            you make the request again with the same request
+            ID, the server ignores the second request This
+            prevents clients from accidentally creating
+            duplicate commitments.
+
+            The request ID must be a valid UUID with the
+            exception that zero UUID is not supported
+            (00000000-0000-0000-0000-000000000000).
+    """
+
+    name: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    request_id: str = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+
+
+class LbEdgeExtension(proto.Message):
+    r"""``LbEdgeExtension`` is a resource that lets the extension service
+    influence the selection of backend services and Cloud CDN cache keys
+    by modifying request headers.
+
+    Attributes:
+        name (str):
+            Required. Identifier. Name of the ``LbEdgeExtension``
+            resource in the following format:
+            ``projects/{project}/locations/{location}/lbEdgeExtensions/{lb_edge_extension}``.
+        create_time (google.protobuf.timestamp_pb2.Timestamp):
+            Output only. The timestamp when the resource
+            was created.
+        update_time (google.protobuf.timestamp_pb2.Timestamp):
+            Output only. The timestamp when the resource
+            was updated.
+        description (str):
+            Optional. A human-readable description of the
+            resource.
+        labels (MutableMapping[str, str]):
+            Optional. Set of labels associated with the
+            ``LbEdgeExtension`` resource.
+
+            The format must comply with `the requirements for
+            labels <https://cloud.google.com/compute/docs/labeling-resources#requirements>`__
+            for Google Cloud resources.
+        forwarding_rules (MutableSequence[str]):
+            Required. A list of references to the forwarding rules to
+            which this service extension is attached. At least one
+            forwarding rule is required. Only one ``LbEdgeExtension``
+            resource can be associated with a forwarding rule.
+        extension_chains (MutableSequence[google.cloud.network_services_v1.types.ExtensionChain]):
+            Required. A set of ordered extension chains
+            that contain the match conditions and extensions
+            to execute. Match conditions for each extension
+            chain are evaluated in sequence for a given
+            request. The first extension chain that has a
+            condition that matches the request is executed.
+            Any subsequent extension chains do not execute.
+            Limited to 5 extension chains per resource.
+        load_balancing_scheme (google.cloud.network_services_v1.types.LoadBalancingScheme):
+            Required. All forwarding rules referenced by this extension
+            must share the same load balancing scheme. Supported values:
+            ``EXTERNAL_MANAGED``.
+    """
+
+    name: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    create_time: timestamp_pb2.Timestamp = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        message=timestamp_pb2.Timestamp,
+    )
+    update_time: timestamp_pb2.Timestamp = proto.Field(
+        proto.MESSAGE,
+        number=3,
+        message=timestamp_pb2.Timestamp,
+    )
+    description: str = proto.Field(
+        proto.STRING,
+        number=9,
+    )
+    labels: MutableMapping[str, str] = proto.MapField(
+        proto.STRING,
+        proto.STRING,
+        number=4,
+    )
+    forwarding_rules: MutableSequence[str] = proto.RepeatedField(
+        proto.STRING,
+        number=5,
+    )
+    extension_chains: MutableSequence["ExtensionChain"] = proto.RepeatedField(
+        proto.MESSAGE,
+        number=6,
+        message="ExtensionChain",
+    )
+    load_balancing_scheme: "LoadBalancingScheme" = proto.Field(
+        proto.ENUM,
+        number=7,
+        enum="LoadBalancingScheme",
+    )
+
+
+class ListLbEdgeExtensionsRequest(proto.Message):
+    r"""Message for requesting list of ``LbEdgeExtension`` resources.
+
+    Attributes:
+        parent (str):
+            Required. The project and location from which the
+            ``LbEdgeExtension`` resources are listed. These values are
+            specified in the following format:
+            ``projects/{project}/locations/{location}``.
+        page_size (int):
+            Optional. Requested page size. The server
+            might return fewer items than requested. If
+            unspecified, the server picks an appropriate
+            default.
+        page_token (str):
+            Optional. A token identifying a page of
+            results that the server returns.
+        filter (str):
+            Optional. Filtering results.
+        order_by (str):
+            Optional. Hint about how to order the
+            results.
+    """
+
+    parent: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    page_size: int = proto.Field(
+        proto.INT32,
+        number=2,
+    )
+    page_token: str = proto.Field(
+        proto.STRING,
+        number=3,
+    )
+    filter: str = proto.Field(
+        proto.STRING,
+        number=4,
+    )
+    order_by: str = proto.Field(
+        proto.STRING,
+        number=5,
+    )
+
+
+class ListLbEdgeExtensionsResponse(proto.Message):
+    r"""Message for response to listing ``LbEdgeExtension`` resources.
+
+    Attributes:
+        lb_edge_extensions (MutableSequence[google.cloud.network_services_v1.types.LbEdgeExtension]):
+            The list of ``LbEdgeExtension`` resources.
+        next_page_token (str):
+            A token identifying a page of results that
+            the server returns.
+        unreachable (MutableSequence[str]):
+            Locations that could not be reached.
+    """
+
+    @property
+    def raw_page(self):
+        return self
+
+    lb_edge_extensions: MutableSequence["LbEdgeExtension"] = proto.RepeatedField(
+        proto.MESSAGE,
+        number=1,
+        message="LbEdgeExtension",
+    )
+    next_page_token: str = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+    unreachable: MutableSequence[str] = proto.RepeatedField(
+        proto.STRING,
+        number=3,
+    )
+
+
+class GetLbEdgeExtensionRequest(proto.Message):
+    r"""Message for getting a ``LbEdgeExtension`` resource.
+
+    Attributes:
+        name (str):
+            Required. A name of the ``LbEdgeExtension`` resource to get.
+            Must be in the format
+            ``projects/{project}/locations/{location}/lbEdgeExtensions/{lb_edge_extension}``.
+    """
+
+    name: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+
+
+class CreateLbEdgeExtensionRequest(proto.Message):
+    r"""Message for creating a ``LbEdgeExtension`` resource.
+
+    Attributes:
+        parent (str):
+            Required. The parent resource of the ``LbEdgeExtension``
+            resource. Must be in the format
+            ``projects/{project}/locations/{location}``.
+        lb_edge_extension_id (str):
+            Required. User-provided ID of the ``LbEdgeExtension``
+            resource to be created.
+        lb_edge_extension (google.cloud.network_services_v1.types.LbEdgeExtension):
+            Required. ``LbEdgeExtension`` resource to be created.
+        request_id (str):
+            Optional. An optional request ID to identify
+            requests. Specify a unique request ID so that if
+            you must retry your request, the server can
+            ignore the request if it has already been
+            completed. The server guarantees that for 60
+            minutes since the first request.
+
+            For example, consider a situation where you make
+            an initial request and the request times out. If
+            you make the request again with the same request
+            ID, the server ignores the second request This
+            prevents clients from accidentally creating
+            duplicate commitments.
+
+            The request ID must be a valid UUID with the
+            exception that zero UUID is not supported
+            (00000000-0000-0000-0000-000000000000).
+    """
+
+    parent: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    lb_edge_extension_id: str = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+    lb_edge_extension: "LbEdgeExtension" = proto.Field(
+        proto.MESSAGE,
+        number=3,
+        message="LbEdgeExtension",
+    )
+    request_id: str = proto.Field(
+        proto.STRING,
+        number=4,
+    )
+
+
+class UpdateLbEdgeExtensionRequest(proto.Message):
+    r"""Message for updating a ``LbEdgeExtension`` resource.
+
+    Attributes:
+        update_mask (google.protobuf.field_mask_pb2.FieldMask):
+            Optional. Used to specify the fields to be overwritten in
+            the ``LbEdgeExtension`` resource by the update. The fields
+            specified in the ``update_mask`` are relative to the
+            resource, not the full request. A field is overwritten if it
+            is in the mask. If the user does not specify a mask, then
+            all fields are overwritten.
+        lb_edge_extension (google.cloud.network_services_v1.types.LbEdgeExtension):
+            Required. ``LbEdgeExtension`` resource being updated.
+        request_id (str):
+            Optional. An optional request ID to identify
+            requests. Specify a unique request ID so that if
+            you must retry your request, the server can
+            ignore the request if it has already been
+            completed. The server guarantees that for 60
+            minutes since the first request.
+
+            For example, consider a situation where you make
+            an initial request and the request times out. If
+            you make the request again with the same request
+            ID, the server ignores the second request This
+            prevents clients from accidentally creating
+            duplicate commitments.
+
+            The request ID must be a valid UUID with the
+            exception that zero UUID is not supported
+            (00000000-0000-0000-0000-000000000000).
+    """
+
+    update_mask: field_mask_pb2.FieldMask = proto.Field(
+        proto.MESSAGE,
+        number=1,
+        message=field_mask_pb2.FieldMask,
+    )
+    lb_edge_extension: "LbEdgeExtension" = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        message="LbEdgeExtension",
+    )
+    request_id: str = proto.Field(
+        proto.STRING,
+        number=3,
+    )
+
+
+class DeleteLbEdgeExtensionRequest(proto.Message):
+    r"""Message for deleting a ``LbEdgeExtension`` resource.
+
+    Attributes:
+        name (str):
+            Required. The name of the ``LbEdgeExtension`` resource to
+            delete. Must be in the format
+            ``projects/{project}/locations/{location}/lbEdgeExtensions/{lb_edge_extension}``.
         request_id (str):
             Optional. An optional request ID to identify
             requests. Specify a unique request ID so that if

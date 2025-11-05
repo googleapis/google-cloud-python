@@ -50,4 +50,5 @@ async def sample_list_lb_traffic_extensions():
     async for response in page_result:
         print(response)
 
+
 # [END networkservices_v1_generated_DepService_ListLbTrafficExtensions_async]

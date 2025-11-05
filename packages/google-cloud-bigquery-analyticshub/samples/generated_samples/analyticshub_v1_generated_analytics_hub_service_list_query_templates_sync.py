@@ -50,4 +50,5 @@ def sample_list_query_templates():
     for response in page_result:
         print(response)
 
+
 # [END analyticshub_v1_generated_AnalyticsHubService_ListQueryTemplates_sync]

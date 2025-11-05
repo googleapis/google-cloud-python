@@ -53,4 +53,5 @@ async def sample_delete_service_binding():
     # Handle the response
     print(response)
 
+
 # [END networkservices_v1_generated_NetworkServices_DeleteServiceBinding_async]

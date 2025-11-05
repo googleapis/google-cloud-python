@@ -58,4 +58,5 @@ async def sample_restore_backup():
     # Handle the response
     print(response)
 
+
 # [END backupdr_v1_generated_BackupDR_RestoreBackup_async]

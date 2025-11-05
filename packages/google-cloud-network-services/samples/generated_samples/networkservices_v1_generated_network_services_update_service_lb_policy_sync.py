@@ -39,8 +39,7 @@ def sample_update_service_lb_policy():
     client = network_services_v1.NetworkServicesClient()
 
     # Initialize request argument(s)
-    request = network_services_v1.UpdateServiceLbPolicyRequest(
-    )
+    request = network_services_v1.UpdateServiceLbPolicyRequest()
 
     # Make the request
     operation = client.update_service_lb_policy(request=request)
@@ -51,5 +50,6 @@ def sample_update_service_lb_policy():
 
     # Handle the response
     print(response)
+
 
 # [END networkservices_v1_generated_NetworkServices_UpdateServiceLbPolicy_sync]

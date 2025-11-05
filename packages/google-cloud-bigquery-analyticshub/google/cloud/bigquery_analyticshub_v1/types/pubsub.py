@@ -175,6 +175,13 @@ class PubSubSubscription(proto.Message):
             messages before they are delivered to
             subscribers. Transforms are applied in the order
             specified.
+        tags (MutableMapping[str, str]):
+            Optional. Input only. Immutable. Tag
+            keys/values directly bound to this resource. For
+            example:
+
+              "123/environment": "production",
+              "123/costCenter": "marketing".
     """
 
     name: str = proto.Field(
@@ -249,6 +256,11 @@ class PubSubSubscription(proto.Message):
         proto.MESSAGE,
         number=25,
         message="MessageTransform",
+    )
+    tags: MutableMapping[str, str] = proto.MapField(
+        proto.STRING,
+        proto.STRING,
+        number=26,
     )
 
 

@@ -49,4 +49,5 @@ async def sample_get_data_exchange():
     # Handle the response
     print(response)
 
+
 # [END analyticshub_v1_generated_AnalyticsHubService_GetDataExchange_async]

@@ -55,4 +55,5 @@ async def sample_subscribe_data_exchange():
     # Handle the response
     print(response)
 
+
 # [END analyticshub_v1_generated_AnalyticsHubService_SubscribeDataExchange_async]

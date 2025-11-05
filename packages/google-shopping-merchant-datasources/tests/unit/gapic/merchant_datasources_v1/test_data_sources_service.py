@@ -5271,7 +5271,6 @@ def test_create_data_source_rest_call_success(request_type):
                     }
                 ]
             },
-            "contains_custom_rules": True,
             "destinations": [{"destination": 1, "state": 1}],
         },
         "supplemental_product_data_source": {
@@ -5534,7 +5533,6 @@ def test_update_data_source_rest_call_success(request_type):
                     }
                 ]
             },
-            "contains_custom_rules": True,
             "destinations": [{"destination": 1, "state": 1}],
         },
         "supplemental_product_data_source": {

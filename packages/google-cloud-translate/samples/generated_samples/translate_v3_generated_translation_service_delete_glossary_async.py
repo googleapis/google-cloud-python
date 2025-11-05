@@ -53,4 +53,5 @@ async def sample_delete_glossary():
     # Handle the response
     print(response)
 
+
 # [END translate_v3_generated_TranslationService_DeleteGlossary_async]

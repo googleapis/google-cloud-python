@@ -50,4 +50,5 @@ async def sample_detect_language():
     # Handle the response
     print(response)
 
+
 # [END translate_v3beta1_generated_TranslationService_DetectLanguage_async]

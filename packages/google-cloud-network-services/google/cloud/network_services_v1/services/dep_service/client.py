@@ -229,6 +229,28 @@ class DepServiceClient(metaclass=DepServiceClientMeta):
         return m.groupdict() if m else {}
 
     @staticmethod
+    def lb_edge_extension_path(
+        project: str,
+        location: str,
+        lb_edge_extension: str,
+    ) -> str:
+        """Returns a fully-qualified lb_edge_extension string."""
+        return "projects/{project}/locations/{location}/lbEdgeExtensions/{lb_edge_extension}".format(
+            project=project,
+            location=location,
+            lb_edge_extension=lb_edge_extension,
+        )
+
+    @staticmethod
+    def parse_lb_edge_extension_path(path: str) -> Dict[str, str]:
+        """Parses a lb_edge_extension path into its component segments."""
+        m = re.match(
+            r"^projects/(?P<project>.+?)/locations/(?P<location>.+?)/lbEdgeExtensions/(?P<lb_edge_extension>.+?)$",
+            path,
+        )
+        return m.groupdict() if m else {}
+
+    @staticmethod
     def lb_route_extension_path(
         project: str,
         location: str,
@@ -2075,6 +2097,670 @@ class DepServiceClient(metaclass=DepServiceClientMeta):
         rpc = self._transport._wrapped_methods[
             self._transport.delete_lb_route_extension
         ]
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
+        )
+
+        # Validate the universe domain.
+        self._validate_universe_domain()
+
+        # Send the request.
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # Wrap the response in an operation future.
+        response = operation.from_gapic(
+            response,
+            self._transport.operations_client,
+            empty_pb2.Empty,
+            metadata_type=common.OperationMetadata,
+        )
+
+        # Done; return the response.
+        return response
+
+    def list_lb_edge_extensions(
+        self,
+        request: Optional[Union[dep.ListLbEdgeExtensionsRequest, dict]] = None,
+        *,
+        parent: Optional[str] = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+    ) -> pagers.ListLbEdgeExtensionsPager:
+        r"""Lists ``LbEdgeExtension`` resources in a given project and
+        location.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import network_services_v1
+
+            def sample_list_lb_edge_extensions():
+                # Create a client
+                client = network_services_v1.DepServiceClient()
+
+                # Initialize request argument(s)
+                request = network_services_v1.ListLbEdgeExtensionsRequest(
+                    parent="parent_value",
+                )
+
+                # Make the request
+                page_result = client.list_lb_edge_extensions(request=request)
+
+                # Handle the response
+                for response in page_result:
+                    print(response)
+
+        Args:
+            request (Union[google.cloud.network_services_v1.types.ListLbEdgeExtensionsRequest, dict]):
+                The request object. Message for requesting list of ``LbEdgeExtension``
+                resources.
+            parent (str):
+                Required. The project and location from which the
+                ``LbEdgeExtension`` resources are listed. These values
+                are specified in the following format:
+                ``projects/{project}/locations/{location}``.
+
+                This corresponds to the ``parent`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                sent along with the request as metadata. Normally, each value must be of type `str`,
+                but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                be of type `bytes`.
+
+        Returns:
+            google.cloud.network_services_v1.services.dep_service.pagers.ListLbEdgeExtensionsPager:
+                Message for response to listing LbEdgeExtension
+                resources.
+
+                Iterating over this object will yield results and
+                resolve additional pages automatically.
+
+        """
+        # Create or coerce a protobuf request object.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
+        flattened_params = [parent]
+        has_flattened_params = (
+            len([param for param in flattened_params if param is not None]) > 0
+        )
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, dep.ListLbEdgeExtensionsRequest):
+            request = dep.ListLbEdgeExtensionsRequest(request)
+            # If we have keyword arguments corresponding to fields on the
+            # request, apply these.
+            if parent is not None:
+                request.parent = parent
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = self._transport._wrapped_methods[self._transport.list_lb_edge_extensions]
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
+        )
+
+        # Validate the universe domain.
+        self._validate_universe_domain()
+
+        # Send the request.
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # This method is paged; wrap the response in a pager, which provides
+        # an `__iter__` convenience method.
+        response = pagers.ListLbEdgeExtensionsPager(
+            method=rpc,
+            request=request,
+            response=response,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # Done; return the response.
+        return response
+
+    def get_lb_edge_extension(
+        self,
+        request: Optional[Union[dep.GetLbEdgeExtensionRequest, dict]] = None,
+        *,
+        name: Optional[str] = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+    ) -> dep.LbEdgeExtension:
+        r"""Gets details of the specified ``LbEdgeExtension`` resource.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import network_services_v1
+
+            def sample_get_lb_edge_extension():
+                # Create a client
+                client = network_services_v1.DepServiceClient()
+
+                # Initialize request argument(s)
+                request = network_services_v1.GetLbEdgeExtensionRequest(
+                    name="name_value",
+                )
+
+                # Make the request
+                response = client.get_lb_edge_extension(request=request)
+
+                # Handle the response
+                print(response)
+
+        Args:
+            request (Union[google.cloud.network_services_v1.types.GetLbEdgeExtensionRequest, dict]):
+                The request object. Message for getting a ``LbEdgeExtension`` resource.
+            name (str):
+                Required. A name of the ``LbEdgeExtension`` resource to
+                get. Must be in the format
+                ``projects/{project}/locations/{location}/lbEdgeExtensions/{lb_edge_extension}``.
+
+                This corresponds to the ``name`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                sent along with the request as metadata. Normally, each value must be of type `str`,
+                but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                be of type `bytes`.
+
+        Returns:
+            google.cloud.network_services_v1.types.LbEdgeExtension:
+                LbEdgeExtension is a resource that lets the extension service influence
+                   the selection of backend services and Cloud CDN cache
+                   keys by modifying request headers.
+
+        """
+        # Create or coerce a protobuf request object.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
+        flattened_params = [name]
+        has_flattened_params = (
+            len([param for param in flattened_params if param is not None]) > 0
+        )
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, dep.GetLbEdgeExtensionRequest):
+            request = dep.GetLbEdgeExtensionRequest(request)
+            # If we have keyword arguments corresponding to fields on the
+            # request, apply these.
+            if name is not None:
+                request.name = name
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = self._transport._wrapped_methods[self._transport.get_lb_edge_extension]
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
+        )
+
+        # Validate the universe domain.
+        self._validate_universe_domain()
+
+        # Send the request.
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # Done; return the response.
+        return response
+
+    def create_lb_edge_extension(
+        self,
+        request: Optional[Union[dep.CreateLbEdgeExtensionRequest, dict]] = None,
+        *,
+        parent: Optional[str] = None,
+        lb_edge_extension: Optional[dep.LbEdgeExtension] = None,
+        lb_edge_extension_id: Optional[str] = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+    ) -> operation.Operation:
+        r"""Creates a new ``LbEdgeExtension`` resource in a given project
+        and location.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import network_services_v1
+
+            def sample_create_lb_edge_extension():
+                # Create a client
+                client = network_services_v1.DepServiceClient()
+
+                # Initialize request argument(s)
+                lb_edge_extension = network_services_v1.LbEdgeExtension()
+                lb_edge_extension.name = "name_value"
+                lb_edge_extension.forwarding_rules = ['forwarding_rules_value1', 'forwarding_rules_value2']
+                lb_edge_extension.extension_chains.name = "name_value"
+                lb_edge_extension.extension_chains.match_condition.cel_expression = "cel_expression_value"
+                lb_edge_extension.extension_chains.extensions.name = "name_value"
+                lb_edge_extension.extension_chains.extensions.service = "service_value"
+                lb_edge_extension.load_balancing_scheme = "EXTERNAL_MANAGED"
+
+                request = network_services_v1.CreateLbEdgeExtensionRequest(
+                    parent="parent_value",
+                    lb_edge_extension_id="lb_edge_extension_id_value",
+                    lb_edge_extension=lb_edge_extension,
+                )
+
+                # Make the request
+                operation = client.create_lb_edge_extension(request=request)
+
+                print("Waiting for operation to complete...")
+
+                response = operation.result()
+
+                # Handle the response
+                print(response)
+
+        Args:
+            request (Union[google.cloud.network_services_v1.types.CreateLbEdgeExtensionRequest, dict]):
+                The request object. Message for creating a ``LbEdgeExtension`` resource.
+            parent (str):
+                Required. The parent resource of the ``LbEdgeExtension``
+                resource. Must be in the format
+                ``projects/{project}/locations/{location}``.
+
+                This corresponds to the ``parent`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            lb_edge_extension (google.cloud.network_services_v1.types.LbEdgeExtension):
+                Required. ``LbEdgeExtension`` resource to be created.
+                This corresponds to the ``lb_edge_extension`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            lb_edge_extension_id (str):
+                Required. User-provided ID of the ``LbEdgeExtension``
+                resource to be created.
+
+                This corresponds to the ``lb_edge_extension_id`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                sent along with the request as metadata. Normally, each value must be of type `str`,
+                but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                be of type `bytes`.
+
+        Returns:
+            google.api_core.operation.Operation:
+                An object representing a long-running operation.
+
+                The result type for the operation will be :class:`google.cloud.network_services_v1.types.LbEdgeExtension` LbEdgeExtension is a resource that lets the extension service influence
+                   the selection of backend services and Cloud CDN cache
+                   keys by modifying request headers.
+
+        """
+        # Create or coerce a protobuf request object.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
+        flattened_params = [parent, lb_edge_extension, lb_edge_extension_id]
+        has_flattened_params = (
+            len([param for param in flattened_params if param is not None]) > 0
+        )
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, dep.CreateLbEdgeExtensionRequest):
+            request = dep.CreateLbEdgeExtensionRequest(request)
+            # If we have keyword arguments corresponding to fields on the
+            # request, apply these.
+            if parent is not None:
+                request.parent = parent
+            if lb_edge_extension is not None:
+                request.lb_edge_extension = lb_edge_extension
+            if lb_edge_extension_id is not None:
+                request.lb_edge_extension_id = lb_edge_extension_id
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = self._transport._wrapped_methods[self._transport.create_lb_edge_extension]
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
+        )
+
+        # Validate the universe domain.
+        self._validate_universe_domain()
+
+        # Send the request.
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # Wrap the response in an operation future.
+        response = operation.from_gapic(
+            response,
+            self._transport.operations_client,
+            dep.LbEdgeExtension,
+            metadata_type=common.OperationMetadata,
+        )
+
+        # Done; return the response.
+        return response
+
+    def update_lb_edge_extension(
+        self,
+        request: Optional[Union[dep.UpdateLbEdgeExtensionRequest, dict]] = None,
+        *,
+        lb_edge_extension: Optional[dep.LbEdgeExtension] = None,
+        update_mask: Optional[field_mask_pb2.FieldMask] = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+    ) -> operation.Operation:
+        r"""Updates the parameters of the specified ``LbEdgeExtension``
+        resource.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import network_services_v1
+
+            def sample_update_lb_edge_extension():
+                # Create a client
+                client = network_services_v1.DepServiceClient()
+
+                # Initialize request argument(s)
+                lb_edge_extension = network_services_v1.LbEdgeExtension()
+                lb_edge_extension.name = "name_value"
+                lb_edge_extension.forwarding_rules = ['forwarding_rules_value1', 'forwarding_rules_value2']
+                lb_edge_extension.extension_chains.name = "name_value"
+                lb_edge_extension.extension_chains.match_condition.cel_expression = "cel_expression_value"
+                lb_edge_extension.extension_chains.extensions.name = "name_value"
+                lb_edge_extension.extension_chains.extensions.service = "service_value"
+                lb_edge_extension.load_balancing_scheme = "EXTERNAL_MANAGED"
+
+                request = network_services_v1.UpdateLbEdgeExtensionRequest(
+                    lb_edge_extension=lb_edge_extension,
+                )
+
+                # Make the request
+                operation = client.update_lb_edge_extension(request=request)
+
+                print("Waiting for operation to complete...")
+
+                response = operation.result()
+
+                # Handle the response
+                print(response)
+
+        Args:
+            request (Union[google.cloud.network_services_v1.types.UpdateLbEdgeExtensionRequest, dict]):
+                The request object. Message for updating a ``LbEdgeExtension`` resource.
+            lb_edge_extension (google.cloud.network_services_v1.types.LbEdgeExtension):
+                Required. ``LbEdgeExtension`` resource being updated.
+                This corresponds to the ``lb_edge_extension`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            update_mask (google.protobuf.field_mask_pb2.FieldMask):
+                Optional. Used to specify the fields to be overwritten
+                in the ``LbEdgeExtension`` resource by the update. The
+                fields specified in the ``update_mask`` are relative to
+                the resource, not the full request. A field is
+                overwritten if it is in the mask. If the user does not
+                specify a mask, then all fields are overwritten.
+
+                This corresponds to the ``update_mask`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                sent along with the request as metadata. Normally, each value must be of type `str`,
+                but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                be of type `bytes`.
+
+        Returns:
+            google.api_core.operation.Operation:
+                An object representing a long-running operation.
+
+                The result type for the operation will be :class:`google.cloud.network_services_v1.types.LbEdgeExtension` LbEdgeExtension is a resource that lets the extension service influence
+                   the selection of backend services and Cloud CDN cache
+                   keys by modifying request headers.
+
+        """
+        # Create or coerce a protobuf request object.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
+        flattened_params = [lb_edge_extension, update_mask]
+        has_flattened_params = (
+            len([param for param in flattened_params if param is not None]) > 0
+        )
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, dep.UpdateLbEdgeExtensionRequest):
+            request = dep.UpdateLbEdgeExtensionRequest(request)
+            # If we have keyword arguments corresponding to fields on the
+            # request, apply these.
+            if lb_edge_extension is not None:
+                request.lb_edge_extension = lb_edge_extension
+            if update_mask is not None:
+                request.update_mask = update_mask
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = self._transport._wrapped_methods[self._transport.update_lb_edge_extension]
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata(
+                (("lb_edge_extension.name", request.lb_edge_extension.name),)
+            ),
+        )
+
+        # Validate the universe domain.
+        self._validate_universe_domain()
+
+        # Send the request.
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # Wrap the response in an operation future.
+        response = operation.from_gapic(
+            response,
+            self._transport.operations_client,
+            dep.LbEdgeExtension,
+            metadata_type=common.OperationMetadata,
+        )
+
+        # Done; return the response.
+        return response
+
+    def delete_lb_edge_extension(
+        self,
+        request: Optional[Union[dep.DeleteLbEdgeExtensionRequest, dict]] = None,
+        *,
+        name: Optional[str] = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+    ) -> operation.Operation:
+        r"""Deletes the specified ``LbEdgeExtension`` resource.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import network_services_v1
+
+            def sample_delete_lb_edge_extension():
+                # Create a client
+                client = network_services_v1.DepServiceClient()
+
+                # Initialize request argument(s)
+                request = network_services_v1.DeleteLbEdgeExtensionRequest(
+                    name="name_value",
+                )
+
+                # Make the request
+                operation = client.delete_lb_edge_extension(request=request)
+
+                print("Waiting for operation to complete...")
+
+                response = operation.result()
+
+                # Handle the response
+                print(response)
+
+        Args:
+            request (Union[google.cloud.network_services_v1.types.DeleteLbEdgeExtensionRequest, dict]):
+                The request object. Message for deleting a ``LbEdgeExtension`` resource.
+            name (str):
+                Required. The name of the ``LbEdgeExtension`` resource
+                to delete. Must be in the format
+                ``projects/{project}/locations/{location}/lbEdgeExtensions/{lb_edge_extension}``.
+
+                This corresponds to the ``name`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                sent along with the request as metadata. Normally, each value must be of type `str`,
+                but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                be of type `bytes`.
+
+        Returns:
+            google.api_core.operation.Operation:
+                An object representing a long-running operation.
+
+                The result type for the operation will be :class:`google.protobuf.empty_pb2.Empty` A generic empty message that you can re-use to avoid defining duplicated
+                   empty messages in your APIs. A typical example is to
+                   use it as the request or the response type of an API
+                   method. For instance:
+
+                      service Foo {
+                         rpc Bar(google.protobuf.Empty) returns
+                         (google.protobuf.Empty);
+
+                      }
+
+        """
+        # Create or coerce a protobuf request object.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
+        flattened_params = [name]
+        has_flattened_params = (
+            len([param for param in flattened_params if param is not None]) > 0
+        )
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, dep.DeleteLbEdgeExtensionRequest):
+            request = dep.DeleteLbEdgeExtensionRequest(request)
+            # If we have keyword arguments corresponding to fields on the
+            # request, apply these.
+            if name is not None:
+                request.name = name
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = self._transport._wrapped_methods[self._transport.delete_lb_edge_extension]
 
         # Certain fields should be provided within the metadata header;
         # add these here.

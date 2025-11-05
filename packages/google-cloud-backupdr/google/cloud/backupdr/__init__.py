@@ -71,6 +71,7 @@ from google.cloud.backupdr_v1.types.backupvault import (
     BackupApplianceLockInfo,
     BackupConfigInfo,
     BackupConfigState,
+    BackupGcpResource,
     BackupLock,
     BackupVault,
     BackupVaultView,
@@ -81,6 +82,8 @@ from google.cloud.backupdr_v1.types.backupvault import (
     DataSourceGcpResource,
     DeleteBackupRequest,
     DeleteBackupVaultRequest,
+    FetchBackupsForResourceTypeRequest,
+    FetchBackupsForResourceTypeResponse,
     FetchUsableBackupVaultsRequest,
     FetchUsableBackupVaultsResponse,
     GcpBackupConfig,
@@ -152,6 +155,8 @@ from google.cloud.backupdr_v1.types.datasourcereference import (
     FetchDataSourceReferencesForResourceTypeRequest,
     FetchDataSourceReferencesForResourceTypeResponse,
     GetDataSourceReferenceRequest,
+    ListDataSourceReferencesRequest,
+    ListDataSourceReferencesResponse,
 )
 
 __all__ = (
@@ -200,6 +205,7 @@ __all__ = (
     "BackupApplianceBackupConfig",
     "BackupApplianceLockInfo",
     "BackupConfigInfo",
+    "BackupGcpResource",
     "BackupLock",
     "BackupVault",
     "CreateBackupVaultRequest",
@@ -208,6 +214,8 @@ __all__ = (
     "DataSourceGcpResource",
     "DeleteBackupRequest",
     "DeleteBackupVaultRequest",
+    "FetchBackupsForResourceTypeRequest",
+    "FetchBackupsForResourceTypeResponse",
     "FetchUsableBackupVaultsRequest",
     "FetchUsableBackupVaultsResponse",
     "GcpBackupConfig",
@@ -272,4 +280,6 @@ __all__ = (
     "FetchDataSourceReferencesForResourceTypeRequest",
     "FetchDataSourceReferencesForResourceTypeResponse",
     "GetDataSourceReferenceRequest",
+    "ListDataSourceReferencesRequest",
+    "ListDataSourceReferencesResponse",
 )

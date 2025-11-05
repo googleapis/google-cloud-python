@@ -145,6 +145,16 @@ class MarketingplatformAdminServiceTransport(abc.ABC):
                 default_timeout=None,
                 client_info=client_info,
             ),
+            self.list_organizations: gapic_v1.method.wrap_method(
+                self.list_organizations,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.find_sales_partner_managed_clients: gapic_v1.method.wrap_method(
+                self.find_sales_partner_managed_clients,
+                default_timeout=None,
+                client_info=client_info,
+            ),
             self.list_analytics_account_links: gapic_v1.method.wrap_method(
                 self.list_analytics_account_links,
                 default_timeout=None,
@@ -165,6 +175,11 @@ class MarketingplatformAdminServiceTransport(abc.ABC):
                 default_timeout=None,
                 client_info=client_info,
             ),
+            self.report_property_usage: gapic_v1.method.wrap_method(
+                self.report_property_usage,
+                default_timeout=None,
+                client_info=client_info,
+            ),
         }
 
     def close(self):
@@ -182,6 +197,30 @@ class MarketingplatformAdminServiceTransport(abc.ABC):
     ) -> Callable[
         [marketingplatform_admin.GetOrganizationRequest],
         Union[resources.Organization, Awaitable[resources.Organization]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def list_organizations(
+        self,
+    ) -> Callable[
+        [marketingplatform_admin.ListOrganizationsRequest],
+        Union[
+            marketingplatform_admin.ListOrganizationsResponse,
+            Awaitable[marketingplatform_admin.ListOrganizationsResponse],
+        ],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def find_sales_partner_managed_clients(
+        self,
+    ) -> Callable[
+        [marketingplatform_admin.FindSalesPartnerManagedClientsRequest],
+        Union[
+            marketingplatform_admin.FindSalesPartnerManagedClientsResponse,
+            Awaitable[marketingplatform_admin.FindSalesPartnerManagedClientsResponse],
+        ],
     ]:
         raise NotImplementedError()
 
@@ -225,6 +264,18 @@ class MarketingplatformAdminServiceTransport(abc.ABC):
         Union[
             marketingplatform_admin.SetPropertyServiceLevelResponse,
             Awaitable[marketingplatform_admin.SetPropertyServiceLevelResponse],
+        ],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def report_property_usage(
+        self,
+    ) -> Callable[
+        [marketingplatform_admin.ReportPropertyUsageRequest],
+        Union[
+            marketingplatform_admin.ReportPropertyUsageResponse,
+            Awaitable[marketingplatform_admin.ReportPropertyUsageResponse],
         ],
     ]:
         raise NotImplementedError()

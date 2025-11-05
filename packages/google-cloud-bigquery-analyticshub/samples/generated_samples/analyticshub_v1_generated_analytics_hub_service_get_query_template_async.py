@@ -49,4 +49,5 @@ async def sample_get_query_template():
     # Handle the response
     print(response)
 
+
 # [END analyticshub_v1_generated_AnalyticsHubService_GetQueryTemplate_async]

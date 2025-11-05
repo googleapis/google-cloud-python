@@ -39,8 +39,7 @@ def sample_update_data_source():
     client = backupdr_v1.BackupDRClient()
 
     # Initialize request argument(s)
-    request = backupdr_v1.UpdateDataSourceRequest(
-    )
+    request = backupdr_v1.UpdateDataSourceRequest()
 
     # Make the request
     operation = client.update_data_source(request=request)
@@ -51,5 +50,6 @@ def sample_update_data_source():
 
     # Handle the response
     print(response)
+
 
 # [END backupdr_v1_generated_BackupDR_UpdateDataSource_sync]

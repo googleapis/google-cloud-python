@@ -729,6 +729,38 @@ class BackupDRGrpcTransport(BackupDRTransport):
         return self._stubs["list_backups"]
 
     @property
+    def fetch_backups_for_resource_type(
+        self,
+    ) -> Callable[
+        [backupvault.FetchBackupsForResourceTypeRequest],
+        backupvault.FetchBackupsForResourceTypeResponse,
+    ]:
+        r"""Return a callable for the fetch backups for resource
+        type method over gRPC.
+
+        Fetch Backups for a given resource type.
+
+        Returns:
+            Callable[[~.FetchBackupsForResourceTypeRequest],
+                    ~.FetchBackupsForResourceTypeResponse]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "fetch_backups_for_resource_type" not in self._stubs:
+            self._stubs[
+                "fetch_backups_for_resource_type"
+            ] = self._logged_channel.unary_unary(
+                "/google.cloud.backupdr.v1.BackupDR/FetchBackupsForResourceType",
+                request_serializer=backupvault.FetchBackupsForResourceTypeRequest.serialize,
+                response_deserializer=backupvault.FetchBackupsForResourceTypeResponse.deserialize,
+            )
+        return self._stubs["fetch_backups_for_resource_type"]
+
+    @property
     def get_backup(
         self,
     ) -> Callable[[backupvault.GetBackupRequest], backupvault.Backup]:
@@ -1269,6 +1301,38 @@ class BackupDRGrpcTransport(BackupDRTransport):
                 response_deserializer=datasourcereference.DataSourceReference.deserialize,
             )
         return self._stubs["get_data_source_reference"]
+
+    @property
+    def list_data_source_references(
+        self,
+    ) -> Callable[
+        [datasourcereference.ListDataSourceReferencesRequest],
+        datasourcereference.ListDataSourceReferencesResponse,
+    ]:
+        r"""Return a callable for the list data source references method over gRPC.
+
+        Lists DataSourceReferences for a given project and
+        location.
+
+        Returns:
+            Callable[[~.ListDataSourceReferencesRequest],
+                    ~.ListDataSourceReferencesResponse]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "list_data_source_references" not in self._stubs:
+            self._stubs[
+                "list_data_source_references"
+            ] = self._logged_channel.unary_unary(
+                "/google.cloud.backupdr.v1.BackupDR/ListDataSourceReferences",
+                request_serializer=datasourcereference.ListDataSourceReferencesRequest.serialize,
+                response_deserializer=datasourcereference.ListDataSourceReferencesResponse.deserialize,
+            )
+        return self._stubs["list_data_source_references"]
 
     @property
     def fetch_data_source_references_for_resource_type(

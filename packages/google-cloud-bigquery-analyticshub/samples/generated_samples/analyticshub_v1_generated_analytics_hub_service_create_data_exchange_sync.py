@@ -54,4 +54,5 @@ def sample_create_data_exchange():
     # Handle the response
     print(response)
 
+
 # [END analyticshub_v1_generated_AnalyticsHubService_CreateDataExchange_sync]

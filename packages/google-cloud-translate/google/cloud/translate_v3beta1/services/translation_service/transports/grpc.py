@@ -651,6 +651,35 @@ class TranslationServiceGrpcTransport(TranslationServiceTransport):
             )
         return self._stubs["delete_glossary"]
 
+    @property
+    def refine_text(
+        self,
+    ) -> Callable[
+        [translation_service.RefineTextRequest], translation_service.RefineTextResponse
+    ]:
+        r"""Return a callable for the refine text method over gRPC.
+
+        Refines the input translated text to improve the
+        quality.
+
+        Returns:
+            Callable[[~.RefineTextRequest],
+                    ~.RefineTextResponse]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "refine_text" not in self._stubs:
+            self._stubs["refine_text"] = self._logged_channel.unary_unary(
+                "/google.cloud.translation.v3beta1.TranslationService/RefineText",
+                request_serializer=translation_service.RefineTextRequest.serialize,
+                response_deserializer=translation_service.RefineTextResponse.deserialize,
+            )
+        return self._stubs["refine_text"]
+
     def close(self):
         self._logged_channel.close()
 

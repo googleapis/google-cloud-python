@@ -49,4 +49,5 @@ def sample_revoke_subscription():
     # Handle the response
     print(response)
 
+
 # [END analyticshub_v1_generated_AnalyticsHubService_RevokeSubscription_sync]

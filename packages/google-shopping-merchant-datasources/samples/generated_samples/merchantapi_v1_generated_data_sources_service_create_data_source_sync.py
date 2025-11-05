@@ -54,4 +54,5 @@ def sample_create_data_source():
     # Handle the response
     print(response)
 
+
 # [END merchantapi_v1_generated_DataSourcesService_CreateDataSource_sync]

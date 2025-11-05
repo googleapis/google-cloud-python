@@ -49,4 +49,5 @@ async def sample_get_data_source():
     # Handle the response
     print(response)
 
+
 # [END backupdr_v1_generated_BackupDR_GetDataSource_async]

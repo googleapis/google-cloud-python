@@ -50,4 +50,5 @@ def sample_list_backup_plan_revisions():
     for response in page_result:
         print(response)
 
+
 # [END backupdr_v1_generated_BackupDR_ListBackupPlanRevisions_sync]

@@ -760,11 +760,20 @@ class ReachabilityServiceRestTransport(_BaseReachabilityServiceRestTransport):
                         "uri": "/v1/{name=projects/*/locations/global/operations/*}:cancel",
                         "body": "*",
                     },
+                    {
+                        "method": "post",
+                        "uri": "/v1/{name=organizations/*/locations/*/operations/*}:cancel",
+                        "body": "*",
+                    },
                 ],
                 "google.longrunning.Operations.DeleteOperation": [
                     {
                         "method": "delete",
                         "uri": "/v1/{name=projects/*/locations/global/operations/*}",
+                    },
+                    {
+                        "method": "delete",
+                        "uri": "/v1/{name=organizations/*/locations/*/operations/*}",
                     },
                 ],
                 "google.longrunning.Operations.GetOperation": [
@@ -772,11 +781,19 @@ class ReachabilityServiceRestTransport(_BaseReachabilityServiceRestTransport):
                         "method": "get",
                         "uri": "/v1/{name=projects/*/locations/global/operations/*}",
                     },
+                    {
+                        "method": "get",
+                        "uri": "/v1/{name=organizations/*/locations/*/operations/*}",
+                    },
                 ],
                 "google.longrunning.Operations.ListOperations": [
                     {
                         "method": "get",
                         "uri": "/v1/{name=projects/*/locations/global}/operations",
+                    },
+                    {
+                        "method": "get",
+                        "uri": "/v1/{name=organizations/*/locations/*}/operations",
                     },
                 ],
             }

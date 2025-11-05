@@ -29,6 +29,8 @@ __protobuf__ = proto.module(
         "DataSourceBackupConfigInfo",
         "DataSourceGcpResourceInfo",
         "GetDataSourceReferenceRequest",
+        "ListDataSourceReferencesRequest",
+        "ListDataSourceReferencesResponse",
         "FetchDataSourceReferencesForResourceTypeRequest",
         "FetchDataSourceReferencesForResourceTypeResponse",
     },
@@ -37,6 +39,8 @@ __protobuf__ = proto.module(
 
 class DataSourceReference(proto.Message):
     r"""DataSourceReference is a reference to a DataSource resource.
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
 
     Attributes:
         name (str):
@@ -63,6 +67,12 @@ class DataSourceReference(proto.Message):
         data_source_gcp_resource_info (google.cloud.backupdr_v1.types.DataSourceGcpResourceInfo):
             Output only. The GCP resource that the
             DataSource is associated with.
+        total_stored_bytes (int):
+            Output only. Total size of the storage used
+            by all backup resources for the referenced
+            datasource.
+
+            This field is a member of `oneof`_ ``_total_stored_bytes``.
     """
 
     name: str = proto.Field(
@@ -96,6 +106,11 @@ class DataSourceReference(proto.Message):
         proto.MESSAGE,
         number=7,
         message="DataSourceGcpResourceInfo",
+    )
+    total_stored_bytes: int = proto.Field(
+        proto.INT64,
+        number=8,
+        optional=True,
     )
 
 
@@ -180,6 +195,102 @@ class GetDataSourceReferenceRequest(proto.Message):
     name: str = proto.Field(
         proto.STRING,
         number=1,
+    )
+
+
+class ListDataSourceReferencesRequest(proto.Message):
+    r"""Request for the ListDataSourceReferences method.
+
+    Attributes:
+        parent (str):
+            Required. The parent resource name.
+            Format: projects/{project}/locations/{location}
+        page_size (int):
+            Optional. The maximum number of
+            DataSourceReferences to return. The service may
+            return fewer than this value. If unspecified, at
+            most 50 DataSourceReferences will be returned.
+            The maximum value is 100; values above 100 will
+            be coerced to 100.
+        page_token (str):
+            Optional. A page token, received from a previous
+            ``ListDataSourceReferences`` call. Provide this to retrieve
+            the subsequent page.
+
+            When paginating, all other parameters provided to
+            ``ListDataSourceReferences`` must match the call that
+            provided the page token.
+        filter (str):
+            Optional. A filter expression that filters the results
+            listed in the response. The expression must specify the
+            field name, a comparison operator, and the value that you
+            want to use for filtering.
+
+            The following field and operator combinations are supported:
+
+            - data_source_gcp_resource_info.gcp_resourcename with ``=``,
+              ``!=``
+            - data_source_gcp_resource_info.type with ``=``, ``!=``
+        order_by (str):
+            Optional. A comma-separated list of fields to order by,
+            sorted in ascending order. Use "desc" after a field name for
+            descending.
+
+            Supported fields:
+
+            - data_source
+            - data_source_gcp_resource_info.gcp_resourcename
+    """
+
+    parent: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    page_size: int = proto.Field(
+        proto.INT32,
+        number=2,
+    )
+    page_token: str = proto.Field(
+        proto.STRING,
+        number=3,
+    )
+    filter: str = proto.Field(
+        proto.STRING,
+        number=4,
+    )
+    order_by: str = proto.Field(
+        proto.STRING,
+        number=5,
+    )
+
+
+class ListDataSourceReferencesResponse(proto.Message):
+    r"""Response for the ListDataSourceReferences method.
+
+    Attributes:
+        data_source_references (MutableSequence[google.cloud.backupdr_v1.types.DataSourceReference]):
+            The DataSourceReferences from the specified
+            parent.
+        next_page_token (str):
+            A token, which can be sent as ``page_token`` to retrieve the
+            next page. If this field is omitted, there are no subsequent
+            pages.
+    """
+
+    @property
+    def raw_page(self):
+        return self
+
+    data_source_references: MutableSequence[
+        "DataSourceReference"
+    ] = proto.RepeatedField(
+        proto.MESSAGE,
+        number=1,
+        message="DataSourceReference",
+    )
+    next_page_token: str = proto.Field(
+        proto.STRING,
+        number=2,
     )
 
 

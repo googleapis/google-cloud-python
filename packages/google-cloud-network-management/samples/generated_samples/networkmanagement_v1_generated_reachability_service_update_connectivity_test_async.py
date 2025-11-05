@@ -39,8 +39,7 @@ async def sample_update_connectivity_test():
     client = network_management_v1.ReachabilityServiceAsyncClient()
 
     # Initialize request argument(s)
-    request = network_management_v1.UpdateConnectivityTestRequest(
-    )
+    request = network_management_v1.UpdateConnectivityTestRequest()
 
     # Make the request
     operation = client.update_connectivity_test(request=request)
@@ -51,5 +50,6 @@ async def sample_update_connectivity_test():
 
     # Handle the response
     print(response)
+
 
 # [END networkmanagement_v1_generated_ReachabilityService_UpdateConnectivityTest_async]

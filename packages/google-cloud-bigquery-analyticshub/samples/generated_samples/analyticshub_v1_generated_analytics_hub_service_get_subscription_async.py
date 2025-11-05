@@ -49,4 +49,5 @@ async def sample_get_subscription():
     # Handle the response
     print(response)
 
+
 # [END analyticshub_v1_generated_AnalyticsHubService_GetSubscription_async]

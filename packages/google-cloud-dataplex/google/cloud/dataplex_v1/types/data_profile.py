@@ -19,7 +19,7 @@ from typing import MutableMapping, MutableSequence
 
 import proto  # type: ignore
 
-from google.cloud.dataplex_v1.types import processing
+from google.cloud.dataplex_v1.types import datascans_common, processing
 
 __protobuf__ = proto.module(
     package="google.cloud.dataplex.v1",
@@ -64,6 +64,10 @@ class DataProfileSpec(proto.Message):
 
             If specified, the fields will be excluded from data profile,
             regardless of ``include_fields`` value.
+        catalog_publishing_enabled (bool):
+            Optional. If set, the latest DataScan job
+            result will be published as Dataplex Universal
+            Catalog metadata.
     """
 
     class PostScanActions(proto.Message):
@@ -141,6 +145,10 @@ class DataProfileSpec(proto.Message):
         number=6,
         message=SelectedFields,
     )
+    catalog_publishing_enabled: bool = proto.Field(
+        proto.BOOL,
+        number=8,
+    )
 
 
 class DataProfileResult(proto.Message):
@@ -158,6 +166,10 @@ class DataProfileResult(proto.Message):
             result.
         post_scan_actions_result (google.cloud.dataplex_v1.types.DataProfileResult.PostScanActionsResult):
             Output only. The result of post scan actions.
+        catalog_publishing_status (google.cloud.dataplex_v1.types.DataScanCatalogPublishingStatus):
+            Output only. The status of publishing the
+            data scan as Dataplex Universal Catalog
+            metadata.
     """
 
     class Profile(proto.Message):
@@ -544,6 +556,13 @@ class DataProfileResult(proto.Message):
         proto.MESSAGE,
         number=6,
         message=PostScanActionsResult,
+    )
+    catalog_publishing_status: datascans_common.DataScanCatalogPublishingStatus = (
+        proto.Field(
+            proto.MESSAGE,
+            number=7,
+            message=datascans_common.DataScanCatalogPublishingStatus,
+        )
     )
 
 

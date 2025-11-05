@@ -49,4 +49,5 @@ def sample_get_adaptive_mt_dataset():
     # Handle the response
     print(response)
 
+
 # [END translate_v3_generated_TranslationService_GetAdaptiveMtDataset_sync]

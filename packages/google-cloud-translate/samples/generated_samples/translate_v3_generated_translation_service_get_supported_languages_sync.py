@@ -49,4 +49,5 @@ def sample_get_supported_languages():
     # Handle the response
     print(response)
 
+
 # [END translate_v3_generated_TranslationService_GetSupportedLanguages_sync]

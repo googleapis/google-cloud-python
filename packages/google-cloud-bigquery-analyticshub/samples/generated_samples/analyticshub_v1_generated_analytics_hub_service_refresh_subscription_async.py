@@ -53,4 +53,5 @@ async def sample_refresh_subscription():
     # Handle the response
     print(response)
 
+
 # [END analyticshub_v1_generated_AnalyticsHubService_RefreshSubscription_async]

@@ -51,4 +51,5 @@ def sample_set_property_service_level():
     # Handle the response
     print(response)
 
+
 # [END marketingplatformadmin_v1alpha_generated_MarketingplatformAdminService_SetPropertyServiceLevel_sync]

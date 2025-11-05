@@ -47,6 +47,7 @@ __protobuf__ = proto.module(
         "DestinationDataset",
         "DestinationPubSubSubscription",
         "Listing",
+        "StoredProcedureConfig",
         "Subscription",
         "ListDataExchangesRequest",
         "ListDataExchangesResponse",
@@ -855,6 +856,10 @@ class Listing(proto.Message):
             Optional. If set, restricted export
             configuration will be propagated and enforced on
             the linked dataset.
+        stored_procedure_config (google.cloud.bigquery_analyticshub_v1.types.StoredProcedureConfig):
+            Optional. If set, stored procedure
+            configuration will be propagated and enforced on
+            the linked dataset.
         discovery_type (google.cloud.bigquery_analyticshub_v1.types.DiscoveryType):
             Optional. Type of discovery of the listing on
             the discovery page.
@@ -1360,6 +1365,11 @@ class Listing(proto.Message):
         number=13,
         message=RestrictedExportConfig,
     )
+    stored_procedure_config: "StoredProcedureConfig" = proto.Field(
+        proto.MESSAGE,
+        number=20,
+        message="StoredProcedureConfig",
+    )
     discovery_type: "DiscoveryType" = proto.Field(
         proto.ENUM,
         number=14,
@@ -1386,6 +1396,44 @@ class Listing(proto.Message):
         proto.BOOL,
         number=19,
         optional=True,
+    )
+
+
+class StoredProcedureConfig(proto.Message):
+    r"""Stored procedure configuration, used to configure stored
+    procedure sharing on linked dataset.
+
+    Attributes:
+        enabled (bool):
+            Optional. If true, enable sharing of stored
+            procedure.
+        allowed_stored_procedure_types (MutableSequence[google.cloud.bigquery_analyticshub_v1.types.StoredProcedureConfig.StoredProcedureType]):
+            Output only. Types of stored procedure
+            supported to share.
+    """
+
+    class StoredProcedureType(proto.Enum):
+        r"""Enum to specify the type of stored procedure to share.
+
+        Values:
+            STORED_PROCEDURE_TYPE_UNSPECIFIED (0):
+                Default value. This value is unused.
+            SQL_PROCEDURE (1):
+                SQL stored procedure.
+        """
+        STORED_PROCEDURE_TYPE_UNSPECIFIED = 0
+        SQL_PROCEDURE = 1
+
+    enabled: bool = proto.Field(
+        proto.BOOL,
+        number=1,
+    )
+    allowed_stored_procedure_types: MutableSequence[
+        StoredProcedureType
+    ] = proto.RepeatedField(
+        proto.ENUM,
+        number=2,
+        enum=StoredProcedureType,
     )
 
 

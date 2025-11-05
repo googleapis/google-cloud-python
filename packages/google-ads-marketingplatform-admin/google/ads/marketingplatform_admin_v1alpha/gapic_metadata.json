@@ -20,6 +20,11 @@
                 "delete_analytics_account_link"
               ]
             },
+            "FindSalesPartnerManagedClients": {
+              "methods": [
+                "find_sales_partner_managed_clients"
+              ]
+            },
             "GetOrganization": {
               "methods": [
                 "get_organization"
@@ -28,6 +33,16 @@
             "ListAnalyticsAccountLinks": {
               "methods": [
                 "list_analytics_account_links"
+              ]
+            },
+            "ListOrganizations": {
+              "methods": [
+                "list_organizations"
+              ]
+            },
+            "ReportPropertyUsage": {
+              "methods": [
+                "report_property_usage"
               ]
             },
             "SetPropertyServiceLevel": {
@@ -50,6 +65,11 @@
                 "delete_analytics_account_link"
               ]
             },
+            "FindSalesPartnerManagedClients": {
+              "methods": [
+                "find_sales_partner_managed_clients"
+              ]
+            },
             "GetOrganization": {
               "methods": [
                 "get_organization"
@@ -58,6 +78,16 @@
             "ListAnalyticsAccountLinks": {
               "methods": [
                 "list_analytics_account_links"
+              ]
+            },
+            "ListOrganizations": {
+              "methods": [
+                "list_organizations"
+              ]
+            },
+            "ReportPropertyUsage": {
+              "methods": [
+                "report_property_usage"
               ]
             },
             "SetPropertyServiceLevel": {
@@ -80,6 +110,11 @@
                 "delete_analytics_account_link"
               ]
             },
+            "FindSalesPartnerManagedClients": {
+              "methods": [
+                "find_sales_partner_managed_clients"
+              ]
+            },
             "GetOrganization": {
               "methods": [
                 "get_organization"
@@ -88,6 +123,16 @@
             "ListAnalyticsAccountLinks": {
               "methods": [
                 "list_analytics_account_links"
+              ]
+            },
+            "ListOrganizations": {
+              "methods": [
+                "list_organizations"
+              ]
+            },
+            "ReportPropertyUsage": {
+              "methods": [
+                "report_property_usage"
               ]
             },
             "SetPropertyServiceLevel": {

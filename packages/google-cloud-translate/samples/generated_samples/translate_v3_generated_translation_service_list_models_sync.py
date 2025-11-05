@@ -50,4 +50,5 @@ def sample_list_models():
     for response in page_result:
         print(response)
 
+
 # [END translate_v3_generated_TranslationService_ListModels_sync]
