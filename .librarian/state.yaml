@@ -4465,8 +4465,7 @@ libraries:
       - packages/googleapis-common-protos
     preserve_regex: []
     remove_regex:
-      - ^packages/googleapis-common-protos/google/(?:api|logging|rpc|type)/.*(?:\.proto|_pb2\.(?:py|pyi))$
-      - ^packages/googleapis-common-protos/google/cloud/.*/.*(?:\.proto|_pb2\.(?:py|pyi))$
+      - ^packages/googleapis-common-protos/google/(?:api|cloud|logging|rpc|type)/.*(?:\.proto|_pb2\.(?:py|pyi))$
       - .repo-metadata.json
       - README.rst
       - docs/summary_overview.md
