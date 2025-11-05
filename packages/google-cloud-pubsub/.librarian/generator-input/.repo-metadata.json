@@ -1,0 +1,18 @@
+{
+    "name": "pubsub",
+    "name_pretty": "Google Cloud Pub/Sub",
+    "product_documentation": "https://cloud.google.com/pubsub/docs/",
+    "client_documentation": "https://cloud.google.com/python/docs/reference/pubsub/latest",
+    "issue_tracker": "https://issuetracker.google.com/savedsearches/559741",
+    "release_level": "stable",
+    "language": "python",
+    "repo": "googleapis/python-pubsub",
+    "distribution_name": "google-cloud-pubsub",
+    "api_id": "pubsub.googleapis.com",
+    "requires_billing": true,
+    "default_version": "v1",
+    "codeowner_team": "@googleapis/api-pubsub",
+    "api_shortname": "pubsub",
+    "library_type": "GAPIC_COMBO",
+    "api_description": "is designed to provide reliable, many-to-many, asynchronous messaging between applications. Publisher applications can send messages to a topic and other applications can subscribe to that topic to receive the messages. By decoupling senders and receivers, Google Cloud Pub/Sub allows developers to communicate between independently written applications."
+}
