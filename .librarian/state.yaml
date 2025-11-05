@@ -969,7 +969,8 @@ libraries:
       - scripts/readme-gen
       - testing/.gitignore
       - tests/system
-      - tests/unit/.*.py
+      - tests/unit/helpers.py
+      - tests/unit/test_.*.py
     remove_regex:
       - packages/google-cloud-bigquery-storage
     tag_format: '{id}-v{version}'
