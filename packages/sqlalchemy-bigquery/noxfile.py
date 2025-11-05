@@ -41,9 +41,9 @@ LINT_PATHS = [
     "setup.py",
 ]
 
-DEFAULT_PYTHON_VERSION = "3.10"
+DEFAULT_PYTHON_VERSION = "3.14"
 
-UNIT_TEST_PYTHON_VERSIONS: List[str] = ["3.9", "3.10", "3.11", "3.12", "3.13"]
+UNIT_TEST_PYTHON_VERSIONS: List[str] = ["3.9", "3.10", "3.11", "3.12", "3.13", "3.14"]
 UNIT_TEST_STANDARD_DEPENDENCIES = [
     "mock",
     "asyncmock",
@@ -73,9 +73,14 @@ UNIT_TEST_EXTRAS_BY_PYTHON: Dict[str, List[str]] = {
         "geography",
         "bqstorage",
     ],
+    "3.14": [
+        "tests",
+        "geography",
+        "bqstorage",
+    ],
 }
 
-SYSTEM_TEST_PYTHON_VERSIONS: List[str] = ["3.9", "3.12", "3.13"]
+SYSTEM_TEST_PYTHON_VERSIONS: List[str] = ["3.9", "3.12", "3.13", "3.14"]
 SYSTEM_TEST_STANDARD_DEPENDENCIES: List[str] = [
     "mock",
     "pytest",
@@ -94,6 +99,11 @@ SYSTEM_TEST_EXTRAS_BY_PYTHON: Dict[str, List[str]] = {
         "bqstorage",
     ],
     "3.13": [
+        "tests",
+        "geography",
+        "bqstorage",
+    ],
+    "3.14": [
         "tests",
         "geography",
         "bqstorage",
@@ -193,7 +203,7 @@ def format(session):
 @_calculate_duration
 def lint_setup_py(session):
     """Verify that setup.py is valid (including RST check)."""
-    session.install("docutils", "pygments")
+    session.install("docutils", "pygments", "setuptools")
     session.run("python", "setup.py", "check", "--restructuredtext", "--strict")
 
 
@@ -234,7 +244,12 @@ def install_unittest_dependencies(session, *constraints):
 def unit(session, protobuf_implementation, install_extras=True):
     # Install all test dependencies, then install this package in-place.
 
-    if protobuf_implementation == "cpp" and session.python in ("3.11", "3.12", "3.13"):
+    if protobuf_implementation == "cpp" and session.python in (
+        "3.11",
+        "3.12",
+        "3.13",
+        "3.14",
+    ):
         session.skip("cpp implementation is not supported in python 3.11+")
 
     constraints_path = str(
@@ -242,7 +257,7 @@ def unit(session, protobuf_implementation, install_extras=True):
     )
     install_unittest_dependencies(session, "-c", constraints_path)
 
-    if install_extras and session.python in ["3.11", "3.12", "3.13"]:
+    if install_extras and session.python in ["3.11", "3.12", "3.13", "3.14"]:
         install_target = ".[geography,alembic,tests,bqstorage]"
     elif install_extras:
         install_target = ".[all]"
@@ -419,7 +434,7 @@ def compliance(session):
         "-c",
         constraints_path,
     )
-    if session.python in ["3.12", "3.13"]:
+    if session.python in ["3.12", "3.13", "3.14"]:
         extras = "[tests,geography,alembic]"
     else:
         extras = "[tests]"
@@ -549,7 +564,7 @@ def docfx(session):
     )
 
 
-@nox.session(python="3.13")
+@nox.session(python=DEFAULT_PYTHON_VERSION)
 @nox.parametrize(
     "protobuf_implementation",
     ["python", "upb", "cpp"],
@@ -558,7 +573,12 @@ def docfx(session):
 def prerelease_deps(session, protobuf_implementation):
     """Run all tests with prerelease versions of dependencies installed."""
 
-    if protobuf_implementation == "cpp" and session.python in ("3.11", "3.12", "3.13"):
+    if protobuf_implementation == "cpp" and session.python in (
+        "3.11",
+        "3.12",
+        "3.13",
+        "3.14",
+    ):
         session.skip("cpp implementation is not supported in python 3.11+")
 
     # Install all dependencies
