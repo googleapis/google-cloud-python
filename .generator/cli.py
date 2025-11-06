@@ -614,7 +614,7 @@ def handle_generate(
             api_path = api.get("path")
             if api_path:
                 _generate_api(
-                    api_path, library_id, source, output, version, is_mono_repo
+                    api_path, library_id, source, output, version, is_mono_repo, input
                 )
         _copy_files_needed_for_post_processing(output, input, library_id, is_mono_repo)
         _generate_repo_metadata_file(
@@ -805,20 +805,19 @@ def _stage_proto_only_library(
         tmp_dir (str): The temporary directory where protoc output was placed.
         staging_dir (str): The final destination for the staged code.
     """
-    # 1. Copy the generated Python files (e.g., *_pb2.py) from the protoc output
-    # The generated Python files are placed under a directory corresponding to `api_path`
-    # inside the temporary directory, since the protoc command ran with `api_path`
-    # specified.
-    shutil.copytree(f"{tmp_dir}/{api_path}", staging_dir, dirs_exist_ok=True)
+    # 1. Copy the generated Python files (e.g., *_pb2.py) from the protoc output.
+    # protoc preserves the directory structure in the output directory.
+    shutil.copytree(tmp_dir, staging_dir, dirs_exist_ok=True)
 
-    # 2. Copy the original proto files to the staging directory
+    # 2. Copy the original proto files to the staging directory.
     # This is typically done for proto-only libraries so that the protos are included
     # in the distributed package.
     proto_glob_path = f"{source_dir}/{api_path}/*.proto"
     for proto_file in glob.glob(proto_glob_path):
-        # The glob is expected to find the file inside the source_dir.
-        # We copy only the filename to the target staging directory.
-        shutil.copyfile(proto_file, f"{staging_dir}/{os.path.basename(proto_file)}")
+        # The destination path should be relative to staging_dir to preserve the structure.
+        destination = os.path.join(staging_dir, api_path, os.path.basename(proto_file))
+        os.makedirs(os.path.dirname(destination), exist_ok=True)
+        shutil.copyfile(proto_file, destination)
 
 
 def _stage_gapic_library(tmp_dir: str, staging_dir: str) -> None:
@@ -843,6 +842,7 @@ def _generate_api(
     output: str,
     gapic_version: str,
     is_mono_repo: bool,
+    input: str,
 ):
     """
     Handles the generation and staging process for a single API path.
@@ -855,6 +855,8 @@ def _generate_api(
         gapic_version(str): The desired version number for the GAPIC client library
             in a format which follows PEP-440.
         is_mono_repo(bool): True if the current repository is a mono-repo.
+        input(str): The path to the directory in the container
+            which contains additional generator input.
     """
     py_gapic_config = _read_bazel_build_py_rule(api_path, source)
     is_proto_only_library = len(py_gapic_config) == 0
@@ -873,13 +875,18 @@ def _generate_api(
         _run_protoc_command(command, source)
 
         # 3. Determine staging location
-        staging_child_directory = _get_staging_child_directory(
-            api_path, is_proto_only_library
-        )
-        staging_dir = os.path.join(output, "owl-bot-staging")
-        if is_mono_repo:
-            staging_dir = os.path.join(staging_dir, library_id)
-        staging_dir = os.path.join(staging_dir, staging_child_directory)
+        # If it's a non-mono repo with a custom owlbot.py, stage directly to output.
+        # Otherwise, use the owl-bot-staging directory.
+        if not is_mono_repo and Path(f"{input}/owlbot.py").exists():
+            staging_dir = output
+        else:
+            staging_child_directory = _get_staging_child_directory(
+                api_path, is_proto_only_library
+            )
+            staging_dir = os.path.join(output, "owl-bot-staging")
+            if is_mono_repo:
+                staging_dir = os.path.join(staging_dir, library_id)
+            staging_dir = os.path.join(staging_dir, staging_child_directory)
 
         # 4. Stage the generated code
         if is_proto_only_library:

@@ -617,16 +617,21 @@ def test_run_protoc_command_failure(mocker):
         _run_protoc_command(command, source)
 
 
-@pytest.mark.parametrize("is_mono_repo", [False, True])
-def test_generate_api_success_py_gapic(mocker, caplog, is_mono_repo):
+@pytest.mark.parametrize(
+    "is_mono_repo,owlbot_py_exists",
+    [(False, False), (True, False), (False, True)],
+)
+def test_generate_api_success_py_gapic(mocker, caplog, is_mono_repo, owlbot_py_exists):
     caplog.set_level(logging.INFO)
 
     API_PATH = "google/cloud/language/v1"
     LIBRARY_ID = "google-cloud-language"
     SOURCE = "source"
     OUTPUT = "output"
+    INPUT = "input"
     gapic_version = "1.2.99"
 
+    mocker.patch("pathlib.Path.exists", return_value=owlbot_py_exists)
     mock_read_bazel_build_py_rule = mocker.patch(
         "cli._read_bazel_build_py_rule",
         return_value={
@@ -638,11 +643,19 @@ def test_generate_api_success_py_gapic(mocker, caplog, is_mono_repo):
     mock_run_protoc_command = mocker.patch("cli._run_protoc_command")
     mock_shutil_copytree = mocker.patch("shutil.copytree")
 
-    _generate_api(API_PATH, LIBRARY_ID, SOURCE, OUTPUT, gapic_version, is_mono_repo)
+    _generate_api(
+        API_PATH, LIBRARY_ID, SOURCE, OUTPUT, gapic_version, is_mono_repo, INPUT
+    )
 
     mock_read_bazel_build_py_rule.assert_called_once()
     mock_run_protoc_command.assert_called_once()
-    mock_shutil_copytree.assert_called_once()
+    if not is_mono_repo and owlbot_py_exists:
+        # In this case, the staging directory is the output directory itself.
+        mock_shutil_copytree.assert_called_once_with(
+            unittest.mock.ANY, OUTPUT, dirs_exist_ok=True
+        )
+    else:
+        mock_shutil_copytree.assert_called_once()
 
 
 @pytest.mark.parametrize("is_mono_repo", [False, True])
@@ -653,6 +666,7 @@ def test_generate_api_success_py_proto(mocker, caplog, is_mono_repo):
     LIBRARY_ID = "google-cloud-language"
     SOURCE = "source"
     OUTPUT = "output"
+    INPUT = "input"
     gapic_version = "1.2.99"
 
     mock_read_bazel_build_py_rule = mocker.patch(
@@ -661,7 +675,9 @@ def test_generate_api_success_py_proto(mocker, caplog, is_mono_repo):
     mock_run_protoc_command = mocker.patch("cli._run_protoc_command")
     mock_shutil_copytree = mocker.patch("shutil.copytree")
 
-    _generate_api(API_PATH, LIBRARY_ID, SOURCE, OUTPUT, gapic_version, is_mono_repo)
+    _generate_api(
+        API_PATH, LIBRARY_ID, SOURCE, OUTPUT, gapic_version, is_mono_repo, INPUT
+    )
 
     mock_read_bazel_build_py_rule.assert_called_once()
     mock_run_protoc_command.assert_called_once()
@@ -1618,6 +1634,7 @@ def test_stage_proto_only_library(mocker):
     mock_shutil_copyfile = mocker.patch("shutil.copyfile")
     mock_shutil_copytree = mocker.patch("shutil.copytree")
     mock_glob_glob = mocker.patch("glob.glob")
+    mock_os_makedirs = mocker.patch("os.makedirs")
 
     # Mock glob.glob to return a list of fake proto files
     mock_proto_files = [
@@ -1636,7 +1653,7 @@ def test_stage_proto_only_library(mocker):
 
     # Assertion 1: Check copytree was called exactly once to move generated Python files
     mock_shutil_copytree.assert_called_once_with(
-        f"{tmp_dir}/{api_path}", staging_dir, dirs_exist_ok=True
+        tmp_dir, staging_dir, dirs_exist_ok=True
     )
 
     # Assertion 2: Check glob.glob was called correctly
@@ -1648,11 +1665,18 @@ def test_stage_proto_only_library(mocker):
 
     # Check the exact arguments for copyfile calls
     mock_shutil_copyfile.assert_any_call(
-        mock_proto_files[0], f"{staging_dir}/{os.path.basename(mock_proto_files[0])}"
+        mock_proto_files[0],
+        os.path.join(
+            staging_dir, api_path, os.path.basename(mock_proto_files[0])
+        ),
     )
     mock_shutil_copyfile.assert_any_call(
-        mock_proto_files[1], f"{staging_dir}/{os.path.basename(mock_proto_files[1])}"
+        mock_proto_files[1],
+        os.path.join(
+            staging_dir, api_path, os.path.basename(mock_proto_files[1])
+        ),
     )
+    assert mock_os_makedirs.call_count == len(mock_proto_files)
 
 
 def test_stage_gapic_library(mocker):
