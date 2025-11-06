@@ -71,23 +71,6 @@ def _hash_digest_file(hasher, filepath):
 
 
 @pytest.fixture(scope="session")
-def normalize_connection_id():
-    """Normalizes the connection ID by casefolding only the LOCATION component.
-
-    Connection format: PROJECT.LOCATION.CONNECTION_NAME
-    Only LOCATION is case-insensitive; PROJECT and CONNECTION_NAME must be lowercase.
-    """
-
-    def normalize(connection_id: str) -> str:
-        parts = connection_id.split(".")
-        if len(parts) == 3:
-            return f"{parts[0]}.{parts[1].casefold()}.{parts[2]}"
-        return connection_id  # Return unchanged if invalid format
-
-    return normalize
-
-
-@pytest.fixture(scope="session")
 def tokyo_location() -> str:
     return TOKYO_LOCATION
 
@@ -212,7 +195,8 @@ def bq_connection_name() -> str:
 
 @pytest.fixture(scope="session")
 def bq_connection(bigquery_client: bigquery.Client, bq_connection_name: str) -> str:
-    return f"{bigquery_client.project}.{bigquery_client.location}.{bq_connection_name}"
+    # TODO(b/458169181): LOCATION casefold is needed for the mutimodal backend bug. Remove after the bug is fixed.
+    return f"{bigquery_client.project}.{bigquery_client.location.casefold()}.{bq_connection_name}"
 
 
 @pytest.fixture(scope="session", autouse=True)

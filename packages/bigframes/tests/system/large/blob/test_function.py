@@ -52,7 +52,6 @@ def images_output_uris(images_output_folder: str) -> list[str]:
     ]
 
 
-@pytest.mark.skip(reason="b/457416070")
 def test_blob_exif(
     bq_connection: str,
     session: bigframes.Session,
@@ -104,7 +103,6 @@ def test_blob_exif_verbose(
     assert content_series.dtype == dtypes.JSON_DTYPE
 
 
-@pytest.mark.skip(reason="b/457416070")
 def test_blob_image_blur_to_series(
     images_mm_df: bpd.DataFrame,
     bq_connection: str,
@@ -138,7 +136,6 @@ def test_blob_image_blur_to_series(
     assert not actual.blob.size().isna().any()
 
 
-@pytest.mark.skip(reason="b/457416070")
 def test_blob_image_blur_to_series_verbose(
     images_mm_df: bpd.DataFrame,
     bq_connection: str,
@@ -166,7 +163,6 @@ def test_blob_image_blur_to_series_verbose(
     assert not actual.blob.size().isna().any()
 
 
-@pytest.mark.skip(reason="b/457416070")
 def test_blob_image_blur_to_folder(
     images_mm_df: bpd.DataFrame,
     bq_connection: str,
@@ -199,7 +195,6 @@ def test_blob_image_blur_to_folder(
     assert not actual.blob.size().isna().any()
 
 
-@pytest.mark.skip(reason="b/457416070")
 def test_blob_image_blur_to_folder_verbose(
     images_mm_df: bpd.DataFrame,
     bq_connection: str,
@@ -259,7 +254,6 @@ def test_blob_image_blur_to_bq_verbose(images_mm_df: bpd.DataFrame, bq_connectio
     assert content_series.dtype == dtypes.BYTES_DTYPE
 
 
-@pytest.mark.skip(reason="b/457416070")
 def test_blob_image_resize_to_series(
     images_mm_df: bpd.DataFrame,
     bq_connection: str,
@@ -297,7 +291,6 @@ def test_blob_image_resize_to_series(
     assert not actual.blob.size().isna().any()
 
 
-@pytest.mark.skip(reason="b/457416070")
 def test_blob_image_resize_to_series_verbose(
     images_mm_df: bpd.DataFrame,
     bq_connection: str,
@@ -332,7 +325,6 @@ def test_blob_image_resize_to_series_verbose(
     assert not actual.blob.size().isna().any()
 
 
-@pytest.mark.skip(reason="b/457416070")
 def test_blob_image_resize_to_folder(
     images_mm_df: bpd.DataFrame,
     bq_connection: str,
@@ -366,7 +358,6 @@ def test_blob_image_resize_to_folder(
     assert not actual.blob.size().isna().any()
 
 
-@pytest.mark.skip(reason="b/457416070")
 def test_blob_image_resize_to_folder_verbose(
     images_mm_df: bpd.DataFrame,
     bq_connection: str,
@@ -429,7 +420,6 @@ def test_blob_image_resize_to_bq_verbose(
     assert content_series.dtype == dtypes.BYTES_DTYPE
 
 
-@pytest.mark.skip(reason="b/457416070")
 def test_blob_image_normalize_to_series(
     images_mm_df: bpd.DataFrame,
     bq_connection: str,
@@ -502,7 +492,6 @@ def test_blob_image_normalize_to_series_verbose(
     assert hasattr(content_series, "blob")
 
 
-@pytest.mark.skip(reason="b/457416070")
 def test_blob_image_normalize_to_folder(
     images_mm_df: bpd.DataFrame,
     bq_connection: str,
@@ -609,7 +598,6 @@ def test_blob_image_normalize_to_bq_verbose(
     assert content_series.dtype == dtypes.BYTES_DTYPE
 
 
-@pytest.mark.skip(reason="b/457416070")
 def test_blob_pdf_extract(
     pdf_mm_df: bpd.DataFrame,
     bq_connection: str,
@@ -645,7 +633,6 @@ def test_blob_pdf_extract(
         ), f"Item (verbose=False): Expected keyword '{keyword}' not found in extracted text. "
 
 
-@pytest.mark.skip(reason="b/457416070")
 def test_blob_pdf_extract_verbose(
     pdf_mm_df: bpd.DataFrame,
     bq_connection: str,
@@ -683,7 +670,6 @@ def test_blob_pdf_extract_verbose(
         ), f"Item (verbose=True): Expected keyword '{keyword}' not found in extracted text. "
 
 
-@pytest.mark.skip(reason="b/457416070")
 def test_blob_pdf_chunk(pdf_mm_df: bpd.DataFrame, bq_connection: str):
     actual = (
         pdf_mm_df["pdf"]
@@ -723,7 +709,6 @@ def test_blob_pdf_chunk(pdf_mm_df: bpd.DataFrame, bq_connection: str):
         ), f"Item (verbose=False): Expected keyword '{keyword}' not found in extracted text. "
 
 
-@pytest.mark.skip(reason="b/457416070")
 def test_blob_pdf_chunk_verbose(pdf_mm_df: bpd.DataFrame, bq_connection: str):
     actual = (
         pdf_mm_df["pdf"]

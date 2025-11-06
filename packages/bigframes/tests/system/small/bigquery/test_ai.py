@@ -273,10 +273,11 @@ def test_ai_if(session):
     assert result.dtype == dtypes.BOOL_DTYPE
 
 
-@pytest.mark.skip(reason="b/457416070")
-def test_ai_if_multi_model(session):
+def test_ai_if_multi_model(session, bq_connection):
     df = session.from_glob_path(
-        "gs://bigframes-dev-testing/a_multimodel/images/*", name="image"
+        "gs://bigframes-dev-testing/a_multimodel/images/*",
+        name="image",
+        connection=bq_connection,
     )
 
     result = bbq.ai.if_((df["image"], " contains an animal"))
@@ -294,10 +295,11 @@ def test_ai_classify(session):
     assert result.dtype == dtypes.STRING_DTYPE
 
 
-@pytest.mark.skip(reason="b/457416070")
-def test_ai_classify_multi_model(session):
+def test_ai_classify_multi_model(session, bq_connection):
     df = session.from_glob_path(
-        "gs://bigframes-dev-testing/a_multimodel/images/*", name="image"
+        "gs://bigframes-dev-testing/a_multimodel/images/*",
+        name="image",
+        connection=bq_connection,
     )
 
     result = bbq.ai.classify(df["image"], ["photo", "cartoon"])
