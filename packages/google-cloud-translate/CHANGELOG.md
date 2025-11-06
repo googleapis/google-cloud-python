@@ -4,6 +4,15 @@
 
 [1]: https://pypi.org/project/google-cloud-translate/#history
 
+## [3.23.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-translate-v3.22.0...google-cloud-translate-v3.23.0) (2025-11-06)
+
+
+### Features
+
+* Adds support for RefineText  ([735dcad100d7957ba5373a654b9a2d7c2a277903](https://github.com/googleapis/google-cloud-python/commit/735dcad100d7957ba5373a654b9a2d7c2a277903))
+* Adds option for pdf_native only document translation  ([735dcad100d7957ba5373a654b9a2d7c2a277903](https://github.com/googleapis/google-cloud-python/commit/735dcad100d7957ba5373a654b9a2d7c2a277903))
+* Adds option for contextual translation with glossaries  ([735dcad100d7957ba5373a654b9a2d7c2a277903](https://github.com/googleapis/google-cloud-python/commit/735dcad100d7957ba5373a654b9a2d7c2a277903))
+
 ## [3.22.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-translate-v3.21.1...google-cloud-translate-v3.22.0) (2025-10-20)
 
 

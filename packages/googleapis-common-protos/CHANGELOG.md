@@ -4,6 +4,14 @@
 
 [1]: https://pypi.org/project/googleapis-common-protos/#history
 
+## [1.72.0](https://github.com/googleapis/google-cloud-python/compare/googleapis-common-protos-v1.71.0...googleapis-common-protos-v1.72.0) (2025-11-06)
+
+
+### Features
+
+* add common_resources.proto (#14851) ([e4e0e2a93c3db14324c1d9f799283ffe4f2bec09](https://github.com/googleapis/google-cloud-python/commit/e4e0e2a93c3db14324c1d9f799283ffe4f2bec09))
+* add field api_version to message ServiceForTransport (#14843) ([81812fde4f1e43d568d53d6a993cf423b38d6728](https://github.com/googleapis/google-cloud-python/commit/81812fde4f1e43d568d53d6a993cf423b38d6728))
+
 ## [1.71.0](https://github.com/googleapis/google-cloud-python/compare/googleapis-common-protos-v1.70.0...googleapis-common-protos-v1.71.0) (2025-10-20)
 
 
