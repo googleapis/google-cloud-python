@@ -16,15 +16,21 @@ import datetime
 import threading
 from typing import List, Optional, Sequence
 import uuid
+import warnings
 
+from google.api_core import retry as api_core_retry
 import google.cloud.bigquery as bigquery
 
 from bigframes import constants
 import bigframes.core.events
+import bigframes.exceptions as bfe
 from bigframes.session import temporary_storage
 import bigframes.session._io.bigquery as bf_io_bigquery
 
 _TEMP_TABLE_ID_FORMAT = "bqdf{date}_{session_id}_{random_id}"
+# UDFs older than this many days are considered stale and will be deleted
+# from the anonymous dataset before creating a new UDF.
+_UDF_CLEANUP_THRESHOLD_DAYS = 3
 
 
 class AnonymousDatasetManager(temporary_storage.TemporaryStorageManager):
@@ -137,8 +143,46 @@ class AnonymousDatasetManager(temporary_storage.TemporaryStorageManager):
         )
         return self.dataset.table(table_id)
 
+    def _cleanup_old_udfs(self):
+        """Clean up old UDFs in the anonymous dataset."""
+        dataset = self.dataset
+        routines = list(self.bqclient.list_routines(dataset))
+        cleanup_cutoff_time = datetime.datetime.now(
+            datetime.timezone.utc
+        ) - datetime.timedelta(days=_UDF_CLEANUP_THRESHOLD_DAYS)
+
+        for routine in routines:
+            if (
+                routine.created < cleanup_cutoff_time
+                and routine._properties["routineType"] == "SCALAR_FUNCTION"
+            ):
+                try:
+                    self.bqclient.delete_routine(
+                        routine.reference,
+                        not_found_ok=True,
+                        retry=api_core_retry.Retry(timeout=0),
+                    )
+                except Exception as e:
+                    msg = bfe.format_message(
+                        f"Unable to clean this old UDF '{routine.reference}': {e}"
+                    )
+                    warnings.warn(msg, category=bfe.CleanupFailedWarning)
+
     def close(self):
         """Delete tables that were created with this session's session_id."""
         for table_ref in self._table_ids:
             self.bqclient.delete_table(table_ref, not_found_ok=True)
         self._table_ids.clear()
+
+        try:
+            # Before closing the session, attempt to clean up any uncollected,
+            # old Python UDFs residing in the anonymous dataset. These UDFs
+            # accumulate over time and can eventually exceed resource limits.
+            # See more from b/450913424.
+            self._cleanup_old_udfs()
+        except Exception as e:
+            # Log a warning on the failure, do not interrupt the workflow.
+            msg = bfe.format_message(
+                f"Failed to clean up the old Python UDFs before closing the session: {e}"
+            )
+            warnings.warn(msg, category=bfe.CleanupFailedWarning)

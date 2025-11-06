@@ -420,7 +420,7 @@ class DataFrame(generic.NDFrame):
             >>> df = bpd.DataFrame({'col1': [1, 2], 'col2': [3, 4]})
             >>> destination = df.to_gbq(ordering_id="ordering_id")
             >>> # The table created can be read outside of the current session.
-            >>> bpd.close_session()  # Optional, to demonstrate a new session.
+            >>> bpd.close_session()  # Optional, to demonstrate a new session.  # doctest: +SKIP
             >>> bpd.read_gbq(destination, index_col="ordering_id")
                          col1  col2
             ordering_id

@@ -30,7 +30,7 @@ class UnknownLocationWarning(Warning):
 
 
 class CleanupFailedWarning(Warning):
-    """Bigframes failed to clean up a table resource."""
+    """Bigframes failed to clean up a table or function resource."""
 
 
 class DefaultIndexWarning(Warning):

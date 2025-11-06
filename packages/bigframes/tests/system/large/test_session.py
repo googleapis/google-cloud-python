@@ -13,6 +13,7 @@
 # limitations under the License.
 
 import datetime
+from unittest import mock
 
 import google.cloud.bigquery as bigquery
 import google.cloud.exceptions
@@ -138,3 +139,35 @@ def test_clean_up_via_context_manager(session_creator):
         bqclient.delete_table(full_id_1)
     with pytest.raises(google.cloud.exceptions.NotFound):
         bqclient.delete_table(full_id_2)
+
+
+def test_cleanup_old_udfs(session: bigframes.Session):
+    routine_ref = session._anon_dataset_manager.dataset.routine("test_routine_cleanup")
+
+    # Create a dummy function to be deleted.
+    create_function_sql = f"""
+CREATE OR REPLACE FUNCTION `{routine_ref.project}.{routine_ref.dataset_id}.{routine_ref.routine_id}`(x INT64)
+RETURNS INT64 LANGUAGE python
+OPTIONS (entry_point='dummy_func', runtime_version='python-3.11')
+AS r'''
+def dummy_func(x):
+    return x + 1
+'''
+    """
+    session.bqclient.query(create_function_sql).result()
+
+    assert session.bqclient.get_routine(routine_ref) is not None
+
+    mock_routine = mock.MagicMock(spec=bigquery.Routine)
+    mock_routine.created = datetime.datetime.now(
+        datetime.timezone.utc
+    ) - datetime.timedelta(days=100)
+    mock_routine.reference = routine_ref
+    mock_routine._properties = {"routineType": "SCALAR_FUNCTION"}
+    routines = [mock_routine]
+
+    with mock.patch.object(session.bqclient, "list_routines", return_value=routines):
+        session._anon_dataset_manager._cleanup_old_udfs()
+
+    with pytest.raises(google.cloud.exceptions.NotFound):
+        session.bqclient.get_routine(routine_ref)
