@@ -15,6 +15,7 @@
 """DB-API Connection for the Google Cloud Spanner."""
 import warnings
 
+from google.api_core.client_options import ClientOptions
 from google.api_core.exceptions import Aborted
 from google.api_core.gapic_v1.client_info import ClientInfo
 from google.auth.credentials import AnonymousCredentials
@@ -734,6 +735,7 @@ def connect(
     client=None,
     route_to_leader_enabled=True,
     database_role=None,
+    experimental_host=None,
     **kwargs,
 ):
     """Creates a connection to a Google Cloud Spanner database.
@@ -805,6 +807,10 @@ def connect(
             client_options = None
             if isinstance(credentials, AnonymousCredentials):
                 client_options = kwargs.get("client_options")
+            if experimental_host is not None:
+                project = "default"
+                credentials = AnonymousCredentials()
+                client_options = ClientOptions(api_endpoint=experimental_host)
             client = spanner.Client(
                 project=project,
                 credentials=credentials,

@@ -86,6 +86,18 @@ class TestDatabase(Database):
                     transport=transport,
                 )
                 return self._spanner_api
+            if self._instance.experimental_host is not None:
+                channel = grpc.insecure_channel(self._instance.experimental_host)
+                self._x_goog_request_id_interceptor = XGoogRequestIDHeaderInterceptor()
+                self._interceptors.append(self._x_goog_request_id_interceptor)
+                channel = grpc.intercept_channel(channel, *self._interceptors)
+                transport = SpannerGrpcTransport(channel=channel)
+                self._spanner_api = SpannerClient(
+                    client_info=client_info,
+                    transport=transport,
+                    client_options=client_options,
+                )
+                return self._spanner_api
             credentials = client.credentials
             if isinstance(credentials, google.auth.credentials.Scoped):
                 credentials = credentials.with_scopes((SPANNER_DATA_SCOPE,))

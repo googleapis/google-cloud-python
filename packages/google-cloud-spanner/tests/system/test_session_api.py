@@ -295,7 +295,9 @@ def sessions_database(
 
     _helpers.retry_has_all_dll(sessions_database.reload)()
     # Some tests expect there to be a session present in the pool.
-    pool.put(pool.get())
+    # Experimental host connections only support multiplexed sessions
+    if not _helpers.USE_EXPERIMENTAL_HOST:
+        pool.put(pool.get())
 
     yield sessions_database
 
@@ -2268,7 +2270,7 @@ def test_read_with_range_keys_and_index_open_open(sessions_database):
         assert rows == expected
 
 
-def test_partition_read_w_index(sessions_database, not_emulator):
+def test_partition_read_w_index(sessions_database, not_emulator, not_experimental_host):
     sd = _sample_data
     row_count = 10
     columns = sd.COLUMNS[1], sd.COLUMNS[2]
@@ -3052,7 +3054,7 @@ def test_execute_sql_returning_transfinite_floats(sessions_database, not_postgre
         assert math.isnan(float_array[2])
 
 
-def test_partition_query(sessions_database, not_emulator):
+def test_partition_query(sessions_database, not_emulator, not_experimental_host):
     row_count = 40
     sql = f"SELECT * FROM {_sample_data.TABLE}"
     committed = _set_up_table(sessions_database, row_count)
@@ -3071,7 +3073,7 @@ def test_partition_query(sessions_database, not_emulator):
     batch_txn.close()
 
 
-def test_run_partition_query(sessions_database, not_emulator):
+def test_run_partition_query(sessions_database, not_emulator, not_experimental_host):
     row_count = 40
     sql = f"SELECT * FROM {_sample_data.TABLE}"
     committed = _set_up_table(sessions_database, row_count)

@@ -26,10 +26,16 @@ skip_env_reason = f"""\
 Remove {_helpers.SKIP_BACKUP_TESTS_ENVVAR} from environment to run these tests.\
 """
 skip_emulator_reason = "Backup operations not supported by emulator."
+skip_experimental_host_reason = (
+    "Backup operations not supported on experimental host yet."
+)
 
 pytestmark = [
     pytest.mark.skipif(_helpers.SKIP_BACKUP_TESTS, reason=skip_env_reason),
     pytest.mark.skipif(_helpers.USE_EMULATOR, reason=skip_emulator_reason),
+    pytest.mark.skipif(
+        _helpers.USE_EXPERIMENTAL_HOST, reason=skip_experimental_host_reason
+    ),
 ]
 
 

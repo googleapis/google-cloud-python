@@ -62,9 +62,10 @@ class DatabaseSessionsManager(object):
     _MAINTENANCE_THREAD_POLLING_INTERVAL = timedelta(minutes=10)
     _MAINTENANCE_THREAD_REFRESH_INTERVAL = timedelta(days=7)
 
-    def __init__(self, database, pool):
+    def __init__(self, database, pool, is_experimental_host: bool = False):
         self._database = database
         self._pool = pool
+        self._is_experimental_host = is_experimental_host
 
         # Declare multiplexed session attributes. When a multiplexed session for the
         # database session manager is created, a maintenance thread is initialized to
@@ -88,7 +89,7 @@ class DatabaseSessionsManager(object):
 
         session = (
             self._get_multiplexed_session()
-            if self._use_multiplexed(transaction_type)
+            if self._use_multiplexed(transaction_type) or self._is_experimental_host
             else self._pool.get()
         )
 

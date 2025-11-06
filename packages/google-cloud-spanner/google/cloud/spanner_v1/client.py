@@ -176,6 +176,11 @@ class Client(ClientWithProject):
         or :class:`dict`
     :param default_transaction_options: (Optional) Default options to use for all transactions.
 
+    :type experimental_host: str
+    :param experimental_host: (Optional) The endpoint for a spanner experimental host deployment.
+        This is intended only for experimental host spanner endpoints.
+        If set, this will override the `api_endpoint` in `client_options`.
+
     :raises: :class:`ValueError <exceptions.ValueError>` if both ``read_only``
              and ``admin`` are :data:`True`
     """
@@ -200,8 +205,10 @@ class Client(ClientWithProject):
         directed_read_options=None,
         observability_options=None,
         default_transaction_options: Optional[DefaultTransactionOptions] = None,
+        experimental_host=None,
     ):
         self._emulator_host = _get_spanner_emulator_host()
+        self._experimental_host = experimental_host
 
         if client_options and type(client_options) is dict:
             self._client_options = google.api_core.client_options.from_dict(
@@ -211,6 +218,8 @@ class Client(ClientWithProject):
             self._client_options = client_options
 
         if self._emulator_host:
+            credentials = AnonymousCredentials()
+        elif self._experimental_host:
             credentials = AnonymousCredentials()
         elif isinstance(credentials, AnonymousCredentials):
             self._emulator_host = self._client_options.api_endpoint
@@ -324,6 +333,15 @@ class Client(ClientWithProject):
                     client_options=self._client_options,
                     transport=transport,
                 )
+            elif self._experimental_host:
+                transport = InstanceAdminGrpcTransport(
+                    channel=grpc.insecure_channel(target=self._experimental_host)
+                )
+                self._instance_admin_api = InstanceAdminClient(
+                    client_info=self._client_info,
+                    client_options=self._client_options,
+                    transport=transport,
+                )
             else:
                 self._instance_admin_api = InstanceAdminClient(
                     credentials=self.credentials,
@@ -339,6 +357,15 @@ class Client(ClientWithProject):
             if self._emulator_host is not None:
                 transport = DatabaseAdminGrpcTransport(
                     channel=grpc.insecure_channel(target=self._emulator_host)
+                )
+                self._database_admin_api = DatabaseAdminClient(
+                    client_info=self._client_info,
+                    client_options=self._client_options,
+                    transport=transport,
+                )
+            elif self._experimental_host:
+                transport = DatabaseAdminGrpcTransport(
+                    channel=grpc.insecure_channel(target=self._experimental_host)
                 )
                 self._database_admin_api = DatabaseAdminClient(
                     client_info=self._client_info,
@@ -485,6 +512,7 @@ class Client(ClientWithProject):
             self._emulator_host,
             labels,
             processing_units,
+            self._experimental_host,
         )
 
     def list_instances(self, filter_="", page_size=None):

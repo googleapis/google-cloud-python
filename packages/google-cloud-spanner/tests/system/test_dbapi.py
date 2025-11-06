@@ -1436,7 +1436,13 @@ class TestDbApi:
     @pytest.mark.noautofixt
     def test_user_agent(self, shared_instance, dbapi_database):
         """Check that DB API uses an appropriate user agent."""
-        conn = connect(shared_instance.name, dbapi_database.name)
+        conn = connect(
+            shared_instance.name,
+            dbapi_database.name,
+            experimental_host=_helpers.EXPERIMENTAL_HOST
+            if _helpers.USE_EXPERIMENTAL_HOST
+            else None,
+        )
         assert (
             conn.instance._client._client_info.user_agent
             == "gl-dbapi/" + package_version.__version__

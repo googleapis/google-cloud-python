@@ -119,6 +119,7 @@ def test_update_instance(
     shared_instance,
     shared_instance_id,
     instance_operation_timeout,
+    not_experimental_host,
 ):
     old_display_name = shared_instance.display_name
     new_display_name = "Foo Bar Baz"
