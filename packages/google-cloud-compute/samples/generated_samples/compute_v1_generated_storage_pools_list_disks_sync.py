@@ -52,4 +52,5 @@ def sample_list_disks():
     for response in page_result:
         print(response)
 
+
 # [END compute_v1_generated_StoragePools_ListDisks_sync]

@@ -49,4 +49,5 @@ async def sample_get_backup_index_download_url():
     # Handle the response
     print(response)
 
+
 # [END gkebackup_v1_generated_BackupForGKE_GetBackupIndexDownloadUrl_async]

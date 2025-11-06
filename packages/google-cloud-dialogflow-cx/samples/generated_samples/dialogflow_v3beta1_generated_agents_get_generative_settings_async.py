@@ -50,4 +50,5 @@ async def sample_get_generative_settings():
     # Handle the response
     print(response)
 
+
 # [END dialogflow_v3beta1_generated_Agents_GetGenerativeSettings_async]

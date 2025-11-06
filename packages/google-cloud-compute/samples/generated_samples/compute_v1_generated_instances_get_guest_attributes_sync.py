@@ -51,4 +51,5 @@ def sample_get_guest_attributes():
     # Handle the response
     print(response)
 
+
 # [END compute_v1_generated_Instances_GetGuestAttributes_sync]

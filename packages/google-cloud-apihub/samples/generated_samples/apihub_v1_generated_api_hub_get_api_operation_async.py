@@ -49,4 +49,5 @@ async def sample_get_api_operation():
     # Handle the response
     print(response)
 
+
 # [END apihub_v1_generated_ApiHub_GetApiOperation_async]

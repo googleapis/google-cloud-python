@@ -49,4 +49,5 @@ async def sample_get_css_product():
     # Handle the response
     print(response)
 
+
 # [END css_v1_generated_CssProductsService_GetCssProduct_async]

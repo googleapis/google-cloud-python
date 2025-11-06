@@ -50,4 +50,5 @@ def sample_mark_insight_accepted():
     # Handle the response
     print(response)
 
+
 # [END recommender_v1_generated_Recommender_MarkInsightAccepted_sync]

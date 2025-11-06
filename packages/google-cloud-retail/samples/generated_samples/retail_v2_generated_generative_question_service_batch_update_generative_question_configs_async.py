@@ -53,4 +53,5 @@ async def sample_batch_update_generative_question_configs():
     # Handle the response
     print(response)
 
+
 # [END retail_v2_generated_GenerativeQuestionService_BatchUpdateGenerativeQuestionConfigs_async]

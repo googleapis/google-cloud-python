@@ -49,4 +49,5 @@ async def sample_get_config():
     # Handle the response
     print(response)
 
+
 # [END dataform_v1_generated_Dataform_GetConfig_async]

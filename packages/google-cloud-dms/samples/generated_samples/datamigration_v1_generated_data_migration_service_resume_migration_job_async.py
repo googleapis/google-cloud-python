@@ -39,8 +39,7 @@ async def sample_resume_migration_job():
     client = clouddms_v1.DataMigrationServiceAsyncClient()
 
     # Initialize request argument(s)
-    request = clouddms_v1.ResumeMigrationJobRequest(
-    )
+    request = clouddms_v1.ResumeMigrationJobRequest()
 
     # Make the request
     operation = client.resume_migration_job(request=request)
@@ -51,5 +50,6 @@ async def sample_resume_migration_job():
 
     # Handle the response
     print(response)
+
 
 # [END datamigration_v1_generated_DataMigrationService_ResumeMigrationJob_async]

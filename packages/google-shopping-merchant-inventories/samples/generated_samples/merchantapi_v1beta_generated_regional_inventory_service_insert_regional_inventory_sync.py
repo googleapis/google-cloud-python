@@ -53,4 +53,5 @@ def sample_insert_regional_inventory():
     # Handle the response
     print(response)
 
+
 # [END merchantapi_v1beta_generated_RegionalInventoryService_InsertRegionalInventory_sync]

@@ -53,4 +53,5 @@ def sample_create_snooze():
     # Handle the response
     print(response)
 
+
 # [END monitoring_v3_generated_SnoozeService_CreateSnooze_sync]

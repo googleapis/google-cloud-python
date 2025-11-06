@@ -39,13 +39,13 @@ def sample_update_queue():
     client = tasks_v2beta3.CloudTasksClient()
 
     # Initialize request argument(s)
-    request = tasks_v2beta3.UpdateQueueRequest(
-    )
+    request = tasks_v2beta3.UpdateQueueRequest()
 
     # Make the request
     response = client.update_queue(request=request)
 
     # Handle the response
     print(response)
+
 
 # [END cloudtasks_v2beta3_generated_CloudTasks_UpdateQueue_sync]

@@ -50,4 +50,5 @@ async def sample_get_build_trigger():
     # Handle the response
     print(response)
 
+
 # [END cloudbuild_v1_generated_CloudBuild_GetBuildTrigger_async]

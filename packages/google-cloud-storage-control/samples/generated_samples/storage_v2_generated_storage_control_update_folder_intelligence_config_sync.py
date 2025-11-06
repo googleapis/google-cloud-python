@@ -39,13 +39,13 @@ def sample_update_folder_intelligence_config():
     client = storage_control_v2.StorageControlClient()
 
     # Initialize request argument(s)
-    request = storage_control_v2.UpdateFolderIntelligenceConfigRequest(
-    )
+    request = storage_control_v2.UpdateFolderIntelligenceConfigRequest()
 
     # Make the request
     response = client.update_folder_intelligence_config(request=request)
 
     # Handle the response
     print(response)
+
 
 # [END storage_v2_generated_StorageControl_UpdateFolderIntelligenceConfig_sync]

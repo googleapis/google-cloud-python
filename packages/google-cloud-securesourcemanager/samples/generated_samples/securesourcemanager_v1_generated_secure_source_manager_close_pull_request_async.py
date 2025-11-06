@@ -53,4 +53,5 @@ async def sample_close_pull_request():
     # Handle the response
     print(response)
 
+
 # [END securesourcemanager_v1_generated_SecureSourceManager_ClosePullRequest_async]

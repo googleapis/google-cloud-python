@@ -50,4 +50,5 @@ def sample_list_network_policies():
     for response in page_result:
         print(response)
 
+
 # [END vmwareengine_v1_generated_VmwareEngine_ListNetworkPolicies_sync]

@@ -50,4 +50,5 @@ def sample_list_inventories():
     for response in page_result:
         print(response)
 
+
 # [END osconfig_v1alpha_generated_OsConfigZonalService_ListInventories_sync]

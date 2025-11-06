@@ -49,4 +49,5 @@ def sample_create_analysis_rule():
     # Handle the response
     print(response)
 
+
 # [END contactcenterinsights_v1_generated_ContactCenterInsights_CreateAnalysisRule_sync]

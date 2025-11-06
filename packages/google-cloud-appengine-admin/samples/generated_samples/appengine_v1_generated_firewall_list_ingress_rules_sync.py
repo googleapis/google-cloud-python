@@ -39,8 +39,7 @@ def sample_list_ingress_rules():
     client = appengine_admin_v1.FirewallClient()
 
     # Initialize request argument(s)
-    request = appengine_admin_v1.ListIngressRulesRequest(
-    )
+    request = appengine_admin_v1.ListIngressRulesRequest()
 
     # Make the request
     page_result = client.list_ingress_rules(request=request)
@@ -48,5 +47,6 @@ def sample_list_ingress_rules():
     # Handle the response
     for response in page_result:
         print(response)
+
 
 # [END appengine_v1_generated_Firewall_ListIngressRules_sync]

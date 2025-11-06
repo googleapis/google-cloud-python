@@ -49,4 +49,5 @@ def sample_get_test_case():
     # Handle the response
     print(response)
 
+
 # [END dialogflow_v3beta1_generated_TestCases_GetTestCase_sync]

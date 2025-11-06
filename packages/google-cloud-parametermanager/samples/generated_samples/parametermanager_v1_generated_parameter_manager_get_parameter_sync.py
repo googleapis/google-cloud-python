@@ -49,4 +49,5 @@ def sample_get_parameter():
     # Handle the response
     print(response)
 
+
 # [END parametermanager_v1_generated_ParameterManager_GetParameter_sync]

@@ -50,4 +50,5 @@ async def sample_list_clusters():
     async for response in page_result:
         print(response)
 
+
 # [END visionai_v1alpha1_generated_StreamsService_ListClusters_async]

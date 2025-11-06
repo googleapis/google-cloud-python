@@ -49,4 +49,5 @@ async def sample_get_session():
     # Handle the response
     print(response)
 
+
 # [END discoveryengine_v1alpha_generated_ConversationalSearchService_GetSession_async]

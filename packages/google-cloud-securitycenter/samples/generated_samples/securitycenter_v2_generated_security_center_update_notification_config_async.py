@@ -39,13 +39,13 @@ async def sample_update_notification_config():
     client = securitycenter_v2.SecurityCenterAsyncClient()
 
     # Initialize request argument(s)
-    request = securitycenter_v2.UpdateNotificationConfigRequest(
-    )
+    request = securitycenter_v2.UpdateNotificationConfigRequest()
 
     # Make the request
     response = await client.update_notification_config(request=request)
 
     # Handle the response
     print(response)
+
 
 # [END securitycenter_v2_generated_SecurityCenter_UpdateNotificationConfig_async]

@@ -50,4 +50,5 @@ def sample_list_findings():
     for response in page_result:
         print(response)
 
+
 # [END securitycenter_v1beta1_generated_SecurityCenter_ListFindings_sync]

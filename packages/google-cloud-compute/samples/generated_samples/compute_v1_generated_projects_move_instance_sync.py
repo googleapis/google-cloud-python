@@ -49,4 +49,5 @@ def sample_move_instance():
     # Handle the response
     print(response)
 
+
 # [END compute_v1_generated_Projects_MoveInstance_sync]

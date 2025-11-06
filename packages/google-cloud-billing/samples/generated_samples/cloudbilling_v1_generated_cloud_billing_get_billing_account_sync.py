@@ -49,4 +49,5 @@ def sample_get_billing_account():
     # Handle the response
     print(response)
 
+
 # [END cloudbilling_v1_generated_CloudBilling_GetBillingAccount_sync]

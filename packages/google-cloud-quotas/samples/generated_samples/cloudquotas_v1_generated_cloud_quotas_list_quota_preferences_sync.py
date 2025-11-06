@@ -50,4 +50,5 @@ def sample_list_quota_preferences():
     for response in page_result:
         print(response)
 
+
 # [END cloudquotas_v1_generated_CloudQuotas_ListQuotaPreferences_sync]

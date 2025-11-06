@@ -49,4 +49,5 @@ def sample_get_deployment():
     # Handle the response
     print(response)
 
+
 # [END dialogflow_v3beta1_generated_Deployments_GetDeployment_sync]

@@ -50,4 +50,5 @@ def sample_list_restore_plan_bindings():
     for response in page_result:
         print(response)
 
+
 # [END gkebackup_v1_generated_BackupForGKE_ListRestorePlanBindings_sync]

@@ -56,4 +56,5 @@ async def sample_update_backup_channel():
     # Handle the response
     print(response)
 
+
 # [END gkebackup_v1_generated_BackupForGKE_UpdateBackupChannel_async]

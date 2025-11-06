@@ -49,4 +49,5 @@ async def sample_get_uptime_check_config():
     # Handle the response
     print(response)
 
+
 # [END monitoring_v3_generated_UptimeCheckService_GetUptimeCheckConfig_async]

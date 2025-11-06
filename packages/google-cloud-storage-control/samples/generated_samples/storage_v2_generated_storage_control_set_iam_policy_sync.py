@@ -23,6 +23,8 @@
 #   python3 -m pip install google-cloud-storage-control
 
 
+from google.iam.v1 import iam_policy_pb2  # type: ignore
+
 # [START storage_v2_generated_StorageControl_SetIamPolicy_sync]
 # This snippet has been automatically generated and should be regarded as a
 # code template only.
@@ -32,7 +34,6 @@
 #   client as shown in:
 #   https://googleapis.dev/python/google-api-core/latest/client_options.html
 from google.cloud import storage_control_v2
-from google.iam.v1 import iam_policy_pb2  # type: ignore
 
 
 def sample_set_iam_policy():
@@ -49,5 +50,6 @@ def sample_set_iam_policy():
 
     # Handle the response
     print(response)
+
 
 # [END storage_v2_generated_StorageControl_SetIamPolicy_sync]

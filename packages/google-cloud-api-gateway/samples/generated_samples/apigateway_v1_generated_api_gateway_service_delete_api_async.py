@@ -53,4 +53,5 @@ async def sample_delete_api():
     # Handle the response
     print(response)
 
+
 # [END apigateway_v1_generated_ApiGatewayService_DeleteApi_async]

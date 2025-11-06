@@ -53,4 +53,5 @@ def sample_delete_dvr_session():
     # Handle the response
     print(response)
 
+
 # [END livestream_v1_generated_LivestreamService_DeleteDvrSession_sync]

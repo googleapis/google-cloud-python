@@ -40,7 +40,7 @@ async def sample_create_variant():
 
     # Initialize request argument(s)
     variant = configdelivery_v1alpha.Variant()
-    variant.resources = ['resources_value1', 'resources_value2']
+    variant.resources = ["resources_value1", "resources_value2"]
 
     request = configdelivery_v1alpha.CreateVariantRequest(
         parent="parent_value",
@@ -57,5 +57,6 @@ async def sample_create_variant():
 
     # Handle the response
     print(response)
+
 
 # [END configdelivery_v1alpha_generated_ConfigDelivery_CreateVariant_async]

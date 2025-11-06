@@ -39,13 +39,13 @@ async def sample_update_organization_settings():
     client = securitycenter_v1beta1.SecurityCenterAsyncClient()
 
     # Initialize request argument(s)
-    request = securitycenter_v1beta1.UpdateOrganizationSettingsRequest(
-    )
+    request = securitycenter_v1beta1.UpdateOrganizationSettingsRequest()
 
     # Make the request
     response = await client.update_organization_settings(request=request)
 
     # Handle the response
     print(response)
+
 
 # [END securitycenter_v1beta1_generated_SecurityCenter_UpdateOrganizationSettings_async]

@@ -50,4 +50,5 @@ def sample_list_edge_slms():
     for response in page_result:
         print(response)
 
+
 # [END telcoautomation_v1_generated_TelcoAutomation_ListEdgeSlms_sync]

@@ -54,4 +54,5 @@ async def sample_create_spoke():
     # Handle the response
     print(response)
 
+
 # [END networkconnectivity_v1_generated_HubService_CreateSpoke_async]

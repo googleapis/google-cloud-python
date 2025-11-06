@@ -54,4 +54,5 @@ def sample_create_branch_rule():
     # Handle the response
     print(response)
 
+
 # [END securesourcemanager_v1_generated_SecureSourceManager_CreateBranchRule_sync]

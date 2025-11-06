@@ -50,4 +50,5 @@ async def sample_list_intents():
     async for response in page_result:
         print(response)
 
+
 # [END dialogflow_v3beta1_generated_Intents_ListIntents_async]

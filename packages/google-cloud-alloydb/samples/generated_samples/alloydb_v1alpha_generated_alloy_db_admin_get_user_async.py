@@ -49,4 +49,5 @@ async def sample_get_user():
     # Handle the response
     print(response)
 
+
 # [END alloydb_v1alpha_generated_AlloyDBAdmin_GetUser_async]

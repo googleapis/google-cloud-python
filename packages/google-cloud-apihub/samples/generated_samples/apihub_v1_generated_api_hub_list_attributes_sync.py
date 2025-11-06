@@ -50,4 +50,5 @@ def sample_list_attributes():
     for response in page_result:
         print(response)
 
+
 # [END apihub_v1_generated_ApiHub_ListAttributes_sync]

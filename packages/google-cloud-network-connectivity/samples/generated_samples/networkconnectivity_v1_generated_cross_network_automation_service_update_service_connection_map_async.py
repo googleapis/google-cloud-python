@@ -39,8 +39,7 @@ async def sample_update_service_connection_map():
     client = networkconnectivity_v1.CrossNetworkAutomationServiceAsyncClient()
 
     # Initialize request argument(s)
-    request = networkconnectivity_v1.UpdateServiceConnectionMapRequest(
-    )
+    request = networkconnectivity_v1.UpdateServiceConnectionMapRequest()
 
     # Make the request
     operation = client.update_service_connection_map(request=request)
@@ -51,5 +50,6 @@ async def sample_update_service_connection_map():
 
     # Handle the response
     print(response)
+
 
 # [END networkconnectivity_v1_generated_CrossNetworkAutomationService_UpdateServiceConnectionMap_async]

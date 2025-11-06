@@ -49,4 +49,5 @@ def sample_calculate_stats():
     # Handle the response
     print(response)
 
+
 # [END contactcenterinsights_v1_generated_ContactCenterInsights_CalculateStats_sync]

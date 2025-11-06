@@ -39,8 +39,7 @@ def sample_search_folders():
     client = resourcemanager_v3.FoldersClient()
 
     # Initialize request argument(s)
-    request = resourcemanager_v3.SearchFoldersRequest(
-    )
+    request = resourcemanager_v3.SearchFoldersRequest()
 
     # Make the request
     page_result = client.search_folders(request=request)
@@ -48,5 +47,6 @@ def sample_search_folders():
     # Handle the response
     for response in page_result:
         print(response)
+
 
 # [END cloudresourcemanager_v3_generated_Folders_SearchFolders_sync]

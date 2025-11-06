@@ -57,4 +57,5 @@ async def sample_export_user_events():
     # Handle the response
     print(response)
 
+
 # [END retail_v2beta_generated_UserEventService_ExportUserEvents_async]

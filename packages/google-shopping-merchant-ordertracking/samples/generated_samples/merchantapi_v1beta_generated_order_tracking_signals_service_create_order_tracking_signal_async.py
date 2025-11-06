@@ -60,4 +60,5 @@ async def sample_create_order_tracking_signal():
     # Handle the response
     print(response)
 
+
 # [END merchantapi_v1beta_generated_OrderTrackingSignalsService_CreateOrderTrackingSignal_async]

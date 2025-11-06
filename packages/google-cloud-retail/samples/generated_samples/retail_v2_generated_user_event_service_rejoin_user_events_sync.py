@@ -53,4 +53,5 @@ def sample_rejoin_user_events():
     # Handle the response
     print(response)
 
+
 # [END retail_v2_generated_UserEventService_RejoinUserEvents_sync]

@@ -54,4 +54,5 @@ async def sample_create_runtime():
     # Handle the response
     print(response)
 
+
 # [END notebooks_v1_generated_ManagedNotebookService_CreateRuntime_async]

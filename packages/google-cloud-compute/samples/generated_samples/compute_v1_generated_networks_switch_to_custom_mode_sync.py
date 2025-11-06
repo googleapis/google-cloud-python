@@ -50,4 +50,5 @@ def sample_switch_to_custom_mode():
     # Handle the response
     print(response)
 
+
 # [END compute_v1_generated_Networks_SwitchToCustomMode_sync]

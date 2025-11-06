@@ -53,4 +53,5 @@ def sample_delete_multicloud_data_transfer_config():
     # Handle the response
     print(response)
 
+
 # [END networkconnectivity_v1_generated_DataTransferService_DeleteMulticloudDataTransferConfig_sync]

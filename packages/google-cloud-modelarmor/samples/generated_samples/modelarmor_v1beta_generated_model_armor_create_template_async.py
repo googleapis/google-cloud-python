@@ -50,4 +50,5 @@ async def sample_create_template():
     # Handle the response
     print(response)
 
+
 # [END modelarmor_v1beta_generated_ModelArmor_CreateTemplate_async]

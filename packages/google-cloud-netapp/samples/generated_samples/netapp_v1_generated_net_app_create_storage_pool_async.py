@@ -60,4 +60,5 @@ async def sample_create_storage_pool():
     # Handle the response
     print(response)
 
+
 # [END netapp_v1_generated_NetApp_CreateStoragePool_async]

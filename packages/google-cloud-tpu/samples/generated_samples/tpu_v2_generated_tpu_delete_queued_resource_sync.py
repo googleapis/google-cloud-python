@@ -53,4 +53,5 @@ def sample_delete_queued_resource():
     # Handle the response
     print(response)
 
+
 # [END tpu_v2_generated_Tpu_DeleteQueuedResource_sync]

@@ -49,4 +49,5 @@ def sample_get_clone_job():
     # Handle the response
     print(response)
 
+
 # [END vmmigration_v1_generated_VmMigration_GetCloneJob_sync]

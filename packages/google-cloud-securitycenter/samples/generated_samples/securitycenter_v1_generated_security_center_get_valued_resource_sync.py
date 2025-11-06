@@ -49,4 +49,5 @@ def sample_get_valued_resource():
     # Handle the response
     print(response)
 
+
 # [END securitycenter_v1_generated_SecurityCenter_GetValuedResource_sync]

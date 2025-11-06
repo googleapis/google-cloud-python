@@ -49,4 +49,5 @@ def sample_get_app_gateway():
     # Handle the response
     print(response)
 
+
 # [END beyondcorp_v1_generated_AppGatewaysService_GetAppGateway_sync]

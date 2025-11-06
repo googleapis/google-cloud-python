@@ -49,4 +49,5 @@ async def sample_get_metadata_import():
     # Handle the response
     print(response)
 
+
 # [END metastore_v1alpha_generated_DataprocMetastore_GetMetadataImport_async]

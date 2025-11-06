@@ -49,4 +49,5 @@ def sample_get_rule():
     # Handle the response
     print(response)
 
+
 # [END chronicle_v1_generated_RuleService_GetRule_sync]

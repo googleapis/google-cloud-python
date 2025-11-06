@@ -53,4 +53,5 @@ def sample_delete_repository():
     # Handle the response
     print(response)
 
+
 # [END cloudbuild_v2_generated_RepositoryManager_DeleteRepository_sync]

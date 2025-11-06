@@ -41,7 +41,7 @@ async def sample_batch_delete_test_cases():
     # Initialize request argument(s)
     request = dialogflowcx_v3.BatchDeleteTestCasesRequest(
         parent="parent_value",
-        names=['names_value1', 'names_value2'],
+        names=["names_value1", "names_value2"],
     )
 
     # Make the request

@@ -50,4 +50,5 @@ async def sample_list_documents():
     async for response in page_result:
         print(response)
 
+
 # [END generativelanguage_v1beta_generated_RetrieverService_ListDocuments_async]

@@ -53,4 +53,5 @@ def sample_delete_logging_server():
     # Handle the response
     print(response)
 
+
 # [END vmwareengine_v1_generated_VmwareEngine_DeleteLoggingServer_sync]

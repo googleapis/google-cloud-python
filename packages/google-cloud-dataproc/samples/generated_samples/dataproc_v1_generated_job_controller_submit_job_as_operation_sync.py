@@ -59,4 +59,5 @@ def sample_submit_job_as_operation():
     # Handle the response
     print(response)
 
+
 # [END dataproc_v1_generated_JobController_SubmitJobAsOperation_sync]

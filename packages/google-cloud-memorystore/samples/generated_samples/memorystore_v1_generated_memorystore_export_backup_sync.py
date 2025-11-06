@@ -54,4 +54,5 @@ def sample_export_backup():
     # Handle the response
     print(response)
 
+
 # [END memorystore_v1_generated_Memorystore_ExportBackup_sync]

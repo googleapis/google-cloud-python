@@ -49,4 +49,5 @@ def sample_cancel_job():
     # Handle the response
     print(response)
 
+
 # [END storagebatchoperations_v1_generated_StorageBatchOperations_CancelJob_sync]

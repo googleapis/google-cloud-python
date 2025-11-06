@@ -50,4 +50,5 @@ async def sample_list_user_events():
     async for response in page_result:
         print(response)
 
+
 # [END recommendationengine_v1beta1_generated_UserEventService_ListUserEvents_async]

@@ -49,4 +49,5 @@ async def sample_get_alert_config():
     # Handle the response
     print(response)
 
+
 # [END retail_v2beta_generated_ProjectService_GetAlertConfig_async]

@@ -39,13 +39,13 @@ async def sample_update_homepage():
     client = merchant_accounts_v1beta.HomepageServiceAsyncClient()
 
     # Initialize request argument(s)
-    request = merchant_accounts_v1beta.UpdateHomepageRequest(
-    )
+    request = merchant_accounts_v1beta.UpdateHomepageRequest()
 
     # Make the request
     response = await client.update_homepage(request=request)
 
     # Handle the response
     print(response)
+
 
 # [END merchantapi_v1beta_generated_HomepageService_UpdateHomepage_async]

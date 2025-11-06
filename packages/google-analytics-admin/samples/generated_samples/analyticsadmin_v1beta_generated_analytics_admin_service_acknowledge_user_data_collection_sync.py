@@ -50,4 +50,5 @@ def sample_acknowledge_user_data_collection():
     # Handle the response
     print(response)
 
+
 # [END analyticsadmin_v1beta_generated_AnalyticsAdminService_AcknowledgeUserDataCollection_sync]

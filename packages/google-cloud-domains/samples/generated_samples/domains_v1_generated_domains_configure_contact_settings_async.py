@@ -53,4 +53,5 @@ async def sample_configure_contact_settings():
     # Handle the response
     print(response)
 
+
 # [END domains_v1_generated_Domains_ConfigureContactSettings_async]

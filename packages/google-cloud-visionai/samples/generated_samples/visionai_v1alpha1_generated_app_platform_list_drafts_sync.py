@@ -50,4 +50,5 @@ def sample_list_drafts():
     for response in page_result:
         print(response)
 
+
 # [END visionai_v1alpha1_generated_AppPlatform_ListDrafts_sync]

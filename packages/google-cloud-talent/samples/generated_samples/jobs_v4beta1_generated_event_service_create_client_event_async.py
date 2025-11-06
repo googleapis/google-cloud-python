@@ -41,7 +41,7 @@ async def sample_create_client_event():
     # Initialize request argument(s)
     client_event = talent_v4beta1.ClientEvent()
     client_event.job_event.type_ = "INTERVIEW_GRANTED"
-    client_event.job_event.jobs = ['jobs_value1', 'jobs_value2']
+    client_event.job_event.jobs = ["jobs_value1", "jobs_value2"]
     client_event.event_id = "event_id_value"
 
     request = talent_v4beta1.CreateClientEventRequest(
@@ -54,5 +54,6 @@ async def sample_create_client_event():
 
     # Handle the response
     print(response)
+
 
 # [END jobs_v4beta1_generated_EventService_CreateClientEvent_async]

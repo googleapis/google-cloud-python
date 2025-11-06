@@ -50,4 +50,5 @@ def sample_list_xpn_hosts():
     for response in page_result:
         print(response)
 
+
 # [END compute_v1_generated_Projects_ListXpnHosts_sync]

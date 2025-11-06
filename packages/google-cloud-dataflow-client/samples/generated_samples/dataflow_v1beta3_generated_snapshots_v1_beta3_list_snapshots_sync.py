@@ -39,13 +39,13 @@ def sample_list_snapshots():
     client = dataflow_v1beta3.SnapshotsV1Beta3Client()
 
     # Initialize request argument(s)
-    request = dataflow_v1beta3.ListSnapshotsRequest(
-    )
+    request = dataflow_v1beta3.ListSnapshotsRequest()
 
     # Make the request
     response = client.list_snapshots(request=request)
 
     # Handle the response
     print(response)
+
 
 # [END dataflow_v1beta3_generated_SnapshotsV1Beta3_ListSnapshots_sync]

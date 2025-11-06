@@ -50,4 +50,5 @@ def sample_list_targets():
     for response in page_result:
         print(response)
 
+
 # [END clouddeploy_v1_generated_CloudDeploy_ListTargets_sync]

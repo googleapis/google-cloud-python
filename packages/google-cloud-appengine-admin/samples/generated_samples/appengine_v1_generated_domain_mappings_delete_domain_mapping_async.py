@@ -39,8 +39,7 @@ async def sample_delete_domain_mapping():
     client = appengine_admin_v1.DomainMappingsAsyncClient()
 
     # Initialize request argument(s)
-    request = appengine_admin_v1.DeleteDomainMappingRequest(
-    )
+    request = appengine_admin_v1.DeleteDomainMappingRequest()
 
     # Make the request
     operation = client.delete_domain_mapping(request=request)
@@ -51,5 +50,6 @@ async def sample_delete_domain_mapping():
 
     # Handle the response
     print(response)
+
 
 # [END appengine_v1_generated_DomainMappings_DeleteDomainMapping_async]

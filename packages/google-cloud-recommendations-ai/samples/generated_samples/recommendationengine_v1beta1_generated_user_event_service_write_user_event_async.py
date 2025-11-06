@@ -54,4 +54,5 @@ async def sample_write_user_event():
     # Handle the response
     print(response)
 
+
 # [END recommendationengine_v1beta1_generated_UserEventService_WriteUserEvent_async]

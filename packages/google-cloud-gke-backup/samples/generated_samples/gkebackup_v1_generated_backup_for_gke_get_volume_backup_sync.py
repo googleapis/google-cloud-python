@@ -49,4 +49,5 @@ def sample_get_volume_backup():
     # Handle the response
     print(response)
 
+
 # [END gkebackup_v1_generated_BackupForGKE_GetVolumeBackup_sync]

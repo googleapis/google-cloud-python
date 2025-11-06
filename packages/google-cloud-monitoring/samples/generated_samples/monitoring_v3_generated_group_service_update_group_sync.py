@@ -39,13 +39,13 @@ def sample_update_group():
     client = monitoring_v3.GroupServiceClient()
 
     # Initialize request argument(s)
-    request = monitoring_v3.UpdateGroupRequest(
-    )
+    request = monitoring_v3.UpdateGroupRequest()
 
     # Make the request
     response = client.update_group(request=request)
 
     # Handle the response
     print(response)
+
 
 # [END monitoring_v3_generated_GroupService_UpdateGroup_sync]

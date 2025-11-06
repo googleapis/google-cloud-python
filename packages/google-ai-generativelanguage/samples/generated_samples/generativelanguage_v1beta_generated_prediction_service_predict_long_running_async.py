@@ -57,4 +57,5 @@ async def sample_predict_long_running():
     # Handle the response
     print(response)
 
+
 # [END generativelanguage_v1beta_generated_PredictionService_PredictLongRunning_async]

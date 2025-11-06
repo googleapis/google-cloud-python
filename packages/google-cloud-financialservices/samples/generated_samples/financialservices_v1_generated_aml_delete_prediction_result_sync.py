@@ -53,4 +53,5 @@ def sample_delete_prediction_result():
     # Handle the response
     print(response)
 
+
 # [END financialservices_v1_generated_AML_DeletePredictionResult_sync]

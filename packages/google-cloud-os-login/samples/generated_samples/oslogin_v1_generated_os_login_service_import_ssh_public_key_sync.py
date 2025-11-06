@@ -49,4 +49,5 @@ def sample_import_ssh_public_key():
     # Handle the response
     print(response)
 
+
 # [END oslogin_v1_generated_OsLoginService_ImportSshPublicKey_sync]

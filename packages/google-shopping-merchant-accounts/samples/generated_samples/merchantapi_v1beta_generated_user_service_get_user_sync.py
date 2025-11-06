@@ -49,4 +49,5 @@ def sample_get_user():
     # Handle the response
     print(response)
 
+
 # [END merchantapi_v1beta_generated_UserService_GetUser_sync]

@@ -39,8 +39,7 @@ def sample_update_group():
     client = vmmigration_v1.VmMigrationClient()
 
     # Initialize request argument(s)
-    request = vmmigration_v1.UpdateGroupRequest(
-    )
+    request = vmmigration_v1.UpdateGroupRequest()
 
     # Make the request
     operation = client.update_group(request=request)
@@ -51,5 +50,6 @@ def sample_update_group():
 
     # Handle the response
     print(response)
+
 
 # [END vmmigration_v1_generated_VmMigration_UpdateGroup_sync]

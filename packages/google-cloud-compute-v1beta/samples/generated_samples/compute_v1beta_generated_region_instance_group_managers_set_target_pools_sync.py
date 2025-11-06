@@ -51,4 +51,5 @@ def sample_set_target_pools():
     # Handle the response
     print(response)
 
+
 # [END compute_v1beta_generated_RegionInstanceGroupManagers_SetTargetPools_sync]

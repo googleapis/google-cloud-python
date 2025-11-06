@@ -49,4 +49,5 @@ async def sample_create_permission():
     # Handle the response
     print(response)
 
+
 # [END generativelanguage_v1beta3_generated_PermissionService_CreatePermission_async]

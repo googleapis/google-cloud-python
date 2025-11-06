@@ -51,4 +51,5 @@ async def sample_move_directory():
     # Handle the response
     print(response)
 
+
 # [END dataform_v1_generated_Dataform_MoveDirectory_async]

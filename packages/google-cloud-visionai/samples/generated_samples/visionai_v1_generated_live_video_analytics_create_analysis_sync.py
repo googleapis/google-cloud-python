@@ -54,4 +54,5 @@ def sample_create_analysis():
     # Handle the response
     print(response)
 
+
 # [END visionai_v1_generated_LiveVideoAnalytics_CreateAnalysis_sync]

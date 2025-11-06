@@ -39,13 +39,13 @@ async def sample_launch_flex_template():
     client = dataflow_v1beta3.FlexTemplatesServiceAsyncClient()
 
     # Initialize request argument(s)
-    request = dataflow_v1beta3.LaunchFlexTemplateRequest(
-    )
+    request = dataflow_v1beta3.LaunchFlexTemplateRequest()
 
     # Make the request
     response = await client.launch_flex_template(request=request)
 
     # Handle the response
     print(response)
+
 
 # [END dataflow_v1beta3_generated_FlexTemplatesService_LaunchFlexTemplate_async]

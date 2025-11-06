@@ -50,4 +50,5 @@ def sample_list_series():
     for response in page_result:
         print(response)
 
+
 # [END visionai_v1_generated_StreamsService_ListSeries_sync]

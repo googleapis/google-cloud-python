@@ -53,4 +53,5 @@ async def sample_update_catalog():
     # Handle the response
     print(response)
 
+
 # [END retail_v2beta_generated_CatalogService_UpdateCatalog_async]

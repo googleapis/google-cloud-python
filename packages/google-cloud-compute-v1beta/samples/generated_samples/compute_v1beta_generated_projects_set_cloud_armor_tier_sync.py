@@ -49,4 +49,5 @@ def sample_set_cloud_armor_tier():
     # Handle the response
     print(response)
 
+
 # [END compute_v1beta_generated_Projects_SetCloudArmorTier_sync]

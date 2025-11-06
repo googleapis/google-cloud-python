@@ -49,4 +49,5 @@ async def sample_get_process():
     # Handle the response
     print(response)
 
+
 # [END visionai_v1_generated_LiveVideoAnalytics_GetProcess_async]

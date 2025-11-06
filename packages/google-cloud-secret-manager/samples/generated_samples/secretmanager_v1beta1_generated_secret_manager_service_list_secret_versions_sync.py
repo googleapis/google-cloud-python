@@ -50,4 +50,5 @@ def sample_list_secret_versions():
     for response in page_result:
         print(response)
 
+
 # [END secretmanager_v1beta1_generated_SecretManagerService_ListSecretVersions_sync]

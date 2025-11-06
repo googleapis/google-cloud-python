@@ -39,13 +39,13 @@ async def sample_get_version():
     client = appengine_admin_v1.VersionsAsyncClient()
 
     # Initialize request argument(s)
-    request = appengine_admin_v1.GetVersionRequest(
-    )
+    request = appengine_admin_v1.GetVersionRequest()
 
     # Make the request
     response = await client.get_version(request=request)
 
     # Handle the response
     print(response)
+
 
 # [END appengine_v1_generated_Versions_GetVersion_async]

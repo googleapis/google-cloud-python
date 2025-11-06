@@ -50,4 +50,5 @@ def sample_list_transcript_entries():
     for response in page_result:
         print(response)
 
+
 # [END meet_v2beta_generated_ConferenceRecordsService_ListTranscriptEntries_sync]

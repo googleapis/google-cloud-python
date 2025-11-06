@@ -49,4 +49,5 @@ def sample_list_generative_question_configs():
     # Handle the response
     print(response)
 
+
 # [END retail_v2_generated_GenerativeQuestionService_ListGenerativeQuestionConfigs_sync]

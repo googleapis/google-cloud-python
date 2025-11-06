@@ -51,4 +51,5 @@ async def sample_validate_attestation_occurrence():
     # Handle the response
     print(response)
 
+
 # [END binaryauthorization_v1_generated_ValidationHelperV1_ValidateAttestationOccurrence_async]

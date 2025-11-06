@@ -53,4 +53,5 @@ def sample_suspend_entitlement():
     # Handle the response
     print(response)
 
+
 # [END cloudchannel_v1_generated_CloudChannelService_SuspendEntitlement_sync]

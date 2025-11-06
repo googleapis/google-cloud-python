@@ -49,4 +49,5 @@ async def sample_get_backup_plan():
     # Handle the response
     print(response)
 
+
 # [END gkebackup_v1_generated_BackupForGKE_GetBackupPlan_async]

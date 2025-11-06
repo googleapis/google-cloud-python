@@ -49,4 +49,5 @@ def sample_get_clip():
     # Handle the response
     print(response)
 
+
 # [END livestream_v1_generated_LivestreamService_GetClip_sync]

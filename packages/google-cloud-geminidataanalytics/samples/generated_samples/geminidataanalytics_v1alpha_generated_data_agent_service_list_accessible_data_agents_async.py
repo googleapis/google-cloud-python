@@ -50,4 +50,5 @@ async def sample_list_accessible_data_agents():
     async for response in page_result:
         print(response)
 
+
 # [END geminidataanalytics_v1alpha_generated_DataAgentService_ListAccessibleDataAgents_async]

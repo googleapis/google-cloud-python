@@ -56,4 +56,5 @@ async def sample_update_network_policy():
     # Handle the response
     print(response)
 
+
 # [END vmwareengine_v1_generated_VmwareEngine_UpdateNetworkPolicy_async]

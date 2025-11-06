@@ -39,13 +39,13 @@ async def sample_update_custom_class():
     client = speech_v1.AdaptationAsyncClient()
 
     # Initialize request argument(s)
-    request = speech_v1.UpdateCustomClassRequest(
-    )
+    request = speech_v1.UpdateCustomClassRequest()
 
     # Make the request
     response = await client.update_custom_class(request=request)
 
     # Handle the response
     print(response)
+
 
 # [END speech_v1_generated_Adaptation_UpdateCustomClass_async]

@@ -49,4 +49,5 @@ async def sample_get_crypto_key():
     # Handle the response
     print(response)
 
+
 # [END cloudkms_v1_generated_KeyManagementService_GetCryptoKey_async]

@@ -49,4 +49,5 @@ def sample_get_model():
     # Handle the response
     print(response)
 
+
 # [END retail_v2_generated_ModelService_GetModel_sync]

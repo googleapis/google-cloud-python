@@ -56,4 +56,5 @@ def sample_update_restore():
     # Handle the response
     print(response)
 
+
 # [END gkebackup_v1_generated_BackupForGKE_UpdateRestore_sync]

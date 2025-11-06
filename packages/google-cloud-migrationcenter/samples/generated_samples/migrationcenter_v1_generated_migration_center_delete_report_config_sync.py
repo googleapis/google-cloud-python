@@ -53,4 +53,5 @@ def sample_delete_report_config():
     # Handle the response
     print(response)
 
+
 # [END migrationcenter_v1_generated_MigrationCenter_DeleteReportConfig_sync]

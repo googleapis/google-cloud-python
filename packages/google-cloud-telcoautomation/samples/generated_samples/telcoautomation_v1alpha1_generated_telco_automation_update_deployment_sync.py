@@ -52,4 +52,5 @@ def sample_update_deployment():
     # Handle the response
     print(response)
 
+
 # [END telcoautomation_v1alpha1_generated_TelcoAutomation_UpdateDeployment_sync]

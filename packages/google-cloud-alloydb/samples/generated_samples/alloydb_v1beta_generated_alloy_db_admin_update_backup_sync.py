@@ -56,4 +56,5 @@ def sample_update_backup():
     # Handle the response
     print(response)
 
+
 # [END alloydb_v1beta_generated_AlloyDBAdmin_UpdateBackup_sync]

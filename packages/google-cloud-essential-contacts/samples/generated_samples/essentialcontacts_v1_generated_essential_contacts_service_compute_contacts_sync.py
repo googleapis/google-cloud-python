@@ -50,4 +50,5 @@ def sample_compute_contacts():
     for response in page_result:
         print(response)
 
+
 # [END essentialcontacts_v1_generated_EssentialContactsService_ComputeContacts_sync]

@@ -50,4 +50,5 @@ async def sample_refresh_runtime_token_internal():
     # Handle the response
     print(response)
 
+
 # [END notebooks_v1_generated_ManagedNotebookService_RefreshRuntimeTokenInternal_async]

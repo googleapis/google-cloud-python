@@ -49,4 +49,5 @@ async def sample_create_qa_scorecard_revision():
     # Handle the response
     print(response)
 
+
 # [END contactcenterinsights_v1_generated_ContactCenterInsights_CreateQaScorecardRevision_async]

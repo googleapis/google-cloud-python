@@ -49,4 +49,5 @@ def sample_get_session():
     # Handle the response
     print(response)
 
+
 # [END discoveryengine_v1beta_generated_SessionService_GetSession_sync]

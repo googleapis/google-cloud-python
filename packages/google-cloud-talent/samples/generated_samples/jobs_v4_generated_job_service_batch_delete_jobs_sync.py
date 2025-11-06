@@ -53,4 +53,5 @@ def sample_batch_delete_jobs():
     # Handle the response
     print(response)
 
+
 # [END jobs_v4_generated_JobService_BatchDeleteJobs_sync]

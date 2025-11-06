@@ -49,4 +49,5 @@ async def sample_activate_job_trigger():
     # Handle the response
     print(response)
 
+
 # [END dlp_v2_generated_DlpService_ActivateJobTrigger_async]

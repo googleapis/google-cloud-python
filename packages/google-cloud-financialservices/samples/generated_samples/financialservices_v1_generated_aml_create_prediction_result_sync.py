@@ -42,7 +42,9 @@ def sample_create_prediction_result():
     prediction_result = financialservices_v1.PredictionResult()
     prediction_result.dataset = "dataset_value"
     prediction_result.model = "model_value"
-    prediction_result.outputs.prediction_destination.write_disposition = "WRITE_TRUNCATE"
+    prediction_result.outputs.prediction_destination.write_disposition = (
+        "WRITE_TRUNCATE"
+    )
 
     request = financialservices_v1.CreatePredictionResultRequest(
         parent="parent_value",
@@ -59,5 +61,6 @@ def sample_create_prediction_result():
 
     # Handle the response
     print(response)
+
 
 # [END financialservices_v1_generated_AML_CreatePredictionResult_sync]

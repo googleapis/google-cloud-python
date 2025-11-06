@@ -39,13 +39,13 @@ async def sample_poll_airflow_command():
     client = service_v1.EnvironmentsAsyncClient()
 
     # Initialize request argument(s)
-    request = service_v1.PollAirflowCommandRequest(
-    )
+    request = service_v1.PollAirflowCommandRequest()
 
     # Make the request
     response = await client.poll_airflow_command(request=request)
 
     # Handle the response
     print(response)
+
 
 # [END composer_v1_generated_Environments_PollAirflowCommand_async]

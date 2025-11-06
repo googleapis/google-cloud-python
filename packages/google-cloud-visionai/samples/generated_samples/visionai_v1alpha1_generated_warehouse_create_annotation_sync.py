@@ -49,4 +49,5 @@ def sample_create_annotation():
     # Handle the response
     print(response)
 
+
 # [END visionai_v1alpha1_generated_Warehouse_CreateAnnotation_sync]

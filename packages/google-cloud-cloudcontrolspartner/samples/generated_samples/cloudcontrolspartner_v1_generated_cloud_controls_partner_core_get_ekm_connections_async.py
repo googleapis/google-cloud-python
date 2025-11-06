@@ -49,4 +49,5 @@ async def sample_get_ekm_connections():
     # Handle the response
     print(response)
 
+
 # [END cloudcontrolspartner_v1_generated_CloudControlsPartnerCore_GetEkmConnections_async]

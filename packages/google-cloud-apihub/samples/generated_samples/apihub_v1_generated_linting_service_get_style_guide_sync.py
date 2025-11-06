@@ -49,4 +49,5 @@ def sample_get_style_guide():
     # Handle the response
     print(response)
 
+
 # [END apihub_v1_generated_LintingService_GetStyleGuide_sync]

@@ -49,4 +49,5 @@ def sample_check_grounding():
     # Handle the response
     print(response)
 
+
 # [END discoveryengine_v1beta_generated_GroundedGenerationService_CheckGrounding_sync]

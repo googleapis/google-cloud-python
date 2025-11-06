@@ -49,4 +49,5 @@ def sample_get_secret():
     # Handle the response
     print(response)
 
+
 # [END secretmanager_v1beta2_generated_SecretManagerService_GetSecret_sync]

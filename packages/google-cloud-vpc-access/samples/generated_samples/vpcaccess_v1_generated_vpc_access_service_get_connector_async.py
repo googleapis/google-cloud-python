@@ -49,4 +49,5 @@ async def sample_get_connector():
     # Handle the response
     print(response)
 
+
 # [END vpcaccess_v1_generated_VpcAccessService_GetConnector_async]

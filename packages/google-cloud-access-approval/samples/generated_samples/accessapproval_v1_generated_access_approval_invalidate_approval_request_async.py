@@ -39,13 +39,13 @@ async def sample_invalidate_approval_request():
     client = accessapproval_v1.AccessApprovalAsyncClient()
 
     # Initialize request argument(s)
-    request = accessapproval_v1.InvalidateApprovalRequestMessage(
-    )
+    request = accessapproval_v1.InvalidateApprovalRequestMessage()
 
     # Make the request
     response = await client.invalidate_approval_request(request=request)
 
     # Handle the response
     print(response)
+
 
 # [END accessapproval_v1_generated_AccessApproval_InvalidateApprovalRequest_async]

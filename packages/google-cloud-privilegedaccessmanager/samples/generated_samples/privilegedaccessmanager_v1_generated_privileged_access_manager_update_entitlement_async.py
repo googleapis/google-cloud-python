@@ -39,8 +39,7 @@ async def sample_update_entitlement():
     client = privilegedaccessmanager_v1.PrivilegedAccessManagerAsyncClient()
 
     # Initialize request argument(s)
-    request = privilegedaccessmanager_v1.UpdateEntitlementRequest(
-    )
+    request = privilegedaccessmanager_v1.UpdateEntitlementRequest()
 
     # Make the request
     operation = client.update_entitlement(request=request)
@@ -51,5 +50,6 @@ async def sample_update_entitlement():
 
     # Handle the response
     print(response)
+
 
 # [END privilegedaccessmanager_v1_generated_PrivilegedAccessManager_UpdateEntitlement_async]

@@ -49,4 +49,5 @@ async def sample_get_node_type():
     # Handle the response
     print(response)
 
+
 # [END vmwareengine_v1_generated_VmwareEngine_GetNodeType_async]

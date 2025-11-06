@@ -49,4 +49,5 @@ async def sample_get_logging_server():
     # Handle the response
     print(response)
 
+
 # [END vmwareengine_v1_generated_VmwareEngine_GetLoggingServer_async]

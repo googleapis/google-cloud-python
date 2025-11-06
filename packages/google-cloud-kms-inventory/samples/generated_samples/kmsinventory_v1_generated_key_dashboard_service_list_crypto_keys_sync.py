@@ -50,4 +50,5 @@ def sample_list_crypto_keys():
     for response in page_result:
         print(response)
 
+
 # [END kmsinventory_v1_generated_KeyDashboardService_ListCryptoKeys_sync]

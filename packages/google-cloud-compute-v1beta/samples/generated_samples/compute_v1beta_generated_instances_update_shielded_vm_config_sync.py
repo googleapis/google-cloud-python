@@ -51,4 +51,5 @@ def sample_update_shielded_vm_config():
     # Handle the response
     print(response)
 
+
 # [END compute_v1beta_generated_Instances_UpdateShieldedVmConfig_sync]

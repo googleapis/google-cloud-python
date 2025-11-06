@@ -39,8 +39,7 @@ def sample_list_features():
     client = gkehub_v1.GkeHubClient()
 
     # Initialize request argument(s)
-    request = gkehub_v1.ListFeaturesRequest(
-    )
+    request = gkehub_v1.ListFeaturesRequest()
 
     # Make the request
     page_result = client.list_features(request=request)
@@ -48,5 +47,6 @@ def sample_list_features():
     # Handle the response
     for response in page_result:
         print(response)
+
 
 # [END gkehub_v1_generated_GkeHub_ListFeatures_sync]

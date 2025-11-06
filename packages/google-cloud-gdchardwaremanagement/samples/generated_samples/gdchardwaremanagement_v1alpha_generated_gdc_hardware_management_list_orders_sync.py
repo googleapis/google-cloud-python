@@ -50,4 +50,5 @@ def sample_list_orders():
     for response in page_result:
         print(response)
 
+
 # [END gdchardwaremanagement_v1alpha_generated_GDCHardwareManagement_ListOrders_sync]

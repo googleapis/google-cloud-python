@@ -50,4 +50,5 @@ async def sample_list_customer_repricing_configs():
     async for response in page_result:
         print(response)
 
+
 # [END cloudchannel_v1_generated_CloudChannelService_ListCustomerRepricingConfigs_async]

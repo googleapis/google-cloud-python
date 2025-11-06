@@ -50,4 +50,5 @@ async def sample_enumerate_licensed_users():
     async for response in page_result:
         print(response)
 
+
 # [END cloudcommerceconsumerprocurement_v1_generated_LicenseManagementService_EnumerateLicensedUsers_async]

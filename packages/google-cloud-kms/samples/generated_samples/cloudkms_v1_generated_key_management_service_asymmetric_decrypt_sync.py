@@ -41,7 +41,7 @@ def sample_asymmetric_decrypt():
     # Initialize request argument(s)
     request = kms_v1.AsymmetricDecryptRequest(
         name="name_value",
-        ciphertext=b'ciphertext_blob',
+        ciphertext=b"ciphertext_blob",
     )
 
     # Make the request
@@ -49,5 +49,6 @@ def sample_asymmetric_decrypt():
 
     # Handle the response
     print(response)
+
 
 # [END cloudkms_v1_generated_KeyManagementService_AsymmetricDecrypt_sync]

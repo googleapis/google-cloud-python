@@ -49,4 +49,5 @@ async def sample_verify_confidential_gke():
     # Handle the response
     print(response)
 
+
 # [END confidentialcomputing_v1_generated_ConfidentialComputing_VerifyConfidentialGke_async]

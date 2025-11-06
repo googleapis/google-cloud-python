@@ -54,4 +54,5 @@ def sample_move_folder():
     # Handle the response
     print(response)
 
+
 # [END cloudresourcemanager_v3_generated_Folders_MoveFolder_sync]

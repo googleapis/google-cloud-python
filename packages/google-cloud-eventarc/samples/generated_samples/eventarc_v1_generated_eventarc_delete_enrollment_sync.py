@@ -53,4 +53,5 @@ def sample_delete_enrollment():
     # Handle the response
     print(response)
 
+
 # [END eventarc_v1_generated_Eventarc_DeleteEnrollment_sync]

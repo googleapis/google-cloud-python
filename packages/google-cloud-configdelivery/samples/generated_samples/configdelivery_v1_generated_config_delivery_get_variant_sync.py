@@ -49,4 +49,5 @@ def sample_get_variant():
     # Handle the response
     print(response)
 
+
 # [END configdelivery_v1_generated_ConfigDelivery_GetVariant_sync]

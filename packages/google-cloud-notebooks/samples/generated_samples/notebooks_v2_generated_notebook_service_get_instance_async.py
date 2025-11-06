@@ -49,4 +49,5 @@ async def sample_get_instance():
     # Handle the response
     print(response)
 
+
 # [END notebooks_v2_generated_NotebookService_GetInstance_async]

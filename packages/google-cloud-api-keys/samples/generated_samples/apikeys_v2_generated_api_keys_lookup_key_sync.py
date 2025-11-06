@@ -49,4 +49,5 @@ def sample_lookup_key():
     # Handle the response
     print(response)
 
+
 # [END apikeys_v2_generated_ApiKeys_LookupKey_sync]

@@ -53,4 +53,5 @@ def sample_count_message_tokens():
     # Handle the response
     print(response)
 
+
 # [END generativelanguage_v1alpha_generated_DiscussService_CountMessageTokens_sync]

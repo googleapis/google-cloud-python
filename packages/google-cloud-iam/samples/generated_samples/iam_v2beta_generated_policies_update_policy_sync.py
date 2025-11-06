@@ -39,8 +39,7 @@ def sample_update_policy():
     client = iam_v2beta.PoliciesClient()
 
     # Initialize request argument(s)
-    request = iam_v2beta.UpdatePolicyRequest(
-    )
+    request = iam_v2beta.UpdatePolicyRequest()
 
     # Make the request
     operation = client.update_policy(request=request)
@@ -51,5 +50,6 @@ def sample_update_policy():
 
     # Handle the response
     print(response)
+
 
 # [END iam_v2beta_generated_Policies_UpdatePolicy_sync]

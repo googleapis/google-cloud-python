@@ -49,4 +49,5 @@ def sample_compute_threat_list_diff():
     # Handle the response
     print(response)
 
+
 # [END webrisk_v1beta1_generated_WebRiskServiceV1Beta1_ComputeThreatListDiff_sync]

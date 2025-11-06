@@ -49,4 +49,5 @@ async def sample_get_vpcsc_config():
     # Handle the response
     print(response)
 
+
 # [END artifactregistry_v1_generated_ArtifactRegistry_GetVPCSCConfig_async]

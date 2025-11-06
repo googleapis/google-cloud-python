@@ -49,4 +49,5 @@ def sample_get_client_gateway():
     # Handle the response
     print(response)
 
+
 # [END beyondcorp_v1_generated_ClientGatewaysService_GetClientGateway_sync]

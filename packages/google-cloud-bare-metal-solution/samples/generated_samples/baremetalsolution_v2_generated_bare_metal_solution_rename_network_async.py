@@ -50,4 +50,5 @@ async def sample_rename_network():
     # Handle the response
     print(response)
 
+
 # [END baremetalsolution_v2_generated_BareMetalSolution_RenameNetwork_async]

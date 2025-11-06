@@ -50,4 +50,5 @@ def sample_fetch_static_ips():
     for response in page_result:
         print(response)
 
+
 # [END datamigration_v1_generated_DataMigrationService_FetchStaticIps_sync]

@@ -53,4 +53,5 @@ async def sample_insert_shipping_settings():
     # Handle the response
     print(response)
 
+
 # [END merchantapi_v1beta_generated_ShippingSettingsService_InsertShippingSettings_async]

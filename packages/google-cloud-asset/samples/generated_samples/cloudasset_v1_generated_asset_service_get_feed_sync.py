@@ -49,4 +49,5 @@ def sample_get_feed():
     # Handle the response
     print(response)
 
+
 # [END cloudasset_v1_generated_AssetService_GetFeed_sync]

@@ -51,4 +51,5 @@ def sample_set_labels():
     # Handle the response
     print(response)
 
+
 # [END compute_v1_generated_RegionDisks_SetLabels_sync]

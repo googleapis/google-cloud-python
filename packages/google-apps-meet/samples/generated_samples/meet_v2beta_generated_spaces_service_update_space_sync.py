@@ -39,13 +39,13 @@ def sample_update_space():
     client = meet_v2beta.SpacesServiceClient()
 
     # Initialize request argument(s)
-    request = meet_v2beta.UpdateSpaceRequest(
-    )
+    request = meet_v2beta.UpdateSpaceRequest()
 
     # Make the request
     response = client.update_space(request=request)
 
     # Handle the response
     print(response)
+
 
 # [END meet_v2beta_generated_SpacesService_UpdateSpace_sync]

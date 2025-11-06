@@ -49,4 +49,5 @@ async def sample_get_backup_policy():
     # Handle the response
     print(response)
 
+
 # [END netapp_v1_generated_NetApp_GetBackupPolicy_async]

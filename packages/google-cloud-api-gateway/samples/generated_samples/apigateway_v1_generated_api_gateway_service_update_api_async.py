@@ -39,8 +39,7 @@ async def sample_update_api():
     client = apigateway_v1.ApiGatewayServiceAsyncClient()
 
     # Initialize request argument(s)
-    request = apigateway_v1.UpdateApiRequest(
-    )
+    request = apigateway_v1.UpdateApiRequest()
 
     # Make the request
     operation = client.update_api(request=request)
@@ -51,5 +50,6 @@ async def sample_update_api():
 
     # Handle the response
     print(response)
+
 
 # [END apigateway_v1_generated_ApiGatewayService_UpdateApi_async]

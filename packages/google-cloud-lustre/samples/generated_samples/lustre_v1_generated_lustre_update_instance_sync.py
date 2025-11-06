@@ -59,4 +59,5 @@ def sample_update_instance():
     # Handle the response
     print(response)
 
+
 # [END lustre_v1_generated_Lustre_UpdateInstance_sync]

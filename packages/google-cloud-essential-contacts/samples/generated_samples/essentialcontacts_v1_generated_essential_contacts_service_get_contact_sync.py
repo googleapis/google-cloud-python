@@ -49,4 +49,5 @@ def sample_get_contact():
     # Handle the response
     print(response)
 
+
 # [END essentialcontacts_v1_generated_EssentialContactsService_GetContact_sync]

@@ -39,13 +39,13 @@ async def sample_publish_channel_connection_events():
     client = eventarc_publishing_v1.PublisherAsyncClient()
 
     # Initialize request argument(s)
-    request = eventarc_publishing_v1.PublishChannelConnectionEventsRequest(
-    )
+    request = eventarc_publishing_v1.PublishChannelConnectionEventsRequest()
 
     # Make the request
     response = await client.publish_channel_connection_events(request=request)
 
     # Handle the response
     print(response)
+
 
 # [END eventarcpublishing_v1_generated_Publisher_PublishChannelConnectionEvents_async]

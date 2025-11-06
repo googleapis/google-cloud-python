@@ -50,4 +50,5 @@ def sample_list_notifications():
     for response in page_result:
         print(response)
 
+
 # [END advisorynotifications_v1_generated_AdvisoryNotificationsService_ListNotifications_sync]

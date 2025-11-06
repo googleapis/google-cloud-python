@@ -51,4 +51,5 @@ def sample_create_snapshot():
     # Handle the response
     print(response)
 
+
 # [END compute_v1_generated_Disks_CreateSnapshot_sync]

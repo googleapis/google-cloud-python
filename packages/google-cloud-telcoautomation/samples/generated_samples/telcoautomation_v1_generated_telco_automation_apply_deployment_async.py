@@ -49,4 +49,5 @@ async def sample_apply_deployment():
     # Handle the response
     print(response)
 
+
 # [END telcoautomation_v1_generated_TelcoAutomation_ApplyDeployment_async]

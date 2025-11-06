@@ -53,4 +53,5 @@ async def sample_update_policy():
     # Handle the response
     print(response)
 
+
 # [END binaryauthorization_v1beta1_generated_BinauthzManagementServiceV1Beta1_UpdatePolicy_async]

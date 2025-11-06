@@ -49,4 +49,5 @@ async def sample_get_insight():
     # Handle the response
     print(response)
 
+
 # [END recommender_v1beta1_generated_Recommender_GetInsight_async]

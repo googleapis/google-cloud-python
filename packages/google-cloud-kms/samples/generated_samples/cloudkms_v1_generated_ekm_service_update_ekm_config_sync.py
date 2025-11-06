@@ -39,13 +39,13 @@ def sample_update_ekm_config():
     client = kms_v1.EkmServiceClient()
 
     # Initialize request argument(s)
-    request = kms_v1.UpdateEkmConfigRequest(
-    )
+    request = kms_v1.UpdateEkmConfigRequest()
 
     # Make the request
     response = client.update_ekm_config(request=request)
 
     # Handle the response
     print(response)
+
 
 # [END cloudkms_v1_generated_EkmService_UpdateEkmConfig_sync]

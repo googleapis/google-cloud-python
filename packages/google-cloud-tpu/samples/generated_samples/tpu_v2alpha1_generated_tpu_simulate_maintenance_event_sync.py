@@ -53,4 +53,5 @@ def sample_simulate_maintenance_event():
     # Handle the response
     print(response)
 
+
 # [END tpu_v2alpha1_generated_Tpu_SimulateMaintenanceEvent_sync]

@@ -50,4 +50,5 @@ async def sample_list_products():
     async for response in page_result:
         print(response)
 
+
 # [END retail_v2beta_generated_ProductService_ListProducts_async]

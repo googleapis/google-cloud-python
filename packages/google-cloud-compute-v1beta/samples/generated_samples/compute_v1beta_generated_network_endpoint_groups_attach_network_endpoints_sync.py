@@ -51,4 +51,5 @@ def sample_attach_network_endpoints():
     # Handle the response
     print(response)
 
+
 # [END compute_v1beta_generated_NetworkEndpointGroups_AttachNetworkEndpoints_sync]

@@ -39,13 +39,13 @@ def sample_update_checkout_settings():
     client = merchant_accounts_v1beta.CheckoutSettingsServiceClient()
 
     # Initialize request argument(s)
-    request = merchant_accounts_v1beta.UpdateCheckoutSettingsRequest(
-    )
+    request = merchant_accounts_v1beta.UpdateCheckoutSettingsRequest()
 
     # Make the request
     response = client.update_checkout_settings(request=request)
 
     # Handle the response
     print(response)
+
 
 # [END merchantapi_v1beta_generated_CheckoutSettingsService_UpdateCheckoutSettings_sync]

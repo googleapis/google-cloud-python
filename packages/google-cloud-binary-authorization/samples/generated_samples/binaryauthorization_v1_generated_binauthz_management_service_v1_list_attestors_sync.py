@@ -50,4 +50,5 @@ def sample_list_attestors():
     for response in page_result:
         print(response)
 
+
 # [END binaryauthorization_v1_generated_BinauthzManagementServiceV1_ListAttestors_sync]

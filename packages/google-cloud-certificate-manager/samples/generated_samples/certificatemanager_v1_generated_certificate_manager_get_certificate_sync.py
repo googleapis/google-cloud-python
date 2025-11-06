@@ -49,4 +49,5 @@ def sample_get_certificate():
     # Handle the response
     print(response)
 
+
 # [END certificatemanager_v1_generated_CertificateManager_GetCertificate_sync]

@@ -49,4 +49,5 @@ async def sample_get_host_project_registration():
     # Handle the response
     print(response)
 
+
 # [END apihub_v1_generated_HostProjectRegistrationService_GetHostProjectRegistration_async]

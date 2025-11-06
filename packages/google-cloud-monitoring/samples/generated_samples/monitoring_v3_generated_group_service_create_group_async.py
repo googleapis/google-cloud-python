@@ -49,4 +49,5 @@ async def sample_create_group():
     # Handle the response
     print(response)
 
+
 # [END monitoring_v3_generated_GroupService_CreateGroup_async]

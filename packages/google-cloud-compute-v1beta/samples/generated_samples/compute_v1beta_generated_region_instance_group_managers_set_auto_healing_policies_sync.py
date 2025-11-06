@@ -51,4 +51,5 @@ def sample_set_auto_healing_policies():
     # Handle the response
     print(response)
 
+
 # [END compute_v1beta_generated_RegionInstanceGroupManagers_SetAutoHealingPolicies_sync]

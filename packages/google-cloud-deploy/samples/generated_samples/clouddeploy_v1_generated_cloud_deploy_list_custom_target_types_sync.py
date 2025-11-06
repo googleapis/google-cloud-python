@@ -50,4 +50,5 @@ def sample_list_custom_target_types():
     for response in page_result:
         print(response)
 
+
 # [END clouddeploy_v1_generated_CloudDeploy_ListCustomTargetTypes_sync]

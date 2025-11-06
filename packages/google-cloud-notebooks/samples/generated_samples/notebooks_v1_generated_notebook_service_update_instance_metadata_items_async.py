@@ -49,4 +49,5 @@ async def sample_update_instance_metadata_items():
     # Handle the response
     print(response)
 
+
 # [END notebooks_v1_generated_NotebookService_UpdateInstanceMetadataItems_async]

@@ -53,4 +53,5 @@ async def sample_apply_software_update():
     # Handle the response
     print(response)
 
+
 # [END memcache_v1beta2_generated_CloudMemcache_ApplySoftwareUpdate_async]

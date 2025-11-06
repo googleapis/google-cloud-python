@@ -50,4 +50,5 @@ def sample_list_connections():
     for response in page_result:
         print(response)
 
+
 # [END apigeeconnect_v1_generated_ConnectionService_ListConnections_sync]

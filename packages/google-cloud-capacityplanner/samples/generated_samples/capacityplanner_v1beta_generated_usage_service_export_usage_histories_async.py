@@ -59,4 +59,5 @@ async def sample_export_usage_histories():
     # Handle the response
     print(response)
 
+
 # [END capacityplanner_v1beta_generated_UsageService_ExportUsageHistories_async]

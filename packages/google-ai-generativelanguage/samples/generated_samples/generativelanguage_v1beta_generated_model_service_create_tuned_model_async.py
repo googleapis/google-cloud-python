@@ -39,8 +39,7 @@ async def sample_create_tuned_model():
     client = generativelanguage_v1beta.ModelServiceAsyncClient()
 
     # Initialize request argument(s)
-    request = generativelanguage_v1beta.CreateTunedModelRequest(
-    )
+    request = generativelanguage_v1beta.CreateTunedModelRequest()
 
     # Make the request
     operation = client.create_tuned_model(request=request)
@@ -51,5 +50,6 @@ async def sample_create_tuned_model():
 
     # Handle the response
     print(response)
+
 
 # [END generativelanguage_v1beta_generated_ModelService_CreateTunedModel_async]

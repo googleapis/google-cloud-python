@@ -49,4 +49,5 @@ async def sample_get_connector():
     # Handle the response
     print(response)
 
+
 # [END managedkafka_v1_generated_ManagedKafkaConnect_GetConnector_async]

@@ -49,4 +49,5 @@ async def sample_delete_api_deployment_revision():
     # Handle the response
     print(response)
 
+
 # [END apigeeregistry_v1_generated_Registry_DeleteApiDeploymentRevision_async]

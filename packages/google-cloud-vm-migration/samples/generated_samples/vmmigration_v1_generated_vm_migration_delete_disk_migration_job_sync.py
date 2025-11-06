@@ -53,4 +53,5 @@ def sample_delete_disk_migration_job():
     # Handle the response
     print(response)
 
+
 # [END vmmigration_v1_generated_VmMigration_DeleteDiskMigrationJob_sync]

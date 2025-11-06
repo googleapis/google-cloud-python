@@ -49,4 +49,5 @@ async def sample_get_artifact():
     # Handle the response
     print(response)
 
+
 # [END apigeeregistry_v1_generated_Registry_GetArtifact_async]

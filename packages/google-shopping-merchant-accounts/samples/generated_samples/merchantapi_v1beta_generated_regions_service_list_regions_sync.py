@@ -50,4 +50,5 @@ def sample_list_regions():
     for response in page_result:
         print(response)
 
+
 # [END merchantapi_v1beta_generated_RegionsService_ListRegions_sync]

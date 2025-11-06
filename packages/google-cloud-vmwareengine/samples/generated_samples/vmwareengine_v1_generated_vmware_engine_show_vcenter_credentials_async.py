@@ -49,4 +49,5 @@ async def sample_show_vcenter_credentials():
     # Handle the response
     print(response)
 
+
 # [END vmwareengine_v1_generated_VmwareEngine_ShowVcenterCredentials_async]

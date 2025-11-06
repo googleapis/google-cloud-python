@@ -50,4 +50,5 @@ async def sample_list_assets():
     async for response in page_result:
         print(response)
 
+
 # [END securitycenter_v1_generated_SecurityCenter_ListAssets_async]

@@ -60,4 +60,5 @@ async def sample_create_image_import():
     # Handle the response
     print(response)
 
+
 # [END vmmigration_v1_generated_VmMigration_CreateImageImport_async]

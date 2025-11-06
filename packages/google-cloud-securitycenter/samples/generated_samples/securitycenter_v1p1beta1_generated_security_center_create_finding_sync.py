@@ -50,4 +50,5 @@ def sample_create_finding():
     # Handle the response
     print(response)
 
+
 # [END securitycenter_v1p1beta1_generated_SecurityCenter_CreateFinding_sync]

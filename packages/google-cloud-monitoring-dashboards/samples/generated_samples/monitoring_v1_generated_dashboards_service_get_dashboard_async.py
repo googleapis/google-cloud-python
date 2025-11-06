@@ -49,4 +49,5 @@ async def sample_get_dashboard():
     # Handle the response
     print(response)
 
+
 # [END monitoring_v1_generated_DashboardsService_GetDashboard_async]

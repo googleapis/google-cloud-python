@@ -53,4 +53,5 @@ def sample_switch_active_replica_zone():
     # Handle the response
     print(response)
 
+
 # [END netapp_v1_generated_NetApp_SwitchActiveReplicaZone_sync]

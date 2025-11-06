@@ -49,4 +49,5 @@ def sample_create_comment():
     # Handle the response
     print(response)
 
+
 # [END cloudsupport_v2beta_generated_CommentService_CreateComment_sync]

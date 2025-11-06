@@ -53,4 +53,5 @@ async def sample_delete_insights_config():
     # Handle the response
     print(response)
 
+
 # [END developerconnect_v1_generated_InsightsConfigService_DeleteInsightsConfig_async]

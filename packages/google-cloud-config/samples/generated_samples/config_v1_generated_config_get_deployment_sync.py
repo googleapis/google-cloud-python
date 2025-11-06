@@ -49,4 +49,5 @@ def sample_get_deployment():
     # Handle the response
     print(response)
 
+
 # [END config_v1_generated_Config_GetDeployment_sync]

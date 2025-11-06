@@ -50,4 +50,5 @@ def sample_list_connection_profiles():
     for response in page_result:
         print(response)
 
+
 # [END datastream_v1alpha1_generated_Datastream_ListConnectionProfiles_sync]

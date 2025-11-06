@@ -49,4 +49,5 @@ async def sample_get_public_blueprint():
     # Handle the response
     print(response)
 
+
 # [END telcoautomation_v1alpha1_generated_TelcoAutomation_GetPublicBlueprint_async]

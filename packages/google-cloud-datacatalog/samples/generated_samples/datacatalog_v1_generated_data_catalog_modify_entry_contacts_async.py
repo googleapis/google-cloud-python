@@ -49,4 +49,5 @@ async def sample_modify_entry_contacts():
     # Handle the response
     print(response)
 
+
 # [END datacatalog_v1_generated_DataCatalog_ModifyEntryContacts_async]

@@ -39,13 +39,13 @@ def sample_update_service_level_objective():
     client = monitoring_v3.ServiceMonitoringServiceClient()
 
     # Initialize request argument(s)
-    request = monitoring_v3.UpdateServiceLevelObjectiveRequest(
-    )
+    request = monitoring_v3.UpdateServiceLevelObjectiveRequest()
 
     # Make the request
     response = client.update_service_level_objective(request=request)
 
     # Handle the response
     print(response)
+
 
 # [END monitoring_v3_generated_ServiceMonitoringService_UpdateServiceLevelObjective_sync]

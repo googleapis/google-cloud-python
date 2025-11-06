@@ -51,4 +51,5 @@ def sample_set_name():
     # Handle the response
     print(response)
 
+
 # [END compute_v1_generated_Instances_SetName_sync]

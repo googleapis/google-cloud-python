@@ -49,4 +49,5 @@ async def sample_list_linked_targets():
     # Handle the response
     print(response)
 
+
 # [END contentwarehouse_v1_generated_DocumentLinkService_ListLinkedTargets_async]

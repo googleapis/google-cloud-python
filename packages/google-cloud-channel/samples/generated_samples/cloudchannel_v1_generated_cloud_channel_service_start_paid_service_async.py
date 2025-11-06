@@ -53,4 +53,5 @@ async def sample_start_paid_service():
     # Handle the response
     print(response)
 
+
 # [END cloudchannel_v1_generated_CloudChannelService_StartPaidService_async]

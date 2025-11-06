@@ -53,4 +53,5 @@ def sample_start_runtime():
     # Handle the response
     print(response)
 
+
 # [END notebooks_v1_generated_ManagedNotebookService_StartRuntime_sync]

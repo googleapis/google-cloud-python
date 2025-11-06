@@ -39,13 +39,13 @@ def sample_update_session():
     client = discoveryengine_v1beta.SessionServiceClient()
 
     # Initialize request argument(s)
-    request = discoveryengine_v1beta.UpdateSessionRequest(
-    )
+    request = discoveryengine_v1beta.UpdateSessionRequest()
 
     # Make the request
     response = client.update_session(request=request)
 
     # Handle the response
     print(response)
+
 
 # [END discoveryengine_v1beta_generated_SessionService_UpdateSession_sync]

@@ -54,4 +54,5 @@ async def sample_report_instance_info():
     # Handle the response
     print(response)
 
+
 # [END notebooks_v1beta1_generated_NotebookService_ReportInstanceInfo_async]

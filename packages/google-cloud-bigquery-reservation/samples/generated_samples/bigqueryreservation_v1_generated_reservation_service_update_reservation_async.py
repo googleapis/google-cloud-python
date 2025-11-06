@@ -39,13 +39,13 @@ async def sample_update_reservation():
     client = bigquery_reservation_v1.ReservationServiceAsyncClient()
 
     # Initialize request argument(s)
-    request = bigquery_reservation_v1.UpdateReservationRequest(
-    )
+    request = bigquery_reservation_v1.UpdateReservationRequest()
 
     # Make the request
     response = await client.update_reservation(request=request)
 
     # Handle the response
     print(response)
+
 
 # [END bigqueryreservation_v1_generated_ReservationService_UpdateReservation_async]

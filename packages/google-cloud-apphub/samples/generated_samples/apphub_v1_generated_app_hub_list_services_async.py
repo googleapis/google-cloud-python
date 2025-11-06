@@ -50,4 +50,5 @@ async def sample_list_services():
     async for response in page_result:
         print(response)
 
+
 # [END apphub_v1_generated_AppHub_ListServices_async]

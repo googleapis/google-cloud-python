@@ -50,4 +50,5 @@ def sample_list_analysis_rules():
     for response in page_result:
         print(response)
 
+
 # [END contactcenterinsights_v1_generated_ContactCenterInsights_ListAnalysisRules_sync]

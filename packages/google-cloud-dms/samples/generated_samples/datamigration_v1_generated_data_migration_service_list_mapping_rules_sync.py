@@ -50,4 +50,5 @@ def sample_list_mapping_rules():
     for response in page_result:
         print(response)
 
+
 # [END datamigration_v1_generated_DataMigrationService_ListMappingRules_sync]

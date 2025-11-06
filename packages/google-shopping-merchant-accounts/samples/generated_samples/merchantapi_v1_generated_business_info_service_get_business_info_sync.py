@@ -49,4 +49,5 @@ def sample_get_business_info():
     # Handle the response
     print(response)
 
+
 # [END merchantapi_v1_generated_BusinessInfoService_GetBusinessInfo_sync]

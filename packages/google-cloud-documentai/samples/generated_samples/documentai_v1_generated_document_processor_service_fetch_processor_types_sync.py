@@ -49,4 +49,5 @@ def sample_fetch_processor_types():
     # Handle the response
     print(response)
 
+
 # [END documentai_v1_generated_DocumentProcessorService_FetchProcessorTypes_sync]

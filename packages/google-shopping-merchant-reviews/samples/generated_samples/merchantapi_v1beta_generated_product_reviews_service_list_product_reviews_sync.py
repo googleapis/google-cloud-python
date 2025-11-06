@@ -50,4 +50,5 @@ def sample_list_product_reviews():
     for response in page_result:
         print(response)
 
+
 # [END merchantapi_v1beta_generated_ProductReviewsService_ListProductReviews_sync]

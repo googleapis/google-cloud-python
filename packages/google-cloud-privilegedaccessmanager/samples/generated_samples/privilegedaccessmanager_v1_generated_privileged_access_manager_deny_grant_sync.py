@@ -49,4 +49,5 @@ def sample_deny_grant():
     # Handle the response
     print(response)
 
+
 # [END privilegedaccessmanager_v1_generated_PrivilegedAccessManager_DenyGrant_sync]

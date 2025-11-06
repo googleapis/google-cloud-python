@@ -54,4 +54,5 @@ async def sample_create_company():
     # Handle the response
     print(response)
 
+
 # [END jobs_v4_generated_CompanyService_CreateCompany_async]

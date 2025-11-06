@@ -50,4 +50,5 @@ async def sample_list_budgets():
     async for response in page_result:
         print(response)
 
+
 # [END billingbudgets_v1_generated_BudgetService_ListBudgets_async]

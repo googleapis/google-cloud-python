@@ -49,4 +49,5 @@ async def sample_get_certificate_map():
     # Handle the response
     print(response)
 
+
 # [END certificatemanager_v1_generated_CertificateManager_GetCertificateMap_async]

@@ -50,4 +50,5 @@ def sample_list_endpoints():
     for response in page_result:
         print(response)
 
+
 # [END servicedirectory_v1beta1_generated_RegistrationService_ListEndpoints_sync]

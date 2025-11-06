@@ -52,4 +52,5 @@ async def sample_update_certificate():
     # Handle the response
     print(response)
 
+
 # [END privateca_v1beta1_generated_CertificateAuthorityService_UpdateCertificate_async]

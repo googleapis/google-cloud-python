@@ -53,4 +53,5 @@ def sample_batch_predict():
     # Handle the response
     print(response)
 
+
 # [END automl_v1beta1_generated_PredictionService_BatchPredict_sync]

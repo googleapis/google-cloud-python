@@ -49,4 +49,5 @@ async def sample_get_service_level_objective():
     # Handle the response
     print(response)
 
+
 # [END monitoring_v3_generated_ServiceMonitoringService_GetServiceLevelObjective_async]

@@ -49,4 +49,5 @@ def sample_get_lfp_merchant_state():
     # Handle the response
     print(response)
 
+
 # [END merchantapi_v1beta_generated_LfpMerchantStateService_GetLfpMerchantState_sync]

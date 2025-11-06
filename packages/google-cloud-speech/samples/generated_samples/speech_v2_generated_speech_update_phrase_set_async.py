@@ -39,8 +39,7 @@ async def sample_update_phrase_set():
     client = speech_v2.SpeechAsyncClient()
 
     # Initialize request argument(s)
-    request = speech_v2.UpdatePhraseSetRequest(
-    )
+    request = speech_v2.UpdatePhraseSetRequest()
 
     # Make the request
     operation = client.update_phrase_set(request=request)
@@ -51,5 +50,6 @@ async def sample_update_phrase_set():
 
     # Handle the response
     print(response)
+
 
 # [END speech_v2_generated_Speech_UpdatePhraseSet_async]

@@ -39,8 +39,7 @@ async def sample_list_services():
     client = billing_v1.CloudCatalogAsyncClient()
 
     # Initialize request argument(s)
-    request = billing_v1.ListServicesRequest(
-    )
+    request = billing_v1.ListServicesRequest()
 
     # Make the request
     page_result = client.list_services(request=request)
@@ -48,5 +47,6 @@ async def sample_list_services():
     # Handle the response
     async for response in page_result:
         print(response)
+
 
 # [END cloudbilling_v1_generated_CloudCatalog_ListServices_async]

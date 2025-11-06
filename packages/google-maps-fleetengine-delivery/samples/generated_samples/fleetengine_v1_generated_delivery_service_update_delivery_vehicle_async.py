@@ -39,13 +39,13 @@ async def sample_update_delivery_vehicle():
     client = fleetengine_delivery_v1.DeliveryServiceAsyncClient()
 
     # Initialize request argument(s)
-    request = fleetengine_delivery_v1.UpdateDeliveryVehicleRequest(
-    )
+    request = fleetengine_delivery_v1.UpdateDeliveryVehicleRequest()
 
     # Make the request
     response = await client.update_delivery_vehicle(request=request)
 
     # Handle the response
     print(response)
+
 
 # [END fleetengine_v1_generated_DeliveryService_UpdateDeliveryVehicle_async]

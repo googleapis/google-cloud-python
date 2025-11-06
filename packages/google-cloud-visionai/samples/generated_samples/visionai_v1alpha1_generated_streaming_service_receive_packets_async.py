@@ -39,8 +39,7 @@ async def sample_receive_packets():
     client = visionai_v1alpha1.StreamingServiceAsyncClient()
 
     # Initialize request argument(s)
-    request = visionai_v1alpha1.ReceivePacketsRequest(
-    )
+    request = visionai_v1alpha1.ReceivePacketsRequest()
 
     # This method expects an iterator which contains
     # 'visionai_v1alpha1.ReceivePacketsRequest' objects
@@ -58,5 +57,6 @@ async def sample_receive_packets():
     # Handle the response
     async for response in stream:
         print(response)
+
 
 # [END visionai_v1alpha1_generated_StreamingService_ReceivePackets_async]

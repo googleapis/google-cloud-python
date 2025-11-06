@@ -39,13 +39,13 @@ def sample_update_role():
     client = iam_admin_v1.IAMClient()
 
     # Initialize request argument(s)
-    request = iam_admin_v1.UpdateRoleRequest(
-    )
+    request = iam_admin_v1.UpdateRoleRequest()
 
     # Make the request
     response = client.update_role(request=request)
 
     # Handle the response
     print(response)
+
 
 # [END iam_v1_generated_IAM_UpdateRole_sync]

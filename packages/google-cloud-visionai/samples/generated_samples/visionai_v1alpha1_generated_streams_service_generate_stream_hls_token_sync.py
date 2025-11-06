@@ -49,4 +49,5 @@ def sample_generate_stream_hls_token():
     # Handle the response
     print(response)
 
+
 # [END visionai_v1alpha1_generated_StreamsService_GenerateStreamHlsToken_sync]

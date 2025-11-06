@@ -50,4 +50,5 @@ async def sample_list_connections():
     async for response in page_result:
         print(response)
 
+
 # [END cloudbuild_v2_generated_RepositoryManager_ListConnections_async]

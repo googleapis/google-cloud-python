@@ -58,4 +58,5 @@ async def sample_create_vpn_connection():
     # Handle the response
     print(response)
 
+
 # [END edgecontainer_v1_generated_EdgeContainer_CreateVpnConnection_async]

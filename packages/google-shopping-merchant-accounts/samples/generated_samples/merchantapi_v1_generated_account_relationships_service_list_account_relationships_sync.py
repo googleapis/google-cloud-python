@@ -50,4 +50,5 @@ def sample_list_account_relationships():
     for response in page_result:
         print(response)
 
+
 # [END merchantapi_v1_generated_AccountRelationshipsService_ListAccountRelationships_sync]

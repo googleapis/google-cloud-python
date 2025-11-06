@@ -53,4 +53,5 @@ async def sample_reactivate_subscription():
     # Handle the response
     print(response)
 
+
 # [END workspaceevents_v1beta_generated_SubscriptionsService_ReactivateSubscription_async]

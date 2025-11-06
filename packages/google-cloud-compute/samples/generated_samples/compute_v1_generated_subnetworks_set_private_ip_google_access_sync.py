@@ -51,4 +51,5 @@ def sample_set_private_ip_google_access():
     # Handle the response
     print(response)
 
+
 # [END compute_v1_generated_Subnetworks_SetPrivateIpGoogleAccess_sync]

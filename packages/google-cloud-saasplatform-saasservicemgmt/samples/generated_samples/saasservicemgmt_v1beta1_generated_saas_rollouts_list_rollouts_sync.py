@@ -50,4 +50,5 @@ def sample_list_rollouts():
     for response in page_result:
         print(response)
 
+
 # [END saasservicemgmt_v1beta1_generated_SaasRollouts_ListRollouts_sync]

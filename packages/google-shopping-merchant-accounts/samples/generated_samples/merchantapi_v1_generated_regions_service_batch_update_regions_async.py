@@ -49,4 +49,5 @@ async def sample_batch_update_regions():
     # Handle the response
     print(response)
 
+
 # [END merchantapi_v1_generated_RegionsService_BatchUpdateRegions_async]

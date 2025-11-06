@@ -51,4 +51,5 @@ def sample_create_instances():
     # Handle the response
     print(response)
 
+
 # [END compute_v1_generated_RegionInstanceGroupManagers_CreateInstances_sync]

@@ -49,4 +49,5 @@ def sample_get_quota_preference():
     # Handle the response
     print(response)
 
+
 # [END cloudquotas_v1beta_generated_CloudQuotas_GetQuotaPreference_sync]

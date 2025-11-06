@@ -50,4 +50,5 @@ async def sample_list_service_level_objectives():
     async for response in page_result:
         print(response)
 
+
 # [END monitoring_v3_generated_ServiceMonitoringService_ListServiceLevelObjectives_async]

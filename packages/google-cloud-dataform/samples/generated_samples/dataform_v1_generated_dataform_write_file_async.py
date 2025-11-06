@@ -42,7 +42,7 @@ async def sample_write_file():
     request = dataform_v1.WriteFileRequest(
         workspace="workspace_value",
         path="path_value",
-        contents=b'contents_blob',
+        contents=b"contents_blob",
     )
 
     # Make the request
@@ -50,5 +50,6 @@ async def sample_write_file():
 
     # Handle the response
     print(response)
+
 
 # [END dataform_v1_generated_Dataform_WriteFile_async]

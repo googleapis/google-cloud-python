@@ -39,13 +39,13 @@ def sample_undelete_service_account():
     client = iam_admin_v1.IAMClient()
 
     # Initialize request argument(s)
-    request = iam_admin_v1.UndeleteServiceAccountRequest(
-    )
+    request = iam_admin_v1.UndeleteServiceAccountRequest()
 
     # Make the request
     response = client.undelete_service_account(request=request)
 
     # Handle the response
     print(response)
+
 
 # [END iam_v1_generated_IAM_UndeleteServiceAccount_sync]

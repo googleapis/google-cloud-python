@@ -49,4 +49,5 @@ async def sample_get_floor_setting():
     # Handle the response
     print(response)
 
+
 # [END modelarmor_v1beta_generated_ModelArmor_GetFloorSetting_async]

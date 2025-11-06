@@ -56,4 +56,5 @@ async def sample_remove_acl_entry():
     # Handle the response
     print(response)
 
+
 # [END managedkafka_v1_generated_ManagedKafka_RemoveAclEntry_async]

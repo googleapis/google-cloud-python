@@ -60,4 +60,5 @@ async def sample_collect_api_data():
     # Handle the response
     print(response)
 
+
 # [END apihub_v1_generated_ApiHubCollect_CollectApiData_async]

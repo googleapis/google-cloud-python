@@ -49,4 +49,5 @@ def sample_failover_reservation():
     # Handle the response
     print(response)
 
+
 # [END bigqueryreservation_v1_generated_ReservationService_FailoverReservation_sync]

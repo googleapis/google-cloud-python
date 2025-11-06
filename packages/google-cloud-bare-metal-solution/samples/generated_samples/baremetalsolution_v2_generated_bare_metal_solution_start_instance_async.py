@@ -53,4 +53,5 @@ async def sample_start_instance():
     # Handle the response
     print(response)
 
+
 # [END baremetalsolution_v2_generated_BareMetalSolution_StartInstance_async]

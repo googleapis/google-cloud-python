@@ -39,13 +39,13 @@ async def sample_update_qa_question():
     client = contact_center_insights_v1.ContactCenterInsightsAsyncClient()
 
     # Initialize request argument(s)
-    request = contact_center_insights_v1.UpdateQaQuestionRequest(
-    )
+    request = contact_center_insights_v1.UpdateQaQuestionRequest()
 
     # Make the request
     response = await client.update_qa_question(request=request)
 
     # Handle the response
     print(response)
+
 
 # [END contactcenterinsights_v1_generated_ContactCenterInsights_UpdateQaQuestion_async]

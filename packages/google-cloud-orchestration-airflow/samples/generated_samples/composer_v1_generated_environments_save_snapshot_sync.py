@@ -39,8 +39,7 @@ def sample_save_snapshot():
     client = service_v1.EnvironmentsClient()
 
     # Initialize request argument(s)
-    request = service_v1.SaveSnapshotRequest(
-    )
+    request = service_v1.SaveSnapshotRequest()
 
     # Make the request
     operation = client.save_snapshot(request=request)
@@ -51,5 +50,6 @@ def sample_save_snapshot():
 
     # Handle the response
     print(response)
+
 
 # [END composer_v1_generated_Environments_SaveSnapshot_sync]

@@ -53,4 +53,5 @@ def sample_check_upgrade():
     # Handle the response
     print(response)
 
+
 # [END composer_v1_generated_Environments_CheckUpgrade_sync]

@@ -53,4 +53,5 @@ def sample_delete_recognizer():
     # Handle the response
     print(response)
 
+
 # [END speech_v2_generated_Speech_DeleteRecognizer_sync]

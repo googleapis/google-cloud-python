@@ -53,4 +53,5 @@ async def sample_remove_application_stream_input():
     # Handle the response
     print(response)
 
+
 # [END visionai_v1alpha1_generated_AppPlatform_RemoveApplicationStreamInput_async]

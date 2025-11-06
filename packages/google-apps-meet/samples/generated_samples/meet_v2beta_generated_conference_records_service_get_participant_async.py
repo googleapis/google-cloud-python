@@ -49,4 +49,5 @@ async def sample_get_participant():
     # Handle the response
     print(response)
 
+
 # [END meet_v2beta_generated_ConferenceRecordsService_GetParticipant_async]

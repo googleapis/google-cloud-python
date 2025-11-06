@@ -51,4 +51,5 @@ def sample_list_clone_jobs():
     for response in page_result:
         print(response)
 
+
 # [END vmmigration_v1_generated_VmMigration_ListCloneJobs_sync]

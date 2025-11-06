@@ -49,4 +49,5 @@ def sample_fetch_certificate_authority_csr():
     # Handle the response
     print(response)
 
+
 # [END privateca_v1beta1_generated_CertificateAuthorityService_FetchCertificateAuthorityCsr_sync]

@@ -49,4 +49,5 @@ def sample_get_gateway():
     # Handle the response
     print(response)
 
+
 # [END apigateway_v1_generated_ApiGatewayService_GetGateway_sync]

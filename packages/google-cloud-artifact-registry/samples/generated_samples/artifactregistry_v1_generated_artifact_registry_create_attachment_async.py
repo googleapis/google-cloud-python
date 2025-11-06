@@ -41,7 +41,7 @@ async def sample_create_attachment():
     # Initialize request argument(s)
     attachment = artifactregistry_v1.Attachment()
     attachment.target = "target_value"
-    attachment.files = ['files_value1', 'files_value2']
+    attachment.files = ["files_value1", "files_value2"]
 
     request = artifactregistry_v1.CreateAttachmentRequest(
         parent="parent_value",
@@ -58,5 +58,6 @@ async def sample_create_attachment():
 
     # Handle the response
     print(response)
+
 
 # [END artifactregistry_v1_generated_ArtifactRegistry_CreateAttachment_async]

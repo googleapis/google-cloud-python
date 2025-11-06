@@ -50,4 +50,5 @@ def sample_list_backups():
     for response in page_result:
         print(response)
 
+
 # [END memorystore_v1_generated_Memorystore_ListBackups_sync]

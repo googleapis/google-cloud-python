@@ -53,4 +53,5 @@ async def sample_add_catalog_attribute():
     # Handle the response
     print(response)
 
+
 # [END retail_v2beta_generated_CatalogService_AddCatalogAttribute_async]

@@ -39,8 +39,7 @@ def sample_update_trust_config():
     client = certificate_manager_v1.CertificateManagerClient()
 
     # Initialize request argument(s)
-    request = certificate_manager_v1.UpdateTrustConfigRequest(
-    )
+    request = certificate_manager_v1.UpdateTrustConfigRequest()
 
     # Make the request
     operation = client.update_trust_config(request=request)
@@ -51,5 +50,6 @@ def sample_update_trust_config():
 
     # Handle the response
     print(response)
+
 
 # [END certificatemanager_v1_generated_CertificateManager_UpdateTrustConfig_sync]

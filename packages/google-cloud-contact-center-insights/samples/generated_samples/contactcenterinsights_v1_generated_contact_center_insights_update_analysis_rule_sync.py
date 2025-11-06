@@ -39,13 +39,13 @@ def sample_update_analysis_rule():
     client = contact_center_insights_v1.ContactCenterInsightsClient()
 
     # Initialize request argument(s)
-    request = contact_center_insights_v1.UpdateAnalysisRuleRequest(
-    )
+    request = contact_center_insights_v1.UpdateAnalysisRuleRequest()
 
     # Make the request
     response = client.update_analysis_rule(request=request)
 
     # Handle the response
     print(response)
+
 
 # [END contactcenterinsights_v1_generated_ContactCenterInsights_UpdateAnalysisRule_sync]

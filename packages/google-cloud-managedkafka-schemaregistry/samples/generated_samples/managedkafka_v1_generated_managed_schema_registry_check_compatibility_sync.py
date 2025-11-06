@@ -50,4 +50,5 @@ def sample_check_compatibility():
     # Handle the response
     print(response)
 
+
 # [END managedkafka_v1_generated_ManagedSchemaRegistry_CheckCompatibility_sync]

@@ -49,4 +49,5 @@ def sample_get_message_bus():
     # Handle the response
     print(response)
 
+
 # [END eventarc_v1_generated_Eventarc_GetMessageBus_sync]

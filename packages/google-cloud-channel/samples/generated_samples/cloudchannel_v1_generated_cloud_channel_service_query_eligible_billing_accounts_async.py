@@ -41,7 +41,7 @@ async def sample_query_eligible_billing_accounts():
     # Initialize request argument(s)
     request = channel_v1.QueryEligibleBillingAccountsRequest(
         customer="customer_value",
-        skus=['skus_value1', 'skus_value2'],
+        skus=["skus_value1", "skus_value2"],
     )
 
     # Make the request
@@ -49,5 +49,6 @@ async def sample_query_eligible_billing_accounts():
 
     # Handle the response
     print(response)
+
 
 # [END cloudchannel_v1_generated_CloudChannelService_QueryEligibleBillingAccounts_async]

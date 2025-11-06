@@ -53,4 +53,5 @@ async def sample_delete_cluster():
     # Handle the response
     print(response)
 
+
 # [END visionai_v1_generated_StreamsService_DeleteCluster_async]

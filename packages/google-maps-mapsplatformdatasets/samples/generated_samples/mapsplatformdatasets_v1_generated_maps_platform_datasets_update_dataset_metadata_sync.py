@@ -39,13 +39,13 @@ def sample_update_dataset_metadata():
     client = mapsplatformdatasets_v1.MapsPlatformDatasetsClient()
 
     # Initialize request argument(s)
-    request = mapsplatformdatasets_v1.UpdateDatasetMetadataRequest(
-    )
+    request = mapsplatformdatasets_v1.UpdateDatasetMetadataRequest()
 
     # Make the request
     response = client.update_dataset_metadata(request=request)
 
     # Handle the response
     print(response)
+
 
 # [END mapsplatformdatasets_v1_generated_MapsPlatformDatasets_UpdateDatasetMetadata_sync]

@@ -39,13 +39,13 @@ def sample_get_application():
     client = appengine_admin_v1.ApplicationsClient()
 
     # Initialize request argument(s)
-    request = appengine_admin_v1.GetApplicationRequest(
-    )
+    request = appengine_admin_v1.GetApplicationRequest()
 
     # Make the request
     response = client.get_application(request=request)
 
     # Handle the response
     print(response)
+
 
 # [END appengine_v1_generated_Applications_GetApplication_sync]

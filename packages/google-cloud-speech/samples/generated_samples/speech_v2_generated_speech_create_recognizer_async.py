@@ -53,4 +53,5 @@ async def sample_create_recognizer():
     # Handle the response
     print(response)
 
+
 # [END speech_v2_generated_Speech_CreateRecognizer_async]

@@ -55,4 +55,5 @@ def sample_insert_css_product_input():
     # Handle the response
     print(response)
 
+
 # [END css_v1_generated_CssProductInputsService_InsertCssProductInput_sync]

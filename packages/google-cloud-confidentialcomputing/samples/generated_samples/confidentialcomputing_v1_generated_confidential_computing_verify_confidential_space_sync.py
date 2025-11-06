@@ -49,4 +49,5 @@ def sample_verify_confidential_space():
     # Handle the response
     print(response)
 
+
 # [END confidentialcomputing_v1_generated_ConfidentialComputing_VerifyConfidentialSpace_sync]

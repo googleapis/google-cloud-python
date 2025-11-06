@@ -49,4 +49,5 @@ async def sample_batch_get_documents_metadata():
     # Handle the response
     print(response)
 
+
 # [END discoveryengine_v1alpha_generated_DocumentService_BatchGetDocumentsMetadata_async]

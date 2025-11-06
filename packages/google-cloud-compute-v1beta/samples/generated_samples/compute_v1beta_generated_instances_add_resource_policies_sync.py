@@ -51,4 +51,5 @@ def sample_add_resource_policies():
     # Handle the response
     print(response)
 
+
 # [END compute_v1beta_generated_Instances_AddResourcePolicies_sync]

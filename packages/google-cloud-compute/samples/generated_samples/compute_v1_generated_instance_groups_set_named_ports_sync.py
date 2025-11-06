@@ -51,4 +51,5 @@ def sample_set_named_ports():
     # Handle the response
     print(response)
 
+
 # [END compute_v1_generated_InstanceGroups_SetNamedPorts_sync]

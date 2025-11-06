@@ -50,4 +50,5 @@ def sample_list_parameter_versions():
     for response in page_result:
         print(response)
 
+
 # [END parametermanager_v1_generated_ParameterManager_ListParameterVersions_sync]

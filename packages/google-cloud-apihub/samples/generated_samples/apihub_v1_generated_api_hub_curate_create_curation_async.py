@@ -42,7 +42,9 @@ async def sample_create_curation():
     curation = apihub_v1.Curation()
     curation.display_name = "display_name_value"
     curation.endpoint.application_integration_endpoint_details.uri = "uri_value"
-    curation.endpoint.application_integration_endpoint_details.trigger_id = "trigger_id_value"
+    curation.endpoint.application_integration_endpoint_details.trigger_id = (
+        "trigger_id_value"
+    )
 
     request = apihub_v1.CreateCurationRequest(
         parent="parent_value",
@@ -54,5 +56,6 @@ async def sample_create_curation():
 
     # Handle the response
     print(response)
+
 
 # [END apihub_v1_generated_ApiHubCurate_CreateCuration_async]

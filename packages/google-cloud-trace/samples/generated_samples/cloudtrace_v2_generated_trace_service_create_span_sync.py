@@ -50,4 +50,5 @@ def sample_create_span():
     # Handle the response
     print(response)
 
+
 # [END cloudtrace_v2_generated_TraceService_CreateSpan_sync]

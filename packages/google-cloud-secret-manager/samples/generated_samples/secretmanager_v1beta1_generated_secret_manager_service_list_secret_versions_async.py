@@ -50,4 +50,5 @@ async def sample_list_secret_versions():
     async for response in page_result:
         print(response)
 
+
 # [END secretmanager_v1beta1_generated_SecretManagerService_ListSecretVersions_async]

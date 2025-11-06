@@ -49,4 +49,5 @@ def sample_move_disk():
     # Handle the response
     print(response)
 
+
 # [END compute_v1beta_generated_Projects_MoveDisk_sync]

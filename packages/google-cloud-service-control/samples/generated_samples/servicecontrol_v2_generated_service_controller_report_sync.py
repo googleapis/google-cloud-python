@@ -39,13 +39,13 @@ def sample_report():
     client = servicecontrol_v2.ServiceControllerClient()
 
     # Initialize request argument(s)
-    request = servicecontrol_v2.ReportRequest(
-    )
+    request = servicecontrol_v2.ReportRequest()
 
     # Make the request
     response = client.report(request=request)
 
     # Handle the response
     print(response)
+
 
 # [END servicecontrol_v2_generated_ServiceController_Report_sync]

@@ -53,4 +53,5 @@ def sample_run_report_job():
     # Handle the response
     print(response)
 
+
 # [END cloudchannel_v1_generated_CloudChannelReportsService_RunReportJob_sync]

@@ -42,7 +42,7 @@ def sample_export_intents():
     request = dialogflowcx_v3beta1.ExportIntentsRequest(
         intents_uri="intents_uri_value",
         parent="parent_value",
-        intents=['intents_value1', 'intents_value2'],
+        intents=["intents_value1", "intents_value2"],
     )
 
     # Make the request
@@ -54,5 +54,6 @@ def sample_export_intents():
 
     # Handle the response
     print(response)
+
 
 # [END dialogflow_v3beta1_generated_Intents_ExportIntents_sync]

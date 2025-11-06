@@ -50,4 +50,5 @@ async def sample_list_os_policy_assignment_revisions():
     async for response in page_result:
         print(response)
 
+
 # [END osconfig_v1alpha_generated_OsConfigZonalService_ListOSPolicyAssignmentRevisions_async]

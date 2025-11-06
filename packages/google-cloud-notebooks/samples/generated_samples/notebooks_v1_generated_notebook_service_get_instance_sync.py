@@ -49,4 +49,5 @@ def sample_get_instance():
     # Handle the response
     print(response)
 
+
 # [END notebooks_v1_generated_NotebookService_GetInstance_sync]

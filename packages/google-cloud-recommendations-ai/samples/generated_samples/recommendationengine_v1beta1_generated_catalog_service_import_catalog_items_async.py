@@ -53,4 +53,5 @@ async def sample_import_catalog_items():
     # Handle the response
     print(response)
 
+
 # [END recommendationengine_v1beta1_generated_CatalogService_ImportCatalogItems_async]

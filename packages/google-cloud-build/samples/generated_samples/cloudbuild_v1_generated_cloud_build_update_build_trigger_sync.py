@@ -54,4 +54,5 @@ def sample_update_build_trigger():
     # Handle the response
     print(response)
 
+
 # [END cloudbuild_v1_generated_CloudBuild_UpdateBuildTrigger_sync]

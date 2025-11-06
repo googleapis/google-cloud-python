@@ -39,13 +39,13 @@ async def sample_update_user():
     client = alloydb_v1beta.AlloyDBAdminAsyncClient()
 
     # Initialize request argument(s)
-    request = alloydb_v1beta.UpdateUserRequest(
-    )
+    request = alloydb_v1beta.UpdateUserRequest()
 
     # Make the request
     response = await client.update_user(request=request)
 
     # Handle the response
     print(response)
+
 
 # [END alloydb_v1beta_generated_AlloyDBAdmin_UpdateUser_async]

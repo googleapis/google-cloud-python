@@ -49,4 +49,5 @@ async def sample_update_billing_account():
     # Handle the response
     print(response)
 
+
 # [END cloudbilling_v1_generated_CloudBilling_UpdateBillingAccount_async]

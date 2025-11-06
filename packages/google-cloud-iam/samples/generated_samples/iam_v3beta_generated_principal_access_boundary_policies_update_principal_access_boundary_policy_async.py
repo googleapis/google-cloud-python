@@ -39,8 +39,7 @@ async def sample_update_principal_access_boundary_policy():
     client = iam_v3beta.PrincipalAccessBoundaryPoliciesAsyncClient()
 
     # Initialize request argument(s)
-    request = iam_v3beta.UpdatePrincipalAccessBoundaryPolicyRequest(
-    )
+    request = iam_v3beta.UpdatePrincipalAccessBoundaryPolicyRequest()
 
     # Make the request
     operation = client.update_principal_access_boundary_policy(request=request)
@@ -51,5 +50,6 @@ async def sample_update_principal_access_boundary_policy():
 
     # Handle the response
     print(response)
+
 
 # [END iam_v3beta_generated_PrincipalAccessBoundaryPolicies_UpdatePrincipalAccessBoundaryPolicy_async]

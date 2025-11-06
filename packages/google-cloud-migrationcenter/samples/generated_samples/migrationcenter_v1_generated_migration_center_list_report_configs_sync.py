@@ -50,4 +50,5 @@ def sample_list_report_configs():
     for response in page_result:
         print(response)
 
+
 # [END migrationcenter_v1_generated_MigrationCenter_ListReportConfigs_sync]

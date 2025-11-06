@@ -53,4 +53,5 @@ async def sample_add_local_inventories():
     # Handle the response
     print(response)
 
+
 # [END retail_v2beta_generated_ProductService_AddLocalInventories_async]

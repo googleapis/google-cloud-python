@@ -53,4 +53,5 @@ def sample_delete_index():
     # Handle the response
     print(response)
 
+
 # [END visionai_v1_generated_Warehouse_DeleteIndex_sync]

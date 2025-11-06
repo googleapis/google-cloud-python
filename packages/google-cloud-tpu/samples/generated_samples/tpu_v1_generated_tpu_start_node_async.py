@@ -39,8 +39,7 @@ async def sample_start_node():
     client = tpu_v1.TpuAsyncClient()
 
     # Initialize request argument(s)
-    request = tpu_v1.StartNodeRequest(
-    )
+    request = tpu_v1.StartNodeRequest()
 
     # Make the request
     operation = client.start_node(request=request)
@@ -51,5 +50,6 @@ async def sample_start_node():
 
     # Handle the response
     print(response)
+
 
 # [END tpu_v1_generated_Tpu_StartNode_async]

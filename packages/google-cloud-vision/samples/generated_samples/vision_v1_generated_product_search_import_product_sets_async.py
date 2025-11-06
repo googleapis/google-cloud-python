@@ -53,4 +53,5 @@ async def sample_import_product_sets():
     # Handle the response
     print(response)
 
+
 # [END vision_v1_generated_ProductSearch_ImportProductSets_async]

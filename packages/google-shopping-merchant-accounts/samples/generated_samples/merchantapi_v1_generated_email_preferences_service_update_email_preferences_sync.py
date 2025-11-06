@@ -39,13 +39,13 @@ def sample_update_email_preferences():
     client = merchant_accounts_v1.EmailPreferencesServiceClient()
 
     # Initialize request argument(s)
-    request = merchant_accounts_v1.UpdateEmailPreferencesRequest(
-    )
+    request = merchant_accounts_v1.UpdateEmailPreferencesRequest()
 
     # Make the request
     response = client.update_email_preferences(request=request)
 
     # Handle the response
     print(response)
+
 
 # [END merchantapi_v1_generated_EmailPreferencesService_UpdateEmailPreferences_sync]

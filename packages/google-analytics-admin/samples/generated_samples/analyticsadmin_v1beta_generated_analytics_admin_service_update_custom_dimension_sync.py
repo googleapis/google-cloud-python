@@ -39,13 +39,13 @@ def sample_update_custom_dimension():
     client = admin_v1beta.AnalyticsAdminServiceClient()
 
     # Initialize request argument(s)
-    request = admin_v1beta.UpdateCustomDimensionRequest(
-    )
+    request = admin_v1beta.UpdateCustomDimensionRequest()
 
     # Make the request
     response = client.update_custom_dimension(request=request)
 
     # Handle the response
     print(response)
+
 
 # [END analyticsadmin_v1beta_generated_AnalyticsAdminService_UpdateCustomDimension_sync]

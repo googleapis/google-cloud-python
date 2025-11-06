@@ -39,8 +39,7 @@ async def sample_list_versions():
     client = artifactregistry_v1beta2.ArtifactRegistryAsyncClient()
 
     # Initialize request argument(s)
-    request = artifactregistry_v1beta2.ListVersionsRequest(
-    )
+    request = artifactregistry_v1beta2.ListVersionsRequest()
 
     # Make the request
     page_result = client.list_versions(request=request)
@@ -48,5 +47,6 @@ async def sample_list_versions():
     # Handle the response
     async for response in page_result:
         print(response)
+
 
 # [END artifactregistry_v1beta2_generated_ArtifactRegistry_ListVersions_async]

@@ -53,4 +53,5 @@ async def sample_delete_dns_authorization():
     # Handle the response
     print(response)
 
+
 # [END certificatemanager_v1_generated_CertificateManager_DeleteDnsAuthorization_async]

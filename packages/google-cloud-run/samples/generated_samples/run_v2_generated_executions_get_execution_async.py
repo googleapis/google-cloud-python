@@ -49,4 +49,5 @@ async def sample_get_execution():
     # Handle the response
     print(response)
 
+
 # [END run_v2_generated_Executions_GetExecution_async]

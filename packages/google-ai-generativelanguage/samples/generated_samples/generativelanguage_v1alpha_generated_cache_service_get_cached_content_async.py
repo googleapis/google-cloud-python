@@ -49,4 +49,5 @@ async def sample_get_cached_content():
     # Handle the response
     print(response)
 
+
 # [END generativelanguage_v1alpha_generated_CacheService_GetCachedContent_async]

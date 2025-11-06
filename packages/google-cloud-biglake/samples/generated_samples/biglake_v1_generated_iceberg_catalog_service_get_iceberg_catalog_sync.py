@@ -49,4 +49,5 @@ def sample_get_iceberg_catalog():
     # Handle the response
     print(response)
 
+
 # [END biglake_v1_generated_IcebergCatalogService_GetIcebergCatalog_sync]

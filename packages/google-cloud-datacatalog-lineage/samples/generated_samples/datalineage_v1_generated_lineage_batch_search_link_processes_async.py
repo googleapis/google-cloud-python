@@ -41,7 +41,7 @@ async def sample_batch_search_link_processes():
     # Initialize request argument(s)
     request = datacatalog_lineage_v1.BatchSearchLinkProcessesRequest(
         parent="parent_value",
-        links=['links_value1', 'links_value2'],
+        links=["links_value1", "links_value2"],
     )
 
     # Make the request
@@ -50,5 +50,6 @@ async def sample_batch_search_link_processes():
     # Handle the response
     async for response in page_result:
         print(response)
+
 
 # [END datalineage_v1_generated_Lineage_BatchSearchLinkProcesses_async]

@@ -50,4 +50,5 @@ async def sample_list_configurations():
     async for response in page_result:
         print(response)
 
+
 # [END licensemanager_v1_generated_LicenseManager_ListConfigurations_async]

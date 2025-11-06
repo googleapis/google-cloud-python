@@ -49,4 +49,5 @@ def sample_get_volume_snapshot():
     # Handle the response
     print(response)
 
+
 # [END baremetalsolution_v2_generated_BareMetalSolution_GetVolumeSnapshot_sync]

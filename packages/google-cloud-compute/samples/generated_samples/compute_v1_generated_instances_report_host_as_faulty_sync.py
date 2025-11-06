@@ -51,4 +51,5 @@ def sample_report_host_as_faulty():
     # Handle the response
     print(response)
 
+
 # [END compute_v1_generated_Instances_ReportHostAsFaulty_sync]

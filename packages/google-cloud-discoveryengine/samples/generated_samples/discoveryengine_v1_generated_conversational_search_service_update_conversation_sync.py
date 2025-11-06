@@ -39,13 +39,13 @@ def sample_update_conversation():
     client = discoveryengine_v1.ConversationalSearchServiceClient()
 
     # Initialize request argument(s)
-    request = discoveryengine_v1.UpdateConversationRequest(
-    )
+    request = discoveryengine_v1.UpdateConversationRequest()
 
     # Make the request
     response = client.update_conversation(request=request)
 
     # Handle the response
     print(response)
+
 
 # [END discoveryengine_v1_generated_ConversationalSearchService_UpdateConversation_sync]

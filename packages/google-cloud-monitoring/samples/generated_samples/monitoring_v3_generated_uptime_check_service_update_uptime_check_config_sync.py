@@ -39,13 +39,13 @@ def sample_update_uptime_check_config():
     client = monitoring_v3.UptimeCheckServiceClient()
 
     # Initialize request argument(s)
-    request = monitoring_v3.UpdateUptimeCheckConfigRequest(
-    )
+    request = monitoring_v3.UpdateUptimeCheckConfigRequest()
 
     # Make the request
     response = client.update_uptime_check_config(request=request)
 
     # Handle the response
     print(response)
+
 
 # [END monitoring_v3_generated_UptimeCheckService_UpdateUptimeCheckConfig_sync]

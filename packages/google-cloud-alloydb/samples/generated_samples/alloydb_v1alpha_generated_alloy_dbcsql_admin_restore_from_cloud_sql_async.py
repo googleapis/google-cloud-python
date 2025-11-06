@@ -64,4 +64,5 @@ async def sample_restore_from_cloud_sql():
     # Handle the response
     print(response)
 
+
 # [END alloydb_v1alpha_generated_AlloyDBCSQLAdmin_RestoreFromCloudSQL_async]

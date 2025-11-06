@@ -49,4 +49,5 @@ def sample_annotate_assessment():
     # Handle the response
     print(response)
 
+
 # [END recaptchaenterprise_v1_generated_RecaptchaEnterpriseService_AnnotateAssessment_sync]

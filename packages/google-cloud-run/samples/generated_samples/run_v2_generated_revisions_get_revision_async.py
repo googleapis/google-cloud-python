@@ -49,4 +49,5 @@ async def sample_get_revision():
     # Handle the response
     print(response)
 
+
 # [END run_v2_generated_Revisions_GetRevision_async]

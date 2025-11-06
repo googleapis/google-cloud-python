@@ -39,8 +39,7 @@ def sample_list_jobs():
     client = batch_v1alpha.BatchServiceClient()
 
     # Initialize request argument(s)
-    request = batch_v1alpha.ListJobsRequest(
-    )
+    request = batch_v1alpha.ListJobsRequest()
 
     # Make the request
     page_result = client.list_jobs(request=request)
@@ -48,5 +47,6 @@ def sample_list_jobs():
     # Handle the response
     for response in page_result:
         print(response)
+
 
 # [END batch_v1alpha_generated_BatchService_ListJobs_sync]

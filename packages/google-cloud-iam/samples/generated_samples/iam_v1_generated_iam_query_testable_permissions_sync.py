@@ -39,8 +39,7 @@ def sample_query_testable_permissions():
     client = iam_admin_v1.IAMClient()
 
     # Initialize request argument(s)
-    request = iam_admin_v1.QueryTestablePermissionsRequest(
-    )
+    request = iam_admin_v1.QueryTestablePermissionsRequest()
 
     # Make the request
     page_result = client.query_testable_permissions(request=request)
@@ -48,5 +47,6 @@ def sample_query_testable_permissions():
     # Handle the response
     for response in page_result:
         print(response)
+
 
 # [END iam_v1_generated_IAM_QueryTestablePermissions_sync]

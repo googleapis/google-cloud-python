@@ -53,4 +53,5 @@ async def sample_delete_plugin_instance():
     # Handle the response
     print(response)
 
+
 # [END apihub_v1_generated_ApiHubPlugin_DeletePluginInstance_async]

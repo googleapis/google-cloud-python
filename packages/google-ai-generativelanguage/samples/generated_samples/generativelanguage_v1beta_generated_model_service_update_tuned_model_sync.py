@@ -39,13 +39,13 @@ def sample_update_tuned_model():
     client = generativelanguage_v1beta.ModelServiceClient()
 
     # Initialize request argument(s)
-    request = generativelanguage_v1beta.UpdateTunedModelRequest(
-    )
+    request = generativelanguage_v1beta.UpdateTunedModelRequest()
 
     # Make the request
     response = client.update_tuned_model(request=request)
 
     # Handle the response
     print(response)
+
 
 # [END generativelanguage_v1beta_generated_ModelService_UpdateTunedModel_sync]

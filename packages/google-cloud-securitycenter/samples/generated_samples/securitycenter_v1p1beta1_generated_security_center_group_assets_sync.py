@@ -51,4 +51,5 @@ def sample_group_assets():
     for response in page_result:
         print(response)
 
+
 # [END securitycenter_v1p1beta1_generated_SecurityCenter_GroupAssets_sync]

@@ -51,4 +51,5 @@ async def sample_get_cluster():
     # Handle the response
     print(response)
 
+
 # [END dataproc_v1_generated_ClusterController_GetCluster_async]

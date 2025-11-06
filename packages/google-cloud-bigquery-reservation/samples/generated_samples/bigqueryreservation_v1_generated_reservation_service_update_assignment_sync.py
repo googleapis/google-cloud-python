@@ -39,13 +39,13 @@ def sample_update_assignment():
     client = bigquery_reservation_v1.ReservationServiceClient()
 
     # Initialize request argument(s)
-    request = bigquery_reservation_v1.UpdateAssignmentRequest(
-    )
+    request = bigquery_reservation_v1.UpdateAssignmentRequest()
 
     # Make the request
     response = client.update_assignment(request=request)
 
     # Handle the response
     print(response)
+
 
 # [END bigqueryreservation_v1_generated_ReservationService_UpdateAssignment_sync]

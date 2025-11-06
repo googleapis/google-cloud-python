@@ -50,4 +50,5 @@ def sample_list_previews():
     for response in page_result:
         print(response)
 
+
 # [END config_v1_generated_Config_ListPreviews_sync]

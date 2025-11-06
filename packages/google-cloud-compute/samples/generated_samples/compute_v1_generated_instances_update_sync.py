@@ -51,4 +51,5 @@ def sample_update():
     # Handle the response
     print(response)
 
+
 # [END compute_v1_generated_Instances_Update_sync]

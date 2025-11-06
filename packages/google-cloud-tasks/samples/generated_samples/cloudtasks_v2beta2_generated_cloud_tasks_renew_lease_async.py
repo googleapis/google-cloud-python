@@ -49,4 +49,5 @@ async def sample_renew_lease():
     # Handle the response
     print(response)
 
+
 # [END cloudtasks_v2beta2_generated_CloudTasks_RenewLease_async]

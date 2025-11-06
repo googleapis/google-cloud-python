@@ -50,4 +50,5 @@ async def sample_list_clips():
     async for response in page_result:
         print(response)
 
+
 # [END livestream_v1_generated_LivestreamService_ListClips_async]

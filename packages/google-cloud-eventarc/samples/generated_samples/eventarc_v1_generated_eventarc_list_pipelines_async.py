@@ -50,4 +50,5 @@ async def sample_list_pipelines():
     async for response in page_result:
         print(response)
 
+
 # [END eventarc_v1_generated_Eventarc_ListPipelines_async]

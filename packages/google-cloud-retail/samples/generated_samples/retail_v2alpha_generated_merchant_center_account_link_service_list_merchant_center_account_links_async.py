@@ -49,4 +49,5 @@ async def sample_list_merchant_center_account_links():
     # Handle the response
     print(response)
 
+
 # [END retail_v2alpha_generated_MerchantCenterAccountLinkService_ListMerchantCenterAccountLinks_async]

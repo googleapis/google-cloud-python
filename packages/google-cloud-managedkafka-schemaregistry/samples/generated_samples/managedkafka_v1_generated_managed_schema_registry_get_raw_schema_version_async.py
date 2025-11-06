@@ -49,4 +49,5 @@ async def sample_get_raw_schema_version():
     # Handle the response
     print(response)
 
+
 # [END managedkafka_v1_generated_ManagedSchemaRegistry_GetRawSchemaVersion_async]

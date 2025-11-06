@@ -49,4 +49,5 @@ def sample_create_checkout_settings():
     # Handle the response
     print(response)
 
+
 # [END merchantapi_v1beta_generated_CheckoutSettingsService_CreateCheckoutSettings_sync]

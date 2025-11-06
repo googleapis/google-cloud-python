@@ -50,4 +50,5 @@ def sample_update_peering():
     # Handle the response
     print(response)
 
+
 # [END compute_v1beta_generated_Networks_UpdatePeering_sync]

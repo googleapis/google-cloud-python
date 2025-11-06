@@ -49,4 +49,5 @@ async def sample_get_node_group():
     # Handle the response
     print(response)
 
+
 # [END dataproc_v1_generated_NodeGroupController_GetNodeGroup_async]

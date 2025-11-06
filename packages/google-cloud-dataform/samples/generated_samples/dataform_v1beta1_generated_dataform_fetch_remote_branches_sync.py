@@ -49,4 +49,5 @@ def sample_fetch_remote_branches():
     # Handle the response
     print(response)
 
+
 # [END dataform_v1beta1_generated_Dataform_FetchRemoteBranches_sync]

@@ -49,4 +49,5 @@ async def sample_get_trust_config():
     # Handle the response
     print(response)
 
+
 # [END certificatemanager_v1_generated_CertificateManager_GetTrustConfig_async]

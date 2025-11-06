@@ -49,4 +49,5 @@ async def sample_get_backup_vault():
     # Handle the response
     print(response)
 
+
 # [END netapp_v1_generated_NetApp_GetBackupVault_async]

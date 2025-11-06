@@ -49,4 +49,5 @@ async def sample_get_conversation():
     # Handle the response
     print(response)
 
+
 # [END geminidataanalytics_v1beta_generated_DataChatService_GetConversation_async]

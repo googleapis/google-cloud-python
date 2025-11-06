@@ -50,4 +50,5 @@ def sample_list_releases():
     for response in page_result:
         print(response)
 
+
 # [END configdelivery_v1beta_generated_ConfigDelivery_ListReleases_sync]

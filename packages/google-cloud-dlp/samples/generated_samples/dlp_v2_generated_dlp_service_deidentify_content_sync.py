@@ -39,13 +39,13 @@ def sample_deidentify_content():
     client = dlp_v2.DlpServiceClient()
 
     # Initialize request argument(s)
-    request = dlp_v2.DeidentifyContentRequest(
-    )
+    request = dlp_v2.DeidentifyContentRequest()
 
     # Make the request
     response = client.deidentify_content(request=request)
 
     # Handle the response
     print(response)
+
 
 # [END dlp_v2_generated_DlpService_DeidentifyContent_sync]

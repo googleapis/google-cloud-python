@@ -54,4 +54,5 @@ def sample_upgrade_instance_internal():
     # Handle the response
     print(response)
 
+
 # [END notebooks_v1beta1_generated_NotebookService_UpgradeInstanceInternal_sync]

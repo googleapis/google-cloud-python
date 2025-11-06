@@ -49,4 +49,5 @@ def sample_list_contexts():
     # Handle the response
     print(response)
 
+
 # [END managedkafka_v1_generated_ManagedSchemaRegistry_ListContexts_sync]

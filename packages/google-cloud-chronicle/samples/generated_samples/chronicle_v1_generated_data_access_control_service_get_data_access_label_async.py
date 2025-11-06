@@ -49,4 +49,5 @@ async def sample_get_data_access_label():
     # Handle the response
     print(response)
 
+
 # [END chronicle_v1_generated_DataAccessControlService_GetDataAccessLabel_async]

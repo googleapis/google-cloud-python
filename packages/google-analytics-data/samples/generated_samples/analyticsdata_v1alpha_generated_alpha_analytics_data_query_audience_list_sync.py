@@ -49,4 +49,5 @@ def sample_query_audience_list():
     # Handle the response
     print(response)
 
+
 # [END analyticsdata_v1alpha_generated_AlphaAnalyticsData_QueryAudienceList_sync]

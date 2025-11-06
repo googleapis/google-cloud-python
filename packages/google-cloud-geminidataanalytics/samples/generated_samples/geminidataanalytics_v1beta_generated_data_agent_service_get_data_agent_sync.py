@@ -49,4 +49,5 @@ def sample_get_data_agent():
     # Handle the response
     print(response)
 
+
 # [END geminidataanalytics_v1beta_generated_DataAgentService_GetDataAgent_sync]

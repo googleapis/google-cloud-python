@@ -50,4 +50,5 @@ def sample_list_templates():
     for response in page_result:
         print(response)
 
+
 # [END modelarmor_v1beta_generated_ModelArmor_ListTemplates_sync]

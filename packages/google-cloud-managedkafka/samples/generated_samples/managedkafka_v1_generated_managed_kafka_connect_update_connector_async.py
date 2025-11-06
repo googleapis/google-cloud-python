@@ -39,13 +39,13 @@ async def sample_update_connector():
     client = managedkafka_v1.ManagedKafkaConnectAsyncClient()
 
     # Initialize request argument(s)
-    request = managedkafka_v1.UpdateConnectorRequest(
-    )
+    request = managedkafka_v1.UpdateConnectorRequest()
 
     # Make the request
     response = await client.update_connector(request=request)
 
     # Handle the response
     print(response)
+
 
 # [END managedkafka_v1_generated_ManagedKafkaConnect_UpdateConnector_async]

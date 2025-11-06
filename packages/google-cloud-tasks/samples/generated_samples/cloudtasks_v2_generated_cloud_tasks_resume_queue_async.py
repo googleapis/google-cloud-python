@@ -49,4 +49,5 @@ async def sample_resume_queue():
     # Handle the response
     print(response)
 
+
 # [END cloudtasks_v2_generated_CloudTasks_ResumeQueue_async]

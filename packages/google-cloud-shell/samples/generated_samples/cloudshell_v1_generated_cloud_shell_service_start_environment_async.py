@@ -39,8 +39,7 @@ async def sample_start_environment():
     client = shell_v1.CloudShellServiceAsyncClient()
 
     # Initialize request argument(s)
-    request = shell_v1.StartEnvironmentRequest(
-    )
+    request = shell_v1.StartEnvironmentRequest()
 
     # Make the request
     operation = client.start_environment(request=request)
@@ -51,5 +50,6 @@ async def sample_start_environment():
 
     # Handle the response
     print(response)
+
 
 # [END cloudshell_v1_generated_CloudShellService_StartEnvironment_async]

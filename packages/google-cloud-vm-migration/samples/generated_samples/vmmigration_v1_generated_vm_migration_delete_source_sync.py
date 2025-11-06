@@ -53,4 +53,5 @@ def sample_delete_source():
     # Handle the response
     print(response)
 
+
 # [END vmmigration_v1_generated_VmMigration_DeleteSource_sync]

@@ -49,4 +49,5 @@ def sample_export_lock_info():
     # Handle the response
     print(response)
 
+
 # [END config_v1_generated_Config_ExportLockInfo_sync]

@@ -50,4 +50,5 @@ def sample_list_connections():
     for response in page_result:
         print(response)
 
+
 # [END developerconnect_v1_generated_DeveloperConnect_ListConnections_sync]

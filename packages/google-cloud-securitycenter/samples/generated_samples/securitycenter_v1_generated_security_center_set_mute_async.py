@@ -50,4 +50,5 @@ async def sample_set_mute():
     # Handle the response
     print(response)
 
+
 # [END securitycenter_v1_generated_SecurityCenter_SetMute_async]

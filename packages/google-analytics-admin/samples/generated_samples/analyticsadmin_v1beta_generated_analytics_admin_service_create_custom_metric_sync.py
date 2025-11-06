@@ -56,4 +56,5 @@ def sample_create_custom_metric():
     # Handle the response
     print(response)
 
+
 # [END analyticsadmin_v1beta_generated_AnalyticsAdminService_CreateCustomMetric_sync]

@@ -50,4 +50,5 @@ def sample_list_autoscaling_policies():
     for response in page_result:
         print(response)
 
+
 # [END dataproc_v1_generated_AutoscalingPolicyService_ListAutoscalingPolicies_sync]

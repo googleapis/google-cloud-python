@@ -50,4 +50,5 @@ def sample_list_entitlements():
     for response in page_result:
         print(response)
 
+
 # [END privilegedaccessmanager_v1_generated_PrivilegedAccessManager_ListEntitlements_sync]

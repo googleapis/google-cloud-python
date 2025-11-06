@@ -54,4 +54,5 @@ async def sample_create_mute_config():
     # Handle the response
     print(response)
 
+
 # [END securitycenter_v1_generated_SecurityCenter_CreateMuteConfig_async]

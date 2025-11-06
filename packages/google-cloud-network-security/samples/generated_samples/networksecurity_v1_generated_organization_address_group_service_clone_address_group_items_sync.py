@@ -54,4 +54,5 @@ def sample_clone_address_group_items():
     # Handle the response
     print(response)
 
+
 # [END networksecurity_v1_generated_OrganizationAddressGroupService_CloneAddressGroupItems_sync]

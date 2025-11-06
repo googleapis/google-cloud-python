@@ -39,8 +39,7 @@ async def sample_update_source():
     client = vmmigration_v1.VmMigrationAsyncClient()
 
     # Initialize request argument(s)
-    request = vmmigration_v1.UpdateSourceRequest(
-    )
+    request = vmmigration_v1.UpdateSourceRequest()
 
     # Make the request
     operation = client.update_source(request=request)
@@ -51,5 +50,6 @@ async def sample_update_source():
 
     # Handle the response
     print(response)
+
 
 # [END vmmigration_v1_generated_VmMigration_UpdateSource_async]

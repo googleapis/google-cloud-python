@@ -49,4 +49,5 @@ async def sample_get_serving_config():
     # Handle the response
     print(response)
 
+
 # [END discoveryengine_v1alpha_generated_ServingConfigService_GetServingConfig_async]

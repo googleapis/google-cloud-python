@@ -51,4 +51,5 @@ def sample_get():
     # Handle the response
     print(response)
 
+
 # [END compute_v1_generated_ForwardingRules_Get_sync]

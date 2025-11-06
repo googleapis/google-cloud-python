@@ -61,4 +61,5 @@ def sample_create_connection_profile():
     # Handle the response
     print(response)
 
+
 # [END datastream_v1_generated_Datastream_CreateConnectionProfile_sync]

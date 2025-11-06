@@ -49,4 +49,5 @@ async def sample_get_organization():
     # Handle the response
     print(response)
 
+
 # [END cloudresourcemanager_v3_generated_Organizations_GetOrganization_async]

@@ -54,4 +54,5 @@ def sample_report_runtime_event():
     # Handle the response
     print(response)
 
+
 # [END notebooks_v1_generated_ManagedNotebookService_ReportRuntimeEvent_sync]

@@ -39,13 +39,13 @@ async def sample_query_auditable_services():
     client = iam_admin_v1.IAMAsyncClient()
 
     # Initialize request argument(s)
-    request = iam_admin_v1.QueryAuditableServicesRequest(
-    )
+    request = iam_admin_v1.QueryAuditableServicesRequest()
 
     # Make the request
     response = await client.query_auditable_services(request=request)
 
     # Handle the response
     print(response)
+
 
 # [END iam_v1_generated_IAM_QueryAuditableServices_async]

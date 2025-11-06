@@ -49,4 +49,5 @@ def sample_get_violation():
     # Handle the response
     print(response)
 
+
 # [END cloudcontrolspartner_v1beta_generated_CloudControlsPartnerMonitoring_GetViolation_sync]

@@ -44,10 +44,13 @@ def sample_list_effective_security_health_analytics_custom_modules():
     )
 
     # Make the request
-    page_result = client.list_effective_security_health_analytics_custom_modules(request=request)
+    page_result = client.list_effective_security_health_analytics_custom_modules(
+        request=request
+    )
 
     # Handle the response
     for response in page_result:
         print(response)
+
 
 # [END securitycentermanagement_v1_generated_SecurityCenterManagement_ListEffectiveSecurityHealthAnalyticsCustomModules_sync]

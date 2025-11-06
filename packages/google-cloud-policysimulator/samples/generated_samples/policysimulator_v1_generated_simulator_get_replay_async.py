@@ -49,4 +49,5 @@ async def sample_get_replay():
     # Handle the response
     print(response)
 
+
 # [END policysimulator_v1_generated_Simulator_GetReplay_async]

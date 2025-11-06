@@ -39,7 +39,8 @@ def sample_list_preconfigured_expression_sets():
     client = compute_v1beta.OrganizationSecurityPoliciesClient()
 
     # Initialize request argument(s)
-    request = compute_v1beta.ListPreconfiguredExpressionSetsOrganizationSecurityPoliciesRequest(
+    request = (
+        compute_v1beta.ListPreconfiguredExpressionSetsOrganizationSecurityPoliciesRequest()
     )
 
     # Make the request
@@ -47,5 +48,6 @@ def sample_list_preconfigured_expression_sets():
 
     # Handle the response
     print(response)
+
 
 # [END compute_v1beta_generated_OrganizationSecurityPolicies_ListPreconfiguredExpressionSets_sync]

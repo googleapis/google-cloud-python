@@ -50,4 +50,5 @@ async def sample_list_builds():
     async for response in page_result:
         print(response)
 
+
 # [END cloudbuild_v1_generated_CloudBuild_ListBuilds_async]

@@ -50,4 +50,5 @@ def sample_list_discovered_workloads():
     for response in page_result:
         print(response)
 
+
 # [END apphub_v1_generated_AppHub_ListDiscoveredWorkloads_sync]

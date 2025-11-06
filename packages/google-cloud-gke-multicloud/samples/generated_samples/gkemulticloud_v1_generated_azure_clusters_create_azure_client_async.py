@@ -59,4 +59,5 @@ async def sample_create_azure_client():
     # Handle the response
     print(response)
 
+
 # [END gkemulticloud_v1_generated_AzureClusters_CreateAzureClient_async]

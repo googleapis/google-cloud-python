@@ -49,4 +49,5 @@ def sample_get_terraform_version():
     # Handle the response
     print(response)
 
+
 # [END config_v1_generated_Config_GetTerraformVersion_sync]

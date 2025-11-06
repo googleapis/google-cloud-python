@@ -39,8 +39,7 @@ async def sample_list_files():
     client = generativelanguage_v1alpha.FileServiceAsyncClient()
 
     # Initialize request argument(s)
-    request = generativelanguage_v1alpha.ListFilesRequest(
-    )
+    request = generativelanguage_v1alpha.ListFilesRequest()
 
     # Make the request
     page_result = client.list_files(request=request)
@@ -48,5 +47,6 @@ async def sample_list_files():
     # Handle the response
     async for response in page_result:
         print(response)
+
 
 # [END generativelanguage_v1alpha_generated_FileService_ListFiles_async]

@@ -49,4 +49,5 @@ def sample_get_conversion_source():
     # Handle the response
     print(response)
 
+
 # [END merchantapi_v1_generated_ConversionSourcesService_GetConversionSource_sync]

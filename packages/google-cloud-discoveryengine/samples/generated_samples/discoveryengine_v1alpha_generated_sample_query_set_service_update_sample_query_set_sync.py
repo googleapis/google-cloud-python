@@ -52,4 +52,5 @@ def sample_update_sample_query_set():
     # Handle the response
     print(response)
 
+
 # [END discoveryengine_v1alpha_generated_SampleQuerySetService_UpdateSampleQuerySet_sync]

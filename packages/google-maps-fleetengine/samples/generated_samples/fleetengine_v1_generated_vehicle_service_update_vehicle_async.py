@@ -49,4 +49,5 @@ async def sample_update_vehicle():
     # Handle the response
     print(response)
 
+
 # [END fleetengine_v1_generated_VehicleService_UpdateVehicle_async]

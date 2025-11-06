@@ -50,4 +50,5 @@ async def sample_execute_question():
     # Handle the response
     print(response)
 
+
 # [END dataqna_v1alpha_generated_QuestionService_ExecuteQuestion_async]

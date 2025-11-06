@@ -51,4 +51,5 @@ def sample_list_lfp_stores():
     for response in page_result:
         print(response)
 
+
 # [END merchantapi_v1beta_generated_LfpStoreService_ListLfpStores_sync]

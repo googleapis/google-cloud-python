@@ -49,4 +49,5 @@ def sample_get_account_relationship():
     # Handle the response
     print(response)
 
+
 # [END merchantapi_v1_generated_AccountRelationshipsService_GetAccountRelationship_sync]

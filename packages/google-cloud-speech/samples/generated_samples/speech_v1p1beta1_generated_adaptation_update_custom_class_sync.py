@@ -39,13 +39,13 @@ def sample_update_custom_class():
     client = speech_v1p1beta1.AdaptationClient()
 
     # Initialize request argument(s)
-    request = speech_v1p1beta1.UpdateCustomClassRequest(
-    )
+    request = speech_v1p1beta1.UpdateCustomClassRequest()
 
     # Make the request
     response = client.update_custom_class(request=request)
 
     # Handle the response
     print(response)
+
 
 # [END speech_v1p1beta1_generated_Adaptation_UpdateCustomClass_sync]

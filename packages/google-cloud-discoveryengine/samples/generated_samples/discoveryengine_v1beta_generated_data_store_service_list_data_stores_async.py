@@ -50,4 +50,5 @@ async def sample_list_data_stores():
     async for response in page_result:
         print(response)
 
+
 # [END discoveryengine_v1beta_generated_DataStoreService_ListDataStores_async]

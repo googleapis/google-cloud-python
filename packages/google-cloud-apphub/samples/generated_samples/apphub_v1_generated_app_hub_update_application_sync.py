@@ -56,4 +56,5 @@ def sample_update_application():
     # Handle the response
     print(response)
 
+
 # [END apphub_v1_generated_AppHub_UpdateApplication_sync]

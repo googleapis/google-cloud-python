@@ -49,4 +49,5 @@ async def sample_list_runtimes():
     # Handle the response
     print(response)
 
+
 # [END cloudfunctions_v2_generated_FunctionService_ListRuntimes_async]

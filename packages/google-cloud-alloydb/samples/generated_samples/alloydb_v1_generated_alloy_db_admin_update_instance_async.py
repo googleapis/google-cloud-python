@@ -56,4 +56,5 @@ async def sample_update_instance():
     # Handle the response
     print(response)
 
+
 # [END alloydb_v1_generated_AlloyDBAdmin_UpdateInstance_async]

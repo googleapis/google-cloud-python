@@ -49,4 +49,5 @@ def sample_get_task():
     # Handle the response
     print(response)
 
+
 # [END fleetengine_v1_generated_DeliveryService_GetTask_sync]

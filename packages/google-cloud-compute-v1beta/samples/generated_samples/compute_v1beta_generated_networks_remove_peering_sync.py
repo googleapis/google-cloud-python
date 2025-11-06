@@ -50,4 +50,5 @@ def sample_remove_peering():
     # Handle the response
     print(response)
 
+
 # [END compute_v1beta_generated_Networks_RemovePeering_sync]

@@ -49,4 +49,5 @@ async def sample_get_cluster_certificate_authority():
     # Handle the response
     print(response)
 
+
 # [END redis_v1_generated_CloudRedisCluster_GetClusterCertificateAuthority_async]

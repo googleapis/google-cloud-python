@@ -49,4 +49,5 @@ def sample_get_automatic_improvements():
     # Handle the response
     print(response)
 
+
 # [END merchantapi_v1beta_generated_AutomaticImprovementsService_GetAutomaticImprovements_sync]

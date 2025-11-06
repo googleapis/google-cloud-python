@@ -50,4 +50,5 @@ def sample_list_curations():
     for response in page_result:
         print(response)
 
+
 # [END apihub_v1_generated_ApiHubCurate_ListCurations_sync]

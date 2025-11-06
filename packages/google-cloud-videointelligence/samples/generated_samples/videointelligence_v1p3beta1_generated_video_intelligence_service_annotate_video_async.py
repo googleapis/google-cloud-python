@@ -40,7 +40,7 @@ async def sample_annotate_video():
 
     # Initialize request argument(s)
     request = videointelligence_v1p3beta1.AnnotateVideoRequest(
-        features=['PERSON_DETECTION'],
+        features=["PERSON_DETECTION"],
     )
 
     # Make the request
@@ -52,5 +52,6 @@ async def sample_annotate_video():
 
     # Handle the response
     print(response)
+
 
 # [END videointelligence_v1p3beta1_generated_VideoIntelligenceService_AnnotateVideo_async]

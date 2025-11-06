@@ -55,4 +55,5 @@ def sample_reject_spoke_update():
     # Handle the response
     print(response)
 
+
 # [END networkconnectivity_v1_generated_HubService_RejectSpokeUpdate_sync]

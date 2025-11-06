@@ -39,8 +39,7 @@ async def sample_update_cdn_key():
     client = stitcher_v1.VideoStitcherServiceAsyncClient()
 
     # Initialize request argument(s)
-    request = stitcher_v1.UpdateCdnKeyRequest(
-    )
+    request = stitcher_v1.UpdateCdnKeyRequest()
 
     # Make the request
     operation = client.update_cdn_key(request=request)
@@ -51,5 +50,6 @@ async def sample_update_cdn_key():
 
     # Handle the response
     print(response)
+
 
 # [END videostitcher_v1_generated_VideoStitcherService_UpdateCdnKey_async]

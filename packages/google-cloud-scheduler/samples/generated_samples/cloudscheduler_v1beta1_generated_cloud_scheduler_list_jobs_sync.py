@@ -50,4 +50,5 @@ def sample_list_jobs():
     for response in page_result:
         print(response)
 
+
 # [END cloudscheduler_v1beta1_generated_CloudScheduler_ListJobs_sync]

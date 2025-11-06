@@ -39,8 +39,7 @@ async def sample_update_input():
     client = live_stream_v1.LivestreamServiceAsyncClient()
 
     # Initialize request argument(s)
-    request = live_stream_v1.UpdateInputRequest(
-    )
+    request = live_stream_v1.UpdateInputRequest()
 
     # Make the request
     operation = client.update_input(request=request)
@@ -51,5 +50,6 @@ async def sample_update_input():
 
     # Handle the response
     print(response)
+
 
 # [END livestream_v1_generated_LivestreamService_UpdateInput_async]

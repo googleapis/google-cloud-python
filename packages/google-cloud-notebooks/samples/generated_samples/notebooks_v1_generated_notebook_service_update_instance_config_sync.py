@@ -53,4 +53,5 @@ def sample_update_instance_config():
     # Handle the response
     print(response)
 
+
 # [END notebooks_v1_generated_NotebookService_UpdateInstanceConfig_sync]

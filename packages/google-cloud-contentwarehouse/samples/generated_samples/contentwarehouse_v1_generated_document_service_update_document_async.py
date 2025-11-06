@@ -55,4 +55,5 @@ async def sample_update_document():
     # Handle the response
     print(response)
 
+
 # [END contentwarehouse_v1_generated_DocumentService_UpdateDocument_async]

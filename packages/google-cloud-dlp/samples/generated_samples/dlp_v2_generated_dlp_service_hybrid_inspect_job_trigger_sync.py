@@ -49,4 +49,5 @@ def sample_hybrid_inspect_job_trigger():
     # Handle the response
     print(response)
 
+
 # [END dlp_v2_generated_DlpService_HybridInspectJobTrigger_sync]

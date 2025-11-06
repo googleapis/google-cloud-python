@@ -50,4 +50,5 @@ async def sample_rollback_deployment():
     # Handle the response
     print(response)
 
+
 # [END telcoautomation_v1_generated_TelcoAutomation_RollbackDeployment_async]

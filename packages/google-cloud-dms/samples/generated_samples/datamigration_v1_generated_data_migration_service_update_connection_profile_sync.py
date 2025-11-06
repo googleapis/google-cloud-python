@@ -59,4 +59,5 @@ def sample_update_connection_profile():
     # Handle the response
     print(response)
 
+
 # [END datamigration_v1_generated_DataMigrationService_UpdateConnectionProfile_sync]

@@ -39,8 +39,7 @@ async def sample_update_group():
     client = networkconnectivity_v1.HubServiceAsyncClient()
 
     # Initialize request argument(s)
-    request = networkconnectivity_v1.UpdateGroupRequest(
-    )
+    request = networkconnectivity_v1.UpdateGroupRequest()
 
     # Make the request
     operation = client.update_group(request=request)
@@ -51,5 +50,6 @@ async def sample_update_group():
 
     # Handle the response
     print(response)
+
 
 # [END networkconnectivity_v1_generated_HubService_UpdateGroup_async]

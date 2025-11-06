@@ -49,4 +49,5 @@ async def sample_get_authorization():
     # Handle the response
     print(response)
 
+
 # [END gsuiteaddons_v1_generated_GSuiteAddOns_GetAuthorization_async]

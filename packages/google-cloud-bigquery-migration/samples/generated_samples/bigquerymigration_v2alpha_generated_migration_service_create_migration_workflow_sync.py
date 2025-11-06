@@ -49,4 +49,5 @@ def sample_create_migration_workflow():
     # Handle the response
     print(response)
 
+
 # [END bigquerymigration_v2alpha_generated_MigrationService_CreateMigrationWorkflow_sync]

@@ -49,4 +49,5 @@ async def sample_calculate_issue_model_stats():
     # Handle the response
     print(response)
 
+
 # [END contactcenterinsights_v1_generated_ContactCenterInsights_CalculateIssueModelStats_async]

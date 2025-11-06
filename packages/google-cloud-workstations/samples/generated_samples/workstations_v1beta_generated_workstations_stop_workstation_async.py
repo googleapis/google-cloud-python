@@ -53,4 +53,5 @@ async def sample_stop_workstation():
     # Handle the response
     print(response)
 
+
 # [END workstations_v1beta_generated_Workstations_StopWorkstation_async]

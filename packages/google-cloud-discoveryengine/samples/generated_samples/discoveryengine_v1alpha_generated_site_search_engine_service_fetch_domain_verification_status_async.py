@@ -50,4 +50,5 @@ async def sample_fetch_domain_verification_status():
     async for response in page_result:
         print(response)
 
+
 # [END discoveryengine_v1alpha_generated_SiteSearchEngineService_FetchDomainVerificationStatus_async]

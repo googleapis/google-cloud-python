@@ -49,4 +49,5 @@ def sample_get_private_connection():
     # Handle the response
     print(response)
 
+
 # [END datastream_v1_generated_Datastream_GetPrivateConnection_sync]

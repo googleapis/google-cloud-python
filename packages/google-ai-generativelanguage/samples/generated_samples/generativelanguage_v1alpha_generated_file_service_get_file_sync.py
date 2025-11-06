@@ -49,4 +49,5 @@ def sample_get_file():
     # Handle the response
     print(response)
 
+
 # [END generativelanguage_v1alpha_generated_FileService_GetFile_sync]

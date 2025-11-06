@@ -39,13 +39,13 @@ def sample_release_lease():
     client = visionai_v1.StreamingServiceClient()
 
     # Initialize request argument(s)
-    request = visionai_v1.ReleaseLeaseRequest(
-    )
+    request = visionai_v1.ReleaseLeaseRequest()
 
     # Make the request
     response = client.release_lease(request=request)
 
     # Handle the response
     print(response)
+
 
 # [END visionai_v1_generated_StreamingService_ReleaseLease_sync]

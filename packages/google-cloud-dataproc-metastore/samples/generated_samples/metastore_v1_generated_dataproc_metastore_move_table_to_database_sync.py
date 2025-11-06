@@ -56,4 +56,5 @@ def sample_move_table_to_database():
     # Handle the response
     print(response)
 
+
 # [END metastore_v1_generated_DataprocMetastore_MoveTableToDatabase_sync]

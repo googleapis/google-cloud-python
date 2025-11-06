@@ -49,4 +49,5 @@ async def sample_get_system_policy():
     # Handle the response
     print(response)
 
+
 # [END binaryauthorization_v1_generated_SystemPolicyV1_GetSystemPolicy_async]

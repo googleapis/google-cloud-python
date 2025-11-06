@@ -53,4 +53,5 @@ def sample_link_dataset():
     # Handle the response
     print(response)
 
+
 # [END storageinsights_v1_generated_StorageInsights_LinkDataset_sync]

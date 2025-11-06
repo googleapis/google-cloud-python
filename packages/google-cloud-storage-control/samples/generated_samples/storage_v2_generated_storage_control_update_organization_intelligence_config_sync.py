@@ -39,13 +39,13 @@ def sample_update_organization_intelligence_config():
     client = storage_control_v2.StorageControlClient()
 
     # Initialize request argument(s)
-    request = storage_control_v2.UpdateOrganizationIntelligenceConfigRequest(
-    )
+    request = storage_control_v2.UpdateOrganizationIntelligenceConfigRequest()
 
     # Make the request
     response = client.update_organization_intelligence_config(request=request)
 
     # Handle the response
     print(response)
+
 
 # [END storage_v2_generated_StorageControl_UpdateOrganizationIntelligenceConfig_sync]

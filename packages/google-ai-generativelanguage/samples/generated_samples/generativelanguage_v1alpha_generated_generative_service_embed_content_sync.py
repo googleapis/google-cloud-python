@@ -49,4 +49,5 @@ def sample_embed_content():
     # Handle the response
     print(response)
 
+
 # [END generativelanguage_v1alpha_generated_GenerativeService_EmbedContent_sync]

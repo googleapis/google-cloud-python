@@ -39,13 +39,13 @@ def sample_get_version():
     client = artifactregistry_v1.ArtifactRegistryClient()
 
     # Initialize request argument(s)
-    request = artifactregistry_v1.GetVersionRequest(
-    )
+    request = artifactregistry_v1.GetVersionRequest()
 
     # Make the request
     response = client.get_version(request=request)
 
     # Handle the response
     print(response)
+
 
 # [END artifactregistry_v1_generated_ArtifactRegistry_GetVersion_sync]

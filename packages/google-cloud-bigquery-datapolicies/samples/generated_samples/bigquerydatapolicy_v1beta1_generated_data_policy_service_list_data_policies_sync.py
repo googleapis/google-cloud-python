@@ -50,4 +50,5 @@ def sample_list_data_policies():
     for response in page_result:
         print(response)
 
+
 # [END bigquerydatapolicy_v1beta1_generated_DataPolicyService_ListDataPolicies_sync]

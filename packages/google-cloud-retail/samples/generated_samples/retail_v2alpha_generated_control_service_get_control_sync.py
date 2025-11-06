@@ -49,4 +49,5 @@ def sample_get_control():
     # Handle the response
     print(response)
 
+
 # [END retail_v2alpha_generated_ControlService_GetControl_sync]

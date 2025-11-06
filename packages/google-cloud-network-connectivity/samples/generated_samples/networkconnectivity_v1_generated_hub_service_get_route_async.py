@@ -49,4 +49,5 @@ async def sample_get_route():
     # Handle the response
     print(response)
 
+
 # [END networkconnectivity_v1_generated_HubService_GetRoute_async]

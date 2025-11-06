@@ -39,8 +39,7 @@ def sample_update_custom_class():
     client = speech_v2.SpeechClient()
 
     # Initialize request argument(s)
-    request = speech_v2.UpdateCustomClassRequest(
-    )
+    request = speech_v2.UpdateCustomClassRequest()
 
     # Make the request
     operation = client.update_custom_class(request=request)
@@ -51,5 +50,6 @@ def sample_update_custom_class():
 
     # Handle the response
     print(response)
+
 
 # [END speech_v2_generated_Speech_UpdateCustomClass_sync]

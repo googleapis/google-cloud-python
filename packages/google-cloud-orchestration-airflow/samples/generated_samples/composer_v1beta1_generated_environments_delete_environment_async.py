@@ -39,8 +39,7 @@ async def sample_delete_environment():
     client = service_v1beta1.EnvironmentsAsyncClient()
 
     # Initialize request argument(s)
-    request = service_v1beta1.DeleteEnvironmentRequest(
-    )
+    request = service_v1beta1.DeleteEnvironmentRequest()
 
     # Make the request
     operation = client.delete_environment(request=request)
@@ -51,5 +50,6 @@ async def sample_delete_environment():
 
     # Handle the response
     print(response)
+
 
 # [END composer_v1beta1_generated_Environments_DeleteEnvironment_async]

@@ -49,4 +49,5 @@ async def sample_get_parameter_version():
     # Handle the response
     print(response)
 
+
 # [END parametermanager_v1_generated_ParameterManager_GetParameterVersion_async]

@@ -39,13 +39,13 @@ def sample_update_saved_query():
     client = asset_v1.AssetServiceClient()
 
     # Initialize request argument(s)
-    request = asset_v1.UpdateSavedQueryRequest(
-    )
+    request = asset_v1.UpdateSavedQueryRequest()
 
     # Make the request
     response = client.update_saved_query(request=request)
 
     # Handle the response
     print(response)
+
 
 # [END cloudasset_v1_generated_AssetService_UpdateSavedQuery_sync]

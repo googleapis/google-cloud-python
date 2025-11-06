@@ -39,8 +39,7 @@ def sample_get_job_execution_details():
     client = dataflow_v1beta3.MetricsV1Beta3Client()
 
     # Initialize request argument(s)
-    request = dataflow_v1beta3.GetJobExecutionDetailsRequest(
-    )
+    request = dataflow_v1beta3.GetJobExecutionDetailsRequest()
 
     # Make the request
     page_result = client.get_job_execution_details(request=request)
@@ -48,5 +47,6 @@ def sample_get_job_execution_details():
     # Handle the response
     for response in page_result:
         print(response)
+
 
 # [END dataflow_v1beta3_generated_MetricsV1Beta3_GetJobExecutionDetails_sync]

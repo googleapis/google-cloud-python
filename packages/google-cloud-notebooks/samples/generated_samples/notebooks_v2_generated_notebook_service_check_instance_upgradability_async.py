@@ -49,4 +49,5 @@ async def sample_check_instance_upgradability():
     # Handle the response
     print(response)
 
+
 # [END notebooks_v2_generated_NotebookService_CheckInstanceUpgradability_async]

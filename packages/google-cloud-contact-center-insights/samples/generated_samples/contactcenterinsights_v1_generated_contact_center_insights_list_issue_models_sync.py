@@ -49,4 +49,5 @@ def sample_list_issue_models():
     # Handle the response
     print(response)
 
+
 # [END contactcenterinsights_v1_generated_ContactCenterInsights_ListIssueModels_sync]

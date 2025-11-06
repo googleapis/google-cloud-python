@@ -50,4 +50,5 @@ def sample_list_organization_events():
     for response in page_result:
         print(response)
 
+
 # [END servicehealth_v1_generated_ServiceHealth_ListOrganizationEvents_sync]

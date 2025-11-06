@@ -50,4 +50,5 @@ def sample_search_jobs():
     for response in page_result:
         print(response)
 
+
 # [END jobs_v4beta1_generated_JobService_SearchJobs_sync]

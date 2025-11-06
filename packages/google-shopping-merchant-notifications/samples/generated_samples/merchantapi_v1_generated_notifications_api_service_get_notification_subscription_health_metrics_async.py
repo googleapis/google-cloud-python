@@ -44,9 +44,12 @@ async def sample_get_notification_subscription_health_metrics():
     )
 
     # Make the request
-    response = await client.get_notification_subscription_health_metrics(request=request)
+    response = await client.get_notification_subscription_health_metrics(
+        request=request
+    )
 
     # Handle the response
     print(response)
+
 
 # [END merchantapi_v1_generated_NotificationsApiService_GetNotificationSubscriptionHealthMetrics_async]

@@ -39,13 +39,13 @@ async def sample_check():
     client = servicecontrol_v1.ServiceControllerAsyncClient()
 
     # Initialize request argument(s)
-    request = servicecontrol_v1.CheckRequest(
-    )
+    request = servicecontrol_v1.CheckRequest()
 
     # Make the request
     response = await client.check(request=request)
 
     # Handle the response
     print(response)
+
 
 # [END servicecontrol_v1_generated_ServiceController_Check_async]

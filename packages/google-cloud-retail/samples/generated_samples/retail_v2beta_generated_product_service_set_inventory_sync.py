@@ -56,4 +56,5 @@ def sample_set_inventory():
     # Handle the response
     print(response)
 
+
 # [END retail_v2beta_generated_ProductService_SetInventory_sync]

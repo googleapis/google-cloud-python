@@ -52,4 +52,5 @@ def sample_delete_network_interface():
     # Handle the response
     print(response)
 
+
 # [END compute_v1beta_generated_Instances_DeleteNetworkInterface_sync]

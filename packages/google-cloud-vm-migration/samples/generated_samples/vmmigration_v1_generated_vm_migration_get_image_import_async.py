@@ -49,4 +49,5 @@ async def sample_get_image_import():
     # Handle the response
     print(response)
 
+
 # [END vmmigration_v1_generated_VmMigration_GetImageImport_async]

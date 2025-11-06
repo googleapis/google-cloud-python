@@ -49,4 +49,5 @@ def sample_move_assignment():
     # Handle the response
     print(response)
 
+
 # [END bigqueryreservation_v1_generated_ReservationService_MoveAssignment_sync]

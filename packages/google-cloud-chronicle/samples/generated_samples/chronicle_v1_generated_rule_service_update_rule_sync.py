@@ -39,13 +39,13 @@ def sample_update_rule():
     client = chronicle_v1.RuleServiceClient()
 
     # Initialize request argument(s)
-    request = chronicle_v1.UpdateRuleRequest(
-    )
+    request = chronicle_v1.UpdateRuleRequest()
 
     # Make the request
     response = client.update_rule(request=request)
 
     # Handle the response
     print(response)
+
 
 # [END chronicle_v1_generated_RuleService_UpdateRule_sync]

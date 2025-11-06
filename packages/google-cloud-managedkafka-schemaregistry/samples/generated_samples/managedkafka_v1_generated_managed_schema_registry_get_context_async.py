@@ -49,4 +49,5 @@ async def sample_get_context():
     # Handle the response
     print(response)
 
+
 # [END managedkafka_v1_generated_ManagedSchemaRegistry_GetContext_async]

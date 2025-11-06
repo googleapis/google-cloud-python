@@ -50,4 +50,5 @@ def sample_list_data_agents():
     for response in page_result:
         print(response)
 
+
 # [END geminidataanalytics_v1beta_generated_DataAgentService_ListDataAgents_sync]

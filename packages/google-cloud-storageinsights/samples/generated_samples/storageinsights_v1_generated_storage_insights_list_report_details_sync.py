@@ -50,4 +50,5 @@ def sample_list_report_details():
     for response in page_result:
         print(response)
 
+
 # [END storageinsights_v1_generated_StorageInsights_ListReportDetails_sync]

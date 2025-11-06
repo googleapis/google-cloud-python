@@ -39,8 +39,7 @@ def sample_update_instance():
     client = memorystore_v1.MemorystoreClient()
 
     # Initialize request argument(s)
-    request = memorystore_v1.UpdateInstanceRequest(
-    )
+    request = memorystore_v1.UpdateInstanceRequest()
 
     # Make the request
     operation = client.update_instance(request=request)
@@ -51,5 +50,6 @@ def sample_update_instance():
 
     # Handle the response
     print(response)
+
 
 # [END memorystore_v1_generated_Memorystore_UpdateInstance_sync]

@@ -59,4 +59,5 @@ async def sample_update_app_connection():
     # Handle the response
     print(response)
 
+
 # [END beyondcorp_v1_generated_AppConnectionsService_UpdateAppConnection_async]

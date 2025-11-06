@@ -50,4 +50,5 @@ def sample_list_collectors():
     for response in page_result:
         print(response)
 
+
 # [END rapidmigrationassessment_v1_generated_RapidMigrationAssessment_ListCollectors_sync]

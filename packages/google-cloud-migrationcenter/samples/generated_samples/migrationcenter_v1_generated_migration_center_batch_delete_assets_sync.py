@@ -41,7 +41,7 @@ def sample_batch_delete_assets():
     # Initialize request argument(s)
     request = migrationcenter_v1.BatchDeleteAssetsRequest(
         parent="parent_value",
-        names=['names_value1', 'names_value2'],
+        names=["names_value1", "names_value2"],
     )
 
     # Make the request

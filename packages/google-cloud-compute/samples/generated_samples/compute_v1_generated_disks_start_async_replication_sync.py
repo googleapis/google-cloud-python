@@ -51,4 +51,5 @@ def sample_start_async_replication():
     # Handle the response
     print(response)
 
+
 # [END compute_v1_generated_Disks_StartAsyncReplication_sync]

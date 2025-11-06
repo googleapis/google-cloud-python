@@ -54,4 +54,5 @@ async def sample_create_multicloud_data_transfer_config():
     # Handle the response
     print(response)
 
+
 # [END networkconnectivity_v1_generated_DataTransferService_CreateMulticloudDataTransferConfig_async]

@@ -41,7 +41,7 @@ def sample_remove_local_inventories():
     # Initialize request argument(s)
     request = retail_v2beta.RemoveLocalInventoriesRequest(
         product="product_value",
-        place_ids=['place_ids_value1', 'place_ids_value2'],
+        place_ids=["place_ids_value1", "place_ids_value2"],
     )
 
     # Make the request
@@ -53,5 +53,6 @@ def sample_remove_local_inventories():
 
     # Handle the response
     print(response)
+
 
 # [END retail_v2beta_generated_ProductService_RemoveLocalInventories_sync]

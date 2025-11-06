@@ -50,4 +50,5 @@ def sample_list_queued_resources():
     for response in page_result:
         print(response)
 
+
 # [END tpu_v2alpha1_generated_Tpu_ListQueuedResources_sync]

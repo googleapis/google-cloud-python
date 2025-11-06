@@ -50,4 +50,5 @@ async def sample_list_data_policies():
     async for response in page_result:
         print(response)
 
+
 # [END bigquerydatapolicy_v2beta1_generated_DataPolicyService_ListDataPolicies_async]

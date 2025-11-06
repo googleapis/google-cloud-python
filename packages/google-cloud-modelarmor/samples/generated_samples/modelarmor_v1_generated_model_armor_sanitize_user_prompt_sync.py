@@ -53,4 +53,5 @@ def sample_sanitize_user_prompt():
     # Handle the response
     print(response)
 
+
 # [END modelarmor_v1_generated_ModelArmor_SanitizeUserPrompt_sync]

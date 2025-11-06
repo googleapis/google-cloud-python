@@ -63,4 +63,5 @@ def sample_ingest_asset():
     for response in stream:
         print(response)
 
+
 # [END visionai_v1alpha1_generated_Warehouse_IngestAsset_sync]

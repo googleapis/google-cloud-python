@@ -49,4 +49,5 @@ async def sample_get_feedback_label():
     # Handle the response
     print(response)
 
+
 # [END contactcenterinsights_v1_generated_ContactCenterInsights_GetFeedbackLabel_async]

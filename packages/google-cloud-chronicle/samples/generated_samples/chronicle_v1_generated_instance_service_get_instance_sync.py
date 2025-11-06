@@ -49,4 +49,5 @@ def sample_get_instance():
     # Handle the response
     print(response)
 
+
 # [END chronicle_v1_generated_InstanceService_GetInstance_sync]

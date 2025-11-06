@@ -53,4 +53,5 @@ async def sample_suspend_rollout():
     # Handle the response
     print(response)
 
+
 # [END configdelivery_v1beta_generated_ConfigDelivery_SuspendRollout_async]

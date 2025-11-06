@@ -50,4 +50,5 @@ async def sample_list_participant_sessions():
     async for response in page_result:
         print(response)
 
+
 # [END meet_v2_generated_ConferenceRecordsService_ListParticipantSessions_async]

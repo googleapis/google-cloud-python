@@ -39,13 +39,13 @@ def sample_list_associations():
     client = compute_v1.OrganizationSecurityPoliciesClient()
 
     # Initialize request argument(s)
-    request = compute_v1.ListAssociationsOrganizationSecurityPolicyRequest(
-    )
+    request = compute_v1.ListAssociationsOrganizationSecurityPolicyRequest()
 
     # Make the request
     response = client.list_associations(request=request)
 
     # Handle the response
     print(response)
+
 
 # [END compute_v1_generated_OrganizationSecurityPolicies_ListAssociations_sync]

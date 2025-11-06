@@ -50,4 +50,5 @@ def sample_make_directory():
     # Handle the response
     print(response)
 
+
 # [END dataform_v1beta1_generated_Dataform_MakeDirectory_sync]

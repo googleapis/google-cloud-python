@@ -53,4 +53,5 @@ def sample_bulk_mute_findings():
     # Handle the response
     print(response)
 
+
 # [END securitycenter_v2_generated_SecurityCenter_BulkMuteFindings_sync]

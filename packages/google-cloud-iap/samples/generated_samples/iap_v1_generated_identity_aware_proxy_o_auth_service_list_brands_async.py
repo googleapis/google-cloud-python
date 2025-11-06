@@ -49,4 +49,5 @@ async def sample_list_brands():
     # Handle the response
     print(response)
 
+
 # [END iap_v1_generated_IdentityAwareProxyOAuthService_ListBrands_async]

@@ -50,4 +50,5 @@ async def sample_generate_answer():
     # Handle the response
     print(response)
 
+
 # [END generativelanguage_v1beta_generated_GenerativeService_GenerateAnswer_async]

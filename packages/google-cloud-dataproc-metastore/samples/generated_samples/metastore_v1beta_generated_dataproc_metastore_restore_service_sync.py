@@ -54,4 +54,5 @@ def sample_restore_service():
     # Handle the response
     print(response)
 
+
 # [END metastore_v1beta_generated_DataprocMetastore_RestoreService_sync]

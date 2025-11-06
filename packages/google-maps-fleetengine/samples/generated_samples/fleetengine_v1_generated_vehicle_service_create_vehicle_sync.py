@@ -50,4 +50,5 @@ def sample_create_vehicle():
     # Handle the response
     print(response)
 
+
 # [END fleetengine_v1_generated_VehicleService_CreateVehicle_sync]

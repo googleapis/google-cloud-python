@@ -50,4 +50,5 @@ def sample_list_events():
     for response in page_result:
         print(response)
 
+
 # [END servicehealth_v1_generated_ServiceHealth_ListEvents_sync]

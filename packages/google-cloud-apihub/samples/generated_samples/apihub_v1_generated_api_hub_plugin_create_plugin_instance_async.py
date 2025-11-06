@@ -58,4 +58,5 @@ async def sample_create_plugin_instance():
     # Handle the response
     print(response)
 
+
 # [END apihub_v1_generated_ApiHubPlugin_CreatePluginInstance_async]

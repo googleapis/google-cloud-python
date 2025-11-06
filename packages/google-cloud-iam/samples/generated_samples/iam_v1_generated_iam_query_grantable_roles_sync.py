@@ -50,4 +50,5 @@ def sample_query_grantable_roles():
     for response in page_result:
         print(response)
 
+
 # [END iam_v1_generated_IAM_QueryGrantableRoles_sync]

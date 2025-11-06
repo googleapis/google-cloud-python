@@ -49,4 +49,5 @@ def sample_get_email_preferences():
     # Handle the response
     print(response)
 
+
 # [END merchantapi_v1beta_generated_EmailPreferencesService_GetEmailPreferences_sync]

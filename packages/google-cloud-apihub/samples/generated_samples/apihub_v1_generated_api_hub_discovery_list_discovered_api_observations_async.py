@@ -50,4 +50,5 @@ async def sample_list_discovered_api_observations():
     async for response in page_result:
         print(response)
 
+
 # [END apihub_v1_generated_ApiHubDiscovery_ListDiscoveredApiObservations_async]

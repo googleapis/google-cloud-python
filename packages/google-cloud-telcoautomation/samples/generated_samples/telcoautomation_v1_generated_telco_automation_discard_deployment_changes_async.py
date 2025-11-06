@@ -49,4 +49,5 @@ async def sample_discard_deployment_changes():
     # Handle the response
     print(response)
 
+
 # [END telcoautomation_v1_generated_TelcoAutomation_DiscardDeploymentChanges_async]

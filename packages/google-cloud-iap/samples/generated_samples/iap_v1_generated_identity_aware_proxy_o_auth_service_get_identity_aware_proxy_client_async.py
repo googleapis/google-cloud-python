@@ -49,4 +49,5 @@ async def sample_get_identity_aware_proxy_client():
     # Handle the response
     print(response)
 
+
 # [END iap_v1_generated_IdentityAwareProxyOAuthService_GetIdentityAwareProxyClient_async]

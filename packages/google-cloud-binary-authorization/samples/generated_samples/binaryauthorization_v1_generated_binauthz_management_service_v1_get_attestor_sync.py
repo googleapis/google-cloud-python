@@ -49,4 +49,5 @@ def sample_get_attestor():
     # Handle the response
     print(response)
 
+
 # [END binaryauthorization_v1_generated_BinauthzManagementServiceV1_GetAttestor_sync]

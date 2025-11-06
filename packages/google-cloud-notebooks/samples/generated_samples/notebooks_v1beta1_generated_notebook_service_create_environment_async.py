@@ -59,4 +59,5 @@ async def sample_create_environment():
     # Handle the response
     print(response)
 
+
 # [END notebooks_v1beta1_generated_NotebookService_CreateEnvironment_async]

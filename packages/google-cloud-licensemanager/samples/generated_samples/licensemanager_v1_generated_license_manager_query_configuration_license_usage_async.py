@@ -49,4 +49,5 @@ async def sample_query_configuration_license_usage():
     # Handle the response
     print(response)
 
+
 # [END licensemanager_v1_generated_LicenseManager_QueryConfigurationLicenseUsage_async]

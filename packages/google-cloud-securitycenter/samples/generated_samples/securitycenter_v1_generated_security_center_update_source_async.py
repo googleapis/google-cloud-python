@@ -39,13 +39,13 @@ async def sample_update_source():
     client = securitycenter_v1.SecurityCenterAsyncClient()
 
     # Initialize request argument(s)
-    request = securitycenter_v1.UpdateSourceRequest(
-    )
+    request = securitycenter_v1.UpdateSourceRequest()
 
     # Make the request
     response = await client.update_source(request=request)
 
     # Handle the response
     print(response)
+
 
 # [END securitycenter_v1_generated_SecurityCenter_UpdateSource_async]

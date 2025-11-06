@@ -49,4 +49,5 @@ def sample_get_site_search_engine():
     # Handle the response
     print(response)
 
+
 # [END discoveryengine_v1_generated_SiteSearchEngineService_GetSiteSearchEngine_sync]

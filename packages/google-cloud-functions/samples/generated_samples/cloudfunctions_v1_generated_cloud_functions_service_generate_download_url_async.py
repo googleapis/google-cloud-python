@@ -39,13 +39,13 @@ async def sample_generate_download_url():
     client = functions_v1.CloudFunctionsServiceAsyncClient()
 
     # Initialize request argument(s)
-    request = functions_v1.GenerateDownloadUrlRequest(
-    )
+    request = functions_v1.GenerateDownloadUrlRequest()
 
     # Make the request
     response = await client.generate_download_url(request=request)
 
     # Handle the response
     print(response)
+
 
 # [END cloudfunctions_v1_generated_CloudFunctionsService_GenerateDownloadUrl_async]

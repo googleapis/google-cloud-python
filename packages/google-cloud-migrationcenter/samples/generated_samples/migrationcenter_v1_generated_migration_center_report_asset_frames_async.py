@@ -50,4 +50,5 @@ async def sample_report_asset_frames():
     # Handle the response
     print(response)
 
+
 # [END migrationcenter_v1_generated_MigrationCenter_ReportAssetFrames_async]

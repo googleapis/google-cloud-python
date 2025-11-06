@@ -50,4 +50,5 @@ def sample_list_prediction_api_key_registrations():
     for response in page_result:
         print(response)
 
+
 # [END recommendationengine_v1beta1_generated_PredictionApiKeyRegistry_ListPredictionApiKeyRegistrations_sync]

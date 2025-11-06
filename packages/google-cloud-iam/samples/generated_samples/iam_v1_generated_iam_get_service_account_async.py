@@ -49,4 +49,5 @@ async def sample_get_service_account():
     # Handle the response
     print(response)
 
+
 # [END iam_v1_generated_IAM_GetServiceAccount_async]

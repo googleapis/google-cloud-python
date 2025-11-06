@@ -49,4 +49,5 @@ def sample_get_project():
     # Handle the response
     print(response)
 
+
 # [END retail_v2alpha_generated_ProjectService_GetProject_sync]

@@ -49,4 +49,5 @@ async def sample_get_api_spec_contents():
     # Handle the response
     print(response)
 
+
 # [END apigeeregistry_v1_generated_Registry_GetApiSpecContents_async]

@@ -39,8 +39,7 @@ async def sample_update_application():
     client = appengine_admin_v1.ApplicationsAsyncClient()
 
     # Initialize request argument(s)
-    request = appengine_admin_v1.UpdateApplicationRequest(
-    )
+    request = appengine_admin_v1.UpdateApplicationRequest()
 
     # Make the request
     operation = client.update_application(request=request)
@@ -51,5 +50,6 @@ async def sample_update_application():
 
     # Handle the response
     print(response)
+
 
 # [END appengine_v1_generated_Applications_UpdateApplication_async]

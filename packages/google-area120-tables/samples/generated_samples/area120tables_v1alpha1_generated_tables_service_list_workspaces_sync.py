@@ -39,8 +39,7 @@ def sample_list_workspaces():
     client = tables_v1alpha1.TablesServiceClient()
 
     # Initialize request argument(s)
-    request = tables_v1alpha1.ListWorkspacesRequest(
-    )
+    request = tables_v1alpha1.ListWorkspacesRequest()
 
     # Make the request
     page_result = client.list_workspaces(request=request)
@@ -48,5 +47,6 @@ def sample_list_workspaces():
     # Handle the response
     for response in page_result:
         print(response)
+
 
 # [END area120tables_v1alpha1_generated_TablesService_ListWorkspaces_sync]

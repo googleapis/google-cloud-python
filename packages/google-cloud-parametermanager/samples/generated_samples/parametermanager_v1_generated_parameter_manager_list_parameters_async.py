@@ -50,4 +50,5 @@ async def sample_list_parameters():
     async for response in page_result:
         print(response)
 
+
 # [END parametermanager_v1_generated_ParameterManager_ListParameters_async]

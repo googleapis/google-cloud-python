@@ -53,4 +53,5 @@ def sample_create_report_task():
     # Handle the response
     print(response)
 
+
 # [END analyticsdata_v1alpha_generated_AlphaAnalyticsData_CreateReportTask_sync]

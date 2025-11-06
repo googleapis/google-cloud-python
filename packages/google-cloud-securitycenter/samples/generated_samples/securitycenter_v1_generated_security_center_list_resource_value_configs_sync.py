@@ -50,4 +50,5 @@ def sample_list_resource_value_configs():
     for response in page_result:
         print(response)
 
+
 # [END securitycenter_v1_generated_SecurityCenter_ListResourceValueConfigs_sync]

@@ -50,4 +50,5 @@ def sample_list():
     for response in page_result:
         print(response)
 
+
 # [END compute_v1_generated_Snapshots_List_sync]

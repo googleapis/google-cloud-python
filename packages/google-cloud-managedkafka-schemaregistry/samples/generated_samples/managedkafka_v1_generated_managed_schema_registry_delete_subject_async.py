@@ -49,4 +49,5 @@ async def sample_delete_subject():
     # Handle the response
     print(response)
 
+
 # [END managedkafka_v1_generated_ManagedSchemaRegistry_DeleteSubject_async]

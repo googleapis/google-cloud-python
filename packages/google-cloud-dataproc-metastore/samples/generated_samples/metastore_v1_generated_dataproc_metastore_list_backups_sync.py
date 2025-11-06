@@ -50,4 +50,5 @@ def sample_list_backups():
     for response in page_result:
         print(response)
 
+
 # [END metastore_v1_generated_DataprocMetastore_ListBackups_sync]

@@ -39,13 +39,13 @@ def sample_update_search_config():
     client = visionai_v1alpha1.WarehouseClient()
 
     # Initialize request argument(s)
-    request = visionai_v1alpha1.UpdateSearchConfigRequest(
-    )
+    request = visionai_v1alpha1.UpdateSearchConfigRequest()
 
     # Make the request
     response = client.update_search_config(request=request)
 
     # Handle the response
     print(response)
+
 
 # [END visionai_v1alpha1_generated_Warehouse_UpdateSearchConfig_sync]

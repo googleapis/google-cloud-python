@@ -49,4 +49,5 @@ def sample_get_network_policy():
     # Handle the response
     print(response)
 
+
 # [END vmwareengine_v1_generated_VmwareEngine_GetNetworkPolicy_sync]

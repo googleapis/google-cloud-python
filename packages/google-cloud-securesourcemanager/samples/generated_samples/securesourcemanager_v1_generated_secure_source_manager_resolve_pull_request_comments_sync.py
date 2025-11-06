@@ -41,7 +41,7 @@ def sample_resolve_pull_request_comments():
     # Initialize request argument(s)
     request = securesourcemanager_v1.ResolvePullRequestCommentsRequest(
         parent="parent_value",
-        names=['names_value1', 'names_value2'],
+        names=["names_value1", "names_value2"],
     )
 
     # Make the request
@@ -53,5 +53,6 @@ def sample_resolve_pull_request_comments():
 
     # Handle the response
     print(response)
+
 
 # [END securesourcemanager_v1_generated_SecureSourceManager_ResolvePullRequestComments_sync]

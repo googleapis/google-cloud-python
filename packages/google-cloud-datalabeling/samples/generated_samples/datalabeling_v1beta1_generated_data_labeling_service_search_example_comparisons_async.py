@@ -50,4 +50,5 @@ async def sample_search_example_comparisons():
     async for response in page_result:
         print(response)
 
+
 # [END datalabeling_v1beta1_generated_DataLabelingService_SearchExampleComparisons_async]

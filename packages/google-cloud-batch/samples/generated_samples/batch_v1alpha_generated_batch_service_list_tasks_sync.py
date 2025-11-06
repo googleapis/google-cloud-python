@@ -50,4 +50,5 @@ def sample_list_tasks():
     for response in page_result:
         print(response)
 
+
 # [END batch_v1alpha_generated_BatchService_ListTasks_sync]

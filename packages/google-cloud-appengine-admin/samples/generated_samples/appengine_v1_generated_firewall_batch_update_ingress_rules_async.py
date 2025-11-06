@@ -39,13 +39,13 @@ async def sample_batch_update_ingress_rules():
     client = appengine_admin_v1.FirewallAsyncClient()
 
     # Initialize request argument(s)
-    request = appengine_admin_v1.BatchUpdateIngressRulesRequest(
-    )
+    request = appengine_admin_v1.BatchUpdateIngressRulesRequest()
 
     # Make the request
     response = await client.batch_update_ingress_rules(request=request)
 
     # Handle the response
     print(response)
+
 
 # [END appengine_v1_generated_Firewall_BatchUpdateIngressRules_async]

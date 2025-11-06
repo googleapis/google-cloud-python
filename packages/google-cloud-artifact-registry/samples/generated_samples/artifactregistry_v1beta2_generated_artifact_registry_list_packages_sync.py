@@ -39,8 +39,7 @@ def sample_list_packages():
     client = artifactregistry_v1beta2.ArtifactRegistryClient()
 
     # Initialize request argument(s)
-    request = artifactregistry_v1beta2.ListPackagesRequest(
-    )
+    request = artifactregistry_v1beta2.ListPackagesRequest()
 
     # Make the request
     page_result = client.list_packages(request=request)
@@ -48,5 +47,6 @@ def sample_list_packages():
     # Handle the response
     for response in page_result:
         print(response)
+
 
 # [END artifactregistry_v1beta2_generated_ArtifactRegistry_ListPackages_sync]

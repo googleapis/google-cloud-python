@@ -56,4 +56,5 @@ def sample_trigger_action():
     # Handle the response
     print(response)
 
+
 # [END merchantapi_v1beta_generated_IssueResolutionService_TriggerAction_sync]

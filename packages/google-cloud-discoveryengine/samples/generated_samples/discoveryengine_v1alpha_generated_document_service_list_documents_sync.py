@@ -50,4 +50,5 @@ def sample_list_documents():
     for response in page_result:
         print(response)
 
+
 # [END discoveryengine_v1alpha_generated_DocumentService_ListDocuments_sync]

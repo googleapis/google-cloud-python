@@ -53,4 +53,5 @@ async def sample_change_renewal_settings():
     # Handle the response
     print(response)
 
+
 # [END cloudchannel_v1_generated_CloudChannelService_ChangeRenewalSettings_async]

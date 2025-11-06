@@ -39,13 +39,13 @@ async def sample_update_data_stream():
     client = admin_v1beta.AnalyticsAdminServiceAsyncClient()
 
     # Initialize request argument(s)
-    request = admin_v1beta.UpdateDataStreamRequest(
-    )
+    request = admin_v1beta.UpdateDataStreamRequest()
 
     # Make the request
     response = await client.update_data_stream(request=request)
 
     # Handle the response
     print(response)
+
 
 # [END analyticsadmin_v1beta_generated_AnalyticsAdminService_UpdateDataStream_async]

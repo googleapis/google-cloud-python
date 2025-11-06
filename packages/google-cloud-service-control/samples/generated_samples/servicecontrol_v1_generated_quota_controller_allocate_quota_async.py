@@ -39,13 +39,13 @@ async def sample_allocate_quota():
     client = servicecontrol_v1.QuotaControllerAsyncClient()
 
     # Initialize request argument(s)
-    request = servicecontrol_v1.AllocateQuotaRequest(
-    )
+    request = servicecontrol_v1.AllocateQuotaRequest()
 
     # Make the request
     response = await client.allocate_quota(request=request)
 
     # Handle the response
     print(response)
+
 
 # [END servicecontrol_v1_generated_QuotaController_AllocateQuota_async]

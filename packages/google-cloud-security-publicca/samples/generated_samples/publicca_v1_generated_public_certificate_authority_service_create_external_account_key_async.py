@@ -49,4 +49,5 @@ async def sample_create_external_account_key():
     # Handle the response
     print(response)
 
+
 # [END publicca_v1_generated_PublicCertificateAuthorityService_CreateExternalAccountKey_async]

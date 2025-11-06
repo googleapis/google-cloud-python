@@ -39,13 +39,13 @@ async def sample_get_instance():
     client = appengine_admin_v1.InstancesAsyncClient()
 
     # Initialize request argument(s)
-    request = appengine_admin_v1.GetInstanceRequest(
-    )
+    request = appengine_admin_v1.GetInstanceRequest()
 
     # Make the request
     response = await client.get_instance(request=request)
 
     # Handle the response
     print(response)
+
 
 # [END appengine_v1_generated_Instances_GetInstance_async]

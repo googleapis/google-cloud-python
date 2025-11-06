@@ -53,4 +53,5 @@ def sample_delete_federation():
     # Handle the response
     print(response)
 
+
 # [END metastore_v1beta_generated_DataprocMetastoreFederation_DeleteFederation_sync]

@@ -49,4 +49,5 @@ async def sample_get_order():
     # Handle the response
     print(response)
 
+
 # [END cloudcommerceconsumerprocurement_v1_generated_ConsumerProcurementService_GetOrder_async]

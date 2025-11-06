@@ -39,8 +39,7 @@ async def sample_update_function():
     client = functions_v2.FunctionServiceAsyncClient()
 
     # Initialize request argument(s)
-    request = functions_v2.UpdateFunctionRequest(
-    )
+    request = functions_v2.UpdateFunctionRequest()
 
     # Make the request
     operation = client.update_function(request=request)
@@ -51,5 +50,6 @@ async def sample_update_function():
 
     # Handle the response
     print(response)
+
 
 # [END cloudfunctions_v2_generated_FunctionService_UpdateFunction_async]

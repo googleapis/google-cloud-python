@@ -49,4 +49,5 @@ async def sample_check_valid_creds():
     # Handle the response
     print(response)
 
+
 # [END bigquerydatatransfer_v1_generated_DataTransferService_CheckValidCreds_async]

@@ -49,4 +49,5 @@ async def sample_get_attached_cluster():
     # Handle the response
     print(response)
 
+
 # [END gkemulticloud_v1_generated_AttachedClusters_GetAttachedCluster_async]

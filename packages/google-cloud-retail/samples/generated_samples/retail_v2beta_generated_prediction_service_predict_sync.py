@@ -54,4 +54,5 @@ def sample_predict():
     # Handle the response
     print(response)
 
+
 # [END retail_v2beta_generated_PredictionService_Predict_sync]

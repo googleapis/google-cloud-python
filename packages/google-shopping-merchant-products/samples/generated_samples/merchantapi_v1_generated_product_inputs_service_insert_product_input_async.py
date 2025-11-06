@@ -56,4 +56,5 @@ async def sample_insert_product_input():
     # Handle the response
     print(response)
 
+
 # [END merchantapi_v1_generated_ProductInputsService_InsertProductInput_async]

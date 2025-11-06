@@ -58,4 +58,5 @@ async def sample_create_insights_config():
     # Handle the response
     print(response)
 
+
 # [END developerconnect_v1_generated_InsightsConfigService_CreateInsightsConfig_async]

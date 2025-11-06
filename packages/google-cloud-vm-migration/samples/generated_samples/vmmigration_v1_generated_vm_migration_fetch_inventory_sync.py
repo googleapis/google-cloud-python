@@ -49,4 +49,5 @@ def sample_fetch_inventory():
     # Handle the response
     print(response)
 
+
 # [END vmmigration_v1_generated_VmMigration_FetchInventory_sync]

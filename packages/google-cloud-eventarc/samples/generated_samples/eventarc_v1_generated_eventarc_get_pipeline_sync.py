@@ -49,4 +49,5 @@ def sample_get_pipeline():
     # Handle the response
     print(response)
 
+
 # [END eventarc_v1_generated_Eventarc_GetPipeline_sync]

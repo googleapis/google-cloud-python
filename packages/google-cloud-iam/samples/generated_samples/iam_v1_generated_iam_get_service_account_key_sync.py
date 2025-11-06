@@ -49,4 +49,5 @@ def sample_get_service_account_key():
     # Handle the response
     print(response)
 
+
 # [END iam_v1_generated_IAM_GetServiceAccountKey_sync]

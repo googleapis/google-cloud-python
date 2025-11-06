@@ -63,4 +63,5 @@ async def sample_label_image():
     # Handle the response
     print(response)
 
+
 # [END datalabeling_v1beta1_generated_DataLabelingService_LabelImage_async]

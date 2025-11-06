@@ -49,4 +49,5 @@ async def sample_get_connect_cluster():
     # Handle the response
     print(response)
 
+
 # [END managedkafka_v1_generated_ManagedKafkaConnect_GetConnectCluster_async]

@@ -49,4 +49,5 @@ def sample_create_alert_policy():
     # Handle the response
     print(response)
 
+
 # [END monitoring_v3_generated_AlertPolicyService_CreateAlertPolicy_sync]

@@ -39,8 +39,7 @@ async def sample_update_dataset_config():
     client = storageinsights_v1.StorageInsightsAsyncClient()
 
     # Initialize request argument(s)
-    request = storageinsights_v1.UpdateDatasetConfigRequest(
-    )
+    request = storageinsights_v1.UpdateDatasetConfigRequest()
 
     # Make the request
     operation = client.update_dataset_config(request=request)
@@ -51,5 +50,6 @@ async def sample_update_dataset_config():
 
     # Handle the response
     print(response)
+
 
 # [END storageinsights_v1_generated_StorageInsights_UpdateDatasetConfig_async]

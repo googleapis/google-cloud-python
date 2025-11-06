@@ -49,4 +49,5 @@ async def sample_detach_service_project_attachment():
     # Handle the response
     print(response)
 
+
 # [END apphub_v1_generated_AppHub_DetachServiceProjectAttachment_async]

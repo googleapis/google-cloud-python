@@ -39,13 +39,13 @@ def sample_update_google_ads_link():
     client = admin_v1beta.AnalyticsAdminServiceClient()
 
     # Initialize request argument(s)
-    request = admin_v1beta.UpdateGoogleAdsLinkRequest(
-    )
+    request = admin_v1beta.UpdateGoogleAdsLinkRequest()
 
     # Make the request
     response = client.update_google_ads_link(request=request)
 
     # Handle the response
     print(response)
+
 
 # [END analyticsadmin_v1beta_generated_AnalyticsAdminService_UpdateGoogleAdsLink_sync]

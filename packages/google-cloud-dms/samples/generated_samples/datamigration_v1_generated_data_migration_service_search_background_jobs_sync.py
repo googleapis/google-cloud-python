@@ -49,4 +49,5 @@ def sample_search_background_jobs():
     # Handle the response
     print(response)
 
+
 # [END datamigration_v1_generated_DataMigrationService_SearchBackgroundJobs_sync]

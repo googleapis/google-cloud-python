@@ -50,4 +50,5 @@ async def sample_list_data_access_labels():
     async for response in page_result:
         print(response)
 
+
 # [END chronicle_v1_generated_DataAccessControlService_ListDataAccessLabels_async]

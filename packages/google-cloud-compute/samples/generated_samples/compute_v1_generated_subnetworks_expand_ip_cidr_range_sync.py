@@ -51,4 +51,5 @@ def sample_expand_ip_cidr_range():
     # Handle the response
     print(response)
 
+
 # [END compute_v1_generated_Subnetworks_ExpandIpCidrRange_sync]

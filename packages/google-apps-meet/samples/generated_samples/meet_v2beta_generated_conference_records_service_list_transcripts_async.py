@@ -50,4 +50,5 @@ async def sample_list_transcripts():
     async for response in page_result:
         print(response)
 
+
 # [END meet_v2beta_generated_ConferenceRecordsService_ListTranscripts_async]

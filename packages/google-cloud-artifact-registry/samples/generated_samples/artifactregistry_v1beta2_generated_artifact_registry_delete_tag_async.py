@@ -39,8 +39,7 @@ async def sample_delete_tag():
     client = artifactregistry_v1beta2.ArtifactRegistryAsyncClient()
 
     # Initialize request argument(s)
-    request = artifactregistry_v1beta2.DeleteTagRequest(
-    )
+    request = artifactregistry_v1beta2.DeleteTagRequest()
 
     # Make the request
     await client.delete_tag(request=request)

@@ -49,4 +49,5 @@ def sample_get_pool():
     # Handle the response
     print(response)
 
+
 # [END livestream_v1_generated_LivestreamService_GetPool_sync]

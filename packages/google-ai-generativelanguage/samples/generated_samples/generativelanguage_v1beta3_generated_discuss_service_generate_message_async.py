@@ -53,4 +53,5 @@ async def sample_generate_message():
     # Handle the response
     print(response)
 
+
 # [END generativelanguage_v1beta3_generated_DiscussService_GenerateMessage_async]

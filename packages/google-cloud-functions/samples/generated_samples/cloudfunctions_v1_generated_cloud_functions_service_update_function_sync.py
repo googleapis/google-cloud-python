@@ -56,4 +56,5 @@ def sample_update_function():
     # Handle the response
     print(response)
 
+
 # [END cloudfunctions_v1_generated_CloudFunctionsService_UpdateFunction_sync]

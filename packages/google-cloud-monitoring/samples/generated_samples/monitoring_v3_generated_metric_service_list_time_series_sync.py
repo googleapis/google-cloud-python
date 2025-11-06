@@ -52,4 +52,5 @@ def sample_list_time_series():
     for response in page_result:
         print(response)
 
+
 # [END monitoring_v3_generated_MetricService_ListTimeSeries_sync]

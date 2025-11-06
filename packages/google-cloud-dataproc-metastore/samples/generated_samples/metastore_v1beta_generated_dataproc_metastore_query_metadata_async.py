@@ -54,4 +54,5 @@ async def sample_query_metadata():
     # Handle the response
     print(response)
 
+
 # [END metastore_v1beta_generated_DataprocMetastore_QueryMetadata_async]

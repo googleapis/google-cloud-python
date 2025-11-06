@@ -50,4 +50,5 @@ def sample_list_address_group_references():
     for response in page_result:
         print(response)
 
+
 # [END networksecurity_v1_generated_AddressGroupService_ListAddressGroupReferences_sync]

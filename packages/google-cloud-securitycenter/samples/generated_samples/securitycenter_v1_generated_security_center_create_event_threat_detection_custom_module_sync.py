@@ -49,4 +49,5 @@ def sample_create_event_threat_detection_custom_module():
     # Handle the response
     print(response)
 
+
 # [END securitycenter_v1_generated_SecurityCenter_CreateEventThreatDetectionCustomModule_sync]

@@ -39,13 +39,13 @@ async def sample_get_role():
     client = iam_admin_v1.IAMAsyncClient()
 
     # Initialize request argument(s)
-    request = iam_admin_v1.GetRoleRequest(
-    )
+    request = iam_admin_v1.GetRoleRequest()
 
     # Make the request
     response = await client.get_role(request=request)
 
     # Handle the response
     print(response)
+
 
 # [END iam_v1_generated_IAM_GetRole_async]

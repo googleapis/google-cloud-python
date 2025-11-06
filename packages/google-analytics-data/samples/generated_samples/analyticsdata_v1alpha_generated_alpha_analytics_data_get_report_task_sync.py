@@ -49,4 +49,5 @@ def sample_get_report_task():
     # Handle the response
     print(response)
 
+
 # [END analyticsdata_v1alpha_generated_AlphaAnalyticsData_GetReportTask_sync]

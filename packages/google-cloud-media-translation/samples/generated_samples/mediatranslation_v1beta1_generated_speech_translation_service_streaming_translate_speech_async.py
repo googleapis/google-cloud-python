@@ -65,4 +65,5 @@ async def sample_streaming_translate_speech():
     async for response in stream:
         print(response)
 
+
 # [END mediatranslation_v1beta1_generated_SpeechTranslationService_StreamingTranslateSpeech_async]

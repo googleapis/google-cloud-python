@@ -39,8 +39,7 @@ async def sample_delete_instance():
     client = appengine_admin_v1.InstancesAsyncClient()
 
     # Initialize request argument(s)
-    request = appengine_admin_v1.DeleteInstanceRequest(
-    )
+    request = appengine_admin_v1.DeleteInstanceRequest()
 
     # Make the request
     operation = client.delete_instance(request=request)
@@ -51,5 +50,6 @@ async def sample_delete_instance():
 
     # Handle the response
     print(response)
+
 
 # [END appengine_v1_generated_Instances_DeleteInstance_async]

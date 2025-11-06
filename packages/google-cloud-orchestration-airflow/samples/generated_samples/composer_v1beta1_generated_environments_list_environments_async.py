@@ -39,8 +39,7 @@ async def sample_list_environments():
     client = service_v1beta1.EnvironmentsAsyncClient()
 
     # Initialize request argument(s)
-    request = service_v1beta1.ListEnvironmentsRequest(
-    )
+    request = service_v1beta1.ListEnvironmentsRequest()
 
     # Make the request
     page_result = client.list_environments(request=request)
@@ -48,5 +47,6 @@ async def sample_list_environments():
     # Handle the response
     async for response in page_result:
         print(response)
+
 
 # [END composer_v1beta1_generated_Environments_ListEnvironments_async]

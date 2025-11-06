@@ -49,4 +49,5 @@ def sample_get_backup_plan_binding():
     # Handle the response
     print(response)
 
+
 # [END gkebackup_v1_generated_BackupForGKE_GetBackupPlanBinding_sync]

@@ -50,4 +50,5 @@ async def sample_list_resource_bundles():
     async for response in page_result:
         print(response)
 
+
 # [END configdelivery_v1alpha_generated_ConfigDelivery_ListResourceBundles_async]

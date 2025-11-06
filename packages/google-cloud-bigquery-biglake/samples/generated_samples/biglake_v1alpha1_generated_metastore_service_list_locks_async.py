@@ -50,4 +50,5 @@ async def sample_list_locks():
     async for response in page_result:
         print(response)
 
+
 # [END biglake_v1alpha1_generated_MetastoreService_ListLocks_async]

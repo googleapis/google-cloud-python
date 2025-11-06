@@ -39,13 +39,13 @@ async def sample_update_namespace():
     client = servicedirectory_v1.RegistrationServiceAsyncClient()
 
     # Initialize request argument(s)
-    request = servicedirectory_v1.UpdateNamespaceRequest(
-    )
+    request = servicedirectory_v1.UpdateNamespaceRequest()
 
     # Make the request
     response = await client.update_namespace(request=request)
 
     # Handle the response
     print(response)
+
 
 # [END servicedirectory_v1_generated_RegistrationService_UpdateNamespace_async]

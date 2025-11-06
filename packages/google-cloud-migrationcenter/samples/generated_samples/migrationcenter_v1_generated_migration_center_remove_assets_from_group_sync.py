@@ -40,7 +40,7 @@ def sample_remove_assets_from_group():
 
     # Initialize request argument(s)
     assets = migrationcenter_v1.AssetList()
-    assets.asset_ids = ['asset_ids_value1', 'asset_ids_value2']
+    assets.asset_ids = ["asset_ids_value1", "asset_ids_value2"]
 
     request = migrationcenter_v1.RemoveAssetsFromGroupRequest(
         group="group_value",
@@ -56,5 +56,6 @@ def sample_remove_assets_from_group():
 
     # Handle the response
     print(response)
+
 
 # [END migrationcenter_v1_generated_MigrationCenter_RemoveAssetsFromGroup_sync]

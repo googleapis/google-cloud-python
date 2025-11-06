@@ -39,8 +39,7 @@ def sample_list_accounts():
     client = admin_v1beta.AnalyticsAdminServiceClient()
 
     # Initialize request argument(s)
-    request = admin_v1beta.ListAccountsRequest(
-    )
+    request = admin_v1beta.ListAccountsRequest()
 
     # Make the request
     page_result = client.list_accounts(request=request)
@@ -48,5 +47,6 @@ def sample_list_accounts():
     # Handle the response
     for response in page_result:
         print(response)
+
 
 # [END analyticsadmin_v1beta_generated_AnalyticsAdminService_ListAccounts_sync]

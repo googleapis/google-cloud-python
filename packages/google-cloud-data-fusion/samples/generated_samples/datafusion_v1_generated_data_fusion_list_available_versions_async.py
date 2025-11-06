@@ -50,4 +50,5 @@ async def sample_list_available_versions():
     async for response in page_result:
         print(response)
 
+
 # [END datafusion_v1_generated_DataFusion_ListAvailableVersions_async]

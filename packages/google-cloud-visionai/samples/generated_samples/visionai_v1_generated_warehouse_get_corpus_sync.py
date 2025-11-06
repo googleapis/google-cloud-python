@@ -49,4 +49,5 @@ def sample_get_corpus():
     # Handle the response
     print(response)
 
+
 # [END visionai_v1_generated_Warehouse_GetCorpus_sync]

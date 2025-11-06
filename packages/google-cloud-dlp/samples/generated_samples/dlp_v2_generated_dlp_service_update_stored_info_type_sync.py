@@ -49,4 +49,5 @@ def sample_update_stored_info_type():
     # Handle the response
     print(response)
 
+
 # [END dlp_v2_generated_DlpService_UpdateStoredInfoType_sync]

@@ -49,4 +49,5 @@ def sample_launch_template():
     # Handle the response
     print(response)
 
+
 # [END dataflow_v1beta3_generated_TemplatesService_LaunchTemplate_sync]

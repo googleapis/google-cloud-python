@@ -50,4 +50,5 @@ def sample_validate():
     # Handle the response
     print(response)
 
+
 # [END compute_v1_generated_UrlMaps_Validate_sync]

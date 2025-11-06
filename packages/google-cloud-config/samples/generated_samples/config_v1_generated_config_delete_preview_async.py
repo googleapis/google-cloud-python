@@ -53,4 +53,5 @@ async def sample_delete_preview():
     # Handle the response
     print(response)
 
+
 # [END config_v1_generated_Config_DeletePreview_async]

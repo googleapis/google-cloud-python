@@ -53,4 +53,5 @@ def sample_create_document_schema():
     # Handle the response
     print(response)
 
+
 # [END contentwarehouse_v1_generated_DocumentSchemaService_CreateDocumentSchema_sync]

@@ -53,4 +53,5 @@ def sample_delete_revision():
     # Handle the response
     print(response)
 
+
 # [END run_v2_generated_Revisions_DeleteRevision_sync]

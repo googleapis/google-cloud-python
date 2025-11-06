@@ -49,4 +49,5 @@ def sample_list_feeds():
     # Handle the response
     print(response)
 
+
 # [END cloudasset_v1_generated_AssetService_ListFeeds_sync]

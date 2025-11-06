@@ -52,4 +52,5 @@ async def sample_generate_attached_cluster_agent_token():
     # Handle the response
     print(response)
 
+
 # [END gkemulticloud_v1_generated_AttachedClusters_GenerateAttachedClusterAgentToken_async]

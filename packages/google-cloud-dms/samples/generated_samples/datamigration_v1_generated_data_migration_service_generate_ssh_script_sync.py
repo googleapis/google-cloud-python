@@ -53,4 +53,5 @@ def sample_generate_ssh_script():
     # Handle the response
     print(response)
 
+
 # [END datamigration_v1_generated_DataMigrationService_GenerateSshScript_sync]

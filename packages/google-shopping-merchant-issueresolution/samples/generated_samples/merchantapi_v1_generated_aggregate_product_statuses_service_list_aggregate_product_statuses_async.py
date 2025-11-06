@@ -50,4 +50,5 @@ async def sample_list_aggregate_product_statuses():
     async for response in page_result:
         print(response)
 
+
 # [END merchantapi_v1_generated_AggregateProductStatusesService_ListAggregateProductStatuses_async]

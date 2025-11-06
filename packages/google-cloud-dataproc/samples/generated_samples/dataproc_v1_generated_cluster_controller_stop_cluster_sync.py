@@ -55,4 +55,5 @@ def sample_stop_cluster():
     # Handle the response
     print(response)
 
+
 # [END dataproc_v1_generated_ClusterController_StopCluster_sync]

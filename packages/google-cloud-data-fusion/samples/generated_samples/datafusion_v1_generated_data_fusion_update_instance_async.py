@@ -56,4 +56,5 @@ async def sample_update_instance():
     # Handle the response
     print(response)
 
+
 # [END datafusion_v1_generated_DataFusion_UpdateInstance_async]

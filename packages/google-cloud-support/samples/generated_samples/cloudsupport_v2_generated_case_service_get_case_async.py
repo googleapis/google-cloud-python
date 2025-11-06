@@ -49,4 +49,5 @@ async def sample_get_case():
     # Handle the response
     print(response)
 
+
 # [END cloudsupport_v2_generated_CaseService_GetCase_async]

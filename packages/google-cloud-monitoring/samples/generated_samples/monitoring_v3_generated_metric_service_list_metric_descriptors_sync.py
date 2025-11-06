@@ -50,4 +50,5 @@ def sample_list_metric_descriptors():
     for response in page_result:
         print(response)
 
+
 # [END monitoring_v3_generated_MetricService_ListMetricDescriptors_sync]

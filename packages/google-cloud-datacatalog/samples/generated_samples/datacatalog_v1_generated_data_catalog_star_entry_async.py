@@ -49,4 +49,5 @@ async def sample_star_entry():
     # Handle the response
     print(response)
 
+
 # [END datacatalog_v1_generated_DataCatalog_StarEntry_async]

@@ -50,4 +50,5 @@ def sample_fetch_network_policy_external_addresses():
     for response in page_result:
         print(response)
 
+
 # [END vmwareengine_v1_generated_VmwareEngine_FetchNetworkPolicyExternalAddresses_sync]

@@ -53,4 +53,5 @@ async def sample_delete_branch_rule():
     # Handle the response
     print(response)
 
+
 # [END securesourcemanager_v1_generated_SecureSourceManager_DeleteBranchRule_async]

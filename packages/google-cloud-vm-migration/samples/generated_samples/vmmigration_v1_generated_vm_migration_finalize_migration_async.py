@@ -53,4 +53,5 @@ async def sample_finalize_migration():
     # Handle the response
     print(response)
 
+
 # [END vmmigration_v1_generated_VmMigration_FinalizeMigration_async]

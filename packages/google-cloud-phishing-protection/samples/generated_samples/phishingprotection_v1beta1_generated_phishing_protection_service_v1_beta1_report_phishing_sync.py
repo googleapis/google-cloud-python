@@ -50,4 +50,5 @@ def sample_report_phishing():
     # Handle the response
     print(response)
 
+
 # [END phishingprotection_v1beta1_generated_PhishingProtectionServiceV1Beta1_ReportPhishing_sync]

@@ -50,4 +50,5 @@ def sample_create_parameter():
     # Handle the response
     print(response)
 
+
 # [END parametermanager_v1_generated_ParameterManager_CreateParameter_sync]

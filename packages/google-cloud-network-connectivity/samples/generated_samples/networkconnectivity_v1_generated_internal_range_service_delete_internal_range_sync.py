@@ -53,4 +53,5 @@ def sample_delete_internal_range():
     # Handle the response
     print(response)
 
+
 # [END networkconnectivity_v1_generated_InternalRangeService_DeleteInternalRange_sync]

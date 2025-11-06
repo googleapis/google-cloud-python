@@ -39,8 +39,7 @@ async def sample_disable_service():
     client = service_usage_v1.ServiceUsageAsyncClient()
 
     # Initialize request argument(s)
-    request = service_usage_v1.DisableServiceRequest(
-    )
+    request = service_usage_v1.DisableServiceRequest()
 
     # Make the request
     operation = client.disable_service(request=request)
@@ -51,5 +50,6 @@ async def sample_disable_service():
 
     # Handle the response
     print(response)
+
 
 # [END serviceusage_v1_generated_ServiceUsage_DisableService_async]

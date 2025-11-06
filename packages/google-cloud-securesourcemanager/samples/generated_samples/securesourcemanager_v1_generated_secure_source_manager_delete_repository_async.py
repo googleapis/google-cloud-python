@@ -53,4 +53,5 @@ async def sample_delete_repository():
     # Handle the response
     print(response)
 
+
 # [END securesourcemanager_v1_generated_SecureSourceManager_DeleteRepository_async]

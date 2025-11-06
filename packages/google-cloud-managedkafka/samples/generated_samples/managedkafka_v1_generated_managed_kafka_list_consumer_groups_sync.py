@@ -50,4 +50,5 @@ def sample_list_consumer_groups():
     for response in page_result:
         print(response)
 
+
 # [END managedkafka_v1_generated_ManagedKafka_ListConsumerGroups_sync]

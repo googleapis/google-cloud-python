@@ -52,4 +52,5 @@ def sample_update_snooze():
     # Handle the response
     print(response)
 
+
 # [END monitoring_v3_generated_SnoozeService_UpdateSnooze_sync]

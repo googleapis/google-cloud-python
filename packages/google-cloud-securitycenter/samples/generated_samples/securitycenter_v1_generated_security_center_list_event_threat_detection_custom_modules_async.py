@@ -50,4 +50,5 @@ async def sample_list_event_threat_detection_custom_modules():
     async for response in page_result:
         print(response)
 
+
 # [END securitycenter_v1_generated_SecurityCenter_ListEventThreatDetectionCustomModules_async]

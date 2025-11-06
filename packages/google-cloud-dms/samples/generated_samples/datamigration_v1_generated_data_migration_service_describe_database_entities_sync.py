@@ -51,4 +51,5 @@ def sample_describe_database_entities():
     for response in page_result:
         print(response)
 
+
 # [END datamigration_v1_generated_DataMigrationService_DescribeDatabaseEntities_sync]

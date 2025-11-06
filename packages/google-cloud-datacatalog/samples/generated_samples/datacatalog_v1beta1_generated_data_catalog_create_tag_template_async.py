@@ -50,4 +50,5 @@ async def sample_create_tag_template():
     # Handle the response
     print(response)
 
+
 # [END datacatalog_v1beta1_generated_DataCatalog_CreateTagTemplate_async]

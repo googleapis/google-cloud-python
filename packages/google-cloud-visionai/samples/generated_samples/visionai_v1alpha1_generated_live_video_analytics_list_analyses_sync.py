@@ -50,4 +50,5 @@ def sample_list_analyses():
     for response in page_result:
         print(response)
 
+
 # [END visionai_v1alpha1_generated_LiveVideoAnalytics_ListAnalyses_sync]

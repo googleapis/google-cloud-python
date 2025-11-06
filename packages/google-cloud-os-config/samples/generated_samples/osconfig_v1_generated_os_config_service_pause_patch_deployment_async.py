@@ -49,4 +49,5 @@ async def sample_pause_patch_deployment():
     # Handle the response
     print(response)
 
+
 # [END osconfig_v1_generated_OsConfigService_PausePatchDeployment_async]

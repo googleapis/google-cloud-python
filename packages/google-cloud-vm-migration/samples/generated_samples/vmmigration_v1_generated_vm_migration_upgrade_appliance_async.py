@@ -53,4 +53,5 @@ async def sample_upgrade_appliance():
     # Handle the response
     print(response)
 
+
 # [END vmmigration_v1_generated_VmMigration_UpgradeAppliance_async]

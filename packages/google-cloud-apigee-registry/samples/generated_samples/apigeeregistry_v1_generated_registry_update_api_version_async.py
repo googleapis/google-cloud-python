@@ -39,13 +39,13 @@ async def sample_update_api_version():
     client = apigee_registry_v1.RegistryAsyncClient()
 
     # Initialize request argument(s)
-    request = apigee_registry_v1.UpdateApiVersionRequest(
-    )
+    request = apigee_registry_v1.UpdateApiVersionRequest()
 
     # Make the request
     response = await client.update_api_version(request=request)
 
     # Handle the response
     print(response)
+
 
 # [END apigeeregistry_v1_generated_Registry_UpdateApiVersion_async]

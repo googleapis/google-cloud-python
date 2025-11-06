@@ -53,4 +53,5 @@ def sample_delete_orchestration_cluster():
     # Handle the response
     print(response)
 
+
 # [END telcoautomation_v1alpha1_generated_TelcoAutomation_DeleteOrchestrationCluster_sync]

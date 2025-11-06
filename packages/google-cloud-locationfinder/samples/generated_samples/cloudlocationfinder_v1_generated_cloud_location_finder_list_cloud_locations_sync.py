@@ -50,4 +50,5 @@ def sample_list_cloud_locations():
     for response in page_result:
         print(response)
 
+
 # [END cloudlocationfinder_v1_generated_CloudLocationFinder_ListCloudLocations_sync]

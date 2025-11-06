@@ -49,4 +49,5 @@ def sample_get_job_template():
     # Handle the response
     print(response)
 
+
 # [END transcoder_v1_generated_TranscoderService_GetJobTemplate_sync]

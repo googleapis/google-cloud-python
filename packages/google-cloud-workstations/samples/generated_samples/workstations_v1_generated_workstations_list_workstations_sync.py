@@ -50,4 +50,5 @@ def sample_list_workstations():
     for response in page_result:
         print(response)
 
+
 # [END workstations_v1_generated_Workstations_ListWorkstations_sync]

@@ -49,4 +49,5 @@ def sample_get_phrase_set():
     # Handle the response
     print(response)
 
+
 # [END speech_v2_generated_Speech_GetPhraseSet_sync]

@@ -39,13 +39,13 @@ async def sample_list_finding_type_stats():
     client = websecurityscanner_v1.WebSecurityScannerAsyncClient()
 
     # Initialize request argument(s)
-    request = websecurityscanner_v1.ListFindingTypeStatsRequest(
-    )
+    request = websecurityscanner_v1.ListFindingTypeStatsRequest()
 
     # Make the request
     response = await client.list_finding_type_stats(request=request)
 
     # Handle the response
     print(response)
+
 
 # [END websecurityscanner_v1_generated_WebSecurityScanner_ListFindingTypeStats_async]

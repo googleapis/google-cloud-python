@@ -49,4 +49,5 @@ async def sample_get_server_config():
     # Handle the response
     print(response)
 
+
 # [END edgecontainer_v1_generated_EdgeContainer_GetServerConfig_async]

@@ -53,4 +53,5 @@ def sample_delete_node_pool():
     # Handle the response
     print(response)
 
+
 # [END edgecontainer_v1_generated_EdgeContainer_DeleteNodePool_sync]

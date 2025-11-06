@@ -39,13 +39,13 @@ async def sample_update_qa_scorecard():
     client = contact_center_insights_v1.ContactCenterInsightsAsyncClient()
 
     # Initialize request argument(s)
-    request = contact_center_insights_v1.UpdateQaScorecardRequest(
-    )
+    request = contact_center_insights_v1.UpdateQaScorecardRequest()
 
     # Make the request
     response = await client.update_qa_scorecard(request=request)
 
     # Handle the response
     print(response)
+
 
 # [END contactcenterinsights_v1_generated_ContactCenterInsights_UpdateQaScorecard_async]

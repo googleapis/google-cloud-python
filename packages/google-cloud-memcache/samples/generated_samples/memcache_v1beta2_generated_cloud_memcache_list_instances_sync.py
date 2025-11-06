@@ -50,4 +50,5 @@ def sample_list_instances():
     for response in page_result:
         print(response)
 
+
 # [END memcache_v1beta2_generated_CloudMemcache_ListInstances_sync]

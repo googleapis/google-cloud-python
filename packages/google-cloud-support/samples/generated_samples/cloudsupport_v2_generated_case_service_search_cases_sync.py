@@ -39,8 +39,7 @@ def sample_search_cases():
     client = support_v2.CaseServiceClient()
 
     # Initialize request argument(s)
-    request = support_v2.SearchCasesRequest(
-    )
+    request = support_v2.SearchCasesRequest()
 
     # Make the request
     page_result = client.search_cases(request=request)
@@ -48,5 +47,6 @@ def sample_search_cases():
     # Handle the response
     for response in page_result:
         print(response)
+
 
 # [END cloudsupport_v2_generated_CaseService_SearchCases_sync]

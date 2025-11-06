@@ -50,4 +50,5 @@ def sample_list_retrohunts():
     for response in page_result:
         print(response)
 
+
 # [END chronicle_v1_generated_RuleService_ListRetrohunts_sync]

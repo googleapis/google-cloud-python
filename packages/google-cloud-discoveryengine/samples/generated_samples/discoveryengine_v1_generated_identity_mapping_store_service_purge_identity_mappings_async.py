@@ -53,4 +53,5 @@ async def sample_purge_identity_mappings():
     # Handle the response
     print(response)
 
+
 # [END discoveryengine_v1_generated_IdentityMappingStoreService_PurgeIdentityMappings_async]

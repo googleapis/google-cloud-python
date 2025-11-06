@@ -55,4 +55,5 @@ def sample_import_registered_parties():
     # Handle the response
     print(response)
 
+
 # [END financialservices_v1_generated_AML_ImportRegisteredParties_sync]

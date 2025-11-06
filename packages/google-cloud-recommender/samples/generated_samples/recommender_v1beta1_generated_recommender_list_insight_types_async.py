@@ -39,8 +39,7 @@ async def sample_list_insight_types():
     client = recommender_v1beta1.RecommenderAsyncClient()
 
     # Initialize request argument(s)
-    request = recommender_v1beta1.ListInsightTypesRequest(
-    )
+    request = recommender_v1beta1.ListInsightTypesRequest()
 
     # Make the request
     page_result = client.list_insight_types(request=request)
@@ -48,5 +47,6 @@ async def sample_list_insight_types():
     # Handle the response
     async for response in page_result:
         print(response)
+
 
 # [END recommender_v1beta1_generated_Recommender_ListInsightTypes_async]

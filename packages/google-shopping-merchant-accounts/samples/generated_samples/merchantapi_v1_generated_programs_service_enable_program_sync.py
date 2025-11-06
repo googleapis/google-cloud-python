@@ -49,4 +49,5 @@ def sample_enable_program():
     # Handle the response
     print(response)
 
+
 # [END merchantapi_v1_generated_ProgramsService_EnableProgram_sync]

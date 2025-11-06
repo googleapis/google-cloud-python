@@ -49,4 +49,5 @@ async def sample_get_notification_subscription():
     # Handle the response
     print(response)
 
+
 # [END merchantapi_v1_generated_NotificationsApiService_GetNotificationSubscription_async]

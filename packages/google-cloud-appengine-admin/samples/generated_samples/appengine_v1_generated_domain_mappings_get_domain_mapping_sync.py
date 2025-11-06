@@ -39,13 +39,13 @@ def sample_get_domain_mapping():
     client = appengine_admin_v1.DomainMappingsClient()
 
     # Initialize request argument(s)
-    request = appengine_admin_v1.GetDomainMappingRequest(
-    )
+    request = appengine_admin_v1.GetDomainMappingRequest()
 
     # Make the request
     response = client.get_domain_mapping(request=request)
 
     # Handle the response
     print(response)
+
 
 # [END appengine_v1_generated_DomainMappings_GetDomainMapping_sync]

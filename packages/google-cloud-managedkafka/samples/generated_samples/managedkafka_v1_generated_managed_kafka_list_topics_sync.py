@@ -50,4 +50,5 @@ def sample_list_topics():
     for response in page_result:
         print(response)
 
+
 # [END managedkafka_v1_generated_ManagedKafka_ListTopics_sync]

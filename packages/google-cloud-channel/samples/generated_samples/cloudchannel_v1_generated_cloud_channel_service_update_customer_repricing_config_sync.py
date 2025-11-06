@@ -52,4 +52,5 @@ def sample_update_customer_repricing_config():
     # Handle the response
     print(response)
 
+
 # [END cloudchannel_v1_generated_CloudChannelService_UpdateCustomerRepricingConfig_sync]

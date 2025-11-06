@@ -39,13 +39,13 @@ async def sample_update_insight_type_config():
     client = recommender_v1.RecommenderAsyncClient()
 
     # Initialize request argument(s)
-    request = recommender_v1.UpdateInsightTypeConfigRequest(
-    )
+    request = recommender_v1.UpdateInsightTypeConfigRequest()
 
     # Make the request
     response = await client.update_insight_type_config(request=request)
 
     # Handle the response
     print(response)
+
 
 # [END recommender_v1_generated_Recommender_UpdateInsightTypeConfig_async]

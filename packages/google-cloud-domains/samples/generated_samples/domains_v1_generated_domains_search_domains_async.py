@@ -50,4 +50,5 @@ async def sample_search_domains():
     # Handle the response
     print(response)
 
+
 # [END domains_v1_generated_Domains_SearchDomains_async]

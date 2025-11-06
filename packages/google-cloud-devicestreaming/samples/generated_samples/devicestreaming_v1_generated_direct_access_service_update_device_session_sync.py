@@ -53,4 +53,5 @@ def sample_update_device_session():
     # Handle the response
     print(response)
 
+
 # [END devicestreaming_v1_generated_DirectAccessService_UpdateDeviceSession_sync]

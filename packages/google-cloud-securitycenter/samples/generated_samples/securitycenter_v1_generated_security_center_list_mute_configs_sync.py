@@ -50,4 +50,5 @@ def sample_list_mute_configs():
     for response in page_result:
         print(response)
 
+
 # [END securitycenter_v1_generated_SecurityCenter_ListMuteConfigs_sync]

@@ -49,4 +49,5 @@ async def sample_get_organization_event():
     # Handle the response
     print(response)
 
+
 # [END servicehealth_v1_generated_ServiceHealth_GetOrganizationEvent_async]

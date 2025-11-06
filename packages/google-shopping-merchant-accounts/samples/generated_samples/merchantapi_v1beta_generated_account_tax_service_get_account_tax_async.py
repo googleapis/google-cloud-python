@@ -49,4 +49,5 @@ async def sample_get_account_tax():
     # Handle the response
     print(response)
 
+
 # [END merchantapi_v1beta_generated_AccountTaxService_GetAccountTax_async]

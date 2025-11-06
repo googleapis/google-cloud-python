@@ -39,8 +39,7 @@ def sample_create_application():
     client = appengine_admin_v1.ApplicationsClient()
 
     # Initialize request argument(s)
-    request = appengine_admin_v1.CreateApplicationRequest(
-    )
+    request = appengine_admin_v1.CreateApplicationRequest()
 
     # Make the request
     operation = client.create_application(request=request)
@@ -51,5 +50,6 @@ def sample_create_application():
 
     # Handle the response
     print(response)
+
 
 # [END appengine_v1_generated_Applications_CreateApplication_sync]

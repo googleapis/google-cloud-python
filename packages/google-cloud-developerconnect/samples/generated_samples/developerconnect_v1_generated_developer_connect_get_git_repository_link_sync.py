@@ -49,4 +49,5 @@ def sample_get_git_repository_link():
     # Handle the response
     print(response)
 
+
 # [END developerconnect_v1_generated_DeveloperConnect_GetGitRepositoryLink_sync]

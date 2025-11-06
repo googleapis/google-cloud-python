@@ -50,4 +50,5 @@ async def sample_list_serving_configs():
     async for response in page_result:
         print(response)
 
+
 # [END discoveryengine_v1beta_generated_ServingConfigService_ListServingConfigs_async]

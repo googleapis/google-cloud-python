@@ -51,4 +51,5 @@ def sample_search_versions():
     for response in page_result:
         print(response)
 
+
 # [END cloudprivatecatalog_v1beta1_generated_PrivateCatalog_SearchVersions_sync]

@@ -39,13 +39,13 @@ async def sample_get_feature():
     client = gkehub_v1.GkeHubAsyncClient()
 
     # Initialize request argument(s)
-    request = gkehub_v1.GetFeatureRequest(
-    )
+    request = gkehub_v1.GetFeatureRequest()
 
     # Make the request
     response = await client.get_feature(request=request)
 
     # Handle the response
     print(response)
+
 
 # [END gkehub_v1_generated_GkeHub_GetFeature_async]

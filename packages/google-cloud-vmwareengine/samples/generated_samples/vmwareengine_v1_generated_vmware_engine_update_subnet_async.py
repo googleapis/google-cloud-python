@@ -39,8 +39,7 @@ async def sample_update_subnet():
     client = vmwareengine_v1.VmwareEngineAsyncClient()
 
     # Initialize request argument(s)
-    request = vmwareengine_v1.UpdateSubnetRequest(
-    )
+    request = vmwareengine_v1.UpdateSubnetRequest()
 
     # Make the request
     operation = client.update_subnet(request=request)
@@ -51,5 +50,6 @@ async def sample_update_subnet():
 
     # Handle the response
     print(response)
+
 
 # [END vmwareengine_v1_generated_VmwareEngine_UpdateSubnet_async]

@@ -49,4 +49,5 @@ async def sample_get_policy():
     # Handle the response
     print(response)
 
+
 # [END iam_v2beta_generated_Policies_GetPolicy_async]

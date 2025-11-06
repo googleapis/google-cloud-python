@@ -39,13 +39,13 @@ def sample_update_api_deployment():
     client = apigee_registry_v1.RegistryClient()
 
     # Initialize request argument(s)
-    request = apigee_registry_v1.UpdateApiDeploymentRequest(
-    )
+    request = apigee_registry_v1.UpdateApiDeploymentRequest()
 
     # Make the request
     response = client.update_api_deployment(request=request)
 
     # Handle the response
     print(response)
+
 
 # [END apigeeregistry_v1_generated_Registry_UpdateApiDeployment_sync]

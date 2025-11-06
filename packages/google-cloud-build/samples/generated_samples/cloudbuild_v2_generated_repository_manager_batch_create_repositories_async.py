@@ -59,4 +59,5 @@ async def sample_batch_create_repositories():
     # Handle the response
     print(response)
 
+
 # [END cloudbuild_v2_generated_RepositoryManager_BatchCreateRepositories_async]

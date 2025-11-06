@@ -53,4 +53,5 @@ async def sample_stop_channel():
     # Handle the response
     print(response)
 
+
 # [END livestream_v1_generated_LivestreamService_StopChannel_async]

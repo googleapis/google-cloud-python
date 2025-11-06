@@ -53,4 +53,5 @@ async def sample_delete_os_policy_assignment():
     # Handle the response
     print(response)
 
+
 # [END osconfig_v1_generated_OsConfigZonalService_DeleteOSPolicyAssignment_async]

@@ -58,4 +58,5 @@ def sample_create_gateway():
     # Handle the response
     print(response)
 
+
 # [END apigateway_v1_generated_ApiGatewayService_CreateGateway_sync]

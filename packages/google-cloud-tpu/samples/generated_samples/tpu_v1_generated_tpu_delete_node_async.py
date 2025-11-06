@@ -53,4 +53,5 @@ async def sample_delete_node():
     # Handle the response
     print(response)
 
+
 # [END tpu_v1_generated_Tpu_DeleteNode_async]

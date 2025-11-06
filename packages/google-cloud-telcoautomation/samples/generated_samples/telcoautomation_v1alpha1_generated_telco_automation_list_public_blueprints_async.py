@@ -50,4 +50,5 @@ async def sample_list_public_blueprints():
     async for response in page_result:
         print(response)
 
+
 # [END telcoautomation_v1alpha1_generated_TelcoAutomation_ListPublicBlueprints_async]

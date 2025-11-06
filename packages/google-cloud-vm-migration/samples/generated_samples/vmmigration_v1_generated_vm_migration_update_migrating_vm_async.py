@@ -39,8 +39,7 @@ async def sample_update_migrating_vm():
     client = vmmigration_v1.VmMigrationAsyncClient()
 
     # Initialize request argument(s)
-    request = vmmigration_v1.UpdateMigratingVmRequest(
-    )
+    request = vmmigration_v1.UpdateMigratingVmRequest()
 
     # Make the request
     operation = client.update_migrating_vm(request=request)
@@ -51,5 +50,6 @@ async def sample_update_migrating_vm():
 
     # Handle the response
     print(response)
+
 
 # [END vmmigration_v1_generated_VmMigration_UpdateMigratingVm_async]

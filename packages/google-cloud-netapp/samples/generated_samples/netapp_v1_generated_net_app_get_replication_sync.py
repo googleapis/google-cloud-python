@@ -49,4 +49,5 @@ def sample_get_replication():
     # Handle the response
     print(response)
 
+
 # [END netapp_v1_generated_NetApp_GetReplication_sync]

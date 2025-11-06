@@ -50,4 +50,5 @@ async def sample_register_subscriber():
     # Handle the response
     print(response)
 
+
 # [END cloudchannel_v1_generated_CloudChannelService_RegisterSubscriber_async]

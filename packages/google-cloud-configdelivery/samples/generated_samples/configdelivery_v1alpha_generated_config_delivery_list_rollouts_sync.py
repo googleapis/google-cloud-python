@@ -50,4 +50,5 @@ def sample_list_rollouts():
     for response in page_result:
         print(response)
 
+
 # [END configdelivery_v1alpha_generated_ConfigDelivery_ListRollouts_sync]

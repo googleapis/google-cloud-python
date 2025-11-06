@@ -50,4 +50,5 @@ def sample_list_replay_results():
     for response in page_result:
         print(response)
 
+
 # [END policysimulator_v1_generated_Simulator_ListReplayResults_sync]

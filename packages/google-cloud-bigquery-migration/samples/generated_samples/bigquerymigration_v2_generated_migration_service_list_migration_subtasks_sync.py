@@ -50,4 +50,5 @@ def sample_list_migration_subtasks():
     for response in page_result:
         print(response)
 
+
 # [END bigquerymigration_v2_generated_MigrationService_ListMigrationSubtasks_sync]

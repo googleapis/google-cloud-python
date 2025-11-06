@@ -49,4 +49,5 @@ async def sample_get_target_site():
     # Handle the response
     print(response)
 
+
 # [END discoveryengine_v1beta_generated_SiteSearchEngineService_GetTargetSite_async]

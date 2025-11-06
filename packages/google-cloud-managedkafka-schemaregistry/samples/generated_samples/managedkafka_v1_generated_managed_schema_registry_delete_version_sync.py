@@ -49,4 +49,5 @@ def sample_delete_version():
     # Handle the response
     print(response)
 
+
 # [END managedkafka_v1_generated_ManagedSchemaRegistry_DeleteVersion_sync]

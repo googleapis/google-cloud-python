@@ -53,4 +53,5 @@ def sample_delete_spoke():
     # Handle the response
     print(response)
 
+
 # [END networkconnectivity_v1alpha1_generated_HubService_DeleteSpoke_sync]

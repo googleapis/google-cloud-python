@@ -49,4 +49,5 @@ def sample_create_user_workloads_secret():
     # Handle the response
     print(response)
 
+
 # [END composer_v1_generated_Environments_CreateUserWorkloadsSecret_sync]

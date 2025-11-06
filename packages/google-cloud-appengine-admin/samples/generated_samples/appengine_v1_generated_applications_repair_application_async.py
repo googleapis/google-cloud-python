@@ -39,8 +39,7 @@ async def sample_repair_application():
     client = appengine_admin_v1.ApplicationsAsyncClient()
 
     # Initialize request argument(s)
-    request = appengine_admin_v1.RepairApplicationRequest(
-    )
+    request = appengine_admin_v1.RepairApplicationRequest()
 
     # Make the request
     operation = client.repair_application(request=request)
@@ -51,5 +50,6 @@ async def sample_repair_application():
 
     # Handle the response
     print(response)
+
 
 # [END appengine_v1_generated_Applications_RepairApplication_async]

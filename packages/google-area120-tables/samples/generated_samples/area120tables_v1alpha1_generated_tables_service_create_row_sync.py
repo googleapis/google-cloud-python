@@ -49,4 +49,5 @@ def sample_create_row():
     # Handle the response
     print(response)
 
+
 # [END area120tables_v1alpha1_generated_TablesService_CreateRow_sync]

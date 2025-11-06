@@ -53,4 +53,5 @@ def sample_delete_delivery_pipeline():
     # Handle the response
     print(response)
 
+
 # [END clouddeploy_v1_generated_CloudDeploy_DeleteDeliveryPipeline_sync]

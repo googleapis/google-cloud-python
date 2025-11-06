@@ -60,4 +60,5 @@ def sample_import_mapping_rules():
     # Handle the response
     print(response)
 
+
 # [END datamigration_v1_generated_DataMigrationService_ImportMappingRules_sync]

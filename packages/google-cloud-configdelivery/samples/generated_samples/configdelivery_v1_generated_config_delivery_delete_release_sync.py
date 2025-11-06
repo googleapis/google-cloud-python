@@ -53,4 +53,5 @@ def sample_delete_release():
     # Handle the response
     print(response)
 
+
 # [END configdelivery_v1_generated_ConfigDelivery_DeleteRelease_sync]

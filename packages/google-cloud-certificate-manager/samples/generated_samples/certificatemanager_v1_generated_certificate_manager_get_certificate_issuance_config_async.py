@@ -49,4 +49,5 @@ async def sample_get_certificate_issuance_config():
     # Handle the response
     print(response)
 
+
 # [END certificatemanager_v1_generated_CertificateManager_GetCertificateIssuanceConfig_async]

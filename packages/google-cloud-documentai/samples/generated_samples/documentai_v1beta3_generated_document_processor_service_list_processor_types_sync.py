@@ -50,4 +50,5 @@ def sample_list_processor_types():
     for response in page_result:
         print(response)
 
+
 # [END documentai_v1beta3_generated_DocumentProcessorService_ListProcessorTypes_sync]

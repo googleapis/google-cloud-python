@@ -54,4 +54,5 @@ def sample_stream_answer_query():
     for response in stream:
         print(response)
 
+
 # [END discoveryengine_v1_generated_ConversationalSearchService_StreamAnswerQuery_sync]

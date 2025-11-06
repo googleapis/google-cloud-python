@@ -49,4 +49,5 @@ def sample_get_runtime_project_attachment():
     # Handle the response
     print(response)
 
+
 # [END apihub_v1_generated_RuntimeProjectAttachmentService_GetRuntimeProjectAttachment_sync]

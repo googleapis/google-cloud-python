@@ -50,4 +50,5 @@ def sample_list_message_buses():
     for response in page_result:
         print(response)
 
+
 # [END eventarc_v1_generated_Eventarc_ListMessageBuses_sync]

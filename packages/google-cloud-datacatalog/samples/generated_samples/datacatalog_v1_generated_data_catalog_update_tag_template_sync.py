@@ -39,13 +39,13 @@ def sample_update_tag_template():
     client = datacatalog_v1.DataCatalogClient()
 
     # Initialize request argument(s)
-    request = datacatalog_v1.UpdateTagTemplateRequest(
-    )
+    request = datacatalog_v1.UpdateTagTemplateRequest()
 
     # Make the request
     response = client.update_tag_template(request=request)
 
     # Handle the response
     print(response)
+
 
 # [END datacatalog_v1_generated_DataCatalog_UpdateTagTemplate_sync]

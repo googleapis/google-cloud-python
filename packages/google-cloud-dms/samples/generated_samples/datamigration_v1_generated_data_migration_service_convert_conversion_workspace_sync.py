@@ -39,8 +39,7 @@ def sample_convert_conversion_workspace():
     client = clouddms_v1.DataMigrationServiceClient()
 
     # Initialize request argument(s)
-    request = clouddms_v1.ConvertConversionWorkspaceRequest(
-    )
+    request = clouddms_v1.ConvertConversionWorkspaceRequest()
 
     # Make the request
     operation = client.convert_conversion_workspace(request=request)
@@ -51,5 +50,6 @@ def sample_convert_conversion_workspace():
 
     # Handle the response
     print(response)
+
 
 # [END datamigration_v1_generated_DataMigrationService_ConvertConversionWorkspace_sync]

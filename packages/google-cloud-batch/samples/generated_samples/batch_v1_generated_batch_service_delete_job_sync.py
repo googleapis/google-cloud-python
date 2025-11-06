@@ -39,8 +39,7 @@ def sample_delete_job():
     client = batch_v1.BatchServiceClient()
 
     # Initialize request argument(s)
-    request = batch_v1.DeleteJobRequest(
-    )
+    request = batch_v1.DeleteJobRequest()
 
     # Make the request
     operation = client.delete_job(request=request)
@@ -51,5 +50,6 @@ def sample_delete_job():
 
     # Handle the response
     print(response)
+
 
 # [END batch_v1_generated_BatchService_DeleteJob_sync]

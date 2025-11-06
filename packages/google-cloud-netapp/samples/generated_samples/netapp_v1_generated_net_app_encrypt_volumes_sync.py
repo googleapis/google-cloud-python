@@ -53,4 +53,5 @@ def sample_encrypt_volumes():
     # Handle the response
     print(response)
 
+
 # [END netapp_v1_generated_NetApp_EncryptVolumes_sync]

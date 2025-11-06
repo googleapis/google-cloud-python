@@ -50,4 +50,5 @@ def sample_list_worker_pools():
     for response in page_result:
         print(response)
 
+
 # [END run_v2_generated_WorkerPools_ListWorkerPools_sync]

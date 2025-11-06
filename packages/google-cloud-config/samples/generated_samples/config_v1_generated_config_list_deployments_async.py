@@ -50,4 +50,5 @@ async def sample_list_deployments():
     async for response in page_result:
         print(response)
 
+
 # [END config_v1_generated_Config_ListDeployments_async]

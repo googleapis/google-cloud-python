@@ -50,4 +50,5 @@ async def sample_list_dependencies():
     async for response in page_result:
         print(response)
 
+
 # [END apihub_v1_generated_ApiHubDependencies_ListDependencies_async]

@@ -50,4 +50,5 @@ def sample_create_reservation_group():
     # Handle the response
     print(response)
 
+
 # [END bigqueryreservation_v1_generated_ReservationService_CreateReservationGroup_sync]

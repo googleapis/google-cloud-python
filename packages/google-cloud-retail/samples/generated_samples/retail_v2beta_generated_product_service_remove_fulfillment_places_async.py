@@ -42,7 +42,7 @@ async def sample_remove_fulfillment_places():
     request = retail_v2beta.RemoveFulfillmentPlacesRequest(
         product="product_value",
         type_="type__value",
-        place_ids=['place_ids_value1', 'place_ids_value2'],
+        place_ids=["place_ids_value1", "place_ids_value2"],
     )
 
     # Make the request
@@ -54,5 +54,6 @@ async def sample_remove_fulfillment_places():
 
     # Handle the response
     print(response)
+
 
 # [END retail_v2beta_generated_ProductService_RemoveFulfillmentPlaces_async]

@@ -49,4 +49,5 @@ def sample_generate_client_certificate():
     # Handle the response
     print(response)
 
+
 # [END alloydb_v1alpha_generated_AlloyDBAdmin_GenerateClientCertificate_sync]

@@ -51,4 +51,5 @@ def sample_remove_association():
     # Handle the response
     print(response)
 
+
 # [END compute_v1beta_generated_RegionNetworkFirewallPolicies_RemoveAssociation_sync]

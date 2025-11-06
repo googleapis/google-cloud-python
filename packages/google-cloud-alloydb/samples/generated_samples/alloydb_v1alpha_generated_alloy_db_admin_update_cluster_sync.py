@@ -57,4 +57,5 @@ def sample_update_cluster():
     # Handle the response
     print(response)
 
+
 # [END alloydb_v1alpha_generated_AlloyDBAdmin_UpdateCluster_sync]

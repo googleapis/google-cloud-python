@@ -50,4 +50,5 @@ def sample_list_skus():
     for response in page_result:
         print(response)
 
+
 # [END cloudbilling_v1_generated_CloudCatalog_ListSkus_sync]

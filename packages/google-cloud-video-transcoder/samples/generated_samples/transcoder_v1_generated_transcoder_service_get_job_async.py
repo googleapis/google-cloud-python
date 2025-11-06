@@ -49,4 +49,5 @@ async def sample_get_job():
     # Handle the response
     print(response)
 
+
 # [END transcoder_v1_generated_TranscoderService_GetJob_async]

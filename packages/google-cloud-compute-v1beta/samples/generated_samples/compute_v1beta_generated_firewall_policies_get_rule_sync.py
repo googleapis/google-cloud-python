@@ -49,4 +49,5 @@ def sample_get_rule():
     # Handle the response
     print(response)
 
+
 # [END compute_v1beta_generated_FirewallPolicies_GetRule_sync]

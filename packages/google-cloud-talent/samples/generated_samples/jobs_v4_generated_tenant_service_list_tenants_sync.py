@@ -50,4 +50,5 @@ def sample_list_tenants():
     for response in page_result:
         print(response)
 
+
 # [END jobs_v4_generated_TenantService_ListTenants_sync]

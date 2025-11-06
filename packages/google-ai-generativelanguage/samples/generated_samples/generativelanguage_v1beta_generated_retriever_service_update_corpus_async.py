@@ -39,13 +39,13 @@ async def sample_update_corpus():
     client = generativelanguage_v1beta.RetrieverServiceAsyncClient()
 
     # Initialize request argument(s)
-    request = generativelanguage_v1beta.UpdateCorpusRequest(
-    )
+    request = generativelanguage_v1beta.UpdateCorpusRequest()
 
     # Make the request
     response = await client.update_corpus(request=request)
 
     # Handle the response
     print(response)
+
 
 # [END generativelanguage_v1beta_generated_RetrieverService_UpdateCorpus_async]

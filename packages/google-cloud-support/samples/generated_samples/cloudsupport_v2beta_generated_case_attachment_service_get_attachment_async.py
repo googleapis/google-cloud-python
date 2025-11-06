@@ -49,4 +49,5 @@ async def sample_get_attachment():
     # Handle the response
     print(response)
 
+
 # [END cloudsupport_v2beta_generated_CaseAttachmentService_GetAttachment_async]

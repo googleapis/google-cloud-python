@@ -40,7 +40,7 @@ def sample_compute_insights():
 
     # Initialize request argument(s)
     request = areainsights_v1.ComputeInsightsRequest(
-        insights=['INSIGHT_PLACES'],
+        insights=["INSIGHT_PLACES"],
     )
 
     # Make the request
@@ -48,5 +48,6 @@ def sample_compute_insights():
 
     # Handle the response
     print(response)
+
 
 # [END areainsights_v1_generated_AreaInsights_ComputeInsights_sync]

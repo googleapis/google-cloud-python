@@ -49,4 +49,5 @@ def sample_retrieve_authorization_code():
     # Handle the response
     print(response)
 
+
 # [END domains_v1beta1_generated_Domains_RetrieveAuthorizationCode_sync]

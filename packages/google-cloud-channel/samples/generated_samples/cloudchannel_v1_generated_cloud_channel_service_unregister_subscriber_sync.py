@@ -50,4 +50,5 @@ def sample_unregister_subscriber():
     # Handle the response
     print(response)
 
+
 # [END cloudchannel_v1_generated_CloudChannelService_UnregisterSubscriber_sync]

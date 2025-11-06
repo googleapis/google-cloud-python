@@ -50,4 +50,5 @@ def sample_create_api_version():
     # Handle the response
     print(response)
 
+
 # [END apigeeregistry_v1_generated_Registry_CreateApiVersion_sync]

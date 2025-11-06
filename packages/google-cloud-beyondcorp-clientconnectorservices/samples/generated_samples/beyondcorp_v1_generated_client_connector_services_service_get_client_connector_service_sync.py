@@ -36,7 +36,9 @@ from google.cloud import beyondcorp_clientconnectorservices_v1
 
 def sample_get_client_connector_service():
     # Create a client
-    client = beyondcorp_clientconnectorservices_v1.ClientConnectorServicesServiceClient()
+    client = (
+        beyondcorp_clientconnectorservices_v1.ClientConnectorServicesServiceClient()
+    )
 
     # Initialize request argument(s)
     request = beyondcorp_clientconnectorservices_v1.GetClientConnectorServiceRequest(
@@ -48,5 +50,6 @@ def sample_get_client_connector_service():
 
     # Handle the response
     print(response)
+
 
 # [END beyondcorp_v1_generated_ClientConnectorServicesService_GetClientConnectorService_sync]

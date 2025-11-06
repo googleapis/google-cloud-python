@@ -50,4 +50,5 @@ async def sample_analyze_workload_move():
     # Handle the response
     print(response)
 
+
 # [END assuredworkloads_v1beta1_generated_AssuredWorkloadsService_AnalyzeWorkloadMove_async]

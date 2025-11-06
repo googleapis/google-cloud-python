@@ -39,13 +39,13 @@ async def sample_update_database():
     client = bigquery_biglake_v1alpha1.MetastoreServiceAsyncClient()
 
     # Initialize request argument(s)
-    request = bigquery_biglake_v1alpha1.UpdateDatabaseRequest(
-    )
+    request = bigquery_biglake_v1alpha1.UpdateDatabaseRequest()
 
     # Make the request
     response = await client.update_database(request=request)
 
     # Handle the response
     print(response)
+
 
 # [END biglake_v1alpha1_generated_MetastoreService_UpdateDatabase_async]

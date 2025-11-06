@@ -49,4 +49,5 @@ async def sample_batch_embed_text():
     # Handle the response
     print(response)
 
+
 # [END generativelanguage_v1alpha_generated_TextService_BatchEmbedText_async]

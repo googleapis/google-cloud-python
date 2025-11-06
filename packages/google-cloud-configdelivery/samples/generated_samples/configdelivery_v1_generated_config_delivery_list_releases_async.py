@@ -50,4 +50,5 @@ async def sample_list_releases():
     async for response in page_result:
         print(response)
 
+
 # [END configdelivery_v1_generated_ConfigDelivery_ListReleases_async]

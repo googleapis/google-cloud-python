@@ -49,4 +49,5 @@ async def sample_get_custom_class():
     # Handle the response
     print(response)
 
+
 # [END speech_v1_generated_Adaptation_GetCustomClass_async]

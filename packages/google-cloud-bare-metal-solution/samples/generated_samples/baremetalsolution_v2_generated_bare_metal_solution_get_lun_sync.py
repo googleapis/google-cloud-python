@@ -49,4 +49,5 @@ def sample_get_lun():
     # Handle the response
     print(response)
 
+
 # [END baremetalsolution_v2_generated_BareMetalSolution_GetLun_sync]

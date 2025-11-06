@@ -39,8 +39,7 @@ def sample_list_functions():
     client = functions_v1.CloudFunctionsServiceClient()
 
     # Initialize request argument(s)
-    request = functions_v1.ListFunctionsRequest(
-    )
+    request = functions_v1.ListFunctionsRequest()
 
     # Make the request
     page_result = client.list_functions(request=request)
@@ -48,5 +47,6 @@ def sample_list_functions():
     # Handle the response
     for response in page_result:
         print(response)
+
 
 # [END cloudfunctions_v1_generated_CloudFunctionsService_ListFunctions_sync]

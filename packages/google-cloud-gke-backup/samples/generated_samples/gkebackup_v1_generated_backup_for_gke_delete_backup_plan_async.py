@@ -53,4 +53,5 @@ async def sample_delete_backup_plan():
     # Handle the response
     print(response)
 
+
 # [END gkebackup_v1_generated_BackupForGKE_DeleteBackupPlan_async]

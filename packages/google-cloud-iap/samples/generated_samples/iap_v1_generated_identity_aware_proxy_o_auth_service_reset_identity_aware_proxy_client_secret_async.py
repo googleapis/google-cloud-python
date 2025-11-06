@@ -49,4 +49,5 @@ async def sample_reset_identity_aware_proxy_client_secret():
     # Handle the response
     print(response)
 
+
 # [END iap_v1_generated_IdentityAwareProxyOAuthService_ResetIdentityAwareProxyClientSecret_async]

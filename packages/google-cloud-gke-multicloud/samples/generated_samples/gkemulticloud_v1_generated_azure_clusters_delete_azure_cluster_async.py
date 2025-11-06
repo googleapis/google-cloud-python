@@ -53,4 +53,5 @@ async def sample_delete_azure_cluster():
     # Handle the response
     print(response)
 
+
 # [END gkemulticloud_v1_generated_AzureClusters_DeleteAzureCluster_async]

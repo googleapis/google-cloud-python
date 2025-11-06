@@ -49,4 +49,5 @@ def sample_restart_connector():
     # Handle the response
     print(response)
 
+
 # [END managedkafka_v1_generated_ManagedKafkaConnect_RestartConnector_sync]

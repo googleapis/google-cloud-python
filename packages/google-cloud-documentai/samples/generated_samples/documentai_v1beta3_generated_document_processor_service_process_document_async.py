@@ -53,4 +53,5 @@ async def sample_process_document():
     # Handle the response
     print(response)
 
+
 # [END documentai_v1beta3_generated_DocumentProcessorService_ProcessDocument_async]

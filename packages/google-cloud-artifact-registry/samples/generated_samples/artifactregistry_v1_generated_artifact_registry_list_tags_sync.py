@@ -39,8 +39,7 @@ def sample_list_tags():
     client = artifactregistry_v1.ArtifactRegistryClient()
 
     # Initialize request argument(s)
-    request = artifactregistry_v1.ListTagsRequest(
-    )
+    request = artifactregistry_v1.ListTagsRequest()
 
     # Make the request
     page_result = client.list_tags(request=request)
@@ -48,5 +47,6 @@ def sample_list_tags():
     # Handle the response
     for response in page_result:
         print(response)
+
 
 # [END artifactregistry_v1_generated_ArtifactRegistry_ListTags_sync]

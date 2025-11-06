@@ -49,4 +49,5 @@ def sample_get_terms_of_service_agreement_state():
     # Handle the response
     print(response)
 
+
 # [END merchantapi_v1_generated_TermsOfServiceAgreementStateService_GetTermsOfServiceAgreementState_sync]

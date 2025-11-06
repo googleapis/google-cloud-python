@@ -50,4 +50,5 @@ async def sample_list_notification_configs():
     async for response in page_result:
         print(response)
 
+
 # [END securitycenter_v1_generated_SecurityCenter_ListNotificationConfigs_async]

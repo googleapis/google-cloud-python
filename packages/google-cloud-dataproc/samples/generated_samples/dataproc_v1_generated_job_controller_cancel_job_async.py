@@ -51,4 +51,5 @@ async def sample_cancel_job():
     # Handle the response
     print(response)
 
+
 # [END dataproc_v1_generated_JobController_CancelJob_async]

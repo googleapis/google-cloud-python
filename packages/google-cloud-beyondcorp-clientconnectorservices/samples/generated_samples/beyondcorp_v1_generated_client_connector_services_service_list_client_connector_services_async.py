@@ -36,7 +36,9 @@ from google.cloud import beyondcorp_clientconnectorservices_v1
 
 async def sample_list_client_connector_services():
     # Create a client
-    client = beyondcorp_clientconnectorservices_v1.ClientConnectorServicesServiceAsyncClient()
+    client = (
+        beyondcorp_clientconnectorservices_v1.ClientConnectorServicesServiceAsyncClient()
+    )
 
     # Initialize request argument(s)
     request = beyondcorp_clientconnectorservices_v1.ListClientConnectorServicesRequest(
@@ -49,5 +51,6 @@ async def sample_list_client_connector_services():
     # Handle the response
     async for response in page_result:
         print(response)
+
 
 # [END beyondcorp_v1_generated_ClientConnectorServicesService_ListClientConnectorServices_async]

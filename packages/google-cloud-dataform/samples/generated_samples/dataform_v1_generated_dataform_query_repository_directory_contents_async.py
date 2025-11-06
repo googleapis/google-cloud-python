@@ -50,4 +50,5 @@ async def sample_query_repository_directory_contents():
     async for response in page_result:
         print(response)
 
+
 # [END dataform_v1_generated_Dataform_QueryRepositoryDirectoryContents_async]

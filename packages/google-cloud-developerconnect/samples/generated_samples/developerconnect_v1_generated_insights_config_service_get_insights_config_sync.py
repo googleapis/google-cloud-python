@@ -49,4 +49,5 @@ def sample_get_insights_config():
     # Handle the response
     print(response)
 
+
 # [END developerconnect_v1_generated_InsightsConfigService_GetInsightsConfig_sync]

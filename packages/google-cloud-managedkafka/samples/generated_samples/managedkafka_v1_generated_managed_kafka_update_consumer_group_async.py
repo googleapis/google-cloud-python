@@ -39,13 +39,13 @@ async def sample_update_consumer_group():
     client = managedkafka_v1.ManagedKafkaAsyncClient()
 
     # Initialize request argument(s)
-    request = managedkafka_v1.UpdateConsumerGroupRequest(
-    )
+    request = managedkafka_v1.UpdateConsumerGroupRequest()
 
     # Make the request
     response = await client.update_consumer_group(request=request)
 
     # Handle the response
     print(response)
+
 
 # [END managedkafka_v1_generated_ManagedKafka_UpdateConsumerGroup_async]

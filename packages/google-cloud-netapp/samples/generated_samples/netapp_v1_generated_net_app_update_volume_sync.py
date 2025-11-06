@@ -43,7 +43,7 @@ def sample_update_volume():
     volume.share_name = "share_name_value"
     volume.storage_pool = "storage_pool_value"
     volume.capacity_gib = 1247
-    volume.protocols = ['SMB']
+    volume.protocols = ["SMB"]
 
     request = netapp_v1.UpdateVolumeRequest(
         volume=volume,
@@ -58,5 +58,6 @@ def sample_update_volume():
 
     # Handle the response
     print(response)
+
 
 # [END netapp_v1_generated_NetApp_UpdateVolume_sync]

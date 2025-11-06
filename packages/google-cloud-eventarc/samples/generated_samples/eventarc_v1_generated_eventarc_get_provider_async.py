@@ -49,4 +49,5 @@ async def sample_get_provider():
     # Handle the response
     print(response)
 
+
 # [END eventarc_v1_generated_Eventarc_GetProvider_async]

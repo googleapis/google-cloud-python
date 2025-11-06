@@ -49,4 +49,5 @@ async def sample_compute_repository_access_token_status():
     # Handle the response
     print(response)
 
+
 # [END dataform_v1beta1_generated_Dataform_ComputeRepositoryAccessTokenStatus_async]

@@ -53,4 +53,5 @@ def sample_batch_process_documents():
     # Handle the response
     print(response)
 
+
 # [END documentai_v1_generated_DocumentProcessorService_BatchProcessDocuments_sync]

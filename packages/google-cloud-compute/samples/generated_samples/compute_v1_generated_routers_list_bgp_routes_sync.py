@@ -52,4 +52,5 @@ def sample_list_bgp_routes():
     for response in page_result:
         print(response)
 
+
 # [END compute_v1_generated_Routers_ListBgpRoutes_sync]

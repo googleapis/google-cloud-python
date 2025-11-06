@@ -50,4 +50,5 @@ def sample_list_models():
     for response in page_result:
         print(response)
 
+
 # [END retail_v2beta_generated_ModelService_ListModels_sync]

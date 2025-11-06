@@ -52,4 +52,5 @@ async def sample_update_agent_pool():
     # Handle the response
     print(response)
 
+
 # [END storagetransfer_v1_generated_StorageTransferService_UpdateAgentPool_async]

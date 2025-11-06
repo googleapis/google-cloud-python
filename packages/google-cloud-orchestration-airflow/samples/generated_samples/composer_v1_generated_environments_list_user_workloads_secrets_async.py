@@ -50,4 +50,5 @@ async def sample_list_user_workloads_secrets():
     async for response in page_result:
         print(response)
 
+
 # [END composer_v1_generated_Environments_ListUserWorkloadsSecrets_async]

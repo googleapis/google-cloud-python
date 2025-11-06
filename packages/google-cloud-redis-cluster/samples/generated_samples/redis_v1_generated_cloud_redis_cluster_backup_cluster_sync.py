@@ -53,4 +53,5 @@ def sample_backup_cluster():
     # Handle the response
     print(response)
 
+
 # [END redis_v1_generated_CloudRedisCluster_BackupCluster_sync]

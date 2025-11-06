@@ -49,4 +49,5 @@ def sample_get_nfs_share():
     # Handle the response
     print(response)
 
+
 # [END baremetalsolution_v2_generated_BareMetalSolution_GetNfsShare_sync]

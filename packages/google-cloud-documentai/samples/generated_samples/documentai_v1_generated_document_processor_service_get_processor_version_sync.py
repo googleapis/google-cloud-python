@@ -49,4 +49,5 @@ def sample_get_processor_version():
     # Handle the response
     print(response)
 
+
 # [END documentai_v1_generated_DocumentProcessorService_GetProcessorVersion_sync]

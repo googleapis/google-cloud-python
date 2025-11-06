@@ -39,13 +39,13 @@ async def sample_update_region():
     client = merchant_accounts_v1.RegionsServiceAsyncClient()
 
     # Initialize request argument(s)
-    request = merchant_accounts_v1.UpdateRegionRequest(
-    )
+    request = merchant_accounts_v1.UpdateRegionRequest()
 
     # Make the request
     response = await client.update_region(request=request)
 
     # Handle the response
     print(response)
+
 
 # [END merchantapi_v1_generated_RegionsService_UpdateRegion_async]

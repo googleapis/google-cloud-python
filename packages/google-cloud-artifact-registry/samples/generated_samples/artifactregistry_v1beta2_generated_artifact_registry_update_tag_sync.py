@@ -39,13 +39,13 @@ def sample_update_tag():
     client = artifactregistry_v1beta2.ArtifactRegistryClient()
 
     # Initialize request argument(s)
-    request = artifactregistry_v1beta2.UpdateTagRequest(
-    )
+    request = artifactregistry_v1beta2.UpdateTagRequest()
 
     # Make the request
     response = client.update_tag(request=request)
 
     # Handle the response
     print(response)
+
 
 # [END artifactregistry_v1beta2_generated_ArtifactRegistry_UpdateTag_sync]

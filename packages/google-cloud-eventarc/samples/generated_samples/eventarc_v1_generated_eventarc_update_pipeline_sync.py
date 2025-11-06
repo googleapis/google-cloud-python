@@ -56,4 +56,5 @@ def sample_update_pipeline():
     # Handle the response
     print(response)
 
+
 # [END eventarc_v1_generated_Eventarc_UpdatePipeline_sync]

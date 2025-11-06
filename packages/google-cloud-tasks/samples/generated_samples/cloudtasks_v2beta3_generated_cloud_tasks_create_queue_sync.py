@@ -49,4 +49,5 @@ def sample_create_queue():
     # Handle the response
     print(response)
 
+
 # [END cloudtasks_v2beta3_generated_CloudTasks_CreateQueue_sync]

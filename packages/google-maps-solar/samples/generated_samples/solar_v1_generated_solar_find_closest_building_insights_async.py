@@ -39,13 +39,13 @@ async def sample_find_closest_building_insights():
     client = solar_v1.SolarAsyncClient()
 
     # Initialize request argument(s)
-    request = solar_v1.FindClosestBuildingInsightsRequest(
-    )
+    request = solar_v1.FindClosestBuildingInsightsRequest()
 
     # Make the request
     response = await client.find_closest_building_insights(request=request)
 
     # Handle the response
     print(response)
+
 
 # [END solar_v1_generated_Solar_FindClosestBuildingInsights_async]

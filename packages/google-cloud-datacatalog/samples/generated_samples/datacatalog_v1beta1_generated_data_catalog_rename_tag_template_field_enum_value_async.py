@@ -50,4 +50,5 @@ async def sample_rename_tag_template_field_enum_value():
     # Handle the response
     print(response)
 
+
 # [END datacatalog_v1beta1_generated_DataCatalog_RenameTagTemplateFieldEnumValue_async]

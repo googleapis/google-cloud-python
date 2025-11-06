@@ -50,4 +50,5 @@ def sample_list_anywhere_caches():
     for response in page_result:
         print(response)
 
+
 # [END storage_v2_generated_StorageControl_ListAnywhereCaches_sync]

@@ -50,4 +50,5 @@ async def sample_list_session_entity_types():
     async for response in page_result:
         print(response)
 
+
 # [END dialogflow_v3_generated_SessionEntityTypes_ListSessionEntityTypes_async]

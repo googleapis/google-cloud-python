@@ -49,4 +49,5 @@ def sample_get_multicloud_data_transfer_supported_service():
     # Handle the response
     print(response)
 
+
 # [END networkconnectivity_v1_generated_DataTransferService_GetMulticloudDataTransferSupportedService_sync]

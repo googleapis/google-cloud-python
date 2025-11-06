@@ -54,4 +54,5 @@ async def sample_import_entries():
     # Handle the response
     print(response)
 
+
 # [END datacatalog_v1_generated_DataCatalog_ImportEntries_async]

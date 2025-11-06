@@ -50,4 +50,5 @@ async def sample_list_agent_pools():
     async for response in page_result:
         print(response)
 
+
 # [END storagetransfer_v1_generated_StorageTransferService_ListAgentPools_async]

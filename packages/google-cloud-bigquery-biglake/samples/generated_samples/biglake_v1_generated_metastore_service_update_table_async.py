@@ -39,13 +39,13 @@ async def sample_update_table():
     client = bigquery_biglake_v1.MetastoreServiceAsyncClient()
 
     # Initialize request argument(s)
-    request = bigquery_biglake_v1.UpdateTableRequest(
-    )
+    request = bigquery_biglake_v1.UpdateTableRequest()
 
     # Make the request
     response = await client.update_table(request=request)
 
     # Handle the response
     print(response)
+
 
 # [END biglake_v1_generated_MetastoreService_UpdateTable_async]

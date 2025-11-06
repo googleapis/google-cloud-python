@@ -53,4 +53,5 @@ def sample_apply_parameters():
     # Handle the response
     print(response)
 
+
 # [END memcache_v1beta2_generated_CloudMemcache_ApplyParameters_sync]

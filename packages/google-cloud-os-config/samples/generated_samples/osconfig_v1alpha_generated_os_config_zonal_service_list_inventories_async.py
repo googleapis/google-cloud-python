@@ -50,4 +50,5 @@ async def sample_list_inventories():
     async for response in page_result:
         print(response)
 
+
 # [END osconfig_v1alpha_generated_OsConfigZonalService_ListInventories_async]

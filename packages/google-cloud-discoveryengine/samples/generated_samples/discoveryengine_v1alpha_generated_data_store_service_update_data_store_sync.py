@@ -52,4 +52,5 @@ def sample_update_data_store():
     # Handle the response
     print(response)
 
+
 # [END discoveryengine_v1alpha_generated_DataStoreService_UpdateDataStore_sync]

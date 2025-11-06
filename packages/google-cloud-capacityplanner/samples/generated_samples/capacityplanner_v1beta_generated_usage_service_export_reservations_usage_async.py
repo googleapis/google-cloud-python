@@ -61,4 +61,5 @@ async def sample_export_reservations_usage():
     # Handle the response
     print(response)
 
+
 # [END capacityplanner_v1beta_generated_UsageService_ExportReservationsUsage_async]

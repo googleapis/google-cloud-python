@@ -54,4 +54,5 @@ async def sample_stream_answer_query():
     async for response in stream:
         print(response)
 
+
 # [END discoveryengine_v1_generated_ConversationalSearchService_StreamAnswerQuery_async]

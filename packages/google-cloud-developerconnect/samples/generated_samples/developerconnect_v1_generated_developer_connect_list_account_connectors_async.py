@@ -50,4 +50,5 @@ async def sample_list_account_connectors():
     async for response in page_result:
         print(response)
 
+
 # [END developerconnect_v1_generated_DeveloperConnect_ListAccountConnectors_async]

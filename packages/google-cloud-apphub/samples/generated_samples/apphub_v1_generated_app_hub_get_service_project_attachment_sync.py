@@ -49,4 +49,5 @@ def sample_get_service_project_attachment():
     # Handle the response
     print(response)
 
+
 # [END apphub_v1_generated_AppHub_GetServiceProjectAttachment_sync]

@@ -56,4 +56,5 @@ def sample_initialize_encryption_spec():
     # Handle the response
     print(response)
 
+
 # [END contactcenterinsights_v1_generated_ContactCenterInsights_InitializeEncryptionSpec_sync]

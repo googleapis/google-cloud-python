@@ -50,4 +50,5 @@ def sample_list_vpn_connections():
     for response in page_result:
         print(response)
 
+
 # [END edgecontainer_v1_generated_EdgeContainer_ListVpnConnections_sync]

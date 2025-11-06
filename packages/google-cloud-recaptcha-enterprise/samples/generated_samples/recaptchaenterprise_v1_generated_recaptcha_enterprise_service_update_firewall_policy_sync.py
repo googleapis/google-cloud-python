@@ -39,13 +39,13 @@ def sample_update_firewall_policy():
     client = recaptchaenterprise_v1.RecaptchaEnterpriseServiceClient()
 
     # Initialize request argument(s)
-    request = recaptchaenterprise_v1.UpdateFirewallPolicyRequest(
-    )
+    request = recaptchaenterprise_v1.UpdateFirewallPolicyRequest()
 
     # Make the request
     response = client.update_firewall_policy(request=request)
 
     # Handle the response
     print(response)
+
 
 # [END recaptchaenterprise_v1_generated_RecaptchaEnterpriseService_UpdateFirewallPolicy_sync]

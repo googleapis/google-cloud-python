@@ -49,4 +49,5 @@ async def sample_get_model():
     # Handle the response
     print(response)
 
+
 # [END financialservices_v1_generated_AML_GetModel_async]

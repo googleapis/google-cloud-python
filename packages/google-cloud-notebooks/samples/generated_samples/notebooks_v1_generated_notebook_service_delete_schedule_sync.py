@@ -53,4 +53,5 @@ def sample_delete_schedule():
     # Handle the response
     print(response)
 
+
 # [END notebooks_v1_generated_NotebookService_DeleteSchedule_sync]

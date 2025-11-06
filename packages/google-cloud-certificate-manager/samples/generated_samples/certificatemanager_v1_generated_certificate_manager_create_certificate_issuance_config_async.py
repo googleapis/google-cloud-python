@@ -40,7 +40,9 @@ async def sample_create_certificate_issuance_config():
 
     # Initialize request argument(s)
     certificate_issuance_config = certificate_manager_v1.CertificateIssuanceConfig()
-    certificate_issuance_config.certificate_authority_config.certificate_authority_service_config.ca_pool = "ca_pool_value"
+    certificate_issuance_config.certificate_authority_config.certificate_authority_service_config.ca_pool = (
+        "ca_pool_value"
+    )
     certificate_issuance_config.rotation_window_percentage = 2788
     certificate_issuance_config.key_algorithm = "ECDSA_P256"
 
@@ -59,5 +61,6 @@ async def sample_create_certificate_issuance_config():
 
     # Handle the response
     print(response)
+
 
 # [END certificatemanager_v1_generated_CertificateManager_CreateCertificateIssuanceConfig_async]

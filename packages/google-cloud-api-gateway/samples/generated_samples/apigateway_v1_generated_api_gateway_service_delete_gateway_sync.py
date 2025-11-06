@@ -53,4 +53,5 @@ def sample_delete_gateway():
     # Handle the response
     print(response)
 
+
 # [END apigateway_v1_generated_ApiGatewayService_DeleteGateway_sync]

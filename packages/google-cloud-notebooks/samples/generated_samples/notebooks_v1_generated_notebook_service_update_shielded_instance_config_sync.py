@@ -53,4 +53,5 @@ def sample_update_shielded_instance_config():
     # Handle the response
     print(response)
 
+
 # [END notebooks_v1_generated_NotebookService_UpdateShieldedInstanceConfig_sync]

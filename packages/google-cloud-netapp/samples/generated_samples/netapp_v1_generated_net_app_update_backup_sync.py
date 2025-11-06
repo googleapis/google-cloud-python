@@ -39,8 +39,7 @@ def sample_update_backup():
     client = netapp_v1.NetAppClient()
 
     # Initialize request argument(s)
-    request = netapp_v1.UpdateBackupRequest(
-    )
+    request = netapp_v1.UpdateBackupRequest()
 
     # Make the request
     operation = client.update_backup(request=request)
@@ -51,5 +50,6 @@ def sample_update_backup():
 
     # Handle the response
     print(response)
+
 
 # [END netapp_v1_generated_NetApp_UpdateBackup_sync]

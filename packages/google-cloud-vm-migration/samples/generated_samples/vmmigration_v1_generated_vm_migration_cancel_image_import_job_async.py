@@ -53,4 +53,5 @@ async def sample_cancel_image_import_job():
     # Handle the response
     print(response)
 
+
 # [END vmmigration_v1_generated_VmMigration_CancelImageImportJob_async]

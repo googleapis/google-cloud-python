@@ -55,4 +55,5 @@ def sample_create_mute_config():
     # Handle the response
     print(response)
 
+
 # [END securitycenter_v2_generated_SecurityCenter_CreateMuteConfig_sync]

@@ -56,4 +56,5 @@ def sample_update_node():
     # Handle the response
     print(response)
 
+
 # [END tpu_v2_generated_Tpu_UpdateNode_sync]

@@ -49,4 +49,5 @@ async def sample_generate_product_text_suggestions():
     # Handle the response
     print(response)
 
+
 # [END merchantapi_v1alpha_generated_TextSuggestionsService_GenerateProductTextSuggestions_async]

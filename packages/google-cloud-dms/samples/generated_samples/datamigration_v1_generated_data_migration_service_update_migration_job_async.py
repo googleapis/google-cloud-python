@@ -60,4 +60,5 @@ async def sample_update_migration_job():
     # Handle the response
     print(response)
 
+
 # [END datamigration_v1_generated_DataMigrationService_UpdateMigrationJob_async]

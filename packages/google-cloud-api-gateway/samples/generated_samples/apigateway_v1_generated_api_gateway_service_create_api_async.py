@@ -54,4 +54,5 @@ async def sample_create_api():
     # Handle the response
     print(response)
 
+
 # [END apigateway_v1_generated_ApiGatewayService_CreateApi_async]

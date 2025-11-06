@@ -54,4 +54,5 @@ async def sample_create_device_session():
     # Handle the response
     print(response)
 
+
 # [END devicestreaming_v1_generated_DirectAccessService_CreateDeviceSession_async]

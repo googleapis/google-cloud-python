@@ -39,8 +39,7 @@ def sample_restart_web_server():
     client = service_v1beta1.EnvironmentsClient()
 
     # Initialize request argument(s)
-    request = service_v1beta1.RestartWebServerRequest(
-    )
+    request = service_v1beta1.RestartWebServerRequest()
 
     # Make the request
     operation = client.restart_web_server(request=request)
@@ -51,5 +50,6 @@ def sample_restart_web_server():
 
     # Handle the response
     print(response)
+
 
 # [END composer_v1beta1_generated_Environments_RestartWebServer_sync]

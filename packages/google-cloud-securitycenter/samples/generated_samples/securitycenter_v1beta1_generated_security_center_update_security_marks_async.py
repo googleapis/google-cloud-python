@@ -39,13 +39,13 @@ async def sample_update_security_marks():
     client = securitycenter_v1beta1.SecurityCenterAsyncClient()
 
     # Initialize request argument(s)
-    request = securitycenter_v1beta1.UpdateSecurityMarksRequest(
-    )
+    request = securitycenter_v1beta1.UpdateSecurityMarksRequest()
 
     # Make the request
     response = await client.update_security_marks(request=request)
 
     # Handle the response
     print(response)
+
 
 # [END securitycenter_v1beta1_generated_SecurityCenter_UpdateSecurityMarks_async]

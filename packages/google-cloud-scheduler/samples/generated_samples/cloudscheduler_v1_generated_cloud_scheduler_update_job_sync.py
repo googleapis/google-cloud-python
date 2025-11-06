@@ -39,13 +39,13 @@ def sample_update_job():
     client = scheduler_v1.CloudSchedulerClient()
 
     # Initialize request argument(s)
-    request = scheduler_v1.UpdateJobRequest(
-    )
+    request = scheduler_v1.UpdateJobRequest()
 
     # Make the request
     response = client.update_job(request=request)
 
     # Handle the response
     print(response)
+
 
 # [END cloudscheduler_v1_generated_CloudScheduler_UpdateJob_sync]

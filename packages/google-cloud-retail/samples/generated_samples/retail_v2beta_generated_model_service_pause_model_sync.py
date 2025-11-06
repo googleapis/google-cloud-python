@@ -49,4 +49,5 @@ def sample_pause_model():
     # Handle the response
     print(response)
 
+
 # [END retail_v2beta_generated_ModelService_PauseModel_sync]

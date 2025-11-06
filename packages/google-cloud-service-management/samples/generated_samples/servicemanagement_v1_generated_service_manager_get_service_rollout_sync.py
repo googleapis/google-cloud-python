@@ -50,4 +50,5 @@ def sample_get_service_rollout():
     # Handle the response
     print(response)
 
+
 # [END servicemanagement_v1_generated_ServiceManager_GetServiceRollout_sync]

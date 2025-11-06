@@ -57,4 +57,5 @@ def sample_report_status():
     # Handle the response
     print(response)
 
+
 # [END beyondcorp_v1_generated_AppConnectorsService_ReportStatus_sync]

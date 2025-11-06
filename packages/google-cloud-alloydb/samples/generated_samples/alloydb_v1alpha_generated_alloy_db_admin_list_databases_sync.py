@@ -50,4 +50,5 @@ def sample_list_databases():
     for response in page_result:
         print(response)
 
+
 # [END alloydb_v1alpha_generated_AlloyDBAdmin_ListDatabases_sync]

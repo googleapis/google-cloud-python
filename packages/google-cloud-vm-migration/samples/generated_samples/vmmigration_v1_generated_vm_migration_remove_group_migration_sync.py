@@ -53,4 +53,5 @@ def sample_remove_group_migration():
     # Handle the response
     print(response)
 
+
 # [END vmmigration_v1_generated_VmMigration_RemoveGroupMigration_sync]

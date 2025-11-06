@@ -51,4 +51,5 @@ def sample_fetch_storage_inventory():
     for response in page_result:
         print(response)
 
+
 # [END vmmigration_v1_generated_VmMigration_FetchStorageInventory_sync]

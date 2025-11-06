@@ -39,8 +39,7 @@ async def sample_disable_service_account():
     client = iam_admin_v1.IAMAsyncClient()
 
     # Initialize request argument(s)
-    request = iam_admin_v1.DisableServiceAccountRequest(
-    )
+    request = iam_admin_v1.DisableServiceAccountRequest()
 
     # Make the request
     await client.disable_service_account(request=request)

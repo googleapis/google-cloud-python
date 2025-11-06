@@ -39,13 +39,13 @@ def sample_update_product():
     client = vision_v1p4beta1.ProductSearchClient()
 
     # Initialize request argument(s)
-    request = vision_v1p4beta1.UpdateProductRequest(
-    )
+    request = vision_v1p4beta1.UpdateProductRequest()
 
     # Make the request
     response = client.update_product(request=request)
 
     # Handle the response
     print(response)
+
 
 # [END vision_v1p4beta1_generated_ProductSearch_UpdateProduct_sync]

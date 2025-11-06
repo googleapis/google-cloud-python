@@ -53,4 +53,5 @@ async def sample_delete_subscription():
     # Handle the response
     print(response)
 
+
 # [END workspaceevents_v1_generated_SubscriptionsService_DeleteSubscription_async]

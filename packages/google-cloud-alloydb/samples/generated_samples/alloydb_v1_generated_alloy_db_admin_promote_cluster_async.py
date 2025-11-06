@@ -53,4 +53,5 @@ async def sample_promote_cluster():
     # Handle the response
     print(response)
 
+
 # [END alloydb_v1_generated_AlloyDBAdmin_PromoteCluster_async]

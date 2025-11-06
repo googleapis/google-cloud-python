@@ -39,8 +39,7 @@ def sample_update_workstation_cluster():
     client = workstations_v1beta.WorkstationsClient()
 
     # Initialize request argument(s)
-    request = workstations_v1beta.UpdateWorkstationClusterRequest(
-    )
+    request = workstations_v1beta.UpdateWorkstationClusterRequest()
 
     # Make the request
     operation = client.update_workstation_cluster(request=request)
@@ -51,5 +50,6 @@ def sample_update_workstation_cluster():
 
     # Handle the response
     print(response)
+
 
 # [END workstations_v1beta_generated_Workstations_UpdateWorkstationCluster_sync]

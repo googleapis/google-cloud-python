@@ -49,4 +49,5 @@ def sample_list_prebuilt_processors():
     # Handle the response
     print(response)
 
+
 # [END visionai_v1alpha1_generated_AppPlatform_ListPrebuiltProcessors_sync]

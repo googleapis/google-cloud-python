@@ -50,4 +50,5 @@ async def sample_restrict_allowed_resources():
     # Handle the response
     print(response)
 
+
 # [END assuredworkloads_v1_generated_AssuredWorkloadsService_RestrictAllowedResources_async]

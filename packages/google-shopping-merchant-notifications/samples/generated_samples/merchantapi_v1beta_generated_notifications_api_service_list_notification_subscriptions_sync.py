@@ -50,4 +50,5 @@ def sample_list_notification_subscriptions():
     for response in page_result:
         print(response)
 
+
 # [END merchantapi_v1beta_generated_NotificationsApiService_ListNotificationSubscriptions_sync]

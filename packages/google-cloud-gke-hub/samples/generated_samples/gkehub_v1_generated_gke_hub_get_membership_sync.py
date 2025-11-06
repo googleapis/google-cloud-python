@@ -49,4 +49,5 @@ def sample_get_membership():
     # Handle the response
     print(response)
 
+
 # [END gkehub_v1_generated_GkeHub_GetMembership_sync]

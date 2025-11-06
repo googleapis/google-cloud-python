@@ -53,4 +53,5 @@ def sample_update_data_policy():
     # Handle the response
     print(response)
 
+
 # [END bigquerydatapolicy_v2beta1_generated_DataPolicyService_UpdateDataPolicy_sync]

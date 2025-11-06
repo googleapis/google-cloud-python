@@ -39,8 +39,7 @@ def sample_update_delivery_pipeline():
     client = deploy_v1.CloudDeployClient()
 
     # Initialize request argument(s)
-    request = deploy_v1.UpdateDeliveryPipelineRequest(
-    )
+    request = deploy_v1.UpdateDeliveryPipelineRequest()
 
     # Make the request
     operation = client.update_delivery_pipeline(request=request)
@@ -51,5 +50,6 @@ def sample_update_delivery_pipeline():
 
     # Handle the response
     print(response)
+
 
 # [END clouddeploy_v1_generated_CloudDeploy_UpdateDeliveryPipeline_sync]

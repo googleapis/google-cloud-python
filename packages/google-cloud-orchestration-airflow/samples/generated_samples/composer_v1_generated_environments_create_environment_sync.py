@@ -39,8 +39,7 @@ def sample_create_environment():
     client = service_v1.EnvironmentsClient()
 
     # Initialize request argument(s)
-    request = service_v1.CreateEnvironmentRequest(
-    )
+    request = service_v1.CreateEnvironmentRequest()
 
     # Make the request
     operation = client.create_environment(request=request)
@@ -51,5 +50,6 @@ def sample_create_environment():
 
     # Handle the response
     print(response)
+
 
 # [END composer_v1_generated_Environments_CreateEnvironment_sync]

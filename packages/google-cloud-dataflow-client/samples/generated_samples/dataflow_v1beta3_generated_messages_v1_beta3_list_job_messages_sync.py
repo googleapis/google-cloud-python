@@ -39,8 +39,7 @@ def sample_list_job_messages():
     client = dataflow_v1beta3.MessagesV1Beta3Client()
 
     # Initialize request argument(s)
-    request = dataflow_v1beta3.ListJobMessagesRequest(
-    )
+    request = dataflow_v1beta3.ListJobMessagesRequest()
 
     # Make the request
     page_result = client.list_job_messages(request=request)
@@ -48,5 +47,6 @@ def sample_list_job_messages():
     # Handle the response
     for response in page_result:
         print(response)
+
 
 # [END dataflow_v1beta3_generated_MessagesV1Beta3_ListJobMessages_sync]

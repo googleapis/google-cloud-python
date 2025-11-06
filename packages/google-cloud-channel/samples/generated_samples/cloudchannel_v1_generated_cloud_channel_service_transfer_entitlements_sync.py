@@ -57,4 +57,5 @@ def sample_transfer_entitlements():
     # Handle the response
     print(response)
 
+
 # [END cloudchannel_v1_generated_CloudChannelService_TransferEntitlements_sync]

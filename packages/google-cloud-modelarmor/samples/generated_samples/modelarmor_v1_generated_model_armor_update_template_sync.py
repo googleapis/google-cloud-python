@@ -39,13 +39,13 @@ def sample_update_template():
     client = modelarmor_v1.ModelArmorClient()
 
     # Initialize request argument(s)
-    request = modelarmor_v1.UpdateTemplateRequest(
-    )
+    request = modelarmor_v1.UpdateTemplateRequest()
 
     # Make the request
     response = client.update_template(request=request)
 
     # Handle the response
     print(response)
+
 
 # [END modelarmor_v1_generated_ModelArmor_UpdateTemplate_sync]

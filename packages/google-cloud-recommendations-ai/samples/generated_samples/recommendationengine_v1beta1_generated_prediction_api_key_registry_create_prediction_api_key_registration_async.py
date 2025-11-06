@@ -49,4 +49,5 @@ async def sample_create_prediction_api_key_registration():
     # Handle the response
     print(response)
 
+
 # [END recommendationengine_v1beta1_generated_PredictionApiKeyRegistry_CreatePredictionApiKeyRegistration_async]

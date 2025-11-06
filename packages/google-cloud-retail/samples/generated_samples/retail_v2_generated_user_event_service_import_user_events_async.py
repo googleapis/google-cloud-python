@@ -58,4 +58,5 @@ async def sample_import_user_events():
     # Handle the response
     print(response)
 
+
 # [END retail_v2_generated_UserEventService_ImportUserEvents_async]

@@ -39,13 +39,13 @@ async def sample_undelete_role():
     client = iam_admin_v1.IAMAsyncClient()
 
     # Initialize request argument(s)
-    request = iam_admin_v1.UndeleteRoleRequest(
-    )
+    request = iam_admin_v1.UndeleteRoleRequest()
 
     # Make the request
     response = await client.undelete_role(request=request)
 
     # Handle the response
     print(response)
+
 
 # [END iam_v1_generated_IAM_UndeleteRole_async]

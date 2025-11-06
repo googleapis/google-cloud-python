@@ -50,4 +50,5 @@ def sample_list_discovered_services():
     for response in page_result:
         print(response)
 
+
 # [END apphub_v1_generated_AppHub_ListDiscoveredServices_sync]

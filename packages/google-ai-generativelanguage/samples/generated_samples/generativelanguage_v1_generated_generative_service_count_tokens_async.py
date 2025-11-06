@@ -49,4 +49,5 @@ async def sample_count_tokens():
     # Handle the response
     print(response)
 
+
 # [END generativelanguage_v1_generated_GenerativeService_CountTokens_async]

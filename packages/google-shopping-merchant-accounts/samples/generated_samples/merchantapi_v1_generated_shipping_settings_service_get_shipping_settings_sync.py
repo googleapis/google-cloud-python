@@ -49,4 +49,5 @@ def sample_get_shipping_settings():
     # Handle the response
     print(response)
 
+
 # [END merchantapi_v1_generated_ShippingSettingsService_GetShippingSettings_sync]

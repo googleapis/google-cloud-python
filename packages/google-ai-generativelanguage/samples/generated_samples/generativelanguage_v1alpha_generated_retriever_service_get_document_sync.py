@@ -49,4 +49,5 @@ def sample_get_document():
     # Handle the response
     print(response)
 
+
 # [END generativelanguage_v1alpha_generated_RetrieverService_GetDocument_sync]

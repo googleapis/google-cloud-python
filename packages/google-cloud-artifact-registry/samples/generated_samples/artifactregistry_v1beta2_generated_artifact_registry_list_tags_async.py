@@ -39,8 +39,7 @@ async def sample_list_tags():
     client = artifactregistry_v1beta2.ArtifactRegistryAsyncClient()
 
     # Initialize request argument(s)
-    request = artifactregistry_v1beta2.ListTagsRequest(
-    )
+    request = artifactregistry_v1beta2.ListTagsRequest()
 
     # Make the request
     page_result = client.list_tags(request=request)
@@ -48,5 +47,6 @@ async def sample_list_tags():
     # Handle the response
     async for response in page_result:
         print(response)
+
 
 # [END artifactregistry_v1beta2_generated_ArtifactRegistry_ListTags_async]

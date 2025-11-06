@@ -49,4 +49,5 @@ async def sample_get_orchestration_cluster():
     # Handle the response
     print(response)
 
+
 # [END telcoautomation_v1_generated_TelcoAutomation_GetOrchestrationCluster_async]

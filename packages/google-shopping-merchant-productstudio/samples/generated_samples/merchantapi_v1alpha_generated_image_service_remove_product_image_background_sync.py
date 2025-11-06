@@ -53,4 +53,5 @@ def sample_remove_product_image_background():
     # Handle the response
     print(response)
 
+
 # [END merchantapi_v1alpha_generated_ImageService_RemoveProductImageBackground_sync]

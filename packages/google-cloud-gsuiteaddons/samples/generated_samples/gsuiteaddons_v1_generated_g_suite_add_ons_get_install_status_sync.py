@@ -49,4 +49,5 @@ def sample_get_install_status():
     # Handle the response
     print(response)
 
+
 # [END gsuiteaddons_v1_generated_GSuiteAddOns_GetInstallStatus_sync]

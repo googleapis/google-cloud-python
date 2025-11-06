@@ -50,4 +50,5 @@ def sample_stream_assist():
     for response in stream:
         print(response)
 
+
 # [END discoveryengine_v1_generated_AssistantService_StreamAssist_sync]

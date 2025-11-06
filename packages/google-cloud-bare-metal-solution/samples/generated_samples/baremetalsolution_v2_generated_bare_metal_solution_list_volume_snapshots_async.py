@@ -50,4 +50,5 @@ async def sample_list_volume_snapshots():
     async for response in page_result:
         print(response)
 
+
 # [END baremetalsolution_v2_generated_BareMetalSolution_ListVolumeSnapshots_async]

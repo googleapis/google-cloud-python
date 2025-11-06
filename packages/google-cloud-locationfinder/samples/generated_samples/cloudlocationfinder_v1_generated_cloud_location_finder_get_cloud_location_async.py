@@ -49,4 +49,5 @@ async def sample_get_cloud_location():
     # Handle the response
     print(response)
 
+
 # [END cloudlocationfinder_v1_generated_CloudLocationFinder_GetCloudLocation_async]

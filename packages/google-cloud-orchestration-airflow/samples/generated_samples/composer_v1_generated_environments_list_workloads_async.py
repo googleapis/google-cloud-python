@@ -50,4 +50,5 @@ async def sample_list_workloads():
     async for response in page_result:
         print(response)
 
+
 # [END composer_v1_generated_Environments_ListWorkloads_async]

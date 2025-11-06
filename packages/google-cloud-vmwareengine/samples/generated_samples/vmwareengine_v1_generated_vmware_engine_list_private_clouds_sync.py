@@ -50,4 +50,5 @@ def sample_list_private_clouds():
     for response in page_result:
         print(response)
 
+
 # [END vmwareengine_v1_generated_VmwareEngine_ListPrivateClouds_sync]

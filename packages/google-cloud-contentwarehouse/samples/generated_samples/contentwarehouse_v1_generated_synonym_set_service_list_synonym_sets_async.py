@@ -50,4 +50,5 @@ async def sample_list_synonym_sets():
     async for response in page_result:
         print(response)
 
+
 # [END contentwarehouse_v1_generated_SynonymSetService_ListSynonymSets_async]

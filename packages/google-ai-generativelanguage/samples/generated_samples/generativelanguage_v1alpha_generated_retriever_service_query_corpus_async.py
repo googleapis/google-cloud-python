@@ -50,4 +50,5 @@ async def sample_query_corpus():
     # Handle the response
     print(response)
 
+
 # [END generativelanguage_v1alpha_generated_RetrieverService_QueryCorpus_async]

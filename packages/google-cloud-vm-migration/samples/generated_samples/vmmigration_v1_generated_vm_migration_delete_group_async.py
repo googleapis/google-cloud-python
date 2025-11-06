@@ -53,4 +53,5 @@ async def sample_delete_group():
     # Handle the response
     print(response)
 
+
 # [END vmmigration_v1_generated_VmMigration_DeleteGroup_async]

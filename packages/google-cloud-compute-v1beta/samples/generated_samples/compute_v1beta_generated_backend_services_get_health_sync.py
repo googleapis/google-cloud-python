@@ -50,4 +50,5 @@ def sample_get_health():
     # Handle the response
     print(response)
 
+
 # [END compute_v1beta_generated_BackendServices_GetHealth_sync]

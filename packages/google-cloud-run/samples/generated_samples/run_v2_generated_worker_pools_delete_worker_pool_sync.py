@@ -53,4 +53,5 @@ def sample_delete_worker_pool():
     # Handle the response
     print(response)
 
+
 # [END run_v2_generated_WorkerPools_DeleteWorkerPool_sync]

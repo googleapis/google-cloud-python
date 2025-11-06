@@ -53,4 +53,5 @@ def sample_update_account():
     # Handle the response
     print(response)
 
+
 # [END merchantapi_v1beta_generated_AccountsService_UpdateAccount_sync]

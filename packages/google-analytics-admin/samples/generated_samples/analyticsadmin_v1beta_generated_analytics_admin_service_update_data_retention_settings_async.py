@@ -53,4 +53,5 @@ async def sample_update_data_retention_settings():
     # Handle the response
     print(response)
 
+
 # [END analyticsadmin_v1beta_generated_AnalyticsAdminService_UpdateDataRetentionSettings_async]

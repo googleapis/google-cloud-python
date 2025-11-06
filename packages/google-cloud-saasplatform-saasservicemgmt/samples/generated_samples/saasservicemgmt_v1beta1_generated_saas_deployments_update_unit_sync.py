@@ -39,13 +39,13 @@ def sample_update_unit():
     client = saasplatform_saasservicemgmt_v1beta1.SaasDeploymentsClient()
 
     # Initialize request argument(s)
-    request = saasplatform_saasservicemgmt_v1beta1.UpdateUnitRequest(
-    )
+    request = saasplatform_saasservicemgmt_v1beta1.UpdateUnitRequest()
 
     # Make the request
     response = client.update_unit(request=request)
 
     # Handle the response
     print(response)
+
 
 # [END saasservicemgmt_v1beta1_generated_SaasDeployments_UpdateUnit_sync]

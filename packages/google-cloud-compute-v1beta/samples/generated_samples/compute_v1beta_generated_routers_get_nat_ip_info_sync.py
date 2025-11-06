@@ -51,4 +51,5 @@ def sample_get_nat_ip_info():
     # Handle the response
     print(response)
 
+
 # [END compute_v1beta_generated_Routers_GetNatIpInfo_sync]

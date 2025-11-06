@@ -49,4 +49,5 @@ async def sample_get_public_key():
     # Handle the response
     print(response)
 
+
 # [END cloudkms_v1_generated_KeyManagementService_GetPublicKey_async]

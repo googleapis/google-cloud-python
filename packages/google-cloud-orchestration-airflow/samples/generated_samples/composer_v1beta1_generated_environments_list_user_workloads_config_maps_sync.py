@@ -50,4 +50,5 @@ def sample_list_user_workloads_config_maps():
     for response in page_result:
         print(response)
 
+
 # [END composer_v1beta1_generated_Environments_ListUserWorkloadsConfigMaps_sync]

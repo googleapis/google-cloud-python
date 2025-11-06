@@ -39,8 +39,7 @@ def sample_list_authorized_domains():
     client = appengine_admin_v1.AuthorizedDomainsClient()
 
     # Initialize request argument(s)
-    request = appengine_admin_v1.ListAuthorizedDomainsRequest(
-    )
+    request = appengine_admin_v1.ListAuthorizedDomainsRequest()
 
     # Make the request
     page_result = client.list_authorized_domains(request=request)
@@ -48,5 +47,6 @@ def sample_list_authorized_domains():
     # Handle the response
     for response in page_result:
         print(response)
+
 
 # [END appengine_v1_generated_AuthorizedDomains_ListAuthorizedDomains_sync]

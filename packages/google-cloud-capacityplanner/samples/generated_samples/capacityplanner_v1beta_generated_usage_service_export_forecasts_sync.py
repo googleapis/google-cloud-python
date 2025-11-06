@@ -59,4 +59,5 @@ def sample_export_forecasts():
     # Handle the response
     print(response)
 
+
 # [END capacityplanner_v1beta_generated_UsageService_ExportForecasts_sync]

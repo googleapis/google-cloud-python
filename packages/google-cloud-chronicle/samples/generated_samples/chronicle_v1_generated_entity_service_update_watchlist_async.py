@@ -52,4 +52,5 @@ async def sample_update_watchlist():
     # Handle the response
     print(response)
 
+
 # [END chronicle_v1_generated_EntityService_UpdateWatchlist_async]

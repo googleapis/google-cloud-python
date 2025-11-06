@@ -50,4 +50,5 @@ def sample_set_proxy_header():
     # Handle the response
     print(response)
 
+
 # [END compute_v1_generated_TargetSslProxies_SetProxyHeader_sync]

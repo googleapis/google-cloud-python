@@ -39,13 +39,13 @@ def sample_update_notification_config():
     client = securitycenter_v1.SecurityCenterClient()
 
     # Initialize request argument(s)
-    request = securitycenter_v1.UpdateNotificationConfigRequest(
-    )
+    request = securitycenter_v1.UpdateNotificationConfigRequest()
 
     # Make the request
     response = client.update_notification_config(request=request)
 
     # Handle the response
     print(response)
+
 
 # [END securitycenter_v1_generated_SecurityCenter_UpdateNotificationConfig_sync]

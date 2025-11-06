@@ -49,4 +49,5 @@ def sample_get_occurrence():
     # Handle the response
     print(response)
 
+
 # [END containeranalysis_v1_generated_Grafeas_GetOccurrence_sync]

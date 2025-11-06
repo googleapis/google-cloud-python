@@ -49,4 +49,5 @@ async def sample_generate_access_token():
     # Handle the response
     print(response)
 
+
 # [END edgecontainer_v1_generated_EdgeContainer_GenerateAccessToken_async]

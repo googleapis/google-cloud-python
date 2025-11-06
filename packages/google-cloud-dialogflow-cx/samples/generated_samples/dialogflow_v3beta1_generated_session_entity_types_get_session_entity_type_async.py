@@ -49,4 +49,5 @@ async def sample_get_session_entity_type():
     # Handle the response
     print(response)
 
+
 # [END dialogflow_v3beta1_generated_SessionEntityTypes_GetSessionEntityType_async]
