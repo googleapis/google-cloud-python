@@ -3680,6 +3680,24 @@ libraries:
     remove_regex:
       - packages/google-cloud-translate/
     tag_format: '{id}-v{version}'
+  - id: google-cloud-vectorsearch
+    version: 0.0.0
+    last_generated_commit: 9fcfbea0aa5b50fa22e190faceb073d74504172b
+    apis:
+      - path: google/cloud/vectorsearch/v1beta
+        service_config: vectorsearch_v1beta.yaml
+    source_roots:
+      - packages/google-cloud-vectorsearch
+    preserve_regex:
+      - packages/google-cloud-vectorsearch/CHANGELOG.md
+      - docs/CHANGELOG.md
+      - samples/README.txt
+      - scripts/client-post-processing
+      - samples/snippets/README.rst
+      - tests/system
+    remove_regex:
+      - packages/google-cloud-vectorsearch
+    tag_format: '{id}-v{version}'
   - id: google-cloud-video-live-stream
     version: 1.14.0
     last_generated_commit: 3322511885371d2b2253f209ccc3aa60d4100cfd
