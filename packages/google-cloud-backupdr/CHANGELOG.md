@@ -4,6 +4,16 @@
 
 [1]: https://pypi.org/project/google-cloud-backupdr/#history
 
+## [0.4.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-backupdr-v0.3.0...google-cloud-backupdr-v0.4.0) (2025-11-06)
+
+
+### Features
+
+* Adding `source_resource` fields to Backup resource  ([735dcad100d7957ba5373a654b9a2d7c2a277903](https://github.com/googleapis/google-cloud-python/commit/735dcad100d7957ba5373a654b9a2d7c2a277903))
+* Adding `ListDataSourceReferences` API  ([735dcad100d7957ba5373a654b9a2d7c2a277903](https://github.com/googleapis/google-cloud-python/commit/735dcad100d7957ba5373a654b9a2d7c2a277903))
+* Adding new workload specific fields for Cloud SQL  ([735dcad100d7957ba5373a654b9a2d7c2a277903](https://github.com/googleapis/google-cloud-python/commit/735dcad100d7957ba5373a654b9a2d7c2a277903))
+* Adding `FetchBackupsForResourceType` API  ([735dcad100d7957ba5373a654b9a2d7c2a277903](https://github.com/googleapis/google-cloud-python/commit/735dcad100d7957ba5373a654b9a2d7c2a277903))
+
 ## [0.3.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-backupdr-v0.2.5...google-cloud-backupdr-v0.3.0) (2025-10-16)
 
 

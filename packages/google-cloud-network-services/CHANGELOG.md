@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-cloud-network-services/#history
 
+## [0.7.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-network-services-v0.6.0...google-cloud-network-services-v0.7.0) (2025-11-06)
+
+
+### Features
+
+* Add support for LbEdgeExtension resource in NetworkServices API  ([735dcad100d7957ba5373a654b9a2d7c2a277903](https://github.com/googleapis/google-cloud-python/commit/735dcad100d7957ba5373a654b9a2d7c2a277903))
+
 ## [0.6.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-network-services-v0.5.24...google-cloud-network-services-v0.6.0) (2025-10-20)
 
 

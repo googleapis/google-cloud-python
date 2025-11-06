@@ -4,6 +4,18 @@
 
 [1]: https://pypi.org/project/google-shopping-merchant-datasources/#history
 
+## [1.2.0](https://github.com/googleapis/google-cloud-python/compare/google-shopping-merchant-datasources-v1.1.0...google-shopping-merchant-datasources-v1.2.0) (2025-11-06)
+
+
+### Documentation
+
+* update documentation for datasources  ([735dcad100d7957ba5373a654b9a2d7c2a277903](https://github.com/googleapis/google-cloud-python/commit/735dcad100d7957ba5373a654b9a2d7c2a277903))
+
+
+### Bug Fixes
+
+* An existing field `contains_custom_rules` is removed from message `.google.shopping.merchant.datasources.v1.PrimaryProductDataSource`  ([735dcad100d7957ba5373a654b9a2d7c2a277903](https://github.com/googleapis/google-cloud-python/commit/735dcad100d7957ba5373a654b9a2d7c2a277903))
+
 ## [1.1.0](https://github.com/googleapis/google-cloud-python/compare/google-shopping-merchant-datasources-v1.0.0...google-shopping-merchant-datasources-v1.1.0) (2025-10-20)
 
 

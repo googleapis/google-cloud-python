@@ -4,6 +4,18 @@
 
 [1]: https://pypi.org/project/google-ads-marketingplatform-admin/#history
 
+## [0.3.0](https://github.com/googleapis/google-cloud-python/compare/google-ads-marketingplatform-admin-v0.2.0...google-ads-marketingplatform-admin-v0.3.0) (2025-11-06)
+
+
+### Features
+
+* add the `ListOrganizationsRequest` and `ListOrganizationsResponse` resources  ([735dcad100d7957ba5373a654b9a2d7c2a277903](https://github.com/googleapis/google-cloud-python/commit/735dcad100d7957ba5373a654b9a2d7c2a277903))
+* add the `FindSalesPartnerManagedClientsRequest` and `FindSalesPartnerManagedClientsResponse` resources  ([735dcad100d7957ba5373a654b9a2d7c2a277903](https://github.com/googleapis/google-cloud-python/commit/735dcad100d7957ba5373a654b9a2d7c2a277903))
+* define AnalyticsServiceLevel and AnalyticsPropertyType enums in resources.proto  ([735dcad100d7957ba5373a654b9a2d7c2a277903](https://github.com/googleapis/google-cloud-python/commit/735dcad100d7957ba5373a654b9a2d7c2a277903))
+* add the `ListOrganizations`, `FindSalesPartnerManagedClients`, and `ReportPropertyUsage` methods  ([735dcad100d7957ba5373a654b9a2d7c2a277903](https://github.com/googleapis/google-cloud-python/commit/735dcad100d7957ba5373a654b9a2d7c2a277903))
+* add the `ReportPropertyUsageRequest` and `ReportPropertyUsageResponse` resources  ([735dcad100d7957ba5373a654b9a2d7c2a277903](https://github.com/googleapis/google-cloud-python/commit/735dcad100d7957ba5373a654b9a2d7c2a277903))
+* update OAuth scopes in marketingplatformadmin_v1alpha.yaml  ([735dcad100d7957ba5373a654b9a2d7c2a277903](https://github.com/googleapis/google-cloud-python/commit/735dcad100d7957ba5373a654b9a2d7c2a277903))
+
 ## [0.2.0](https://github.com/googleapis/google-cloud-python/compare/google-ads-marketingplatform-admin-v0.1.6...google-ads-marketingplatform-admin-v0.2.0) (2025-10-16)
 
 

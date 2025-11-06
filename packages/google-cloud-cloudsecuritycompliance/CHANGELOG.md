@@ -4,6 +4,20 @@
 
 [1]: https://pypi.org/project/google-cloud-cloudsecuritycompliance/#history
 
+## [0.4.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-cloudsecuritycompliance-v0.3.0...google-cloud-cloudsecuritycompliance-v0.4.0) (2025-11-06)
+
+
+### Documentation
+
+* Updated docs for the APIs  ([735dcad100d7957ba5373a654b9a2d7c2a277903](https://github.com/googleapis/google-cloud-python/commit/735dcad100d7957ba5373a654b9a2d7c2a277903))
+* Changes to few fields are also made  ([a7ed7007b4a25a4266f22d90e3ccde137ae5a066](https://github.com/googleapis/google-cloud-python/commit/a7ed7007b4a25a4266f22d90e3ccde137ae5a066))
+
+
+### Features
+
+* Adding client libraries for Monitoring API Compliance Manager Service  ([735dcad100d7957ba5373a654b9a2d7c2a277903](https://github.com/googleapis/google-cloud-python/commit/735dcad100d7957ba5373a654b9a2d7c2a277903))
+* add Audit API surface  ([a7ed7007b4a25a4266f22d90e3ccde137ae5a066](https://github.com/googleapis/google-cloud-python/commit/a7ed7007b4a25a4266f22d90e3ccde137ae5a066))
+
 ## [0.3.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-cloudsecuritycompliance-v0.2.0...google-cloud-cloudsecuritycompliance-v0.3.0) (2025-10-16)
 
 

@@ -4,6 +4,14 @@
 
 [1]: https://pypi.org/project/google-cloud-bigquery-analyticshub/#history
 
+## [0.6.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-bigquery-analyticshub-v0.5.0...google-cloud-bigquery-analyticshub-v0.6.0) (2025-11-06)
+
+
+### Features
+
+* add Stored Procedure Sharing support for analyticshub listings  ([735dcad100d7957ba5373a654b9a2d7c2a277903](https://github.com/googleapis/google-cloud-python/commit/735dcad100d7957ba5373a654b9a2d7c2a277903))
+* add tags support for Pub/Sub subscriptions  ([735dcad100d7957ba5373a654b9a2d7c2a277903](https://github.com/googleapis/google-cloud-python/commit/735dcad100d7957ba5373a654b9a2d7c2a277903))
+
 ## [0.5.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-bigquery-analyticshub-v0.4.20...google-cloud-bigquery-analyticshub-v0.5.0) (2025-10-16)
 
 
