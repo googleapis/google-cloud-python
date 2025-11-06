@@ -54,4 +54,5 @@ def sample_create_backup_vault():
     # Handle the response
     print(response)
 
+
 # [END netapp_v1_generated_NetApp_CreateBackupVault_sync]

@@ -50,4 +50,5 @@ def sample_list_registrations():
     for response in page_result:
         print(response)
 
+
 # [END domains_v1_generated_Domains_ListRegistrations_sync]

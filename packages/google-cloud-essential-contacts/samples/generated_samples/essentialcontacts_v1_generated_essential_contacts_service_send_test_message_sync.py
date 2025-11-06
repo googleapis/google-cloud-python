@@ -40,7 +40,7 @@ def sample_send_test_message():
 
     # Initialize request argument(s)
     request = essential_contacts_v1.SendTestMessageRequest(
-        contacts=['contacts_value1', 'contacts_value2'],
+        contacts=["contacts_value1", "contacts_value2"],
         resource="resource_value",
         notification_category="TECHNICAL_INCIDENTS",
     )

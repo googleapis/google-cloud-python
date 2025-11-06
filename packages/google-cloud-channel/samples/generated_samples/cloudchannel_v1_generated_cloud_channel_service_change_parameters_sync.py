@@ -53,4 +53,5 @@ def sample_change_parameters():
     # Handle the response
     print(response)
 
+
 # [END cloudchannel_v1_generated_CloudChannelService_ChangeParameters_sync]

@@ -50,4 +50,5 @@ async def sample_list_models():
     async for response in page_result:
         print(response)
 
+
 # [END retail_v2alpha_generated_ModelService_ListModels_async]

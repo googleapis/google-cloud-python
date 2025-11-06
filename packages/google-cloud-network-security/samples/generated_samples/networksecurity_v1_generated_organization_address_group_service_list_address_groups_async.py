@@ -50,4 +50,5 @@ async def sample_list_address_groups():
     async for response in page_result:
         print(response)
 
+
 # [END networksecurity_v1_generated_OrganizationAddressGroupService_ListAddressGroups_async]

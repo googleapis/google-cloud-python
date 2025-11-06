@@ -50,4 +50,5 @@ async def sample_add_control():
     # Handle the response
     print(response)
 
+
 # [END retail_v2_generated_ServingConfigService_AddControl_async]

@@ -53,4 +53,5 @@ def sample_count_text_tokens():
     # Handle the response
     print(response)
 
+
 # [END generativelanguage_v1beta3_generated_TextService_CountTextTokens_sync]

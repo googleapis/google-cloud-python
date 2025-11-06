@@ -52,4 +52,5 @@ def sample_update_version():
     # Handle the response
     print(response)
 
+
 # [END apihub_v1_generated_ApiHub_UpdateVersion_sync]

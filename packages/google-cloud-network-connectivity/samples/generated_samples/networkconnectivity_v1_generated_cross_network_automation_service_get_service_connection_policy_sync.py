@@ -49,4 +49,5 @@ def sample_get_service_connection_policy():
     # Handle the response
     print(response)
 
+
 # [END networkconnectivity_v1_generated_CrossNetworkAutomationService_GetServiceConnectionPolicy_sync]

@@ -52,4 +52,5 @@ def sample_analyze_entities():
     # Handle the response
     print(response)
 
+
 # [END language_v1beta2_generated_LanguageService_AnalyzeEntities_sync]

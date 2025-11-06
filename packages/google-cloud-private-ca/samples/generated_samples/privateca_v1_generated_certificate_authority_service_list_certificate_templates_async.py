@@ -50,4 +50,5 @@ async def sample_list_certificate_templates():
     async for response in page_result:
         print(response)
 
+
 # [END privateca_v1_generated_CertificateAuthorityService_ListCertificateTemplates_async]

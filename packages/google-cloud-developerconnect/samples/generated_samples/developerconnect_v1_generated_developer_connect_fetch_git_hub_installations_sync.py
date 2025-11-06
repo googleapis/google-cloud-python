@@ -49,4 +49,5 @@ def sample_fetch_git_hub_installations():
     # Handle the response
     print(response)
 
+
 # [END developerconnect_v1_generated_DeveloperConnect_FetchGitHubInstallations_sync]

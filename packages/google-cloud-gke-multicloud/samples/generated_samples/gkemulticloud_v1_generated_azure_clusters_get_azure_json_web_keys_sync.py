@@ -49,4 +49,5 @@ def sample_get_azure_json_web_keys():
     # Handle the response
     print(response)
 
+
 # [END gkemulticloud_v1_generated_AzureClusters_GetAzureJsonWebKeys_sync]

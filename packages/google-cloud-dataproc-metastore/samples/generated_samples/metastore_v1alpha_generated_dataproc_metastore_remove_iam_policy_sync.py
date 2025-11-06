@@ -49,4 +49,5 @@ def sample_remove_iam_policy():
     # Handle the response
     print(response)
 
+
 # [END metastore_v1alpha_generated_DataprocMetastore_RemoveIamPolicy_sync]

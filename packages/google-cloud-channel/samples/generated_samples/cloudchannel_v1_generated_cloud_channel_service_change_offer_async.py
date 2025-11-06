@@ -54,4 +54,5 @@ async def sample_change_offer():
     # Handle the response
     print(response)
 
+
 # [END cloudchannel_v1_generated_CloudChannelService_ChangeOffer_async]

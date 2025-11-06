@@ -57,4 +57,5 @@ async def sample_export_insights_data():
     # Handle the response
     print(response)
 
+
 # [END contactcenterinsights_v1_generated_ContactCenterInsights_ExportInsightsData_async]

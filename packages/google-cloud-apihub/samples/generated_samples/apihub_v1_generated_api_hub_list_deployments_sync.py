@@ -50,4 +50,5 @@ def sample_list_deployments():
     for response in page_result:
         print(response)
 
+
 # [END apihub_v1_generated_ApiHub_ListDeployments_sync]

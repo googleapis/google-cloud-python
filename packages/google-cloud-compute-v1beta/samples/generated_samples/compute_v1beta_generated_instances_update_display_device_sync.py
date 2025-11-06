@@ -51,4 +51,5 @@ def sample_update_display_device():
     # Handle the response
     print(response)
 
+
 # [END compute_v1beta_generated_Instances_UpdateDisplayDevice_sync]

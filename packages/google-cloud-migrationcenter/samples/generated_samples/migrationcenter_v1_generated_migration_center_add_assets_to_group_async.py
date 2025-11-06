@@ -40,7 +40,7 @@ async def sample_add_assets_to_group():
 
     # Initialize request argument(s)
     assets = migrationcenter_v1.AssetList()
-    assets.asset_ids = ['asset_ids_value1', 'asset_ids_value2']
+    assets.asset_ids = ["asset_ids_value1", "asset_ids_value2"]
 
     request = migrationcenter_v1.AddAssetsToGroupRequest(
         group="group_value",
@@ -56,5 +56,6 @@ async def sample_add_assets_to_group():
 
     # Handle the response
     print(response)
+
 
 # [END migrationcenter_v1_generated_MigrationCenter_AddAssetsToGroup_async]

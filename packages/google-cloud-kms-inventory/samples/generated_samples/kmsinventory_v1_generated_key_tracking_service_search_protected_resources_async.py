@@ -51,4 +51,5 @@ async def sample_search_protected_resources():
     async for response in page_result:
         print(response)
 
+
 # [END kmsinventory_v1_generated_KeyTrackingService_SearchProtectedResources_async]

@@ -39,8 +39,7 @@ async def sample_update_message_bus():
     client = eventarc_v1.EventarcAsyncClient()
 
     # Initialize request argument(s)
-    request = eventarc_v1.UpdateMessageBusRequest(
-    )
+    request = eventarc_v1.UpdateMessageBusRequest()
 
     # Make the request
     operation = client.update_message_bus(request=request)
@@ -51,5 +50,6 @@ async def sample_update_message_bus():
 
     # Handle the response
     print(response)
+
 
 # [END eventarc_v1_generated_Eventarc_UpdateMessageBus_async]

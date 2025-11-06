@@ -57,4 +57,5 @@ async def sample_diagnose_runtime():
     # Handle the response
     print(response)
 
+
 # [END notebooks_v1_generated_ManagedNotebookService_DiagnoseRuntime_async]

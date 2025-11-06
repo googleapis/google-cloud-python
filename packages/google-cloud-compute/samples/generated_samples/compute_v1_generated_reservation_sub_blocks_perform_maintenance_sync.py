@@ -52,4 +52,5 @@ def sample_perform_maintenance():
     # Handle the response
     print(response)
 
+
 # [END compute_v1_generated_ReservationSubBlocks_PerformMaintenance_sync]

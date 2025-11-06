@@ -52,4 +52,5 @@ def sample_update_unit_kind():
     # Handle the response
     print(response)
 
+
 # [END saasservicemgmt_v1beta1_generated_SaasDeployments_UpdateUnitKind_sync]

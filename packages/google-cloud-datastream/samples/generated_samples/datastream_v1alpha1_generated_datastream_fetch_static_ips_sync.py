@@ -50,4 +50,5 @@ def sample_fetch_static_ips():
     for response in page_result:
         print(response)
 
+
 # [END datastream_v1alpha1_generated_Datastream_FetchStaticIps_sync]

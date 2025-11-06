@@ -50,4 +50,5 @@ def sample_list_aws_clusters():
     for response in page_result:
         print(response)
 
+
 # [END gkemulticloud_v1_generated_AwsClusters_ListAwsClusters_sync]

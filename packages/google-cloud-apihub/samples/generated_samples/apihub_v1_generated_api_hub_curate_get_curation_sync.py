@@ -49,4 +49,5 @@ def sample_get_curation():
     # Handle the response
     print(response)
 
+
 # [END apihub_v1_generated_ApiHubCurate_GetCuration_sync]

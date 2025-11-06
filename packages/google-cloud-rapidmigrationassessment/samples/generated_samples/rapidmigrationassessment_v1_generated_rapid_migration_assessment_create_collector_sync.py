@@ -54,4 +54,5 @@ def sample_create_collector():
     # Handle the response
     print(response)
 
+
 # [END rapidmigrationassessment_v1_generated_RapidMigrationAssessment_CreateCollector_sync]

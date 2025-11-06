@@ -39,8 +39,7 @@ async def sample_load_snapshot():
     client = service_v1beta1.EnvironmentsAsyncClient()
 
     # Initialize request argument(s)
-    request = service_v1beta1.LoadSnapshotRequest(
-    )
+    request = service_v1beta1.LoadSnapshotRequest()
 
     # Make the request
     operation = client.load_snapshot(request=request)
@@ -51,5 +50,6 @@ async def sample_load_snapshot():
 
     # Handle the response
     print(response)
+
 
 # [END composer_v1beta1_generated_Environments_LoadSnapshot_async]

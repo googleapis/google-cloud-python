@@ -49,4 +49,5 @@ async def sample_create_event_threat_detection_custom_module():
     # Handle the response
     print(response)
 
+
 # [END securitycentermanagement_v1_generated_SecurityCenterManagement_CreateEventThreatDetectionCustomModule_async]

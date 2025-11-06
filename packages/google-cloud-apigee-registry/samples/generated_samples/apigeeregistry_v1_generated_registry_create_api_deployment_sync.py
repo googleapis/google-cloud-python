@@ -50,4 +50,5 @@ def sample_create_api_deployment():
     # Handle the response
     print(response)
 
+
 # [END apigeeregistry_v1_generated_Registry_CreateApiDeployment_sync]

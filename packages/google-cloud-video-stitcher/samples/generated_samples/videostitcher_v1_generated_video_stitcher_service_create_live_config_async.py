@@ -59,4 +59,5 @@ async def sample_create_live_config():
     # Handle the response
     print(response)
 
+
 # [END videostitcher_v1_generated_VideoStitcherService_CreateLiveConfig_async]

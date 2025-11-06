@@ -52,4 +52,5 @@ async def sample_update_product():
     # Handle the response
     print(response)
 
+
 # [END retail_v2beta_generated_ProductService_UpdateProduct_async]

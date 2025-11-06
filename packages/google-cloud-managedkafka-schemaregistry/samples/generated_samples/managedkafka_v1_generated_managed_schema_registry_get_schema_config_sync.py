@@ -49,4 +49,5 @@ def sample_get_schema_config():
     # Handle the response
     print(response)
 
+
 # [END managedkafka_v1_generated_ManagedSchemaRegistry_GetSchemaConfig_sync]

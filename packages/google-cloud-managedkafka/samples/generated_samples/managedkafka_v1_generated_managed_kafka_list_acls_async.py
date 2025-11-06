@@ -50,4 +50,5 @@ async def sample_list_acls():
     async for response in page_result:
         print(response)
 
+
 # [END managedkafka_v1_generated_ManagedKafka_ListAcls_async]

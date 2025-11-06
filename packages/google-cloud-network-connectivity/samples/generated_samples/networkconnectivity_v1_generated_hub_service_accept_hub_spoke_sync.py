@@ -54,4 +54,5 @@ def sample_accept_hub_spoke():
     # Handle the response
     print(response)
 
+
 # [END networkconnectivity_v1_generated_HubService_AcceptHubSpoke_sync]

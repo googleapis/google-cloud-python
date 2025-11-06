@@ -50,4 +50,5 @@ def sample_connect_active_conference():
     # Handle the response
     print(response)
 
+
 # [END meet_v2beta_generated_SpacesService_ConnectActiveConference_sync]

@@ -63,4 +63,5 @@ async def sample_bidi_generate_content():
     async for response in stream:
         print(response)
 
+
 # [END generativelanguage_v1alpha_generated_GenerativeService_BidiGenerateContent_async]

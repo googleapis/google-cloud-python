@@ -49,4 +49,5 @@ async def sample_get_capacity_commitment():
     # Handle the response
     print(response)
 
+
 # [END bigqueryreservation_v1_generated_ReservationService_GetCapacityCommitment_async]

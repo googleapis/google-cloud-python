@@ -49,4 +49,5 @@ async def sample_generate_access_token():
     # Handle the response
     print(response)
 
+
 # [END workstations_v1_generated_Workstations_GenerateAccessToken_async]

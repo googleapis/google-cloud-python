@@ -51,4 +51,5 @@ async def sample_generate_tcp_proxy_script():
     # Handle the response
     print(response)
 
+
 # [END datamigration_v1_generated_DataMigrationService_GenerateTcpProxyScript_async]

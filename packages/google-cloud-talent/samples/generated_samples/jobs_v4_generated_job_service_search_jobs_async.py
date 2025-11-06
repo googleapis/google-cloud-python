@@ -49,4 +49,5 @@ async def sample_search_jobs():
     # Handle the response
     print(response)
 
+
 # [END jobs_v4_generated_JobService_SearchJobs_async]

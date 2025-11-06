@@ -23,6 +23,8 @@
 #   python3 -m pip install google-cloud-securesourcemanager
 
 
+from google.iam.v1 import iam_policy_pb2  # type: ignore
+
 # [START securesourcemanager_v1_generated_SecureSourceManager_GetIamPolicyRepo_sync]
 # This snippet has been automatically generated and should be regarded as a
 # code template only.
@@ -32,7 +34,6 @@
 #   client as shown in:
 #   https://googleapis.dev/python/google-api-core/latest/client_options.html
 from google.cloud import securesourcemanager_v1
-from google.iam.v1 import iam_policy_pb2  # type: ignore
 
 
 def sample_get_iam_policy_repo():
@@ -49,5 +50,6 @@ def sample_get_iam_policy_repo():
 
     # Handle the response
     print(response)
+
 
 # [END securesourcemanager_v1_generated_SecureSourceManager_GetIamPolicyRepo_sync]

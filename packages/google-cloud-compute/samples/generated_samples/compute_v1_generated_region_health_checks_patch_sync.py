@@ -51,4 +51,5 @@ def sample_patch():
     # Handle the response
     print(response)
 
+
 # [END compute_v1_generated_RegionHealthChecks_Patch_sync]

@@ -49,4 +49,5 @@ async def sample_get_hook():
     # Handle the response
     print(response)
 
+
 # [END securesourcemanager_v1_generated_SecureSourceManager_GetHook_async]

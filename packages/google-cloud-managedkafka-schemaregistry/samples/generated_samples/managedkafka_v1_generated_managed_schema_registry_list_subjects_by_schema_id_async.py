@@ -49,4 +49,5 @@ async def sample_list_subjects_by_schema_id():
     # Handle the response
     print(response)
 
+
 # [END managedkafka_v1_generated_ManagedSchemaRegistry_ListSubjectsBySchemaId_async]

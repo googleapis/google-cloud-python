@@ -39,13 +39,13 @@ def sample_update_qa_scorecard():
     client = contact_center_insights_v1.ContactCenterInsightsClient()
 
     # Initialize request argument(s)
-    request = contact_center_insights_v1.UpdateQaScorecardRequest(
-    )
+    request = contact_center_insights_v1.UpdateQaScorecardRequest()
 
     # Make the request
     response = client.update_qa_scorecard(request=request)
 
     # Handle the response
     print(response)
+
 
 # [END contactcenterinsights_v1_generated_ContactCenterInsights_UpdateQaScorecard_sync]

@@ -54,4 +54,5 @@ async def sample_export_metadata():
     # Handle the response
     print(response)
 
+
 # [END metastore_v1beta_generated_DataprocMetastore_ExportMetadata_async]

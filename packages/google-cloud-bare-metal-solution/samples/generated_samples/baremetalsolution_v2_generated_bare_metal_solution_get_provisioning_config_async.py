@@ -49,4 +49,5 @@ async def sample_get_provisioning_config():
     # Handle the response
     print(response)
 
+
 # [END baremetalsolution_v2_generated_BareMetalSolution_GetProvisioningConfig_async]

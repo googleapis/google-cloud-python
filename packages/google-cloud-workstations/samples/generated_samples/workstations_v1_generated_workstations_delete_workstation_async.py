@@ -53,4 +53,5 @@ async def sample_delete_workstation():
     # Handle the response
     print(response)
 
+
 # [END workstations_v1_generated_Workstations_DeleteWorkstation_async]

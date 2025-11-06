@@ -23,6 +23,8 @@
 #   python3 -m pip install google-cloud-bigquery-datapolicies
 
 
+from google.iam.v1 import iam_policy_pb2  # type: ignore
+
 # [START bigquerydatapolicy_v2beta1_generated_DataPolicyService_TestIamPermissions_async]
 # This snippet has been automatically generated and should be regarded as a
 # code template only.
@@ -32,7 +34,6 @@
 #   client as shown in:
 #   https://googleapis.dev/python/google-api-core/latest/client_options.html
 from google.cloud import bigquery_datapolicies_v2beta1
-from google.iam.v1 import iam_policy_pb2  # type: ignore
 
 
 async def sample_test_iam_permissions():
@@ -42,7 +43,7 @@ async def sample_test_iam_permissions():
     # Initialize request argument(s)
     request = iam_policy_pb2.TestIamPermissionsRequest(
         resource="resource_value",
-        permissions=['permissions_value1', 'permissions_value2'],
+        permissions=["permissions_value1", "permissions_value2"],
     )
 
     # Make the request
@@ -50,5 +51,6 @@ async def sample_test_iam_permissions():
 
     # Handle the response
     print(response)
+
 
 # [END bigquerydatapolicy_v2beta1_generated_DataPolicyService_TestIamPermissions_async]

@@ -49,4 +49,5 @@ def sample_get_merchant_review():
     # Handle the response
     print(response)
 
+
 # [END merchantapi_v1beta_generated_MerchantReviewsService_GetMerchantReview_sync]

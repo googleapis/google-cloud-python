@@ -39,13 +39,13 @@ async def sample_acquire_lease():
     client = visionai_v1alpha1.StreamingServiceAsyncClient()
 
     # Initialize request argument(s)
-    request = visionai_v1alpha1.AcquireLeaseRequest(
-    )
+    request = visionai_v1alpha1.AcquireLeaseRequest()
 
     # Make the request
     response = await client.acquire_lease(request=request)
 
     # Handle the response
     print(response)
+
 
 # [END visionai_v1alpha1_generated_StreamingService_AcquireLease_async]

@@ -49,4 +49,5 @@ async def sample_get_table():
     # Handle the response
     print(response)
 
+
 # [END biglake_v1_generated_MetastoreService_GetTable_async]

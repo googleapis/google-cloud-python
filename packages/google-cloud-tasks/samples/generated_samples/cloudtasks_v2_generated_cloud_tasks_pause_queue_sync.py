@@ -49,4 +49,5 @@ def sample_pause_queue():
     # Handle the response
     print(response)
 
+
 # [END cloudtasks_v2_generated_CloudTasks_PauseQueue_sync]

@@ -39,8 +39,7 @@ def sample_list_image_versions():
     client = service_v1.ImageVersionsClient()
 
     # Initialize request argument(s)
-    request = service_v1.ListImageVersionsRequest(
-    )
+    request = service_v1.ListImageVersionsRequest()
 
     # Make the request
     page_result = client.list_image_versions(request=request)
@@ -48,5 +47,6 @@ def sample_list_image_versions():
     # Handle the response
     for response in page_result:
         print(response)
+
 
 # [END composer_v1_generated_ImageVersions_ListImageVersions_sync]

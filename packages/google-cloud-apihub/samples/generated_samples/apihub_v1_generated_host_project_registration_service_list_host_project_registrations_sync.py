@@ -50,4 +50,5 @@ def sample_list_host_project_registrations():
     for response in page_result:
         print(response)
 
+
 # [END apihub_v1_generated_HostProjectRegistrationService_ListHostProjectRegistrations_sync]

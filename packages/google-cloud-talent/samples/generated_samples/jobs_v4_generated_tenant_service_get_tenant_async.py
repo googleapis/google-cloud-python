@@ -49,4 +49,5 @@ async def sample_get_tenant():
     # Handle the response
     print(response)
 
+
 # [END jobs_v4_generated_TenantService_GetTenant_async]

@@ -52,4 +52,5 @@ def sample_update_user_feedback():
     # Handle the response
     print(response)
 
+
 # [END dataqna_v1alpha_generated_QuestionService_UpdateUserFeedback_sync]

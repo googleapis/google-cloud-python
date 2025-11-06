@@ -49,4 +49,5 @@ async def sample_get_job():
     # Handle the response
     print(response)
 
+
 # [END storagebatchoperations_v1_generated_StorageBatchOperations_GetJob_async]

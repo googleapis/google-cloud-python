@@ -42,7 +42,7 @@ def sample_create_microsoft_ad_domain():
     domain = managedidentities_v1.Domain()
     domain.name = "name_value"
     domain.reserved_ip_range = "reserved_ip_range_value"
-    domain.locations = ['locations_value1', 'locations_value2']
+    domain.locations = ["locations_value1", "locations_value2"]
 
     request = managedidentities_v1.CreateMicrosoftAdDomainRequest(
         parent="parent_value",
@@ -59,5 +59,6 @@ def sample_create_microsoft_ad_domain():
 
     # Handle the response
     print(response)
+
 
 # [END managedidentities_v1_generated_ManagedIdentitiesService_CreateMicrosoftAdDomain_sync]

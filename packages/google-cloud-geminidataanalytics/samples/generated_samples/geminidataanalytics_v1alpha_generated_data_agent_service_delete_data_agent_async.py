@@ -53,4 +53,5 @@ async def sample_delete_data_agent():
     # Handle the response
     print(response)
 
+
 # [END geminidataanalytics_v1alpha_generated_DataAgentService_DeleteDataAgent_async]

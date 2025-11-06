@@ -39,13 +39,13 @@ async def sample_update_job():
     client = batch_v1alpha.BatchServiceAsyncClient()
 
     # Initialize request argument(s)
-    request = batch_v1alpha.UpdateJobRequest(
-    )
+    request = batch_v1alpha.UpdateJobRequest()
 
     # Make the request
     response = await client.update_job(request=request)
 
     # Handle the response
     print(response)
+
 
 # [END batch_v1alpha_generated_BatchService_UpdateJob_async]

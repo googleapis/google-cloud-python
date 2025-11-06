@@ -39,8 +39,7 @@ async def sample_list_scan_configs():
     client = websecurityscanner_v1.WebSecurityScannerAsyncClient()
 
     # Initialize request argument(s)
-    request = websecurityscanner_v1.ListScanConfigsRequest(
-    )
+    request = websecurityscanner_v1.ListScanConfigsRequest()
 
     # Make the request
     page_result = client.list_scan_configs(request=request)
@@ -48,5 +47,6 @@ async def sample_list_scan_configs():
     # Handle the response
     async for response in page_result:
         print(response)
+
 
 # [END websecurityscanner_v1_generated_WebSecurityScanner_ListScanConfigs_async]

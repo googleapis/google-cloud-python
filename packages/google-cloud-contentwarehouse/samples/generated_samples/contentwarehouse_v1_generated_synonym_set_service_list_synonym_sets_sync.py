@@ -50,4 +50,5 @@ def sample_list_synonym_sets():
     for response in page_result:
         print(response)
 
+
 # [END contentwarehouse_v1_generated_SynonymSetService_ListSynonymSets_sync]

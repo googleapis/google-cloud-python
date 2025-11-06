@@ -50,4 +50,5 @@ def sample_get_service_config():
     # Handle the response
     print(response)
 
+
 # [END servicemanagement_v1_generated_ServiceManager_GetServiceConfig_sync]

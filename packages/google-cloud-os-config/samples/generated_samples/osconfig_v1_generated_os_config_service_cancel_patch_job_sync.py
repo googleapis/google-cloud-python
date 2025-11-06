@@ -49,4 +49,5 @@ def sample_cancel_patch_job():
     # Handle the response
     print(response)
 
+
 # [END osconfig_v1_generated_OsConfigService_CancelPatchJob_sync]

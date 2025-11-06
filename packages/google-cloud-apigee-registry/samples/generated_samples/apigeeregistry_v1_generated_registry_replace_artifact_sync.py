@@ -39,13 +39,13 @@ def sample_replace_artifact():
     client = apigee_registry_v1.RegistryClient()
 
     # Initialize request argument(s)
-    request = apigee_registry_v1.ReplaceArtifactRequest(
-    )
+    request = apigee_registry_v1.ReplaceArtifactRequest()
 
     # Make the request
     response = client.replace_artifact(request=request)
 
     # Handle the response
     print(response)
+
 
 # [END apigeeregistry_v1_generated_Registry_ReplaceArtifact_sync]

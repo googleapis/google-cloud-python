@@ -50,4 +50,5 @@ def sample_search_connections():
     for response in page_result:
         print(response)
 
+
 # [END dlp_v2_generated_DlpService_SearchConnections_sync]

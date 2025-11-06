@@ -51,4 +51,5 @@ def sample_set_scheduling():
     # Handle the response
     print(response)
 
+
 # [END compute_v1beta_generated_Instances_SetScheduling_sync]

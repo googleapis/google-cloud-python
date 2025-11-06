@@ -44,10 +44,13 @@ def sample_list_multicloud_data_transfer_supported_services():
     )
 
     # Make the request
-    page_result = client.list_multicloud_data_transfer_supported_services(request=request)
+    page_result = client.list_multicloud_data_transfer_supported_services(
+        request=request
+    )
 
     # Handle the response
     for response in page_result:
         print(response)
+
 
 # [END networkconnectivity_v1_generated_DataTransferService_ListMulticloudDataTransferSupportedServices_sync]

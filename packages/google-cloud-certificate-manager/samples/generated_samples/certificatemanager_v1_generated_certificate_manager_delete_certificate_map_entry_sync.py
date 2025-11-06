@@ -53,4 +53,5 @@ def sample_delete_certificate_map_entry():
     # Handle the response
     print(response)
 
+
 # [END certificatemanager_v1_generated_CertificateManager_DeleteCertificateMapEntry_sync]

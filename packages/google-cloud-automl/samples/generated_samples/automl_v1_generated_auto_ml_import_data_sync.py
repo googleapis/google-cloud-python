@@ -40,7 +40,7 @@ def sample_import_data():
 
     # Initialize request argument(s)
     input_config = automl_v1.InputConfig()
-    input_config.gcs_source.input_uris = ['input_uris_value1', 'input_uris_value2']
+    input_config.gcs_source.input_uris = ["input_uris_value1", "input_uris_value2"]
 
     request = automl_v1.ImportDataRequest(
         name="name_value",
@@ -56,5 +56,6 @@ def sample_import_data():
 
     # Handle the response
     print(response)
+
 
 # [END automl_v1_generated_AutoMl_ImportData_sync]

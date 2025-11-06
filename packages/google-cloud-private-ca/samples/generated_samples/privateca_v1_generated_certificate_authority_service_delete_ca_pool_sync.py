@@ -53,4 +53,5 @@ def sample_delete_ca_pool():
     # Handle the response
     print(response)
 
+
 # [END privateca_v1_generated_CertificateAuthorityService_DeleteCaPool_sync]

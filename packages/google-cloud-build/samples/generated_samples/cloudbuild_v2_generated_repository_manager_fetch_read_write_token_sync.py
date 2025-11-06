@@ -49,4 +49,5 @@ def sample_fetch_read_write_token():
     # Handle the response
     print(response)
 
+
 # [END cloudbuild_v2_generated_RepositoryManager_FetchReadWriteToken_sync]

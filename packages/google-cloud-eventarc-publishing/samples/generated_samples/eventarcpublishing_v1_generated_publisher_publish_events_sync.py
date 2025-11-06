@@ -39,13 +39,13 @@ def sample_publish_events():
     client = eventarc_publishing_v1.PublisherClient()
 
     # Initialize request argument(s)
-    request = eventarc_publishing_v1.PublishEventsRequest(
-    )
+    request = eventarc_publishing_v1.PublishEventsRequest()
 
     # Make the request
     response = client.publish_events(request=request)
 
     # Handle the response
     print(response)
+
 
 # [END eventarcpublishing_v1_generated_Publisher_PublishEvents_sync]

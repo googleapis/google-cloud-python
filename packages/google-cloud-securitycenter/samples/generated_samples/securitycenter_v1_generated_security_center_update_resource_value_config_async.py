@@ -41,7 +41,7 @@ async def sample_update_resource_value_config():
     # Initialize request argument(s)
     resource_value_config = securitycenter_v1.ResourceValueConfig()
     resource_value_config.resource_value = "NONE"
-    resource_value_config.tag_values = ['tag_values_value1', 'tag_values_value2']
+    resource_value_config.tag_values = ["tag_values_value1", "tag_values_value2"]
 
     request = securitycenter_v1.UpdateResourceValueConfigRequest(
         resource_value_config=resource_value_config,
@@ -52,5 +52,6 @@ async def sample_update_resource_value_config():
 
     # Handle the response
     print(response)
+
 
 # [END securitycenter_v1_generated_SecurityCenter_UpdateResourceValueConfig_async]

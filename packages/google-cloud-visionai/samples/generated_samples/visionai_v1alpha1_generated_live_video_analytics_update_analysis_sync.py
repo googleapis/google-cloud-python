@@ -39,8 +39,7 @@ def sample_update_analysis():
     client = visionai_v1alpha1.LiveVideoAnalyticsClient()
 
     # Initialize request argument(s)
-    request = visionai_v1alpha1.UpdateAnalysisRequest(
-    )
+    request = visionai_v1alpha1.UpdateAnalysisRequest()
 
     # Make the request
     operation = client.update_analysis(request=request)
@@ -51,5 +50,6 @@ def sample_update_analysis():
 
     # Handle the response
     print(response)
+
 
 # [END visionai_v1alpha1_generated_LiveVideoAnalytics_UpdateAnalysis_sync]

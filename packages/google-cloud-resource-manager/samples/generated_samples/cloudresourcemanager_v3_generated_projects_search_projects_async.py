@@ -39,8 +39,7 @@ async def sample_search_projects():
     client = resourcemanager_v3.ProjectsAsyncClient()
 
     # Initialize request argument(s)
-    request = resourcemanager_v3.SearchProjectsRequest(
-    )
+    request = resourcemanager_v3.SearchProjectsRequest()
 
     # Make the request
     page_result = client.search_projects(request=request)
@@ -48,5 +47,6 @@ async def sample_search_projects():
     # Handle the response
     async for response in page_result:
         print(response)
+
 
 # [END cloudresourcemanager_v3_generated_Projects_SearchProjects_async]

@@ -50,4 +50,5 @@ def sample_list_restores():
     for response in page_result:
         print(response)
 
+
 # [END gkebackup_v1_generated_BackupForGKE_ListRestores_sync]

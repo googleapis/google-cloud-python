@@ -39,13 +39,13 @@ async def sample_update_permission():
     client = generativelanguage_v1beta3.PermissionServiceAsyncClient()
 
     # Initialize request argument(s)
-    request = generativelanguage_v1beta3.UpdatePermissionRequest(
-    )
+    request = generativelanguage_v1beta3.UpdatePermissionRequest()
 
     # Make the request
     response = await client.update_permission(request=request)
 
     # Handle the response
     print(response)
+
 
 # [END generativelanguage_v1beta3_generated_PermissionService_UpdatePermission_async]

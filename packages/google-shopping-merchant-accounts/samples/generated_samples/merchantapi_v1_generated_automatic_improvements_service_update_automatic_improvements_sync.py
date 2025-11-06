@@ -39,13 +39,13 @@ def sample_update_automatic_improvements():
     client = merchant_accounts_v1.AutomaticImprovementsServiceClient()
 
     # Initialize request argument(s)
-    request = merchant_accounts_v1.UpdateAutomaticImprovementsRequest(
-    )
+    request = merchant_accounts_v1.UpdateAutomaticImprovementsRequest()
 
     # Make the request
     response = client.update_automatic_improvements(request=request)
 
     # Handle the response
     print(response)
+
 
 # [END merchantapi_v1_generated_AutomaticImprovementsService_UpdateAutomaticImprovements_sync]

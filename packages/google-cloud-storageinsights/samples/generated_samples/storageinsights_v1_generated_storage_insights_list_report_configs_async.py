@@ -50,4 +50,5 @@ async def sample_list_report_configs():
     async for response in page_result:
         print(response)
 
+
 # [END storageinsights_v1_generated_StorageInsights_ListReportConfigs_async]

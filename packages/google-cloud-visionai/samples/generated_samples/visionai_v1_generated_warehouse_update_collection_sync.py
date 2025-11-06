@@ -39,13 +39,13 @@ def sample_update_collection():
     client = visionai_v1.WarehouseClient()
 
     # Initialize request argument(s)
-    request = visionai_v1.UpdateCollectionRequest(
-    )
+    request = visionai_v1.UpdateCollectionRequest()
 
     # Make the request
     response = client.update_collection(request=request)
 
     # Handle the response
     print(response)
+
 
 # [END visionai_v1_generated_Warehouse_UpdateCollection_sync]

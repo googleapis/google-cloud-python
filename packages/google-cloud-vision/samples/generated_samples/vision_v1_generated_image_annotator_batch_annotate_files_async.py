@@ -39,13 +39,13 @@ async def sample_batch_annotate_files():
     client = vision_v1.ImageAnnotatorAsyncClient()
 
     # Initialize request argument(s)
-    request = vision_v1.BatchAnnotateFilesRequest(
-    )
+    request = vision_v1.BatchAnnotateFilesRequest()
 
     # Make the request
     response = await client.batch_annotate_files(request=request)
 
     # Handle the response
     print(response)
+
 
 # [END vision_v1_generated_ImageAnnotator_BatchAnnotateFiles_async]

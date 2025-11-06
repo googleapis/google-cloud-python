@@ -50,4 +50,5 @@ async def sample_aggregate_usage():
     async for response in page_result:
         print(response)
 
+
 # [END licensemanager_v1_generated_LicenseManager_AggregateUsage_async]

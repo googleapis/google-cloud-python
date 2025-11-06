@@ -39,8 +39,7 @@ async def sample_update_worker_pool():
     client = cloudbuild_v1.CloudBuildAsyncClient()
 
     # Initialize request argument(s)
-    request = cloudbuild_v1.UpdateWorkerPoolRequest(
-    )
+    request = cloudbuild_v1.UpdateWorkerPoolRequest()
 
     # Make the request
     operation = client.update_worker_pool(request=request)
@@ -51,5 +50,6 @@ async def sample_update_worker_pool():
 
     # Handle the response
     print(response)
+
 
 # [END cloudbuild_v1_generated_CloudBuild_UpdateWorkerPool_async]

@@ -39,8 +39,7 @@ async def sample_list_jobs():
     client = batch_v1.BatchServiceAsyncClient()
 
     # Initialize request argument(s)
-    request = batch_v1.ListJobsRequest(
-    )
+    request = batch_v1.ListJobsRequest()
 
     # Make the request
     page_result = client.list_jobs(request=request)
@@ -48,5 +47,6 @@ async def sample_list_jobs():
     # Handle the response
     async for response in page_result:
         print(response)
+
 
 # [END batch_v1_generated_BatchService_ListJobs_async]

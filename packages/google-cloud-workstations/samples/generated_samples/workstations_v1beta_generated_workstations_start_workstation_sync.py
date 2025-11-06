@@ -53,4 +53,5 @@ def sample_start_workstation():
     # Handle the response
     print(response)
 
+
 # [END workstations_v1beta_generated_Workstations_StartWorkstation_sync]

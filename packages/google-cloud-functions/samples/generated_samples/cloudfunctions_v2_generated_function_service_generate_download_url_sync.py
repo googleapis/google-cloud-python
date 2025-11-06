@@ -49,4 +49,5 @@ def sample_generate_download_url():
     # Handle the response
     print(response)
 
+
 # [END cloudfunctions_v2_generated_FunctionService_GenerateDownloadUrl_sync]

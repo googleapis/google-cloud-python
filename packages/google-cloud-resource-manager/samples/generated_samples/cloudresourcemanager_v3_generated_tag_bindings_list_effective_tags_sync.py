@@ -50,4 +50,5 @@ def sample_list_effective_tags():
     for response in page_result:
         print(response)
 
+
 # [END cloudresourcemanager_v3_generated_TagBindings_ListEffectiveTags_sync]

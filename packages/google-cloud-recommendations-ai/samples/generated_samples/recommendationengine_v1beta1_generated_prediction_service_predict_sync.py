@@ -55,4 +55,5 @@ def sample_predict():
     for response in page_result:
         print(response)
 
+
 # [END recommendationengine_v1beta1_generated_PredictionService_Predict_sync]

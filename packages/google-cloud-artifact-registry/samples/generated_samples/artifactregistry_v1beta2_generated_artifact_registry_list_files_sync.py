@@ -39,8 +39,7 @@ def sample_list_files():
     client = artifactregistry_v1beta2.ArtifactRegistryClient()
 
     # Initialize request argument(s)
-    request = artifactregistry_v1beta2.ListFilesRequest(
-    )
+    request = artifactregistry_v1beta2.ListFilesRequest()
 
     # Make the request
     page_result = client.list_files(request=request)
@@ -48,5 +47,6 @@ def sample_list_files():
     # Handle the response
     for response in page_result:
         print(response)
+
 
 # [END artifactregistry_v1beta2_generated_ArtifactRegistry_ListFiles_sync]

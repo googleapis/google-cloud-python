@@ -50,4 +50,5 @@ def sample_list_products():
     for response in page_result:
         print(response)
 
+
 # [END vision_v1p4beta1_generated_ProductSearch_ListProducts_sync]

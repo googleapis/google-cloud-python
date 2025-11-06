@@ -49,4 +49,5 @@ async def sample_get_metadata():
     # Handle the response
     print(response)
 
+
 # [END analyticsdata_v1beta_generated_BetaAnalyticsData_GetMetadata_async]

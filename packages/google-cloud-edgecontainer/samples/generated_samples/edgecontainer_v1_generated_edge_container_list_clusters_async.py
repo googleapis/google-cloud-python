@@ -50,4 +50,5 @@ async def sample_list_clusters():
     async for response in page_result:
         print(response)
 
+
 # [END edgecontainer_v1_generated_EdgeContainer_ListClusters_async]

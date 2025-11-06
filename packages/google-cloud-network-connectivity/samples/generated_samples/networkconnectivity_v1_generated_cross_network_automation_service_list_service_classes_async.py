@@ -50,4 +50,5 @@ async def sample_list_service_classes():
     async for response in page_result:
         print(response)
 
+
 # [END networkconnectivity_v1_generated_CrossNetworkAutomationService_ListServiceClasses_async]

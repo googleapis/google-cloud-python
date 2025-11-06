@@ -50,4 +50,5 @@ def sample_list_usable():
     for response in page_result:
         print(response)
 
+
 # [END compute_v1_generated_Subnetworks_ListUsable_sync]

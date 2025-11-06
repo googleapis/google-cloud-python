@@ -50,4 +50,5 @@ async def sample_find_lfp_providers():
     async for response in page_result:
         print(response)
 
+
 # [END merchantapi_v1_generated_LfpProvidersService_FindLfpProviders_async]

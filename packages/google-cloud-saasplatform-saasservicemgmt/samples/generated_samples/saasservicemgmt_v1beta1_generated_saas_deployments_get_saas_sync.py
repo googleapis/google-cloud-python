@@ -49,4 +49,5 @@ def sample_get_saas():
     # Handle the response
     print(response)
 
+
 # [END saasservicemgmt_v1beta1_generated_SaasDeployments_GetSaas_sync]

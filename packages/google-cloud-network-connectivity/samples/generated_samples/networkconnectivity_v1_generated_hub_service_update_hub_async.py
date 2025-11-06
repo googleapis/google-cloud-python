@@ -39,8 +39,7 @@ async def sample_update_hub():
     client = networkconnectivity_v1.HubServiceAsyncClient()
 
     # Initialize request argument(s)
-    request = networkconnectivity_v1.UpdateHubRequest(
-    )
+    request = networkconnectivity_v1.UpdateHubRequest()
 
     # Make the request
     operation = client.update_hub(request=request)
@@ -51,5 +50,6 @@ async def sample_update_hub():
 
     # Handle the response
     print(response)
+
 
 # [END networkconnectivity_v1_generated_HubService_UpdateHub_async]

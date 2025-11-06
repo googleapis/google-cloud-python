@@ -51,4 +51,5 @@ async def sample_group_assets():
     async for response in page_result:
         print(response)
 
+
 # [END securitycenter_v1beta1_generated_SecurityCenter_GroupAssets_async]

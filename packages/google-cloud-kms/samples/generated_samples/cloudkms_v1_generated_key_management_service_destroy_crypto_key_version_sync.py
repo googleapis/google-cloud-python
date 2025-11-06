@@ -49,4 +49,5 @@ def sample_destroy_crypto_key_version():
     # Handle the response
     print(response)
 
+
 # [END cloudkms_v1_generated_KeyManagementService_DestroyCryptoKeyVersion_sync]

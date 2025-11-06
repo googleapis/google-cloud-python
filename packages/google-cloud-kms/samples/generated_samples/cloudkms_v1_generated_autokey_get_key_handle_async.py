@@ -49,4 +49,5 @@ async def sample_get_key_handle():
     # Handle the response
     print(response)
 
+
 # [END cloudkms_v1_generated_Autokey_GetKeyHandle_async]

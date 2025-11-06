@@ -49,4 +49,5 @@ async def sample_get_vod_config():
     # Handle the response
     print(response)
 
+
 # [END videostitcher_v1_generated_VideoStitcherService_GetVodConfig_async]

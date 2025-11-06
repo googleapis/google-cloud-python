@@ -49,4 +49,5 @@ async def sample_get_runtime():
     # Handle the response
     print(response)
 
+
 # [END notebooks_v1_generated_ManagedNotebookService_GetRuntime_async]

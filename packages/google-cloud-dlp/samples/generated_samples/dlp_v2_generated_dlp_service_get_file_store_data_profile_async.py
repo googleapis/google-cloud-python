@@ -49,4 +49,5 @@ async def sample_get_file_store_data_profile():
     # Handle the response
     print(response)
 
+
 # [END dlp_v2_generated_DlpService_GetFileStoreDataProfile_async]

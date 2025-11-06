@@ -49,4 +49,5 @@ def sample_create_service_level_objective():
     # Handle the response
     print(response)
 
+
 # [END monitoring_v3_generated_ServiceMonitoringService_CreateServiceLevelObjective_sync]

@@ -50,4 +50,5 @@ async def sample_list_patch_jobs():
     async for response in page_result:
         print(response)
 
+
 # [END osconfig_v1_generated_OsConfigService_ListPatchJobs_async]

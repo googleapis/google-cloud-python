@@ -39,13 +39,13 @@ async def sample_create_file():
     client = generativelanguage_v1alpha.FileServiceAsyncClient()
 
     # Initialize request argument(s)
-    request = generativelanguage_v1alpha.CreateFileRequest(
-    )
+    request = generativelanguage_v1alpha.CreateFileRequest()
 
     # Make the request
     response = await client.create_file(request=request)
 
     # Handle the response
     print(response)
+
 
 # [END generativelanguage_v1alpha_generated_FileService_CreateFile_async]

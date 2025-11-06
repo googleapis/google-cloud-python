@@ -50,4 +50,5 @@ def sample_list_apis():
     for response in page_result:
         print(response)
 
+
 # [END apigateway_v1_generated_ApiGatewayService_ListApis_sync]

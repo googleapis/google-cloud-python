@@ -40,7 +40,7 @@ def sample_update_user():
 
     # Initialize request argument(s)
     user = merchant_accounts_v1.User()
-    user.access_rights = ['API_DEVELOPER']
+    user.access_rights = ["API_DEVELOPER"]
 
     request = merchant_accounts_v1.UpdateUserRequest(
         user=user,
@@ -51,5 +51,6 @@ def sample_update_user():
 
     # Handle the response
     print(response)
+
 
 # [END merchantapi_v1_generated_UserService_UpdateUser_sync]

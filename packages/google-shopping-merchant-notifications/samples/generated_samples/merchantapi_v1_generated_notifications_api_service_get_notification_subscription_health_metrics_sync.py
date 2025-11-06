@@ -49,4 +49,5 @@ def sample_get_notification_subscription_health_metrics():
     # Handle the response
     print(response)
 
+
 # [END merchantapi_v1_generated_NotificationsApiService_GetNotificationSubscriptionHealthMetrics_sync]

@@ -49,4 +49,5 @@ def sample_get_product():
     # Handle the response
     print(response)
 
+
 # [END vision_v1p4beta1_generated_ProductSearch_GetProduct_sync]

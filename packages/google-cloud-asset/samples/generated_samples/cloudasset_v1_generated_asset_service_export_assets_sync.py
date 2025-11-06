@@ -57,4 +57,5 @@ def sample_export_assets():
     # Handle the response
     print(response)
 
+
 # [END cloudasset_v1_generated_AssetService_ExportAssets_sync]

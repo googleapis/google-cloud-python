@@ -49,4 +49,5 @@ async def sample_get_source():
     # Handle the response
     print(response)
 
+
 # [END securitycenter_v1_generated_SecurityCenter_GetSource_async]

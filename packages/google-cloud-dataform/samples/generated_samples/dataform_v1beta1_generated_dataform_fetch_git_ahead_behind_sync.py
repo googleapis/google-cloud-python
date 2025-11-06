@@ -49,4 +49,5 @@ def sample_fetch_git_ahead_behind():
     # Handle the response
     print(response)
 
+
 # [END dataform_v1beta1_generated_Dataform_FetchGitAheadBehind_sync]

@@ -50,4 +50,5 @@ def sample_patch():
     # Handle the response
     print(response)
 
+
 # [END compute_v1_generated_InterconnectAttachmentGroups_Patch_sync]

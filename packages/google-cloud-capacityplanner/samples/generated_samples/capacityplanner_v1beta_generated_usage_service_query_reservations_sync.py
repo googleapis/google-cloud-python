@@ -52,4 +52,5 @@ def sample_query_reservations():
     # Handle the response
     print(response)
 
+
 # [END capacityplanner_v1beta_generated_UsageService_QueryReservations_sync]

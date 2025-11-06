@@ -49,4 +49,5 @@ def sample_get_database():
     # Handle the response
     print(response)
 
+
 # [END biglake_v1alpha1_generated_MetastoreService_GetDatabase_sync]

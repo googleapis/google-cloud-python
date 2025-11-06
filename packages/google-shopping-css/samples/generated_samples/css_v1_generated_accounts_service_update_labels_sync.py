@@ -49,4 +49,5 @@ def sample_update_labels():
     # Handle the response
     print(response)
 
+
 # [END css_v1_generated_AccountsService_UpdateLabels_sync]

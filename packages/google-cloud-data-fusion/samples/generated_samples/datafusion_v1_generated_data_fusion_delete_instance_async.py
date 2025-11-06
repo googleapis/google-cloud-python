@@ -53,4 +53,5 @@ async def sample_delete_instance():
     # Handle the response
     print(response)
 
+
 # [END datafusion_v1_generated_DataFusion_DeleteInstance_async]

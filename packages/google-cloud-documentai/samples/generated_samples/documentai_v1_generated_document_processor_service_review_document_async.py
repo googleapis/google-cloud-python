@@ -57,4 +57,5 @@ async def sample_review_document():
     # Handle the response
     print(response)
 
+
 # [END documentai_v1_generated_DocumentProcessorService_ReviewDocument_async]

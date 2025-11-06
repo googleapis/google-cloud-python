@@ -51,4 +51,5 @@ def sample_perform_maintenance():
     # Handle the response
     print(response)
 
+
 # [END compute_v1_generated_Reservations_PerformMaintenance_sync]

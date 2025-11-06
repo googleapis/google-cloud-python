@@ -54,4 +54,5 @@ def sample_purge_user_events():
     # Handle the response
     print(response)
 
+
 # [END discoveryengine_v1_generated_UserEventService_PurgeUserEvents_sync]

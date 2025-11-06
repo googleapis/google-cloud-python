@@ -53,4 +53,5 @@ def sample_start_instance():
     # Handle the response
     print(response)
 
+
 # [END notebooks_v1_generated_NotebookService_StartInstance_sync]

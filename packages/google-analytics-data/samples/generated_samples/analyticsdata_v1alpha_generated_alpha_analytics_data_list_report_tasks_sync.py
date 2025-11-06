@@ -50,4 +50,5 @@ def sample_list_report_tasks():
     for response in page_result:
         print(response)
 
+
 # [END analyticsdata_v1alpha_generated_AlphaAnalyticsData_ListReportTasks_sync]

@@ -53,4 +53,5 @@ async def sample_delete_message_bus():
     # Handle the response
     print(response)
 
+
 # [END eventarc_v1_generated_Eventarc_DeleteMessageBus_async]

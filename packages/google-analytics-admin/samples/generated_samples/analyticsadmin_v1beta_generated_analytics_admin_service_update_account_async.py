@@ -52,4 +52,5 @@ async def sample_update_account():
     # Handle the response
     print(response)
 
+
 # [END analyticsadmin_v1beta_generated_AnalyticsAdminService_UpdateAccount_async]

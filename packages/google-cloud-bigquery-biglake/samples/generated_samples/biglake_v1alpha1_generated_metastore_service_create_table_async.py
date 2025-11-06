@@ -50,4 +50,5 @@ async def sample_create_table():
     # Handle the response
     print(response)
 
+
 # [END biglake_v1alpha1_generated_MetastoreService_CreateTable_async]

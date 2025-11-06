@@ -53,4 +53,5 @@ def sample_create_key_event():
     # Handle the response
     print(response)
 
+
 # [END analyticsadmin_v1beta_generated_AnalyticsAdminService_CreateKeyEvent_sync]

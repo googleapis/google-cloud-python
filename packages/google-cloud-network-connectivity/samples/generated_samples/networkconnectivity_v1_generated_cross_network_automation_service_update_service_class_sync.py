@@ -39,8 +39,7 @@ def sample_update_service_class():
     client = networkconnectivity_v1.CrossNetworkAutomationServiceClient()
 
     # Initialize request argument(s)
-    request = networkconnectivity_v1.UpdateServiceClassRequest(
-    )
+    request = networkconnectivity_v1.UpdateServiceClassRequest()
 
     # Make the request
     operation = client.update_service_class(request=request)
@@ -51,5 +50,6 @@ def sample_update_service_class():
 
     # Handle the response
     print(response)
+
 
 # [END networkconnectivity_v1_generated_CrossNetworkAutomationService_UpdateServiceClass_sync]

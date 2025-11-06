@@ -50,4 +50,5 @@ def sample_list_customer_repricing_configs():
     for response in page_result:
         print(response)
 
+
 # [END cloudchannel_v1_generated_CloudChannelService_ListCustomerRepricingConfigs_sync]

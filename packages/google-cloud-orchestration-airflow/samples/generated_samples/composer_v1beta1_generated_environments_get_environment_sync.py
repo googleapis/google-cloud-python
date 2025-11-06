@@ -39,13 +39,13 @@ def sample_get_environment():
     client = service_v1beta1.EnvironmentsClient()
 
     # Initialize request argument(s)
-    request = service_v1beta1.GetEnvironmentRequest(
-    )
+    request = service_v1beta1.GetEnvironmentRequest()
 
     # Make the request
     response = client.get_environment(request=request)
 
     # Handle the response
     print(response)
+
 
 # [END composer_v1beta1_generated_Environments_GetEnvironment_sync]

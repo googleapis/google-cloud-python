@@ -50,4 +50,5 @@ def sample_stream_generate_content():
     for response in stream:
         print(response)
 
+
 # [END generativelanguage_v1alpha_generated_GenerativeService_StreamGenerateContent_sync]

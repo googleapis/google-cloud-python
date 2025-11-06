@@ -39,8 +39,7 @@ def sample_delete_tag():
     client = artifactregistry_v1.ArtifactRegistryClient()
 
     # Initialize request argument(s)
-    request = artifactregistry_v1.DeleteTagRequest(
-    )
+    request = artifactregistry_v1.DeleteTagRequest()
 
     # Make the request
     client.delete_tag(request=request)

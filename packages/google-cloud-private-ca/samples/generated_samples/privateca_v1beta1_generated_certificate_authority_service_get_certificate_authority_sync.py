@@ -49,4 +49,5 @@ def sample_get_certificate_authority():
     # Handle the response
     print(response)
 
+
 # [END privateca_v1beta1_generated_CertificateAuthorityService_GetCertificateAuthority_sync]

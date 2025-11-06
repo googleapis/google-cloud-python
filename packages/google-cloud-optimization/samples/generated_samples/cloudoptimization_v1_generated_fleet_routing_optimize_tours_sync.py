@@ -49,4 +49,5 @@ def sample_optimize_tours():
     # Handle the response
     print(response)
 
+
 # [END cloudoptimization_v1_generated_FleetRouting_OptimizeTours_sync]

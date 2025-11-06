@@ -39,8 +39,7 @@ def sample_batch_enable_services():
     client = service_usage_v1.ServiceUsageClient()
 
     # Initialize request argument(s)
-    request = service_usage_v1.BatchEnableServicesRequest(
-    )
+    request = service_usage_v1.BatchEnableServicesRequest()
 
     # Make the request
     operation = client.batch_enable_services(request=request)
@@ -51,5 +50,6 @@ def sample_batch_enable_services():
 
     # Handle the response
     print(response)
+
 
 # [END serviceusage_v1_generated_ServiceUsage_BatchEnableServices_sync]

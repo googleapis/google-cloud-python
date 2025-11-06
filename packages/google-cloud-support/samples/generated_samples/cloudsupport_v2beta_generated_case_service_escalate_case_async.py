@@ -49,4 +49,5 @@ async def sample_escalate_case():
     # Handle the response
     print(response)
 
+
 # [END cloudsupport_v2beta_generated_CaseService_EscalateCase_async]

@@ -39,8 +39,7 @@ async def sample_async_batch_annotate_files():
     client = vision_v1.ImageAnnotatorAsyncClient()
 
     # Initialize request argument(s)
-    request = vision_v1.AsyncBatchAnnotateFilesRequest(
-    )
+    request = vision_v1.AsyncBatchAnnotateFilesRequest()
 
     # Make the request
     operation = client.async_batch_annotate_files(request=request)
@@ -51,5 +50,6 @@ async def sample_async_batch_annotate_files():
 
     # Handle the response
     print(response)
+
 
 # [END vision_v1_generated_ImageAnnotator_AsyncBatchAnnotateFiles_async]

@@ -51,4 +51,5 @@ def sample_set_backup():
     # Handle the response
     print(response)
 
+
 # [END compute_v1beta_generated_TargetPools_SetBackup_sync]

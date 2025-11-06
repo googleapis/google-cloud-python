@@ -49,4 +49,5 @@ def sample_get_app_connector():
     # Handle the response
     print(response)
 
+
 # [END beyondcorp_v1_generated_AppConnectorsService_GetAppConnector_sync]

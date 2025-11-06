@@ -39,8 +39,7 @@ def sample_update_worker_pool():
     client = run_v2.WorkerPoolsClient()
 
     # Initialize request argument(s)
-    request = run_v2.UpdateWorkerPoolRequest(
-    )
+    request = run_v2.UpdateWorkerPoolRequest()
 
     # Make the request
     operation = client.update_worker_pool(request=request)
@@ -51,5 +50,6 @@ def sample_update_worker_pool():
 
     # Handle the response
     print(response)
+
 
 # [END run_v2_generated_WorkerPools_UpdateWorkerPool_sync]

@@ -39,13 +39,13 @@ async def sample_update_business_identity():
     client = merchant_accounts_v1beta.BusinessIdentityServiceAsyncClient()
 
     # Initialize request argument(s)
-    request = merchant_accounts_v1beta.UpdateBusinessIdentityRequest(
-    )
+    request = merchant_accounts_v1beta.UpdateBusinessIdentityRequest()
 
     # Make the request
     response = await client.update_business_identity(request=request)
 
     # Handle the response
     print(response)
+
 
 # [END merchantapi_v1beta_generated_BusinessIdentityService_UpdateBusinessIdentity_async]

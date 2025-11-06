@@ -52,4 +52,5 @@ async def sample_update_iceberg_catalog():
     # Handle the response
     print(response)
 
+
 # [END biglake_v1_generated_IcebergCatalogService_UpdateIcebergCatalog_async]

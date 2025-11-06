@@ -54,4 +54,5 @@ async def sample_create_repository():
     # Handle the response
     print(response)
 
+
 # [END securesourcemanager_v1_generated_SecureSourceManager_CreateRepository_async]

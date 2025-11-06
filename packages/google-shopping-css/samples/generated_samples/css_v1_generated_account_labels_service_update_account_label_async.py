@@ -39,13 +39,13 @@ async def sample_update_account_label():
     client = css_v1.AccountLabelsServiceAsyncClient()
 
     # Initialize request argument(s)
-    request = css_v1.UpdateAccountLabelRequest(
-    )
+    request = css_v1.UpdateAccountLabelRequest()
 
     # Make the request
     response = await client.update_account_label(request=request)
 
     # Handle the response
     print(response)
+
 
 # [END css_v1_generated_AccountLabelsService_UpdateAccountLabel_async]

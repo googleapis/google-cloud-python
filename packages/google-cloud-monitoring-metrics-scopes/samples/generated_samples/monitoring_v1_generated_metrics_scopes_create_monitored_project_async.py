@@ -53,4 +53,5 @@ async def sample_create_monitored_project():
     # Handle the response
     print(response)
 
+
 # [END monitoring_v1_generated_MetricsScopes_CreateMonitoredProject_async]

@@ -39,13 +39,13 @@ async def sample_update_user():
     client = merchant_accounts_v1beta.UserServiceAsyncClient()
 
     # Initialize request argument(s)
-    request = merchant_accounts_v1beta.UpdateUserRequest(
-    )
+    request = merchant_accounts_v1beta.UpdateUserRequest()
 
     # Make the request
     response = await client.update_user(request=request)
 
     # Handle the response
     print(response)
+
 
 # [END merchantapi_v1beta_generated_UserService_UpdateUser_async]

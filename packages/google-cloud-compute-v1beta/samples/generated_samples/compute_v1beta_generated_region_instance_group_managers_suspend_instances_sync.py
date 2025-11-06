@@ -51,4 +51,5 @@ def sample_suspend_instances():
     # Handle the response
     print(response)
 
+
 # [END compute_v1beta_generated_RegionInstanceGroupManagers_SuspendInstances_sync]

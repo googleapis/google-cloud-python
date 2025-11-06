@@ -50,4 +50,5 @@ def sample_list_clusters():
     for response in page_result:
         print(response)
 
+
 # [END alloydb_v1beta_generated_AlloyDBAdmin_ListClusters_sync]

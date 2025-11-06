@@ -57,4 +57,5 @@ def sample_export_issue_model():
     # Handle the response
     print(response)
 
+
 # [END contactcenterinsights_v1_generated_ContactCenterInsights_ExportIssueModel_sync]

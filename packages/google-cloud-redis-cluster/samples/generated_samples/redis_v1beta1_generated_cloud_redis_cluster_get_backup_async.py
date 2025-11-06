@@ -49,4 +49,5 @@ async def sample_get_backup():
     # Handle the response
     print(response)
 
+
 # [END redis_v1beta1_generated_CloudRedisCluster_GetBackup_async]

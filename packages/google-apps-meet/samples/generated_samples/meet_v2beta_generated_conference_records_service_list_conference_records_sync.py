@@ -39,8 +39,7 @@ def sample_list_conference_records():
     client = meet_v2beta.ConferenceRecordsServiceClient()
 
     # Initialize request argument(s)
-    request = meet_v2beta.ListConferenceRecordsRequest(
-    )
+    request = meet_v2beta.ListConferenceRecordsRequest()
 
     # Make the request
     page_result = client.list_conference_records(request=request)
@@ -48,5 +47,6 @@ def sample_list_conference_records():
     # Handle the response
     for response in page_result:
         print(response)
+
 
 # [END meet_v2beta_generated_ConferenceRecordsService_ListConferenceRecords_sync]

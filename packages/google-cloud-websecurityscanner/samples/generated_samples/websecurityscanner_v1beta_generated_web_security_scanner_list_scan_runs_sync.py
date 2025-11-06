@@ -50,4 +50,5 @@ def sample_list_scan_runs():
     for response in page_result:
         print(response)
 
+
 # [END websecurityscanner_v1beta_generated_WebSecurityScanner_ListScanRuns_sync]

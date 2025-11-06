@@ -49,4 +49,5 @@ def sample_get_workstation():
     # Handle the response
     print(response)
 
+
 # [END workstations_v1_generated_Workstations_GetWorkstation_sync]

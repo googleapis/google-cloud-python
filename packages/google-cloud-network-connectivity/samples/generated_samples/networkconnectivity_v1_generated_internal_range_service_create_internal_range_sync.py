@@ -53,4 +53,5 @@ def sample_create_internal_range():
     # Handle the response
     print(response)
 
+
 # [END networkconnectivity_v1_generated_InternalRangeService_CreateInternalRange_sync]

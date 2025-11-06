@@ -49,4 +49,5 @@ def sample_list_metrics_scopes_by_monitored_project():
     # Handle the response
     print(response)
 
+
 # [END monitoring_v1_generated_MetricsScopes_ListMetricsScopesByMonitoredProject_sync]

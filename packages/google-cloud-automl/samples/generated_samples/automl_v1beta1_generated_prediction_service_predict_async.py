@@ -40,7 +40,7 @@ async def sample_predict():
 
     # Initialize request argument(s)
     payload = automl_v1beta1.ExamplePayload()
-    payload.image.image_bytes = b'image_bytes_blob'
+    payload.image.image_bytes = b"image_bytes_blob"
 
     request = automl_v1beta1.PredictRequest(
         name="name_value",
@@ -52,5 +52,6 @@ async def sample_predict():
 
     # Handle the response
     print(response)
+
 
 # [END automl_v1beta1_generated_PredictionService_Predict_async]

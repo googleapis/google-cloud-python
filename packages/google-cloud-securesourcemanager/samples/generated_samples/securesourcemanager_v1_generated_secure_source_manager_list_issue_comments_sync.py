@@ -50,4 +50,5 @@ def sample_list_issue_comments():
     for response in page_result:
         print(response)
 
+
 # [END securesourcemanager_v1_generated_SecureSourceManager_ListIssueComments_sync]

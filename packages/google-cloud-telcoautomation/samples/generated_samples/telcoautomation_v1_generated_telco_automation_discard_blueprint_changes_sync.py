@@ -49,4 +49,5 @@ def sample_discard_blueprint_changes():
     # Handle the response
     print(response)
 
+
 # [END telcoautomation_v1_generated_TelcoAutomation_DiscardBlueprintChanges_sync]

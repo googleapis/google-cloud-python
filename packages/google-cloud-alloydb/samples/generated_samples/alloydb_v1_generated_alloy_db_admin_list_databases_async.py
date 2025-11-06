@@ -50,4 +50,5 @@ async def sample_list_databases():
     async for response in page_result:
         print(response)
 
+
 # [END alloydb_v1_generated_AlloyDBAdmin_ListDatabases_async]

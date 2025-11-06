@@ -50,4 +50,5 @@ def sample_list_documents():
     for response in page_result:
         print(response)
 
+
 # [END generativelanguage_v1alpha_generated_RetrieverService_ListDocuments_sync]

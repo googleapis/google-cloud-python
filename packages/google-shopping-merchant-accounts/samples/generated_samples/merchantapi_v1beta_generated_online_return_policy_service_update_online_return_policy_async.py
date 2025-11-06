@@ -41,7 +41,7 @@ async def sample_update_online_return_policy():
     # Initialize request argument(s)
     online_return_policy = merchant_accounts_v1beta.OnlineReturnPolicy()
     online_return_policy.label = "label_value"
-    online_return_policy.countries = ['countries_value1', 'countries_value2']
+    online_return_policy.countries = ["countries_value1", "countries_value2"]
     online_return_policy.return_policy_uri = "return_policy_uri_value"
 
     request = merchant_accounts_v1beta.UpdateOnlineReturnPolicyRequest(
@@ -53,5 +53,6 @@ async def sample_update_online_return_policy():
 
     # Handle the response
     print(response)
+
 
 # [END merchantapi_v1beta_generated_OnlineReturnPolicyService_UpdateOnlineReturnPolicy_async]

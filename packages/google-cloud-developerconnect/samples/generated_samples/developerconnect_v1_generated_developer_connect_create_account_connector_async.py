@@ -41,7 +41,7 @@ async def sample_create_account_connector():
     # Initialize request argument(s)
     account_connector = developerconnect_v1.AccountConnector()
     account_connector.provider_oauth_config.system_provider_id = "DYNATRACE"
-    account_connector.provider_oauth_config.scopes = ['scopes_value1', 'scopes_value2']
+    account_connector.provider_oauth_config.scopes = ["scopes_value1", "scopes_value2"]
 
     request = developerconnect_v1.CreateAccountConnectorRequest(
         parent="parent_value",
@@ -58,5 +58,6 @@ async def sample_create_account_connector():
 
     # Handle the response
     print(response)
+
 
 # [END developerconnect_v1_generated_DeveloperConnect_CreateAccountConnector_async]

@@ -60,4 +60,5 @@ def sample_create_instance():
     # Handle the response
     print(response)
 
+
 # [END memorystore_v1beta_generated_Memorystore_CreateInstance_sync]

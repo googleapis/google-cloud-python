@@ -39,8 +39,7 @@ async def sample_update_volume():
     client = bare_metal_solution_v2.BareMetalSolutionAsyncClient()
 
     # Initialize request argument(s)
-    request = bare_metal_solution_v2.UpdateVolumeRequest(
-    )
+    request = bare_metal_solution_v2.UpdateVolumeRequest()
 
     # Make the request
     operation = client.update_volume(request=request)
@@ -51,5 +50,6 @@ async def sample_update_volume():
 
     # Handle the response
     print(response)
+
 
 # [END baremetalsolution_v2_generated_BareMetalSolution_UpdateVolume_async]

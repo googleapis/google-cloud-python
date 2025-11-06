@@ -54,4 +54,5 @@ async def sample_create_entity_type():
     # Handle the response
     print(response)
 
+
 # [END dialogflow_v3_generated_EntityTypes_CreateEntityType_async]

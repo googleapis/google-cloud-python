@@ -49,4 +49,5 @@ def sample_get_branch():
     # Handle the response
     print(response)
 
+
 # [END retail_v2alpha_generated_BranchService_GetBranch_sync]

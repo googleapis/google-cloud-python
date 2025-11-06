@@ -49,4 +49,5 @@ def sample_get_private_cloud():
     # Handle the response
     print(response)
 
+
 # [END vmwareengine_v1_generated_VmwareEngine_GetPrivateCloud_sync]

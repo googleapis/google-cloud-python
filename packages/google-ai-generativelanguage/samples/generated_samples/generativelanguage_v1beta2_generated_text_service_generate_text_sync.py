@@ -53,4 +53,5 @@ def sample_generate_text():
     # Handle the response
     print(response)
 
+
 # [END generativelanguage_v1beta2_generated_TextService_GenerateText_sync]

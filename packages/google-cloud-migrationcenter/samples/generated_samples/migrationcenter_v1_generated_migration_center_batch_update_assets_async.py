@@ -49,4 +49,5 @@ async def sample_batch_update_assets():
     # Handle the response
     print(response)
 
+
 # [END migrationcenter_v1_generated_MigrationCenter_BatchUpdateAssets_async]

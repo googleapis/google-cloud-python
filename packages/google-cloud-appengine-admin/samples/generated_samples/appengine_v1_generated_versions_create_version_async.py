@@ -39,8 +39,7 @@ async def sample_create_version():
     client = appengine_admin_v1.VersionsAsyncClient()
 
     # Initialize request argument(s)
-    request = appengine_admin_v1.CreateVersionRequest(
-    )
+    request = appengine_admin_v1.CreateVersionRequest()
 
     # Make the request
     operation = client.create_version(request=request)
@@ -51,5 +50,6 @@ async def sample_create_version():
 
     # Handle the response
     print(response)
+
 
 # [END appengine_v1_generated_Versions_CreateVersion_async]

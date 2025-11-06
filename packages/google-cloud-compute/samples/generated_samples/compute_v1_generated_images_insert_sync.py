@@ -49,4 +49,5 @@ def sample_insert():
     # Handle the response
     print(response)
 
+
 # [END compute_v1_generated_Images_Insert_sync]

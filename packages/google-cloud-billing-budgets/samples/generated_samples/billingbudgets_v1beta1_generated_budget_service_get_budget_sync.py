@@ -49,4 +49,5 @@ def sample_get_budget():
     # Handle the response
     print(response)
 
+
 # [END billingbudgets_v1beta1_generated_BudgetService_GetBudget_sync]

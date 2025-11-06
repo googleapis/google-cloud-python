@@ -56,4 +56,5 @@ async def sample_update_cluster():
     # Handle the response
     print(response)
 
+
 # [END redis_v1_generated_CloudRedisCluster_UpdateCluster_async]

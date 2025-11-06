@@ -39,8 +39,7 @@ async def sample_enable_service_account():
     client = iam_admin_v1.IAMAsyncClient()
 
     # Initialize request argument(s)
-    request = iam_admin_v1.EnableServiceAccountRequest(
-    )
+    request = iam_admin_v1.EnableServiceAccountRequest()
 
     # Make the request
     await client.enable_service_account(request=request)

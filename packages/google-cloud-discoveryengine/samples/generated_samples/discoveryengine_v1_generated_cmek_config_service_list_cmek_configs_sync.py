@@ -49,4 +49,5 @@ def sample_list_cmek_configs():
     # Handle the response
     print(response)
 
+
 # [END discoveryengine_v1_generated_CmekConfigService_ListCmekConfigs_sync]

@@ -39,8 +39,7 @@ def sample_reimage_node():
     client = tpu_v1.TpuClient()
 
     # Initialize request argument(s)
-    request = tpu_v1.ReimageNodeRequest(
-    )
+    request = tpu_v1.ReimageNodeRequest()
 
     # Make the request
     operation = client.reimage_node(request=request)
@@ -51,5 +50,6 @@ def sample_reimage_node():
 
     # Handle the response
     print(response)
+
 
 # [END tpu_v1_generated_Tpu_ReimageNode_sync]

@@ -50,4 +50,5 @@ async def sample_fetch_blob():
     # Handle the response
     print(response)
 
+
 # [END securesourcemanager_v1_generated_SecureSourceManager_FetchBlob_async]

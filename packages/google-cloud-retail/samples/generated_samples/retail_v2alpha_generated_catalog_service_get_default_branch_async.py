@@ -39,13 +39,13 @@ async def sample_get_default_branch():
     client = retail_v2alpha.CatalogServiceAsyncClient()
 
     # Initialize request argument(s)
-    request = retail_v2alpha.GetDefaultBranchRequest(
-    )
+    request = retail_v2alpha.GetDefaultBranchRequest()
 
     # Make the request
     response = await client.get_default_branch(request=request)
 
     # Handle the response
     print(response)
+
 
 # [END retail_v2alpha_generated_CatalogService_GetDefaultBranch_async]

@@ -50,4 +50,5 @@ def sample_search_catalogs():
     for response in page_result:
         print(response)
 
+
 # [END cloudprivatecatalog_v1beta1_generated_PrivateCatalog_SearchCatalogs_sync]

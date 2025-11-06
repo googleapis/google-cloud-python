@@ -53,4 +53,5 @@ def sample_delete_access_config():
     # Handle the response
     print(response)
 
+
 # [END compute_v1_generated_Instances_DeleteAccessConfig_sync]

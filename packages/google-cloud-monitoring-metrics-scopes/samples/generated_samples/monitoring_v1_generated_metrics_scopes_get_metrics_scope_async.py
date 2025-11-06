@@ -49,4 +49,5 @@ async def sample_get_metrics_scope():
     # Handle the response
     print(response)
 
+
 # [END monitoring_v1_generated_MetricsScopes_GetMetricsScope_async]

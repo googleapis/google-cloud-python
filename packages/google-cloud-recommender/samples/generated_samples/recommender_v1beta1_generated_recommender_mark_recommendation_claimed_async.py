@@ -50,4 +50,5 @@ async def sample_mark_recommendation_claimed():
     # Handle the response
     print(response)
 
+
 # [END recommender_v1beta1_generated_Recommender_MarkRecommendationClaimed_async]

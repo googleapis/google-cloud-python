@@ -49,4 +49,5 @@ async def sample_get_user_workloads_secret():
     # Handle the response
     print(response)
 
+
 # [END composer_v1_generated_Environments_GetUserWorkloadsSecret_async]

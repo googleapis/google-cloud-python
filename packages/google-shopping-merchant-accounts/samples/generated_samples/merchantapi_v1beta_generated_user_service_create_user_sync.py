@@ -50,4 +50,5 @@ def sample_create_user():
     # Handle the response
     print(response)
 
+
 # [END merchantapi_v1beta_generated_UserService_CreateUser_sync]

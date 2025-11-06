@@ -50,4 +50,5 @@ async def sample_list_channel_partner_links():
     async for response in page_result:
         print(response)
 
+
 # [END cloudchannel_v1_generated_CloudChannelService_ListChannelPartnerLinks_async]

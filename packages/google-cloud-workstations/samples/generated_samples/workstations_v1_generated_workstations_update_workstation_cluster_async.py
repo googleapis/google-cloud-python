@@ -39,8 +39,7 @@ async def sample_update_workstation_cluster():
     client = workstations_v1.WorkstationsAsyncClient()
 
     # Initialize request argument(s)
-    request = workstations_v1.UpdateWorkstationClusterRequest(
-    )
+    request = workstations_v1.UpdateWorkstationClusterRequest()
 
     # Make the request
     operation = client.update_workstation_cluster(request=request)
@@ -51,5 +50,6 @@ async def sample_update_workstation_cluster():
 
     # Handle the response
     print(response)
+
 
 # [END workstations_v1_generated_Workstations_UpdateWorkstationCluster_async]

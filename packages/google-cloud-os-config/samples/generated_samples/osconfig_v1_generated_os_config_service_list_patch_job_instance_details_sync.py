@@ -50,4 +50,5 @@ def sample_list_patch_job_instance_details():
     for response in page_result:
         print(response)
 
+
 # [END osconfig_v1_generated_OsConfigService_ListPatchJobInstanceDetails_sync]

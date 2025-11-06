@@ -49,4 +49,5 @@ async def sample_get_cutover_job():
     # Handle the response
     print(response)
 
+
 # [END vmmigration_v1_generated_VmMigration_GetCutoverJob_async]

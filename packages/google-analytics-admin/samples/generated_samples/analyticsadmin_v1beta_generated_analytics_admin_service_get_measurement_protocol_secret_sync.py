@@ -49,4 +49,5 @@ def sample_get_measurement_protocol_secret():
     # Handle the response
     print(response)
 
+
 # [END analyticsadmin_v1beta_generated_AnalyticsAdminService_GetMeasurementProtocolSecret_sync]

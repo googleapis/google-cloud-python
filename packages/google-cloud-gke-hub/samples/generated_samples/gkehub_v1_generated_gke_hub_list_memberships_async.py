@@ -50,4 +50,5 @@ async def sample_list_memberships():
     async for response in page_result:
         print(response)
 
+
 # [END gkehub_v1_generated_GkeHub_ListMemberships_async]

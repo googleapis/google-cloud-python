@@ -39,13 +39,13 @@ def sample_update_namespace():
     client = servicedirectory_v1beta1.RegistrationServiceClient()
 
     # Initialize request argument(s)
-    request = servicedirectory_v1beta1.UpdateNamespaceRequest(
-    )
+    request = servicedirectory_v1beta1.UpdateNamespaceRequest()
 
     # Make the request
     response = client.update_namespace(request=request)
 
     # Handle the response
     print(response)
+
 
 # [END servicedirectory_v1beta1_generated_RegistrationService_UpdateNamespace_sync]

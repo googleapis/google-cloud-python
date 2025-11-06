@@ -54,4 +54,5 @@ async def sample_import_assets():
     # Handle the response
     print(response)
 
+
 # [END visionai_v1_generated_Warehouse_ImportAssets_async]

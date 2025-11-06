@@ -54,4 +54,5 @@ def sample_register_instance():
     # Handle the response
     print(response)
 
+
 # [END notebooks_v1beta1_generated_NotebookService_RegisterInstance_sync]

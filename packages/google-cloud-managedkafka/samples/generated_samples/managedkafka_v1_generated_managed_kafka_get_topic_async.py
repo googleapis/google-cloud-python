@@ -49,4 +49,5 @@ async def sample_get_topic():
     # Handle the response
     print(response)
 
+
 # [END managedkafka_v1_generated_ManagedKafka_GetTopic_async]

@@ -49,4 +49,5 @@ async def sample_batch_create_occurrences():
     # Handle the response
     print(response)
 
+
 # [END containeranalysis_v1_generated_Grafeas_BatchCreateOccurrences_async]

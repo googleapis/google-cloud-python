@@ -39,13 +39,13 @@ async def sample_update_repository():
     client = dataform_v1.DataformAsyncClient()
 
     # Initialize request argument(s)
-    request = dataform_v1.UpdateRepositoryRequest(
-    )
+    request = dataform_v1.UpdateRepositoryRequest()
 
     # Make the request
     response = await client.update_repository(request=request)
 
     # Handle the response
     print(response)
+
 
 # [END dataform_v1_generated_Dataform_UpdateRepository_async]

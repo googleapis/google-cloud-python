@@ -50,4 +50,5 @@ async def sample_create_secret():
     # Handle the response
     print(response)
 
+
 # [END secretmanager_v1_generated_SecretManagerService_CreateSecret_async]

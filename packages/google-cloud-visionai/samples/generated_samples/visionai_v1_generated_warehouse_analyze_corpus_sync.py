@@ -53,4 +53,5 @@ def sample_analyze_corpus():
     # Handle the response
     print(response)
 
+
 # [END visionai_v1_generated_Warehouse_AnalyzeCorpus_sync]

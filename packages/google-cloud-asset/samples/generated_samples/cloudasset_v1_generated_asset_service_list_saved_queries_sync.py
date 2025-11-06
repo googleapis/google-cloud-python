@@ -50,4 +50,5 @@ def sample_list_saved_queries():
     for response in page_result:
         print(response)
 
+
 # [END cloudasset_v1_generated_AssetService_ListSavedQueries_sync]

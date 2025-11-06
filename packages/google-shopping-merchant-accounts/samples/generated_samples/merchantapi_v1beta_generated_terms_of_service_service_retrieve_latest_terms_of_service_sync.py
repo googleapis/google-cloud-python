@@ -50,4 +50,5 @@ def sample_retrieve_latest_terms_of_service():
     # Handle the response
     print(response)
 
+
 # [END merchantapi_v1beta_generated_TermsOfServiceService_RetrieveLatestTermsOfService_sync]

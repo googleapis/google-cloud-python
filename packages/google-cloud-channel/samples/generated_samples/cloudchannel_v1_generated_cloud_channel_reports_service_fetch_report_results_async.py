@@ -50,4 +50,5 @@ async def sample_fetch_report_results():
     async for response in page_result:
         print(response)
 
+
 # [END cloudchannel_v1_generated_CloudChannelReportsService_FetchReportResults_async]

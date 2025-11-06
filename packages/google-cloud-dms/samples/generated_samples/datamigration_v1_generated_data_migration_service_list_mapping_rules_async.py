@@ -50,4 +50,5 @@ async def sample_list_mapping_rules():
     async for response in page_result:
         print(response)
 
+
 # [END datamigration_v1_generated_DataMigrationService_ListMappingRules_async]

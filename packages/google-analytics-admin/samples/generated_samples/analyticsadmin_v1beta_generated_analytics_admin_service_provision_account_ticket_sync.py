@@ -39,13 +39,13 @@ def sample_provision_account_ticket():
     client = admin_v1beta.AnalyticsAdminServiceClient()
 
     # Initialize request argument(s)
-    request = admin_v1beta.ProvisionAccountTicketRequest(
-    )
+    request = admin_v1beta.ProvisionAccountTicketRequest()
 
     # Make the request
     response = client.provision_account_ticket(request=request)
 
     # Handle the response
     print(response)
+
 
 # [END analyticsadmin_v1beta_generated_AnalyticsAdminService_ProvisionAccountTicket_sync]

@@ -49,4 +49,5 @@ def sample_get_delivery_vehicle():
     # Handle the response
     print(response)
 
+
 # [END fleetengine_v1_generated_DeliveryService_GetDeliveryVehicle_sync]

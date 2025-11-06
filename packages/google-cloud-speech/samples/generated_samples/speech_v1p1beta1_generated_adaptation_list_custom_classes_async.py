@@ -50,4 +50,5 @@ async def sample_list_custom_classes():
     async for response in page_result:
         print(response)
 
+
 # [END speech_v1p1beta1_generated_Adaptation_ListCustomClasses_async]

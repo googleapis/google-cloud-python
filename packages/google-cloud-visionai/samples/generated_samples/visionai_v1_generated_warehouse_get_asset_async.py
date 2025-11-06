@@ -49,4 +49,5 @@ async def sample_get_asset():
     # Handle the response
     print(response)
 
+
 # [END visionai_v1_generated_Warehouse_GetAsset_async]

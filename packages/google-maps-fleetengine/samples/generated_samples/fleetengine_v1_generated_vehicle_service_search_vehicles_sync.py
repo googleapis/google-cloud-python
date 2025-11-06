@@ -44,7 +44,7 @@ def sample_search_vehicles():
         pickup_radius_meters=2146,
         count=553,
         minimum_capacity=1705,
-        trip_types=['EXCLUSIVE'],
+        trip_types=["EXCLUSIVE"],
         order_by="COST",
     )
 
@@ -53,5 +53,6 @@ def sample_search_vehicles():
 
     # Handle the response
     print(response)
+
 
 # [END fleetengine_v1_generated_VehicleService_SearchVehicles_sync]

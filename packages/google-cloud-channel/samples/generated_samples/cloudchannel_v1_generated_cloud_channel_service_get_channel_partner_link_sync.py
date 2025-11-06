@@ -49,4 +49,5 @@ def sample_get_channel_partner_link():
     # Handle the response
     print(response)
 
+
 # [END cloudchannel_v1_generated_CloudChannelService_GetChannelPartnerLink_sync]

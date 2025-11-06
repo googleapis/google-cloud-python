@@ -49,4 +49,5 @@ async def sample_resume_patch_deployment():
     # Handle the response
     print(response)
 
+
 # [END osconfig_v1_generated_OsConfigService_ResumePatchDeployment_async]

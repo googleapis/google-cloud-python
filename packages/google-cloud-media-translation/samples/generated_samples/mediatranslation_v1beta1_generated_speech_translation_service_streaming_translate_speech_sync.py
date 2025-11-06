@@ -65,4 +65,5 @@ def sample_streaming_translate_speech():
     for response in stream:
         print(response)
 
+
 # [END mediatranslation_v1beta1_generated_SpeechTranslationService_StreamingTranslateSpeech_sync]

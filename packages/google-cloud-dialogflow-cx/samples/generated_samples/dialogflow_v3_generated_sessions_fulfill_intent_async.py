@@ -39,13 +39,13 @@ async def sample_fulfill_intent():
     client = dialogflowcx_v3.SessionsAsyncClient()
 
     # Initialize request argument(s)
-    request = dialogflowcx_v3.FulfillIntentRequest(
-    )
+    request = dialogflowcx_v3.FulfillIntentRequest()
 
     # Make the request
     response = await client.fulfill_intent(request=request)
 
     # Handle the response
     print(response)
+
 
 # [END dialogflow_v3_generated_Sessions_FulfillIntent_async]

@@ -49,4 +49,5 @@ async def sample_get_template():
     # Handle the response
     print(response)
 
+
 # [END modelarmor_v1_generated_ModelArmor_GetTemplate_async]

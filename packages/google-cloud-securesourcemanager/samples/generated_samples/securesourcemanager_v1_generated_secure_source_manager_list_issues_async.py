@@ -50,4 +50,5 @@ async def sample_list_issues():
     async for response in page_result:
         print(response)
 
+
 # [END securesourcemanager_v1_generated_SecureSourceManager_ListIssues_async]

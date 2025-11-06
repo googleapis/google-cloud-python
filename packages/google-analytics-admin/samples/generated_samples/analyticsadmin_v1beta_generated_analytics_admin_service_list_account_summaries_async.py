@@ -39,8 +39,7 @@ async def sample_list_account_summaries():
     client = admin_v1beta.AnalyticsAdminServiceAsyncClient()
 
     # Initialize request argument(s)
-    request = admin_v1beta.ListAccountSummariesRequest(
-    )
+    request = admin_v1beta.ListAccountSummariesRequest()
 
     # Make the request
     page_result = client.list_account_summaries(request=request)
@@ -48,5 +47,6 @@ async def sample_list_account_summaries():
     # Handle the response
     async for response in page_result:
         print(response)
+
 
 # [END analyticsadmin_v1beta_generated_AnalyticsAdminService_ListAccountSummaries_async]

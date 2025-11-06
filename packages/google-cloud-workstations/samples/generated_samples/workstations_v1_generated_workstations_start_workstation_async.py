@@ -53,4 +53,5 @@ async def sample_start_workstation():
     # Handle the response
     print(response)
 
+
 # [END workstations_v1_generated_Workstations_StartWorkstation_async]

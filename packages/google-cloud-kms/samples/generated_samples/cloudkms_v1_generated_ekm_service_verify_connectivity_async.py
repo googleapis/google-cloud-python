@@ -49,4 +49,5 @@ async def sample_verify_connectivity():
     # Handle the response
     print(response)
 
+
 # [END cloudkms_v1_generated_EkmService_VerifyConnectivity_async]

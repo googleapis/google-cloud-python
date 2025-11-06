@@ -39,8 +39,7 @@ def sample_promote_migration_job():
     client = clouddms_v1.DataMigrationServiceClient()
 
     # Initialize request argument(s)
-    request = clouddms_v1.PromoteMigrationJobRequest(
-    )
+    request = clouddms_v1.PromoteMigrationJobRequest()
 
     # Make the request
     operation = client.promote_migration_job(request=request)
@@ -51,5 +50,6 @@ def sample_promote_migration_job():
 
     # Handle the response
     print(response)
+
 
 # [END datamigration_v1_generated_DataMigrationService_PromoteMigrationJob_sync]

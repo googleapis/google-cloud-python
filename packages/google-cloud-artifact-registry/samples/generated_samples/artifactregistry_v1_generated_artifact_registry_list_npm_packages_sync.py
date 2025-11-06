@@ -50,4 +50,5 @@ def sample_list_npm_packages():
     for response in page_result:
         print(response)
 
+
 # [END artifactregistry_v1_generated_ArtifactRegistry_ListNpmPackages_sync]

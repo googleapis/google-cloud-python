@@ -50,4 +50,5 @@ def sample_list_security_health_analytics_custom_modules():
     for response in page_result:
         print(response)
 
+
 # [END securitycenter_v1_generated_SecurityCenter_ListSecurityHealthAnalyticsCustomModules_sync]

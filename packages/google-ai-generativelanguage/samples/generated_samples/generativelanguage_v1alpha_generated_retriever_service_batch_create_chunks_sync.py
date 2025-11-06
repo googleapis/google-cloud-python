@@ -53,4 +53,5 @@ def sample_batch_create_chunks():
     # Handle the response
     print(response)
 
+
 # [END generativelanguage_v1alpha_generated_RetrieverService_BatchCreateChunks_sync]

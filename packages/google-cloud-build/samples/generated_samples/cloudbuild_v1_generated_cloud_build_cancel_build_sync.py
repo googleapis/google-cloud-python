@@ -50,4 +50,5 @@ def sample_cancel_build():
     # Handle the response
     print(response)
 
+
 # [END cloudbuild_v1_generated_CloudBuild_CancelBuild_sync]

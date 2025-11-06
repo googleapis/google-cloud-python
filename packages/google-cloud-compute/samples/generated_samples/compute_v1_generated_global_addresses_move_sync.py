@@ -50,4 +50,5 @@ def sample_move():
     # Handle the response
     print(response)
 
+
 # [END compute_v1_generated_GlobalAddresses_Move_sync]

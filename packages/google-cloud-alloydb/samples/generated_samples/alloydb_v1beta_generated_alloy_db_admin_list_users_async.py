@@ -50,4 +50,5 @@ async def sample_list_users():
     async for response in page_result:
         print(response)
 
+
 # [END alloydb_v1beta_generated_AlloyDBAdmin_ListUsers_async]

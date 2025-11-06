@@ -53,4 +53,5 @@ async def sample_count_message_tokens():
     # Handle the response
     print(response)
 
+
 # [END generativelanguage_v1beta2_generated_DiscussService_CountMessageTokens_async]

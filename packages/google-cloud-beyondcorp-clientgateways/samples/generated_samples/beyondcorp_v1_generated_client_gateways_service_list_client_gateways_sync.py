@@ -50,4 +50,5 @@ def sample_list_client_gateways():
     for response in page_result:
         print(response)
 
+
 # [END beyondcorp_v1_generated_ClientGatewaysService_ListClientGateways_sync]

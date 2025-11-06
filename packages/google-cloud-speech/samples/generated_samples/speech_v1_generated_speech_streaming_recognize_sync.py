@@ -63,4 +63,5 @@ def sample_streaming_recognize():
     for response in stream:
         print(response)
 
+
 # [END speech_v1_generated_Speech_StreamingRecognize_sync]

@@ -51,4 +51,5 @@ def sample_get_serial_port_output():
     # Handle the response
     print(response)
 
+
 # [END compute_v1_generated_Instances_GetSerialPortOutput_sync]

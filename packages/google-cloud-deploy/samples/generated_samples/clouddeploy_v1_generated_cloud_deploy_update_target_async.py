@@ -39,8 +39,7 @@ async def sample_update_target():
     client = deploy_v1.CloudDeployAsyncClient()
 
     # Initialize request argument(s)
-    request = deploy_v1.UpdateTargetRequest(
-    )
+    request = deploy_v1.UpdateTargetRequest()
 
     # Make the request
     operation = client.update_target(request=request)
@@ -51,5 +50,6 @@ async def sample_update_target():
 
     # Handle the response
     print(response)
+
 
 # [END clouddeploy_v1_generated_CloudDeploy_UpdateTarget_async]

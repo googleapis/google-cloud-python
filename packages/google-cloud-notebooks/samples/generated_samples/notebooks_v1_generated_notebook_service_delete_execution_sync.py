@@ -53,4 +53,5 @@ def sample_delete_execution():
     # Handle the response
     print(response)
 
+
 # [END notebooks_v1_generated_NotebookService_DeleteExecution_sync]

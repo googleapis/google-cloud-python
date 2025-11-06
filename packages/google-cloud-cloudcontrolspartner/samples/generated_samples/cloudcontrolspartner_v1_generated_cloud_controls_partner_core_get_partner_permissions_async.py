@@ -49,4 +49,5 @@ async def sample_get_partner_permissions():
     # Handle the response
     print(response)
 
+
 # [END cloudcontrolspartner_v1_generated_CloudControlsPartnerCore_GetPartnerPermissions_async]

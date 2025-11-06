@@ -49,4 +49,5 @@ def sample_get_notification_channel_verification_code():
     # Handle the response
     print(response)
 
+
 # [END monitoring_v3_generated_NotificationChannelService_GetNotificationChannelVerificationCode_sync]

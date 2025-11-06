@@ -53,4 +53,5 @@ def sample_batch_embed_contents():
     # Handle the response
     print(response)
 
+
 # [END generativelanguage_v1beta_generated_GenerativeService_BatchEmbedContents_sync]

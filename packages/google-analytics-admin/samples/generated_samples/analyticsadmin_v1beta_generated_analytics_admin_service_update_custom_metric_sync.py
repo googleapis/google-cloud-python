@@ -39,13 +39,13 @@ def sample_update_custom_metric():
     client = admin_v1beta.AnalyticsAdminServiceClient()
 
     # Initialize request argument(s)
-    request = admin_v1beta.UpdateCustomMetricRequest(
-    )
+    request = admin_v1beta.UpdateCustomMetricRequest()
 
     # Make the request
     response = client.update_custom_metric(request=request)
 
     # Handle the response
     print(response)
+
 
 # [END analyticsadmin_v1beta_generated_AnalyticsAdminService_UpdateCustomMetric_sync]

@@ -53,4 +53,5 @@ async def sample_cancel_cutover_job():
     # Handle the response
     print(response)
 
+
 # [END vmmigration_v1_generated_VmMigration_CancelCutoverJob_async]

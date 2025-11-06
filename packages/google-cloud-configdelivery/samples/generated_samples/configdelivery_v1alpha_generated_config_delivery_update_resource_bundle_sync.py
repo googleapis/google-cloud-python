@@ -39,8 +39,7 @@ def sample_update_resource_bundle():
     client = configdelivery_v1alpha.ConfigDeliveryClient()
 
     # Initialize request argument(s)
-    request = configdelivery_v1alpha.UpdateResourceBundleRequest(
-    )
+    request = configdelivery_v1alpha.UpdateResourceBundleRequest()
 
     # Make the request
     operation = client.update_resource_bundle(request=request)
@@ -51,5 +50,6 @@ def sample_update_resource_bundle():
 
     # Handle the response
     print(response)
+
 
 # [END configdelivery_v1alpha_generated_ConfigDelivery_UpdateResourceBundle_sync]

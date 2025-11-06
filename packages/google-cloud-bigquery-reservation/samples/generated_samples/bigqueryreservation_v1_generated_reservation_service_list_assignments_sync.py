@@ -50,4 +50,5 @@ def sample_list_assignments():
     for response in page_result:
         print(response)
 
+
 # [END bigqueryreservation_v1_generated_ReservationService_ListAssignments_sync]

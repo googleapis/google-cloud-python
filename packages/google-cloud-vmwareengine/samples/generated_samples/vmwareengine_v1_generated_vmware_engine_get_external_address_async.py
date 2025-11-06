@@ -49,4 +49,5 @@ async def sample_get_external_address():
     # Handle the response
     print(response)
 
+
 # [END vmwareengine_v1_generated_VmwareEngine_GetExternalAddress_async]

@@ -50,4 +50,5 @@ def sample_list_error_frames():
     for response in page_result:
         print(response)
 
+
 # [END migrationcenter_v1_generated_MigrationCenter_ListErrorFrames_sync]

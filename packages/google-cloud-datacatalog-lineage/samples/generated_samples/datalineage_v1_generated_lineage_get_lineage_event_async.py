@@ -49,4 +49,5 @@ async def sample_get_lineage_event():
     # Handle the response
     print(response)
 
+
 # [END datalineage_v1_generated_Lineage_GetLineageEvent_async]

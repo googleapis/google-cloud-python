@@ -50,4 +50,5 @@ async def sample_create_note():
     # Handle the response
     print(response)
 
+
 # [END containeranalysis_v1_generated_Grafeas_CreateNote_async]

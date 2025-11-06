@@ -54,4 +54,5 @@ def sample_reconcile_tags():
     # Handle the response
     print(response)
 
+
 # [END datacatalog_v1_generated_DataCatalog_ReconcileTags_sync]

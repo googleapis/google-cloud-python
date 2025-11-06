@@ -56,4 +56,5 @@ async def sample_create_mapping_rule():
     # Handle the response
     print(response)
 
+
 # [END datamigration_v1_generated_DataMigrationService_CreateMappingRule_async]

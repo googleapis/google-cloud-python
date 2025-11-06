@@ -53,4 +53,5 @@ def sample_delete_plugin():
     # Handle the response
     print(response)
 
+
 # [END apihub_v1_generated_ApiHubPlugin_DeletePlugin_sync]

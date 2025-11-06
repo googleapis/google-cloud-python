@@ -50,4 +50,5 @@ def sample_remove_association():
     # Handle the response
     print(response)
 
+
 # [END compute_v1_generated_NetworkFirewallPolicies_RemoveAssociation_sync]

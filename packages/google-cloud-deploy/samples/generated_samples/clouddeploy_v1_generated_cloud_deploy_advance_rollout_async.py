@@ -50,4 +50,5 @@ async def sample_advance_rollout():
     # Handle the response
     print(response)
 
+
 # [END clouddeploy_v1_generated_CloudDeploy_AdvanceRollout_async]

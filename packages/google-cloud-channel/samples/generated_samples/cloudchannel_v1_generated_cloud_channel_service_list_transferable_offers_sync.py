@@ -52,4 +52,5 @@ def sample_list_transferable_offers():
     for response in page_result:
         print(response)
 
+
 # [END cloudchannel_v1_generated_CloudChannelService_ListTransferableOffers_sync]

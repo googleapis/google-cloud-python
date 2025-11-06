@@ -56,4 +56,5 @@ async def sample_update_workflow():
     # Handle the response
     print(response)
 
+
 # [END workflows_v1beta_generated_Workflows_UpdateWorkflow_async]

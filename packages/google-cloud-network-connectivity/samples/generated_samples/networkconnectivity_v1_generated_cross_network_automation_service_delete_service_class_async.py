@@ -53,4 +53,5 @@ async def sample_delete_service_class():
     # Handle the response
     print(response)
 
+
 # [END networkconnectivity_v1_generated_CrossNetworkAutomationService_DeleteServiceClass_async]

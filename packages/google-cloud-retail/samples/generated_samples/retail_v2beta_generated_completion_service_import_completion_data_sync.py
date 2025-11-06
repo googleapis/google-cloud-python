@@ -58,4 +58,5 @@ def sample_import_completion_data():
     # Handle the response
     print(response)
 
+
 # [END retail_v2beta_generated_CompletionService_ImportCompletionData_sync]

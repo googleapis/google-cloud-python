@@ -58,4 +58,5 @@ def sample_create_control():
     # Handle the response
     print(response)
 
+
 # [END discoveryengine_v1_generated_ControlService_CreateControl_sync]

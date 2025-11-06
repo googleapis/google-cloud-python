@@ -53,4 +53,5 @@ async def sample_delete_environment():
     # Handle the response
     print(response)
 
+
 # [END notebooks_v1_generated_NotebookService_DeleteEnvironment_async]

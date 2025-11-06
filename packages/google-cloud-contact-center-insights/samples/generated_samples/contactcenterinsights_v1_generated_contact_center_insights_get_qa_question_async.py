@@ -49,4 +49,5 @@ async def sample_get_qa_question():
     # Handle the response
     print(response)
 
+
 # [END contactcenterinsights_v1_generated_ContactCenterInsights_GetQaQuestion_async]

@@ -44,10 +44,13 @@ async def sample_list_effective_event_threat_detection_custom_modules():
     )
 
     # Make the request
-    page_result = client.list_effective_event_threat_detection_custom_modules(request=request)
+    page_result = client.list_effective_event_threat_detection_custom_modules(
+        request=request
+    )
 
     # Handle the response
     async for response in page_result:
         print(response)
+
 
 # [END securitycenter_v1_generated_SecurityCenter_ListEffectiveEventThreatDetectionCustomModules_async]

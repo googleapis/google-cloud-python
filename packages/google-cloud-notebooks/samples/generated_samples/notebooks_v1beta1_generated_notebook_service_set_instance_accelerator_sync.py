@@ -55,4 +55,5 @@ def sample_set_instance_accelerator():
     # Handle the response
     print(response)
 
+
 # [END notebooks_v1beta1_generated_NotebookService_SetInstanceAccelerator_sync]

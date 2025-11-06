@@ -49,4 +49,5 @@ def sample_get_runtime_version():
     # Handle the response
     print(response)
 
+
 # [END tpu_v2alpha1_generated_Tpu_GetRuntimeVersion_sync]

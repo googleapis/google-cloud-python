@@ -50,4 +50,5 @@ def sample_list_service_accounts():
     for response in page_result:
         print(response)
 
+
 # [END iam_v1_generated_IAM_ListServiceAccounts_sync]

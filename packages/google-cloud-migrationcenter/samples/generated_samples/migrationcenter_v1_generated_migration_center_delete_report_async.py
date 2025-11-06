@@ -53,4 +53,5 @@ async def sample_delete_report():
     # Handle the response
     print(response)
 
+
 # [END migrationcenter_v1_generated_MigrationCenter_DeleteReport_async]

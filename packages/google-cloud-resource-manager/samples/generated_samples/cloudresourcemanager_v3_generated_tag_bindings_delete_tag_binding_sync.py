@@ -53,4 +53,5 @@ def sample_delete_tag_binding():
     # Handle the response
     print(response)
 
+
 # [END cloudresourcemanager_v3_generated_TagBindings_DeleteTagBinding_sync]

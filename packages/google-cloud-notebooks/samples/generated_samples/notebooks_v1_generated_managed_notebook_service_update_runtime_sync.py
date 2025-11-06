@@ -39,8 +39,7 @@ def sample_update_runtime():
     client = notebooks_v1.ManagedNotebookServiceClient()
 
     # Initialize request argument(s)
-    request = notebooks_v1.UpdateRuntimeRequest(
-    )
+    request = notebooks_v1.UpdateRuntimeRequest()
 
     # Make the request
     operation = client.update_runtime(request=request)
@@ -51,5 +50,6 @@ def sample_update_runtime():
 
     # Handle the response
     print(response)
+
 
 # [END notebooks_v1_generated_ManagedNotebookService_UpdateRuntime_sync]

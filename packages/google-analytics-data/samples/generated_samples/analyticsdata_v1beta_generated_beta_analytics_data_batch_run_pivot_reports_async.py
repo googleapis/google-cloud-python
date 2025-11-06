@@ -39,13 +39,13 @@ async def sample_batch_run_pivot_reports():
     client = data_v1beta.BetaAnalyticsDataAsyncClient()
 
     # Initialize request argument(s)
-    request = data_v1beta.BatchRunPivotReportsRequest(
-    )
+    request = data_v1beta.BatchRunPivotReportsRequest()
 
     # Make the request
     response = await client.batch_run_pivot_reports(request=request)
 
     # Handle the response
     print(response)
+
 
 # [END analyticsdata_v1beta_generated_BetaAnalyticsData_BatchRunPivotReports_async]

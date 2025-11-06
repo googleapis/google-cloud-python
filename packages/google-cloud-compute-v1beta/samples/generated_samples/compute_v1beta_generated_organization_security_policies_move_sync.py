@@ -49,4 +49,5 @@ def sample_move():
     # Handle the response
     print(response)
 
+
 # [END compute_v1beta_generated_OrganizationSecurityPolicies_Move_sync]

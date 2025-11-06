@@ -50,4 +50,5 @@ def sample_list_data_access_scopes():
     for response in page_result:
         print(response)
 
+
 # [END chronicle_v1_generated_DataAccessControlService_ListDataAccessScopes_sync]

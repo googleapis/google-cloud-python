@@ -49,4 +49,5 @@ async def sample_get_column_spec():
     # Handle the response
     print(response)
 
+
 # [END automl_v1beta1_generated_AutoMl_GetColumnSpec_async]

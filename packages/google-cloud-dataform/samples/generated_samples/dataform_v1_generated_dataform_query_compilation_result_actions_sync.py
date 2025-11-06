@@ -50,4 +50,5 @@ def sample_query_compilation_result_actions():
     for response in page_result:
         print(response)
 
+
 # [END dataform_v1_generated_Dataform_QueryCompilationResultActions_sync]

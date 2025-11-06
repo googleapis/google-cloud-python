@@ -39,13 +39,13 @@ def sample_update_issue():
     client = contact_center_insights_v1.ContactCenterInsightsClient()
 
     # Initialize request argument(s)
-    request = contact_center_insights_v1.UpdateIssueRequest(
-    )
+    request = contact_center_insights_v1.UpdateIssueRequest()
 
     # Make the request
     response = client.update_issue(request=request)
 
     # Handle the response
     print(response)
+
 
 # [END contactcenterinsights_v1_generated_ContactCenterInsights_UpdateIssue_sync]

@@ -63,4 +63,5 @@ async def sample_ingest_asset():
     async for response in stream:
         print(response)
 
+
 # [END visionai_v1_generated_Warehouse_IngestAsset_async]

@@ -56,4 +56,5 @@ def sample_update_processor():
     # Handle the response
     print(response)
 
+
 # [END visionai_v1alpha1_generated_AppPlatform_UpdateProcessor_sync]

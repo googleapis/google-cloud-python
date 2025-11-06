@@ -53,4 +53,5 @@ def sample_create_certificate():
     # Handle the response
     print(response)
 
+
 # [END privateca_v1_generated_CertificateAuthorityService_CreateCertificate_sync]

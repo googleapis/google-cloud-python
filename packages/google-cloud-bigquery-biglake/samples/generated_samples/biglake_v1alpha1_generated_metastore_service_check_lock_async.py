@@ -49,4 +49,5 @@ async def sample_check_lock():
     # Handle the response
     print(response)
 
+
 # [END biglake_v1alpha1_generated_MetastoreService_CheckLock_async]

@@ -50,4 +50,5 @@ async def sample_remove_directory():
     # Handle the response
     print(response)
 
+
 # [END dataform_v1beta1_generated_Dataform_RemoveDirectory_async]

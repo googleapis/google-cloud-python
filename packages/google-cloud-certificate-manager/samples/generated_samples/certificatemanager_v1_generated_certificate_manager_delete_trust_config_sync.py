@@ -53,4 +53,5 @@ def sample_delete_trust_config():
     # Handle the response
     print(response)
 
+
 # [END certificatemanager_v1_generated_CertificateManager_DeleteTrustConfig_sync]

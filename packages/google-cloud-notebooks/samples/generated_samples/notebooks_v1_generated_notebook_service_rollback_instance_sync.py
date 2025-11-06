@@ -54,4 +54,5 @@ def sample_rollback_instance():
     # Handle the response
     print(response)
 
+
 # [END notebooks_v1_generated_NotebookService_RollbackInstance_sync]

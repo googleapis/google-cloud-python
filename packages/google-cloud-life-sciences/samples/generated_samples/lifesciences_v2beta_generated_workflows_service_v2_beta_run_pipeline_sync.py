@@ -39,8 +39,7 @@ def sample_run_pipeline():
     client = lifesciences_v2beta.WorkflowsServiceV2BetaClient()
 
     # Initialize request argument(s)
-    request = lifesciences_v2beta.RunPipelineRequest(
-    )
+    request = lifesciences_v2beta.RunPipelineRequest()
 
     # Make the request
     operation = client.run_pipeline(request=request)
@@ -51,5 +50,6 @@ def sample_run_pipeline():
 
     # Handle the response
     print(response)
+
 
 # [END lifesciences_v2beta_generated_WorkflowsServiceV2Beta_RunPipeline_sync]

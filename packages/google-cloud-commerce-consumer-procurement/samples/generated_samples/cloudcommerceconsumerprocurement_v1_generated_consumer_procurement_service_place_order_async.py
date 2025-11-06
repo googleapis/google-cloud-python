@@ -54,4 +54,5 @@ async def sample_place_order():
     # Handle the response
     print(response)
 
+
 # [END cloudcommerceconsumerprocurement_v1_generated_ConsumerProcurementService_PlaceOrder_async]

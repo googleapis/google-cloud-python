@@ -53,4 +53,5 @@ async def sample_delete_backup():
     # Handle the response
     print(response)
 
+
 # [END metastore_v1alpha_generated_DataprocMetastore_DeleteBackup_async]

@@ -49,4 +49,5 @@ async def sample_delete_schema_config():
     # Handle the response
     print(response)
 
+
 # [END managedkafka_v1_generated_ManagedSchemaRegistry_DeleteSchemaConfig_async]

@@ -57,4 +57,5 @@ async def sample_execute_plugin_instance_action():
     # Handle the response
     print(response)
 
+
 # [END apihub_v1_generated_ApiHubPlugin_ExecutePluginInstanceAction_async]

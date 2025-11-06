@@ -50,4 +50,5 @@ async def sample_list_alert_policies():
     async for response in page_result:
         print(response)
 
+
 # [END monitoring_v3_generated_AlertPolicyService_ListAlertPolicies_async]

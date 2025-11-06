@@ -49,4 +49,5 @@ def sample_get_cluster():
     # Handle the response
     print(response)
 
+
 # [END visionai_v1_generated_StreamsService_GetCluster_sync]

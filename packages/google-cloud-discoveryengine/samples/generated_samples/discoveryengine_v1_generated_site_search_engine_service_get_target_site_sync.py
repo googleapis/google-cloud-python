@@ -49,4 +49,5 @@ def sample_get_target_site():
     # Handle the response
     print(response)
 
+
 # [END discoveryengine_v1_generated_SiteSearchEngineService_GetTargetSite_sync]

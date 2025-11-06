@@ -49,4 +49,5 @@ async def sample_get_product_review():
     # Handle the response
     print(response)
 
+
 # [END merchantapi_v1beta_generated_ProductReviewsService_GetProductReview_async]

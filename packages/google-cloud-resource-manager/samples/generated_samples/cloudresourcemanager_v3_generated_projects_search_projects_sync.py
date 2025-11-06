@@ -39,8 +39,7 @@ def sample_search_projects():
     client = resourcemanager_v3.ProjectsClient()
 
     # Initialize request argument(s)
-    request = resourcemanager_v3.SearchProjectsRequest(
-    )
+    request = resourcemanager_v3.SearchProjectsRequest()
 
     # Make the request
     page_result = client.search_projects(request=request)
@@ -48,5 +47,6 @@ def sample_search_projects():
     # Handle the response
     for response in page_result:
         print(response)
+
 
 # [END cloudresourcemanager_v3_generated_Projects_SearchProjects_sync]

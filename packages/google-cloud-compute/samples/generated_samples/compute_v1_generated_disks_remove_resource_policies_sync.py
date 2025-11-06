@@ -51,4 +51,5 @@ def sample_remove_resource_policies():
     # Handle the response
     print(response)
 
+
 # [END compute_v1_generated_Disks_RemoveResourcePolicies_sync]

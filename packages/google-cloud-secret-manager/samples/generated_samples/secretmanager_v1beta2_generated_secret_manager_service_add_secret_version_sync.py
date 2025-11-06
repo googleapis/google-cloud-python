@@ -49,4 +49,5 @@ def sample_add_secret_version():
     # Handle the response
     print(response)
 
+
 # [END secretmanager_v1beta2_generated_SecretManagerService_AddSecretVersion_sync]

@@ -39,8 +39,7 @@ async def sample_update_backup_vault():
     client = netapp_v1.NetAppAsyncClient()
 
     # Initialize request argument(s)
-    request = netapp_v1.UpdateBackupVaultRequest(
-    )
+    request = netapp_v1.UpdateBackupVaultRequest()
 
     # Make the request
     operation = client.update_backup_vault(request=request)
@@ -51,5 +50,6 @@ async def sample_update_backup_vault():
 
     # Handle the response
     print(response)
+
 
 # [END netapp_v1_generated_NetApp_UpdateBackupVault_async]

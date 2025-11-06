@@ -54,4 +54,5 @@ def sample_create_omnichannel_setting():
     # Handle the response
     print(response)
 
+
 # [END merchantapi_v1beta_generated_OmnichannelSettingsService_CreateOmnichannelSetting_sync]

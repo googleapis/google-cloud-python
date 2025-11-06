@@ -49,4 +49,5 @@ async def sample_get_engine():
     # Handle the response
     print(response)
 
+
 # [END discoveryengine_v1beta_generated_EngineService_GetEngine_async]

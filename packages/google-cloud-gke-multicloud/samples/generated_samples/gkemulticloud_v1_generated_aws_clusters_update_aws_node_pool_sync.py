@@ -62,4 +62,5 @@ def sample_update_aws_node_pool():
     # Handle the response
     print(response)
 
+
 # [END gkemulticloud_v1_generated_AwsClusters_UpdateAwsNodePool_sync]

@@ -50,4 +50,5 @@ async def sample_list_comments():
     async for response in page_result:
         print(response)
 
+
 # [END gdchardwaremanagement_v1alpha_generated_GDCHardwareManagement_ListComments_async]

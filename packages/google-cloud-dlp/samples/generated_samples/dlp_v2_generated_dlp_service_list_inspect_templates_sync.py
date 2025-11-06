@@ -50,4 +50,5 @@ def sample_list_inspect_templates():
     for response in page_result:
         print(response)
 
+
 # [END dlp_v2_generated_DlpService_ListInspectTemplates_sync]

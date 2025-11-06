@@ -39,13 +39,13 @@ def sample_list_voices():
     client = texttospeech_v1.TextToSpeechClient()
 
     # Initialize request argument(s)
-    request = texttospeech_v1.ListVoicesRequest(
-    )
+    request = texttospeech_v1.ListVoicesRequest()
 
     # Make the request
     response = client.list_voices(request=request)
 
     # Handle the response
     print(response)
+
 
 # [END texttospeech_v1_generated_TextToSpeech_ListVoices_sync]

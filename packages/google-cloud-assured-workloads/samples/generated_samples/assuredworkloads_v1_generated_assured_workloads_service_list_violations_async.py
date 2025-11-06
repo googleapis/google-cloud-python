@@ -50,4 +50,5 @@ async def sample_list_violations():
     async for response in page_result:
         print(response)
 
+
 # [END assuredworkloads_v1_generated_AssuredWorkloadsService_ListViolations_async]

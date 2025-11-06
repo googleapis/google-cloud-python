@@ -49,4 +49,5 @@ def sample_get_iap_settings():
     # Handle the response
     print(response)
 
+
 # [END iap_v1_generated_IdentityAwareProxyAdminService_GetIapSettings_sync]

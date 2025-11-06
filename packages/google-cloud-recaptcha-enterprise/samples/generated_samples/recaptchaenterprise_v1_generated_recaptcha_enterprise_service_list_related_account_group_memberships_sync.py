@@ -50,4 +50,5 @@ def sample_list_related_account_group_memberships():
     for response in page_result:
         print(response)
 
+
 # [END recaptchaenterprise_v1_generated_RecaptchaEnterpriseService_ListRelatedAccountGroupMemberships_sync]

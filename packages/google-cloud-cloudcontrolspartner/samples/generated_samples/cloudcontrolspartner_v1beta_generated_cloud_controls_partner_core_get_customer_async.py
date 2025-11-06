@@ -49,4 +49,5 @@ async def sample_get_customer():
     # Handle the response
     print(response)
 
+
 # [END cloudcontrolspartner_v1beta_generated_CloudControlsPartnerCore_GetCustomer_async]

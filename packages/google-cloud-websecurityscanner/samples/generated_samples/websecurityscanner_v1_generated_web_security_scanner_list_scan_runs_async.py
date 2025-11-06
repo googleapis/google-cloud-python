@@ -39,8 +39,7 @@ async def sample_list_scan_runs():
     client = websecurityscanner_v1.WebSecurityScannerAsyncClient()
 
     # Initialize request argument(s)
-    request = websecurityscanner_v1.ListScanRunsRequest(
-    )
+    request = websecurityscanner_v1.ListScanRunsRequest()
 
     # Make the request
     page_result = client.list_scan_runs(request=request)
@@ -48,5 +47,6 @@ async def sample_list_scan_runs():
     # Handle the response
     async for response in page_result:
         print(response)
+
 
 # [END websecurityscanner_v1_generated_WebSecurityScanner_ListScanRuns_async]

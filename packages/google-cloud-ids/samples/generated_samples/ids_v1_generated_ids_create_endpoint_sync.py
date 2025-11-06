@@ -59,4 +59,5 @@ def sample_create_endpoint():
     # Handle the response
     print(response)
 
+
 # [END ids_v1_generated_IDS_CreateEndpoint_sync]

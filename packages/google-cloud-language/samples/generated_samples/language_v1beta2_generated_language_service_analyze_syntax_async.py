@@ -52,4 +52,5 @@ async def sample_analyze_syntax():
     # Handle the response
     print(response)
 
+
 # [END language_v1beta2_generated_LanguageService_AnalyzeSyntax_async]

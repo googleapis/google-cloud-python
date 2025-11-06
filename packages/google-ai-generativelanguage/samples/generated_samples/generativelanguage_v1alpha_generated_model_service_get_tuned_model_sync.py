@@ -49,4 +49,5 @@ def sample_get_tuned_model():
     # Handle the response
     print(response)
 
+
 # [END generativelanguage_v1alpha_generated_ModelService_GetTunedModel_sync]

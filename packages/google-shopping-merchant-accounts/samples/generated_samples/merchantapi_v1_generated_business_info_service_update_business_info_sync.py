@@ -39,13 +39,13 @@ def sample_update_business_info():
     client = merchant_accounts_v1.BusinessInfoServiceClient()
 
     # Initialize request argument(s)
-    request = merchant_accounts_v1.UpdateBusinessInfoRequest(
-    )
+    request = merchant_accounts_v1.UpdateBusinessInfoRequest()
 
     # Make the request
     response = client.update_business_info(request=request)
 
     # Handle the response
     print(response)
+
 
 # [END merchantapi_v1_generated_BusinessInfoService_UpdateBusinessInfo_sync]

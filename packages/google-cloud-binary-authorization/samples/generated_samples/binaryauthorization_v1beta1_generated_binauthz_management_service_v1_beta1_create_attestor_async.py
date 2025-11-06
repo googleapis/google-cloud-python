@@ -55,4 +55,5 @@ async def sample_create_attestor():
     # Handle the response
     print(response)
 
+
 # [END binaryauthorization_v1beta1_generated_BinauthzManagementServiceV1Beta1_CreateAttestor_async]

@@ -49,4 +49,5 @@ async def sample_get_rule_deployment():
     # Handle the response
     print(response)
 
+
 # [END chronicle_v1_generated_RuleService_GetRuleDeployment_async]

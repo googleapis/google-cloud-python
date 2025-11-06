@@ -49,4 +49,5 @@ def sample_get_property_quotas_snapshot():
     # Handle the response
     print(response)
 
+
 # [END analyticsdata_v1alpha_generated_AlphaAnalyticsData_GetPropertyQuotasSnapshot_sync]

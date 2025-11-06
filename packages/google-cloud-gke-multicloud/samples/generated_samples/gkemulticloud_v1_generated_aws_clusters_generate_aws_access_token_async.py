@@ -49,4 +49,5 @@ async def sample_generate_aws_access_token():
     # Handle the response
     print(response)
 
+
 # [END gkemulticloud_v1_generated_AwsClusters_GenerateAwsAccessToken_async]

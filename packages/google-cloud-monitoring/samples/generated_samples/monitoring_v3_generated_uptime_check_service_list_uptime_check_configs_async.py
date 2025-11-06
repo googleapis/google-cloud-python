@@ -50,4 +50,5 @@ async def sample_list_uptime_check_configs():
     async for response in page_result:
         print(response)
 
+
 # [END monitoring_v3_generated_UptimeCheckService_ListUptimeCheckConfigs_async]

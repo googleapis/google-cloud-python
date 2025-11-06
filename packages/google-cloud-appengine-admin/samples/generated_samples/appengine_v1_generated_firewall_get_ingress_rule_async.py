@@ -39,13 +39,13 @@ async def sample_get_ingress_rule():
     client = appengine_admin_v1.FirewallAsyncClient()
 
     # Initialize request argument(s)
-    request = appengine_admin_v1.GetIngressRuleRequest(
-    )
+    request = appengine_admin_v1.GetIngressRuleRequest()
 
     # Make the request
     response = await client.get_ingress_rule(request=request)
 
     # Handle the response
     print(response)
+
 
 # [END appengine_v1_generated_Firewall_GetIngressRule_async]

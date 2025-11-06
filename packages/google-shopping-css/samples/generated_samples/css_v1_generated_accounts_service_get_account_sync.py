@@ -49,4 +49,5 @@ def sample_get_account():
     # Handle the response
     print(response)
 
+
 # [END css_v1_generated_AccountsService_GetAccount_sync]

@@ -50,4 +50,5 @@ async def sample_rename_data_policy():
     # Handle the response
     print(response)
 
+
 # [END bigquerydatapolicy_v1_generated_DataPolicyService_RenameDataPolicy_async]

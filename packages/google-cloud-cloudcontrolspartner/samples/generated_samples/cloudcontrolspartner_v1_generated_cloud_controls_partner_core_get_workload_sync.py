@@ -49,4 +49,5 @@ def sample_get_workload():
     # Handle the response
     print(response)
 
+
 # [END cloudcontrolspartner_v1_generated_CloudControlsPartnerCore_GetWorkload_sync]

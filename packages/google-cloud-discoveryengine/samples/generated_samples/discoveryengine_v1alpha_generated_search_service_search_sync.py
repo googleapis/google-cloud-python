@@ -50,4 +50,5 @@ def sample_search():
     for response in page_result:
         print(response)
 
+
 # [END discoveryengine_v1alpha_generated_SearchService_Search_sync]

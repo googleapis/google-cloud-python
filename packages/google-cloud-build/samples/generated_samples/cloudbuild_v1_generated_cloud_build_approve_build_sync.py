@@ -53,4 +53,5 @@ def sample_approve_build():
     # Handle the response
     print(response)
 
+
 # [END cloudbuild_v1_generated_CloudBuild_ApproveBuild_sync]

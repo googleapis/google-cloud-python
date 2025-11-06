@@ -53,4 +53,5 @@ def sample_get_document():
     # Handle the response
     print(response)
 
+
 # [END documentai_v1beta3_generated_DocumentService_GetDocument_sync]

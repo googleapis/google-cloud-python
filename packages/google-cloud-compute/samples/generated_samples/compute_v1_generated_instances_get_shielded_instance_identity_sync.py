@@ -51,4 +51,5 @@ def sample_get_shielded_instance_identity():
     # Handle the response
     print(response)
 
+
 # [END compute_v1_generated_Instances_GetShieldedInstanceIdentity_sync]

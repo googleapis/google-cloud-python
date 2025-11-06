@@ -39,8 +39,7 @@ async def sample_update_snapshot():
     client = filestore_v1.CloudFilestoreManagerAsyncClient()
 
     # Initialize request argument(s)
-    request = filestore_v1.UpdateSnapshotRequest(
-    )
+    request = filestore_v1.UpdateSnapshotRequest()
 
     # Make the request
     operation = client.update_snapshot(request=request)
@@ -51,5 +50,6 @@ async def sample_update_snapshot():
 
     # Handle the response
     print(response)
+
 
 # [END file_v1_generated_CloudFilestoreManager_UpdateSnapshot_async]

@@ -53,4 +53,5 @@ def sample_create_job_trigger():
     # Handle the response
     print(response)
 
+
 # [END dlp_v2_generated_DlpService_CreateJobTrigger_sync]

@@ -49,4 +49,5 @@ def sample_get_insight():
     # Handle the response
     print(response)
 
+
 # [END recommender_v1_generated_Recommender_GetInsight_sync]

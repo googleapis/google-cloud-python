@@ -49,4 +49,5 @@ def sample_stop_backfill_job():
     # Handle the response
     print(response)
 
+
 # [END datastream_v1_generated_Datastream_StopBackfillJob_sync]

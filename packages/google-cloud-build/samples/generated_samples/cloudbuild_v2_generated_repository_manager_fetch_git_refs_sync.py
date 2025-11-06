@@ -49,4 +49,5 @@ def sample_fetch_git_refs():
     # Handle the response
     print(response)
 
+
 # [END cloudbuild_v2_generated_RepositoryManager_FetchGitRefs_sync]

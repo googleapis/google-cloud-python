@@ -49,4 +49,5 @@ async def sample_pause_job():
     # Handle the response
     print(response)
 
+
 # [END cloudscheduler_v1_generated_CloudScheduler_PauseJob_async]

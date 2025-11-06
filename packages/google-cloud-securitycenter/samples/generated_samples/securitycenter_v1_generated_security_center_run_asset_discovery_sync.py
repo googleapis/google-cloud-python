@@ -53,4 +53,5 @@ def sample_run_asset_discovery():
     # Handle the response
     print(response)
 
+
 # [END securitycenter_v1_generated_SecurityCenter_RunAssetDiscovery_sync]

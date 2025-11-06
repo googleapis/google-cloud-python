@@ -52,4 +52,5 @@ async def sample_update_transfer_config():
     # Handle the response
     print(response)
 
+
 # [END bigquerydatatransfer_v1_generated_DataTransferService_UpdateTransferConfig_async]

@@ -49,4 +49,5 @@ def sample_get_internal_range():
     # Handle the response
     print(response)
 
+
 # [END networkconnectivity_v1_generated_InternalRangeService_GetInternalRange_sync]

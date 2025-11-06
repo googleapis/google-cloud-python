@@ -39,13 +39,13 @@ def sample_update_table_spec():
     client = automl_v1beta1.AutoMlClient()
 
     # Initialize request argument(s)
-    request = automl_v1beta1.UpdateTableSpecRequest(
-    )
+    request = automl_v1beta1.UpdateTableSpecRequest()
 
     # Make the request
     response = client.update_table_spec(request=request)
 
     # Handle the response
     print(response)
+
 
 # [END automl_v1beta1_generated_AutoMl_UpdateTableSpec_sync]

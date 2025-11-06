@@ -63,4 +63,5 @@ async def sample_adb_connect():
     async for response in stream:
         print(response)
 
+
 # [END devicestreaming_v1_generated_DirectAccessService_AdbConnect_async]

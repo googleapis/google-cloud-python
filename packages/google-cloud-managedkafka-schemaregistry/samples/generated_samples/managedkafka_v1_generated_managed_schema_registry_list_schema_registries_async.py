@@ -49,4 +49,5 @@ async def sample_list_schema_registries():
     # Handle the response
     print(response)
 
+
 # [END managedkafka_v1_generated_ManagedSchemaRegistry_ListSchemaRegistries_async]

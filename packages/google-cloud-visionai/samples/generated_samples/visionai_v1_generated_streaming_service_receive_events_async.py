@@ -39,8 +39,7 @@ async def sample_receive_events():
     client = visionai_v1.StreamingServiceAsyncClient()
 
     # Initialize request argument(s)
-    request = visionai_v1.ReceiveEventsRequest(
-    )
+    request = visionai_v1.ReceiveEventsRequest()
 
     # This method expects an iterator which contains
     # 'visionai_v1.ReceiveEventsRequest' objects
@@ -58,5 +57,6 @@ async def sample_receive_events():
     # Handle the response
     async for response in stream:
         print(response)
+
 
 # [END visionai_v1_generated_StreamingService_ReceiveEvents_async]

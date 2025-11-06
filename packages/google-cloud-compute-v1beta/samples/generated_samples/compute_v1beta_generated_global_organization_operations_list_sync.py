@@ -39,8 +39,7 @@ def sample_list():
     client = compute_v1beta.GlobalOrganizationOperationsClient()
 
     # Initialize request argument(s)
-    request = compute_v1beta.ListGlobalOrganizationOperationsRequest(
-    )
+    request = compute_v1beta.ListGlobalOrganizationOperationsRequest()
 
     # Make the request
     page_result = client.list(request=request)
@@ -48,5 +47,6 @@ def sample_list():
     # Handle the response
     for response in page_result:
         print(response)
+
 
 # [END compute_v1beta_generated_GlobalOrganizationOperations_List_sync]

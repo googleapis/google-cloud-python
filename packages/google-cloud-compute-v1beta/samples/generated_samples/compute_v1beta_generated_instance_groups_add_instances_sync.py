@@ -51,4 +51,5 @@ def sample_add_instances():
     # Handle the response
     print(response)
 
+
 # [END compute_v1beta_generated_InstanceGroups_AddInstances_sync]

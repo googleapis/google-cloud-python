@@ -50,4 +50,5 @@ def sample_list_workflow_templates():
     for response in page_result:
         print(response)
 
+
 # [END dataproc_v1_generated_WorkflowTemplateService_ListWorkflowTemplates_sync]

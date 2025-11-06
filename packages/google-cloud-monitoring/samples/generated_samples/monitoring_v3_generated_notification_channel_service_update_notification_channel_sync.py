@@ -39,13 +39,13 @@ def sample_update_notification_channel():
     client = monitoring_v3.NotificationChannelServiceClient()
 
     # Initialize request argument(s)
-    request = monitoring_v3.UpdateNotificationChannelRequest(
-    )
+    request = monitoring_v3.UpdateNotificationChannelRequest()
 
     # Make the request
     response = client.update_notification_channel(request=request)
 
     # Handle the response
     print(response)
+
 
 # [END monitoring_v3_generated_NotificationChannelService_UpdateNotificationChannel_sync]

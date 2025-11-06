@@ -49,4 +49,5 @@ async def sample_get_catalog_item():
     # Handle the response
     print(response)
 
+
 # [END recommendationengine_v1beta1_generated_CatalogService_GetCatalogItem_async]

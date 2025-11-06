@@ -49,4 +49,5 @@ def sample_get_autoscaling_policy():
     # Handle the response
     print(response)
 
+
 # [END dataproc_v1_generated_AutoscalingPolicyService_GetAutoscalingPolicy_sync]

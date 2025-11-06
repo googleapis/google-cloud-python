@@ -50,4 +50,5 @@ async def sample_list_host_project_registrations():
     async for response in page_result:
         print(response)
 
+
 # [END apihub_v1_generated_HostProjectRegistrationService_ListHostProjectRegistrations_async]

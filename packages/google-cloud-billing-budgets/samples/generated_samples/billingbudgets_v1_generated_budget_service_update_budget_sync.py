@@ -39,13 +39,13 @@ def sample_update_budget():
     client = budgets_v1.BudgetServiceClient()
 
     # Initialize request argument(s)
-    request = budgets_v1.UpdateBudgetRequest(
-    )
+    request = budgets_v1.UpdateBudgetRequest()
 
     # Make the request
     response = client.update_budget(request=request)
 
     # Handle the response
     print(response)
+
 
 # [END billingbudgets_v1_generated_BudgetService_UpdateBudget_sync]

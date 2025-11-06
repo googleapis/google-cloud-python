@@ -50,4 +50,5 @@ def sample_list_quota_groups():
     for response in page_result:
         print(response)
 
+
 # [END css_v1_generated_QuotaService_ListQuotaGroups_sync]

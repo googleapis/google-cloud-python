@@ -52,4 +52,5 @@ def sample_update_data_access_scope():
     # Handle the response
     print(response)
 
+
 # [END chronicle_v1_generated_DataAccessControlService_UpdateDataAccessScope_sync]

@@ -55,4 +55,5 @@ def sample_create_spec():
     # Handle the response
     print(response)
 
+
 # [END apihub_v1_generated_ApiHub_CreateSpec_sync]

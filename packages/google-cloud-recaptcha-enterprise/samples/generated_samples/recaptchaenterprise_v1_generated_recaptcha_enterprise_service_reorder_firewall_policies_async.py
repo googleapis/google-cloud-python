@@ -41,7 +41,7 @@ async def sample_reorder_firewall_policies():
     # Initialize request argument(s)
     request = recaptchaenterprise_v1.ReorderFirewallPoliciesRequest(
         parent="parent_value",
-        names=['names_value1', 'names_value2'],
+        names=["names_value1", "names_value2"],
     )
 
     # Make the request
@@ -49,5 +49,6 @@ async def sample_reorder_firewall_policies():
 
     # Handle the response
     print(response)
+
 
 # [END recaptchaenterprise_v1_generated_RecaptchaEnterpriseService_ReorderFirewallPolicies_async]

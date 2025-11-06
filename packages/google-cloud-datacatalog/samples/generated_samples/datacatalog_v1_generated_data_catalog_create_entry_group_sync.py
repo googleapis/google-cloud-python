@@ -50,4 +50,5 @@ def sample_create_entry_group():
     # Handle the response
     print(response)
 
+
 # [END datacatalog_v1_generated_DataCatalog_CreateEntryGroup_sync]

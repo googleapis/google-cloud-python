@@ -49,4 +49,5 @@ def sample_list_available_features():
     # Handle the response
     print(response)
 
+
 # [END compute_v1beta_generated_SslPolicies_ListAvailableFeatures_sync]

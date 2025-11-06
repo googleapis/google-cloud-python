@@ -53,4 +53,5 @@ async def sample_delete_cluster():
     # Handle the response
     print(response)
 
+
 # [END redis_v1beta1_generated_CloudRedisCluster_DeleteCluster_async]

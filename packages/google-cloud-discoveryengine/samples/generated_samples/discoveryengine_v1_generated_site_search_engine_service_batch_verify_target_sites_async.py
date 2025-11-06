@@ -53,4 +53,5 @@ async def sample_batch_verify_target_sites():
     # Handle the response
     print(response)
 
+
 # [END discoveryengine_v1_generated_SiteSearchEngineService_BatchVerifyTargetSites_async]

@@ -39,13 +39,13 @@ def sample_update_parameter():
     client = parametermanager_v1.ParameterManagerClient()
 
     # Initialize request argument(s)
-    request = parametermanager_v1.UpdateParameterRequest(
-    )
+    request = parametermanager_v1.UpdateParameterRequest()
 
     # Make the request
     response = client.update_parameter(request=request)
 
     # Handle the response
     print(response)
+
 
 # [END parametermanager_v1_generated_ParameterManager_UpdateParameter_sync]

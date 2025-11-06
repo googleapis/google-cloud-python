@@ -58,4 +58,5 @@ def sample_create_merchant_center_account_link():
     # Handle the response
     print(response)
 
+
 # [END retail_v2alpha_generated_MerchantCenterAccountLinkService_CreateMerchantCenterAccountLink_sync]

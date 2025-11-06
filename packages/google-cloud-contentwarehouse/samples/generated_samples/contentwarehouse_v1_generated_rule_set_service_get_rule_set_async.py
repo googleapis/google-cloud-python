@@ -49,4 +49,5 @@ async def sample_get_rule_set():
     # Handle the response
     print(response)
 
+
 # [END contentwarehouse_v1_generated_RuleSetService_GetRuleSet_async]

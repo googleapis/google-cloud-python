@@ -50,4 +50,5 @@ def sample_create_patch_deployment():
     # Handle the response
     print(response)
 
+
 # [END osconfig_v1_generated_OsConfigService_CreatePatchDeployment_sync]

@@ -49,4 +49,5 @@ async def sample_create_assessment():
     # Handle the response
     print(response)
 
+
 # [END recaptchaenterprise_v1_generated_RecaptchaEnterpriseService_CreateAssessment_async]

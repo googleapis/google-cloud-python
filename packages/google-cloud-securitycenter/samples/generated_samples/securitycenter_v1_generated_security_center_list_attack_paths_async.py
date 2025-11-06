@@ -50,4 +50,5 @@ async def sample_list_attack_paths():
     async for response in page_result:
         print(response)
 
+
 # [END securitycenter_v1_generated_SecurityCenter_ListAttackPaths_async]

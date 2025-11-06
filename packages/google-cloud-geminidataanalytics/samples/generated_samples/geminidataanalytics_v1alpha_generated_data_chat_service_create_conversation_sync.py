@@ -40,7 +40,7 @@ def sample_create_conversation():
 
     # Initialize request argument(s)
     conversation = geminidataanalytics_v1alpha.Conversation()
-    conversation.agents = ['agents_value1', 'agents_value2']
+    conversation.agents = ["agents_value1", "agents_value2"]
 
     request = geminidataanalytics_v1alpha.CreateConversationRequest(
         parent="parent_value",
@@ -52,5 +52,6 @@ def sample_create_conversation():
 
     # Handle the response
     print(response)
+
 
 # [END geminidataanalytics_v1alpha_generated_DataChatService_CreateConversation_sync]

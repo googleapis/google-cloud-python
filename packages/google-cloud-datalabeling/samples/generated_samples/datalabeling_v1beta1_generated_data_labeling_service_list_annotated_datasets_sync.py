@@ -50,4 +50,5 @@ def sample_list_annotated_datasets():
     for response in page_result:
         print(response)
 
+
 # [END datalabeling_v1beta1_generated_DataLabelingService_ListAnnotatedDatasets_sync]

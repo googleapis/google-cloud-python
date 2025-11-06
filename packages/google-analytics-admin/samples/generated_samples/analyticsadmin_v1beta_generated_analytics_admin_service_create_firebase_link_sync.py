@@ -49,4 +49,5 @@ def sample_create_firebase_link():
     # Handle the response
     print(response)
 
+
 # [END analyticsadmin_v1beta_generated_AnalyticsAdminService_CreateFirebaseLink_sync]

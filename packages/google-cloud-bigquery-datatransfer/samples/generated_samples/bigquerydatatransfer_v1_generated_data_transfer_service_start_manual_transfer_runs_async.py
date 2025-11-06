@@ -49,4 +49,5 @@ async def sample_start_manual_transfer_runs():
     # Handle the response
     print(response)
 
+
 # [END bigquerydatatransfer_v1_generated_DataTransferService_StartManualTransferRuns_async]

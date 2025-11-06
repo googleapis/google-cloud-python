@@ -50,4 +50,5 @@ def sample_list_namespaces():
     for response in page_result:
         print(response)
 
+
 # [END servicedirectory_v1_generated_RegistrationService_ListNamespaces_sync]

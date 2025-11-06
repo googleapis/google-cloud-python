@@ -60,4 +60,5 @@ def sample_update_active_directory():
     # Handle the response
     print(response)
 
+
 # [END netapp_v1_generated_NetApp_UpdateActiveDirectory_sync]

@@ -53,4 +53,5 @@ def sample_restart_instance():
     # Handle the response
     print(response)
 
+
 # [END datafusion_v1_generated_DataFusion_RestartInstance_sync]

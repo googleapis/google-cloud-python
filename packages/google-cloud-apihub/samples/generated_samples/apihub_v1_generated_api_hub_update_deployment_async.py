@@ -44,7 +44,7 @@ async def sample_update_deployment():
     deployment.deployment_type.enum_values.values.id = "id_value"
     deployment.deployment_type.enum_values.values.display_name = "display_name_value"
     deployment.resource_uri = "resource_uri_value"
-    deployment.endpoints = ['endpoints_value1', 'endpoints_value2']
+    deployment.endpoints = ["endpoints_value1", "endpoints_value2"]
 
     request = apihub_v1.UpdateDeploymentRequest(
         deployment=deployment,
@@ -55,5 +55,6 @@ async def sample_update_deployment():
 
     # Handle the response
     print(response)
+
 
 # [END apihub_v1_generated_ApiHub_UpdateDeployment_async]

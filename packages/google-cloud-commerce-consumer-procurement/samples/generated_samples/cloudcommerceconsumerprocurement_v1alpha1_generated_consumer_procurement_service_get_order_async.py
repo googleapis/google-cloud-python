@@ -36,7 +36,9 @@ from google.cloud import commerce_consumer_procurement_v1alpha1
 
 async def sample_get_order():
     # Create a client
-    client = commerce_consumer_procurement_v1alpha1.ConsumerProcurementServiceAsyncClient()
+    client = (
+        commerce_consumer_procurement_v1alpha1.ConsumerProcurementServiceAsyncClient()
+    )
 
     # Initialize request argument(s)
     request = commerce_consumer_procurement_v1alpha1.GetOrderRequest(
@@ -48,5 +50,6 @@ async def sample_get_order():
 
     # Handle the response
     print(response)
+
 
 # [END cloudcommerceconsumerprocurement_v1alpha1_generated_ConsumerProcurementService_GetOrder_async]

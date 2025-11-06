@@ -50,4 +50,5 @@ async def sample_list_quota_infos():
     async for response in page_result:
         print(response)
 
+
 # [END cloudquotas_v1_generated_CloudQuotas_ListQuotaInfos_async]

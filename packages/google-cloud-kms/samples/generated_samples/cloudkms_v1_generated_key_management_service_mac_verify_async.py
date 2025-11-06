@@ -41,8 +41,8 @@ async def sample_mac_verify():
     # Initialize request argument(s)
     request = kms_v1.MacVerifyRequest(
         name="name_value",
-        data=b'data_blob',
-        mac=b'mac_blob',
+        data=b"data_blob",
+        mac=b"mac_blob",
     )
 
     # Make the request
@@ -50,5 +50,6 @@ async def sample_mac_verify():
 
     # Handle the response
     print(response)
+
 
 # [END cloudkms_v1_generated_KeyManagementService_MacVerify_async]

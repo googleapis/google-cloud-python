@@ -39,13 +39,13 @@ async def sample_update_crypto_key():
     client = kms_v1.KeyManagementServiceAsyncClient()
 
     # Initialize request argument(s)
-    request = kms_v1.UpdateCryptoKeyRequest(
-    )
+    request = kms_v1.UpdateCryptoKeyRequest()
 
     # Make the request
     response = await client.update_crypto_key(request=request)
 
     # Handle the response
     print(response)
+
 
 # [END cloudkms_v1_generated_KeyManagementService_UpdateCryptoKey_async]

@@ -39,13 +39,13 @@ async def sample_update_hydrated_deployment():
     client = telcoautomation_v1.TelcoAutomationAsyncClient()
 
     # Initialize request argument(s)
-    request = telcoautomation_v1.UpdateHydratedDeploymentRequest(
-    )
+    request = telcoautomation_v1.UpdateHydratedDeploymentRequest()
 
     # Make the request
     response = await client.update_hydrated_deployment(request=request)
 
     # Handle the response
     print(response)
+
 
 # [END telcoautomation_v1_generated_TelcoAutomation_UpdateHydratedDeployment_async]

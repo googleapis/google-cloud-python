@@ -53,4 +53,5 @@ def sample_update_membership():
     # Handle the response
     print(response)
 
+
 # [END gkehub_v1beta1_generated_GkeHubMembershipService_UpdateMembership_sync]

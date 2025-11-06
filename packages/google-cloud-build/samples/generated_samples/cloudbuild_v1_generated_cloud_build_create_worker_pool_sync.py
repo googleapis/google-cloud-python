@@ -54,4 +54,5 @@ def sample_create_worker_pool():
     # Handle the response
     print(response)
 
+
 # [END cloudbuild_v1_generated_CloudBuild_CreateWorkerPool_sync]

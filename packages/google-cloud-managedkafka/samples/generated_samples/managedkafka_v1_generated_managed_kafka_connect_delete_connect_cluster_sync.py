@@ -53,4 +53,5 @@ def sample_delete_connect_cluster():
     # Handle the response
     print(response)
 
+
 # [END managedkafka_v1_generated_ManagedKafkaConnect_DeleteConnectCluster_sync]

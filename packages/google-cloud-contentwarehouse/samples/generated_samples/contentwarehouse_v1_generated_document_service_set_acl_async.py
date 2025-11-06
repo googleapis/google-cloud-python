@@ -49,4 +49,5 @@ async def sample_set_acl():
     # Handle the response
     print(response)
 
+
 # [END contentwarehouse_v1_generated_DocumentService_SetAcl_async]

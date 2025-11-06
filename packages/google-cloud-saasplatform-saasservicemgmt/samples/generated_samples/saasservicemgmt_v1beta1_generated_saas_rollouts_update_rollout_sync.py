@@ -39,13 +39,13 @@ def sample_update_rollout():
     client = saasplatform_saasservicemgmt_v1beta1.SaasRolloutsClient()
 
     # Initialize request argument(s)
-    request = saasplatform_saasservicemgmt_v1beta1.UpdateRolloutRequest(
-    )
+    request = saasplatform_saasservicemgmt_v1beta1.UpdateRolloutRequest()
 
     # Make the request
     response = client.update_rollout(request=request)
 
     # Handle the response
     print(response)
+
 
 # [END saasservicemgmt_v1beta1_generated_SaasRollouts_UpdateRollout_sync]

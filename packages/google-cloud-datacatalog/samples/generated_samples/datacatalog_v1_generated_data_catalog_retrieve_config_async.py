@@ -49,4 +49,5 @@ async def sample_retrieve_config():
     # Handle the response
     print(response)
 
+
 # [END datacatalog_v1_generated_DataCatalog_RetrieveConfig_async]

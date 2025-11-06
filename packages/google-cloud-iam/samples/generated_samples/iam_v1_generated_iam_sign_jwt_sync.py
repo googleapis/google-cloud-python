@@ -50,4 +50,5 @@ def sample_sign_jwt():
     # Handle the response
     print(response)
 
+
 # [END iam_v1_generated_IAM_SignJwt_sync]

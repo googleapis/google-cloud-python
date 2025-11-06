@@ -50,4 +50,5 @@ def sample_deprecate():
     # Handle the response
     print(response)
 
+
 # [END compute_v1beta_generated_Images_Deprecate_sync]

@@ -49,4 +49,5 @@ def sample_get_bi_reservation():
     # Handle the response
     print(response)
 
+
 # [END bigqueryreservation_v1_generated_ReservationService_GetBiReservation_sync]

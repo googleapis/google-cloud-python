@@ -49,4 +49,5 @@ def sample_stop_scan_run():
     # Handle the response
     print(response)
 
+
 # [END websecurityscanner_v1alpha_generated_WebSecurityScanner_StopScanRun_sync]

@@ -53,4 +53,5 @@ async def sample_enable_interactive_serial_console():
     # Handle the response
     print(response)
 
+
 # [END baremetalsolution_v2_generated_BareMetalSolution_EnableInteractiveSerialConsole_async]

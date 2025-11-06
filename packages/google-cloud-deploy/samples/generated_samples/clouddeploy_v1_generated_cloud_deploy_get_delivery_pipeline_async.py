@@ -49,4 +49,5 @@ async def sample_get_delivery_pipeline():
     # Handle the response
     print(response)
 
+
 # [END clouddeploy_v1_generated_CloudDeploy_GetDeliveryPipeline_async]

@@ -44,9 +44,12 @@ async def sample_create_security_health_analytics_custom_module():
     )
 
     # Make the request
-    response = await client.create_security_health_analytics_custom_module(request=request)
+    response = await client.create_security_health_analytics_custom_module(
+        request=request
+    )
 
     # Handle the response
     print(response)
+
 
 # [END securitycenter_v1_generated_SecurityCenter_CreateSecurityHealthAnalyticsCustomModule_async]

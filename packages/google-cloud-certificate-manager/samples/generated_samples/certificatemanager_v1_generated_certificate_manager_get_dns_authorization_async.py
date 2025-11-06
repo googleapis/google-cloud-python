@@ -49,4 +49,5 @@ async def sample_get_dns_authorization():
     # Handle the response
     print(response)
 
+
 # [END certificatemanager_v1_generated_CertificateManager_GetDnsAuthorization_async]

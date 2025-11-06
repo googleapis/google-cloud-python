@@ -54,4 +54,5 @@ async def sample_create_workstation_cluster():
     # Handle the response
     print(response)
 
+
 # [END workstations_v1_generated_Workstations_CreateWorkstationCluster_async]

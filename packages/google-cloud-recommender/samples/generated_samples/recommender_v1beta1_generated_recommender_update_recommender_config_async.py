@@ -39,13 +39,13 @@ async def sample_update_recommender_config():
     client = recommender_v1beta1.RecommenderAsyncClient()
 
     # Initialize request argument(s)
-    request = recommender_v1beta1.UpdateRecommenderConfigRequest(
-    )
+    request = recommender_v1beta1.UpdateRecommenderConfigRequest()
 
     # Make the request
     response = await client.update_recommender_config(request=request)
 
     # Handle the response
     print(response)
+
 
 # [END recommender_v1beta1_generated_Recommender_UpdateRecommenderConfig_async]

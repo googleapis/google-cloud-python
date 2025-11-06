@@ -49,4 +49,5 @@ async def sample_get_promotion():
     # Handle the response
     print(response)
 
+
 # [END merchantapi_v1_generated_PromotionsService_GetPromotion_async]

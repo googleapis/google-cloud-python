@@ -43,8 +43,14 @@ async def sample_create_azure_cluster():
     azure_cluster.azure_region = "azure_region_value"
     azure_cluster.resource_group_id = "resource_group_id_value"
     azure_cluster.networking.virtual_network_id = "virtual_network_id_value"
-    azure_cluster.networking.pod_address_cidr_blocks = ['pod_address_cidr_blocks_value1', 'pod_address_cidr_blocks_value2']
-    azure_cluster.networking.service_address_cidr_blocks = ['service_address_cidr_blocks_value1', 'service_address_cidr_blocks_value2']
+    azure_cluster.networking.pod_address_cidr_blocks = [
+        "pod_address_cidr_blocks_value1",
+        "pod_address_cidr_blocks_value2",
+    ]
+    azure_cluster.networking.service_address_cidr_blocks = [
+        "service_address_cidr_blocks_value1",
+        "service_address_cidr_blocks_value2",
+    ]
     azure_cluster.control_plane.version = "version_value"
     azure_cluster.control_plane.ssh_config.authorized_key = "authorized_key_value"
     azure_cluster.fleet.project = "project_value"
@@ -64,5 +70,6 @@ async def sample_create_azure_cluster():
 
     # Handle the response
     print(response)
+
 
 # [END gkemulticloud_v1_generated_AzureClusters_CreateAzureCluster_async]

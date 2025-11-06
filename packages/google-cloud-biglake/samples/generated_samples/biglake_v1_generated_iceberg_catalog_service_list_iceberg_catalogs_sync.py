@@ -50,4 +50,5 @@ def sample_list_iceberg_catalogs():
     for response in page_result:
         print(response)
 
+
 # [END biglake_v1_generated_IcebergCatalogService_ListIcebergCatalogs_sync]

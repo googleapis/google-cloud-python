@@ -54,4 +54,5 @@ async def sample_insert_merchant_review():
     # Handle the response
     print(response)
 
+
 # [END merchantapi_v1beta_generated_MerchantReviewsService_InsertMerchantReview_async]

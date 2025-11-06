@@ -53,4 +53,5 @@ def sample_delete_hub():
     # Handle the response
     print(response)
 
+
 # [END networkconnectivity_v1_generated_HubService_DeleteHub_sync]

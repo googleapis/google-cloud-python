@@ -49,4 +49,5 @@ def sample_count_tokens():
     # Handle the response
     print(response)
 
+
 # [END generativelanguage_v1beta_generated_GenerativeService_CountTokens_sync]

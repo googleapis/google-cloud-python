@@ -50,4 +50,5 @@ async def sample_list_processors():
     async for response in page_result:
         print(response)
 
+
 # [END documentai_v1beta3_generated_DocumentProcessorService_ListProcessors_async]

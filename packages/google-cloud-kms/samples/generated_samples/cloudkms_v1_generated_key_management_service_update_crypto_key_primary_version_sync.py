@@ -50,4 +50,5 @@ def sample_update_crypto_key_primary_version():
     # Handle the response
     print(response)
 
+
 # [END cloudkms_v1_generated_KeyManagementService_UpdateCryptoKeyPrimaryVersion_sync]

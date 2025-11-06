@@ -50,4 +50,5 @@ def sample_list_applications():
     for response in page_result:
         print(response)
 
+
 # [END visionai_v1_generated_AppPlatform_ListApplications_sync]

@@ -49,4 +49,5 @@ def sample_get_fleet_package():
     # Handle the response
     print(response)
 
+
 # [END configdelivery_v1beta_generated_ConfigDelivery_GetFleetPackage_sync]

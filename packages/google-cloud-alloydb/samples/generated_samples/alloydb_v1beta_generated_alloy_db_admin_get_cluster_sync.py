@@ -49,4 +49,5 @@ def sample_get_cluster():
     # Handle the response
     print(response)
 
+
 # [END alloydb_v1beta_generated_AlloyDBAdmin_GetCluster_sync]

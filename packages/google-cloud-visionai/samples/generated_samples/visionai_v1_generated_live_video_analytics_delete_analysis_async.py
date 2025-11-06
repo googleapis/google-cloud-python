@@ -53,4 +53,5 @@ async def sample_delete_analysis():
     # Handle the response
     print(response)
 
+
 # [END visionai_v1_generated_LiveVideoAnalytics_DeleteAnalysis_async]

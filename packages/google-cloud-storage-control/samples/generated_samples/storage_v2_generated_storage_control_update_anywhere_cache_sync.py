@@ -39,8 +39,7 @@ def sample_update_anywhere_cache():
     client = storage_control_v2.StorageControlClient()
 
     # Initialize request argument(s)
-    request = storage_control_v2.UpdateAnywhereCacheRequest(
-    )
+    request = storage_control_v2.UpdateAnywhereCacheRequest()
 
     # Make the request
     operation = client.update_anywhere_cache(request=request)
@@ -51,5 +50,6 @@ def sample_update_anywhere_cache():
 
     # Handle the response
     print(response)
+
 
 # [END storage_v2_generated_StorageControl_UpdateAnywhereCache_sync]

@@ -49,4 +49,5 @@ async def sample_get_violation():
     # Handle the response
     print(response)
 
+
 # [END assuredworkloads_v1_generated_AssuredWorkloadsService_GetViolation_async]

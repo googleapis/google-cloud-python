@@ -50,4 +50,5 @@ async def sample_list_project_billing_info():
     async for response in page_result:
         print(response)
 
+
 # [END cloudbilling_v1_generated_CloudBilling_ListProjectBillingInfo_async]

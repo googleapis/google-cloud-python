@@ -39,13 +39,13 @@ def sample_health_check():
     client = visionai_v1.HealthCheckServiceClient()
 
     # Initialize request argument(s)
-    request = visionai_v1.HealthCheckRequest(
-    )
+    request = visionai_v1.HealthCheckRequest()
 
     # Make the request
     response = client.health_check(request=request)
 
     # Handle the response
     print(response)
+
 
 # [END visionai_v1_generated_HealthCheckService_HealthCheck_sync]

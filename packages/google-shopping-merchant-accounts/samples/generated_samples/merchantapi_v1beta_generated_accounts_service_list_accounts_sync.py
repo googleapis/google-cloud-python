@@ -39,8 +39,7 @@ def sample_list_accounts():
     client = merchant_accounts_v1beta.AccountsServiceClient()
 
     # Initialize request argument(s)
-    request = merchant_accounts_v1beta.ListAccountsRequest(
-    )
+    request = merchant_accounts_v1beta.ListAccountsRequest()
 
     # Make the request
     page_result = client.list_accounts(request=request)
@@ -48,5 +47,6 @@ def sample_list_accounts():
     # Handle the response
     for response in page_result:
         print(response)
+
 
 # [END merchantapi_v1beta_generated_AccountsService_ListAccounts_sync]

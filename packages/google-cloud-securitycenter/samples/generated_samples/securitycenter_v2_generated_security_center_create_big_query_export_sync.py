@@ -50,4 +50,5 @@ def sample_create_big_query_export():
     # Handle the response
     print(response)
 
+
 # [END securitycenter_v2_generated_SecurityCenter_CreateBigQueryExport_sync]

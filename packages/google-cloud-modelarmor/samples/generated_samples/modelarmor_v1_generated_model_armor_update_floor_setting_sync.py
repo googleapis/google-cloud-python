@@ -39,13 +39,13 @@ def sample_update_floor_setting():
     client = modelarmor_v1.ModelArmorClient()
 
     # Initialize request argument(s)
-    request = modelarmor_v1.UpdateFloorSettingRequest(
-    )
+    request = modelarmor_v1.UpdateFloorSettingRequest()
 
     # Make the request
     response = client.update_floor_setting(request=request)
 
     # Handle the response
     print(response)
+
 
 # [END modelarmor_v1_generated_ModelArmor_UpdateFloorSetting_sync]

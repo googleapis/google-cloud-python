@@ -51,4 +51,5 @@ def sample_set_shielded_vm_integrity_policy():
     # Handle the response
     print(response)
 
+
 # [END compute_v1beta_generated_Instances_SetShieldedVmIntegrityPolicy_sync]

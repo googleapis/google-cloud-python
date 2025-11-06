@@ -52,4 +52,5 @@ async def sample_update_data_schema():
     # Handle the response
     print(response)
 
+
 # [END visionai_v1alpha1_generated_Warehouse_UpdateDataSchema_async]

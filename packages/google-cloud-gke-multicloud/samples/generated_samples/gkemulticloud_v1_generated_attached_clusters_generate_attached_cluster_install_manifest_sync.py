@@ -51,4 +51,5 @@ def sample_generate_attached_cluster_install_manifest():
     # Handle the response
     print(response)
 
+
 # [END gkemulticloud_v1_generated_AttachedClusters_GenerateAttachedClusterInstallManifest_sync]

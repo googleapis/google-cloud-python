@@ -64,4 +64,5 @@ def sample_register_domain():
     # Handle the response
     print(response)
 
+
 # [END domains_v1_generated_Domains_RegisterDomain_sync]

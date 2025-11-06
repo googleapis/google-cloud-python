@@ -54,4 +54,5 @@ async def sample_create_resource_bundle():
     # Handle the response
     print(response)
 
+
 # [END configdelivery_v1beta_generated_ConfigDelivery_CreateResourceBundle_async]

@@ -50,4 +50,5 @@ async def sample_list_group_members():
     async for response in page_result:
         print(response)
 
+
 # [END monitoring_v3_generated_GroupService_ListGroupMembers_async]

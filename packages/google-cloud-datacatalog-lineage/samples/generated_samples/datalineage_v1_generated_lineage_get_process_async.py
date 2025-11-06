@@ -49,4 +49,5 @@ async def sample_get_process():
     # Handle the response
     print(response)
 
+
 # [END datalineage_v1_generated_Lineage_GetProcess_async]

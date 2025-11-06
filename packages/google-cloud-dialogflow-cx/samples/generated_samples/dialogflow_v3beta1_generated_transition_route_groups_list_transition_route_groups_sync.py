@@ -50,4 +50,5 @@ def sample_list_transition_route_groups():
     for response in page_result:
         print(response)
 
+
 # [END dialogflow_v3beta1_generated_TransitionRouteGroups_ListTransitionRouteGroups_sync]

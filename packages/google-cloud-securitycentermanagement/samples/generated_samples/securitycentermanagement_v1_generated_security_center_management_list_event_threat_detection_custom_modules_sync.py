@@ -50,4 +50,5 @@ def sample_list_event_threat_detection_custom_modules():
     for response in page_result:
         print(response)
 
+
 # [END securitycentermanagement_v1_generated_SecurityCenterManagement_ListEventThreatDetectionCustomModules_sync]

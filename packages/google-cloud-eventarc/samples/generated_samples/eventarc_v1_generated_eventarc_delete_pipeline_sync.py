@@ -53,4 +53,5 @@ def sample_delete_pipeline():
     # Handle the response
     print(response)
 
+
 # [END eventarc_v1_generated_Eventarc_DeletePipeline_sync]

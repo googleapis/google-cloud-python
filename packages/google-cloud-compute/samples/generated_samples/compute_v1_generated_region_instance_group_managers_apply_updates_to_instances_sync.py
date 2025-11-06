@@ -51,4 +51,5 @@ def sample_apply_updates_to_instances():
     # Handle the response
     print(response)
 
+
 # [END compute_v1_generated_RegionInstanceGroupManagers_ApplyUpdatesToInstances_sync]

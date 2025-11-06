@@ -39,13 +39,13 @@ async def sample_update_row():
     client = tables_v1alpha1.TablesServiceAsyncClient()
 
     # Initialize request argument(s)
-    request = tables_v1alpha1.UpdateRowRequest(
-    )
+    request = tables_v1alpha1.UpdateRowRequest()
 
     # Make the request
     response = await client.update_row(request=request)
 
     # Handle the response
     print(response)
+
 
 # [END area120tables_v1alpha1_generated_TablesService_UpdateRow_async]

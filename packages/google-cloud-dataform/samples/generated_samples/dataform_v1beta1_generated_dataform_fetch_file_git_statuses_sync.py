@@ -49,4 +49,5 @@ def sample_fetch_file_git_statuses():
     # Handle the response
     print(response)
 
+
 # [END dataform_v1beta1_generated_Dataform_FetchFileGitStatuses_sync]

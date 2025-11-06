@@ -39,8 +39,7 @@ def sample_list_findings():
     client = websecurityscanner_v1.WebSecurityScannerClient()
 
     # Initialize request argument(s)
-    request = websecurityscanner_v1.ListFindingsRequest(
-    )
+    request = websecurityscanner_v1.ListFindingsRequest()
 
     # Make the request
     page_result = client.list_findings(request=request)
@@ -48,5 +47,6 @@ def sample_list_findings():
     # Handle the response
     for response in page_result:
         print(response)
+
 
 # [END websecurityscanner_v1_generated_WebSecurityScanner_ListFindings_sync]

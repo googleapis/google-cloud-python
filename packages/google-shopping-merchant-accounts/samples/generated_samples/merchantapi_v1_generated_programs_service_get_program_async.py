@@ -49,4 +49,5 @@ async def sample_get_program():
     # Handle the response
     print(response)
 
+
 # [END merchantapi_v1_generated_ProgramsService_GetProgram_async]

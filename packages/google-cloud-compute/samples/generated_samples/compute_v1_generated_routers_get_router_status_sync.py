@@ -51,4 +51,5 @@ def sample_get_router_status():
     # Handle the response
     print(response)
 
+
 # [END compute_v1_generated_Routers_GetRouterStatus_sync]

@@ -50,4 +50,5 @@ def sample_list_usable_workstations():
     for response in page_result:
         print(response)
 
+
 # [END workstations_v1beta_generated_Workstations_ListUsableWorkstations_sync]

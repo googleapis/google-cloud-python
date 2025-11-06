@@ -49,4 +49,5 @@ def sample_get_group():
     # Handle the response
     print(response)
 
+
 # [END monitoring_v3_generated_GroupService_GetGroup_sync]

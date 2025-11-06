@@ -50,4 +50,5 @@ def sample_list_functions():
     for response in page_result:
         print(response)
 
+
 # [END cloudfunctions_v2_generated_FunctionService_ListFunctions_sync]

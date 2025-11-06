@@ -39,13 +39,13 @@ def sample_stop_airflow_command():
     client = service_v1beta1.EnvironmentsClient()
 
     # Initialize request argument(s)
-    request = service_v1beta1.StopAirflowCommandRequest(
-    )
+    request = service_v1beta1.StopAirflowCommandRequest()
 
     # Make the request
     response = client.stop_airflow_command(request=request)
 
     # Handle the response
     print(response)
+
 
 # [END composer_v1beta1_generated_Environments_StopAirflowCommand_sync]

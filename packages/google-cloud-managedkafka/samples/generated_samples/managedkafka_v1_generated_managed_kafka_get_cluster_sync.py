@@ -49,4 +49,5 @@ def sample_get_cluster():
     # Handle the response
     print(response)
 
+
 # [END managedkafka_v1_generated_ManagedKafka_GetCluster_sync]

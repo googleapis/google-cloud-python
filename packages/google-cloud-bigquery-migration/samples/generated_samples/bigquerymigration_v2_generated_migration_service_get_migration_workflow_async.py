@@ -49,4 +49,5 @@ async def sample_get_migration_workflow():
     # Handle the response
     print(response)
 
+
 # [END bigquerymigration_v2_generated_MigrationService_GetMigrationWorkflow_async]

@@ -49,4 +49,5 @@ async def sample_get_scan_config():
     # Handle the response
     print(response)
 
+
 # [END websecurityscanner_v1beta_generated_WebSecurityScanner_GetScanConfig_async]

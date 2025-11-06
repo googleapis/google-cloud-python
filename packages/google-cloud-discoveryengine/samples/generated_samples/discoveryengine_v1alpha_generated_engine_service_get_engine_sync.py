@@ -49,4 +49,5 @@ def sample_get_engine():
     # Handle the response
     print(response)
 
+
 # [END discoveryengine_v1alpha_generated_EngineService_GetEngine_sync]

@@ -53,4 +53,5 @@ async def sample_batch_create_chunks():
     # Handle the response
     print(response)
 
+
 # [END generativelanguage_v1beta_generated_RetrieverService_BatchCreateChunks_async]

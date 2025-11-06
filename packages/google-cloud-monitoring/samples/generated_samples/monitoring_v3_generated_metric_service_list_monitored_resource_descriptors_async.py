@@ -50,4 +50,5 @@ async def sample_list_monitored_resource_descriptors():
     async for response in page_result:
         print(response)
 
+
 # [END monitoring_v3_generated_MetricService_ListMonitoredResourceDescriptors_async]

@@ -53,4 +53,5 @@ def sample_run_stream():
     # Handle the response
     print(response)
 
+
 # [END datastream_v1_generated_Datastream_RunStream_sync]

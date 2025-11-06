@@ -49,4 +49,5 @@ def sample_get_file():
     # Handle the response
     print(response)
 
+
 # [END artifactregistry_v1_generated_ArtifactRegistry_GetFile_sync]

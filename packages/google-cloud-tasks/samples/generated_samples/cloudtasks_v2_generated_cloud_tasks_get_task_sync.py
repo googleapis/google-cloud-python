@@ -49,4 +49,5 @@ def sample_get_task():
     # Handle the response
     print(response)
 
+
 # [END cloudtasks_v2_generated_CloudTasks_GetTask_sync]

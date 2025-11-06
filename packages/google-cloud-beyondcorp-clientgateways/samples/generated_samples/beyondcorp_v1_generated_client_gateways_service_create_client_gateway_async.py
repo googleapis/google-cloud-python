@@ -57,4 +57,5 @@ async def sample_create_client_gateway():
     # Handle the response
     print(response)
 
+
 # [END beyondcorp_v1_generated_ClientGatewaysService_CreateClientGateway_async]

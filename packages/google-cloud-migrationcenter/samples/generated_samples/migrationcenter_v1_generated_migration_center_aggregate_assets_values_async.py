@@ -49,4 +49,5 @@ async def sample_aggregate_assets_values():
     # Handle the response
     print(response)
 
+
 # [END migrationcenter_v1_generated_MigrationCenter_AggregateAssetsValues_async]

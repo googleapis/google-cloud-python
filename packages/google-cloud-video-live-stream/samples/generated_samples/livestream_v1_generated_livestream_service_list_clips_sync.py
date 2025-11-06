@@ -50,4 +50,5 @@ def sample_list_clips():
     for response in page_result:
         print(response)
 
+
 # [END livestream_v1_generated_LivestreamService_ListClips_sync]

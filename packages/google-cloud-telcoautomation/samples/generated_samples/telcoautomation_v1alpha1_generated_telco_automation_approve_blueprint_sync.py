@@ -49,4 +49,5 @@ def sample_approve_blueprint():
     # Handle the response
     print(response)
 
+
 # [END telcoautomation_v1alpha1_generated_TelcoAutomation_ApproveBlueprint_sync]

@@ -39,13 +39,13 @@ async def sample_get_service():
     client = appengine_admin_v1.ServicesAsyncClient()
 
     # Initialize request argument(s)
-    request = appengine_admin_v1.GetServiceRequest(
-    )
+    request = appengine_admin_v1.GetServiceRequest()
 
     # Make the request
     response = await client.get_service(request=request)
 
     # Handle the response
     print(response)
+
 
 # [END appengine_v1_generated_Services_GetService_async]

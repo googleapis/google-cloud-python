@@ -49,4 +49,5 @@ async def sample_get_online_return_policy():
     # Handle the response
     print(response)
 
+
 # [END merchantapi_v1beta_generated_OnlineReturnPolicyService_GetOnlineReturnPolicy_async]

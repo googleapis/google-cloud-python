@@ -39,13 +39,13 @@ async def sample_replace_deployment():
     client = gsuiteaddons_v1.GSuiteAddOnsAsyncClient()
 
     # Initialize request argument(s)
-    request = gsuiteaddons_v1.ReplaceDeploymentRequest(
-    )
+    request = gsuiteaddons_v1.ReplaceDeploymentRequest()
 
     # Make the request
     response = await client.replace_deployment(request=request)
 
     # Handle the response
     print(response)
+
 
 # [END gsuiteaddons_v1_generated_GSuiteAddOns_ReplaceDeployment_async]

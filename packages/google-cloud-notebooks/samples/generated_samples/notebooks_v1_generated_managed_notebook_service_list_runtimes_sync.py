@@ -50,4 +50,5 @@ def sample_list_runtimes():
     for response in page_result:
         print(response)
 
+
 # [END notebooks_v1_generated_ManagedNotebookService_ListRuntimes_sync]

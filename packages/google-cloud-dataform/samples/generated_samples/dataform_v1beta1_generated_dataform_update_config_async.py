@@ -39,13 +39,13 @@ async def sample_update_config():
     client = dataform_v1beta1.DataformAsyncClient()
 
     # Initialize request argument(s)
-    request = dataform_v1beta1.UpdateConfigRequest(
-    )
+    request = dataform_v1beta1.UpdateConfigRequest()
 
     # Make the request
     response = await client.update_config(request=request)
 
     # Handle the response
     print(response)
+
 
 # [END dataform_v1beta1_generated_Dataform_UpdateConfig_async]

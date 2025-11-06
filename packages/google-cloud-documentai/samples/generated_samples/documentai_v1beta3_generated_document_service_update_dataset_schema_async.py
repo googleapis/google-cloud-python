@@ -39,13 +39,13 @@ async def sample_update_dataset_schema():
     client = documentai_v1beta3.DocumentServiceAsyncClient()
 
     # Initialize request argument(s)
-    request = documentai_v1beta3.UpdateDatasetSchemaRequest(
-    )
+    request = documentai_v1beta3.UpdateDatasetSchemaRequest()
 
     # Make the request
     response = await client.update_dataset_schema(request=request)
 
     # Handle the response
     print(response)
+
 
 # [END documentai_v1beta3_generated_DocumentService_UpdateDatasetSchema_async]

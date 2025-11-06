@@ -49,4 +49,5 @@ async def sample_check_onboarding_status():
     # Handle the response
     print(response)
 
+
 # [END privilegedaccessmanager_v1_generated_PrivilegedAccessManager_CheckOnboardingStatus_async]

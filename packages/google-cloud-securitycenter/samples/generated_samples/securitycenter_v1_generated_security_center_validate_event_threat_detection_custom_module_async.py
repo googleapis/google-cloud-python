@@ -46,9 +46,12 @@ async def sample_validate_event_threat_detection_custom_module():
     )
 
     # Make the request
-    response = await client.validate_event_threat_detection_custom_module(request=request)
+    response = await client.validate_event_threat_detection_custom_module(
+        request=request
+    )
 
     # Handle the response
     print(response)
+
 
 # [END securitycenter_v1_generated_SecurityCenter_ValidateEventThreatDetectionCustomModule_async]

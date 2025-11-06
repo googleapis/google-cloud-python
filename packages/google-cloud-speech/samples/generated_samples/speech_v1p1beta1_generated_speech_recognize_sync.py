@@ -43,7 +43,7 @@ def sample_recognize():
     config.language_code = "language_code_value"
 
     audio = speech_v1p1beta1.RecognitionAudio()
-    audio.content = b'content_blob'
+    audio.content = b"content_blob"
 
     request = speech_v1p1beta1.RecognizeRequest(
         config=config,
@@ -55,5 +55,6 @@ def sample_recognize():
 
     # Handle the response
     print(response)
+
 
 # [END speech_v1p1beta1_generated_Speech_Recognize_sync]

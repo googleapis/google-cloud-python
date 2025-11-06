@@ -50,4 +50,5 @@ def sample_list_disk_migration_jobs():
     for response in page_result:
         print(response)
 
+
 # [END vmmigration_v1_generated_VmMigration_ListDiskMigrationJobs_sync]

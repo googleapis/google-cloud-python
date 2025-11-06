@@ -50,4 +50,5 @@ def sample_list_workflow_invocations():
     for response in page_result:
         print(response)
 
+
 # [END dataform_v1beta1_generated_Dataform_ListWorkflowInvocations_sync]

@@ -53,4 +53,5 @@ def sample_stop_runtime():
     # Handle the response
     print(response)
 
+
 # [END notebooks_v1_generated_ManagedNotebookService_StopRuntime_sync]

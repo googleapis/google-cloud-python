@@ -39,8 +39,7 @@ def sample_update_backup():
     client = filestore_v1.CloudFilestoreManagerClient()
 
     # Initialize request argument(s)
-    request = filestore_v1.UpdateBackupRequest(
-    )
+    request = filestore_v1.UpdateBackupRequest()
 
     # Make the request
     operation = client.update_backup(request=request)
@@ -51,5 +50,6 @@ def sample_update_backup():
 
     # Handle the response
     print(response)
+
 
 # [END file_v1_generated_CloudFilestoreManager_UpdateBackup_sync]

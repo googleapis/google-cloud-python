@@ -51,4 +51,5 @@ def sample_update_reservations():
     # Handle the response
     print(response)
 
+
 # [END compute_v1beta_generated_RegionCommitments_UpdateReservations_sync]

@@ -49,4 +49,5 @@ def sample_get_resource_bundle():
     # Handle the response
     print(response)
 
+
 # [END configdelivery_v1alpha_generated_ConfigDelivery_GetResourceBundle_sync]

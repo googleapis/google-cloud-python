@@ -39,13 +39,13 @@ def sample_inspect_content():
     client = dlp_v2.DlpServiceClient()
 
     # Initialize request argument(s)
-    request = dlp_v2.InspectContentRequest(
-    )
+    request = dlp_v2.InspectContentRequest()
 
     # Make the request
     response = client.inspect_content(request=request)
 
     # Handle the response
     print(response)
+
 
 # [END dlp_v2_generated_DlpService_InspectContent_sync]

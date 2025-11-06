@@ -39,13 +39,13 @@ async def sample_troubleshoot_iam_policy():
     client = policytroubleshooter_v1.IamCheckerAsyncClient()
 
     # Initialize request argument(s)
-    request = policytroubleshooter_v1.TroubleshootIamPolicyRequest(
-    )
+    request = policytroubleshooter_v1.TroubleshootIamPolicyRequest()
 
     # Make the request
     response = await client.troubleshoot_iam_policy(request=request)
 
     # Handle the response
     print(response)
+
 
 # [END policytroubleshooter_v1_generated_IamChecker_TroubleshootIamPolicy_async]

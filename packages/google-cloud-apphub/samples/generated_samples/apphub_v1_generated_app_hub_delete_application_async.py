@@ -53,4 +53,5 @@ async def sample_delete_application():
     # Handle the response
     print(response)
 
+
 # [END apphub_v1_generated_AppHub_DeleteApplication_async]

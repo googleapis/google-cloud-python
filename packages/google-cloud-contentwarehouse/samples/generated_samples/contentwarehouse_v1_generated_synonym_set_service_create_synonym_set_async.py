@@ -49,4 +49,5 @@ async def sample_create_synonym_set():
     # Handle the response
     print(response)
 
+
 # [END contentwarehouse_v1_generated_SynonymSetService_CreateSynonymSet_async]

@@ -49,4 +49,5 @@ async def sample_generate_upload_url():
     # Handle the response
     print(response)
 
+
 # [END cloudfunctions_v2_generated_FunctionService_GenerateUploadUrl_async]

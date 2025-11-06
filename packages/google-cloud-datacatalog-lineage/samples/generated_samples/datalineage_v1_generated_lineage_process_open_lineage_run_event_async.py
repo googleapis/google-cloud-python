@@ -49,4 +49,5 @@ async def sample_process_open_lineage_run_event():
     # Handle the response
     print(response)
 
+
 # [END datalineage_v1_generated_Lineage_ProcessOpenLineageRunEvent_async]

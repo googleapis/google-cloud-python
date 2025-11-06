@@ -39,13 +39,13 @@ async def sample_update_conversation():
     client = discoveryengine_v1alpha.ConversationalSearchServiceAsyncClient()
 
     # Initialize request argument(s)
-    request = discoveryengine_v1alpha.UpdateConversationRequest(
-    )
+    request = discoveryengine_v1alpha.UpdateConversationRequest()
 
     # Make the request
     response = await client.update_conversation(request=request)
 
     # Handle the response
     print(response)
+
 
 # [END discoveryengine_v1alpha_generated_ConversationalSearchService_UpdateConversation_async]

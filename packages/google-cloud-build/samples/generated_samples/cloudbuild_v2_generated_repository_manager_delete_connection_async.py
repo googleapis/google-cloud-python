@@ -53,4 +53,5 @@ async def sample_delete_connection():
     # Handle the response
     print(response)
 
+
 # [END cloudbuild_v2_generated_RepositoryManager_DeleteConnection_async]

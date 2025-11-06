@@ -39,13 +39,13 @@ def sample_update_phrase_set():
     client = speech_v1.AdaptationClient()
 
     # Initialize request argument(s)
-    request = speech_v1.UpdatePhraseSetRequest(
-    )
+    request = speech_v1.UpdatePhraseSetRequest()
 
     # Make the request
     response = client.update_phrase_set(request=request)
 
     # Handle the response
     print(response)
+
 
 # [END speech_v1_generated_Adaptation_UpdatePhraseSet_sync]

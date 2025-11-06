@@ -39,8 +39,7 @@ def sample_update_environment():
     client = service_v1beta1.EnvironmentsClient()
 
     # Initialize request argument(s)
-    request = service_v1beta1.UpdateEnvironmentRequest(
-    )
+    request = service_v1beta1.UpdateEnvironmentRequest()
 
     # Make the request
     operation = client.update_environment(request=request)
@@ -51,5 +50,6 @@ def sample_update_environment():
 
     # Handle the response
     print(response)
+
 
 # [END composer_v1beta1_generated_Environments_UpdateEnvironment_sync]

@@ -39,8 +39,7 @@ async def sample_update_settings():
     client = migrationcenter_v1.MigrationCenterAsyncClient()
 
     # Initialize request argument(s)
-    request = migrationcenter_v1.UpdateSettingsRequest(
-    )
+    request = migrationcenter_v1.UpdateSettingsRequest()
 
     # Make the request
     operation = client.update_settings(request=request)
@@ -51,5 +50,6 @@ async def sample_update_settings():
 
     # Handle the response
     print(response)
+
 
 # [END migrationcenter_v1_generated_MigrationCenter_UpdateSettings_async]

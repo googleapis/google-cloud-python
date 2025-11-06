@@ -60,4 +60,5 @@ async def sample_update_order():
     # Handle the response
     print(response)
 
+
 # [END gdchardwaremanagement_v1alpha_generated_GDCHardwareManagement_UpdateOrder_async]

@@ -41,7 +41,7 @@ async def sample_update_contact():
     # Initialize request argument(s)
     contact = essential_contacts_v1.Contact()
     contact.email = "email_value"
-    contact.notification_category_subscriptions = ['TECHNICAL_INCIDENTS']
+    contact.notification_category_subscriptions = ["TECHNICAL_INCIDENTS"]
     contact.language_tag = "language_tag_value"
 
     request = essential_contacts_v1.UpdateContactRequest(
@@ -53,5 +53,6 @@ async def sample_update_contact():
 
     # Handle the response
     print(response)
+
 
 # [END essentialcontacts_v1_generated_EssentialContactsService_UpdateContact_async]

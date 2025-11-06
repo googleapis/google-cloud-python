@@ -50,4 +50,5 @@ def sample_retrieve_register_parameters():
     # Handle the response
     print(response)
 
+
 # [END domains_v1_generated_Domains_RetrieveRegisterParameters_sync]

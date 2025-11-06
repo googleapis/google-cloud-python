@@ -52,4 +52,5 @@ def sample_list_instances():
     for response in page_result:
         print(response)
 
+
 # [END compute_v1beta_generated_InstanceGroups_ListInstances_sync]

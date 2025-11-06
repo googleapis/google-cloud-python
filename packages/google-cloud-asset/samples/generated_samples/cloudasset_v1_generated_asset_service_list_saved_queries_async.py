@@ -50,4 +50,5 @@ async def sample_list_saved_queries():
     async for response in page_result:
         print(response)
 
+
 # [END cloudasset_v1_generated_AssetService_ListSavedQueries_async]

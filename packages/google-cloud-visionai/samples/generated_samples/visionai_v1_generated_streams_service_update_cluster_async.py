@@ -39,8 +39,7 @@ async def sample_update_cluster():
     client = visionai_v1.StreamsServiceAsyncClient()
 
     # Initialize request argument(s)
-    request = visionai_v1.UpdateClusterRequest(
-    )
+    request = visionai_v1.UpdateClusterRequest()
 
     # Make the request
     operation = client.update_cluster(request=request)
@@ -51,5 +50,6 @@ async def sample_update_cluster():
 
     # Handle the response
     print(response)
+
 
 # [END visionai_v1_generated_StreamsService_UpdateCluster_async]

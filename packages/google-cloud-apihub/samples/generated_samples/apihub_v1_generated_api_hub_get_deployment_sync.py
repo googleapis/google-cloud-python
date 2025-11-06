@@ -49,4 +49,5 @@ def sample_get_deployment():
     # Handle the response
     print(response)
 
+
 # [END apihub_v1_generated_ApiHub_GetDeployment_sync]

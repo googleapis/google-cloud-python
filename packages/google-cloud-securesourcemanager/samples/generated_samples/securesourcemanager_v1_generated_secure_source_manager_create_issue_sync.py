@@ -57,4 +57,5 @@ def sample_create_issue():
     # Handle the response
     print(response)
 
+
 # [END securesourcemanager_v1_generated_SecureSourceManager_CreateIssue_sync]

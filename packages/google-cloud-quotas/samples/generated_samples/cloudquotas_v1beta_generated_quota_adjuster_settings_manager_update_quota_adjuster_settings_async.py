@@ -39,13 +39,13 @@ async def sample_update_quota_adjuster_settings():
     client = cloudquotas_v1beta.QuotaAdjusterSettingsManagerAsyncClient()
 
     # Initialize request argument(s)
-    request = cloudquotas_v1beta.UpdateQuotaAdjusterSettingsRequest(
-    )
+    request = cloudquotas_v1beta.UpdateQuotaAdjusterSettingsRequest()
 
     # Make the request
     response = await client.update_quota_adjuster_settings(request=request)
 
     # Handle the response
     print(response)
+
 
 # [END cloudquotas_v1beta_generated_QuotaAdjusterSettingsManager_UpdateQuotaAdjusterSettings_async]

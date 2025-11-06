@@ -50,4 +50,5 @@ def sample_list_service_connection_tokens():
     for response in page_result:
         print(response)
 
+
 # [END networkconnectivity_v1_generated_CrossNetworkAutomationService_ListServiceConnectionTokens_sync]

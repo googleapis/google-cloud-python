@@ -49,4 +49,5 @@ async def sample_get_uri_pattern_document_data():
     # Handle the response
     print(response)
 
+
 # [END discoveryengine_v1alpha_generated_SiteSearchEngineService_GetUriPatternDocumentData_async]

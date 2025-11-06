@@ -49,4 +49,5 @@ def sample_get_google_service_account():
     # Handle the response
     print(response)
 
+
 # [END storagetransfer_v1_generated_StorageTransferService_GetGoogleServiceAccount_sync]

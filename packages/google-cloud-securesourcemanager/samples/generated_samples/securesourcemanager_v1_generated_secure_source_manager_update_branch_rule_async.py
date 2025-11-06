@@ -39,8 +39,7 @@ async def sample_update_branch_rule():
     client = securesourcemanager_v1.SecureSourceManagerAsyncClient()
 
     # Initialize request argument(s)
-    request = securesourcemanager_v1.UpdateBranchRuleRequest(
-    )
+    request = securesourcemanager_v1.UpdateBranchRuleRequest()
 
     # Make the request
     operation = client.update_branch_rule(request=request)
@@ -51,5 +50,6 @@ async def sample_update_branch_rule():
 
     # Handle the response
     print(response)
+
 
 # [END securesourcemanager_v1_generated_SecureSourceManager_UpdateBranchRule_async]

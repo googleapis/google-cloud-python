@@ -50,4 +50,5 @@ def sample_list_access_approval_requests():
     for response in page_result:
         print(response)
 
+
 # [END cloudcontrolspartner_v1_generated_CloudControlsPartnerCore_ListAccessApprovalRequests_sync]

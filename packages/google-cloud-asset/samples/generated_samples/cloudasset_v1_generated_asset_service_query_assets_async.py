@@ -50,4 +50,5 @@ async def sample_query_assets():
     # Handle the response
     print(response)
 
+
 # [END cloudasset_v1_generated_AssetService_QueryAssets_async]

@@ -49,4 +49,5 @@ def sample_is_instance_upgradeable():
     # Handle the response
     print(response)
 
+
 # [END notebooks_v1_generated_NotebookService_IsInstanceUpgradeable_sync]

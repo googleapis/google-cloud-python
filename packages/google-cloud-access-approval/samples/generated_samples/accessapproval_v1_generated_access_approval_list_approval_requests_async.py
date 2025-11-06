@@ -39,8 +39,7 @@ async def sample_list_approval_requests():
     client = accessapproval_v1.AccessApprovalAsyncClient()
 
     # Initialize request argument(s)
-    request = accessapproval_v1.ListApprovalRequestsMessage(
-    )
+    request = accessapproval_v1.ListApprovalRequestsMessage()
 
     # Make the request
     page_result = client.list_approval_requests(request=request)
@@ -48,5 +47,6 @@ async def sample_list_approval_requests():
     # Handle the response
     async for response in page_result:
         print(response)
+
 
 # [END accessapproval_v1_generated_AccessApproval_ListApprovalRequests_async]

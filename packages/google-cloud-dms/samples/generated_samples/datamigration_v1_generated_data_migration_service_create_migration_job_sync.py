@@ -62,4 +62,5 @@ def sample_create_migration_job():
     # Handle the response
     print(response)
 
+
 # [END datamigration_v1_generated_DataMigrationService_CreateMigrationJob_sync]

@@ -39,13 +39,13 @@ def sample_generate_random_bytes():
     client = kms_v1.KeyManagementServiceClient()
 
     # Initialize request argument(s)
-    request = kms_v1.GenerateRandomBytesRequest(
-    )
+    request = kms_v1.GenerateRandomBytesRequest()
 
     # Make the request
     response = client.generate_random_bytes(request=request)
 
     # Handle the response
     print(response)
+
 
 # [END cloudkms_v1_generated_KeyManagementService_GenerateRandomBytes_sync]

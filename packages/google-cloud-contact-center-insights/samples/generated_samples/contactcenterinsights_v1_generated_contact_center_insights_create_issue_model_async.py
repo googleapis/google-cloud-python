@@ -53,4 +53,5 @@ async def sample_create_issue_model():
     # Handle the response
     print(response)
 
+
 # [END contactcenterinsights_v1_generated_ContactCenterInsights_CreateIssueModel_async]

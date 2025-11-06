@@ -50,4 +50,5 @@ def sample_list_violations():
     for response in page_result:
         print(response)
 
+
 # [END assuredworkloads_v1_generated_AssuredWorkloadsService_ListViolations_sync]

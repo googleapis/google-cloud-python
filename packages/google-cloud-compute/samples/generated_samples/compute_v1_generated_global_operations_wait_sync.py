@@ -50,4 +50,5 @@ def sample_wait():
     # Handle the response
     print(response)
 
+
 # [END compute_v1_generated_GlobalOperations_Wait_sync]

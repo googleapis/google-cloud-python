@@ -39,13 +39,13 @@ async def sample_update_job():
     client = scheduler_v1beta1.CloudSchedulerAsyncClient()
 
     # Initialize request argument(s)
-    request = scheduler_v1beta1.UpdateJobRequest(
-    )
+    request = scheduler_v1beta1.UpdateJobRequest()
 
     # Make the request
     response = await client.update_job(request=request)
 
     # Handle the response
     print(response)
+
 
 # [END cloudscheduler_v1beta1_generated_CloudScheduler_UpdateJob_async]

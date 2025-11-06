@@ -49,4 +49,5 @@ async def sample_fetch_ca_certs():
     # Handle the response
     print(response)
 
+
 # [END privateca_v1_generated_CertificateAuthorityService_FetchCaCerts_async]

@@ -39,13 +39,13 @@ def sample_update_source():
     client = securitycenter_v2.SecurityCenterClient()
 
     # Initialize request argument(s)
-    request = securitycenter_v2.UpdateSourceRequest(
-    )
+    request = securitycenter_v2.UpdateSourceRequest()
 
     # Make the request
     response = client.update_source(request=request)
 
     # Handle the response
     print(response)
+
 
 # [END securitycenter_v2_generated_SecurityCenter_UpdateSource_sync]

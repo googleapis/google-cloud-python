@@ -50,4 +50,5 @@ async def sample_list_accelerator_types():
     async for response in page_result:
         print(response)
 
+
 # [END tpu_v1_generated_Tpu_ListAcceleratorTypes_async]

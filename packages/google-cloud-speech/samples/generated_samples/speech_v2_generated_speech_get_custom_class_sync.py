@@ -49,4 +49,5 @@ def sample_get_custom_class():
     # Handle the response
     print(response)
 
+
 # [END speech_v2_generated_Speech_GetCustomClass_sync]

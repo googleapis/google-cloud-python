@@ -53,4 +53,5 @@ async def sample_lock_deployment():
     # Handle the response
     print(response)
 
+
 # [END config_v1_generated_Config_LockDeployment_async]

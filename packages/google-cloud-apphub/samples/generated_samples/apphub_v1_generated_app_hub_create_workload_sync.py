@@ -58,4 +58,5 @@ def sample_create_workload():
     # Handle the response
     print(response)
 
+
 # [END apphub_v1_generated_AppHub_CreateWorkload_sync]

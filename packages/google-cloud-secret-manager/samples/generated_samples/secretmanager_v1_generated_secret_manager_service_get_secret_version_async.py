@@ -49,4 +49,5 @@ async def sample_get_secret_version():
     # Handle the response
     print(response)
 
+
 # [END secretmanager_v1_generated_SecretManagerService_GetSecretVersion_async]

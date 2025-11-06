@@ -39,13 +39,13 @@ def sample_delete_snapshot():
     client = dataflow_v1beta3.SnapshotsV1Beta3Client()
 
     # Initialize request argument(s)
-    request = dataflow_v1beta3.DeleteSnapshotRequest(
-    )
+    request = dataflow_v1beta3.DeleteSnapshotRequest()
 
     # Make the request
     response = client.delete_snapshot(request=request)
 
     # Handle the response
     print(response)
+
 
 # [END dataflow_v1beta3_generated_SnapshotsV1Beta3_DeleteSnapshot_sync]

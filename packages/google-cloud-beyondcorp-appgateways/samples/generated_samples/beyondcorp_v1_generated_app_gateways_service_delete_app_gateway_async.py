@@ -53,4 +53,5 @@ async def sample_delete_app_gateway():
     # Handle the response
     print(response)
 
+
 # [END beyondcorp_v1_generated_AppGatewaysService_DeleteAppGateway_async]

@@ -50,4 +50,5 @@ async def sample_list_entry_groups():
     async for response in page_result:
         print(response)
 
+
 # [END datacatalog_v1_generated_DataCatalog_ListEntryGroups_async]

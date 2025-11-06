@@ -49,4 +49,5 @@ def sample_get_vpn_connection():
     # Handle the response
     print(response)
 
+
 # [END edgecontainer_v1_generated_EdgeContainer_GetVpnConnection_sync]

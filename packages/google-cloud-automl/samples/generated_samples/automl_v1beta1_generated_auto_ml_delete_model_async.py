@@ -53,4 +53,5 @@ async def sample_delete_model():
     # Handle the response
     print(response)
 
+
 # [END automl_v1beta1_generated_AutoMl_DeleteModel_async]

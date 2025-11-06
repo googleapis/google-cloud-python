@@ -50,4 +50,5 @@ def sample_list_data_access_labels():
     for response in page_result:
         print(response)
 
+
 # [END chronicle_v1_generated_DataAccessControlService_ListDataAccessLabels_sync]

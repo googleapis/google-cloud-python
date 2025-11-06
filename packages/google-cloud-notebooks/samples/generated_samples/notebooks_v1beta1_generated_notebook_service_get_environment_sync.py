@@ -49,4 +49,5 @@ def sample_get_environment():
     # Handle the response
     print(response)
 
+
 # [END notebooks_v1beta1_generated_NotebookService_GetEnvironment_sync]

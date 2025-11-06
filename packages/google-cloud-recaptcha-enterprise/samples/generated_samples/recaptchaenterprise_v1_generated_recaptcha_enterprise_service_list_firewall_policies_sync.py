@@ -50,4 +50,5 @@ def sample_list_firewall_policies():
     for response in page_result:
         print(response)
 
+
 # [END recaptchaenterprise_v1_generated_RecaptchaEnterpriseService_ListFirewallPolicies_sync]

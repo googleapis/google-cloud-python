@@ -50,4 +50,5 @@ def sample_list_occurrences():
     for response in page_result:
         print(response)
 
+
 # [END containeranalysis_v1_generated_Grafeas_ListOccurrences_sync]

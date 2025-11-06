@@ -39,8 +39,7 @@ async def sample_set_default_branch():
     client = retail_v2.CatalogServiceAsyncClient()
 
     # Initialize request argument(s)
-    request = retail_v2.SetDefaultBranchRequest(
-    )
+    request = retail_v2.SetDefaultBranchRequest()
 
     # Make the request
     await client.set_default_branch(request=request)

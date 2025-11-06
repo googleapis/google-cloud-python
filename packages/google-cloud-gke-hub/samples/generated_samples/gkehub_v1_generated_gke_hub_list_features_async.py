@@ -39,8 +39,7 @@ async def sample_list_features():
     client = gkehub_v1.GkeHubAsyncClient()
 
     # Initialize request argument(s)
-    request = gkehub_v1.ListFeaturesRequest(
-    )
+    request = gkehub_v1.ListFeaturesRequest()
 
     # Make the request
     page_result = client.list_features(request=request)
@@ -48,5 +47,6 @@ async def sample_list_features():
     # Handle the response
     async for response in page_result:
         print(response)
+
 
 # [END gkehub_v1_generated_GkeHub_ListFeatures_async]

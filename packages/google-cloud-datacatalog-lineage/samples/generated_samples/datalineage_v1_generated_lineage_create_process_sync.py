@@ -49,4 +49,5 @@ def sample_create_process():
     # Handle the response
     print(response)
 
+
 # [END datalineage_v1_generated_Lineage_CreateProcess_sync]

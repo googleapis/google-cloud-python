@@ -50,4 +50,5 @@ def sample_list_hub_spokes():
     for response in page_result:
         print(response)
 
+
 # [END networkconnectivity_v1_generated_HubService_ListHubSpokes_sync]

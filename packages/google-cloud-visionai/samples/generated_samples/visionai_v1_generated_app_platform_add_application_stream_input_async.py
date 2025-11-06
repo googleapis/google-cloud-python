@@ -53,4 +53,5 @@ async def sample_add_application_stream_input():
     # Handle the response
     print(response)
 
+
 # [END visionai_v1_generated_AppPlatform_AddApplicationStreamInput_async]

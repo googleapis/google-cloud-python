@@ -39,13 +39,13 @@ async def sample_update_custom_dimension():
     client = admin_v1beta.AnalyticsAdminServiceAsyncClient()
 
     # Initialize request argument(s)
-    request = admin_v1beta.UpdateCustomDimensionRequest(
-    )
+    request = admin_v1beta.UpdateCustomDimensionRequest()
 
     # Make the request
     response = await client.update_custom_dimension(request=request)
 
     # Handle the response
     print(response)
+
 
 # [END analyticsadmin_v1beta_generated_AnalyticsAdminService_UpdateCustomDimension_async]

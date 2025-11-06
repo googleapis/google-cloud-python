@@ -50,4 +50,5 @@ def sample_list_rules():
     for response in page_result:
         print(response)
 
+
 # [END artifactregistry_v1_generated_ArtifactRegistry_ListRules_sync]

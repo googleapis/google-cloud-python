@@ -50,4 +50,5 @@ def sample_delete():
     # Handle the response
     print(response)
 
+
 # [END compute_v1_generated_ExternalVpnGateways_Delete_sync]

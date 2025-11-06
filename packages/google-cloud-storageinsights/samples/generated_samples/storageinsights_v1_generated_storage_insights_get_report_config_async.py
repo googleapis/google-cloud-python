@@ -49,4 +49,5 @@ async def sample_get_report_config():
     # Handle the response
     print(response)
 
+
 # [END storageinsights_v1_generated_StorageInsights_GetReportConfig_async]

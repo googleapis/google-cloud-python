@@ -50,4 +50,5 @@ def sample_list_processors():
     for response in page_result:
         print(response)
 
+
 # [END documentai_v1_generated_DocumentProcessorService_ListProcessors_sync]

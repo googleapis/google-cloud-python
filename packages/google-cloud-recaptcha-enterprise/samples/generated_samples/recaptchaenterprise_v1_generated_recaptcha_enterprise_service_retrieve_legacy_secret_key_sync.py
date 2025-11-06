@@ -49,4 +49,5 @@ def sample_retrieve_legacy_secret_key():
     # Handle the response
     print(response)
 
+
 # [END recaptchaenterprise_v1_generated_RecaptchaEnterpriseService_RetrieveLegacySecretKey_sync]

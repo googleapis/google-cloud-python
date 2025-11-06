@@ -53,4 +53,5 @@ def sample_cancel_order():
     # Handle the response
     print(response)
 
+
 # [END cloudcommerceconsumerprocurement_v1_generated_ConsumerProcurementService_CancelOrder_sync]

@@ -39,8 +39,7 @@ def sample_list_versions():
     client = artifactregistry_v1.ArtifactRegistryClient()
 
     # Initialize request argument(s)
-    request = artifactregistry_v1.ListVersionsRequest(
-    )
+    request = artifactregistry_v1.ListVersionsRequest()
 
     # Make the request
     page_result = client.list_versions(request=request)
@@ -48,5 +47,6 @@ def sample_list_versions():
     # Handle the response
     for response in page_result:
         print(response)
+
 
 # [END artifactregistry_v1_generated_ArtifactRegistry_ListVersions_sync]

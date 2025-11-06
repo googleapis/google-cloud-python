@@ -54,4 +54,5 @@ def sample_search_links():
     for response in page_result:
         print(response)
 
+
 # [END datalineage_v1_generated_Lineage_SearchLinks_sync]

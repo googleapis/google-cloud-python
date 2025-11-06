@@ -50,4 +50,5 @@ async def sample_query_document():
     # Handle the response
     print(response)
 
+
 # [END generativelanguage_v1beta_generated_RetrieverService_QueryDocument_async]

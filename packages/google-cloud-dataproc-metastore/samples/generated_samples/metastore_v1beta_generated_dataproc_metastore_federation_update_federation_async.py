@@ -39,8 +39,7 @@ async def sample_update_federation():
     client = metastore_v1beta.DataprocMetastoreFederationAsyncClient()
 
     # Initialize request argument(s)
-    request = metastore_v1beta.UpdateFederationRequest(
-    )
+    request = metastore_v1beta.UpdateFederationRequest()
 
     # Make the request
     operation = client.update_federation(request=request)
@@ -51,5 +50,6 @@ async def sample_update_federation():
 
     # Handle the response
     print(response)
+
 
 # [END metastore_v1beta_generated_DataprocMetastoreFederation_UpdateFederation_async]

@@ -49,4 +49,5 @@ async def sample_get_release_config():
     # Handle the response
     print(response)
 
+
 # [END dataform_v1beta1_generated_Dataform_GetReleaseConfig_async]

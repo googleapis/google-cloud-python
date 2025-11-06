@@ -51,4 +51,5 @@ def sample_resolve_app_connections():
     for response in page_result:
         print(response)
 
+
 # [END beyondcorp_v1_generated_AppConnectionsService_ResolveAppConnections_sync]

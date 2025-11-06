@@ -49,4 +49,5 @@ async def sample_get_guest_attributes():
     # Handle the response
     print(response)
 
+
 # [END tpu_v2_generated_Tpu_GetGuestAttributes_async]

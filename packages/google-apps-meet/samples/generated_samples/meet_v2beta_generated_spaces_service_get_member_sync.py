@@ -49,4 +49,5 @@ def sample_get_member():
     # Handle the response
     print(response)
 
+
 # [END meet_v2beta_generated_SpacesService_GetMember_sync]

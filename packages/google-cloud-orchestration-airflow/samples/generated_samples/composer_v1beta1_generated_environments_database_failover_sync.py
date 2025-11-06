@@ -39,8 +39,7 @@ def sample_database_failover():
     client = service_v1beta1.EnvironmentsClient()
 
     # Initialize request argument(s)
-    request = service_v1beta1.DatabaseFailoverRequest(
-    )
+    request = service_v1beta1.DatabaseFailoverRequest()
 
     # Make the request
     operation = client.database_failover(request=request)
@@ -51,5 +50,6 @@ def sample_database_failover():
 
     # Handle the response
     print(response)
+
 
 # [END composer_v1beta1_generated_Environments_DatabaseFailover_sync]

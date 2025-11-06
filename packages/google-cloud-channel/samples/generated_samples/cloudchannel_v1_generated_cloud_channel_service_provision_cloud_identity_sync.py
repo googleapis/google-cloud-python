@@ -53,4 +53,5 @@ def sample_provision_cloud_identity():
     # Handle the response
     print(response)
 
+
 # [END cloudchannel_v1_generated_CloudChannelService_ProvisionCloudIdentity_sync]

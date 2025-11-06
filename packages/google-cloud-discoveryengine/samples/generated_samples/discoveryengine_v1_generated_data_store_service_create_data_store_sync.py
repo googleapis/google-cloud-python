@@ -59,4 +59,5 @@ def sample_create_data_store():
     # Handle the response
     print(response)
 
+
 # [END discoveryengine_v1_generated_DataStoreService_CreateDataStore_sync]

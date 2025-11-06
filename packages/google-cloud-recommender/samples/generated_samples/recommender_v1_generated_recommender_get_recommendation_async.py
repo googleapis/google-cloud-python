@@ -49,4 +49,5 @@ async def sample_get_recommendation():
     # Handle the response
     print(response)
 
+
 # [END recommender_v1_generated_Recommender_GetRecommendation_async]

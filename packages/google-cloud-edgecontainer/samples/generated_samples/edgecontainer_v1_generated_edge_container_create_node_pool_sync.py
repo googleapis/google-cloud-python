@@ -59,4 +59,5 @@ def sample_create_node_pool():
     # Handle the response
     print(response)
 
+
 # [END edgecontainer_v1_generated_EdgeContainer_CreateNodePool_sync]

@@ -39,8 +39,7 @@ def sample_list_billing_accounts():
     client = billing_v1.CloudBillingClient()
 
     # Initialize request argument(s)
-    request = billing_v1.ListBillingAccountsRequest(
-    )
+    request = billing_v1.ListBillingAccountsRequest()
 
     # Make the request
     page_result = client.list_billing_accounts(request=request)
@@ -48,5 +47,6 @@ def sample_list_billing_accounts():
     # Handle the response
     for response in page_result:
         print(response)
+
 
 # [END cloudbilling_v1_generated_CloudBilling_ListBillingAccounts_sync]

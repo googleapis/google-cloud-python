@@ -57,4 +57,5 @@ async def sample_import_documents():
     # Handle the response
     print(response)
 
+
 # [END documentai_v1beta3_generated_DocumentService_ImportDocuments_async]

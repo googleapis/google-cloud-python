@@ -50,4 +50,5 @@ def sample_search_trips():
     for response in page_result:
         print(response)
 
+
 # [END fleetengine_v1_generated_TripService_SearchTrips_sync]

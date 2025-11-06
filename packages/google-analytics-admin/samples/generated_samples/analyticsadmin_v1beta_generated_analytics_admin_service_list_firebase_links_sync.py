@@ -50,4 +50,5 @@ def sample_list_firebase_links():
     for response in page_result:
         print(response)
 
+
 # [END analyticsadmin_v1beta_generated_AnalyticsAdminService_ListFirebaseLinks_sync]

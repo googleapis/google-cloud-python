@@ -49,4 +49,5 @@ async def sample_get_project_data_profile():
     # Handle the response
     print(response)
 
+
 # [END dlp_v2_generated_DlpService_GetProjectDataProfile_async]

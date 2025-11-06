@@ -50,4 +50,5 @@ def sample_get_operational_status():
     # Handle the response
     print(response)
 
+
 # [END compute_v1_generated_InterconnectGroups_GetOperationalStatus_sync]

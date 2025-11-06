@@ -50,4 +50,5 @@ async def sample_list_report_tasks():
     async for response in page_result:
         print(response)
 
+
 # [END analyticsdata_v1alpha_generated_AlphaAnalyticsData_ListReportTasks_async]

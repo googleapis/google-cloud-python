@@ -53,4 +53,5 @@ async def sample_close_issue():
     # Handle the response
     print(response)
 
+
 # [END securesourcemanager_v1_generated_SecureSourceManager_CloseIssue_async]

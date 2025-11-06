@@ -41,7 +41,7 @@ async def sample_mac_sign():
     # Initialize request argument(s)
     request = kms_v1.MacSignRequest(
         name="name_value",
-        data=b'data_blob',
+        data=b"data_blob",
     )
 
     # Make the request
@@ -49,5 +49,6 @@ async def sample_mac_sign():
 
     # Handle the response
     print(response)
+
 
 # [END cloudkms_v1_generated_KeyManagementService_MacSign_async]

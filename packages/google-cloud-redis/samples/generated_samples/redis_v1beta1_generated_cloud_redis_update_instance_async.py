@@ -58,4 +58,5 @@ async def sample_update_instance():
     # Handle the response
     print(response)
 
+
 # [END redis_v1beta1_generated_CloudRedis_UpdateInstance_async]

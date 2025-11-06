@@ -39,13 +39,13 @@ def sample_poll_airflow_command():
     client = service_v1beta1.EnvironmentsClient()
 
     # Initialize request argument(s)
-    request = service_v1beta1.PollAirflowCommandRequest(
-    )
+    request = service_v1beta1.PollAirflowCommandRequest()
 
     # Make the request
     response = client.poll_airflow_command(request=request)
 
     # Handle the response
     print(response)
+
 
 # [END composer_v1beta1_generated_Environments_PollAirflowCommand_sync]

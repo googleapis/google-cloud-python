@@ -49,4 +49,5 @@ def sample_get_group():
     # Handle the response
     print(response)
 
+
 # [END networkconnectivity_v1_generated_HubService_GetGroup_sync]

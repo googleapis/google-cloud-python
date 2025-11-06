@@ -50,4 +50,5 @@ def sample_list_client_tls_policies():
     for response in page_result:
         print(response)
 
+
 # [END networksecurity_v1alpha1_generated_NetworkSecurity_ListClientTlsPolicies_sync]

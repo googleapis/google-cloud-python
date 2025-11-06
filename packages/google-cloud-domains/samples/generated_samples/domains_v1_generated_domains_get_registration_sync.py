@@ -49,4 +49,5 @@ def sample_get_registration():
     # Handle the response
     print(response)
 
+
 # [END domains_v1_generated_Domains_GetRegistration_sync]

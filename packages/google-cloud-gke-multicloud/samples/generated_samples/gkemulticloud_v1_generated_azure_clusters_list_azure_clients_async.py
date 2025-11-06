@@ -50,4 +50,5 @@ async def sample_list_azure_clients():
     async for response in page_result:
         print(response)
 
+
 # [END gkemulticloud_v1_generated_AzureClusters_ListAzureClients_async]

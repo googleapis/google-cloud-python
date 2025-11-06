@@ -50,4 +50,5 @@ def sample_list_volumes():
     for response in page_result:
         print(response)
 
+
 # [END baremetalsolution_v2_generated_BareMetalSolution_ListVolumes_sync]

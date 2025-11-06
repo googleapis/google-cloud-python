@@ -49,4 +49,5 @@ async def sample_fetch_self():
     # Handle the response
     print(response)
 
+
 # [END developerconnect_v1_generated_DeveloperConnect_FetchSelf_async]

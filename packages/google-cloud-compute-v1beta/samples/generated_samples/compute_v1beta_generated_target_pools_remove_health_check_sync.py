@@ -51,4 +51,5 @@ def sample_remove_health_check():
     # Handle the response
     print(response)
 
+
 # [END compute_v1beta_generated_TargetPools_RemoveHealthCheck_sync]

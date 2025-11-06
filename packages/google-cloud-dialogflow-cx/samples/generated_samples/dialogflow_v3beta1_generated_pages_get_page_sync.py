@@ -49,4 +49,5 @@ def sample_get_page():
     # Handle the response
     print(response)
 
+
 # [END dialogflow_v3beta1_generated_Pages_GetPage_sync]

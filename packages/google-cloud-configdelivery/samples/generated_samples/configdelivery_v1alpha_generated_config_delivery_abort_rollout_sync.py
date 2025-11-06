@@ -53,4 +53,5 @@ def sample_abort_rollout():
     # Handle the response
     print(response)
 
+
 # [END configdelivery_v1alpha_generated_ConfigDelivery_AbortRollout_sync]

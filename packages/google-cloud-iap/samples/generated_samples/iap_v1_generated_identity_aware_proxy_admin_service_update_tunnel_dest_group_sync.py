@@ -39,13 +39,13 @@ def sample_update_tunnel_dest_group():
     client = iap_v1.IdentityAwareProxyAdminServiceClient()
 
     # Initialize request argument(s)
-    request = iap_v1.UpdateTunnelDestGroupRequest(
-    )
+    request = iap_v1.UpdateTunnelDestGroupRequest()
 
     # Make the request
     response = client.update_tunnel_dest_group(request=request)
 
     # Handle the response
     print(response)
+
 
 # [END iap_v1_generated_IdentityAwareProxyAdminService_UpdateTunnelDestGroup_sync]

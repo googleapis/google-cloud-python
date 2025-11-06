@@ -50,4 +50,5 @@ def sample_list_custom_metrics():
     for response in page_result:
         print(response)
 
+
 # [END analyticsadmin_v1beta_generated_AnalyticsAdminService_ListCustomMetrics_sync]

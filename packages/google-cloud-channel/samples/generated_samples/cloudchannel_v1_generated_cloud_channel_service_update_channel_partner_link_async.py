@@ -54,4 +54,5 @@ async def sample_update_channel_partner_link():
     # Handle the response
     print(response)
 
+
 # [END cloudchannel_v1_generated_CloudChannelService_UpdateChannelPartnerLink_async]

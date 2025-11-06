@@ -39,13 +39,13 @@ def sample_execute_airflow_command():
     client = service_v1.EnvironmentsClient()
 
     # Initialize request argument(s)
-    request = service_v1.ExecuteAirflowCommandRequest(
-    )
+    request = service_v1.ExecuteAirflowCommandRequest()
 
     # Make the request
     response = client.execute_airflow_command(request=request)
 
     # Handle the response
     print(response)
+
 
 # [END composer_v1_generated_Environments_ExecuteAirflowCommand_sync]

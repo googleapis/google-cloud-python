@@ -54,4 +54,5 @@ def sample_create_trust_config():
     # Handle the response
     print(response)
 
+
 # [END certificatemanager_v1_generated_CertificateManager_CreateTrustConfig_sync]

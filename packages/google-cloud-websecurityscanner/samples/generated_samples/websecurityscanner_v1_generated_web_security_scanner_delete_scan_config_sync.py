@@ -39,8 +39,7 @@ def sample_delete_scan_config():
     client = websecurityscanner_v1.WebSecurityScannerClient()
 
     # Initialize request argument(s)
-    request = websecurityscanner_v1.DeleteScanConfigRequest(
-    )
+    request = websecurityscanner_v1.DeleteScanConfigRequest()
 
     # Make the request
     client.delete_scan_config(request=request)

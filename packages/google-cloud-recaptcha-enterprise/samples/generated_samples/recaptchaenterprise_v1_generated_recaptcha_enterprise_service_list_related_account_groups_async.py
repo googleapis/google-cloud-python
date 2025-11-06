@@ -50,4 +50,5 @@ async def sample_list_related_account_groups():
     async for response in page_result:
         print(response)
 
+
 # [END recaptchaenterprise_v1_generated_RecaptchaEnterpriseService_ListRelatedAccountGroups_async]

@@ -50,4 +50,5 @@ async def sample_complete_query():
     # Handle the response
     print(response)
 
+
 # [END retail_v2alpha_generated_CompletionService_CompleteQuery_async]

@@ -49,4 +49,5 @@ def sample_get_namespaced_tag_value():
     # Handle the response
     print(response)
 
+
 # [END cloudresourcemanager_v3_generated_TagValues_GetNamespacedTagValue_sync]

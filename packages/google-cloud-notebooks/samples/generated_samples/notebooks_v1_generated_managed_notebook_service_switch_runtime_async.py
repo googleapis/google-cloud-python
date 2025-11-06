@@ -53,4 +53,5 @@ async def sample_switch_runtime():
     # Handle the response
     print(response)
 
+
 # [END notebooks_v1_generated_ManagedNotebookService_SwitchRuntime_async]

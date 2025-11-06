@@ -49,4 +49,5 @@ async def sample_get_service_connection_map():
     # Handle the response
     print(response)
 
+
 # [END networkconnectivity_v1_generated_CrossNetworkAutomationService_GetServiceConnectionMap_async]

@@ -50,4 +50,5 @@ def sample_list_traces():
     for response in page_result:
         print(response)
 
+
 # [END cloudtrace_v1_generated_TraceService_ListTraces_sync]

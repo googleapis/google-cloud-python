@@ -54,4 +54,5 @@ def sample_create_schedule():
     # Handle the response
     print(response)
 
+
 # [END notebooks_v1_generated_NotebookService_CreateSchedule_sync]

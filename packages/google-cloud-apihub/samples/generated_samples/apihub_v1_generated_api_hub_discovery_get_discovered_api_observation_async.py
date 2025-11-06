@@ -49,4 +49,5 @@ async def sample_get_discovered_api_observation():
     # Handle the response
     print(response)
 
+
 # [END apihub_v1_generated_ApiHubDiscovery_GetDiscoveredApiObservation_async]

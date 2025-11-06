@@ -53,4 +53,5 @@ async def sample_delete_automation():
     # Handle the response
     print(response)
 
+
 # [END clouddeploy_v1_generated_CloudDeploy_DeleteAutomation_async]

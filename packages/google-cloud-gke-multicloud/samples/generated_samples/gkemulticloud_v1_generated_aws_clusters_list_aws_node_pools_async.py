@@ -50,4 +50,5 @@ async def sample_list_aws_node_pools():
     async for response in page_result:
         print(response)
 
+
 # [END gkemulticloud_v1_generated_AwsClusters_ListAwsNodePools_async]

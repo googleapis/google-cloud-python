@@ -39,13 +39,13 @@ async def sample_update_conversion_event():
     client = admin_v1beta.AnalyticsAdminServiceAsyncClient()
 
     # Initialize request argument(s)
-    request = admin_v1beta.UpdateConversionEventRequest(
-    )
+    request = admin_v1beta.UpdateConversionEventRequest()
 
     # Make the request
     response = await client.update_conversion_event(request=request)
 
     # Handle the response
     print(response)
+
 
 # [END analyticsadmin_v1beta_generated_AnalyticsAdminService_UpdateConversionEvent_async]

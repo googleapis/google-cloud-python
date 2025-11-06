@@ -49,4 +49,5 @@ def sample_get_key_string():
     # Handle the response
     print(response)
 
+
 # [END apikeys_v2_generated_ApiKeys_GetKeyString_sync]

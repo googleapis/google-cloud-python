@@ -58,4 +58,5 @@ def sample_create_application_instances():
     # Handle the response
     print(response)
 
+
 # [END visionai_v1alpha1_generated_AppPlatform_CreateApplicationInstances_sync]

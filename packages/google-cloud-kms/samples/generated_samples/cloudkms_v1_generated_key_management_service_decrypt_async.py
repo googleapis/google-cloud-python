@@ -41,7 +41,7 @@ async def sample_decrypt():
     # Initialize request argument(s)
     request = kms_v1.DecryptRequest(
         name="name_value",
-        ciphertext=b'ciphertext_blob',
+        ciphertext=b"ciphertext_blob",
     )
 
     # Make the request
@@ -49,5 +49,6 @@ async def sample_decrypt():
 
     # Handle the response
     print(response)
+
 
 # [END cloudkms_v1_generated_KeyManagementService_Decrypt_async]

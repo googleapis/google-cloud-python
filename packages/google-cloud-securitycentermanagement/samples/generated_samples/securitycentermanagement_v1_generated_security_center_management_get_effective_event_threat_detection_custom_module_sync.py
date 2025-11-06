@@ -39,14 +39,19 @@ def sample_get_effective_event_threat_detection_custom_module():
     client = securitycentermanagement_v1.SecurityCenterManagementClient()
 
     # Initialize request argument(s)
-    request = securitycentermanagement_v1.GetEffectiveEventThreatDetectionCustomModuleRequest(
-        name="name_value",
+    request = (
+        securitycentermanagement_v1.GetEffectiveEventThreatDetectionCustomModuleRequest(
+            name="name_value",
+        )
     )
 
     # Make the request
-    response = client.get_effective_event_threat_detection_custom_module(request=request)
+    response = client.get_effective_event_threat_detection_custom_module(
+        request=request
+    )
 
     # Handle the response
     print(response)
+
 
 # [END securitycentermanagement_v1_generated_SecurityCenterManagement_GetEffectiveEventThreatDetectionCustomModule_sync]

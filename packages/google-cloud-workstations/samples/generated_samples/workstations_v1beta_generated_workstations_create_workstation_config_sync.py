@@ -54,4 +54,5 @@ def sample_create_workstation_config():
     # Handle the response
     print(response)
 
+
 # [END workstations_v1beta_generated_Workstations_CreateWorkstationConfig_sync]

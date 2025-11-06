@@ -49,4 +49,5 @@ def sample_get_blueprint():
     # Handle the response
     print(response)
 
+
 # [END telcoautomation_v1_generated_TelcoAutomation_GetBlueprint_sync]

@@ -53,4 +53,5 @@ def sample_configure_dns_settings():
     # Handle the response
     print(response)
 
+
 # [END domains_v1_generated_Domains_ConfigureDnsSettings_sync]

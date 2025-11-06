@@ -56,4 +56,5 @@ def sample_update_release():
     # Handle the response
     print(response)
 
+
 # [END configdelivery_v1_generated_ConfigDelivery_UpdateRelease_sync]

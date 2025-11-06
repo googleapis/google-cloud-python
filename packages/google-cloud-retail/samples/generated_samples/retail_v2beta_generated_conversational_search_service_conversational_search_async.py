@@ -52,4 +52,5 @@ async def sample_conversational_search():
     async for response in stream:
         print(response)
 
+
 # [END retail_v2beta_generated_ConversationalSearchService_ConversationalSearch_async]

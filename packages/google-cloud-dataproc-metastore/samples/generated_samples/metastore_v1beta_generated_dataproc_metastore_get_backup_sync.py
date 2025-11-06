@@ -49,4 +49,5 @@ def sample_get_backup():
     # Handle the response
     print(response)
 
+
 # [END metastore_v1beta_generated_DataprocMetastore_GetBackup_sync]

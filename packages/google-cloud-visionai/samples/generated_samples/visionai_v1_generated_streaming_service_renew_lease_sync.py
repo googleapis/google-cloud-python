@@ -39,13 +39,13 @@ def sample_renew_lease():
     client = visionai_v1.StreamingServiceClient()
 
     # Initialize request argument(s)
-    request = visionai_v1.RenewLeaseRequest(
-    )
+    request = visionai_v1.RenewLeaseRequest()
 
     # Make the request
     response = client.renew_lease(request=request)
 
     # Handle the response
     print(response)
+
 
 # [END visionai_v1_generated_StreamingService_RenewLease_sync]

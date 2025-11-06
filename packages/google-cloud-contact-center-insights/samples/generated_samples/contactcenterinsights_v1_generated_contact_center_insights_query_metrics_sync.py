@@ -54,4 +54,5 @@ def sample_query_metrics():
     # Handle the response
     print(response)
 
+
 # [END contactcenterinsights_v1_generated_ContactCenterInsights_QueryMetrics_sync]

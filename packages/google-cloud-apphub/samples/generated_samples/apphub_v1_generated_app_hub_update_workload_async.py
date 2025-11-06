@@ -56,4 +56,5 @@ async def sample_update_workload():
     # Handle the response
     print(response)
 
+
 # [END apphub_v1_generated_AppHub_UpdateWorkload_async]

@@ -49,4 +49,5 @@ def sample_get_instance_auth_string():
     # Handle the response
     print(response)
 
+
 # [END redis_v1_generated_CloudRedis_GetInstanceAuthString_sync]

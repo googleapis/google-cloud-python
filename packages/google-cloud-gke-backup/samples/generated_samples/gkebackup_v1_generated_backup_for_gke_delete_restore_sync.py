@@ -53,4 +53,5 @@ def sample_delete_restore():
     # Handle the response
     print(response)
 
+
 # [END gkebackup_v1_generated_BackupForGKE_DeleteRestore_sync]

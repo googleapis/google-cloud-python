@@ -53,4 +53,5 @@ def sample_delete_service():
     # Handle the response
     print(response)
 
+
 # [END metastore_v1_generated_DataprocMetastore_DeleteService_sync]

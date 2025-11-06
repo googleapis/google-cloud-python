@@ -51,4 +51,5 @@ async def sample_fetch_git_refs():
     async for response in page_result:
         print(response)
 
+
 # [END developerconnect_v1_generated_DeveloperConnect_FetchGitRefs_async]

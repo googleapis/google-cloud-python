@@ -39,8 +39,7 @@ async def sample_update_service():
     client = run_v2.ServicesAsyncClient()
 
     # Initialize request argument(s)
-    request = run_v2.UpdateServiceRequest(
-    )
+    request = run_v2.UpdateServiceRequest()
 
     # Make the request
     operation = client.update_service(request=request)
@@ -51,5 +50,6 @@ async def sample_update_service():
 
     # Handle the response
     print(response)
+
 
 # [END run_v2_generated_Services_UpdateService_async]

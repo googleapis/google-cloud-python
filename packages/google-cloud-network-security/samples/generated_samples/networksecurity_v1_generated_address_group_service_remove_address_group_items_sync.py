@@ -41,7 +41,7 @@ def sample_remove_address_group_items():
     # Initialize request argument(s)
     request = network_security_v1.RemoveAddressGroupItemsRequest(
         address_group="address_group_value",
-        items=['items_value1', 'items_value2'],
+        items=["items_value1", "items_value2"],
     )
 
     # Make the request
@@ -53,5 +53,6 @@ def sample_remove_address_group_items():
 
     # Handle the response
     print(response)
+
 
 # [END networksecurity_v1_generated_AddressGroupService_RemoveAddressGroupItems_sync]

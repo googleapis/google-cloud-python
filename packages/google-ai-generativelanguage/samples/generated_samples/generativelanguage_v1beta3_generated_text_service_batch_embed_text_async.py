@@ -41,7 +41,7 @@ async def sample_batch_embed_text():
     # Initialize request argument(s)
     request = generativelanguage_v1beta3.BatchEmbedTextRequest(
         model="model_value",
-        texts=['texts_value1', 'texts_value2'],
+        texts=["texts_value1", "texts_value2"],
     )
 
     # Make the request
@@ -49,5 +49,6 @@ async def sample_batch_embed_text():
 
     # Handle the response
     print(response)
+
 
 # [END generativelanguage_v1beta3_generated_TextService_BatchEmbedText_async]

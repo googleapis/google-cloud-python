@@ -52,4 +52,5 @@ async def sample_update_measurement_protocol_secret():
     # Handle the response
     print(response)
 
+
 # [END analyticsadmin_v1beta_generated_AnalyticsAdminService_UpdateMeasurementProtocolSecret_async]

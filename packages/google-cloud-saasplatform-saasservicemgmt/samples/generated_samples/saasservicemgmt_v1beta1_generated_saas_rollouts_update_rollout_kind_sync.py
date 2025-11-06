@@ -52,4 +52,5 @@ def sample_update_rollout_kind():
     # Handle the response
     print(response)
 
+
 # [END saasservicemgmt_v1beta1_generated_SaasRollouts_UpdateRolloutKind_sync]

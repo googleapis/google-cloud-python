@@ -50,4 +50,5 @@ def sample_list_node_types():
     for response in page_result:
         print(response)
 
+
 # [END vmwareengine_v1_generated_VmwareEngine_ListNodeTypes_sync]

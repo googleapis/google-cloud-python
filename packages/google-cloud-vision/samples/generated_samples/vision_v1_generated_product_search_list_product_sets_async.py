@@ -50,4 +50,5 @@ async def sample_list_product_sets():
     async for response in page_result:
         print(response)
 
+
 # [END vision_v1_generated_ProductSearch_ListProductSets_async]

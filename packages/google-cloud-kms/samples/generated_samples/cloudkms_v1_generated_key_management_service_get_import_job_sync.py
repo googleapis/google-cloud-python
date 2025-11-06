@@ -49,4 +49,5 @@ def sample_get_import_job():
     # Handle the response
     print(response)
 
+
 # [END cloudkms_v1_generated_KeyManagementService_GetImportJob_sync]

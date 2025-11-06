@@ -50,4 +50,5 @@ def sample_list_internal_ranges():
     for response in page_result:
         print(response)
 
+
 # [END networkconnectivity_v1_generated_InternalRangeService_ListInternalRanges_sync]

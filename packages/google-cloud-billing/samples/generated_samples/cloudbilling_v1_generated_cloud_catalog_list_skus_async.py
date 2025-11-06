@@ -50,4 +50,5 @@ async def sample_list_skus():
     async for response in page_result:
         print(response)
 
+
 # [END cloudbilling_v1_generated_CloudCatalog_ListSkus_async]

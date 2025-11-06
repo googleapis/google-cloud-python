@@ -49,4 +49,5 @@ async def sample_list_versions():
     # Handle the response
     print(response)
 
+
 # [END managedkafka_v1_generated_ManagedSchemaRegistry_ListVersions_async]

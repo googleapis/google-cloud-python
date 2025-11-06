@@ -53,4 +53,5 @@ async def sample_delete_destination():
     # Handle the response
     print(response)
 
+
 # [END networkconnectivity_v1_generated_DataTransferService_DeleteDestination_async]

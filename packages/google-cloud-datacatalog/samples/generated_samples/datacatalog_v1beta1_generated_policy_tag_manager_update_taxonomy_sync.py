@@ -39,13 +39,13 @@ def sample_update_taxonomy():
     client = datacatalog_v1beta1.PolicyTagManagerClient()
 
     # Initialize request argument(s)
-    request = datacatalog_v1beta1.UpdateTaxonomyRequest(
-    )
+    request = datacatalog_v1beta1.UpdateTaxonomyRequest()
 
     # Make the request
     response = client.update_taxonomy(request=request)
 
     # Handle the response
     print(response)
+
 
 # [END datacatalog_v1beta1_generated_PolicyTagManager_UpdateTaxonomy_sync]

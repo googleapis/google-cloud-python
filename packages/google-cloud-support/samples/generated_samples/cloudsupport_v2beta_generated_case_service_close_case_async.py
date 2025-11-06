@@ -49,4 +49,5 @@ async def sample_close_case():
     # Handle the response
     print(response)
 
+
 # [END cloudsupport_v2beta_generated_CaseService_CloseCase_async]

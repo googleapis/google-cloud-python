@@ -49,4 +49,5 @@ def sample_get_reusable_config():
     # Handle the response
     print(response)
 
+
 # [END privateca_v1beta1_generated_CertificateAuthorityService_GetReusableConfig_sync]

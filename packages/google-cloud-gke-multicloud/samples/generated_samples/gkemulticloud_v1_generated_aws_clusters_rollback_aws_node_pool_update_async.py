@@ -53,4 +53,5 @@ async def sample_rollback_aws_node_pool_update():
     # Handle the response
     print(response)
 
+
 # [END gkemulticloud_v1_generated_AwsClusters_RollbackAwsNodePoolUpdate_async]

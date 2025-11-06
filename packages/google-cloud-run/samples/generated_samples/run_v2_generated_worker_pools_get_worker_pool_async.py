@@ -49,4 +49,5 @@ async def sample_get_worker_pool():
     # Handle the response
     print(response)
 
+
 # [END run_v2_generated_WorkerPools_GetWorkerPool_async]

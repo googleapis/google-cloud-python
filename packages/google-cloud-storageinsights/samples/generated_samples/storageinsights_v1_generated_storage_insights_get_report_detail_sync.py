@@ -49,4 +49,5 @@ def sample_get_report_detail():
     # Handle the response
     print(response)
 
+
 # [END storageinsights_v1_generated_StorageInsights_GetReportDetail_sync]

@@ -51,4 +51,5 @@ def sample_clone_rules():
     # Handle the response
     print(response)
 
+
 # [END compute_v1_generated_RegionNetworkFirewallPolicies_CloneRules_sync]

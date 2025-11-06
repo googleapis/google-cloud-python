@@ -50,4 +50,5 @@ async def sample_list_connectors():
     async for response in page_result:
         print(response)
 
+
 # [END managedkafka_v1_generated_ManagedKafkaConnect_ListConnectors_async]

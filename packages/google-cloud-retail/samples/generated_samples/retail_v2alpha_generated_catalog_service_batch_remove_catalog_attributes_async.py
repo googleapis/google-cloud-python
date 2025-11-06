@@ -41,7 +41,7 @@ async def sample_batch_remove_catalog_attributes():
     # Initialize request argument(s)
     request = retail_v2alpha.BatchRemoveCatalogAttributesRequest(
         attributes_config="attributes_config_value",
-        attribute_keys=['attribute_keys_value1', 'attribute_keys_value2'],
+        attribute_keys=["attribute_keys_value1", "attribute_keys_value2"],
     )
 
     # Make the request
@@ -49,5 +49,6 @@ async def sample_batch_remove_catalog_attributes():
 
     # Handle the response
     print(response)
+
 
 # [END retail_v2alpha_generated_CatalogService_BatchRemoveCatalogAttributes_async]

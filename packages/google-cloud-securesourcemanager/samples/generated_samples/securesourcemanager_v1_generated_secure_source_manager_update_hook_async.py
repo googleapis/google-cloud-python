@@ -56,4 +56,5 @@ async def sample_update_hook():
     # Handle the response
     print(response)
 
+
 # [END securesourcemanager_v1_generated_SecureSourceManager_UpdateHook_async]

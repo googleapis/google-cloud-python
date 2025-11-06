@@ -51,4 +51,5 @@ async def sample_search_cloud_locations():
     async for response in page_result:
         print(response)
 
+
 # [END cloudlocationfinder_v1_generated_CloudLocationFinder_SearchCloudLocations_async]

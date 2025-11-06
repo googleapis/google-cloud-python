@@ -49,4 +49,5 @@ async def sample_create_challenge():
     # Handle the response
     print(response)
 
+
 # [END confidentialcomputing_v1_generated_ConfidentialComputing_CreateChallenge_async]

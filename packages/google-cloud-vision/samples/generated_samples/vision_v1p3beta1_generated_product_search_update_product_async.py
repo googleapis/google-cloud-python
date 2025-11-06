@@ -39,13 +39,13 @@ async def sample_update_product():
     client = vision_v1p3beta1.ProductSearchAsyncClient()
 
     # Initialize request argument(s)
-    request = vision_v1p3beta1.UpdateProductRequest(
-    )
+    request = vision_v1p3beta1.UpdateProductRequest()
 
     # Make the request
     response = await client.update_product(request=request)
 
     # Handle the response
     print(response)
+
 
 # [END vision_v1p3beta1_generated_ProductSearch_UpdateProduct_async]

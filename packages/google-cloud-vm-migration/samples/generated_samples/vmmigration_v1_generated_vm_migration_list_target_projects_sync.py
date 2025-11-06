@@ -51,4 +51,5 @@ def sample_list_target_projects():
     for response in page_result:
         print(response)
 
+
 # [END vmmigration_v1_generated_VmMigration_ListTargetProjects_sync]

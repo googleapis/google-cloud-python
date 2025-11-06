@@ -39,13 +39,13 @@ async def sample_update_finding():
     client = securitycenter_v2.SecurityCenterAsyncClient()
 
     # Initialize request argument(s)
-    request = securitycenter_v2.UpdateFindingRequest(
-    )
+    request = securitycenter_v2.UpdateFindingRequest()
 
     # Make the request
     response = await client.update_finding(request=request)
 
     # Handle the response
     print(response)
+
 
 # [END securitycenter_v2_generated_SecurityCenter_UpdateFinding_async]

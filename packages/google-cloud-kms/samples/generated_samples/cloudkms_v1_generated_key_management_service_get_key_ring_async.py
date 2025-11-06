@@ -49,4 +49,5 @@ async def sample_get_key_ring():
     # Handle the response
     print(response)
 
+
 # [END cloudkms_v1_generated_KeyManagementService_GetKeyRing_async]

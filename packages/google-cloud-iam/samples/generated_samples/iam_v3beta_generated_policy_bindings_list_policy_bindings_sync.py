@@ -50,4 +50,5 @@ def sample_list_policy_bindings():
     for response in page_result:
         print(response)
 
+
 # [END iam_v3beta_generated_PolicyBindings_ListPolicyBindings_sync]

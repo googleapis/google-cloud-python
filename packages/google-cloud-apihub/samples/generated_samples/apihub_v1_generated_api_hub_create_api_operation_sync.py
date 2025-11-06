@@ -49,4 +49,5 @@ def sample_create_api_operation():
     # Handle the response
     print(response)
 
+
 # [END apihub_v1_generated_ApiHub_CreateApiOperation_sync]

@@ -39,8 +39,7 @@ async def sample_update_registration():
     client = domains_v1beta1.DomainsAsyncClient()
 
     # Initialize request argument(s)
-    request = domains_v1beta1.UpdateRegistrationRequest(
-    )
+    request = domains_v1beta1.UpdateRegistrationRequest()
 
     # Make the request
     operation = client.update_registration(request=request)
@@ -51,5 +50,6 @@ async def sample_update_registration():
 
     # Handle the response
     print(response)
+
 
 # [END domains_v1beta1_generated_Domains_UpdateRegistration_async]

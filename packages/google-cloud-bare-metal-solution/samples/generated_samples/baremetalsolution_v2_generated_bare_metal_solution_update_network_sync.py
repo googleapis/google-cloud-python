@@ -39,8 +39,7 @@ def sample_update_network():
     client = bare_metal_solution_v2.BareMetalSolutionClient()
 
     # Initialize request argument(s)
-    request = bare_metal_solution_v2.UpdateNetworkRequest(
-    )
+    request = bare_metal_solution_v2.UpdateNetworkRequest()
 
     # Make the request
     operation = client.update_network(request=request)
@@ -51,5 +50,6 @@ def sample_update_network():
 
     # Handle the response
     print(response)
+
 
 # [END baremetalsolution_v2_generated_BareMetalSolution_UpdateNetwork_sync]

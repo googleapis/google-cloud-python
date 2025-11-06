@@ -53,4 +53,5 @@ async def sample_update_workload():
     # Handle the response
     print(response)
 
+
 # [END assuredworkloads_v1beta1_generated_AssuredWorkloadsService_UpdateWorkload_async]

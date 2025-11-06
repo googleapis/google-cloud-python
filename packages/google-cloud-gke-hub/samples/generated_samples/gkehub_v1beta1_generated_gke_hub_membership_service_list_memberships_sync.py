@@ -50,4 +50,5 @@ def sample_list_memberships():
     for response in page_result:
         print(response)
 
+
 # [END gkehub_v1beta1_generated_GkeHubMembershipService_ListMemberships_sync]

@@ -50,4 +50,5 @@ def sample_list_channel_partner_repricing_configs():
     for response in page_result:
         print(response)
 
+
 # [END cloudchannel_v1_generated_CloudChannelService_ListChannelPartnerRepricingConfigs_sync]

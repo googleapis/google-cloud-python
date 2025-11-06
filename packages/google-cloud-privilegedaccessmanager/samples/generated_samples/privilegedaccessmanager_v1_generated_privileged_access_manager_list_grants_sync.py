@@ -50,4 +50,5 @@ def sample_list_grants():
     for response in page_result:
         print(response)
 
+
 # [END privilegedaccessmanager_v1_generated_PrivilegedAccessManager_ListGrants_sync]

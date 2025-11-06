@@ -59,4 +59,5 @@ def sample_create_secondary_cluster():
     # Handle the response
     print(response)
 
+
 # [END alloydb_v1_generated_AlloyDBAdmin_CreateSecondaryCluster_sync]

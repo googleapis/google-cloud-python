@@ -49,4 +49,5 @@ def sample_get_job():
     # Handle the response
     print(response)
 
+
 # [END run_v2_generated_Jobs_GetJob_sync]

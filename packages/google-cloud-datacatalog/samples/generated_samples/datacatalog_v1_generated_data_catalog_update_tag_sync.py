@@ -53,4 +53,5 @@ def sample_update_tag():
     # Handle the response
     print(response)
 
+
 # [END datacatalog_v1_generated_DataCatalog_UpdateTag_sync]

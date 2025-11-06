@@ -49,4 +49,5 @@ async def sample_get_acl():
     # Handle the response
     print(response)
 
+
 # [END managedkafka_v1_generated_ManagedKafka_GetAcl_async]

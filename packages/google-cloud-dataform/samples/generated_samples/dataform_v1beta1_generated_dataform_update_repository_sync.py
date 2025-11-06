@@ -39,13 +39,13 @@ def sample_update_repository():
     client = dataform_v1beta1.DataformClient()
 
     # Initialize request argument(s)
-    request = dataform_v1beta1.UpdateRepositoryRequest(
-    )
+    request = dataform_v1beta1.UpdateRepositoryRequest()
 
     # Make the request
     response = client.update_repository(request=request)
 
     # Handle the response
     print(response)
+
 
 # [END dataform_v1beta1_generated_Dataform_UpdateRepository_sync]

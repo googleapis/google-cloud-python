@@ -49,4 +49,5 @@ async def sample_get_workflow_template():
     # Handle the response
     print(response)
 
+
 # [END dataproc_v1_generated_WorkflowTemplateService_GetWorkflowTemplate_async]

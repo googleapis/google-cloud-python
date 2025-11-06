@@ -49,4 +49,5 @@ async def sample_resume_model():
     # Handle the response
     print(response)
 
+
 # [END retail_v2_generated_ModelService_ResumeModel_async]

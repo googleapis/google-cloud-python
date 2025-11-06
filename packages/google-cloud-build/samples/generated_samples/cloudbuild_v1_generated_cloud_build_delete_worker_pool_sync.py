@@ -53,4 +53,5 @@ def sample_delete_worker_pool():
     # Handle the response
     print(response)
 
+
 # [END cloudbuild_v1_generated_CloudBuild_DeleteWorkerPool_sync]

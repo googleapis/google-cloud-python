@@ -50,4 +50,5 @@ def sample_call_function():
     # Handle the response
     print(response)
 
+
 # [END cloudfunctions_v1_generated_CloudFunctionsService_CallFunction_sync]

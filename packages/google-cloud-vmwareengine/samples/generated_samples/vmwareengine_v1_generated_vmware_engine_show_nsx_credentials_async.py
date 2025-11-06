@@ -49,4 +49,5 @@ async def sample_show_nsx_credentials():
     # Handle the response
     print(response)
 
+
 # [END vmwareengine_v1_generated_VmwareEngine_ShowNsxCredentials_async]

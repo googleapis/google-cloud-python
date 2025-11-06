@@ -53,4 +53,5 @@ async def sample_update_dependency():
     # Handle the response
     print(response)
 
+
 # [END apihub_v1_generated_ApiHubDependencies_UpdateDependency_async]

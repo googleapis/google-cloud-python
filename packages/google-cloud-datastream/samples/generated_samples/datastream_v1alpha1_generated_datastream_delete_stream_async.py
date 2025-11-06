@@ -53,4 +53,5 @@ async def sample_delete_stream():
     # Handle the response
     print(response)
 
+
 # [END datastream_v1alpha1_generated_Datastream_DeleteStream_async]

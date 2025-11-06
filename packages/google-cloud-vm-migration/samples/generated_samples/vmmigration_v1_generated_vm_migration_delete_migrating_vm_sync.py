@@ -53,4 +53,5 @@ def sample_delete_migrating_vm():
     # Handle the response
     print(response)
 
+
 # [END vmmigration_v1_generated_VmMigration_DeleteMigratingVm_sync]

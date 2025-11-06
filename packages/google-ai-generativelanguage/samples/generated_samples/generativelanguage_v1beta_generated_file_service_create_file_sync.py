@@ -39,13 +39,13 @@ def sample_create_file():
     client = generativelanguage_v1beta.FileServiceClient()
 
     # Initialize request argument(s)
-    request = generativelanguage_v1beta.CreateFileRequest(
-    )
+    request = generativelanguage_v1beta.CreateFileRequest()
 
     # Make the request
     response = client.create_file(request=request)
 
     # Handle the response
     print(response)
+
 
 # [END generativelanguage_v1beta_generated_FileService_CreateFile_sync]

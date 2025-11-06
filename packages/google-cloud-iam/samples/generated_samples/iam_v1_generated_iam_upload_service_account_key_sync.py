@@ -39,13 +39,13 @@ def sample_upload_service_account_key():
     client = iam_admin_v1.IAMClient()
 
     # Initialize request argument(s)
-    request = iam_admin_v1.UploadServiceAccountKeyRequest(
-    )
+    request = iam_admin_v1.UploadServiceAccountKeyRequest()
 
     # Make the request
     response = client.upload_service_account_key(request=request)
 
     # Handle the response
     print(response)
+
 
 # [END iam_v1_generated_IAM_UploadServiceAccountKey_sync]

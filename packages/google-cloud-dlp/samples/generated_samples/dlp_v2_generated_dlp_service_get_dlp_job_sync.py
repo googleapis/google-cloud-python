@@ -49,4 +49,5 @@ def sample_get_dlp_job():
     # Handle the response
     print(response)
 
+
 # [END dlp_v2_generated_DlpService_GetDlpJob_sync]

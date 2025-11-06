@@ -49,4 +49,5 @@ def sample_get_reference_list():
     # Handle the response
     print(response)
 
+
 # [END chronicle_v1_generated_ReferenceListService_GetReferenceList_sync]

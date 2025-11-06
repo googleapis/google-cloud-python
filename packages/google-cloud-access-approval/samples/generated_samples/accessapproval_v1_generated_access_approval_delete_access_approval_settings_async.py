@@ -39,8 +39,7 @@ async def sample_delete_access_approval_settings():
     client = accessapproval_v1.AccessApprovalAsyncClient()
 
     # Initialize request argument(s)
-    request = accessapproval_v1.DeleteAccessApprovalSettingsMessage(
-    )
+    request = accessapproval_v1.DeleteAccessApprovalSettingsMessage()
 
     # Make the request
     await client.delete_access_approval_settings(request=request)

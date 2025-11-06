@@ -49,4 +49,5 @@ def sample_get_schema_registry():
     # Handle the response
     print(response)
 
+
 # [END managedkafka_v1_generated_ManagedSchemaRegistry_GetSchemaRegistry_sync]

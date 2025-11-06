@@ -53,4 +53,5 @@ async def sample_delete_resource_bundle():
     # Handle the response
     print(response)
 
+
 # [END configdelivery_v1alpha_generated_ConfigDelivery_DeleteResourceBundle_async]

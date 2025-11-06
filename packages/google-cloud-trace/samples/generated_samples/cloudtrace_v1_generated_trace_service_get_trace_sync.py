@@ -50,4 +50,5 @@ def sample_get_trace():
     # Handle the response
     print(response)
 
+
 # [END cloudtrace_v1_generated_TraceService_GetTrace_sync]

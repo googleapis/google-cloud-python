@@ -50,4 +50,5 @@ def sample_retrieve_transfer_parameters():
     # Handle the response
     print(response)
 
+
 # [END domains_v1_generated_Domains_RetrieveTransferParameters_sync]

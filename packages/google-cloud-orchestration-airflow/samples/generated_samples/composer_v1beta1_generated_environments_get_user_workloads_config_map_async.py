@@ -49,4 +49,5 @@ async def sample_get_user_workloads_config_map():
     # Handle the response
     print(response)
 
+
 # [END composer_v1beta1_generated_Environments_GetUserWorkloadsConfigMap_async]

@@ -39,13 +39,13 @@ def sample_update_version():
     client = artifactregistry_v1.ArtifactRegistryClient()
 
     # Initialize request argument(s)
-    request = artifactregistry_v1.UpdateVersionRequest(
-    )
+    request = artifactregistry_v1.UpdateVersionRequest()
 
     # Make the request
     response = client.update_version(request=request)
 
     # Handle the response
     print(response)
+
 
 # [END artifactregistry_v1_generated_ArtifactRegistry_UpdateVersion_sync]

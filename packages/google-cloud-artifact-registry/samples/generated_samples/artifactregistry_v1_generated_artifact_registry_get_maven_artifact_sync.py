@@ -49,4 +49,5 @@ def sample_get_maven_artifact():
     # Handle the response
     print(response)
 
+
 # [END artifactregistry_v1_generated_ArtifactRegistry_GetMavenArtifact_sync]

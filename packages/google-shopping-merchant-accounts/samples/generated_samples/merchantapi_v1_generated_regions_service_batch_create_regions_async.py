@@ -54,4 +54,5 @@ async def sample_batch_create_regions():
     # Handle the response
     print(response)
 
+
 # [END merchantapi_v1_generated_RegionsService_BatchCreateRegions_async]

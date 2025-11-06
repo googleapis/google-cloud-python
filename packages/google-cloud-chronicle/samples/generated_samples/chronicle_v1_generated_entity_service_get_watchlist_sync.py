@@ -49,4 +49,5 @@ def sample_get_watchlist():
     # Handle the response
     print(response)
 
+
 # [END chronicle_v1_generated_EntityService_GetWatchlist_sync]

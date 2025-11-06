@@ -55,4 +55,5 @@ async def sample_insert_lfp_store():
     # Handle the response
     print(response)
 
+
 # [END merchantapi_v1beta_generated_LfpStoreService_InsertLfpStore_async]

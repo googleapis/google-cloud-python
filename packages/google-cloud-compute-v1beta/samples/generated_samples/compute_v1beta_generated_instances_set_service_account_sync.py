@@ -51,4 +51,5 @@ def sample_set_service_account():
     # Handle the response
     print(response)
 
+
 # [END compute_v1beta_generated_Instances_SetServiceAccount_sync]

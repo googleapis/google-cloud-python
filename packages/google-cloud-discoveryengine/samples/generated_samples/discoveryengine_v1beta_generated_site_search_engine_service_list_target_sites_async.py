@@ -50,4 +50,5 @@ async def sample_list_target_sites():
     async for response in page_result:
         print(response)
 
+
 # [END discoveryengine_v1beta_generated_SiteSearchEngineService_ListTargetSites_async]

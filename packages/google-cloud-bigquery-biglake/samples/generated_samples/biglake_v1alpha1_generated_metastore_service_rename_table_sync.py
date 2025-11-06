@@ -50,4 +50,5 @@ def sample_rename_table():
     # Handle the response
     print(response)
 
+
 # [END biglake_v1alpha1_generated_MetastoreService_RenameTable_sync]

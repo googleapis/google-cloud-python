@@ -53,4 +53,5 @@ async def sample_delete_connection():
     # Handle the response
     print(response)
 
+
 # [END developerconnect_v1_generated_DeveloperConnect_DeleteConnection_async]

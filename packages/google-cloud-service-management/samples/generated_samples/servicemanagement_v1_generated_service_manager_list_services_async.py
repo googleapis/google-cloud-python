@@ -39,8 +39,7 @@ async def sample_list_services():
     client = servicemanagement_v1.ServiceManagerAsyncClient()
 
     # Initialize request argument(s)
-    request = servicemanagement_v1.ListServicesRequest(
-    )
+    request = servicemanagement_v1.ListServicesRequest()
 
     # Make the request
     page_result = client.list_services(request=request)
@@ -48,5 +47,6 @@ async def sample_list_services():
     # Handle the response
     async for response in page_result:
         print(response)
+
 
 # [END servicemanagement_v1_generated_ServiceManager_ListServices_async]

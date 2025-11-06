@@ -49,4 +49,5 @@ def sample_create_permission():
     # Handle the response
     print(response)
 
+
 # [END generativelanguage_v1beta_generated_PermissionService_CreatePermission_sync]

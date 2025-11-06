@@ -49,4 +49,5 @@ def sample_get_entity_reconciliation_job():
     # Handle the response
     print(response)
 
+
 # [END enterpriseknowledgegraph_v1_generated_EnterpriseKnowledgeGraphService_GetEntityReconciliationJob_sync]

@@ -54,4 +54,5 @@ async def sample_reschedule_maintenance():
     # Handle the response
     print(response)
 
+
 # [END redis_v1_generated_CloudRedis_RescheduleMaintenance_async]

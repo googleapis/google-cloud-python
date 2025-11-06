@@ -39,13 +39,13 @@ def sample_update_finding():
     client = securitycenter_v1beta1.SecurityCenterClient()
 
     # Initialize request argument(s)
-    request = securitycenter_v1beta1.UpdateFindingRequest(
-    )
+    request = securitycenter_v1beta1.UpdateFindingRequest()
 
     # Make the request
     response = client.update_finding(request=request)
 
     # Handle the response
     print(response)
+
 
 # [END securitycenter_v1beta1_generated_SecurityCenter_UpdateFinding_sync]

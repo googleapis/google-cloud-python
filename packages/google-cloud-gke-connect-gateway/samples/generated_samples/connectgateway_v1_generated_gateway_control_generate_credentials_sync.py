@@ -49,4 +49,5 @@ def sample_generate_credentials():
     # Handle the response
     print(response)
 
+
 # [END connectgateway_v1_generated_GatewayControl_GenerateCredentials_sync]

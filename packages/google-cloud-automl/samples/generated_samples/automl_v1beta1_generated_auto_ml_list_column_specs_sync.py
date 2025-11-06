@@ -50,4 +50,5 @@ def sample_list_column_specs():
     for response in page_result:
         print(response)
 
+
 # [END automl_v1beta1_generated_AutoMl_ListColumnSpecs_sync]

@@ -50,4 +50,5 @@ def sample_list_connection_profiles():
     for response in page_result:
         print(response)
 
+
 # [END datamigration_v1_generated_DataMigrationService_ListConnectionProfiles_sync]

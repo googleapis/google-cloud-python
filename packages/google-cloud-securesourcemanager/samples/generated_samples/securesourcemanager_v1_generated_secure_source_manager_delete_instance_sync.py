@@ -53,4 +53,5 @@ def sample_delete_instance():
     # Handle the response
     print(response)
 
+
 # [END securesourcemanager_v1_generated_SecureSourceManager_DeleteInstance_sync]

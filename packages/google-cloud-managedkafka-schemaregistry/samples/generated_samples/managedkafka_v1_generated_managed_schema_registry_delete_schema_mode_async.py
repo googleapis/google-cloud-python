@@ -49,4 +49,5 @@ async def sample_delete_schema_mode():
     # Handle the response
     print(response)
 
+
 # [END managedkafka_v1_generated_ManagedSchemaRegistry_DeleteSchemaMode_async]

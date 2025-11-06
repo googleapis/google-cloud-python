@@ -53,4 +53,5 @@ def sample_delete_registration():
     # Handle the response
     print(response)
 
+
 # [END domains_v1beta1_generated_Domains_DeleteRegistration_sync]

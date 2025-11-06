@@ -39,13 +39,13 @@ async def sample_update_resource_value_config():
     client = securitycenter_v2.SecurityCenterAsyncClient()
 
     # Initialize request argument(s)
-    request = securitycenter_v2.UpdateResourceValueConfigRequest(
-    )
+    request = securitycenter_v2.UpdateResourceValueConfigRequest()
 
     # Make the request
     response = await client.update_resource_value_config(request=request)
 
     # Handle the response
     print(response)
+
 
 # [END securitycenter_v2_generated_SecurityCenter_UpdateResourceValueConfig_async]

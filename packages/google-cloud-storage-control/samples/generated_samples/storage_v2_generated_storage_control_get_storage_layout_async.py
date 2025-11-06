@@ -49,4 +49,5 @@ async def sample_get_storage_layout():
     # Handle the response
     print(response)
 
+
 # [END storage_v2_generated_StorageControl_GetStorageLayout_async]

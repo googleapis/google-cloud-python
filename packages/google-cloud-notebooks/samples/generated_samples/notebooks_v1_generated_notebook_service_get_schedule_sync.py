@@ -49,4 +49,5 @@ def sample_get_schedule():
     # Handle the response
     print(response)
 
+
 # [END notebooks_v1_generated_NotebookService_GetSchedule_sync]

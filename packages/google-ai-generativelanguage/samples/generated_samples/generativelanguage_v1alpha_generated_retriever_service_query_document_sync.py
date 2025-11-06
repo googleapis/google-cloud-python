@@ -50,4 +50,5 @@ def sample_query_document():
     # Handle the response
     print(response)
 
+
 # [END generativelanguage_v1alpha_generated_RetrieverService_QueryDocument_sync]

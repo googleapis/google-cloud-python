@@ -49,4 +49,5 @@ async def sample_get_space():
     # Handle the response
     print(response)
 
+
 # [END meet_v2beta_generated_SpacesService_GetSpace_async]

@@ -39,8 +39,7 @@ def sample_update_recognizer():
     client = speech_v2.SpeechClient()
 
     # Initialize request argument(s)
-    request = speech_v2.UpdateRecognizerRequest(
-    )
+    request = speech_v2.UpdateRecognizerRequest()
 
     # Make the request
     operation = client.update_recognizer(request=request)
@@ -51,5 +50,6 @@ def sample_update_recognizer():
 
     # Handle the response
     print(response)
+
 
 # [END speech_v2_generated_Speech_UpdateRecognizer_sync]

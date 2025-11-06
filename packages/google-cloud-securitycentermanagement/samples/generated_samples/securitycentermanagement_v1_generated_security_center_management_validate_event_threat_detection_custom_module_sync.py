@@ -39,10 +39,12 @@ def sample_validate_event_threat_detection_custom_module():
     client = securitycentermanagement_v1.SecurityCenterManagementClient()
 
     # Initialize request argument(s)
-    request = securitycentermanagement_v1.ValidateEventThreatDetectionCustomModuleRequest(
-        parent="parent_value",
-        raw_text="raw_text_value",
-        type_="type__value",
+    request = (
+        securitycentermanagement_v1.ValidateEventThreatDetectionCustomModuleRequest(
+            parent="parent_value",
+            raw_text="raw_text_value",
+            type_="type__value",
+        )
     )
 
     # Make the request
@@ -50,5 +52,6 @@ def sample_validate_event_threat_detection_custom_module():
 
     # Handle the response
     print(response)
+
 
 # [END securitycentermanagement_v1_generated_SecurityCenterManagement_ValidateEventThreatDetectionCustomModule_sync]

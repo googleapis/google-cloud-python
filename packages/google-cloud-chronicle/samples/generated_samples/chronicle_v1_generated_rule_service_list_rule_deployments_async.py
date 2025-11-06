@@ -50,4 +50,5 @@ async def sample_list_rule_deployments():
     async for response in page_result:
         print(response)
 
+
 # [END chronicle_v1_generated_RuleService_ListRuleDeployments_async]

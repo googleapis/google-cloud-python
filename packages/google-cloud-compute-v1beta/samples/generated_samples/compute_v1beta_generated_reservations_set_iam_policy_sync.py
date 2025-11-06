@@ -51,4 +51,5 @@ def sample_set_iam_policy():
     # Handle the response
     print(response)
 
+
 # [END compute_v1beta_generated_Reservations_SetIamPolicy_sync]

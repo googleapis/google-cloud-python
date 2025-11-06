@@ -50,4 +50,5 @@ def sample_list_backup_collections():
     for response in page_result:
         print(response)
 
+
 # [END redis_v1beta1_generated_CloudRedisCluster_ListBackupCollections_sync]

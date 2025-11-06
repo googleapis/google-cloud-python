@@ -51,4 +51,5 @@ def sample_set_shielded_instance_integrity_policy():
     # Handle the response
     print(response)
 
+
 # [END compute_v1_generated_Instances_SetShieldedInstanceIntegrityPolicy_sync]

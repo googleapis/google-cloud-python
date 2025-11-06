@@ -49,4 +49,5 @@ async def sample_get_external_access_rule():
     # Handle the response
     print(response)
 
+
 # [END vmwareengine_v1_generated_VmwareEngine_GetExternalAccessRule_async]

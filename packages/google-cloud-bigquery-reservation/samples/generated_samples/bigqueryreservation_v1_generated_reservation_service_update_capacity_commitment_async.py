@@ -39,13 +39,13 @@ async def sample_update_capacity_commitment():
     client = bigquery_reservation_v1.ReservationServiceAsyncClient()
 
     # Initialize request argument(s)
-    request = bigquery_reservation_v1.UpdateCapacityCommitmentRequest(
-    )
+    request = bigquery_reservation_v1.UpdateCapacityCommitmentRequest()
 
     # Make the request
     response = await client.update_capacity_commitment(request=request)
 
     # Handle the response
     print(response)
+
 
 # [END bigqueryreservation_v1_generated_ReservationService_UpdateCapacityCommitment_async]

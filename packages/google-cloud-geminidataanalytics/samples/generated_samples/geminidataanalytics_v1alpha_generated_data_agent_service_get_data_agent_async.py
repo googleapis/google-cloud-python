@@ -49,4 +49,5 @@ async def sample_get_data_agent():
     # Handle the response
     print(response)
 
+
 # [END geminidataanalytics_v1alpha_generated_DataAgentService_GetDataAgent_async]

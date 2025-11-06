@@ -49,4 +49,5 @@ async def sample_get_vod_stitch_detail():
     # Handle the response
     print(response)
 
+
 # [END videostitcher_v1_generated_VideoStitcherService_GetVodStitchDetail_async]

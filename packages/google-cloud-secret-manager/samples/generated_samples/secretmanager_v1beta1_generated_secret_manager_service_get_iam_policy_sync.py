@@ -23,6 +23,8 @@
 #   python3 -m pip install google-cloud-secretmanager
 
 
+from google.iam.v1 import iam_policy_pb2  # type: ignore
+
 # [START secretmanager_v1beta1_generated_SecretManagerService_GetIamPolicy_sync]
 # This snippet has been automatically generated and should be regarded as a
 # code template only.
@@ -32,7 +34,6 @@
 #   client as shown in:
 #   https://googleapis.dev/python/google-api-core/latest/client_options.html
 from google.cloud import secretmanager_v1beta1
-from google.iam.v1 import iam_policy_pb2  # type: ignore
 
 
 def sample_get_iam_policy():
@@ -49,5 +50,6 @@ def sample_get_iam_policy():
 
     # Handle the response
     print(response)
+
 
 # [END secretmanager_v1beta1_generated_SecretManagerService_GetIamPolicy_sync]

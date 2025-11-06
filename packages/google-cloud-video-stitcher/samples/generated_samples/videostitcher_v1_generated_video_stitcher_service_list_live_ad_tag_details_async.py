@@ -50,4 +50,5 @@ async def sample_list_live_ad_tag_details():
     async for response in page_result:
         print(response)
 
+
 # [END videostitcher_v1_generated_VideoStitcherService_ListLiveAdTagDetails_async]

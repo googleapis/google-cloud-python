@@ -49,4 +49,5 @@ async def sample_get_snapshot():
     # Handle the response
     print(response)
 
+
 # [END netapp_v1_generated_NetApp_GetSnapshot_async]

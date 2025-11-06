@@ -50,4 +50,5 @@ def sample_list_policy_tags():
     for response in page_result:
         print(response)
 
+
 # [END datacatalog_v1_generated_PolicyTagManager_ListPolicyTags_sync]

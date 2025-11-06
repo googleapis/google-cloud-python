@@ -50,4 +50,5 @@ async def sample_create_version():
     # Handle the response
     print(response)
 
+
 # [END managedkafka_v1_generated_ManagedSchemaRegistry_CreateVersion_async]

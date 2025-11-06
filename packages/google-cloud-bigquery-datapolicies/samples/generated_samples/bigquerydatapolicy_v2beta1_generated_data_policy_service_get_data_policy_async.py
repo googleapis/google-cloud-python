@@ -49,4 +49,5 @@ async def sample_get_data_policy():
     # Handle the response
     print(response)
 
+
 # [END bigquerydatapolicy_v2beta1_generated_DataPolicyService_GetDataPolicy_async]

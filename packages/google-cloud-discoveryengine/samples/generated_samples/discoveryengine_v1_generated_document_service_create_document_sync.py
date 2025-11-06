@@ -50,4 +50,5 @@ def sample_create_document():
     # Handle the response
     print(response)
 
+
 # [END discoveryengine_v1_generated_DocumentService_CreateDocument_sync]

@@ -39,8 +39,7 @@ def sample_start_migration_job():
     client = clouddms_v1.DataMigrationServiceClient()
 
     # Initialize request argument(s)
-    request = clouddms_v1.StartMigrationJobRequest(
-    )
+    request = clouddms_v1.StartMigrationJobRequest()
 
     # Make the request
     operation = client.start_migration_job(request=request)
@@ -51,5 +50,6 @@ def sample_start_migration_job():
 
     # Handle the response
     print(response)
+
 
 # [END datamigration_v1_generated_DataMigrationService_StartMigrationJob_sync]

@@ -49,4 +49,5 @@ def sample_get_xpn_host():
     # Handle the response
     print(response)
 
+
 # [END compute_v1_generated_Projects_GetXpnHost_sync]

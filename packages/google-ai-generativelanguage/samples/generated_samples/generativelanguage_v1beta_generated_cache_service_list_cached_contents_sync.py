@@ -39,8 +39,7 @@ def sample_list_cached_contents():
     client = generativelanguage_v1beta.CacheServiceClient()
 
     # Initialize request argument(s)
-    request = generativelanguage_v1beta.ListCachedContentsRequest(
-    )
+    request = generativelanguage_v1beta.ListCachedContentsRequest()
 
     # Make the request
     page_result = client.list_cached_contents(request=request)
@@ -48,5 +47,6 @@ def sample_list_cached_contents():
     # Handle the response
     for response in page_result:
         print(response)
+
 
 # [END generativelanguage_v1beta_generated_CacheService_ListCachedContents_sync]

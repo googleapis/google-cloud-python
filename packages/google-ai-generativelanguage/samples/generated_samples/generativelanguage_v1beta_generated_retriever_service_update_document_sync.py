@@ -39,13 +39,13 @@ def sample_update_document():
     client = generativelanguage_v1beta.RetrieverServiceClient()
 
     # Initialize request argument(s)
-    request = generativelanguage_v1beta.UpdateDocumentRequest(
-    )
+    request = generativelanguage_v1beta.UpdateDocumentRequest()
 
     # Make the request
     response = client.update_document(request=request)
 
     # Handle the response
     print(response)
+
 
 # [END generativelanguage_v1beta_generated_RetrieverService_UpdateDocument_sync]

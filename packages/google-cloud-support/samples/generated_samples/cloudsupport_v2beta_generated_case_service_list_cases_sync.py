@@ -50,4 +50,5 @@ def sample_list_cases():
     for response in page_result:
         print(response)
 
+
 # [END cloudsupport_v2beta_generated_CaseService_ListCases_sync]

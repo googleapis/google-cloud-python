@@ -49,4 +49,5 @@ def sample_get_product():
     # Handle the response
     print(response)
 
+
 # [END licensemanager_v1_generated_LicenseManager_GetProduct_sync]

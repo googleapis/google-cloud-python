@@ -50,4 +50,5 @@ async def sample_list_iceberg_catalogs():
     async for response in page_result:
         print(response)
 
+
 # [END biglake_v1_generated_IcebergCatalogService_ListIcebergCatalogs_async]

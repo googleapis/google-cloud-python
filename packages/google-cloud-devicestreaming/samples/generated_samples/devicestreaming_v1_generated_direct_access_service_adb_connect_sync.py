@@ -63,4 +63,5 @@ def sample_adb_connect():
     for response in stream:
         print(response)
 
+
 # [END devicestreaming_v1_generated_DirectAccessService_AdbConnect_sync]

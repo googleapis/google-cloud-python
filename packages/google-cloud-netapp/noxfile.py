@@ -27,6 +27,10 @@ ISORT_VERSION = "isort==5.11.0"
 
 LINT_PATHS = ["docs", "google", "tests", "noxfile.py", "setup.py"]
 
+# Add samples to the list of directories to format if the directory exists.
+if os.path.isdir("samples"):
+    LINT_PATHS.append("samples")
+
 ALL_PYTHON = [
     "3.7",
     "3.8",

@@ -50,4 +50,5 @@ async def sample_list_workstation_configs():
     async for response in page_result:
         print(response)
 
+
 # [END workstations_v1_generated_Workstations_ListWorkstationConfigs_async]

@@ -51,4 +51,5 @@ def sample_patch_rule():
     # Handle the response
     print(response)
 
+
 # [END compute_v1_generated_RegionSecurityPolicies_PatchRule_sync]

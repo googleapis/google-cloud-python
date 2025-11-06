@@ -54,4 +54,5 @@ def sample_rename_folder():
     # Handle the response
     print(response)
 
+
 # [END storage_v2_generated_StorageControl_RenameFolder_sync]

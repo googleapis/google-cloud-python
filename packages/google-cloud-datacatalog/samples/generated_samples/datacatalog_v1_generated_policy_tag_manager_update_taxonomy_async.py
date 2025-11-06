@@ -39,13 +39,13 @@ async def sample_update_taxonomy():
     client = datacatalog_v1.PolicyTagManagerAsyncClient()
 
     # Initialize request argument(s)
-    request = datacatalog_v1.UpdateTaxonomyRequest(
-    )
+    request = datacatalog_v1.UpdateTaxonomyRequest()
 
     # Make the request
     response = await client.update_taxonomy(request=request)
 
     # Handle the response
     print(response)
+
 
 # [END datacatalog_v1_generated_PolicyTagManager_UpdateTaxonomy_async]

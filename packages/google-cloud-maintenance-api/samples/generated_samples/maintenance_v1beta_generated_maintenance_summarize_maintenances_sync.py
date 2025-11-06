@@ -50,4 +50,5 @@ def sample_summarize_maintenances():
     for response in page_result:
         print(response)
 
+
 # [END maintenance_v1beta_generated_Maintenance_SummarizeMaintenances_sync]

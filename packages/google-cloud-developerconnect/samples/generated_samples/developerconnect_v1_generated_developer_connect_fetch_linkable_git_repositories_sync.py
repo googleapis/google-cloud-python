@@ -50,4 +50,5 @@ def sample_fetch_linkable_git_repositories():
     for response in page_result:
         print(response)
 
+
 # [END developerconnect_v1_generated_DeveloperConnect_FetchLinkableGitRepositories_sync]

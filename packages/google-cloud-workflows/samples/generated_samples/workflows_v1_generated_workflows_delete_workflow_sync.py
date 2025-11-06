@@ -53,4 +53,5 @@ def sample_delete_workflow():
     # Handle the response
     print(response)
 
+
 # [END workflows_v1_generated_Workflows_DeleteWorkflow_sync]

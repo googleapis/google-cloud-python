@@ -53,4 +53,5 @@ def sample_delete_snapshot():
     # Handle the response
     print(response)
 
+
 # [END netapp_v1_generated_NetApp_DeleteSnapshot_sync]

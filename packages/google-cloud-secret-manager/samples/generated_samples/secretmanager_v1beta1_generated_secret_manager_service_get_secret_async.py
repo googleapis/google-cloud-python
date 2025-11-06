@@ -49,4 +49,5 @@ async def sample_get_secret():
     # Handle the response
     print(response)
 
+
 # [END secretmanager_v1beta1_generated_SecretManagerService_GetSecret_async]

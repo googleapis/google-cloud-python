@@ -51,4 +51,5 @@ def sample_delete_nodes():
     # Handle the response
     print(response)
 
+
 # [END compute_v1beta_generated_NodeGroups_DeleteNodes_sync]

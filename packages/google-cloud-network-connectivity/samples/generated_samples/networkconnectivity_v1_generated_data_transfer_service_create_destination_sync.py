@@ -60,4 +60,5 @@ def sample_create_destination():
     # Handle the response
     print(response)
 
+
 # [END networkconnectivity_v1_generated_DataTransferService_CreateDestination_sync]

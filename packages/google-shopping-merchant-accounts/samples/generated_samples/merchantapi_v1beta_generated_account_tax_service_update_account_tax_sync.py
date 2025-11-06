@@ -39,13 +39,13 @@ def sample_update_account_tax():
     client = merchant_accounts_v1beta.AccountTaxServiceClient()
 
     # Initialize request argument(s)
-    request = merchant_accounts_v1beta.UpdateAccountTaxRequest(
-    )
+    request = merchant_accounts_v1beta.UpdateAccountTaxRequest()
 
     # Make the request
     response = client.update_account_tax(request=request)
 
     # Handle the response
     print(response)
+
 
 # [END merchantapi_v1beta_generated_AccountTaxService_UpdateAccountTax_sync]

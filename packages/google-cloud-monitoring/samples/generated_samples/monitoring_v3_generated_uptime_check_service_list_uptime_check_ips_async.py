@@ -39,8 +39,7 @@ async def sample_list_uptime_check_ips():
     client = monitoring_v3.UptimeCheckServiceAsyncClient()
 
     # Initialize request argument(s)
-    request = monitoring_v3.ListUptimeCheckIpsRequest(
-    )
+    request = monitoring_v3.ListUptimeCheckIpsRequest()
 
     # Make the request
     page_result = client.list_uptime_check_ips(request=request)
@@ -48,5 +47,6 @@ async def sample_list_uptime_check_ips():
     # Handle the response
     async for response in page_result:
         print(response)
+
 
 # [END monitoring_v3_generated_UptimeCheckService_ListUptimeCheckIps_async]

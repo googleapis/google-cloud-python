@@ -39,8 +39,7 @@ def sample_create_project():
     client = resourcemanager_v3.ProjectsClient()
 
     # Initialize request argument(s)
-    request = resourcemanager_v3.CreateProjectRequest(
-    )
+    request = resourcemanager_v3.CreateProjectRequest()
 
     # Make the request
     operation = client.create_project(request=request)
@@ -51,5 +50,6 @@ def sample_create_project():
 
     # Handle the response
     print(response)
+
 
 # [END cloudresourcemanager_v3_generated_Projects_CreateProject_sync]

@@ -49,4 +49,5 @@ async def sample_list_finding_type_stats():
     # Handle the response
     print(response)
 
+
 # [END websecurityscanner_v1beta_generated_WebSecurityScanner_ListFindingTypeStats_async]

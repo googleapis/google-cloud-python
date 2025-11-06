@@ -39,13 +39,13 @@ async def sample_update_access_approval_settings():
     client = accessapproval_v1.AccessApprovalAsyncClient()
 
     # Initialize request argument(s)
-    request = accessapproval_v1.UpdateAccessApprovalSettingsMessage(
-    )
+    request = accessapproval_v1.UpdateAccessApprovalSettingsMessage()
 
     # Make the request
     response = await client.update_access_approval_settings(request=request)
 
     # Handle the response
     print(response)
+
 
 # [END accessapproval_v1_generated_AccessApproval_UpdateAccessApprovalSettings_async]

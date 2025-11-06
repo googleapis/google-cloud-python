@@ -50,4 +50,5 @@ async def sample_sign_jwt():
     # Handle the response
     print(response)
 
+
 # [END iamcredentials_v1_generated_IAMCredentials_SignJwt_async]

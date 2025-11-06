@@ -49,4 +49,5 @@ def sample_get_node():
     # Handle the response
     print(response)
 
+
 # [END vmwareengine_v1_generated_VmwareEngine_GetNode_sync]

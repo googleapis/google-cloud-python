@@ -39,8 +39,7 @@ def sample_list_files():
     client = generativelanguage_v1beta.FileServiceClient()
 
     # Initialize request argument(s)
-    request = generativelanguage_v1beta.ListFilesRequest(
-    )
+    request = generativelanguage_v1beta.ListFilesRequest()
 
     # Make the request
     page_result = client.list_files(request=request)
@@ -48,5 +47,6 @@ def sample_list_files():
     # Handle the response
     for response in page_result:
         print(response)
+
 
 # [END generativelanguage_v1beta_generated_FileService_ListFiles_sync]

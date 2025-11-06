@@ -53,4 +53,5 @@ def sample_delete_azure_node_pool():
     # Handle the response
     print(response)
 
+
 # [END gkemulticloud_v1_generated_AzureClusters_DeleteAzureNodePool_sync]

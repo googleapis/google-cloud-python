@@ -39,8 +39,7 @@ def sample_update_backup_policy():
     client = netapp_v1.NetAppClient()
 
     # Initialize request argument(s)
-    request = netapp_v1.UpdateBackupPolicyRequest(
-    )
+    request = netapp_v1.UpdateBackupPolicyRequest()
 
     # Make the request
     operation = client.update_backup_policy(request=request)
@@ -51,5 +50,6 @@ def sample_update_backup_policy():
 
     # Handle the response
     print(response)
+
 
 # [END netapp_v1_generated_NetApp_UpdateBackupPolicy_sync]

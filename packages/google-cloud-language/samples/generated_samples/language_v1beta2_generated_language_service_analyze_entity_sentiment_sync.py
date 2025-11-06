@@ -52,4 +52,5 @@ def sample_analyze_entity_sentiment():
     # Handle the response
     print(response)
 
+
 # [END language_v1beta2_generated_LanguageService_AnalyzeEntitySentiment_sync]

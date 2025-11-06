@@ -39,13 +39,13 @@ async def sample_update_endpoint():
     client = servicedirectory_v1.RegistrationServiceAsyncClient()
 
     # Initialize request argument(s)
-    request = servicedirectory_v1.UpdateEndpointRequest(
-    )
+    request = servicedirectory_v1.UpdateEndpointRequest()
 
     # Make the request
     response = await client.update_endpoint(request=request)
 
     # Handle the response
     print(response)
+
 
 # [END servicedirectory_v1_generated_RegistrationService_UpdateEndpoint_async]

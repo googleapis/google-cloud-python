@@ -49,4 +49,5 @@ async def sample_get_ekm_connection():
     # Handle the response
     print(response)
 
+
 # [END cloudkms_v1_generated_EkmService_GetEkmConnection_async]

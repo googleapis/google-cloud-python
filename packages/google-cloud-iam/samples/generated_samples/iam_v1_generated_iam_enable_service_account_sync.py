@@ -39,8 +39,7 @@ def sample_enable_service_account():
     client = iam_admin_v1.IAMClient()
 
     # Initialize request argument(s)
-    request = iam_admin_v1.EnableServiceAccountRequest(
-    )
+    request = iam_admin_v1.EnableServiceAccountRequest()
 
     # Make the request
     client.enable_service_account(request=request)

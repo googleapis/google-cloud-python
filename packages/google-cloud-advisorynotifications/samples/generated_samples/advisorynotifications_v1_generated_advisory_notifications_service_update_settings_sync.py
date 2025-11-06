@@ -52,4 +52,5 @@ def sample_update_settings():
     # Handle the response
     print(response)
 
+
 # [END advisorynotifications_v1_generated_AdvisoryNotificationsService_UpdateSettings_sync]

@@ -51,4 +51,5 @@ def sample_get_association():
     # Handle the response
     print(response)
 
+
 # [END compute_v1beta_generated_RegionNetworkPolicies_GetAssociation_sync]

@@ -39,13 +39,13 @@ async def sample_create_corpus():
     client = generativelanguage_v1beta.RetrieverServiceAsyncClient()
 
     # Initialize request argument(s)
-    request = generativelanguage_v1beta.CreateCorpusRequest(
-    )
+    request = generativelanguage_v1beta.CreateCorpusRequest()
 
     # Make the request
     response = await client.create_corpus(request=request)
 
     # Handle the response
     print(response)
+
 
 # [END generativelanguage_v1beta_generated_RetrieverService_CreateCorpus_async]

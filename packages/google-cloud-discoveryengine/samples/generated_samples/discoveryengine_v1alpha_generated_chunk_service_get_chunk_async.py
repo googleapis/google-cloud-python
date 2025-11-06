@@ -49,4 +49,5 @@ async def sample_get_chunk():
     # Handle the response
     print(response)
 
+
 # [END discoveryengine_v1alpha_generated_ChunkService_GetChunk_async]

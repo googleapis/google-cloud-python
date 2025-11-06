@@ -50,4 +50,5 @@ def sample_search_assignments():
     for response in page_result:
         print(response)
 
+
 # [END bigqueryreservation_v1_generated_ReservationService_SearchAssignments_sync]

@@ -54,4 +54,5 @@ async def sample_create_federation():
     # Handle the response
     print(response)
 
+
 # [END metastore_v1_generated_DataprocMetastoreFederation_CreateFederation_async]

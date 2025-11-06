@@ -50,4 +50,5 @@ def sample_list_triggers():
     for response in page_result:
         print(response)
 
+
 # [END eventarc_v1_generated_Eventarc_ListTriggers_sync]

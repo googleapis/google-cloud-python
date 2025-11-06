@@ -58,4 +58,5 @@ def sample_create_clip():
     # Handle the response
     print(response)
 
+
 # [END livestream_v1_generated_LivestreamService_CreateClip_sync]

@@ -52,4 +52,5 @@ def sample_update_autofeed_settings():
     # Handle the response
     print(response)
 
+
 # [END merchantapi_v1_generated_AutofeedSettingsService_UpdateAutofeedSettings_sync]

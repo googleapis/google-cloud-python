@@ -39,13 +39,13 @@ async def sample_create_authorized_certificate():
     client = appengine_admin_v1.AuthorizedCertificatesAsyncClient()
 
     # Initialize request argument(s)
-    request = appengine_admin_v1.CreateAuthorizedCertificateRequest(
-    )
+    request = appengine_admin_v1.CreateAuthorizedCertificateRequest()
 
     # Make the request
     response = await client.create_authorized_certificate(request=request)
 
     # Handle the response
     print(response)
+
 
 # [END appengine_v1_generated_AuthorizedCertificates_CreateAuthorizedCertificate_async]

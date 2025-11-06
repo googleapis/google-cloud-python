@@ -49,4 +49,5 @@ async def sample_get_processor():
     # Handle the response
     print(response)
 
+
 # [END visionai_v1_generated_AppPlatform_GetProcessor_async]

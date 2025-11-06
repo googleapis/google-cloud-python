@@ -39,8 +39,7 @@ def sample_list_recommenders():
     client = recommender_v1beta1.RecommenderClient()
 
     # Initialize request argument(s)
-    request = recommender_v1beta1.ListRecommendersRequest(
-    )
+    request = recommender_v1beta1.ListRecommendersRequest()
 
     # Make the request
     page_result = client.list_recommenders(request=request)
@@ -48,5 +47,6 @@ def sample_list_recommenders():
     # Handle the response
     for response in page_result:
         print(response)
+
 
 # [END recommender_v1beta1_generated_Recommender_ListRecommenders_sync]

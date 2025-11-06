@@ -39,13 +39,13 @@ async def sample_update_event_threat_detection_custom_module():
     client = securitycenter_v1.SecurityCenterAsyncClient()
 
     # Initialize request argument(s)
-    request = securitycenter_v1.UpdateEventThreatDetectionCustomModuleRequest(
-    )
+    request = securitycenter_v1.UpdateEventThreatDetectionCustomModuleRequest()
 
     # Make the request
     response = await client.update_event_threat_detection_custom_module(request=request)
 
     # Handle the response
     print(response)
+
 
 # [END securitycenter_v1_generated_SecurityCenter_UpdateEventThreatDetectionCustomModule_async]

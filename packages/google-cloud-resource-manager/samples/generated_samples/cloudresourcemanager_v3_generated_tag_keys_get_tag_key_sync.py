@@ -49,4 +49,5 @@ def sample_get_tag_key():
     # Handle the response
     print(response)
 
+
 # [END cloudresourcemanager_v3_generated_TagKeys_GetTagKey_sync]

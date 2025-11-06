@@ -50,4 +50,5 @@ async def sample_list_services():
     async for response in page_result:
         print(response)
 
+
 # [END servicedirectory_v1_generated_RegistrationService_ListServices_async]

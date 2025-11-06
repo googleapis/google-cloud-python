@@ -39,8 +39,7 @@ def sample_list_roles():
     client = iam_admin_v1.IAMClient()
 
     # Initialize request argument(s)
-    request = iam_admin_v1.ListRolesRequest(
-    )
+    request = iam_admin_v1.ListRolesRequest()
 
     # Make the request
     page_result = client.list_roles(request=request)
@@ -48,5 +47,6 @@ def sample_list_roles():
     # Handle the response
     for response in page_result:
         print(response)
+
 
 # [END iam_v1_generated_IAM_ListRoles_sync]

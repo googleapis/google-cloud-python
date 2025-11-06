@@ -39,8 +39,7 @@ async def sample_import_yum_artifacts():
     client = artifactregistry_v1beta2.ArtifactRegistryAsyncClient()
 
     # Initialize request argument(s)
-    request = artifactregistry_v1beta2.ImportYumArtifactsRequest(
-    )
+    request = artifactregistry_v1beta2.ImportYumArtifactsRequest()
 
     # Make the request
     operation = client.import_yum_artifacts(request=request)
@@ -51,5 +50,6 @@ async def sample_import_yum_artifacts():
 
     # Handle the response
     print(response)
+
 
 # [END artifactregistry_v1beta2_generated_ArtifactRegistry_ImportYumArtifacts_async]

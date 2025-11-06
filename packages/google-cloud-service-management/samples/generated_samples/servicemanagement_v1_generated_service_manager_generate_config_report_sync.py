@@ -39,13 +39,13 @@ def sample_generate_config_report():
     client = servicemanagement_v1.ServiceManagerClient()
 
     # Initialize request argument(s)
-    request = servicemanagement_v1.GenerateConfigReportRequest(
-    )
+    request = servicemanagement_v1.GenerateConfigReportRequest()
 
     # Make the request
     response = client.generate_config_report(request=request)
 
     # Handle the response
     print(response)
+
 
 # [END servicemanagement_v1_generated_ServiceManager_GenerateConfigReport_sync]

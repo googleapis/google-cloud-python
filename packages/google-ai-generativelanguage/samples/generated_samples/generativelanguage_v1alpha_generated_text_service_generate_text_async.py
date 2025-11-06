@@ -53,4 +53,5 @@ async def sample_generate_text():
     # Handle the response
     print(response)
 
+
 # [END generativelanguage_v1alpha_generated_TextService_GenerateText_async]

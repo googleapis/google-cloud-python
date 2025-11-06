@@ -49,4 +49,5 @@ def sample_get_series():
     # Handle the response
     print(response)
 
+
 # [END visionai_v1_generated_StreamsService_GetSeries_sync]

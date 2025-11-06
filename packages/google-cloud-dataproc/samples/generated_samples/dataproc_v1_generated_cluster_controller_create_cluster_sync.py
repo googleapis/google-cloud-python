@@ -59,4 +59,5 @@ def sample_create_cluster():
     # Handle the response
     print(response)
 
+
 # [END dataproc_v1_generated_ClusterController_CreateCluster_sync]

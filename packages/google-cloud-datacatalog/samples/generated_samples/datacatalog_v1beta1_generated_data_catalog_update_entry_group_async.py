@@ -39,13 +39,13 @@ async def sample_update_entry_group():
     client = datacatalog_v1beta1.DataCatalogAsyncClient()
 
     # Initialize request argument(s)
-    request = datacatalog_v1beta1.UpdateEntryGroupRequest(
-    )
+    request = datacatalog_v1beta1.UpdateEntryGroupRequest()
 
     # Make the request
     response = await client.update_entry_group(request=request)
 
     # Handle the response
     print(response)
+
 
 # [END datacatalog_v1beta1_generated_DataCatalog_UpdateEntryGroup_async]

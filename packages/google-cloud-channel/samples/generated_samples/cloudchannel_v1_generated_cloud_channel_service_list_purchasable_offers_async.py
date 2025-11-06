@@ -54,4 +54,5 @@ async def sample_list_purchasable_offers():
     async for response in page_result:
         print(response)
 
+
 # [END cloudchannel_v1_generated_CloudChannelService_ListPurchasableOffers_async]

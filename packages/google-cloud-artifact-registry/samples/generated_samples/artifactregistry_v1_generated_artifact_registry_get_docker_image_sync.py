@@ -49,4 +49,5 @@ def sample_get_docker_image():
     # Handle the response
     print(response)
 
+
 # [END artifactregistry_v1_generated_ArtifactRegistry_GetDockerImage_sync]

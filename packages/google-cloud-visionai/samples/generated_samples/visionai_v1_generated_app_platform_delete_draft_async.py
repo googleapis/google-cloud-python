@@ -53,4 +53,5 @@ async def sample_delete_draft():
     # Handle the response
     print(response)
 
+
 # [END visionai_v1_generated_AppPlatform_DeleteDraft_async]

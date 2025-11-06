@@ -50,4 +50,5 @@ async def sample_list_service_project_attachments():
     async for response in page_result:
         print(response)
 
+
 # [END apphub_v1_generated_AppHub_ListServiceProjectAttachments_async]

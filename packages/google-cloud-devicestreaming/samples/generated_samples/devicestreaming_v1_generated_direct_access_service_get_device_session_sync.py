@@ -49,4 +49,5 @@ def sample_get_device_session():
     # Handle the response
     print(response)
 
+
 # [END devicestreaming_v1_generated_DirectAccessService_GetDeviceSession_sync]

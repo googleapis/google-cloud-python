@@ -57,4 +57,5 @@ def sample_create_key_handle():
     # Handle the response
     print(response)
 
+
 # [END cloudkms_v1_generated_Autokey_CreateKeyHandle_sync]

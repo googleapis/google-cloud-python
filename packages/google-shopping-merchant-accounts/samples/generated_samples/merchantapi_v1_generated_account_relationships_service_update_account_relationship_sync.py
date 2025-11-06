@@ -39,13 +39,13 @@ def sample_update_account_relationship():
     client = merchant_accounts_v1.AccountRelationshipsServiceClient()
 
     # Initialize request argument(s)
-    request = merchant_accounts_v1.UpdateAccountRelationshipRequest(
-    )
+    request = merchant_accounts_v1.UpdateAccountRelationshipRequest()
 
     # Make the request
     response = client.update_account_relationship(request=request)
 
     # Handle the response
     print(response)
+
 
 # [END merchantapi_v1_generated_AccountRelationshipsService_UpdateAccountRelationship_sync]

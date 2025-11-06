@@ -50,4 +50,5 @@ async def sample_list_account_issues():
     async for response in page_result:
         print(response)
 
+
 # [END merchantapi_v1_generated_AccountIssueService_ListAccountIssues_async]

@@ -50,4 +50,5 @@ async def sample_list_session_templates():
     async for response in page_result:
         print(response)
 
+
 # [END dataproc_v1_generated_SessionTemplateController_ListSessionTemplates_async]

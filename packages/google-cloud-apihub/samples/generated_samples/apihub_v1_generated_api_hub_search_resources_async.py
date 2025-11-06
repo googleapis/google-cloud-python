@@ -51,4 +51,5 @@ async def sample_search_resources():
     async for response in page_result:
         print(response)
 
+
 # [END apihub_v1_generated_ApiHub_SearchResources_async]

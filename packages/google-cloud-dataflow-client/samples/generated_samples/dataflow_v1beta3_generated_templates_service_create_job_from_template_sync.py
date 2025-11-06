@@ -49,4 +49,5 @@ def sample_create_job_from_template():
     # Handle the response
     print(response)
 
+
 # [END dataflow_v1beta3_generated_TemplatesService_CreateJobFromTemplate_sync]

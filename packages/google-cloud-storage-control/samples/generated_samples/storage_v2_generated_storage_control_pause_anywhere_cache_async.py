@@ -49,4 +49,5 @@ async def sample_pause_anywhere_cache():
     # Handle the response
     print(response)
 
+
 # [END storage_v2_generated_StorageControl_PauseAnywhereCache_async]

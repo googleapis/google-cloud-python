@@ -50,4 +50,5 @@ def sample_bulk_insert():
     # Handle the response
     print(response)
 
+
 # [END compute_v1_generated_RegionDisks_BulkInsert_sync]

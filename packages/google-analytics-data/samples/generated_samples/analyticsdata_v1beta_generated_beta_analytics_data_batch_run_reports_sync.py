@@ -39,13 +39,13 @@ def sample_batch_run_reports():
     client = data_v1beta.BetaAnalyticsDataClient()
 
     # Initialize request argument(s)
-    request = data_v1beta.BatchRunReportsRequest(
-    )
+    request = data_v1beta.BatchRunReportsRequest()
 
     # Make the request
     response = client.batch_run_reports(request=request)
 
     # Handle the response
     print(response)
+
 
 # [END analyticsdata_v1beta_generated_BetaAnalyticsData_BatchRunReports_sync]

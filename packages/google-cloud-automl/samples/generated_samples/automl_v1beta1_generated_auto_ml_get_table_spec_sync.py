@@ -49,4 +49,5 @@ def sample_get_table_spec():
     # Handle the response
     print(response)
 
+
 # [END automl_v1beta1_generated_AutoMl_GetTableSpec_sync]

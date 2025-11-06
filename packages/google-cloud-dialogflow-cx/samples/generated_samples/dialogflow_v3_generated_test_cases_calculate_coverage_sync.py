@@ -50,4 +50,5 @@ def sample_calculate_coverage():
     # Handle the response
     print(response)
 
+
 # [END dialogflow_v3_generated_TestCases_CalculateCoverage_sync]

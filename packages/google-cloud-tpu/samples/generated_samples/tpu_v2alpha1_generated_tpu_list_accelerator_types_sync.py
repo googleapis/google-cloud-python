@@ -50,4 +50,5 @@ def sample_list_accelerator_types():
     for response in page_result:
         print(response)
 
+
 # [END tpu_v2alpha1_generated_Tpu_ListAcceleratorTypes_sync]

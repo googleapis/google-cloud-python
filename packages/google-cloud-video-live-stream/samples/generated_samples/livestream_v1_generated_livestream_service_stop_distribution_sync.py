@@ -53,4 +53,5 @@ def sample_stop_distribution():
     # Handle the response
     print(response)
 
+
 # [END livestream_v1_generated_LivestreamService_StopDistribution_sync]

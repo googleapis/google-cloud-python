@@ -49,4 +49,5 @@ def sample_get_connection_profile():
     # Handle the response
     print(response)
 
+
 # [END datastream_v1_generated_Datastream_GetConnectionProfile_sync]

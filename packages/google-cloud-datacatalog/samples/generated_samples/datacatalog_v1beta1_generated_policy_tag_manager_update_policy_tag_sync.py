@@ -39,13 +39,13 @@ def sample_update_policy_tag():
     client = datacatalog_v1beta1.PolicyTagManagerClient()
 
     # Initialize request argument(s)
-    request = datacatalog_v1beta1.UpdatePolicyTagRequest(
-    )
+    request = datacatalog_v1beta1.UpdatePolicyTagRequest()
 
     # Make the request
     response = client.update_policy_tag(request=request)
 
     # Handle the response
     print(response)
+
 
 # [END datacatalog_v1beta1_generated_PolicyTagManager_UpdatePolicyTag_sync]

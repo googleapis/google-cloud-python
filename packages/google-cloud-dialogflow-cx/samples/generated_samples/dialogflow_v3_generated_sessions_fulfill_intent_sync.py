@@ -39,13 +39,13 @@ def sample_fulfill_intent():
     client = dialogflowcx_v3.SessionsClient()
 
     # Initialize request argument(s)
-    request = dialogflowcx_v3.FulfillIntentRequest(
-    )
+    request = dialogflowcx_v3.FulfillIntentRequest()
 
     # Make the request
     response = client.fulfill_intent(request=request)
 
     # Handle the response
     print(response)
+
 
 # [END dialogflow_v3_generated_Sessions_FulfillIntent_sync]

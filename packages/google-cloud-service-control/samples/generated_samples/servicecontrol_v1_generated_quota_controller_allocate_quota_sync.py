@@ -39,13 +39,13 @@ def sample_allocate_quota():
     client = servicecontrol_v1.QuotaControllerClient()
 
     # Initialize request argument(s)
-    request = servicecontrol_v1.AllocateQuotaRequest(
-    )
+    request = servicecontrol_v1.AllocateQuotaRequest()
 
     # Make the request
     response = client.allocate_quota(request=request)
 
     # Handle the response
     print(response)
+
 
 # [END servicecontrol_v1_generated_QuotaController_AllocateQuota_sync]

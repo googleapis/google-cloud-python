@@ -49,4 +49,5 @@ async def sample_get_resource_maintenance():
     # Handle the response
     print(response)
 
+
 # [END maintenance_v1beta_generated_Maintenance_GetResourceMaintenance_async]

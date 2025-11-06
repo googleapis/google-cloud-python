@@ -53,4 +53,5 @@ async def sample_delete_backup_channel():
     # Handle the response
     print(response)
 
+
 # [END gkebackup_v1_generated_BackupForGKE_DeleteBackupChannel_async]

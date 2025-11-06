@@ -50,4 +50,5 @@ def sample_list_gbp_accounts():
     for response in page_result:
         print(response)
 
+
 # [END merchantapi_v1_generated_GbpAccountsService_ListGbpAccounts_sync]

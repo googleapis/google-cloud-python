@@ -58,4 +58,5 @@ def sample_create_workload():
     # Handle the response
     print(response)
 
+
 # [END assuredworkloads_v1beta1_generated_AssuredWorkloadsService_CreateWorkload_sync]

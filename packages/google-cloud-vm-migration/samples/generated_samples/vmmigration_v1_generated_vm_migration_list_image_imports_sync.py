@@ -50,4 +50,5 @@ def sample_list_image_imports():
     for response in page_result:
         print(response)
 
+
 # [END vmmigration_v1_generated_VmMigration_ListImageImports_sync]

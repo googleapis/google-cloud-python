@@ -49,4 +49,5 @@ async def sample_unclaim_homepage():
     # Handle the response
     print(response)
 
+
 # [END merchantapi_v1beta_generated_HomepageService_UnclaimHomepage_async]

@@ -50,4 +50,5 @@ def sample_get():
     # Handle the response
     print(response)
 
+
 # [END compute_v1beta_generated_InterconnectRemoteLocations_Get_sync]

@@ -39,13 +39,13 @@ def sample_update_rule():
     client = artifactregistry_v1.ArtifactRegistryClient()
 
     # Initialize request argument(s)
-    request = artifactregistry_v1.UpdateRuleRequest(
-    )
+    request = artifactregistry_v1.UpdateRuleRequest()
 
     # Make the request
     response = client.update_rule(request=request)
 
     # Handle the response
     print(response)
+
 
 # [END artifactregistry_v1_generated_ArtifactRegistry_UpdateRule_sync]

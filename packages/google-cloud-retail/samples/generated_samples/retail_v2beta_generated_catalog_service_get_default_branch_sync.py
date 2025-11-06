@@ -39,13 +39,13 @@ def sample_get_default_branch():
     client = retail_v2beta.CatalogServiceClient()
 
     # Initialize request argument(s)
-    request = retail_v2beta.GetDefaultBranchRequest(
-    )
+    request = retail_v2beta.GetDefaultBranchRequest()
 
     # Make the request
     response = client.get_default_branch(request=request)
 
     # Handle the response
     print(response)
+
 
 # [END retail_v2beta_generated_CatalogService_GetDefaultBranch_sync]

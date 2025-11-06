@@ -53,4 +53,5 @@ async def sample_signal_zone_state():
     # Handle the response
     print(response)
 
+
 # [END gdchardwaremanagement_v1alpha_generated_GDCHardwareManagement_SignalZoneState_async]

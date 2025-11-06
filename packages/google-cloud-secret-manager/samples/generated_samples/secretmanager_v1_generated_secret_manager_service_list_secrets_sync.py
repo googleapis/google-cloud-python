@@ -50,4 +50,5 @@ def sample_list_secrets():
     for response in page_result:
         print(response)
 
+
 # [END secretmanager_v1_generated_SecretManagerService_ListSecrets_sync]

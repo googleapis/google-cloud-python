@@ -50,4 +50,5 @@ def sample_mark_recommendation_succeeded():
     # Handle the response
     print(response)
 
+
 # [END recommender_v1beta1_generated_Recommender_MarkRecommendationSucceeded_sync]

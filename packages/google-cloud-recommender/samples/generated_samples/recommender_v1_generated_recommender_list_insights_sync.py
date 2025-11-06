@@ -50,4 +50,5 @@ def sample_list_insights():
     for response in page_result:
         print(response)
 
+
 # [END recommender_v1_generated_Recommender_ListInsights_sync]

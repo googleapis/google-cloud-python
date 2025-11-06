@@ -58,4 +58,5 @@ def sample_batch_create_target_sites():
     # Handle the response
     print(response)
 
+
 # [END discoveryengine_v1beta_generated_SiteSearchEngineService_BatchCreateTargetSites_sync]

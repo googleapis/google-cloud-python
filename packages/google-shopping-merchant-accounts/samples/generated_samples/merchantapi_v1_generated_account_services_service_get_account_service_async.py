@@ -49,4 +49,5 @@ async def sample_get_account_service():
     # Handle the response
     print(response)
 
+
 # [END merchantapi_v1_generated_AccountServicesService_GetAccountService_async]

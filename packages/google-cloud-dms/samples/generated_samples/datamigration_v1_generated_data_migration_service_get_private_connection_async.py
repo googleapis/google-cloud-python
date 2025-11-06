@@ -49,4 +49,5 @@ async def sample_get_private_connection():
     # Handle the response
     print(response)
 
+
 # [END datamigration_v1_generated_DataMigrationService_GetPrivateConnection_async]

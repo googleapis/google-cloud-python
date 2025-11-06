@@ -50,4 +50,5 @@ def sample_transfer_ownership():
     # Handle the response
     print(response)
 
+
 # [END generativelanguage_v1beta_generated_PermissionService_TransferOwnership_sync]

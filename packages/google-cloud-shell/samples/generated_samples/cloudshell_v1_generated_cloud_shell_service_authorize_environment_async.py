@@ -39,8 +39,7 @@ async def sample_authorize_environment():
     client = shell_v1.CloudShellServiceAsyncClient()
 
     # Initialize request argument(s)
-    request = shell_v1.AuthorizeEnvironmentRequest(
-    )
+    request = shell_v1.AuthorizeEnvironmentRequest()
 
     # Make the request
     operation = client.authorize_environment(request=request)
@@ -51,5 +50,6 @@ async def sample_authorize_environment():
 
     # Handle the response
     print(response)
+
 
 # [END cloudshell_v1_generated_CloudShellService_AuthorizeEnvironment_async]

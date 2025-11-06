@@ -50,4 +50,5 @@ def sample_list_examples():
     for response in page_result:
         print(response)
 
+
 # [END datalabeling_v1beta1_generated_DataLabelingService_ListExamples_sync]

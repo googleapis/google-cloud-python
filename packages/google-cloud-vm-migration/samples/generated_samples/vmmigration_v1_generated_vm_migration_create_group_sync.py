@@ -54,4 +54,5 @@ def sample_create_group():
     # Handle the response
     print(response)
 
+
 # [END vmmigration_v1_generated_VmMigration_CreateGroup_sync]

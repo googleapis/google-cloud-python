@@ -54,4 +54,5 @@ def sample_create_event():
     # Handle the response
     print(response)
 
+
 # [END visionai_v1_generated_StreamsService_CreateEvent_sync]

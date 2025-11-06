@@ -49,4 +49,5 @@ def sample_get_cluster():
     # Handle the response
     print(response)
 
+
 # [END vmwareengine_v1_generated_VmwareEngine_GetCluster_sync]

@@ -49,4 +49,5 @@ async def sample_create_entity_reconciliation_job():
     # Handle the response
     print(response)
 
+
 # [END enterpriseknowledgegraph_v1_generated_EnterpriseKnowledgeGraphService_CreateEntityReconciliationJob_async]

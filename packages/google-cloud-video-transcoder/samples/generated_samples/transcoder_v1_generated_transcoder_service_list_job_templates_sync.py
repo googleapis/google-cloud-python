@@ -50,4 +50,5 @@ def sample_list_job_templates():
     for response in page_result:
         print(response)
 
+
 # [END transcoder_v1_generated_TranscoderService_ListJobTemplates_sync]

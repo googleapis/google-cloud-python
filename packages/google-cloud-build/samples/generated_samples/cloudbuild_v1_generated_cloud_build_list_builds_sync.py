@@ -50,4 +50,5 @@ def sample_list_builds():
     for response in page_result:
         print(response)
 
+
 # [END cloudbuild_v1_generated_CloudBuild_ListBuilds_sync]

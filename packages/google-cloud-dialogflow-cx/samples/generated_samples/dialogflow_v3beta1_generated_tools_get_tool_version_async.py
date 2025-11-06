@@ -49,4 +49,5 @@ async def sample_get_tool_version():
     # Handle the response
     print(response)
 
+
 # [END dialogflow_v3beta1_generated_Tools_GetToolVersion_async]

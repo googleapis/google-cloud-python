@@ -53,4 +53,5 @@ async def sample_delete_function():
     # Handle the response
     print(response)
 
+
 # [END cloudfunctions_v2_generated_FunctionService_DeleteFunction_async]

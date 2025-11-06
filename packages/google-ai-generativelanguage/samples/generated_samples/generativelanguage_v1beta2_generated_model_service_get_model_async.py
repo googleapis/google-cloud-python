@@ -49,4 +49,5 @@ async def sample_get_model():
     # Handle the response
     print(response)
 
+
 # [END generativelanguage_v1beta2_generated_ModelService_GetModel_async]

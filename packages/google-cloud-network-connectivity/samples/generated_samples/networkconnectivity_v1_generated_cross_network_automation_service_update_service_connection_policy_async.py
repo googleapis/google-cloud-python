@@ -39,8 +39,7 @@ async def sample_update_service_connection_policy():
     client = networkconnectivity_v1.CrossNetworkAutomationServiceAsyncClient()
 
     # Initialize request argument(s)
-    request = networkconnectivity_v1.UpdateServiceConnectionPolicyRequest(
-    )
+    request = networkconnectivity_v1.UpdateServiceConnectionPolicyRequest()
 
     # Make the request
     operation = client.update_service_connection_policy(request=request)
@@ -51,5 +50,6 @@ async def sample_update_service_connection_policy():
 
     # Handle the response
     print(response)
+
 
 # [END networkconnectivity_v1_generated_CrossNetworkAutomationService_UpdateServiceConnectionPolicy_async]

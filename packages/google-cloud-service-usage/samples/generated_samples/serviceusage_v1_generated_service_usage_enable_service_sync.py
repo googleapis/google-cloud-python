@@ -39,8 +39,7 @@ def sample_enable_service():
     client = service_usage_v1.ServiceUsageClient()
 
     # Initialize request argument(s)
-    request = service_usage_v1.EnableServiceRequest(
-    )
+    request = service_usage_v1.EnableServiceRequest()
 
     # Make the request
     operation = client.enable_service(request=request)
@@ -51,5 +50,6 @@ def sample_enable_service():
 
     # Handle the response
     print(response)
+
 
 # [END serviceusage_v1_generated_ServiceUsage_EnableService_sync]

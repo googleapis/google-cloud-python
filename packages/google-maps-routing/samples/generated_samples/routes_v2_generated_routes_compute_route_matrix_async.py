@@ -39,8 +39,7 @@ async def sample_compute_route_matrix():
     client = routing_v2.RoutesAsyncClient()
 
     # Initialize request argument(s)
-    request = routing_v2.ComputeRouteMatrixRequest(
-    )
+    request = routing_v2.ComputeRouteMatrixRequest()
 
     # Make the request
     stream = await client.compute_route_matrix(request=request)
@@ -48,5 +47,6 @@ async def sample_compute_route_matrix():
     # Handle the response
     async for response in stream:
         print(response)
+
 
 # [END routes_v2_generated_Routes_ComputeRouteMatrix_async]

@@ -42,15 +42,20 @@ async def sample_simulate_security_health_analytics_custom_module():
     resource = securitycentermanagement_v1.SimulatedResource()
     resource.resource_type = "resource_type_value"
 
-    request = securitycentermanagement_v1.SimulateSecurityHealthAnalyticsCustomModuleRequest(
-        parent="parent_value",
-        resource=resource,
+    request = (
+        securitycentermanagement_v1.SimulateSecurityHealthAnalyticsCustomModuleRequest(
+            parent="parent_value",
+            resource=resource,
+        )
     )
 
     # Make the request
-    response = await client.simulate_security_health_analytics_custom_module(request=request)
+    response = await client.simulate_security_health_analytics_custom_module(
+        request=request
+    )
 
     # Handle the response
     print(response)
+
 
 # [END securitycentermanagement_v1_generated_SecurityCenterManagement_SimulateSecurityHealthAnalyticsCustomModule_async]

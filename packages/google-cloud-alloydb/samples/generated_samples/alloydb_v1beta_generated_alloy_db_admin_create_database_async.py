@@ -50,4 +50,5 @@ async def sample_create_database():
     # Handle the response
     print(response)
 
+
 # [END alloydb_v1beta_generated_AlloyDBAdmin_CreateDatabase_async]

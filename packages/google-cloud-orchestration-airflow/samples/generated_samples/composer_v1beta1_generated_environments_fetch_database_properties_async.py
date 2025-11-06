@@ -49,4 +49,5 @@ async def sample_fetch_database_properties():
     # Handle the response
     print(response)
 
+
 # [END composer_v1beta1_generated_Environments_FetchDatabaseProperties_async]

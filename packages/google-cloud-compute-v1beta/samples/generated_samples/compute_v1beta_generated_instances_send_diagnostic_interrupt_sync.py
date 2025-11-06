@@ -51,4 +51,5 @@ def sample_send_diagnostic_interrupt():
     # Handle the response
     print(response)
 
+
 # [END compute_v1beta_generated_Instances_SendDiagnosticInterrupt_sync]

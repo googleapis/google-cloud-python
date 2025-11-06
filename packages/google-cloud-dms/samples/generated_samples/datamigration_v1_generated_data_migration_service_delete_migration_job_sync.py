@@ -53,4 +53,5 @@ def sample_delete_migration_job():
     # Handle the response
     print(response)
 
+
 # [END datamigration_v1_generated_DataMigrationService_DeleteMigrationJob_sync]

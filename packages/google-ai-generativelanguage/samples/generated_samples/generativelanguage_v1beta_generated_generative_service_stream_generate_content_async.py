@@ -50,4 +50,5 @@ async def sample_stream_generate_content():
     async for response in stream:
         print(response)
 
+
 # [END generativelanguage_v1beta_generated_GenerativeService_StreamGenerateContent_async]

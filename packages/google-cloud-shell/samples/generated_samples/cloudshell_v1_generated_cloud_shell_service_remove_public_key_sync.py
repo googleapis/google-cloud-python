@@ -39,8 +39,7 @@ def sample_remove_public_key():
     client = shell_v1.CloudShellServiceClient()
 
     # Initialize request argument(s)
-    request = shell_v1.RemovePublicKeyRequest(
-    )
+    request = shell_v1.RemovePublicKeyRequest()
 
     # Make the request
     operation = client.remove_public_key(request=request)
@@ -51,5 +50,6 @@ def sample_remove_public_key():
 
     # Handle the response
     print(response)
+
 
 # [END cloudshell_v1_generated_CloudShellService_RemovePublicKey_sync]

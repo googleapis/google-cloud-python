@@ -39,8 +39,7 @@ async def sample_update_external_address():
     client = vmwareengine_v1.VmwareEngineAsyncClient()
 
     # Initialize request argument(s)
-    request = vmwareengine_v1.UpdateExternalAddressRequest(
-    )
+    request = vmwareengine_v1.UpdateExternalAddressRequest()
 
     # Make the request
     operation = client.update_external_address(request=request)
@@ -51,5 +50,6 @@ async def sample_update_external_address():
 
     # Handle the response
     print(response)
+
 
 # [END vmwareengine_v1_generated_VmwareEngine_UpdateExternalAddress_async]

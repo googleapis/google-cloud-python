@@ -49,4 +49,5 @@ def sample_get_aws_open_id_config():
     # Handle the response
     print(response)
 
+
 # [END gkemulticloud_v1_generated_AwsClusters_GetAwsOpenIdConfig_sync]

@@ -54,4 +54,5 @@ def sample_create_dependency():
     # Handle the response
     print(response)
 
+
 # [END apihub_v1_generated_ApiHubDependencies_CreateDependency_sync]
