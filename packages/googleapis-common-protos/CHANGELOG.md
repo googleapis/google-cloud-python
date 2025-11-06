@@ -9,22 +9,8 @@
 
 ### Features
 
-* add common_resources.proto (#14851) This PR depends on
-https://github.com/googleapis/google-cloud-python/pull/14850
-`google/cloud` was not listed as an api path for
-`googleapis-common-protos` for code was not being generated for
-https://github.com/googleapis/googleapis/blob/master/google/cloud/extended_operations.proto
-and
-https://github.com/googleapis/googleapis/blob/master/google/cloud/common_resources.proto ([e4e0e2a93c3db14324c1d9f799283ffe4f2bec09](https://github.com/googleapis/google-cloud-python/commit/e4e0e2a93c3db14324c1d9f799283ffe4f2bec09))
-* add field api_version to message ServiceForTransport (#14843) This PR was created locally. The reason that this could not be automated
-is that the current directory structure
-[gapic/metadata](https://github.com/googleapis/googleapis/tree/master/gapic/metadata)
-doesn't align with the protobuf package name
-[google.gapic.metadata](https://github.com/googleapis/googleapis/blob/53af3b727f84acc34e31c23f3b6e7b8aa4b7e837/gapic/metadata/gapic_metadata.proto#L18).
-The expected directory structure for `google.gapic.metadata` is
-`google/gapic/metadata`.
-In the `googleapis-common-protos` package, the `gencode` is in the
-expected location ([81812fde4f1e43d568d53d6a993cf423b38d6728](https://github.com/googleapis/google-cloud-python/commit/81812fde4f1e43d568d53d6a993cf423b38d6728))
+* add common_resources.proto (#14851) ([e4e0e2a93c3db14324c1d9f799283ffe4f2bec09](https://github.com/googleapis/google-cloud-python/commit/e4e0e2a93c3db14324c1d9f799283ffe4f2bec09))
+* add field api_version to message ServiceForTransport (#14843) ([81812fde4f1e43d568d53d6a993cf423b38d6728](https://github.com/googleapis/google-cloud-python/commit/81812fde4f1e43d568d53d6a993cf423b38d6728))
 
 ## [1.71.0](https://github.com/googleapis/google-cloud-python/compare/googleapis-common-protos-v1.70.0...googleapis-common-protos-v1.71.0) (2025-10-20)
 
