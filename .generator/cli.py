@@ -46,7 +46,7 @@ logger = logging.getLogger()
 BUILD_REQUEST_FILE = "build-request.json"
 GENERATE_REQUEST_FILE = "generate-request.json"
 CONFIGURE_REQUEST_FILE = "configure-request.json"
-RELEASE_INIT_REQUEST_FILE = "release-init-request.json"
+RELEASE_STAGE_REQUEST_FILE = "release-stage-request.json"
 STATE_YAML_FILE = "state.yaml"
 
 INPUT_DIR = "input"
@@ -1433,13 +1433,13 @@ def _is_mono_repo(repo: str) -> bool:
     return Path(f"{repo}/packages").exists()
 
 
-def handle_release_init(
+def handle_release_stage(
     librarian: str = LIBRARIAN_DIR, repo: str = REPO_DIR, output: str = OUTPUT_DIR
 ):
     """The main coordinator for the release preparation process.
 
     This function prepares for the release of client libraries by reading a
-    `librarian/release-init-request.json` file. The primary responsibility is
+    `librarian/release-stage-request.json` file. The primary responsibility is
     to update all required files with the new version and commit information
     for libraries that have the `release_triggered` field set to `True`.
 
@@ -1447,7 +1447,7 @@ def handle_release_init(
 
     Args:
         librarian(str): Path to the directory in the container which contains
-            the `release-init-request.json` file.
+            the `release-stage-request.json` file.
         repo(str): This directory will contain all directories that make up a
             library, the .librarian folder, and any global file declared in
             the config.yaml.
@@ -1455,16 +1455,16 @@ def handle_release_init(
             code should be placed.
 
     Raises:
-        ValueError: if the version in `release-init-request.json` is
+        ValueError: if the version in `release-stage-request.json` is
             the same as the version in state.yaml or if the
-            `release-init-request.json` file in the given
+            `release-stage-request.json` file in the given
             librarian directory cannot be read.
     """
     try:
         is_mono_repo = _is_mono_repo(repo)
 
-        # Read a release-init-request.json file
-        request_data = _read_json_file(f"{librarian}/{RELEASE_INIT_REQUEST_FILE}")
+        # Read a release-stage-request.json file
+        request_data = _read_json_file(f"{librarian}/{RELEASE_STAGE_REQUEST_FILE}")
         libraries_to_prep_for_release = _get_libraries_to_prepare_for_release(
             request_data
         )
@@ -1488,7 +1488,7 @@ def handle_release_init(
             previous_version = _get_previous_version(library_id, librarian)
             if previous_version == version:
                 raise ValueError(
-                    f"The version in {RELEASE_INIT_REQUEST_FILE} is the same as the version in {STATE_YAML_FILE}\n"
+                    f"The version in {RELEASE_STAGE_REQUEST_FILE} is the same as the version in {STATE_YAML_FILE}\n"
                     f"{library_id} version: {previous_version}\n"
                 )
 
@@ -1506,9 +1506,9 @@ def handle_release_init(
             )
 
     except Exception as e:
-        raise ValueError(f"Release init failed: {e}") from e
+        raise ValueError(f"Release stage failed: {e}") from e
 
-    logger.info("'release-init' command executed.")
+    logger.info("'release-stage' command executed.")
 
 
 if __name__ == "__main__":  # pragma: NO COVER
@@ -1522,14 +1522,14 @@ if __name__ == "__main__":  # pragma: NO COVER
         "configure": handle_configure,
         "generate": handle_generate,
         "build": handle_build,
-        "release-init": handle_release_init,
+        "release-stage": handle_release_stage,
     }
 
     for command_name, help_text in [
         ("configure", "Onboard a new library or an api path to Librarian workflow."),
         ("generate", "generate a python client for an API."),
         ("build", "Run unit tests via nox for the generated library."),
-        ("release-init", "Prepare to release a given set of libraries"),
+        ("release-stage", "Prepare to release a given set of libraries"),
     ]:
         parser_cmd = subparsers.add_parser(command_name, help=help_text)
         parser_cmd.set_defaults(func=handler_map[command_name])
@@ -1588,7 +1588,7 @@ if __name__ == "__main__":  # pragma: NO COVER
         )
     elif args.command == "build":
         args.func(librarian=args.librarian, repo=args.repo)
-    elif args.command == "release-init":
+    elif args.command == "release-stage":
         args.func(librarian=args.librarian, repo=args.repo, output=args.output)
     else:
         args.func()
