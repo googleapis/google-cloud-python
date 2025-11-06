@@ -1634,7 +1634,6 @@ def test_stage_proto_only_library(mocker):
     mock_shutil_copyfile = mocker.patch("shutil.copyfile")
     mock_shutil_copytree = mocker.patch("shutil.copytree")
     mock_glob_glob = mocker.patch("glob.glob")
-    mock_os_makedirs = mocker.patch("os.makedirs")
 
     # Mock glob.glob to return a list of fake proto files
     mock_proto_files = [
@@ -1653,7 +1652,7 @@ def test_stage_proto_only_library(mocker):
 
     # Assertion 1: Check copytree was called exactly once to move generated Python files
     mock_shutil_copytree.assert_called_once_with(
-        tmp_dir, staging_dir, dirs_exist_ok=True
+        f"{tmp_dir}/{api_path}", staging_dir, dirs_exist_ok=True
     )
 
     # Assertion 2: Check glob.glob was called correctly
@@ -1665,18 +1664,11 @@ def test_stage_proto_only_library(mocker):
 
     # Check the exact arguments for copyfile calls
     mock_shutil_copyfile.assert_any_call(
-        mock_proto_files[0],
-        os.path.join(
-            staging_dir, api_path, os.path.basename(mock_proto_files[0])
-        ),
+        mock_proto_files[0], f"{staging_dir}/{os.path.basename(mock_proto_files[0])}"
     )
     mock_shutil_copyfile.assert_any_call(
-        mock_proto_files[1],
-        os.path.join(
-            staging_dir, api_path, os.path.basename(mock_proto_files[1])
-        ),
+        mock_proto_files[1], f"{staging_dir}/{os.path.basename(mock_proto_files[1])}"
     )
-    assert mock_os_makedirs.call_count == len(mock_proto_files)
 
 
 def test_stage_gapic_library(mocker):

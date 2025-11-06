@@ -805,19 +805,20 @@ def _stage_proto_only_library(
         tmp_dir (str): The temporary directory where protoc output was placed.
         staging_dir (str): The final destination for the staged code.
     """
-    # 1. Copy the generated Python files (e.g., *_pb2.py) from the protoc output.
-    # protoc preserves the directory structure in the output directory.
-    shutil.copytree(tmp_dir, staging_dir, dirs_exist_ok=True)
+    # 1. Copy the generated Python files (e.g., *_pb2.py) from the protoc output
+    # The generated Python files are placed under a directory corresponding to `api_path`
+    # inside the temporary directory, since the protoc command ran with `api_path`
+    # specified.
+    shutil.copytree(f"{tmp_dir}/{api_path}", staging_dir, dirs_exist_ok=True)
 
-    # 2. Copy the original proto files to the staging directory.
+    # 2. Copy the original proto files to the staging directory
     # This is typically done for proto-only libraries so that the protos are included
     # in the distributed package.
     proto_glob_path = f"{source_dir}/{api_path}/*.proto"
     for proto_file in glob.glob(proto_glob_path):
-        # The destination path should be relative to staging_dir to preserve the structure.
-        destination = os.path.join(staging_dir, api_path, os.path.basename(proto_file))
-        os.makedirs(os.path.dirname(destination), exist_ok=True)
-        shutil.copyfile(proto_file, destination)
+        # The glob is expected to find the file inside the source_dir.
+        # We copy only the filename to the target staging directory.
+        shutil.copyfile(proto_file, f"{staging_dir}/{os.path.basename(proto_file)}")
 
 
 def _stage_gapic_library(tmp_dir: str, staging_dir: str) -> None:
