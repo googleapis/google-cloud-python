@@ -3650,6 +3650,8 @@ class DataFrame(vendored_pandas_frame.DataFrame):
         *,
         left_on: Union[blocks.Label, Sequence[blocks.Label], None] = None,
         right_on: Union[blocks.Label, Sequence[blocks.Label], None] = None,
+        left_index: bool = False,
+        right_index: bool = False,
         sort: bool = False,
         suffixes: tuple[str, str] = ("_x", "_y"),
     ) -> DataFrame:
@@ -3662,6 +3664,8 @@ class DataFrame(vendored_pandas_frame.DataFrame):
             on,
             left_on=left_on,
             right_on=right_on,
+            left_index=left_index,
+            right_index=right_index,
             sort=sort,
             suffixes=suffixes,
         )

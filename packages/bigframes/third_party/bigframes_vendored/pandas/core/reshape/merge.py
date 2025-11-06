@@ -13,6 +13,8 @@ def merge(
     *,
     left_on=None,
     right_on=None,
+    left_index: bool = False,
+    right_index: bool = False,
     sort=False,
     suffixes=("_x", "_y"),
 ):
@@ -61,6 +63,10 @@ def merge(
         right_on (label or list of labels):
             Columns to join on in the right DataFrame. Either on or left_on + right_on
             must be passed in.
+        left_index (bool, default False):
+            Use the index from the left DataFrame as the join key.
+        right_index (bool, default False):
+            Use the index from the right DataFrame as the join key.
         sort:
             Default False. Sort the join keys lexicographically in the
             result DataFrame. If False, the order of the join keys depends
