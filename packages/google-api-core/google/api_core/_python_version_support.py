@@ -151,9 +151,11 @@ def _flatten_message(text: str) -> str:
     return " ".join(textwrap.dedent(text).strip().split())
 
 
-# TODO(https://github.com/googleapis/python-api-core/issues/835): Remove once we
-# no longer support Python 3.7
-if sys.version_info < (3, 8):
+# TODO(https://github.com/googleapis/python-api-core/issues/835):
+# Remove once we no longer support Python 3.9.
+# `importlib.metadata.packages_distributions()` is only supported in Python 3.10 and newer
+# https://docs.python.org/3/library/importlib.metadata.html#importlib.metadata.packages_distributions
+if sys.version_info < (3, 10):
 
     def _get_pypi_package_name(module_name):  # pragma: NO COVER
         """Determine the PyPI package name for a given module name."""
@@ -172,7 +174,7 @@ else:
             if module_name in module_to_distributions:  # pragma: NO COVER
                 # The value is a list of distribution names, take the first one
                 return module_to_distributions[module_name][0]
-        except Exception as e:
+        except Exception as e:  # pragma: NO COVER
             _LOGGER.info(
                 "An error occurred while determining PyPI package name for %s: %s",
                 module_name,
