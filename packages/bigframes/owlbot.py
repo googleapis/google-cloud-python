@@ -44,6 +44,7 @@ s.move(
     excludes=[
         # Need a combined LICENSE for all vendored packages.
         "LICENSE",
+        "docs/conf.py",
         # Multi-processing note isn't relevant, as bigframes is responsible for
         # creating clients, not the end user.
         "docs/multiprocessing.rst",
@@ -112,13 +113,6 @@ assert 1 == s.replace(  # MANIFEST.in
     ["MANIFEST.in"],
     re.escape("recursive-include bigframes *.json *.proto *.js py.typed"),
     "recursive-include bigframes *.json *.proto *.js *.css py.typed",
-)
-
-# Fixup the documentation.
-assert 1 == s.replace(  # docs/conf.py
-    ["docs/conf.py"],
-    re.escape("Google Cloud Client Libraries for bigframes"),
-    "BigQuery DataFrames provides DataFrame APIs on the BigQuery engine",
 )
 
 # Don't omit `*/core/*.py` when counting test coverages

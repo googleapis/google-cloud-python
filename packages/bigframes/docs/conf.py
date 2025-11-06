@@ -24,9 +24,11 @@
 # All configuration values have a default; values that are commented out
 # serve to show the default.
 
+from __future__ import annotations
+
 import os
-import shlex
 import sys
+from typing import Any
 
 # If extensions (or modules to document with autodoc) are in another directory,
 # add these directories to sys.path here. If the directory is relative to the
@@ -56,7 +58,7 @@ extensions = [
     "sphinx.ext.napoleon",
     "sphinx.ext.todo",
     "sphinx.ext.viewcode",
-    "recommonmark",
+    "myst_parser",
 ]
 
 # autodoc/autosummary flags
@@ -98,7 +100,7 @@ version = ".".join(release.split(".")[0:2])
 #
 # This is also used if you do content translation via gettext catalogs.
 # Usually you set "language" from the command line for these cases.
-language = None
+language = "en-US"
 
 # There are two options for replacing |today|: either, you set today to some
 # non-false value, then it is used:
@@ -148,19 +150,27 @@ todo_include_todos = True
 
 # The theme to use for HTML and HTML Help pages.  See the documentation for
 # a list of builtin themes.
-html_theme = "alabaster"
+html_theme = "pydata_sphinx_theme"
 
 # Theme options are theme-specific and customize the look and feel of a theme
 # further.  For a list of options available for each theme, see the
 # documentation.
+# https://pydata-sphinx-theme.readthedocs.io/en/stable/user_guide/layout.html#references
 html_theme_options = {
-    "description": "BigQuery DataFrames provides DataFrame APIs on the BigQuery engine",
-    "github_user": "googleapis",
-    "github_repo": "python-bigquery-dataframes",
-    "github_banner": True,
-    "font_family": "'Roboto', Georgia, sans",
-    "head_font_family": "'Roboto', Georgia, serif",
-    "code_font_family": "'Roboto Mono', 'Consolas', monospace",
+    "github_url": "https://github.com/googleapis/python-bigquery-dataframes",
+    "logo": {
+        "text": "BigQuery DataFrames (BigFrames)",
+    },
+    "external_links": [
+        {
+            "name": "Getting started",
+            "url": "https://docs.cloud.google.com/bigquery/docs/dataframes-quickstart",
+        },
+        {
+            "name": "User guide",
+            "url": "https://docs.cloud.google.com/bigquery/docs/bigquery-dataframes-introduction",
+        },
+    ],
 }
 
 # Add any paths that contain custom themes here, relative to this directory.
@@ -264,7 +274,7 @@ suppress_warnings = [
 
 # -- Options for LaTeX output ---------------------------------------------
 
-latex_elements = {
+latex_elements: dict[str, Any] = {
     # The paper size ('letterpaper' or 'a4paper').
     #'papersize': 'letterpaper',
     # The font size ('10pt', '11pt' or '12pt').
@@ -282,7 +292,7 @@ latex_documents = [
     (
         root_doc,
         "bigframes.tex",
-        "bigframes Documentation",
+        "BigQuery DataFrames (BigFrames)",
         author,
         "manual",
     )
@@ -317,7 +327,7 @@ man_pages = [
     (
         root_doc,
         "bigframes",
-        "bigframes Documentation",
+        "BigQuery DataFrames (BigFrames)",
         [author],
         1,
     )
@@ -336,7 +346,7 @@ texinfo_documents = [
     (
         root_doc,
         "bigframes",
-        "bigframes Documentation",
+        "BigQuery DataFrames (BigFrames)",
         author,
         "bigframes",
         "bigframes Library",

@@ -515,24 +515,14 @@ def cover(session):
     session.run("coverage", "erase")
 
 
-@nox.session(python=DEFAULT_PYTHON_VERSION)
+@nox.session(python="3.13")
 def docs(session):
     """Build the docs for this library."""
     session.install("-e", ".[scikit-learn]")
     session.install(
-        # We need to pin to specific versions of the `sphinxcontrib-*` packages
-        # which still support sphinx 4.x.
-        # See https://github.com/googleapis/sphinx-docfx-yaml/issues/344
-        # and https://github.com/googleapis/sphinx-docfx-yaml/issues/345.
-        "sphinxcontrib-applehelp==1.0.4",
-        "sphinxcontrib-devhelp==1.0.2",
-        "sphinxcontrib-htmlhelp==2.0.1",
-        "sphinxcontrib-qthelp==1.0.3",
-        "sphinxcontrib-serializinghtml==1.1.5",
-        SPHINX_VERSION,
-        "alabaster",
-        "recommonmark",
-        "anywidget",
+        "sphinx==8.2.3",
+        "myst-parser==4.0.1",
+        "pydata-sphinx-theme==0.16.1",
     )
 
     shutil.rmtree(os.path.join("docs", "_build"), ignore_errors=True)
@@ -562,19 +552,10 @@ def docfx(session):
 
     session.install("-e", ".[scikit-learn]")
     session.install(
-        # We need to pin to specific versions of the `sphinxcontrib-*` packages
-        # which still support sphinx 4.x.
-        # See https://github.com/googleapis/sphinx-docfx-yaml/issues/344
-        # and https://github.com/googleapis/sphinx-docfx-yaml/issues/345.
-        "sphinxcontrib-applehelp==1.0.4",
-        "sphinxcontrib-devhelp==1.0.2",
-        "sphinxcontrib-htmlhelp==2.0.1",
-        "sphinxcontrib-qthelp==1.0.3",
-        "sphinxcontrib-serializinghtml==1.1.5",
         SPHINX_VERSION,
-        "alabaster",
-        "recommonmark",
-        "gcp-sphinx-docfx-yaml==3.0.1",
+        "pydata-sphinx-theme==0.13.3",
+        "myst-parser==0.18.1",
+        "gcp-sphinx-docfx-yaml==3.2.4",
         "anywidget",
     )
 
@@ -599,7 +580,7 @@ def docfx(session):
             "sphinx.ext.napoleon,"
             "sphinx.ext.todo,"
             "sphinx.ext.viewcode,"
-            "recommonmark"
+            "myst_parser"
         ),
         "-b",
         "html",
