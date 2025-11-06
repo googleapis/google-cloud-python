@@ -2,7 +2,7 @@ image: us-central1-docker.pkg.dev/cloud-sdk-librarian-prod/images-prod/python-li
 libraries:
   - id: google-cloud-pubsub
     version: 2.33.0
-    last_generated_commit: fee5b32df810adbd07d6a20bd97d9239937ef6e4
+    last_generated_commit: 9fcfbea0aa5b50fa22e190faceb073d74504172b
     apis:
       - path: google/pubsub/v1
         service_config: pubsub_v1.yaml
@@ -10,7 +10,28 @@ libraries:
       - .
     preserve_regex: []
     remove_regex:
-      - google/pubsub
-      - google/pubsub_v1
-      - tests/unit/gapic
+      - ^google/pubsub
+      - ^google/pubsub_v1
+      - ^tests/unit/gapic
+      - ^tests/__init__.py
+      - ^tests/unit/__init__.py
+      - ^.coveragerc
+      - ^.flake8
+      - ^.pre-commit-config.yaml
+      - ^.repo-metadata.json
+      - ^.trampolinerc
+      - ^LICENSE
+      - ^MANIFEST.in
+      - ^SECURITY.md
+      - ^mypy.ini
+      - ^noxfile.py
+      - ^owlbot.py
+      - ^renovate.json
+      - ^samples/AUTHORING_GUIDE.md
+      - ^samples/CONTRIBUTING.md
+      - ^samples/generated_samples
+      - ^scripts/fixup_pubsub_v1_keywords.py
+      - ^setup.py
+      - ^testing/constraints-3.9
+      - ^testing/constraints-3.1
     tag_format: v{version}
