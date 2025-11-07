@@ -1,0 +1,10 @@
+image: us-central1-docker.pkg.dev/cloud-sdk-librarian-prod/images-prod/python-librarian-generator@sha256:39628f6e89c9cad27973b9a39a50f7052bec0435ee58c7027b4fa6b655943e31
+libraries:
+  - id: google-cloud-bigquery
+    version: 3.38.0
+    apis: []
+    source_roots:
+      - .
+    preserve_regex: []
+    remove_regex: []
+    tag_format: v{version}
