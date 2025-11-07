@@ -1935,6 +1935,7 @@ def test_list_buckets(request_type, transport: str = "grpc"):
         # Designate an appropriate return value for the call.
         call.return_value = storage.ListBucketsResponse(
             next_page_token="next_page_token_value",
+            unreachable=["unreachable_value"],
         )
         response = client.list_buckets(request)
 
@@ -1947,6 +1948,7 @@ def test_list_buckets(request_type, transport: str = "grpc"):
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListBucketsPager)
     assert response.next_page_token == "next_page_token_value"
+    assert response.unreachable == ["unreachable_value"]
 
 
 def test_list_buckets_non_empty_request_with_auto_populated_field():
@@ -2077,6 +2079,7 @@ async def test_list_buckets_async(
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
             storage.ListBucketsResponse(
                 next_page_token="next_page_token_value",
+                unreachable=["unreachable_value"],
             )
         )
         response = await client.list_buckets(request)
@@ -2090,6 +2093,7 @@ async def test_list_buckets_async(
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListBucketsAsyncPager)
     assert response.next_page_token == "next_page_token_value"
+    assert response.unreachable == ["unreachable_value"]
 
 
 @pytest.mark.asyncio
@@ -9281,6 +9285,7 @@ async def test_list_buckets_empty_call_grpc_asyncio():
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
             storage.ListBucketsResponse(
                 next_page_token="next_page_token_value",
+                unreachable=["unreachable_value"],
             )
         )
         await client.list_buckets(request=None)
@@ -10018,6 +10023,7 @@ async def test_list_buckets_routing_parameters_request_1_grpc_asyncio():
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
             storage.ListBucketsResponse(
                 next_page_token="next_page_token_value",
+                unreachable=["unreachable_value"],
             )
         )
         await client.list_buckets(request={"parent": "sample1"})

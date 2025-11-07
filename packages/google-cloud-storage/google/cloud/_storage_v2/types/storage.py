@@ -90,7 +90,9 @@ __protobuf__ = proto.module(
 
 
 class DeleteBucketRequest(proto.Message):
-    r"""Request message for DeleteBucket.
+    r"""Request message for
+    [DeleteBucket][google.storage.v2.Storage.DeleteBucket].
+
 
     .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
 
@@ -126,7 +128,9 @@ class DeleteBucketRequest(proto.Message):
 
 
 class GetBucketRequest(proto.Message):
-    r"""Request message for GetBucket.
+    r"""Request message for
+    [GetBucket][google.storage.v2.Storage.GetBucket].
+
 
     .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
 
@@ -134,21 +138,20 @@ class GetBucketRequest(proto.Message):
         name (str):
             Required. Name of a bucket.
         if_metageneration_match (int):
-            If set, and if the bucket's current
-            metageneration does not match the specified
-            value, the request will return an error.
+            If set, only gets the bucket metadata if its
+            metageneration matches this value.
 
             This field is a member of `oneof`_ ``_if_metageneration_match``.
         if_metageneration_not_match (int):
             If set, and if the bucket's current
             metageneration matches the specified value, the
-            request will return an error.
+            request returns an error.
 
             This field is a member of `oneof`_ ``_if_metageneration_not_match``.
         read_mask (google.protobuf.field_mask_pb2.FieldMask):
-            Mask specifying which fields to read. A "\*" field may be
-            used to indicate all fields. If no mask is specified, will
-            default to all fields.
+            Mask specifying which fields to read. A ``*`` field might be
+            used to indicate all fields. If no mask is specified, it
+            defaults to all fields.
 
             This field is a member of `oneof`_ ``_read_mask``.
     """
@@ -176,40 +179,39 @@ class GetBucketRequest(proto.Message):
 
 
 class CreateBucketRequest(proto.Message):
-    r"""Request message for CreateBucket.
+    r"""Request message for
+    [CreateBucket][google.storage.v2.Storage.CreateBucket].
 
     Attributes:
         parent (str):
-            Required. The project to which this bucket will belong. This
+            Required. The project to which this bucket belongs. This
             field must either be empty or ``projects/_``. The project ID
             that owns this bucket should be specified in the
             ``bucket.project`` field.
         bucket (google.cloud._storage_v2.types.Bucket):
             Optional. Properties of the new bucket being inserted. The
             name of the bucket is specified in the ``bucket_id`` field.
-            Populating ``bucket.name`` field will result in an error.
-            The project of the bucket must be specified in the
+            Populating ``bucket.name`` field results in an error. The
+            project of the bucket must be specified in the
             ``bucket.project`` field. This field must be in
             ``projects/{projectIdentifier}`` format, {projectIdentifier}
             can be the project ID or project number. The ``parent``
             field must be either empty or ``projects/_``.
         bucket_id (str):
-            Required. The ID to use for this bucket, which will become
-            the final component of the bucket's resource name. For
-            example, the value ``foo`` might result in a bucket with the
-            name ``projects/123456/buckets/foo``.
+            Required. The ID to use for this bucket, which becomes the
+            final component of the bucket's resource name. For example,
+            the value ``foo`` might result in a bucket with the name
+            ``projects/123456/buckets/foo``.
         predefined_acl (str):
-            Optional. Apply a predefined set of access
-            controls to this bucket. Valid values are
-            "authenticatedRead", "private",
-            "projectPrivate", "publicRead", or
-            "publicReadWrite".
+            Optional. Apply a predefined set of access controls to this
+            bucket. Valid values are ``authenticatedRead``, ``private``,
+            ``projectPrivate``, ``publicRead``, or ``publicReadWrite``.
         predefined_default_object_acl (str):
-            Optional. Apply a predefined set of default
-            object access controls to this bucket. Valid
-            values are "authenticatedRead",
-            "bucketOwnerFullControl", "bucketOwnerRead",
-            "private", "projectPrivate", or "publicRead".
+            Optional. Apply a predefined set of default object access
+            controls to this bucket. Valid values are
+            ``authenticatedRead``, ``bucketOwnerFullControl``,
+            ``bucketOwnerRead``, ``private``, ``projectPrivate``, or
+            ``publicRead``.
         enable_object_retention (bool):
             Optional. If true, enable object retention on
             the bucket.
@@ -243,7 +245,9 @@ class CreateBucketRequest(proto.Message):
 
 
 class ListBucketsRequest(proto.Message):
-    r"""Request message for ListBuckets.
+    r"""Request message for
+    [ListBuckets][google.storage.v2.Storage.ListBuckets].
+
 
     .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
 
@@ -253,10 +257,10 @@ class ListBucketsRequest(proto.Message):
             listing.
         page_size (int):
             Optional. Maximum number of buckets to return in a single
-            response. The service will use this parameter or 1,000
-            items, whichever is smaller. If "acl" is present in the
-            read_mask, the service will use this parameter of 200 items,
-            whichever is smaller.
+            response. The service uses this parameter or ``1,000``
+            items, whichever is smaller. If ``acl`` is present in the
+            ``read_mask``, the service uses this parameter of ``200``
+            items, whichever is smaller.
         page_token (str):
             Optional. A previously-returned page token
             representing part of the larger set of results
@@ -266,12 +270,15 @@ class ListBucketsRequest(proto.Message):
             names begin with this prefix.
         read_mask (google.protobuf.field_mask_pb2.FieldMask):
             Mask specifying which fields to read from each result. If no
-            mask is specified, will default to all fields except
-            items.owner, items.acl, and items.default_object_acl.
-
-            - may be used to mean "all fields".
+            mask is specified, it defaults to all fields except
+            ``items. owner``, ``items.acl``, and
+            ``items.default_object_acl``. ``*`` might be used to mean
+            "all fields".
 
             This field is a member of `oneof`_ ``_read_mask``.
+        return_partial_success (bool):
+            Optional. Allows listing of buckets, even if
+            there are buckets that are unreachable.
     """
 
     parent: str = proto.Field(
@@ -296,10 +303,15 @@ class ListBucketsRequest(proto.Message):
         optional=True,
         message=field_mask_pb2.FieldMask,
     )
+    return_partial_success: bool = proto.Field(
+        proto.BOOL,
+        number=9,
+    )
 
 
 class ListBucketsResponse(proto.Message):
-    r"""The result of a call to Buckets.ListBuckets
+    r"""Response message for
+    [ListBuckets][google.storage.v2.Storage.ListBuckets].
 
     Attributes:
         buckets (MutableSequence[google.cloud._storage_v2.types.Bucket]):
@@ -309,6 +321,13 @@ class ListBucketsResponse(proto.Message):
             large result sets. Provide this value in a
             subsequent request to return the next page of
             results.
+        unreachable (MutableSequence[str]):
+            Unreachable resources. This field can only be present if the
+            caller specified return_partial_success to be true in the
+            request to receive indications of temporarily missing
+            resources. unreachable might be: unreachable = [
+            "projects/*/buckets/bucket1", "projects/*/buckets/bucket2",
+            "projects/\_/buckets/bucket3", ]
     """
 
     @property
@@ -324,10 +343,15 @@ class ListBucketsResponse(proto.Message):
         proto.STRING,
         number=2,
     )
+    unreachable: MutableSequence[str] = proto.RepeatedField(
+        proto.STRING,
+        number=3,
+    )
 
 
 class LockBucketRetentionPolicyRequest(proto.Message):
-    r"""Request message for LockBucketRetentionPolicyRequest.
+    r"""Request message for
+    [LockBucketRetentionPolicy][google.storage.v2.Storage.LockBucketRetentionPolicy].
 
     Attributes:
         bucket (str):
@@ -349,43 +373,43 @@ class LockBucketRetentionPolicyRequest(proto.Message):
 
 
 class UpdateBucketRequest(proto.Message):
-    r"""Request for UpdateBucket method.
+    r"""Request for [UpdateBucket][google.storage.v2.Storage.UpdateBucket]
+    method.
+
 
     .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
 
     Attributes:
         bucket (google.cloud._storage_v2.types.Bucket):
             Required. The bucket to update. The bucket's ``name`` field
-            will be used to identify the bucket.
+            is used to identify the bucket.
         if_metageneration_match (int):
-            If set, will only modify the bucket if its
-            metageneration matches this value.
+            If set, the request modifies the bucket if
+            its metageneration matches this value.
 
             This field is a member of `oneof`_ ``_if_metageneration_match``.
         if_metageneration_not_match (int):
-            If set, will only modify the bucket if its
-            metageneration does not match this value.
+            If set, the request modifies the bucket if
+            its metageneration doesn't match this value.
 
             This field is a member of `oneof`_ ``_if_metageneration_not_match``.
         predefined_acl (str):
-            Optional. Apply a predefined set of access
-            controls to this bucket. Valid values are
-            "authenticatedRead", "private",
-            "projectPrivate", "publicRead", or
-            "publicReadWrite".
+            Optional. Apply a predefined set of access controls to this
+            bucket. Valid values are ``authenticatedRead``, ``private``,
+            ``projectPrivate``, ``publicRead``, or ``publicReadWrite``.
         predefined_default_object_acl (str):
-            Optional. Apply a predefined set of default
-            object access controls to this bucket. Valid
-            values are "authenticatedRead",
-            "bucketOwnerFullControl", "bucketOwnerRead",
-            "private", "projectPrivate", or "publicRead".
+            Optional. Apply a predefined set of default object access
+            controls to this bucket. Valid values are
+            ``authenticatedRead``, ``bucketOwnerFullControl``,
+            ``bucketOwnerRead``, ``private``, ``projectPrivate``, or
+            ``publicRead``.
         update_mask (google.protobuf.field_mask_pb2.FieldMask):
             Required. List of fields to be updated.
 
             To specify ALL fields, equivalent to the JSON API's "update"
             function, specify a single field with the value ``*``. Note:
             not recommended. If a new field is introduced at a later
-            time, an older client updating with the ``*`` may
+            time, an older client updating with the ``*`` might
             accidentally reset the new field's value.
 
             Not specifying any fields is an error.
@@ -422,7 +446,9 @@ class UpdateBucketRequest(proto.Message):
 
 
 class ComposeObjectRequest(proto.Message):
-    r"""Request message for ComposeObject.
+    r"""Request message for
+    [ComposeObject][google.storage.v2.Storage.ComposeObject].
+
 
     .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
 
@@ -430,14 +456,13 @@ class ComposeObjectRequest(proto.Message):
         destination (google.cloud._storage_v2.types.Object):
             Required. Properties of the resulting object.
         source_objects (MutableSequence[google.cloud._storage_v2.types.ComposeObjectRequest.SourceObject]):
-            Optional. The list of source objects that
-            will be concatenated into a single object.
+            Optional. The list of source objects that is
+            concatenated into a single object.
         destination_predefined_acl (str):
-            Optional. Apply a predefined set of access
-            controls to the destination object. Valid values
-            are "authenticatedRead",
-            "bucketOwnerFullControl", "bucketOwnerRead",
-            "private", "projectPrivate", or "publicRead".
+            Optional. Apply a predefined set of access controls to the
+            destination object. Valid values are ``authenticatedRead``,
+            ``bucketOwnerFullControl``, ``bucketOwnerRead``,
+            ``private``, ``projectPrivate``, or ``publicRead``.
         if_generation_match (int):
             Makes the operation conditional on whether
             the object's current generation matches the
@@ -455,15 +480,15 @@ class ComposeObjectRequest(proto.Message):
         kms_key (str):
             Optional. Resource name of the Cloud KMS key, of the form
             ``projects/my-project/locations/my-location/keyRings/my-kr/cryptoKeys/my-key``,
-            that will be used to encrypt the object. Overrides the
-            object metadata's ``kms_key_name`` value, if any.
+            that is used to encrypt the object. Overrides the object
+            metadata's ``kms_key_name`` value, if any.
         common_object_request_params (google.cloud._storage_v2.types.CommonObjectRequestParams):
             Optional. A set of parameters common to
             Storage API requests concerning an object.
         object_checksums (google.cloud._storage_v2.types.ObjectChecksums):
             Optional. The checksums of the complete
-            object. This will be validated against the
-            combined checksums of the component objects.
+            object. This is validated against the combined
+            checksums of the component objects.
     """
 
     class SourceObject(proto.Message):
@@ -492,7 +517,7 @@ class ComposeObjectRequest(proto.Message):
                     generation of the source object that would be
                     used matches this value.  If this value and a
                     generation are both specified, they must be the
-                    same value or the call will fail.
+                    same value or the call fails.
 
                     This field is a member of `oneof`_ ``_if_generation_match``.
             """
@@ -558,9 +583,7 @@ class ComposeObjectRequest(proto.Message):
 
 
 class DeleteObjectRequest(proto.Message):
-    r"""Message for deleting an object. ``bucket`` and ``object`` **must**
-    be set.
-
+    r"""Request message for deleting an object.
 
     .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
 
@@ -650,8 +673,9 @@ class DeleteObjectRequest(proto.Message):
 
 
 class RestoreObjectRequest(proto.Message):
-    r"""Message for restoring an object. ``bucket``, ``object``, and
-    ``generation`` **must** be set.
+    r"""Request message for
+    [RestoreObject][google.storage.v2.Storage.RestoreObject].
+    ``bucket``, ``object``, and ``generation`` **must** be set.
 
 
     .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
@@ -704,9 +728,9 @@ class RestoreObjectRequest(proto.Message):
             This field is a member of `oneof`_ ``_if_metageneration_not_match``.
         copy_source_acl (bool):
             If false or unset, the bucket's default
-            object ACL will be used. If true, copy the
-            source object's access controls. Return an error
-            if bucket has UBLA enabled.
+            object ACL is used. If true, copy the source
+            object's access controls. Return an error if
+            bucket has UBLA enabled.
 
             This field is a member of `oneof`_ ``_copy_source_acl``.
         common_object_request_params (google.cloud._storage_v2.types.CommonObjectRequestParams):
@@ -763,8 +787,8 @@ class RestoreObjectRequest(proto.Message):
 
 
 class CancelResumableWriteRequest(proto.Message):
-    r"""Message for canceling an in-progress resumable upload. ``upload_id``
-    **must** be set.
+    r"""Request message for
+    [CancelResumableWrite][google.storage.v2.Storage.CancelResumableWrite].
 
     Attributes:
         upload_id (str):
@@ -781,13 +805,15 @@ class CancelResumableWriteRequest(proto.Message):
 
 class CancelResumableWriteResponse(proto.Message):
     r"""Empty response message for canceling an in-progress resumable
-    upload, will be extended as needed.
+    upload, is extended as needed.
 
     """
 
 
 class ReadObjectRequest(proto.Message):
-    r"""Request message for ReadObject.
+    r"""Request message for
+    [ReadObject][google.storage.v2.Storage.ReadObject].
+
 
     .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
 
@@ -805,18 +831,19 @@ class ReadObjectRequest(proto.Message):
             Optional. The offset for the first byte to return in the
             read, relative to the start of the object.
 
-            A negative ``read_offset`` value will be interpreted as the
+            A negative ``read_offset`` value is interpreted as the
             number of bytes back from the end of the object to be
-            returned. For example, if an object's length is 15 bytes, a
-            ReadObjectRequest with ``read_offset`` = -5 and
-            ``read_limit`` = 3 would return bytes 10 through 12 of the
-            object. Requesting a negative offset with magnitude larger
-            than the size of the object will return the entire object.
+            returned. For example, if an object's length is ``15``
+            bytes, a ``ReadObjectRequest`` with ``read_offset`` = ``-5``
+            and ``read_limit`` = ``3`` would return bytes ``10`` through
+            ``12`` of the object. Requesting a negative offset with
+            magnitude larger than the size of the object returns the
+            entire object.
         read_limit (int):
             Optional. The maximum number of ``data`` bytes the server is
             allowed to return in the sum of all ``Object`` messages. A
             ``read_limit`` of zero indicates that there is no limit, and
-            a negative ``read_limit`` will cause an error.
+            a negative ``read_limit`` causes an error.
 
             If the stream returns fewer bytes than allowed by the
             ``read_limit`` and no error occurred, the stream includes
@@ -855,12 +882,11 @@ class ReadObjectRequest(proto.Message):
             Optional. A set of parameters common to
             Storage API requests concerning an object.
         read_mask (google.protobuf.field_mask_pb2.FieldMask):
-            Mask specifying which fields to read. The checksummed_data
-            field and its children will always be present. If no mask is
-            specified, will default to all fields except metadata.owner
-            and metadata.acl.
-
-            - may be used to mean "all fields".
+            Mask specifying which fields to read. The
+            ``checksummed_data`` field and its children are always
+            present. If no mask is specified, it defaults to all fields
+            except ``metadata. owner`` and ``metadata.acl``. ``*`` might
+            be used to mean "all fields".
 
             This field is a member of `oneof`_ ``_read_mask``.
     """
@@ -919,7 +945,9 @@ class ReadObjectRequest(proto.Message):
 
 
 class GetObjectRequest(proto.Message):
-    r"""Request message for GetObject.
+    r"""Request message for
+    [GetObject][google.storage.v2.Storage.GetObject].
+
 
     .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
 
@@ -972,19 +1000,19 @@ class GetObjectRequest(proto.Message):
             Storage API requests concerning an object.
         read_mask (google.protobuf.field_mask_pb2.FieldMask):
             Mask specifying which fields to read. If no mask is
-            specified, will default to all fields except metadata.acl
-            and metadata.owner.
-
-            - may be used to mean "all fields".
+            specified, it defaults to all fields except
+            ``metadata. acl`` and ``metadata.owner``. ``*`` might be
+            used to mean "all fields".
 
             This field is a member of `oneof`_ ``_read_mask``.
         restore_token (str):
             Optional. Restore token used to differentiate soft-deleted
             objects with the same name and generation. Only applicable
-            for hierarchical namespace buckets and if soft_deleted is
-            set to true. This parameter is optional, and is only
+            for hierarchical namespace buckets and if ``soft_deleted``
+            is set to ``true``. This parameter is optional, and is only
             required in the rare case when there are multiple
-            soft-deleted objects with the same name and generation.
+            soft-deleted objects with the same ``name`` and
+            ``generation``.
     """
 
     bucket: str = proto.Field(
@@ -1042,11 +1070,12 @@ class GetObjectRequest(proto.Message):
 
 
 class ReadObjectResponse(proto.Message):
-    r"""Response message for ReadObject.
+    r"""Response message for
+    [ReadObject][google.storage.v2.Storage.ReadObject].
 
     Attributes:
         checksummed_data (google.cloud._storage_v2.types.ChecksummedData):
-            A portion of the data for the object. The service **may**
+            A portion of the data for the object. The service might
             leave ``data`` empty for any given ``ReadResponse``. This
             enables the service to inform the client that the request is
             still live while it is running an operation to generate more
@@ -1058,9 +1087,9 @@ class ReadObjectResponse(proto.Message):
             downloaded object and compare it against the
             value provided here.
         content_range (google.cloud._storage_v2.types.ContentRange):
-            If read_offset and or read_limit was specified on the
-            ReadObjectRequest, ContentRange will be populated on the
-            first ReadObjectResponse message of the read stream.
+            If ``read_offset`` and or ``read_limit`` is specified on the
+            ``ReadObjectRequest``, ``ContentRange`` is populated on the
+            first ``ReadObjectResponse`` message of the read stream.
         metadata (google.cloud._storage_v2.types.Object):
             Metadata of the object whose media is being
             returned. Only populated in the first response
@@ -1137,15 +1166,13 @@ class BidiReadObjectSpec(proto.Message):
             Optional. A set of parameters common to
             Storage API requests concerning an object.
         read_mask (google.protobuf.field_mask_pb2.FieldMask):
-            Mask specifying which fields to read. The checksummed_data
-            field and its children will always be present. If no mask is
-            specified, will default to all fields except metadata.owner
-            and metadata.acl.
-
-            - may be used to mean "all fields". As per
-              https://google.aip.dev/161, this field is deprecated. As
-              an alternative, grpc metadata can be used:
-              https://cloud.google.com/apis/docs/system-parameters#definitions
+            Mask specifying which fields to read. The
+            ``checksummed_data`` field and its children are always
+            present. If no mask is specified, it defaults to all fields
+            except ``metadata. owner`` and ``metadata.acl``. ``*`` might
+            be used to mean "all fields". As per
+            https://google.aip.dev/161, this field is deprecated. As an
+            alternative, ``grpc metadata`` can be used:
 
             This field is a member of `oneof`_ ``_read_mask``.
         read_handle (google.cloud._storage_v2.types.BidiReadHandle):
@@ -1220,24 +1247,23 @@ class BidiReadObjectSpec(proto.Message):
 
 
 class BidiReadObjectRequest(proto.Message):
-    r"""Request message for BidiReadObject.
+    r"""Request message for
+    [BidiReadObject][google.storage.v2.Storage.BidiReadObject].
 
     Attributes:
         read_object_spec (google.cloud._storage_v2.types.BidiReadObjectSpec):
             Optional. The first message of each stream
             should set this field. If this is not the first
-            message, an error will be returned. Describes
-            the object to read.
+            message, an error is returned. Describes the
+            object to read.
         read_ranges (MutableSequence[google.cloud._storage_v2.types.ReadRange]):
-            Optional. Provides a list of 0 or more (up to
-            100) ranges to read. If a single range is large
-            enough to require multiple responses, they are
-            guaranteed to be delivered in increasing offset
-            order. There are no ordering guarantees across
-            ranges. When no ranges are provided, the
-            response message will not include
-            ObjectRangeData. For full object downloads, the
-            offset and size can be set to 0.
+            Optional. Provides a list of 0 or more (up to 100) ranges to
+            read. If a single range is large enough to require multiple
+            responses, they are delivered in increasing offset order.
+            There are no ordering guarantees across ranges. When no
+            ranges are provided, the response message doesn't include
+            ``ObjectRangeData``. For full object downloads, the offset
+            and size can be set to ``0``.
     """
 
     read_object_spec: "BidiReadObjectSpec" = proto.Field(
@@ -1253,29 +1279,29 @@ class BidiReadObjectRequest(proto.Message):
 
 
 class BidiReadObjectResponse(proto.Message):
-    r"""Response message for BidiReadObject.
+    r"""Response message for
+    [BidiReadObject][google.storage.v2.Storage.BidiReadObject].
 
     Attributes:
         object_data_ranges (MutableSequence[google.cloud._storage_v2.types.ObjectRangeData]):
-            A portion of the object's data. The service **may** leave
-            data empty for any given ReadResponse. This enables the
+            A portion of the object's data. The service might leave data
+            empty for any given ``ReadResponse``. This enables the
             service to inform the client that the request is still live
             while it is running an operation to generate more data. The
-            service **may** pipeline multiple responses belonging to
-            different read requests. Each ObjectRangeData entry will
-            have a read_id set to the same value as the corresponding
-            source read request.
+            service might pipeline multiple responses belonging to
+            different read requests. Each ``ObjectRangeData`` entry has
+            a ``read_id`` that is set to the same value as the
+            corresponding source read request.
         metadata (google.cloud._storage_v2.types.Object):
             Metadata of the object whose media is being
             returned. Only populated in the first response
             in the stream and not populated when the stream
             is opened with a read handle.
         read_handle (google.cloud._storage_v2.types.BidiReadHandle):
-            This field will be periodically refreshed,
-            however it may not be set in every response. It
-            allows the client to more efficiently open
-            subsequent bidirectional streams to the same
-            object.
+            This field is periodically refreshed, however
+            it might not be set in every response. It allows
+            the client to more efficiently open subsequent
+            bidirectional streams to the same object.
     """
 
     object_data_ranges: MutableSequence["ObjectRangeData"] = proto.RepeatedField(
@@ -1297,7 +1323,7 @@ class BidiReadObjectResponse(proto.Message):
 
 class BidiReadObjectRedirectedError(proto.Message):
     r"""Error proto containing details for a redirected read. This
-    error may be attached as details for an ABORTED response to
+    error might be attached as details for an ABORTED response to
     BidiReadObject.
 
 
@@ -1306,7 +1332,7 @@ class BidiReadObjectRedirectedError(proto.Message):
     Attributes:
         read_handle (google.cloud._storage_v2.types.BidiReadHandle):
             The read handle for the redirected read. If
-            set, the client may use this in the
+            set, the client might use this in the
             BidiReadObjectSpec when retrying the read
             stream.
         routing_token (str):
@@ -1332,7 +1358,7 @@ class BidiReadObjectRedirectedError(proto.Message):
 
 class BidiWriteObjectRedirectedError(proto.Message):
     r"""Error proto containing details for a redirected write. This
-    error may be attached as details for an ABORTED response to
+    error might be attached as details for an ABORTED response to
     BidiWriteObject.
 
 
@@ -1349,14 +1375,14 @@ class BidiWriteObjectRedirectedError(proto.Message):
         write_handle (google.cloud._storage_v2.types.BidiWriteHandle):
             Opaque value describing a previous write. If set, the client
             must use this in an AppendObjectSpec first_message when
-            retrying the write stream. If not set, clients may retry the
-            original request.
+            retrying the write stream. If not set, clients might retry
+            the original request.
 
             This field is a member of `oneof`_ ``_write_handle``.
         generation (int):
             The generation of the object that triggered the redirect.
-            This will be set iff write_handle is set. If set, the client
-            must use this in an AppendObjectSpec first_message when
+            This is set iff ``write_handle`` is set. If set, the client
+            must use this in an ``AppendObjectSpec`` first_message when
             retrying the write stream.
 
             This field is a member of `oneof`_ ``_generation``.
@@ -1420,7 +1446,7 @@ class ReadRangeError(proto.Message):
 
 
 class ReadRange(proto.Message):
-    r"""Describes a range of bytes to read in a BidiReadObjectRanges
+    r"""Describes a range of bytes to read in a ``BidiReadObjectRanges``
     request.
 
     Attributes:
@@ -1428,30 +1454,31 @@ class ReadRange(proto.Message):
             Required. The offset for the first byte to return in the
             read, relative to the start of the object.
 
-            A negative read_offset value will be interpreted as the
-            number of bytes back from the end of the object to be
-            returned. For example, if an object's length is 15 bytes, a
-            ReadObjectRequest with read_offset = -5 and read_length = 3
-            would return bytes 10 through 12 of the object. Requesting a
-            negative offset with magnitude larger than the size of the
-            object will return the entire object. A read_offset larger
-            than the size of the object will result in an OutOfRange
-            error.
+            A negative read_offset value is interpreted as the number of
+            bytes back from the end of the object to be returned. For
+            example, if an object's length is 15 bytes, a
+            ``ReadObjectRequest`` with ``read_offset`` = -5 and
+            ``read_length`` = 3 would return bytes 10 through 12 of the
+            object. Requesting a negative offset with magnitude larger
+            than the size of the object returns the entire object. A
+            ``read_offset`` larger than the size of the object results
+            in an ``OutOfRange`` error.
         read_length (int):
             Optional. The maximum number of data bytes the server is
             allowed to return across all response messages with the same
-            read_id. A read_length of zero indicates to read until the
-            resource end, and a negative read_length will cause an
-            error. If the stream returns fewer bytes than allowed by the
-            read_length and no error occurred, the stream includes all
-            data from the read_offset to the resource end.
+            ``read_id``. A ``read_length`` of zero indicates to read
+            until the resource end, and a negative ``read_length``
+            causes an error. If the stream returns fewer bytes than
+            allowed by the ``read_length`` and no error occurred, the
+            stream includes all data from the ``read_offset`` to the
+            resource end.
         read_id (int):
             Required. Read identifier provided by the client. When the
-            client issues more than one outstanding ReadRange on the
+            client issues more than one outstanding ``ReadRange`` on the
             same stream, responses can be mapped back to their
             corresponding requests using this value. Clients must ensure
             that all outstanding requests have different read_id values.
-            The server may close the stream with an error if this
+            The server might close the stream with an error if this
             condition is not met.
     """
 
@@ -1476,12 +1503,12 @@ class ObjectRangeData(proto.Message):
         checksummed_data (google.cloud._storage_v2.types.ChecksummedData):
             A portion of the data for the object.
         read_range (google.cloud._storage_v2.types.ReadRange):
-            The ReadRange describes the content being returned with
-            read_id set to the corresponding ReadObjectRequest in the
-            stream. Multiple ObjectRangeData messages may have the same
-            read_id but increasing offsets. ReadObjectResponse messages
-            with the same read_id are guaranteed to be delivered in
-            increasing offset order.
+            The ``ReadRange`` describes the content being returned with
+            ``read_id`` set to the corresponding ``ReadObjectRequest``
+            in the stream. Multiple ``ObjectRangeData`` messages might
+            have the same read_id but increasing offsets.
+            ``ReadObjectResponse`` messages with the same ``read_id``
+            are guaranteed to be delivered in increasing offset order.
         range_end (bool):
             If set, indicates there are no more bytes to
             read for the given ReadRange.
@@ -1504,9 +1531,9 @@ class ObjectRangeData(proto.Message):
 
 
 class BidiReadHandle(proto.Message):
-    r"""BidiReadHandle contains a handle from a previous
-    BiDiReadObject invocation. The client can use this instead of
-    BidiReadObjectSpec as an optimized way of opening subsequent
+    r"""``BidiReadHandle`` contains a handle from a previous
+    ``BiDiReadObject`` invocation. The client can use this instead of
+    ``BidiReadObjectSpec`` as an optimized way of opening subsequent
     bidirectional streams to the same object.
 
     Attributes:
@@ -1522,10 +1549,10 @@ class BidiReadHandle(proto.Message):
 
 
 class BidiWriteHandle(proto.Message):
-    r"""BidiWriteHandle contains a handle from a previous
-    BidiWriteObject invocation. The client can use this as an
-    optimized way of opening subsequent bidirectional streams to the
-    same object.
+    r"""``BidiWriteHandle`` contains a handle from a previous
+    ``BidiWriteObject`` invocation. The client can use this instead of
+    ``BidiReadObjectSpec`` as an optimized way of opening subsequent
+    bidirectional streams to the same object.
 
     Attributes:
         handle (bytes):
@@ -1551,26 +1578,23 @@ class WriteObjectSpec(proto.Message):
             Required. Destination object, including its
             name and its metadata.
         predefined_acl (str):
-            Optional. Apply a predefined set of access
-            controls to this object. Valid values are
-            "authenticatedRead", "bucketOwnerFullControl",
-            "bucketOwnerRead", "private", "projectPrivate",
-            or "publicRead".
+            Optional. Apply a predefined set of access controls to this
+            object. Valid values are ``authenticatedRead``,
+            ``bucketOwnerFullControl``, ``bucketOwnerRead``,
+            ``private``, ``projectPrivate``, or ``publicRead``.
         if_generation_match (int):
-            Makes the operation conditional on whether
-            the object's current generation matches the
-            given value. Setting to 0 makes the operation
-            succeed only if there are no live versions of
-            the object.
+            Makes the operation conditional on whether the object's
+            current generation matches the given value. Setting to ``0``
+            makes the operation succeed only if there are no live
+            versions of the object.
 
             This field is a member of `oneof`_ ``_if_generation_match``.
         if_generation_not_match (int):
-            Makes the operation conditional on whether
-            the object's live generation does not match the
-            given value. If no live object exists, the
-            precondition fails. Setting to 0 makes the
-            operation succeed only if there is a live
-            version of the object.
+            Makes the operation conditional on whether the object's live
+            generation does not match the given value. If no live object
+            exists, the precondition fails. Setting to ``0`` makes the
+            operation succeed only if there is a live version of the
+            object.
 
             This field is a member of `oneof`_ ``_if_generation_not_match``.
         if_metageneration_match (int):
@@ -1588,7 +1612,7 @@ class WriteObjectSpec(proto.Message):
         object_size (int):
             The expected final object size being uploaded. If this value
             is set, closing the stream after writing fewer or more than
-            ``object_size`` bytes will result in an OUT_OF_RANGE error.
+            ``object_size`` bytes results in an ``OUT_OF_RANGE`` error.
 
             This situation is considered a client error, and if such an
             error occurs you must start the upload over from scratch,
@@ -1596,9 +1620,8 @@ class WriteObjectSpec(proto.Message):
 
             This field is a member of `oneof`_ ``_object_size``.
         appendable (bool):
-            If true, the object will be created in
-            appendable mode. This field may only be set when
-            using BidiWriteObject.
+            If ``true``, the object is created in appendable mode. This
+            field might only be set when using ``BidiWriteObject``.
 
             This field is a member of `oneof`_ ``_appendable``.
     """
@@ -1645,7 +1668,8 @@ class WriteObjectSpec(proto.Message):
 
 
 class WriteObjectRequest(proto.Message):
-    r"""Request message for WriteObject.
+    r"""Request message for
+    [WriteObject][google.storage.v2.Storage.WriteObject].
 
     This message has `oneof`_ fields (mutually exclusive fields).
     For each oneof, at most one member field can be set at the same time.
@@ -1680,28 +1704,28 @@ class WriteObjectRequest(proto.Message):
             the sum of the first ``write_offset`` and the sizes of all
             ``data`` chunks sent previously on this stream.
 
-            An incorrect value will cause an error.
+            An incorrect value causes an error.
         checksummed_data (google.cloud._storage_v2.types.ChecksummedData):
             The data to insert. If a crc32c checksum is
             provided that doesn't match the checksum
-            computed by the service, the request will fail.
+            computed by the service, the request fails.
 
             This field is a member of `oneof`_ ``data``.
         object_checksums (google.cloud._storage_v2.types.ObjectChecksums):
             Optional. Checksums for the complete object. If the
             checksums computed by the service don't match the specified
-            checksums the call will fail. May only be provided in the
-            first or last request (either with first_message, or
-            finish_write set).
+            checksums the call fails. This field might only be provided
+            in the first or last request (either with ``first_message``,
+            or ``finish_write`` set).
         finish_write (bool):
             Optional. If ``true``, this indicates that the write is
             complete. Sending any ``WriteObjectRequest``\ s subsequent
-            to one in which ``finish_write`` is ``true`` will cause an
-            error. For a non-resumable write (where the upload_id was
-            not set in the first message), it is an error not to set
+            to one in which ``finish_write`` is ``true`` causes an
+            error. For a non-resumable write (where the ``upload_id``
+            was not set in the first message), it is an error not to set
             this field in the final message of the stream.
         common_object_request_params (google.cloud._storage_v2.types.CommonObjectRequestParams):
-            Optional. A set of parameters common to
+            Optional. A set of parameters common to Cloud
             Storage API requests concerning an object.
     """
 
@@ -1743,7 +1767,8 @@ class WriteObjectRequest(proto.Message):
 
 
 class WriteObjectResponse(proto.Message):
-    r"""Response message for WriteObject.
+    r"""Response message for
+    [WriteObject][google.storage.v2.Storage.WriteObject].
 
     This message has `oneof`_ fields (mutually exclusive fields).
     For each oneof, at most one member field can be set at the same time.
@@ -1814,9 +1839,9 @@ class AppendObjectSpec(proto.Message):
 
             This field is a member of `oneof`_ ``_if_metageneration_not_match``.
         routing_token (str):
-            An optional routing token that influences
-            request routing for the stream. Must be provided
-            if a BidiWriteObjectRedirectedError is returned.
+            An optional routing token that influences request routing
+            for the stream. Must be provided if a
+            ``BidiWriteObjectRedirectedError`` is returned.
 
             This field is a member of `oneof`_ ``_routing_token``.
         write_handle (google.cloud._storage_v2.types.BidiWriteHandle):
@@ -1866,7 +1891,8 @@ class AppendObjectSpec(proto.Message):
 
 
 class BidiWriteObjectRequest(proto.Message):
-    r"""Request message for BidiWriteObject.
+    r"""Request message for
+    [BidiWriteObject][google.storage.v2.Storage.BidiWriteObject].
 
     This message has `oneof`_ fields (mutually exclusive fields).
     For each oneof, at most one member field can be set at the same time.
@@ -1898,52 +1924,52 @@ class BidiWriteObjectRequest(proto.Message):
 
             In the first ``WriteObjectRequest`` of a ``WriteObject()``
             action, it indicates the initial offset for the ``Write()``
-            call. The value **must** be equal to the ``persisted_size``
-            that a call to ``QueryWriteStatus()`` would return (0 if
-            this is the first write to the object).
+            call. The value must be equal to the ``persisted_size`` that
+            a call to ``QueryWriteStatus()`` would return (0 if this is
+            the first write to the object).
 
-            On subsequent calls, this value **must** be no larger than
-            the sum of the first ``write_offset`` and the sizes of all
+            On subsequent calls, this value must be no larger than the
+            sum of the first ``write_offset`` and the sizes of all
             ``data`` chunks sent previously on this stream.
 
-            An invalid value will cause an error.
+            An invalid value causes an error.
         checksummed_data (google.cloud._storage_v2.types.ChecksummedData):
             The data to insert. If a crc32c checksum is
             provided that doesn't match the checksum
-            computed by the service, the request will fail.
+            computed by the service, the request fails.
 
             This field is a member of `oneof`_ ``data``.
         object_checksums (google.cloud._storage_v2.types.ObjectChecksums):
             Optional. Checksums for the complete object. If the
             checksums computed by the service don't match the specified
-            checksums the call will fail. May only be provided in the
+            checksums the call fails. Might only be provided in the
             first request or the last request (with finish_write set).
         state_lookup (bool):
-            Optional. For each BidiWriteObjectRequest where state_lookup
-            is ``true`` or the client closes the stream, the service
-            will send a BidiWriteObjectResponse containing the current
-            persisted size. The persisted size sent in responses covers
-            all the bytes the server has persisted thus far and can be
-            used to decide what data is safe for the client to drop.
-            Note that the object's current size reported by the
-            BidiWriteObjectResponse may lag behind the number of bytes
-            written by the client. This field is ignored if
-            ``finish_write`` is set to true.
+            Optional. For each ``BidiWriteObjectRequest`` where
+            ``state_lookup`` is ``true`` or the client closes the
+            stream, the service sends a ``BidiWriteObjectResponse``
+            containing the current persisted size. The persisted size
+            sent in responses covers all the bytes the server has
+            persisted thus far and can be used to decide what data is
+            safe for the client to drop. Note that the object's current
+            size reported by the ``BidiWriteObjectResponse`` might lag
+            behind the number of bytes written by the client. This field
+            is ignored if ``finish_write`` is set to true.
         flush (bool):
             Optional. Persists data written on the stream, up to and
             including the current message, to permanent storage. This
-            option should be used sparingly as it may reduce
-            performance. Ongoing writes will periodically be persisted
-            on the server even when ``flush`` is not set. This field is
+            option should be used sparingly as it might reduce
+            performance. Ongoing writes are periodically persisted on
+            the server even when ``flush`` is not set. This field is
             ignored if ``finish_write`` is set to true since there's no
             need to checkpoint or flush if this message completes the
             write.
         finish_write (bool):
             Optional. If ``true``, this indicates that the write is
             complete. Sending any ``WriteObjectRequest``\ s subsequent
-            to one in which ``finish_write`` is ``true`` will cause an
-            error. For a non-resumable write (where the upload_id was
-            not set in the first message), it is an error not to set
+            to one in which ``finish_write`` is ``true`` causes an
+            error. For a non-resumable write (where the ``upload_id``
+            was not set in the first message), it is an error not to set
             this field in the final message of the stream.
         common_object_request_params (google.cloud._storage_v2.types.CommonObjectRequestParams):
             Optional. A set of parameters common to
@@ -2025,11 +2051,10 @@ class BidiWriteObjectResponse(proto.Message):
 
             This field is a member of `oneof`_ ``write_status``.
         write_handle (google.cloud._storage_v2.types.BidiWriteHandle):
-            An optional write handle that will
-            periodically be present in response messages.
-            Clients should save it for later use in
-            establishing a new stream if a connection is
-            interrupted.
+            An optional write handle that is returned
+            periodically in response messages. Clients
+            should save it for later use in establishing a
+            new stream if a connection is interrupted.
 
             This field is a member of `oneof`_ ``_write_handle``.
     """
@@ -2054,7 +2079,9 @@ class BidiWriteObjectResponse(proto.Message):
 
 
 class ListObjectsRequest(proto.Message):
-    r"""Request message for ListObjects.
+    r"""Request message for
+    [ListObjects][google.storage.v2.Storage.ListObjects].
+
 
     .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
 
@@ -2065,68 +2092,69 @@ class ListObjectsRequest(proto.Message):
         page_size (int):
             Optional. Maximum number of ``items`` plus ``prefixes`` to
             return in a single page of responses. As duplicate
-            ``prefixes`` are omitted, fewer total results may be
-            returned than requested. The service will use this parameter
-            or 1,000 items, whichever is smaller.
+            ``prefixes`` are omitted, fewer total results might be
+            returned than requested. The service uses this parameter or
+            1,000 items, whichever is smaller.
         page_token (str):
             Optional. A previously-returned page token
             representing part of the larger set of results
             to view.
         delimiter (str):
             Optional. If set, returns results in a directory-like mode.
-            ``items`` will contain only objects whose names, aside from
-            the ``prefix``, do not contain ``delimiter``. Objects whose
-            names, aside from the ``prefix``, contain ``delimiter`` will
-            have their name, truncated after the ``delimiter``, returned
-            in ``prefixes``. Duplicate ``prefixes`` are omitted.
+            ``items`` contains only objects whose names, aside from the
+            ``prefix``, do not contain ``delimiter``. Objects whose
+            names, aside from the ``prefix``, contain ``delimiter`` has
+            their name, truncated after the ``delimiter``, returned in
+            ``prefixes``. Duplicate ``prefixes`` are omitted.
         include_trailing_delimiter (bool):
             Optional. If true, objects that end in exactly one instance
-            of ``delimiter`` will have their metadata included in
-            ``items`` in addition to ``prefixes``.
+            of ``delimiter`` has their metadata included in ``items`` in
+            addition to ``prefixes``.
         prefix (str):
             Optional. Filter results to objects whose
             names begin with this prefix.
         versions (bool):
             Optional. If ``true``, lists all versions of an object as
-            distinct results. For more information, see `Object
-            Versioning <https://cloud.google.com/storage/docs/object-versioning>`__.
+            distinct results.
         read_mask (google.protobuf.field_mask_pb2.FieldMask):
             Mask specifying which fields to read from each result. If no
-            mask is specified, will default to all fields except
-            items.acl and items.owner.
-
-            - may be used to mean "all fields".
+            mask is specified, defaults to all fields except
+            ``items.acl`` and ``items.owner``. ``*`` might be used to
+            mean all fields.
 
             This field is a member of `oneof`_ ``_read_mask``.
         lexicographic_start (str):
             Optional. Filter results to objects whose names are
-            lexicographically equal to or after lexicographic_start. If
-            lexicographic_end is also set, the objects listed have names
-            between lexicographic_start (inclusive) and
-            lexicographic_end (exclusive).
+            lexicographically equal to or after ``lexicographic_start``.
+            If ``lexicographic_end`` is also set, the objects listed
+            have names between ``lexicographic_start`` (inclusive) and
+            ``lexicographic_end`` (exclusive).
         lexicographic_end (str):
             Optional. Filter results to objects whose names are
-            lexicographically before lexicographic_end. If
-            lexicographic_start is also set, the objects listed have
-            names between lexicographic_start (inclusive) and
-            lexicographic_end (exclusive).
+            lexicographically before ``lexicographic_end``. If
+            ``lexicographic_start`` is also set, the objects listed have
+            names between ``lexicographic_start`` (inclusive) and
+            ``lexicographic_end`` (exclusive).
         soft_deleted (bool):
             Optional. If true, only list all soft-deleted
             versions of the object. Soft delete policy is
             required to set this option.
         include_folders_as_prefixes (bool):
-            Optional. If true, will also include folders and managed
-            folders (besides objects) in the returned ``prefixes``.
-            Requires ``delimiter`` to be set to '/'.
+            Optional. If true, includes folders and managed folders
+            (besides objects) in the returned ``prefixes``. Requires
+            ``delimiter`` to be set to '/'.
         match_glob (str):
             Optional. Filter results to objects and prefixes that match
-            this glob pattern. See `List Objects Using
-            Glob <https://cloud.google.com/storage/docs/json_api/v1/objects/list#list-objects-and-prefixes-using-glob>`__
+            this glob pattern. See `List objects using
+            glob <https://cloud.google.com/storage/docs/json_api/v1/objects/list#list-objects-and-prefixes-using-glob>`__
             for the full syntax.
         filter (str):
-            Optional. Filter the returned objects. Currently only
-            supported for the ``contexts`` field. If ``delimiter`` is
-            set, the returned ``prefixes`` are exempt from this filter.
+            Optional. An expression used to filter the returned objects
+            by the ``context`` field. For the full syntax, see `Filter
+            objects by contexts
+            syntax <https://cloud.google.com/storage/docs/listing-objects#filter-by-object-contexts-syntax>`__.
+            If a ``delimiter`` is set, the returned ``prefixes`` are
+            exempt from this filter.
     """
 
     parent: str = proto.Field(
@@ -2190,7 +2218,8 @@ class ListObjectsRequest(proto.Message):
 
 
 class QueryWriteStatusRequest(proto.Message):
-    r"""Request object for ``QueryWriteStatus``.
+    r"""Request object for
+    [QueryWriteStatus][google.storage.v2.Storage.QueryWriteStatus].
 
     Attributes:
         upload_id (str):
@@ -2214,7 +2243,8 @@ class QueryWriteStatusRequest(proto.Message):
 
 
 class QueryWriteStatusResponse(proto.Message):
-    r"""Response object for ``QueryWriteStatus``.
+    r"""Response object for
+    [QueryWriteStatus][google.storage.v2.Storage.QueryWriteStatus].
 
     This message has `oneof`_ fields (mutually exclusive fields).
     For each oneof, at most one member field can be set at the same time.
@@ -2254,15 +2284,17 @@ class QueryWriteStatusResponse(proto.Message):
 
 
 class RewriteObjectRequest(proto.Message):
-    r"""Request message for RewriteObject. If the source object is encrypted
-    using a Customer-Supplied Encryption Key the key information must be
-    provided in the copy_source_encryption_algorithm,
-    copy_source_encryption_key_bytes, and
-    copy_source_encryption_key_sha256_bytes fields. If the destination
-    object should be encrypted the keying information should be provided
-    in the encryption_algorithm, encryption_key_bytes, and
-    encryption_key_sha256_bytes fields of the
-    common_object_request_params.customer_encryption field.
+    r"""Request message for
+    [RewriteObject][google.storage.v2.Storage.RewriteObject]. If the
+    source object is encrypted using a Customer-Supplied Encryption Key
+    the key information must be provided in the
+    ``copy_source_encryption_algorithm``,
+    ``copy_source_encryption_key_bytes``, and
+    ``copy_source_encryption_key_sha256_bytes`` fields. If the
+    destination object should be encrypted the keying information should
+    be provided in the ``encryption_algorithm``,
+    ``encryption_key_bytes``, and ``encryption_key_sha256_bytes`` fields
+    of the ``common_object_request_params.customer_encryption`` field.
 
 
     .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
@@ -2281,9 +2313,9 @@ class RewriteObjectRequest(proto.Message):
             containing the destination object.
         destination_kms_key (str):
             Optional. The name of the Cloud KMS key that
-            will be used to encrypt the destination object.
-            The Cloud KMS key must be located in same
-            location as the object. If the parameter is not
+            is used to encrypt the destination object. The
+            Cloud KMS key must be located in same location
+            as the object. If the parameter is not
             specified, the request uses the destination
             bucket's default encryption key, if any, or else
             the Google-managed encryption key.
@@ -2293,9 +2325,9 @@ class RewriteObjectRequest(proto.Message):
             not be populated (these values are specified in the
             ``destination_name``, ``destination_bucket``, and
             ``destination_kms_key`` fields). If ``destination`` is
-            present it will be used to construct the destination
-            object's metadata; otherwise the destination object's
-            metadata will be copied from the source object.
+            present it is used to construct the destination object's
+            metadata; otherwise the destination object's metadata is
+            copied from the source object.
         source_bucket (str):
             Required. Name of the bucket in which to find
             the source object.
@@ -2315,11 +2347,10 @@ class RewriteObjectRequest(proto.Message):
             the values provided in the first rewrite
             request.
         destination_predefined_acl (str):
-            Optional. Apply a predefined set of access
-            controls to the destination object. Valid values
-            are "authenticatedRead",
-            "bucketOwnerFullControl", "bucketOwnerRead",
-            "private", "projectPrivate", or "publicRead".
+            Optional. Apply a predefined set of access controls to the
+            destination object. Valid values are ``authenticatedRead``,
+            ``bucketOwnerFullControl``, ``bucketOwnerRead``,
+            ``private``, ``projectPrivate``, or ``publicRead``.
         if_generation_match (int):
             Makes the operation conditional on whether
             the object's current generation matches the
@@ -2374,15 +2405,15 @@ class RewriteObjectRequest(proto.Message):
 
             This field is a member of `oneof`_ ``_if_source_metageneration_not_match``.
         max_bytes_rewritten_per_call (int):
-            Optional. The maximum number of bytes that will be rewritten
-            per rewrite request. Most callers shouldn't need to specify
-            this parameter - it is primarily in place to support
-            testing. If specified the value must be an integral multiple
-            of 1 MiB (1048576). Also, this only applies to requests
-            where the source and destination span locations and/or
-            storage classes. Finally, this value must not change across
-            rewrite calls else you'll get an error that the
-            ``rewriteToken`` is invalid.
+            Optional. The maximum number of bytes that are rewritten per
+            rewrite request. Most callers shouldn't need to specify this
+            parameter - it is primarily in place to support testing. If
+            specified the value must be an integral multiple of 1 MiB
+            (1048576). Also, this only applies to requests where the
+            source and destination span locations and/or storage
+            classes. Finally, this value must not change across rewrite
+            calls else you'll get an error that the ``rewriteToken`` is
+            invalid.
         copy_source_encryption_algorithm (str):
             Optional. The algorithm used to encrypt the
             source object, if any. Used if the source object
@@ -2403,8 +2434,8 @@ class RewriteObjectRequest(proto.Message):
             Storage API requests concerning an object.
         object_checksums (google.cloud._storage_v2.types.ObjectChecksums):
             Optional. The checksums of the complete
-            object. This will be used to validate the
-            destination object after rewriting.
+            object. This is used to validate the destination
+            object after rewriting.
     """
 
     destination_name: str = proto.Field(
@@ -2564,7 +2595,9 @@ class RewriteResponse(proto.Message):
 
 
 class MoveObjectRequest(proto.Message):
-    r"""Request message for MoveObject.
+    r"""Request message for
+    [MoveObject][google.storage.v2.Storage.MoveObject].
+
 
     .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
 
@@ -2708,7 +2741,8 @@ class MoveObjectRequest(proto.Message):
 
 
 class StartResumableWriteRequest(proto.Message):
-    r"""Request message StartResumableWrite.
+    r"""Request message for
+    [StartResumableWrite][google.storage.v2.Storage.StartResumableWrite].
 
     Attributes:
         write_object_spec (google.cloud._storage_v2.types.WriteObjectSpec):
@@ -2744,7 +2778,8 @@ class StartResumableWriteRequest(proto.Message):
 
 
 class StartResumableWriteResponse(proto.Message):
-    r"""Response object for ``StartResumableWrite``.
+    r"""Response object for
+    [StartResumableWrite][google.storage.v2.Storage.StartResumableWrite].
 
     Attributes:
         upload_id (str):
@@ -2763,7 +2798,9 @@ class StartResumableWriteResponse(proto.Message):
 
 
 class UpdateObjectRequest(proto.Message):
-    r"""Request message for UpdateObject.
+    r"""Request message for
+    [UpdateObject][google.storage.v2.Storage.UpdateObject].
+
 
     .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
 
@@ -2817,7 +2854,7 @@ class UpdateObjectRequest(proto.Message):
             To specify ALL fields, equivalent to the JSON API's "update"
             function, specify a single field with the value ``*``. Note:
             not recommended. If a new field is introduced at a later
-            time, an older client updating with the ``*`` may
+            time, an older client updating with the ``*`` might
             accidentally reset the new field's value.
 
             Not specifying any fields is an error.
@@ -2887,7 +2924,7 @@ class CommonObjectRequestParams(proto.Message):
             raw bytes format (not base64-encoded).
         encryption_key_sha256_bytes (bytes):
             Optional. SHA256 hash of encryption key used
-            with the Customer-Supplied Encryption Keys
+            with the Customer-supplied encryption keys
             feature.
     """
 
@@ -2916,9 +2953,8 @@ class ServiceConstants(proto.Message):
             VALUES_UNSPECIFIED (0):
                 Unused. Proto3 requires first enum to be 0.
             MAX_READ_CHUNK_BYTES (2097152):
-                The maximum size chunk that can will be
-                returned in a single ReadRequest.
-                2 MiB.
+                The maximum size chunk that can be returned in a single
+                ``ReadRequest``. 2 MiB.
             MAX_WRITE_CHUNK_BYTES (2097152):
                 The maximum size chunk that can be sent in a
                 single WriteObjectRequest. 2 MiB.
@@ -3006,31 +3042,25 @@ class Bucket(proto.Message):
         bucket_id (str):
             Output only. The user-chosen part of the bucket name. The
             ``{bucket}`` portion of the ``name`` field. For globally
-            unique buckets, this is equal to the "bucket name" of other
-            Cloud Storage APIs. Example: "pub".
+            unique buckets, this is equal to the ``bucket name`` of
+            other Cloud Storage APIs. Example: ``pub``.
         etag (str):
-            The etag of the bucket.
-            If included in the metadata of an
-            UpdateBucketRequest, the operation will only be
-            performed if the etag matches that of the
-            bucket.
+            The etag of the bucket. If included in the metadata of an
+            ``UpdateBucketRequest``, the operation is only performed if
+            the ``etag`` matches that of the bucket.
         project (str):
-            Immutable. The project which owns this
-            bucket, in the format of
-            "projects/{projectIdentifier}".
-            {projectIdentifier} can be the project ID or
-            project number. Output values will always be in
-            project number format.
+            Immutable. The project which owns this bucket, in the format
+            of ``projects/{projectIdentifier}``. ``{projectIdentifier}``
+            can be the project ID or project number. Output values are
+            always in the project number format.
         metageneration (int):
             Output only. The metadata generation of this
             bucket.
         location (str):
             Immutable. The location of the bucket. Object data for
             objects in the bucket resides in physical storage within
-            this region. Defaults to ``US``. See the
-            [https://developers.google.com/storage/docs/concepts-techniques#specifyinglocations"][developer's
-            guide] for the authoritative list. Attempting to update this
-            field after the bucket is created will result in an error.
+            this region. Defaults to ``US``. Attempting to update this
+            field after the bucket is created results in an error.
         location_type (str):
             Output only. The location type of the bucket
             (region, dual-region, multi-region, etc).
@@ -3039,37 +3069,39 @@ class Bucket(proto.Message):
             no storageClass is specified for a newly-created object.
             This defines how objects in the bucket are stored and
             determines the SLA and the cost of storage. If this value is
-            not specified when the bucket is created, it will default to
-            ``STANDARD``. For more information, see
-            https://developers.google.com/storage/docs/storage-classes.
+            not specified when the bucket is created, it defaults to
+            ``STANDARD``. For more information, see `Storage
+            classes <https://developers.google.com/storage/docs/storage-classes>`__.
         rpo (str):
             Optional. The recovery point objective for cross-region
             replication of the bucket. Applicable only for dual- and
-            multi-region buckets. "DEFAULT" uses default replication.
-            "ASYNC_TURBO" enables turbo replication, valid for
+            multi-region buckets. ``DEFAULT`` uses default replication.
+            ``ASYNC_TURBO`` enables turbo replication, valid for
             dual-region buckets only. If rpo is not specified when the
-            bucket is created, it defaults to "DEFAULT". For more
-            information, see
-            https://cloud.google.com/storage/docs/availability-durability#turbo-replication.
+            bucket is created, it defaults to ``DEFAULT``. For more
+            information, see `Turbo
+            replication <https://cloud.google.com/storage/docs/availability-durability#turbo-replication>`__.
         acl (MutableSequence[google.cloud._storage_v2.types.BucketAccessControl]):
             Optional. Access controls on the bucket. If
-            iam_config.uniform_bucket_level_access is enabled on this
-            bucket, requests to set, read, or modify acl is an error.
+            ``iam_config.uniform_bucket_level_access`` is enabled on
+            this bucket, requests to set, read, or modify acl is an
+            error.
         default_object_acl (MutableSequence[google.cloud._storage_v2.types.ObjectAccessControl]):
             Optional. Default access controls to apply to new objects
             when no ACL is provided. If
-            iam_config.uniform_bucket_level_access is enabled on this
-            bucket, requests to set, read, or modify acl is an error.
+            ``iam_config.uniform_bucket_level_access`` is enabled on
+            this bucket, requests to set, read, or modify acl is an
+            error.
         lifecycle (google.cloud._storage_v2.types.Bucket.Lifecycle):
-            Optional. The bucket's lifecycle config. See
-            [https://developers.google.com/storage/docs/lifecycle]Lifecycle
-            Management] for more information.
+            Optional. The bucket's lifecycle configuration. See
+            `Lifecycle
+            Management <https://developers.google.com/storage/docs/lifecycle>`__
+            for more information.
         create_time (google.protobuf.timestamp_pb2.Timestamp):
             Output only. The creation time of the bucket.
         cors (MutableSequence[google.cloud._storage_v2.types.Bucket.Cors]):
             Optional. The bucket's
-            [https://www.w3.org/TR/cors/][Cross-Origin Resource Sharing]
-            (CORS) config.
+            `CORS <https://www.w3.org/TR/cors/>`__ configuration.
         update_time (google.protobuf.timestamp_pb2.Timestamp):
             Output only. The modification time of the
             bucket.
@@ -3079,32 +3111,33 @@ class Bucket(proto.Message):
             Event-based hold is a way to retain objects
             indefinitely until an event occurs, signified by
             the hold's release. After being released, such
-            objects will be subject to bucket-level
-            retention (if any). One sample use case of this
-            flag is for banks to hold loan documents for at
-            least 3 years after loan is paid in full. Here,
+            objects are subject to bucket-level retention
+            (if any).  One sample use case of this flag is
+            for banks to hold loan documents for at least 3
+            years after loan is paid in full. Here,
             bucket-level retention is 3 years and the event
             is loan being paid in full. In this example,
-            these objects will be held intact for any number
-            of years until the event has occurred
-            (event-based hold on the object is released) and
-            then 3 more years after that. That means
-            retention duration of the objects begins from
-            the moment event-based hold transitioned from
-            true to false.  Objects under event-based hold
-            cannot be deleted, overwritten or archived until
-            the hold is removed.
+            these objects are held intact for any number of
+            years until the event has occurred (event-based
+            hold on the object is released) and then 3 more
+            years after that. That means retention duration
+            of the objects begins from the moment
+            event-based hold transitioned from true to
+            false.  Objects under event-based hold cannot be
+            deleted, overwritten or archived until the hold
+            is removed.
         labels (MutableMapping[str, str]):
             Optional. User-provided labels, in key/value
             pairs.
         website (google.cloud._storage_v2.types.Bucket.Website):
             Optional. The bucket's website config, controlling how the
             service behaves when accessing bucket contents as a web
-            site. See the
-            [https://cloud.google.com/storage/docs/static-website][Static
-            Website Examples] for more information.
+            site. See the `Static website
+            examples <https://cloud.google.com/storage/docs/static-website>`__
+            for more information.
         versioning (google.cloud._storage_v2.types.Bucket.Versioning):
-            Optional. The bucket's versioning config.
+            Optional. The bucket's versioning
+            configuration.
         logging (google.cloud._storage_v2.types.Bucket.Logging):
             Optional. The bucket's logging config, which
             defines the destination bucket and name prefix
@@ -3115,38 +3148,37 @@ class Bucket(proto.Message):
         encryption (google.cloud._storage_v2.types.Bucket.Encryption):
             Optional. Encryption config for a bucket.
         billing (google.cloud._storage_v2.types.Bucket.Billing):
-            Optional. The bucket's billing config.
+            Optional. The bucket's billing configuration.
         retention_policy (google.cloud._storage_v2.types.Bucket.RetentionPolicy):
             Optional. The bucket's retention policy. The retention
             policy enforces a minimum retention time for all objects
             contained in the bucket, based on their creation time. Any
             attempt to overwrite or delete objects younger than the
-            retention period will result in a PERMISSION_DENIED error.
+            retention period results in a ``PERMISSION_DENIED`` error.
             An unlocked retention policy can be modified or removed from
             the bucket via a storage.buckets.update operation. A locked
             retention policy cannot be removed or shortened in duration
             for the lifetime of the bucket. Attempting to remove or
-            decrease period of a locked retention policy will result in
-            a PERMISSION_DENIED error.
+            decrease period of a locked retention policy results in a
+            ``PERMISSION_DENIED`` error.
         iam_config (google.cloud._storage_v2.types.Bucket.IamConfig):
-            Optional. The bucket's IAM config.
+            Optional. The bucket's IAM configuration.
         satisfies_pzs (bool):
             Optional. Reserved for future use.
         custom_placement_config (google.cloud._storage_v2.types.Bucket.CustomPlacementConfig):
             Optional. Configuration that, if present, specifies the data
-            placement for a
-            [https://cloud.google.com/storage/docs/locations#location-dr][configurable
-            dual-region].
+            placement for a `configurable
+            dual-region <https://cloud.google.com/storage/docs/locations#location-dr>`__.
         autoclass (google.cloud._storage_v2.types.Bucket.Autoclass):
             Optional. The bucket's Autoclass
             configuration. If there is no configuration, the
-            Autoclass feature will be disabled and have no
-            effect on the bucket.
+            Autoclass feature is disabled and has no effect
+            on the bucket.
         hierarchical_namespace (google.cloud._storage_v2.types.Bucket.HierarchicalNamespace):
             Optional. The bucket's hierarchical namespace
             configuration. If there is no configuration, the
-            hierarchical namespace feature will be disabled
-            and have no effect on the bucket.
+            hierarchical namespace feature is disabled and
+            has no effect on the bucket.
         soft_delete_policy (google.cloud._storage_v2.types.Bucket.SoftDeletePolicy):
             Optional. The bucket's soft delete policy.
             The soft delete policy prevents soft-deleted
@@ -3154,7 +3186,7 @@ class Bucket(proto.Message):
         object_retention (google.cloud._storage_v2.types.Bucket.ObjectRetention):
             Optional. The bucket's object retention
             configuration. Must be enabled before objects in
-            the bucket may have retention configured.
+            the bucket might have retention configured.
         ip_filter (google.cloud._storage_v2.types.Bucket.IpFilter):
             Optional. The bucket's IP filter
             configuration.
@@ -3184,25 +3216,27 @@ class Bucket(proto.Message):
 
         Attributes:
             origin (MutableSequence[str]):
-                Optional. The list of Origins eligible to receive CORS
-                response headers. See
-                [https://tools.ietf.org/html/rfc6454][RFC 6454] for more on
-                origins. Note: "\*" is permitted in the list of origins, and
-                means "any Origin".
+                Optional. The list of origins eligible to receive CORS
+                response headers. For more information about origins, see
+                `RFC 6454 <https://tools.ietf.org/html/rfc6454>`__. Note:
+                ``*`` is permitted in the list of origins, and means
+                ``any origin``.
             method (MutableSequence[str]):
                 Optional. The list of HTTP methods on which to include CORS
                 response headers, (``GET``, ``OPTIONS``, ``POST``, etc)
-                Note: "\*" is permitted in the list of methods, and means
+                Note: ``*`` is permitted in the list of methods, and means
                 "any method".
             response_header (MutableSequence[str]):
-                Optional. The list of HTTP headers other than the
-                [https://www.w3.org/TR/cors/#simple-response-header][simple
-                response headers] to give permission for the user-agent to
-                share across domains.
+                Optional. The list of HTTP headers other than the `simple
+                response
+                headers <https://www.w3.org/TR/cors/#simple-response-headers>`__
+                to give permission for the user-agent to share across
+                domains.
             max_age_seconds (int):
                 Optional. The value, in seconds, to return in the
-                [https://www.w3.org/TR/cors/#access-control-max-age-response-header][Access-Control-Max-Age
-                header] used in preflight responses.
+                `Access-Control-Max-Age
+                header <https://www.w3.org/TR/cors/#access-control-max-age-response-header>`__
+                used in preflight responses.
         """
 
         origin: MutableSequence[str] = proto.RepeatedField(
@@ -3230,9 +3264,8 @@ class Bucket(proto.Message):
         Attributes:
             default_kms_key (str):
                 Optional. The name of the Cloud KMS key that
-                will be used to encrypt objects inserted into
-                this bucket, if no encryption method is
-                specified.
+                is used to encrypt objects inserted into this
+                bucket, if no encryption method is specified.
             google_managed_encryption_enforcement_config (google.cloud._storage_v2.types.Bucket.Encryption.GoogleManagedEncryptionEnforcementConfig):
                 Optional. If omitted, then new objects with
                 GMEK encryption-type is allowed. If set, then
@@ -3273,10 +3306,11 @@ class Bucket(proto.Message):
                 restriction_mode (str):
                     Restriction mode for google-managed encryption for new
                     objects within the bucket. Valid values are:
-                    "NotRestricted", "FullyRestricted". If ``NotRestricted`` or
-                    unset, creation of new objects with google-managed
-                    encryption is allowed. If ``FullyRestricted``, new objects
-                    can't be created using google-managed encryption.
+                    ``NotRestricted`` and ``FullyRestricted``. If
+                    ``NotRestricted`` or unset, creation of new objects with
+                    google-managed encryption is allowed. If
+                    ``FullyRestricted``, new objects can't be created using
+                    google-managed encryption.
 
                     This field is a member of `oneof`_ ``_restriction_mode``.
                 effective_time (google.protobuf.timestamp_pb2.Timestamp):
@@ -3309,10 +3343,11 @@ class Bucket(proto.Message):
                 restriction_mode (str):
                     Restriction mode for customer-managed encryption for new
                     objects within the bucket. Valid values are:
-                    "NotRestricted", "FullyRestricted". If ``NotRestricted`` or
-                    unset, creation of new objects with customer-managed
-                    encryption is allowed. If ``FullyRestricted``, new objects
-                    can't be created using customer-managed encryption.
+                    ``NotRestricted`` and ``FullyRestricted``. If
+                    ``NotRestricted`` or unset, creation of new objects with
+                    customer-managed encryption is allowed. If
+                    ``FullyRestricted``, new objects can't be created using
+                    customer-managed encryption.
 
                     This field is a member of `oneof`_ ``_restriction_mode``.
                 effective_time (google.protobuf.timestamp_pb2.Timestamp):
@@ -3345,10 +3380,11 @@ class Bucket(proto.Message):
                 restriction_mode (str):
                     Restriction mode for customer-supplied encryption for new
                     objects within the bucket. Valid values are:
-                    "NotRestricted", "FullyRestricted". If ``NotRestricted`` or
-                    unset, creation of new objects with customer-supplied
-                    encryption is allowed. If ``FullyRestricted``, new objects
-                    can't be created using customer-supplied encryption.
+                    ``NotRestricted`` and ``FullyRestricted``. If
+                    ``NotRestricted`` or unset, creation of new objects with
+                    customer-supplied encryption is allowed. If
+                    ``FullyRestricted``, new objects can't be created using
+                    customer-supplied encryption.
 
                     This field is a member of `oneof`_ ``_restriction_mode``.
                 effective_time (google.protobuf.timestamp_pb2.Timestamp):
@@ -3401,9 +3437,8 @@ class Bucket(proto.Message):
                 Optional. Bucket restriction options
                 currently enforced on the bucket.
             public_access_prevention (str):
-                Optional. Whether IAM will enforce public
-                access prevention. Valid values are "enforced"
-                or "inherited".
+                Optional. Whether IAM enforces public access prevention.
+                Valid values are ``enforced`` or ``inherited``.
         """
 
         class UniformBucketLevelAccess(proto.Message):
@@ -3445,28 +3480,27 @@ class Bucket(proto.Message):
         )
 
     class Lifecycle(proto.Message):
-        r"""Lifecycle properties of a bucket.
-        For more information, see
-        https://cloud.google.com/storage/docs/lifecycle.
+        r"""Lifecycle properties of a bucket. For more information, see `Object
+        Lifecycle
+        Management <https://cloud.google.com/storage/docs/lifecycle>`__.
 
         Attributes:
             rule (MutableSequence[google.cloud._storage_v2.types.Bucket.Lifecycle.Rule]):
                 Optional. A lifecycle management rule, which
-                is made of an action to take and the
-                condition(s) under which the action will be
-                taken.
+                is made of an action to take and the condition
+                under which the action is taken.
         """
 
         class Rule(proto.Message):
             r"""A lifecycle Rule, combining an action to take on an object
-            and a condition which will trigger that action.
+            and a condition which triggers that action.
 
             Attributes:
                 action (google.cloud._storage_v2.types.Bucket.Lifecycle.Rule.Action):
                     Optional. The action to take.
                 condition (google.cloud._storage_v2.types.Bucket.Lifecycle.Rule.Condition):
-                    Optional. The condition(s) under which the
-                    action will be taken.
+                    Optional. The condition under which the
+                    action is taken.
             """
 
             class Action(proto.Message):
@@ -3524,7 +3558,7 @@ class Bucket(proto.Message):
                         This field is a member of `oneof`_ ``_num_newer_versions``.
                     matches_storage_class (MutableSequence[str]):
                         Optional. Objects having any of the storage classes
-                        specified by this condition will be matched. Values include
+                        specified by this condition are matched. Values include
                         ``MULTI_REGIONAL``, ``REGIONAL``, ``NEARLINE``,
                         ``COLDLINE``, ``STANDARD``, and
                         ``DURABLE_REDUCED_AVAILABILITY``.
@@ -3545,8 +3579,8 @@ class Bucket(proto.Message):
                         condition only if these many days have been
                         passed since it became noncurrent. The value of
                         the field must be a nonnegative integer. If it's
-                        zero, the object version will become eligible
-                        for Lifecycle action as soon as it becomes
+                        zero, the object version becomes eligible for
+                        Lifecycle action as soon as it becomes
                         noncurrent.
 
                         This field is a member of `oneof`_ ``_days_since_noncurrent_time``.
@@ -3686,8 +3720,8 @@ class Bucket(proto.Message):
                 Retention duration must be greater than zero and less than
                 100 years. Note that enforcement of retention periods less
                 than a day is not guaranteed. Such periods should only be
-                used for testing purposes. Any ``nanos`` value specified
-                will be rounded down to the nearest second.
+                used for testing purposes. Any ``nanos`` value specified is
+                rounded down to the nearest second.
         """
 
         effective_time: timestamp_pb2.Timestamp = proto.Field(
@@ -3740,9 +3774,9 @@ class Bucket(proto.Message):
         )
 
     class Versioning(proto.Message):
-        r"""Properties of a bucket related to versioning.
-        For more on Cloud Storage versioning, see
-        https://cloud.google.com/storage/docs/object-versioning.
+        r"""Properties of a bucket related to versioning. For more information
+        about Cloud Storage versioning, see `Object
+        versioning <https://cloud.google.com/storage/docs/object-versioning>`__.
 
         Attributes:
             enabled (bool):
@@ -3756,25 +3790,24 @@ class Bucket(proto.Message):
         )
 
     class Website(proto.Message):
-        r"""Properties of a bucket related to accessing the contents as a
-        static website. For more on hosting a static website via Cloud
-        Storage, see
-        https://cloud.google.com/storage/docs/hosting-static-website.
+        r"""Properties of a bucket related to accessing the contents as a static
+        website. For details, see `hosting a static website using Cloud
+        Storage <https://cloud.google.com/storage/docs/hosting-static-website>`__.
 
         Attributes:
             main_page_suffix (str):
                 Optional. If the requested object path is missing, the
-                service will ensure the path has a trailing '/', append this
+                service ensures the path has a trailing '/', append this
                 suffix, and attempt to retrieve the resulting object. This
                 allows the creation of ``index.html`` objects to represent
                 directory pages.
             not_found_page (str):
                 Optional. If the requested object path is missing, and any
                 ``mainPageSuffix`` object is missing, if applicable, the
-                service will return the named object from this bucket as the
-                content for a
-                [https://tools.ietf.org/html/rfc7231#section-6.5.4][404 Not
-                Found] result.
+                service returns the named object from this bucket as the
+                content for a `404 Not
+                Found <https://tools.ietf.org/html/rfc7231#section-6.5.4>`__
+                result.
         """
 
         main_page_suffix: str = proto.Field(
@@ -3787,10 +3820,11 @@ class Bucket(proto.Message):
         )
 
     class CustomPlacementConfig(proto.Message):
-        r"""Configuration for Custom Dual Regions. It should specify precisely
-        two eligible regions within the same Multiregion. More information
-        on regions may be found
-        `here <https://cloud.google.com/storage/docs/locations>`__.
+        r"""Configuration for `configurable dual-
+        regions <https://cloud.google.com/storage/docs/locations#configurable>`__.
+        It should specify precisely two eligible regions within the same
+        multi-region. For details, see
+        `locations <https://cloud.google.com/storage/docs/locations>`__.
 
         Attributes:
             data_locations (MutableSequence[str]):
@@ -3815,13 +3849,13 @@ class Bucket(proto.Message):
                 Output only. Latest instant at which the ``enabled`` field
                 was set to true after being disabled/unconfigured or set to
                 false after being enabled. If Autoclass is enabled when the
-                bucket is created, the toggle_time is set to the bucket
-                creation time.
+                bucket is created, the value of the ``toggle_time`` field is
+                set to the bucket ``create_time``.
             terminal_storage_class (str):
-                An object in an Autoclass bucket will
-                eventually cool down to the terminal storage
-                class if there is no access to the object. The
-                only valid values are NEARLINE and ARCHIVE.
+                An object in an Autoclass bucket eventually
+                cools down to the terminal storage class if
+                there is no access to the object. The only valid
+                values are NEARLINE and ARCHIVE.
 
                 This field is a member of `oneof`_ ``_terminal_storage_class``.
             terminal_storage_class_update_time (google.protobuf.timestamp_pb2.Timestamp):
@@ -3868,7 +3902,7 @@ class Bucket(proto.Message):
                 filtering rules are applied to a bucket and all incoming
                 requests to the bucket are evaluated against these rules.
                 When set to ``Disabled``, IP filtering rules are not applied
-                to a bucket.".
+                to a bucket.
 
                 This field is a member of `oneof`_ ``_mode``.
             public_network_source (google.cloud._storage_v2.types.Bucket.IpFilter.PublicNetworkSource):
@@ -3885,13 +3919,13 @@ class Bucket(proto.Message):
                 orgs different than the bucket's parent org to
                 access the bucket. When set to true, validations
                 on the existence of the VPCs won't be performed.
-                If set to false, each VPC network source will be
+                If set to false, each VPC network source is
                 checked to belong to the same org as the bucket
                 as well as validated for existence.
             allow_all_service_agent_access (bool):
                 Whether or not to allow all P4SA access to
                 the bucket. When set to true, IP filter config
-                validation will not apply.
+                validation doesn't apply.
 
                 This field is a member of `oneof`_ ``_allow_all_service_agent_access``.
         """
@@ -4168,20 +4202,18 @@ class BucketAccessControl(proto.Message):
             - All members of the Google Apps for Business domain
               ``example.com`` would be ``domain-example.com`` For
               project entities, ``project-{team}-{projectnumber}``
-              format will be returned on response.
+              format is returned on response.
         entity_alt (str):
             Output only. The alternative entity format, if exists. For
-            project entities, ``project-{team}-{projectid}`` format will
-            be returned on response.
+            project entities, ``project-{team}-{projectid}`` format is
+            returned in the response.
         entity_id (str):
             Optional. The ID for the entity, if any.
         etag (str):
-            Optional. The etag of the
-            BucketAccessControl. If included in the metadata
-            of an update or delete request message, the
-            operation operation will only be performed if
-            the etag matches that of the bucket's
-            BucketAccessControl.
+            Optional. The ``etag`` of the ``BucketAccessControl``. If
+            included in the metadata of an update or delete request
+            message, the operation operation is only performed if the
+            etag matches that of the bucket's ``BucketAccessControl``.
         email (str):
             Optional. The email address associated with
             the entity, if any.
@@ -4272,18 +4304,18 @@ class ObjectChecksums(proto.Message):
             CRC32C digest of the object data. Computed by
             the Cloud Storage service for all written
             objects. If set in a WriteObjectRequest, service
-            will validate that the stored object matches
-            this checksum.
+            validates that the stored object matches this
+            checksum.
 
             This field is a member of `oneof`_ ``_crc32c``.
         md5_hash (bytes):
             Optional. 128 bit MD5 hash of the object data. For more
-            information about using the MD5 hash, see
-            [https://cloud.google.com/storage/docs/hashes-etags#json-api][Hashes
-            and ETags: Best Practices]. Not all objects will provide an
-            MD5 hash. For example, composite objects provide only crc32c
-            hashes. This value is equivalent to running
-            ``cat object.txt | openssl md5 -binary``
+            information about using the MD5 hash, see `Data validation
+            and change
+            detection <https://cloud.google.com/storage/docs/data-validation>`__.
+            Not all objects provide an MD5 hash. For example, composite
+            objects provide only crc32c hashes. This value is equivalent
+            to running ``cat object.txt | openssl md5 -binary``
     """
 
     crc32c: int = proto.Field(
@@ -4344,8 +4376,8 @@ class ObjectContexts(proto.Message):
 
 
 class CustomerEncryption(proto.Message):
-    r"""Describes the Customer-Supplied Encryption Key mechanism used
-    to store an Object's data at rest.
+    r"""Describes the customer-supplied encryption key mechanism used
+    to store an object's data at rest.
 
     Attributes:
         encryption_algorithm (str):
@@ -4383,10 +4415,9 @@ class Object(proto.Message):
             Immutable. The name of the bucket containing
             this object.
         etag (str):
-            Optional. The etag of the object.
-            If included in the metadata of an update or
-            delete request message, the operation will only
-            be performed if the etag matches that of the
+            Optional. The ``etag`` of an object. If included in the
+            metadata of an update or delete request message, the
+            operation is only performed if the etag matches that of the
             live object.
         generation (int):
             Immutable. The content generation of this
@@ -4409,32 +4440,30 @@ class Object(proto.Message):
             Optional. Storage class of the object.
         size (int):
             Output only. Content-Length of the object data in bytes,
-            matching
-            [https://tools.ietf.org/html/rfc7230#section-3.3.2][RFC 7230
-            §3.3.2].
+            matching `RFC 7230
+            §3.3.2 <https://tools.ietf.org/html/rfc7230#section-3.3.2]>`__.
         content_encoding (str):
-            Optional. Content-Encoding of the object data, matching
-            [https://tools.ietf.org/html/rfc7231#section-3.1.2.2][RFC
-            7231 §3.1.2.2]
+            Optional. Content-Encoding of the object data, matching `RFC
+            7231
+            §3.1.2.2 <https://tools.ietf.org/html/rfc7231#section-3.1.2.2>`__
         content_disposition (str):
             Optional. Content-Disposition of the object data, matching
-            [https://tools.ietf.org/html/rfc6266][RFC 6266].
+            `RFC 6266 <https://tools.ietf.org/html/rfc6266>`__.
         cache_control (str):
             Optional. Cache-Control directive for the object data,
-            matching
-            [https://tools.ietf.org/html/rfc7234#section-5.2"][RFC 7234
-            §5.2]. If omitted, and the object is accessible to all
-            anonymous users, the default will be
-            ``public, max-age=3600``.
+            matching `RFC 7234
+            §5.2 <https://tools.ietf.org/html/rfc7234#section-5.2>`__.
+            If omitted, and the object is accessible to all anonymous
+            users, the default is ``public, max-age=3600``.
         acl (MutableSequence[google.cloud._storage_v2.types.ObjectAccessControl]):
             Optional. Access controls on the object. If
-            iam_config.uniform_bucket_level_access is enabled on the
+            ``iam_config.uniform_bucket_level_access`` is enabled on the
             parent bucket, requests to set, read, or modify acl is an
             error.
         content_language (str):
-            Optional. Content-Language of the object data, matching
-            [https://tools.ietf.org/html/rfc7231#section-3.1.3.2][RFC
-            7231 §3.1.3.2].
+            Optional. Content-Language of the object data, matching `RFC
+            7231
+            §3.1.3.2 <https://tools.ietf.org/html/rfc7231#section-3.1.3.2>`__.
         delete_time (google.protobuf.timestamp_pb2.Timestamp):
             Output only. If this object is noncurrent,
             this is the time when the object became
@@ -4443,10 +4472,11 @@ class Object(proto.Message):
             Output only. The time when the object was
             finalized.
         content_type (str):
-            Optional. Content-Type of the object data, matching
-            [https://tools.ietf.org/html/rfc7231#section-3.1.1.5][RFC
-            7231 §3.1.1.5]. If an object is stored without a
-            Content-Type, it is served as ``application/octet-stream``.
+            Optional. Content-Type of the object data, matching `RFC
+            7231
+            §3.1.1.5 <https://tools.ietf.org/html/rfc7231#section-3.1.1.5>`__.
+            If an object is stored without a Content-Type, it is served
+            as ``application/octet-stream``.
         create_time (google.protobuf.timestamp_pb2.Timestamp):
             Output only. The creation time of the object.
         component_count (int):
@@ -4456,13 +4486,12 @@ class Object(proto.Message):
         checksums (google.cloud._storage_v2.types.ObjectChecksums):
             Output only. Hashes for the data part of this
             object. This field is used for output only and
-            will be silently ignored if provided in
-            requests. The checksums of the complete object
-            regardless of data range. If the object is
-            downloaded in full, the client should compute
-            one of these checksums over the downloaded
-            object and compare it against the value provided
-            here.
+            is silently ignored if provided in requests. The
+            checksums of the complete object regardless of
+            data range. If the object is downloaded in full,
+            the client should compute one of these checksums
+            over the downloaded object and compare it
+            against the value provided here.
         update_time (google.protobuf.timestamp_pb2.Timestamp):
             Output only. The modification time of the
             object metadata. Set initially to object
@@ -4480,7 +4509,7 @@ class Object(proto.Message):
         update_storage_class_time (google.protobuf.timestamp_pb2.Timestamp):
             Output only. The time at which the object's storage class
             was last changed. When the object is initially created, it
-            will be set to time_created.
+            is set to ``time_created``.
         temporary_hold (bool):
             Optional. Whether an object is under
             temporary hold. While this flag is set to true,
@@ -4515,24 +4544,24 @@ class Object(proto.Message):
             Whether an object is under event-based hold. An event-based
             hold is a way to force the retention of an object until
             after some event occurs. Once the hold is released by
-            explicitly setting this field to false, the object will
-            become subject to any bucket-level retention policy, except
-            that the retention duration will be calculated from the time
-            the event based hold was lifted, rather than the time the
-            object was created.
+            explicitly setting this field to ``false``, the object
+            becomes subject to any bucket-level retention policy, except
+            that the retention duration is calculated from the time the
+            event based hold was lifted, rather than the time the object
+            was created.
 
-            In a WriteObject request, not setting this field implies
+            In a ``WriteObject`` request, not setting this field implies
             that the value should be taken from the parent bucket's
-            "default_event_based_hold" field. In a response, this field
-            will always be set to true or false.
+            ``default_event_based_hold`` field. In a response, this
+            field is always set to ``true`` or ``false``.
 
             This field is a member of `oneof`_ ``_event_based_hold``.
         owner (google.cloud._storage_v2.types.Owner):
-            Output only. The owner of the object. This
-            will always be the uploader of the object.
+            Output only. The owner of the object. This is
+            always the uploader of the object.
         customer_encryption (google.cloud._storage_v2.types.CustomerEncryption):
-            Optional. Metadata of Customer-Supplied
-            Encryption Key, if the object is encrypted by
+            Optional. Metadata of customer-supplied
+            encryption key, if the object is encrypted by
             such a key.
         custom_time (google.protobuf.timestamp_pb2.Timestamp):
             Optional. A user-specified timestamp set on
@@ -4542,22 +4571,23 @@ class Object(proto.Message):
             soft-deleted.
 
             Soft-deleted objects are only accessible if a
-            soft_delete_policy is enabled. Also see hard_delete_time.
+            soft_delete_policy is enabled. Also see
+            ``hard_delete_time``.
 
             This field is a member of `oneof`_ ``_soft_delete_time``.
         hard_delete_time (google.protobuf.timestamp_pb2.Timestamp):
-            Output only. The time when the object will be permanently
+            Output only. The time when the object is permanently
             deleted.
 
             Only set when an object becomes soft-deleted with a
-            soft_delete_policy. Otherwise, the object will not be
+            ``soft_delete_policy``. Otherwise, the object is not
             accessible.
 
             This field is a member of `oneof`_ ``_hard_delete_time``.
         retention (google.cloud._storage_v2.types.Object.Retention):
             Optional. Retention configuration of this
-            object. May only be configured if the bucket has
-            object retention enabled.
+            object. Might only be configured if the bucket
+            has object retention enabled.
     """
 
     class Retention(proto.Message):
@@ -4582,11 +4612,11 @@ class Object(proto.Message):
                     No specified mode. Object is not under
                     retention.
                 UNLOCKED (1):
-                    Retention period may be decreased or
-                    increased. The Retention configuration may be
-                    removed. The mode may be changed to locked.
+                    Retention period might be decreased or
+                    increased. The Retention configuration might be
+                    removed. The mode might be changed to locked.
                 LOCKED (2):
-                    Retention period may be increased.
+                    Retention period might be increased.
                     The Retention configuration cannot be removed.
                     The mode cannot be changed.
             """
@@ -4792,20 +4822,19 @@ class ObjectAccessControl(proto.Message):
             - All members of the Google Apps for Business domain
               ``example.com`` would be ``domain-example.com``. For
               project entities, ``project-{team}-{projectnumber}``
-              format will be returned on response.
+              format is returned in the response.
         entity_alt (str):
             Output only. The alternative entity format, if exists. For
-            project entities, ``project-{team}-{projectid}`` format will
-            be returned on response.
+            project entities, ``project-{team}-{projectid}`` format is
+            returned in the response.
         entity_id (str):
             Optional. The ID for the entity, if any.
         etag (str):
             Optional. The etag of the
             ObjectAccessControl. If included in the metadata
             of an update or delete request message, the
-            operation will only be performed if the etag
-            matches that of the live object's
-            ObjectAccessControl.
+            operation is only performed if the etag matches
+            that of the live object's ObjectAccessControl.
         email (str):
             Optional. The email address associated with
             the entity, if any.
