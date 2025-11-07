@@ -253,9 +253,16 @@ def _iter_table(
         value_generator = iter_array(
             array.flatten(), bigframes.dtypes.get_array_inner_type(dtype)
         )
-        for (start, end) in _pairwise(array.offsets):
-            arr_size = end.as_py() - start.as_py()
-            yield list(itertools.islice(value_generator, arr_size))
+        offset_generator = iter_array(array.offsets, bigframes.dtypes.INT_DTYPE)
+
+        start_offset = None
+        end_offset = None
+        for offset in offset_generator:
+            start_offset = end_offset
+            end_offset = offset
+            if start_offset is not None:
+                arr_size = end_offset - start_offset
+                yield list(itertools.islice(value_generator, arr_size))
 
     @iter_array.register
     def _(
@@ -267,8 +274,15 @@ def _iter_table(
             sub_generators[field_name] = iter_array(array.field(field_name), dtype)
 
         keys = list(sub_generators.keys())
-        for row_values in zip(*sub_generators.values()):
-            yield {key: value for key, value in zip(keys, row_values)}
+        is_null_generator = iter_array(array.is_null(), bigframes.dtypes.BOOL_DTYPE)
+
+        for values in zip(is_null_generator, *sub_generators.values()):
+            is_row_null = values[0]
+            row_values = values[1:]
+            if not is_row_null:
+                yield {key: value for key, value in zip(keys, row_values)}
+            else:
+                yield None
 
     for batch in table.to_batches():
         sub_generators: dict[str, Generator[Any, None, None]] = {}
@@ -491,16 +505,3 @@ def _schema_durations_to_ints(schema: pa.Schema) -> pa.Schema:
     return pa.schema(
         pa.field(field.name, _durations_to_ints(field.type)) for field in schema
     )
-
-
-def _pairwise(iterable):
-    do_yield = False
-    a = None
-    b = None
-    for item in iterable:
-        a = b
-        b = item
-        if do_yield:
-            yield (a, b)
-        else:
-            do_yield = True
