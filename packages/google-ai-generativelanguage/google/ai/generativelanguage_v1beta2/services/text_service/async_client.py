@@ -394,7 +394,7 @@ class TextServiceAsyncClient:
                 The model uses combined Top-k and nucleus sampling.
 
                 Tokens are sorted based on their assigned probabilities
-                so that only the most liekly tokens are considered.
+                so that only the most likely tokens are considered.
                 Top-k sampling directly limits the maximum number of
                 tokens to consider, while Nucleus sampling limits number
                 of tokens based on the cumulative probability.
