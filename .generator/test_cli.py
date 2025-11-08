@@ -1037,18 +1037,19 @@ def test_update_version_for_library_success_gapic(mocker):
 
     mock_rglob = mocker.patch("pathlib.Path.rglob")
     mock_rglob.side_effect = [
-        [pathlib.Path("repo/gapic_version.py")],  # 1st call (gapic_version.py)
+        [pathlib.Path("repo/gapic_version.py"), pathlib.Path("repo/tests/gapic_version.py")],  # 1st call (gapic_version.py)
         [pathlib.Path("repo/types/version.py")],  # 2nd call (types/version.py).
         [pathlib.Path("repo/samples/snippet_metadata.json")],  # 3rd call (snippets)
     ]
-    mock_rglob = mocker.patch("cli._read_text_file")
-    mock_rglob.side_effect = [
+    mock_read_text_file = mocker.patch("cli._read_text_file")
+    mock_read_text_file.side_effect = [
         mock_content,  # 1st call (gapic_version.py)
         # Do not process version files in the `types` directory as some
         # GAPIC libraries have `version.py` which are generated from
         # `version.proto` and do not include SDK versions.
         # Leave the content as empty because it doesn't contain version information
-        "",  # 2nd call (types/version.py)
+        "",  # 2nd call (tests/gapic_version.py)
+        "",  # 3rd call (types/version.py)
     ]
 
     with unittest.mock.patch("cli.open", m):
