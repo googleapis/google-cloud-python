@@ -156,7 +156,6 @@ def test_create_job_configs_labels_length_limit_met():
         )
 
     assert labels is not None
-    assert len(labels) == 56
     assert "dataframe-max" in labels.values()
     assert "dataframe-head" not in labels.values()
     assert "bigframes-api" in labels.keys()

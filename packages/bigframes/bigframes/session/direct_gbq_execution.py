@@ -40,9 +40,7 @@ class DirectGbqExecutor(semi_executor.SemiExecutor):
     ):
         self.bqclient = bqclient
         self._compile_fn = (
-            compile.compile_sql
-            if compiler == "ibis"
-            else sqlglot.SQLGlotCompiler()._compile_sql
+            compile.compile_sql if compiler == "ibis" else sqlglot.compile_sql
         )
         self._publisher = publisher
 

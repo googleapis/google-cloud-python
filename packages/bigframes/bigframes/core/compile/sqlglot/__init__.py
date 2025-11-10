@@ -13,7 +13,7 @@
 # limitations under the License.
 from __future__ import annotations
 
-from bigframes.core.compile.sqlglot.compiler import SQLGlotCompiler
+from bigframes.core.compile.sqlglot.compiler import compile_sql
 import bigframes.core.compile.sqlglot.expressions.ai_ops  # noqa: F401
 import bigframes.core.compile.sqlglot.expressions.array_ops  # noqa: F401
 import bigframes.core.compile.sqlglot.expressions.blob_ops  # noqa: F401
@@ -29,4 +29,4 @@ import bigframes.core.compile.sqlglot.expressions.string_ops  # noqa: F401
 import bigframes.core.compile.sqlglot.expressions.struct_ops  # noqa: F401
 import bigframes.core.compile.sqlglot.expressions.timedelta_ops  # noqa: F401
 
-__all__ = ["SQLGlotCompiler"]
+__all__ = ["compile_sql"]

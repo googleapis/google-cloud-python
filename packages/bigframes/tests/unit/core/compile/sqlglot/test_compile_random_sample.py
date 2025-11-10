@@ -16,7 +16,7 @@ import pytest
 
 from bigframes.core import nodes
 import bigframes.core as core
-import bigframes.core.compile.sqlglot as sqlglot
+import bigframes.core.compile as compile
 
 pytest.importorskip("pytest_snapshot")
 
@@ -31,5 +31,5 @@ def test_compile_random_sample(
     operation, this test constructs the node directly and then compiles it to SQL.
     """
     node = nodes.RandomSampleNode(scalar_types_array_value.node, fraction=0.1)
-    sql = sqlglot.compiler.SQLGlotCompiler().compile(node)
+    sql = compile.sqlglot.compile_sql(compile.CompileRequest(node, sort_rows=True)).sql
     snapshot.assert_match(sql, "out.sql")
