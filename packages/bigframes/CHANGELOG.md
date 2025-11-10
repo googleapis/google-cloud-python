@@ -4,6 +4,29 @@
 
 [1]: https://pypi.org/project/bigframes/#history
 
+## [2.29.0](https://github.com/googleapis/python-bigquery-dataframes/compare/v2.28.0...v2.29.0) (2025-11-10)
+
+
+### Features
+
+* Add bigframes.bigquery.st_regionstats to join raster data from Earth Engine ([#2228](https://github.com/googleapis/python-bigquery-dataframes/issues/2228)) ([10ec52f](https://github.com/googleapis/python-bigquery-dataframes/commit/10ec52f30a0a9c61b9eda9cf4f9bd6aa0cd95db5))
+* Add DataFrame.resample and Series.resample ([#2213](https://github.com/googleapis/python-bigquery-dataframes/issues/2213)) ([c9ca02c](https://github.com/googleapis/python-bigquery-dataframes/commit/c9ca02c5194c8b8e9b940eddd2224efd2ff0d5d9))
+* SQL Cell no longer escapes formatted string values ([#2245](https://github.com/googleapis/python-bigquery-dataframes/issues/2245)) ([d2d38f9](https://github.com/googleapis/python-bigquery-dataframes/commit/d2d38f94ed8333eae6f9cff3833177756eefe85a))
+* Support left_index and right_index for merge ([#2220](https://github.com/googleapis/python-bigquery-dataframes/issues/2220)) ([da9ba26](https://github.com/googleapis/python-bigquery-dataframes/commit/da9ba267812c01ffa6fa0b09943d7a4c63b8f187))
+
+
+### Bug Fixes
+
+* Correctly iterate over null struct values in ManagedArrowTable ([#2209](https://github.com/googleapis/python-bigquery-dataframes/issues/2209)) ([12e04d5](https://github.com/googleapis/python-bigquery-dataframes/commit/12e04d55f0d6aef1297b7ca773935aecf3313ee7))
+* Simplify UnsupportedTypeError message ([#2212](https://github.com/googleapis/python-bigquery-dataframes/issues/2212)) ([6c9a18d](https://github.com/googleapis/python-bigquery-dataframes/commit/6c9a18d7e67841c6fe6c1c6f34f80b950815141f))
+* Support results with STRUCT and ARRAY columns containing JSON subfields in `to_pandas_batches()` ([#2216](https://github.com/googleapis/python-bigquery-dataframes/issues/2216)) ([3d8b17f](https://github.com/googleapis/python-bigquery-dataframes/commit/3d8b17fa5eb9bbfc9e151031141a419f2dc3acb4))
+
+
+### Documentation
+
+* Switch API reference docs to pydata theme ([#2237](https://github.com/googleapis/python-bigquery-dataframes/issues/2237)) ([9b86dcf](https://github.com/googleapis/python-bigquery-dataframes/commit/9b86dcf87929648bf5ab565dfd46a23b639f01ac))
+* Update notebook for JSON subfields support in to_pandas_batches() ([#2138](https://github.com/googleapis/python-bigquery-dataframes/issues/2138)) ([5663d2a](https://github.com/googleapis/python-bigquery-dataframes/commit/5663d2a18064589596558af109e915f87d426eb0))
+
 ## [2.28.0](https://github.com/googleapis/python-bigquery-dataframes/compare/v2.27.0...v2.28.0) (2025-11-03)
 
 
