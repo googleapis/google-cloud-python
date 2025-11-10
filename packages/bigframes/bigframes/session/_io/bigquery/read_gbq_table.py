@@ -402,6 +402,7 @@ def get_index_cols(
     | bigframes.enums.DefaultIndexKind,
     *,
     rename_to_schema: Optional[Dict[str, str]] = None,
+    default_index_type: bigframes.enums.DefaultIndexKind = bigframes.enums.DefaultIndexKind.SEQUENTIAL_INT64,
 ) -> List[str]:
     """
     If we can get a total ordering from the table, such as via primary key
@@ -471,7 +472,11 @@ def get_index_cols(
         # find index_cols to use. This is to avoid unexpected performance and
         # resource utilization because of the default sequential index. See
         # internal issue 335727141.
-        if _is_table_clustered_or_partitioned(table) and not primary_keys:
+        if (
+            _is_table_clustered_or_partitioned(table)
+            and not primary_keys
+            and default_index_type == bigframes.enums.DefaultIndexKind.SEQUENTIAL_INT64
+        ):
             msg = bfe.format_message(
                 f"Table '{str(table.reference)}' is clustered and/or "
                 "partitioned, but BigQuery DataFrames was not able to find a "

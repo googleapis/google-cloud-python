@@ -15,10 +15,13 @@
 """Unit tests for read_gbq_table helper functions."""
 
 import unittest.mock as mock
+import warnings
 
 import google.cloud.bigquery
 import pytest
 
+import bigframes.enums
+import bigframes.exceptions
 import bigframes.session._io.bigquery.read_gbq_table as bf_read_gbq_table
 from bigframes.testing import mocks
 
@@ -143,3 +146,43 @@ def test_check_if_index_columns_are_unique(index_cols, values_distinct, expected
     )
 
     assert result == expected
+
+
+def test_get_index_cols_warns_if_clustered_but_sequential_index():
+    table = google.cloud.bigquery.Table.from_api_repr(
+        {
+            "tableReference": {
+                "projectId": "my-project",
+                "datasetId": "my_dataset",
+                "tableId": "my_table",
+            },
+            "clustering": {
+                "fields": ["col1", "col2"],
+            },
+        },
+    )
+    table.schema = (
+        google.cloud.bigquery.SchemaField("col1", "INT64"),
+        google.cloud.bigquery.SchemaField("col2", "INT64"),
+        google.cloud.bigquery.SchemaField("col3", "INT64"),
+        google.cloud.bigquery.SchemaField("col4", "INT64"),
+    )
+
+    with pytest.warns(bigframes.exceptions.DefaultIndexWarning, match="is clustered"):
+        bf_read_gbq_table.get_index_cols(
+            table,
+            index_col=(),
+            default_index_type=bigframes.enums.DefaultIndexKind.SEQUENTIAL_INT64,
+        )
+
+    # Ensure that we don't raise if using a NULL index by default, such as in
+    # partial ordering mode. See: internal issue b/356872356.
+    with warnings.catch_warnings():
+        warnings.simplefilter(
+            "error", category=bigframes.exceptions.DefaultIndexWarning
+        )
+        bf_read_gbq_table.get_index_cols(
+            table,
+            index_col=(),
+            default_index_type=bigframes.enums.DefaultIndexKind.NULL,
+        )

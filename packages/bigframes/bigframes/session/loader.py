@@ -696,6 +696,7 @@ class GbqDataLoader:
             table=table,
             index_col=index_col,
             rename_to_schema=rename_to_schema,
+            default_index_type=self._default_index_type,
         )
         _check_index_col_param(
             index_cols,
