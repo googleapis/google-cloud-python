@@ -54,7 +54,10 @@ NEWEST_PYTHON = ALL_PYTHON[-1]
 def unit(session):
     """Run the unit test suite."""
     session.install(
-        "coverage",
+        # TODO(https://github.com/googleapis/gapic-generator-python/issues/2478):
+        # Temporarily pin coverage to 7.11.0
+        # See https://github.com/nedbat/coveragepy/issues/2077
+        "coverage<=7.11.0",
         "pytest-cov",
         "pytest",
         "pytest-xdist",
