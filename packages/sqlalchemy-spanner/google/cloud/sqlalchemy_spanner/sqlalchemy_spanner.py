@@ -1267,33 +1267,36 @@ class SpannerDialect(DefaultDialect):
                i.table_schema,
                i.table_name,
                i.index_name,
-               (
-                   SELECT ARRAY_AGG(ic.column_name)
+               ARRAY(
+                   SELECT ic.column_name
                    FROM information_schema.index_columns ic
                    WHERE ic.index_name = i.index_name
                    AND ic.table_catalog = i.table_catalog
                    AND ic.table_schema = i.table_schema
                    AND ic.table_name = i.table_name
                    AND ic.column_ordering is not null
+                   ORDER BY ic.ordinal_position
                ) as columns,
                i.is_unique,
-               (
-                   SELECT ARRAY_AGG(ic.column_ordering)
+               ARRAY(
+                   SELECT ic.column_ordering
                    FROM information_schema.index_columns ic
                    WHERE ic.index_name = i.index_name
                    AND ic.table_catalog = i.table_catalog
                    AND ic.table_schema = i.table_schema
                    AND ic.table_name = i.table_name
                    AND ic.column_ordering is not null
+                   ORDER BY ic.ordinal_position
                ) as column_orderings,
-               (
-                   SELECT ARRAY_AGG(storing.column_name)
+               ARRAY(
+                   SELECT storing.column_name
                    FROM information_schema.index_columns storing
                    WHERE storing.index_name = i.index_name
                    AND storing.table_catalog = i.table_catalog
                    AND storing.table_schema = i.table_schema
                    AND storing.table_name = i.table_name
                    AND storing.column_ordering is null
+                   ORDER BY storing.ordinal_position
                ) as storing_columns,
             FROM information_schema.indexes as i
             JOIN information_schema.tables AS t

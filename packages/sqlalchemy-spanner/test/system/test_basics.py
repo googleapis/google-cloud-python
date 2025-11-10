@@ -106,7 +106,7 @@ class TestBasics(fixtures.TablesTest):
             Column("a", String, primary_key=True),
             Column("b", String, primary_key=True),
         )
-        Table(
+        composite_fk = Table(
             "composite_fk",
             metadata,
             Column("my_a", String, primary_key=True),
@@ -117,6 +117,12 @@ class TestBasics(fixtures.TablesTest):
                 ["composite_pk.a", "composite_pk.b"],
                 name="composite_fk_composite_pk_a_b",
             ),
+        )
+        Index(
+            "idx_composte_fk_all",
+            composite_fk.c.my_a,
+            composite_fk.c.my_b,
+            composite_fk.c.my_c,
         )
 
     def test_hello_world(self, connection):
@@ -354,6 +360,28 @@ class TestBasics(fixtures.TablesTest):
                 ]
             },
             insp.get_multi_foreign_keys(filter_names=["composite_fk"]),
+        )
+
+    def test_composite_index_lookups(self, connection):
+        """Ensures we introspect composite indexes."""
+
+        engine = connection.engine
+
+        insp = inspect(engine)
+        eq_(
+            {
+                (None, "composite_fk"): [
+                    {
+                        "name": "idx_composte_fk_all",
+                        "column_names": ["my_a", "my_b", "my_c"],
+                        "unique": False,
+                        "column_sorting": {"my_a": "asc", "my_b": "asc", "my_c": "asc"},
+                        "include_columns": [],
+                        "dialect_options": {},
+                    }
+                ]
+            },
+            insp.get_multi_indexes(filter_names=["composite_fk"]),
         )
 
     def test_commit_timestamp(self, connection):
