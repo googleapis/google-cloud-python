@@ -108,7 +108,7 @@ def test_read_gbq_colab_calls_set_location(
     mock_with_default_session.return_value = mock_df
 
     query_or_table = "SELECT {param1} AS param1"
-    sample_pyformat_args = {"param1": "value1"}
+    sample_pyformat_args = {"param1": "'value1'"}
     result = bf_io_api._read_gbq_colab(
         query_or_table, pyformat_args=sample_pyformat_args, dry_run=False
     )

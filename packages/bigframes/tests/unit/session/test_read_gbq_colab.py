@@ -60,7 +60,7 @@ def test_read_gbq_colab_includes_formatted_values_in_dry_run(monkeypatch, dry_ru
 
     pyformat_args = {
         "some_integer": 123,
-        "some_string": "This could be dangerous, but we escape it",
+        "some_string": "some_column",
         "bf_df": bf_df,
         "pd_df": pd_df,
         # This is not a supported type, but ignored if not referenced.
@@ -84,7 +84,7 @@ def test_read_gbq_colab_includes_formatted_values_in_dry_run(monkeypatch, dry_ru
     expected = textwrap.dedent(
         f"""
         SELECT 123 as some_integer,
-        'This could be dangerous, but we escape it' as some_string,
+        some_column as some_string,
         '{{escaped}}' as escaped
         FROM `proj`.`dset`.`temp_{"table" if dry_run else "view"}` AS bf_df
         FULL OUTER JOIN `proj`.`dset`.`temp_{"table" if dry_run else "view"}` AS pd_df

@@ -104,6 +104,9 @@ def _field_to_template_value(
     if isinstance(value, bigframes.dataframe.DataFrame):
         return _table_to_sql(value._to_placeholder_table(dry_run=dry_run))
 
+    if isinstance(value, str):
+        return value
+
     return bigframes.core.sql.simple_literal(value)
 
 

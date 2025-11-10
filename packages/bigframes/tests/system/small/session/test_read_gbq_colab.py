@@ -143,7 +143,7 @@ def test_read_gbq_colab_repr_avoids_requery(maybe_ordered_session):
 def test_read_gbq_colab_includes_formatted_scalars(session):
     pyformat_args = {
         "some_integer": 123,
-        "some_string": "This could be dangerous, but we escape it",
+        "some_string": "This could be dangerous.",
         # This is not a supported type, but ignored if not referenced.
         "some_object": object(),
     }
@@ -153,7 +153,7 @@ def test_read_gbq_colab_includes_formatted_scalars(session):
     df = session._read_gbq_colab(
         """
         SELECT {some_integer} as some_integer,
-        {some_string} as some_string,
+        '{some_string}' as some_string,
         '{{escaped}}' as escaped
         """,
         pyformat_args=pyformat_args,
@@ -165,7 +165,7 @@ def test_read_gbq_colab_includes_formatted_scalars(session):
             {
                 "some_integer": pandas.Series([123], dtype=pandas.Int64Dtype()),
                 "some_string": pandas.Series(
-                    ["This could be dangerous, but we escape it"],
+                    ["This could be dangerous."],
                     dtype="string[pyarrow]",
                 ),
                 "escaped": pandas.Series(["{escaped}"], dtype="string[pyarrow]"),

@@ -444,7 +444,7 @@ def test_pyformat_with_pandas_dataframe_not_dry_run_no_session_raises_valueerror
 
 def test_pyformat_with_query_string_replaces_variables(session):
     pyformat_args = {
-        "my_string": "some string value",
+        "my_string": "`my_table`",
         "max_value": 2.25,
         "year": 2025,
         "null_value": None,
@@ -456,9 +456,8 @@ def test_pyformat_with_query_string_replaces_variables(session):
     SELECT {year} - year  AS age,
     @myparam AS myparam,
     '{{my_string}}' AS escaped_string,
-    {my_string} AS my_string,
-    {null_value} AS null_value,
-    FROM my_dataset.my_table
+    *
+    FROM {my_string}
     WHERE height < {max_value}
     """.strip()
 
@@ -466,9 +465,8 @@ def test_pyformat_with_query_string_replaces_variables(session):
     SELECT 2025 - year  AS age,
     @myparam AS myparam,
     '{my_string}' AS escaped_string,
-    'some string value' AS my_string,
-    NULL AS null_value,
-    FROM my_dataset.my_table
+    *
+    FROM `my_table`
     WHERE height < 2.25
     """.strip()
 
