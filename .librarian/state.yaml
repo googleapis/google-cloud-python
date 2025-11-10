@@ -1,4 +1,4 @@
-image: us-central1-docker.pkg.dev/cloud-sdk-librarian-prod/images-prod/python-librarian-generator@sha256:39628f6e89c9cad27973b9a39a50f7052bec0435ee58c7027b4fa6b655943e31
+image: us-central1-docker.pkg.dev/cloud-sdk-librarian-prod/images-prod/python-librarian-generator@sha256:c8612d3fffb3f6a32353b2d1abd16b61e87811866f7ec9d65b59b02eb452a620
 libraries:
   - id: google-ads-admanager
     version: 0.6.0
@@ -272,7 +272,7 @@ libraries:
     tag_format: '{id}-v{version}'
   - id: google-cloud-access-context-manager
     version: 0.3.0
-    last_generated_commit: 3322511885371d2b2253f209ccc3aa60d4100cfd
+    last_generated_commit: e8365a7f88fabe8717cb8322b8ce784b03b6daea
     apis:
       - path: google/identity/accesscontextmanager/v1
         service_config: accesscontextmanager_v1.yaml
@@ -282,7 +282,10 @@ libraries:
       - packages/google-cloud-access-context-manager
     preserve_regex: []
     remove_regex:
-      - ^packages/google-cloud-access-context-manager/google/.*/.*_pb2\.(?:py|pyi)$/
+      - ^packages/google-cloud-access-context-manager/google/.*/.*(?:\.proto|_pb2\.(?:py|pyi))$
+      - .repo-metadata.json
+      - README.rst
+      - docs/summary_overview.md
     tag_format: '{id}-v{version}'
   - id: google-cloud-advisorynotifications
     version: 0.4.0
@@ -566,7 +569,10 @@ libraries:
       - packages/google-cloud-audit-log
     preserve_regex: []
     remove_regex:
-      - ^packages/google-cloud-audit-log/google/.*/.*_pb2\.(?:py|pyi)$/
+      - ^packages/google-cloud-audit-log/google/.*/.*(?:\.proto|_pb2\.(?:py|pyi))$
+      - .repo-metadata.json
+      - README.rst
+      - docs/summary_overview.md
     tag_format: '{id}-v{version}'
   - id: google-cloud-automl
     version: 2.17.0
@@ -4493,7 +4499,7 @@ libraries:
     tag_format: '{id}-v{version}'
   - id: grafeas
     version: 1.16.0
-    last_generated_commit: 3322511885371d2b2253f209ccc3aa60d4100cfd
+    last_generated_commit: e8365a7f88fabe8717cb8322b8ce784b03b6daea
     apis:
       - path: grafeas/v1
         service_config: grafeas_v1.yaml
@@ -4506,15 +4512,15 @@ libraries:
       - scripts/client-post-processing
       - samples/snippets/README.rst
       - tests/system
-      - grafeas/grafeas.py
-      - grafeas/grafeas/__init__.py
+      - grafeas/grafeas\.py
+      - ^packages/grafeas/grafeas/__init__.py
       - grafeas/grafeas/grafeas_v1/types.py
     remove_regex:
       - packages/grafeas
     tag_format: '{id}-v{version}'
   - id: grpc-google-iam-v1
     version: 0.14.2
-    last_generated_commit: 55319b058f8a0e46bbeeff30e374e4b1f081f494
+    last_generated_commit: e8365a7f88fabe8717cb8322b8ce784b03b6daea
     apis:
       - path: google/iam/v1
         service_config: iam_meta_api.yaml
@@ -4522,5 +4528,8 @@ libraries:
       - packages/grpc-google-iam-v1/
     preserve_regex: []
     remove_regex:
-      - ^packages/grpc-google-iam-v1/google/.*/.*_pb2\.(?:py|pyi)$/
+      - ^packages/grpc-google-iam-v1/google/iam/v1/[^/]*(?:\.proto|_pb2\.(?:py|pyi))$
+      - .repo-metadata.json
+      - README.rst
+      - docs/summary_overview.md
     tag_format: '{id}-v{version}'
