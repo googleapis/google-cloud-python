@@ -55,6 +55,20 @@ def test_arcsinh(scalar_types_df: bpd.DataFrame, snapshot):
     snapshot.assert_match(sql, "out.sql")
 
 
+def test_arctan2(scalar_types_df: bpd.DataFrame, snapshot):
+    bf_df = scalar_types_df[["int64_col", "float64_col", "bool_col"]]
+
+    sql = utils._apply_ops_to_sql(
+        bf_df,
+        [
+            ops.arctan2_op.as_expr("int64_col", "float64_col"),
+            ops.arctan2_op.as_expr("bool_col", "float64_col"),
+        ],
+        ["int64_col", "bool_col"],
+    )
+    snapshot.assert_match(sql, "out.sql")
+
+
 def test_arctan(scalar_types_df: bpd.DataFrame, snapshot):
     col_name = "float64_col"
     bf_df = scalar_types_df[[col_name]]
