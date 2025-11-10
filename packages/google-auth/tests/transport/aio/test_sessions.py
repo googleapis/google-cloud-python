@@ -32,8 +32,13 @@ from google.auth.exceptions import InvalidType, TimeoutError, TransportError
 
 
 @pytest.fixture
-async def simple_async_task():
-    return True
+def simple_async_task():
+    # Wrap async fixture within a synchronous fixture to suppress pytest.PytestRemovedIn9Warning
+    # See https://docs.pytest.org/en/stable/deprecations.html#sync-test-depending-on-async-fixture
+    async def inner_fixture():
+        return True
+
+    return inner_fixture()
 
 
 class MockRequest(Request):
@@ -151,10 +156,15 @@ class TestAsyncAuthorizedSession(object):
     credentials = AnonymousCredentials()
 
     @pytest.fixture
-    async def mocked_content(self):
-        content = [b"Cavefish ", b"have ", b"no ", b"sight."]
-        for chunk in content:
-            yield chunk
+    def mocked_content(self):
+        # Wrap async fixture within a synchronous fixture to suppress pytest.PytestRemovedIn9Warning
+        # See https://docs.pytest.org/en/stable/deprecations.html#sync-test-depending-on-async-fixture
+        async def inner_fixture():
+            content = [b"Cavefish ", b"have ", b"no ", b"sight."]
+            for chunk in content:
+                yield chunk
+
+        return inner_fixture()
 
     @pytest.mark.asyncio
     async def test_constructor_with_default_auth_request(self):
