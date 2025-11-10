@@ -43,7 +43,7 @@ def with_request_id(
     all_metadata = (other_metadata or []).copy()
     all_metadata.append((REQ_ID_HEADER_KEY, req_id))
 
-    if span is not None:
+    if span:
         span.set_attribute(X_GOOG_SPANNER_REQUEST_ID_SPAN_ATTR, req_id)
 
     return all_metadata

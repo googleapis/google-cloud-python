@@ -44,18 +44,15 @@ dependencies = [
     "proto-plus >= 1.22.2, <2.0.0; python_version>='3.11'",
     "protobuf>=3.20.2,<7.0.0,!=4.21.0,!=4.21.1,!=4.21.2,!=4.21.3,!=4.21.4,!=4.21.5",
     "grpc-interceptor >= 0.15.4",
+    # Make OpenTelemetry a core dependency
+    "opentelemetry-api >= 1.22.0",
+    "opentelemetry-sdk >= 1.22.0",
+    "opentelemetry-semantic-conventions >= 0.43b0",
+    "opentelemetry-resourcedetector-gcp >= 1.8.0a0",
+    "google-cloud-monitoring >= 2.16.0",
+    "mmh3 >= 4.1.0 ",
 ]
-extras = {
-    "tracing": [
-        "opentelemetry-api >= 1.22.0",
-        "opentelemetry-sdk >= 1.22.0",
-        "opentelemetry-semantic-conventions >= 0.43b0",
-        "opentelemetry-resourcedetector-gcp >= 1.8.0a0",
-        "google-cloud-monitoring >= 2.16.0",
-        "mmh3 >= 4.1.0 ",
-    ],
-    "libcst": "libcst >= 0.2.5",
-}
+extras = {"libcst": "libcst >= 0.2.5"}
 
 url = "https://github.com/googleapis/python-spanner"
 

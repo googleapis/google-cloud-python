@@ -251,11 +251,9 @@ class Session(object):
                         span,
                     ),
                 )
-                if span:
-                    span.set_attribute("session_found", True)
+                span.set_attribute("session_found", True)
             except NotFound:
-                if span:
-                    span.set_attribute("session_found", False)
+                span.set_attribute("session_found", False)
                 return False
 
         return True
@@ -317,18 +315,21 @@ class Session(object):
         """
         if self._session_id is None:
             raise ValueError("Session ID not set by back-end")
+
         database = self._database
         api = database.spanner_api
-        request = ExecuteSqlRequest(session=self.name, sql="SELECT 1")
-        api.execute_sql(
-            request=request,
-            metadata=database.metadata_with_request_id(
-                database._next_nth_request,
-                1,
-                _metadata_with_prefix(database.name),
-            ),
-        )
-        self._last_use_time = datetime.now()
+
+        with trace_call("CloudSpanner.Session.ping", self) as span:
+            request = ExecuteSqlRequest(session=self.name, sql="SELECT 1")
+            api.execute_sql(
+                request=request,
+                metadata=database.metadata_with_request_id(
+                    database._next_nth_request,
+                    1,
+                    _metadata_with_prefix(database.name),
+                    span,
+                ),
+            )
 
     def snapshot(self, **kw):
         """Create a snapshot to perform a set of reads with shared staleness.
@@ -566,20 +567,18 @@ class Session(object):
 
                 except Aborted as exc:
                     previous_transaction_id = txn._transaction_id
-                    if span:
-                        delay_seconds = _get_retry_delay(
-                            exc.errors[0],
-                            attempts,
-                            default_retry_delay=default_retry_delay,
-                        )
-                        attributes = dict(delay_seconds=delay_seconds, cause=str(exc))
-                        attributes.update(span_attributes)
-                        add_span_event(
-                            span,
-                            "Transaction was aborted in user operation, retrying",
-                            attributes,
-                        )
-
+                    delay_seconds = _get_retry_delay(
+                        exc.errors[0],
+                        attempts,
+                        default_retry_delay=default_retry_delay,
+                    )
+                    attributes = dict(delay_seconds=delay_seconds, cause=str(exc))
+                    attributes.update(span_attributes)
+                    add_span_event(
+                        span,
+                        "Transaction was aborted in user operation, retrying",
+                        attributes,
+                    )
                     _delay_until_retry(
                         exc, deadline, attempts, default_retry_delay=default_retry_delay
                     )
@@ -611,20 +610,18 @@ class Session(object):
 
                 except Aborted as exc:
                     previous_transaction_id = txn._transaction_id
-                    if span:
-                        delay_seconds = _get_retry_delay(
-                            exc.errors[0],
-                            attempts,
-                            default_retry_delay=default_retry_delay,
-                        )
-                        attributes = dict(delay_seconds=delay_seconds)
-                        attributes.update(span_attributes)
-                        add_span_event(
-                            span,
-                            "Transaction was aborted during commit, retrying",
-                            attributes,
-                        )
-
+                    delay_seconds = _get_retry_delay(
+                        exc.errors[0],
+                        attempts,
+                        default_retry_delay=default_retry_delay,
+                    )
+                    attributes = dict(delay_seconds=delay_seconds)
+                    attributes.update(span_attributes)
+                    add_span_event(
+                        span,
+                        "Transaction was aborted during commit, retrying",
+                        attributes,
+                    )
                     _delay_until_retry(
                         exc, deadline, attempts, default_retry_delay=default_retry_delay
                     )

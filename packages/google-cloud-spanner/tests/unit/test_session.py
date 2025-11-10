@@ -470,35 +470,6 @@ class TestSession(OpenTelemetryBase):
             ),
         )
 
-    @mock.patch(
-        "google.cloud.spanner_v1._opentelemetry_tracing.HAS_OPENTELEMETRY_INSTALLED",
-        False,
-    )
-    def test_exists_hit_wo_span(self):
-        session_pb = self._make_session_pb(self.SESSION_NAME)
-        gax_api = self._make_spanner_api()
-        gax_api.get_session.return_value = session_pb
-        database = self._make_database()
-        database.spanner_api = gax_api
-        session = self._make_one(database)
-        session._session_id = self.SESSION_ID
-
-        self.assertTrue(session.exists())
-
-        gax_api.get_session.assert_called_once_with(
-            name=self.SESSION_NAME,
-            metadata=[
-                ("google-cloud-resource-prefix", database.name),
-                ("x-goog-spanner-route-to-leader", "true"),
-                (
-                    "x-goog-spanner-request-id",
-                    f"1.{REQ_RAND_PROCESS_ID}.{database._nth_client_id}.{database._channel_id}.1.1",
-                ),
-            ],
-        )
-
-        self.assertNoSpans()
-
     def test_exists_miss(self):
         gax_api = self._make_spanner_api()
         gax_api.get_session.side_effect = NotFound("testing")
@@ -530,34 +501,6 @@ class TestSession(OpenTelemetryBase):
                 x_goog_spanner_request_id=req_id,
             ),
         )
-
-    @mock.patch(
-        "google.cloud.spanner_v1._opentelemetry_tracing.HAS_OPENTELEMETRY_INSTALLED",
-        False,
-    )
-    def test_exists_miss_wo_span(self):
-        gax_api = self._make_spanner_api()
-        gax_api.get_session.side_effect = NotFound("testing")
-        database = self._make_database()
-        database.spanner_api = gax_api
-        session = self._make_one(database)
-        session._session_id = self.SESSION_ID
-
-        self.assertFalse(session.exists())
-
-        gax_api.get_session.assert_called_once_with(
-            name=self.SESSION_NAME,
-            metadata=[
-                ("google-cloud-resource-prefix", database.name),
-                ("x-goog-spanner-route-to-leader", "true"),
-                (
-                    "x-goog-spanner-request-id",
-                    f"1.{REQ_RAND_PROCESS_ID}.{database._nth_client_id}.{database._channel_id}.1.1",
-                ),
-            ],
-        )
-
-        self.assertNoSpans()
 
     def test_exists_error(self):
         gax_api = self._make_spanner_api()
@@ -612,15 +555,21 @@ class TestSession(OpenTelemetryBase):
             sql="SELECT 1",
         )
 
+        req_id = f"1.{REQ_RAND_PROCESS_ID}.{database._nth_client_id}.{database._channel_id}.1.1"
         gax_api.execute_sql.assert_called_once_with(
             request=request,
             metadata=[
                 ("google-cloud-resource-prefix", database.name),
                 (
                     "x-goog-spanner-request-id",
-                    f"1.{REQ_RAND_PROCESS_ID}.{database._nth_client_id}.{database._channel_id}.1.1",
+                    req_id,
                 ),
             ],
+        )
+
+        self.assertSpanAttributes(
+            "CloudSpanner.Session.ping",
+            attributes=dict(self.BASE_ATTRIBUTES, x_goog_spanner_request_id=req_id),
         )
 
     def test_ping_miss(self):
@@ -639,15 +588,22 @@ class TestSession(OpenTelemetryBase):
             sql="SELECT 1",
         )
 
+        req_id = f"1.{REQ_RAND_PROCESS_ID}.{database._nth_client_id}.{database._channel_id}.1.1"
         gax_api.execute_sql.assert_called_once_with(
             request=request,
             metadata=[
                 ("google-cloud-resource-prefix", database.name),
                 (
                     "x-goog-spanner-request-id",
-                    f"1.{REQ_RAND_PROCESS_ID}.{database._nth_client_id}.{database._channel_id}.1.1",
+                    req_id,
                 ),
             ],
+        )
+
+        self.assertSpanAttributes(
+            "CloudSpanner.Session.ping",
+            status=StatusCode.ERROR,
+            attributes=dict(self.BASE_ATTRIBUTES, x_goog_spanner_request_id=req_id),
         )
 
     def test_ping_error(self):
@@ -666,15 +622,22 @@ class TestSession(OpenTelemetryBase):
             sql="SELECT 1",
         )
 
+        req_id = f"1.{REQ_RAND_PROCESS_ID}.{database._nth_client_id}.{database._channel_id}.1.1"
         gax_api.execute_sql.assert_called_once_with(
             request=request,
             metadata=[
                 ("google-cloud-resource-prefix", database.name),
                 (
                     "x-goog-spanner-request-id",
-                    f"1.{REQ_RAND_PROCESS_ID}.{database._nth_client_id}.{database._channel_id}.1.1",
+                    req_id,
                 ),
             ],
+        )
+
+        self.assertSpanAttributes(
+            "CloudSpanner.Session.ping",
+            status=StatusCode.ERROR,
+            attributes=dict(self.BASE_ATTRIBUTES, x_goog_spanner_request_id=req_id),
         )
 
     def test_delete_wo_session_id(self):

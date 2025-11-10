@@ -24,17 +24,12 @@ from google.cloud.spanner_v1._helpers import (
     _metadata_with_span_context,
 )
 
-try:
-    from opentelemetry import trace
-    from opentelemetry.trace.status import Status, StatusCode
-    from opentelemetry.semconv.attributes.otel_attributes import (
-        OTEL_SCOPE_NAME,
-        OTEL_SCOPE_VERSION,
-    )
-
-    HAS_OPENTELEMETRY_INSTALLED = True
-except ImportError:
-    HAS_OPENTELEMETRY_INSTALLED = False
+from opentelemetry import trace
+from opentelemetry.trace.status import Status, StatusCode
+from opentelemetry.semconv.attributes.otel_attributes import (
+    OTEL_SCOPE_NAME,
+    OTEL_SCOPE_VERSION,
+)
 
 from google.cloud.spanner_v1.metrics.metrics_capture import MetricsCapture
 
@@ -69,11 +64,6 @@ def trace_call(
 ):
     if session:
         session._last_use_time = datetime.now()
-
-    if not (HAS_OPENTELEMETRY_INSTALLED and name):
-        # Empty context manager. Users will have to check if the generated value is None or a span
-        yield None
-        return
 
     tracer_provider = None
 
@@ -155,11 +145,8 @@ def trace_call(
 
 
 def get_current_span():
-    if not HAS_OPENTELEMETRY_INSTALLED:
-        return None
     return trace.get_current_span()
 
 
 def add_span_event(span, event_name, event_attributes=None):
-    if span:
-        span.add_event(event_name, event_attributes)
+    span.add_event(event_name, event_attributes)
