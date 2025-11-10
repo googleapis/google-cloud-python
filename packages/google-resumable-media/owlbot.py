@@ -6,7 +6,7 @@ common = gcp.CommonTemplates()
 # ----------------------------------------------------------------------------
 # Add templated .kokoro files
 # ----------------------------------------------------------------------------
-templated_files = common.py_library()
+templated_files = common.py_library(default_python_version="3.10")
 s.move(templated_files / ".kokoro")
 s.move(templated_files / ".trampolinerc")
 s.move(templated_files / ".github")

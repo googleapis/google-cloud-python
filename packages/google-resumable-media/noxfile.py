@@ -24,12 +24,19 @@ CURRENT_DIRECTORY = pathlib.Path(__file__).parent.absolute()
 SYSTEM_TEST_ENV_VARS = ("GOOGLE_APPLICATION_CREDENTIALS",)
 BLACK_VERSION = "black==22.3.0"
 
-DEFAULT_PYTHON_VERSION = "3.8"
-SYSTEM_TEST_PYTHON_VERSIONS = ["3.8"]
-UNIT_TEST_PYTHON_VERSIONS = ["3.7", "3.8", "3.9", "3.10", "3.11", "3.12", "3.13"]
+DEFAULT_PYTHON_VERSION = "3.10"
+SYSTEM_TEST_PYTHON_VERSIONS = ["3.10"]
+UNIT_TEST_PYTHON_VERSIONS = ["3.7", "3.8", "3.9", "3.10", "3.11", "3.12", "3.13", "3.14"]
 
 # Error if a python version is missing
 nox.options.error_on_missing_interpreters = True
+
+nox.options.sessions = [
+    "system",
+    "blacken",
+    "mypy",
+    "doctest",
+]
 
 
 @nox.session(python=UNIT_TEST_PYTHON_VERSIONS)
@@ -150,7 +157,12 @@ def doctest(session):
     session.install("-e", ".[requests,aiohttp]")
     session.install("sphinx==4.0.1", "alabaster", "recommonmark")
     session.install(
-        "sphinx==4.0.1",
+        "sphinxcontrib-applehelp==1.0.4",
+        "sphinxcontrib-devhelp==1.0.2",
+        "sphinxcontrib-htmlhelp==2.0.1",
+        "sphinxcontrib-qthelp==1.0.3",
+        "sphinxcontrib-serializinghtml==1.1.5",
+        "sphinx==4.5.0",
         "sphinx_rtd_theme",
         "sphinx-docstring-typing >= 0.0.3",
         "mock",
