@@ -450,6 +450,72 @@ def test_merge_raises_error_when_left_right_on_set(scalars_dfs):
         )
 
 
+def test_crosstab_aligned_series(scalars_dfs):
+    scalars_df, scalars_pandas_df = scalars_dfs
+
+    pd_result = pd.crosstab(
+        scalars_pandas_df["int64_col"], scalars_pandas_df["int64_too"]
+    )
+    bf_result = bpd.crosstab(
+        scalars_df["int64_col"], scalars_df["int64_too"]
+    ).to_pandas()
+
+    assert_pandas_df_equal(bf_result, pd_result, check_dtype=False)
+
+
+def test_crosstab_nondefault_func(scalars_dfs):
+    scalars_df, scalars_pandas_df = scalars_dfs
+
+    pd_result = pd.crosstab(
+        scalars_pandas_df["int64_col"],
+        scalars_pandas_df["int64_too"],
+        values=scalars_pandas_df["float64_col"],
+        aggfunc="mean",
+    )
+    bf_result = bpd.crosstab(
+        scalars_df["int64_col"],
+        scalars_df["int64_too"],
+        values=scalars_df["float64_col"],
+        aggfunc="mean",
+    ).to_pandas()
+
+    assert_pandas_df_equal(bf_result, pd_result, check_dtype=False)
+
+
+def test_crosstab_multi_cols(scalars_dfs):
+    scalars_df, scalars_pandas_df = scalars_dfs
+
+    pd_result = pd.crosstab(
+        [scalars_pandas_df["int64_col"], scalars_pandas_df["bool_col"]],
+        [scalars_pandas_df["int64_too"], scalars_pandas_df["string_col"]],
+        rownames=["a", "b"],
+        colnames=["c", "d"],
+    )
+    bf_result = bpd.crosstab(
+        [scalars_df["int64_col"], scalars_df["bool_col"]],
+        [scalars_df["int64_too"], scalars_df["string_col"]],
+        rownames=["a", "b"],
+        colnames=["c", "d"],
+    ).to_pandas()
+
+    assert_pandas_df_equal(bf_result, pd_result, check_dtype=False)
+
+
+def test_crosstab_unaligned_series(scalars_dfs, session):
+    scalars_df, scalars_pandas_df = scalars_dfs
+    other_pd_series = pd.Series(
+        [10, 20, 10, 30, 10], index=[5, 4, 1, 2, 3], dtype="Int64", name="nums"
+    )
+    other_bf_series = session.Series(
+        [10, 20, 10, 30, 10], index=[5, 4, 1, 2, 3], name="nums"
+    )
+
+    pd_result = pd.crosstab(scalars_pandas_df["int64_col"], other_pd_series)
+    bf_result = bpd.crosstab(scalars_df["int64_col"], other_bf_series).to_pandas()
+
+    assert_pandas_df_equal(bf_result, pd_result, check_dtype=False)
+
+
 def _convert_pandas_category(pd_s: pd.Series):
     """
     Transforms a pandas Series with Categorical dtype into a bigframes-compatible

@@ -2312,6 +2312,21 @@ class Session(
             **kwargs,
         )
 
+    def crosstab(self, *args, **kwargs) -> dataframe.DataFrame:
+        """Compute a simple cross tabulation of two (or more) factors.
+
+        Included for compatibility between bpd and Session.
+
+        See :func:`bigframes.pandas.crosstab` for full documentation.
+        """
+        import bigframes.core.reshape.pivot
+
+        return bigframes.core.reshape.pivot.crosstab(
+            *args,
+            session=self,
+            **kwargs,
+        )
+
     def DataFrame(self, *args, **kwargs):
         """Constructs a DataFrame.
 

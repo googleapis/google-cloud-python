@@ -31,7 +31,7 @@ from bigframes.core import log_adapter
 import bigframes.core.blocks
 import bigframes.core.global_session as global_session
 import bigframes.core.indexes
-from bigframes.core.reshape.api import concat, cut, get_dummies, merge, qcut
+from bigframes.core.reshape.api import concat, crosstab, cut, get_dummies, merge, qcut
 import bigframes.core.tools
 import bigframes.dataframe
 import bigframes.enums
@@ -372,6 +372,7 @@ if resource is not None:
 _functions = [
     clean_up_by_session_id,
     concat,
+    crosstab,
     cut,
     deploy_remote_function,
     deploy_udf,

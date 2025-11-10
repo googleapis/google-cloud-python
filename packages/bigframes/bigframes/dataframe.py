@@ -3479,7 +3479,34 @@ class DataFrame(vendored_pandas_frame.DataFrame):
         ] = None,
         columns: typing.Union[blocks.Label, Sequence[blocks.Label]] = None,
         aggfunc: str = "mean",
+        fill_value=None,
+        margins: bool = False,
+        dropna: bool = True,
+        margins_name: Hashable = "All",
+        observed: bool = False,
+        sort: bool = True,
     ) -> DataFrame:
+        if fill_value is not None:
+            raise NotImplementedError(
+                "DataFrame.pivot_table fill_value arg not supported. {constants.FEEDBACK_LINK}"
+            )
+        if margins:
+            raise NotImplementedError(
+                "DataFrame.pivot_table margins arg not supported. {constants.FEEDBACK_LINK}"
+            )
+        if not dropna:
+            raise NotImplementedError(
+                "DataFrame.pivot_table dropna arg not supported. {constants.FEEDBACK_LINK}"
+            )
+        if margins_name != "All":
+            raise NotImplementedError(
+                "DataFrame.pivot_table margins_name arg not supported. {constants.FEEDBACK_LINK}"
+            )
+        if observed:
+            raise NotImplementedError(
+                "DataFrame.pivot_table observed arg not supported. {constants.FEEDBACK_LINK}"
+            )
+
         if isinstance(index, Iterable) and not (
             isinstance(index, blocks.Label) and index in self.columns
         ):
@@ -3521,7 +3548,9 @@ class DataFrame(vendored_pandas_frame.DataFrame):
             columns=columns,
             index=index,
             values=values if len(values) > 1 else None,
-        ).sort_index()
+        )
+        if sort:
+            pivoted = pivoted.sort_index()
 
         # TODO: Remove the reordering step once the issue is resolved.
         # The pivot_table method results in multi-index columns that are always ordered.
