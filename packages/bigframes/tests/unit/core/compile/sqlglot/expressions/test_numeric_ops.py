@@ -117,6 +117,21 @@ def test_cosh(scalar_types_df: bpd.DataFrame, snapshot):
     snapshot.assert_match(sql, "out.sql")
 
 
+def test_cosine_distance(repeated_types_df: bpd.DataFrame, snapshot):
+    col_names = ["int_list_col", "float_list_col"]
+    bf_df = repeated_types_df[col_names]
+
+    sql = utils._apply_ops_to_sql(
+        bf_df,
+        [
+            ops.cosine_distance_op.as_expr("int_list_col", "int_list_col"),
+            ops.cosine_distance_op.as_expr("float_list_col", "float_list_col"),
+        ],
+        ["int_list_col", "float_list_col"],
+    )
+    snapshot.assert_match(sql, "out.sql")
+
+
 def test_exp(scalar_types_df: bpd.DataFrame, snapshot):
     col_name = "float64_col"
     bf_df = scalar_types_df[[col_name]]

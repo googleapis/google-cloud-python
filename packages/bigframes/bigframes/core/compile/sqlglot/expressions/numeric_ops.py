@@ -125,6 +125,18 @@ def _(expr: TypedExpr) -> sge.Expression:
     )
 
 
+@register_binary_op(ops.cosine_distance_op)
+def _(left: TypedExpr, right: TypedExpr) -> sge.Expression:
+    return sge.Anonymous(
+        this="ML.DISTANCE",
+        expressions=[
+            left.expr,
+            right.expr,
+            sge.Literal.string("COSINE"),
+        ],
+    )
+
+
 @register_unary_op(ops.exp_op)
 def _(expr: TypedExpr) -> sge.Expression:
     return sge.Case(
