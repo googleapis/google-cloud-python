@@ -199,12 +199,16 @@ class TicketSale(Base):
         String(36), ForeignKey("singers.id", spanner_not_enforced=True)
     )
     # Create a commit timestamp column and set a client-side default of
-    # PENDING_COMMIT_TIMESTAMP() An event handler below is responsible for
+    # PENDING_COMMIT_TIMESTAMP(). An event handler below is responsible for
     # setting PENDING_COMMIT_TIMESTAMP() on updates. If using SQLAlchemy
     # core rather than the ORM, callers will need to supply their own
     # PENDING_COMMIT_TIMESTAMP() values in their inserts & updates.
+    #
+    # Columns that use PENDING_COMMIT_TIMESTAMP() cannot be included in a
+    # THEN RETURN clause.
     last_update_time: Mapped[datetime.datetime] = mapped_column(
         spanner_allow_commit_timestamp=True,
+        spanner_exclude_from_returning=True,
         default=text("PENDING_COMMIT_TIMESTAMP()"),
     )
 
