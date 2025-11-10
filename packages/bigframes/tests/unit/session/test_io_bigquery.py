@@ -18,12 +18,15 @@ from typing import Iterable, Optional
 from unittest import mock
 
 import google.cloud.bigquery as bigquery
+import google.cloud.bigquery.job
+import google.cloud.bigquery.table
 import pytest
 
 import bigframes
 from bigframes.core import log_adapter
 import bigframes.core.events
 import bigframes.pandas as bpd
+import bigframes.session._io.bigquery
 import bigframes.session._io.bigquery as io_bq
 from bigframes.testing import mocks
 
@@ -32,7 +35,7 @@ from bigframes.testing import mocks
 def mock_bq_client():
     mock_client = mock.create_autospec(bigquery.Client)
     mock_query_job = mock.create_autospec(bigquery.QueryJob)
-    mock_row_iterator = mock.create_autospec(bigquery.table.RowIterator)
+    mock_row_iterator = mock.create_autospec(google.cloud.bigquery.table.RowIterator)
 
     mock_query_job.result.return_value = mock_row_iterator
 
@@ -98,14 +101,12 @@ def test_create_job_configs_labels_log_adaptor_call_method_under_length_limit():
     cur_labels = {
         "source": "bigquery-dataframes-temp",
     }
-    df = bpd.DataFrame(
-        {"col1": [1, 2], "col2": [3, 4]}, session=mocks.create_bigquery_session()
-    )
-    # Test running two methods
-    df.head()
-    df.max()
-    df.columns
-    api_methods = log_adapter._api_methods
+    api_methods = [
+        "dataframe-columns",
+        "dataframe-max",
+        "dataframe-head",
+        "dataframe-__init__",
+    ]
 
     labels = io_bq.create_job_configs_labels(
         job_configs_labels=cur_labels, api_methods=api_methods
@@ -123,17 +124,13 @@ def test_create_job_configs_labels_log_adaptor_call_method_under_length_limit():
 
 def test_create_job_configs_labels_length_limit_met_and_labels_is_none():
     log_adapter.get_and_reset_api_methods()
-    df = bpd.DataFrame(
-        {"col1": [1, 2], "col2": [3, 4]}, session=mocks.create_bigquery_session()
-    )
     # Test running methods more than the labels' length limit
-    for i in range(100):
-        df.head()
-    api_methods = log_adapter._api_methods
+    api_methods = list(["dataframe-head"] * 100)
 
-    labels = io_bq.create_job_configs_labels(
-        job_configs_labels=None, api_methods=api_methods
-    )
+    with bpd.option_context("compute.extra_query_labels", {}):
+        labels = io_bq.create_job_configs_labels(
+            job_configs_labels=None, api_methods=api_methods
+        )
     assert labels is not None
     assert len(labels) == log_adapter.MAX_LABELS_COUNT
     assert "dataframe-head" in labels.values()
@@ -150,17 +147,14 @@ def test_create_job_configs_labels_length_limit_met():
         value = f"test{i}"
         cur_labels[key] = value
     # If cur_labels length is 62, we can only add one label from api_methods
-    df = bpd.DataFrame(
-        {"col1": [1, 2], "col2": [3, 4]}, session=mocks.create_bigquery_session()
-    )
     # Test running two methods
-    df.head()
-    df.max()
-    api_methods = log_adapter._api_methods
+    api_methods = ["dataframe-max", "dataframe-head"]
 
-    labels = io_bq.create_job_configs_labels(
-        job_configs_labels=cur_labels, api_methods=api_methods
-    )
+    with bpd.option_context("compute.extra_query_labels", {}):
+        labels = io_bq.create_job_configs_labels(
+            job_configs_labels=cur_labels, api_methods=api_methods
+        )
+
     assert labels is not None
     assert len(labels) == 56
     assert "dataframe-max" in labels.values()
@@ -184,7 +178,7 @@ def test_add_and_trim_labels_length_limit_met():
         {"col1": [1, 2], "col2": [3, 4]}, session=mocks.create_bigquery_session()
     )
 
-    job_config = bigquery.job.QueryJobConfig()
+    job_config = google.cloud.bigquery.job.QueryJobConfig()
     job_config.labels = cur_labels
 
     df.max()
@@ -221,7 +215,7 @@ def test_start_query_with_client_labels_length_limit_met(
         {"col1": [1, 2], "col2": [3, 4]}, session=mocks.create_bigquery_session()
     )
 
-    job_config = bigquery.job.QueryJobConfig()
+    job_config = google.cloud.bigquery.job.QueryJobConfig()
     job_config.labels = cur_labels
 
     df.max()

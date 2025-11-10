@@ -58,8 +58,9 @@ s.move(
         ".kokoro/build.sh",
         ".kokoro/continuous/common.cfg",
         ".kokoro/presubmit/common.cfg",
-        # Temporary workaround to update docs job to use python 3.10
         ".github/workflows/docs.yml",
+        ".github/workflows/lint.yml",
+        ".github/workflows/unittest.yml",
     ],
 )
 
