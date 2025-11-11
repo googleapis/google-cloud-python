@@ -17,9 +17,10 @@ from __future__ import annotations
 
 from typing import MutableMapping, MutableSequence
 
+from google.protobuf import wrappers_pb2  # type: ignore
 import proto  # type: ignore
 
-from google.cloud.geminidataanalytics_v1alpha.types import datasource
+from google.cloud.geminidataanalytics_v1alpha.types import datasource as gcg_datasource
 
 __protobuf__ = proto.module(
     package="google.cloud.geminidataanalytics.v1alpha",
@@ -28,6 +29,7 @@ __protobuf__ = proto.module(
         "ExampleQuery",
         "GlossaryTerm",
         "ConversationOptions",
+        "DatasourceOptions",
         "ChartOptions",
         "AnalysisOptions",
     },
@@ -163,10 +165,10 @@ class Context(proto.Message):
         proto.STRING,
         number=1,
     )
-    datasource_references: datasource.DatasourceReferences = proto.Field(
+    datasource_references: gcg_datasource.DatasourceReferences = proto.Field(
         proto.MESSAGE,
         number=7,
-        message=datasource.DatasourceReferences,
+        message=gcg_datasource.DatasourceReferences,
     )
     options: "ConversationOptions" = proto.Field(
         proto.MESSAGE,
@@ -265,6 +267,8 @@ class ConversationOptions(proto.Message):
             Optional. Options for chart generation.
         analysis (google.cloud.geminidataanalytics_v1alpha.types.AnalysisOptions):
             Optional. Options for analysis.
+        datasource (google.cloud.geminidataanalytics_v1alpha.types.DatasourceOptions):
+            Optional. Options for datasources.
     """
 
     chart: "ChartOptions" = proto.Field(
@@ -276,6 +280,31 @@ class ConversationOptions(proto.Message):
         proto.MESSAGE,
         number=2,
         message="AnalysisOptions",
+    )
+    datasource: "DatasourceOptions" = proto.Field(
+        proto.MESSAGE,
+        number=3,
+        message="DatasourceOptions",
+    )
+
+
+class DatasourceOptions(proto.Message):
+    r"""Options for datasources configurations.
+
+    Attributes:
+        big_query_max_billed_bytes (google.protobuf.wrappers_pb2.Int64Value):
+            Optional. This option applies to datasources
+            that require BigQuery queries only. Limits the
+            bytes billed for each BQ query job. Queries that
+            will have bytes billed beyond this limit will
+            fail (without incurring a charge). If
+            unspecified, no limit will be applied.
+    """
+
+    big_query_max_billed_bytes: wrappers_pb2.Int64Value = proto.Field(
+        proto.MESSAGE,
+        number=1,
+        message=wrappers_pb2.Int64Value,
     )
 
 

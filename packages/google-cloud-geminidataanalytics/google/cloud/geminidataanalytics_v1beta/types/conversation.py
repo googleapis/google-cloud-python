@@ -28,6 +28,7 @@ __protobuf__ = proto.module(
         "GetConversationRequest",
         "ListConversationsRequest",
         "ListConversationsResponse",
+        "DeleteConversationRequest",
     },
 )
 
@@ -45,7 +46,7 @@ class Conversation(proto.Message):
             https://google.aip.dev/122#resource-id-segments
 
             Example:
-            ``projects/1234567890/locations/us-central1/conversations/my-conversation``.
+            ``projects/1234567890/locations/global/conversations/my-conversation``.
 
             It is recommended to skip setting this field during
             conversation creation as it will be inferred automatically
@@ -172,7 +173,7 @@ class ListConversationsRequest(proto.Message):
             specified within the filter. ListConversations allows
             filtering by:
 
-            - agent_id
+            - agents
             - labels
     """
 
@@ -217,6 +218,22 @@ class ListConversationsResponse(proto.Message):
     next_page_token: str = proto.Field(
         proto.STRING,
         number=2,
+    )
+
+
+class DeleteConversationRequest(proto.Message):
+    r"""Request for deleting a conversation based on parent and
+    conversation id.
+
+    Attributes:
+        name (str):
+            Required. Name of the resource. Format:
+            ``projects/{project}/locations/{location}/conversations/{conversation}``
+    """
+
+    name: str = proto.Field(
+        proto.STRING,
+        number=1,
     )
 
 
