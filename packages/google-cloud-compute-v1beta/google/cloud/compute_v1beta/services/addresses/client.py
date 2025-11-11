@@ -694,9 +694,10 @@ class AddressesClient(metaclass=AddressesClientMeta):
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> pagers.AggregatedListPager:
-        r"""Retrieves an aggregated list of addresses. To prevent failure,
-        Google recommends that you set the ``returnPartialSuccess``
-        parameter to ``true``.
+        r"""Retrieves an aggregated list of addresses.
+
+        To prevent failure, it is recommended that you set the
+        ``returnPartialSuccess`` parameter to ``true``.
 
         .. code-block:: python
 
@@ -1170,13 +1171,17 @@ class AddressesClient(metaclass=AddressesClientMeta):
 
         Returns:
             google.cloud.compute_v1beta.types.Address:
-                Represents an IP Address resource. Google Compute Engine
-                has two IP Address resources: \* [Global (external and
-                internal)](https://cloud.google.com/compute/docs/reference/rest/beta/globalAddresses)
-                \* [Regional (external and
-                internal)](https://cloud.google.com/compute/docs/reference/rest/beta/addresses)
-                For more information, see Reserving a static external IP
-                address.
+                Represents an IP Address resource.
+
+                   Google Compute Engine has two IP Address resources:
+
+                   \* [Global (external and
+                   internal)](https://cloud.google.com/compute/docs/reference/rest/beta/globalAddresses)
+                   \* [Regional (external and
+                   internal)](https://cloud.google.com/compute/docs/reference/rest/beta/addresses)
+
+                   For more information, see Reserving a static external
+                   IP address.
 
         """
         # Create or coerce a protobuf request object.
@@ -1530,8 +1535,8 @@ class AddressesClient(metaclass=AddressesClientMeta):
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> pagers.ListPager:
-        r"""Retrieves a list of addresses contained within the
-        specified region.
+        r"""Retrieves a list of addresses contained within
+        the specified region.
 
         .. code-block:: python
 
@@ -1994,7 +1999,7 @@ class AddressesClient(metaclass=AddressesClientMeta):
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> compute.Operation:
         r"""Sets the labels on an Address. To learn more about
-        labels, read the Labeling Resources documentation.
+        labels, read theLabeling Resources documentation.
 
         .. code-block:: python
 
@@ -2145,7 +2150,7 @@ class AddressesClient(metaclass=AddressesClientMeta):
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> extended_operation.ExtendedOperation:
         r"""Sets the labels on an Address. To learn more about
-        labels, read the Labeling Resources documentation.
+        labels, read theLabeling Resources documentation.
 
         .. code-block:: python
 

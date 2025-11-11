@@ -735,10 +735,10 @@ class RegionInstanceGroupManagerResizeRequestsClient(
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> compute.Operation:
-        r"""Cancels the specified resize request. Cancelled
-        resize request no longer waits for the resources to be
-        provisioned. Cancel is only possible for requests that
-        are in accepted state.
+        r"""Cancels the specified resize request.
+        Cancelled resize request no longer waits for the
+        resources to be provisioned. Cancel is only possible for
+        requests that are in accepted state.
 
         .. code-block:: python
 
@@ -780,8 +780,9 @@ class RegionInstanceGroupManagerResizeRequestsClient(
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
             region (str):
-                The name of the region scoping this
-                request. Name should conform to RFC1035.
+                The name of the region
+                scoping this request. Name should
+                conform to RFC1035.
 
                 This corresponds to the ``region`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -893,10 +894,10 @@ class RegionInstanceGroupManagerResizeRequestsClient(
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> extended_operation.ExtendedOperation:
-        r"""Cancels the specified resize request. Cancelled
-        resize request no longer waits for the resources to be
-        provisioned. Cancel is only possible for requests that
-        are in accepted state.
+        r"""Cancels the specified resize request.
+        Cancelled resize request no longer waits for the
+        resources to be provisioned. Cancel is only possible for
+        requests that are in accepted state.
 
         .. code-block:: python
 
@@ -938,8 +939,9 @@ class RegionInstanceGroupManagerResizeRequestsClient(
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
             region (str):
-                The name of the region scoping this
-                request. Name should conform to RFC1035.
+                The name of the region
+                scoping this request. Name should
+                conform to RFC1035.
 
                 This corresponds to the ``region`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -1121,8 +1123,9 @@ class RegionInstanceGroupManagerResizeRequestsClient(
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
             region (str):
-                The name of the region scoping this
-                request. Name should conform to RFC1035.
+                The name of the region
+                scoping this request. Name should
+                conform to RFC1035.
 
                 This corresponds to the ``region`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -1279,8 +1282,9 @@ class RegionInstanceGroupManagerResizeRequestsClient(
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
             region (str):
-                The name of the region scoping this
-                request. Name should conform to RFC1035.
+                The name of the region
+                scoping this request. Name should
+                conform to RFC1035.
 
                 This corresponds to the ``region`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -1460,8 +1464,9 @@ class RegionInstanceGroupManagerResizeRequestsClient(
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
             region (str):
-                The name of the region scoping this
-                request. Name should conform to RFC1035.
+                The name of the region
+                scoping this request. Name should
+                conform to RFC1035.
 
                 This corresponds to the ``region`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -1475,8 +1480,8 @@ class RegionInstanceGroupManagerResizeRequestsClient(
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
             resize_request (str):
-                The name of the resize request. Name
-                should conform to RFC1035 or be a
+                The name of the resize request.
+                Name should conform to RFC1035 or be a
                 resource ID.
 
                 This corresponds to the ``resize_request`` field
@@ -1621,8 +1626,9 @@ class RegionInstanceGroupManagerResizeRequestsClient(
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
             region (str):
-                Name of the region scoping this
-                request. Name should conform to RFC1035.
+                Name of the region
+                scoping this request. Name should
+                conform to RFC1035.
 
                 This corresponds to the ``region`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -1782,8 +1788,9 @@ class RegionInstanceGroupManagerResizeRequestsClient(
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
             region (str):
-                Name of the region scoping this
-                request. Name should conform to RFC1035.
+                Name of the region
+                scoping this request. Name should
+                conform to RFC1035.
 
                 This corresponds to the ``region`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -1966,8 +1973,9 @@ class RegionInstanceGroupManagerResizeRequestsClient(
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
             region (str):
-                Name of the region scoping this
-                request. Name should conform to RFC1035.
+                Name of the region
+                scoping this request. Name should
+                conform to RFC1035.
 
                 This corresponds to the ``region`` field
                 on the ``request`` instance; if ``request`` is provided, this

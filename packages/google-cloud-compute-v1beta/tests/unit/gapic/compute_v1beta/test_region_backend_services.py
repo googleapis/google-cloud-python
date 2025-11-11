@@ -5750,6 +5750,7 @@ def test_insert_rest_call_success(request_type):
         "timeout_sec": 1185,
         "tls_settings": {
             "authentication_config": "authentication_config_value",
+            "identity": "identity_value",
             "sni": "sni_value",
             "subject_alt_names": [
                 {
@@ -6463,6 +6464,7 @@ def test_patch_rest_call_success(request_type):
         "timeout_sec": 1185,
         "tls_settings": {
             "authentication_config": "authentication_config_value",
+            "identity": "identity_value",
             "sni": "sni_value",
             "subject_alt_names": [
                 {
@@ -7623,6 +7625,7 @@ def test_update_rest_call_success(request_type):
         "timeout_sec": 1185,
         "tls_settings": {
             "authentication_config": "authentication_config_value",
+            "identity": "identity_value",
             "sni": "sni_value",
             "subject_alt_names": [
                 {

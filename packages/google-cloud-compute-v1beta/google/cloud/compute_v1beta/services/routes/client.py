@@ -1012,12 +1012,14 @@ class RoutesClient(metaclass=RoutesClientMeta):
 
         Returns:
             google.cloud.compute_v1beta.types.Route:
-                Represents a Route resource. A route
-                defines a path from VM instances in the
-                VPC network to a specific destination.
-                This destination can be inside or
-                outside the VPC network. For more
-                information, read the Routes overview.
+                Represents a Route resource.
+
+                A route defines a path from VM instances
+                in the VPC network to a specific
+                destination. This destination can be
+                inside or outside the VPC network. For
+                more information, read theRoutes
+                overview.
 
         """
         # Create or coerce a protobuf request object.

@@ -695,9 +695,10 @@ class UrlMapsClient(metaclass=UrlMapsClientMeta):
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> pagers.AggregatedListPager:
         r"""Retrieves the list of all UrlMap resources, regional and global,
-        available to the specified project. To prevent failure, Google
-        recommends that you set the ``returnPartialSuccess`` parameter
-        to ``true``.
+        available to the specified project.
+
+        To prevent failure, Google recommends that you set the
+        ``returnPartialSuccess`` parameter to ``true``.
 
         .. code-block:: python
 
@@ -1143,31 +1144,43 @@ class UrlMapsClient(metaclass=UrlMapsClientMeta):
 
         Returns:
             google.cloud.compute_v1beta.types.UrlMap:
-                Represents a URL Map resource. Compute Engine has two
-                URL Map resources: \*
-                [Global](/compute/docs/reference/rest/beta/urlMaps) \*
-                [Regional](/compute/docs/reference/rest/beta/regionUrlMaps)
-                A URL map resource is a component of certain types of
-                cloud load balancers and Traffic Director: \* urlMaps
-                are used by global external Application Load Balancers,
-                classic Application Load Balancers, and cross-region
-                internal Application Load Balancers. \* regionUrlMaps
-                are used by internal Application Load Balancers,
-                regional external Application Load Balancers and
-                regional internal Application Load Balancers. For a list
-                of supported URL map features by the load balancer type,
-                see the Load balancing features: Routing and traffic
-                management table. For a list of supported URL map
-                features for Traffic Director, see the Traffic Director
-                features: Routing and traffic management table. This
-                resource defines mappings from hostnames and URL paths
-                to either a backend service or a backend bucket. To use
-                the global urlMaps resource, the backend service must
-                have a loadBalancingScheme of either EXTERNAL,
-                EXTERNAL_MANAGED, or INTERNAL_SELF_MANAGED. To use the
-                regionUrlMaps resource, the backend service must have a
-                loadBalancingScheme of INTERNAL_MANAGED. For more
-                information, read URL Map Concepts.
+                Represents a URL Map resource.
+
+                   Compute Engine has two URL Map resources:
+
+                   - [Global](/compute/docs/reference/rest/beta/urlMaps)
+                   - [Regional](/compute/docs/reference/rest/beta/regionUrlMaps)
+
+                   A URL map resource is a component of certain types of
+                   cloud load balancers and Traffic Director:
+
+                   \* urlMaps are used by global external Application
+                   Load Balancers, classic Application Load Balancers,
+                   and cross-region internal Application Load Balancers.
+                   \* regionUrlMaps are used by internal Application
+                   Load Balancers, regional external Application Load
+                   Balancers and regional internal Application Load
+                   Balancers.
+
+                   For a list of supported URL map features by the load
+                   balancer type, see the Load balancing features:
+                   Routing and traffic management table.
+
+                   For a list of supported URL map features for Traffic
+                   Director, see the Traffic Director features: Routing
+                   and traffic management table.
+
+                   This resource defines mappings from hostnames and URL
+                   paths to either a backend service or a backend
+                   bucket.
+
+                   To use the global urlMaps resource, the backend
+                   service must have a loadBalancingScheme of either
+                   EXTERNAL,EXTERNAL_MANAGED, or INTERNAL_SELF_MANAGED.
+                   To use the regionUrlMaps resource, the backend
+                   service must have aloadBalancingScheme of
+                   INTERNAL_MANAGED. For more information, read URL Map
+                   Concepts.
 
         """
         # Create or coerce a protobuf request object.
@@ -1491,8 +1504,9 @@ class UrlMapsClient(metaclass=UrlMapsClientMeta):
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> compute.Operation:
         r"""Initiates a cache invalidation operation, invalidating the
-        specified path, scoped to the specified UrlMap. For more
-        information, see `Invalidating cached
+        specified path, scoped to the specified UrlMap.
+
+        For more information, see `Invalidating cached
         content </cdn/docs/invalidating-cached-content>`__.
 
         .. code-block:: python
@@ -1629,8 +1643,9 @@ class UrlMapsClient(metaclass=UrlMapsClientMeta):
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> extended_operation.ExtendedOperation:
         r"""Initiates a cache invalidation operation, invalidating the
-        specified path, scoped to the specified UrlMap. For more
-        information, see `Invalidating cached
+        specified path, scoped to the specified UrlMap.
+
+        For more information, see `Invalidating cached
         content </cdn/docs/invalidating-cached-content>`__.
 
         .. code-block:: python
@@ -1911,9 +1926,9 @@ class UrlMapsClient(metaclass=UrlMapsClientMeta):
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> compute.Operation:
         r"""Patches the specified UrlMap resource with the data
-        included in the request. This method supports PATCH
-        semantics and uses the JSON merge patch format and
-        processing rules.
+        included in the request. This method supportsPATCH
+        semantics and uses theJSON merge
+        patch format and processing rules.
 
         .. code-block:: python
 
@@ -2042,9 +2057,9 @@ class UrlMapsClient(metaclass=UrlMapsClientMeta):
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> extended_operation.ExtendedOperation:
         r"""Patches the specified UrlMap resource with the data
-        included in the request. This method supports PATCH
-        semantics and uses the JSON merge patch format and
-        processing rules.
+        included in the request. This method supportsPATCH
+        semantics and uses theJSON merge
+        patch format and processing rules.
 
         .. code-block:: python
 

@@ -1028,13 +1028,17 @@ class GlobalAddressesClient(metaclass=GlobalAddressesClientMeta):
 
         Returns:
             google.cloud.compute_v1beta.types.Address:
-                Represents an IP Address resource. Google Compute Engine
-                has two IP Address resources: \* [Global (external and
-                internal)](https://cloud.google.com/compute/docs/reference/rest/beta/globalAddresses)
-                \* [Regional (external and
-                internal)](https://cloud.google.com/compute/docs/reference/rest/beta/addresses)
-                For more information, see Reserving a static external IP
-                address.
+                Represents an IP Address resource.
+
+                   Google Compute Engine has two IP Address resources:
+
+                   \* [Global (external and
+                   internal)](https://cloud.google.com/compute/docs/reference/rest/beta/globalAddresses)
+                   \* [Regional (external and
+                   internal)](https://cloud.google.com/compute/docs/reference/rest/beta/addresses)
+
+                   For more information, see Reserving a static external
+                   IP address.
 
         """
         # Create or coerce a protobuf request object.
@@ -1778,7 +1782,7 @@ class GlobalAddressesClient(metaclass=GlobalAddressesClientMeta):
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> compute.Operation:
         r"""Sets the labels on a GlobalAddress. To learn more
-        about labels, read the Labeling Resources documentation.
+        about labels, read theLabeling Resources documentation.
 
         .. code-block:: python
 
@@ -1914,7 +1918,7 @@ class GlobalAddressesClient(metaclass=GlobalAddressesClientMeta):
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> extended_operation.ExtendedOperation:
         r"""Sets the labels on a GlobalAddress. To learn more
-        about labels, read the Labeling Resources documentation.
+        about labels, read theLabeling Resources documentation.
 
         .. code-block:: python
 

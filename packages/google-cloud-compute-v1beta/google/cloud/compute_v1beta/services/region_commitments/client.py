@@ -706,8 +706,9 @@ class RegionCommitmentsClient(metaclass=RegionCommitmentsClientMeta):
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> pagers.AggregatedListPager:
-        r"""Retrieves an aggregated list of commitments by region. To
-        prevent failure, Google recommends that you set the
+        r"""Retrieves an aggregated list of commitments by region.
+
+        To prevent failure, it is recommended that you set the
         ``returnPartialSuccess`` parameter to ``true``.
 
         .. code-block:: python
@@ -891,15 +892,15 @@ class RegionCommitmentsClient(metaclass=RegionCommitmentsClientMeta):
         Returns:
             google.cloud.compute_v1beta.types.Commitment:
                 Represents a regional resource-based
-                commitment resource. Creating this
-                commitment resource means that you are
-                purchasing a resource-based committed
-                use contract, with an explicit start and
-                end time. You can purchase
+                commitment resource.
+                Creating this commitment resource means
+                that you are purchasing a resource-based
+                committed use contract, with an explicit
+                start and end time. You can purchase
                 resource-based commitments for both
                 hardware and software resources. For
-                more information, read Resource-based
-                committed use discounts
+                more information, read
+                Resource-based committed use discounts
 
         """
         # Create or coerce a protobuf request object.
@@ -1253,8 +1254,8 @@ class RegionCommitmentsClient(metaclass=RegionCommitmentsClientMeta):
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> pagers.ListPager:
-        r"""Retrieves a list of commitments contained within the
-        specified region.
+        r"""Retrieves a list of commitments contained within
+        the specified region.
 
         .. code-block:: python
 

@@ -695,9 +695,10 @@ class SslPoliciesClient(metaclass=SslPoliciesClientMeta):
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> pagers.AggregatedListPager:
         r"""Retrieves the list of all SslPolicy resources, regional and
-        global, available to the specified project. To prevent failure,
-        Google recommends that you set the ``returnPartialSuccess``
-        parameter to ``true``.
+        global, available to the specified project.
+
+        To prevent failure, Google recommends that you set the
+        ``returnPartialSuccess`` parameter to ``true``.
 
         .. code-block:: python
 
@@ -1155,6 +1156,7 @@ class SslPoliciesClient(metaclass=SslPoliciesClientMeta):
         Returns:
             google.cloud.compute_v1beta.types.SslPolicy:
                 Represents an SSL Policy resource.
+
                 Use SSL policies to control SSL
                 features, such as versions and cipher
                 suites, that are offered by Application

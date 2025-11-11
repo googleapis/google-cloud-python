@@ -711,8 +711,10 @@ class PublicDelegatedPrefixesClient(metaclass=PublicDelegatedPrefixesClientMeta)
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> pagers.AggregatedListPager:
         r"""Lists all PublicDelegatedPrefix resources owned by the specific
-        project across all scopes. To prevent failure, Google recommends
-        that you set the ``returnPartialSuccess`` parameter to ``true``.
+        project across all scopes.
+
+        To prevent failure, Google recommends that you set the
+        ``returnPartialSuccess`` parameter to ``true``.
 
         .. code-block:: python
 
@@ -882,9 +884,9 @@ class PublicDelegatedPrefixesClient(metaclass=PublicDelegatedPrefixesClientMeta)
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
             region (str):
-                The name of the region where the
-                public delegated prefix is located. It
-                should comply with RFC1035.
+                The name of theregion where
+                the public delegated prefix is located.
+                It should comply with RFC1035.
 
                 This corresponds to the ``region`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -1021,9 +1023,9 @@ class PublicDelegatedPrefixesClient(metaclass=PublicDelegatedPrefixesClientMeta)
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
             region (str):
-                The name of the region where the
-                public delegated prefix is located. It
-                should comply with RFC1035.
+                The name of theregion where
+                the public delegated prefix is located.
+                It should comply with RFC1035.
 
                 This corresponds to the ``region`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -2022,8 +2024,8 @@ class PublicDelegatedPrefixesClient(metaclass=PublicDelegatedPrefixesClientMeta)
     ) -> compute.Operation:
         r"""Patches the specified PublicDelegatedPrefix resource
         with the data included in the request. This method
-        supports PATCH semantics and uses JSON merge patch
-        format and processing rules.
+        supportsPATCH semantics and usesJSON merge
+        patch format and processing rules.
 
         .. code-block:: python
 
@@ -2177,8 +2179,8 @@ class PublicDelegatedPrefixesClient(metaclass=PublicDelegatedPrefixesClientMeta)
     ) -> extended_operation.ExtendedOperation:
         r"""Patches the specified PublicDelegatedPrefix resource
         with the data included in the request. This method
-        supports PATCH semantics and uses JSON merge patch
-        format and processing rules.
+        supportsPATCH semantics and usesJSON merge
+        patch format and processing rules.
 
         .. code-block:: python
 
@@ -2394,9 +2396,9 @@ class PublicDelegatedPrefixesClient(metaclass=PublicDelegatedPrefixesClientMeta)
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
             region (str):
-                The name of the region where the
-                public delegated prefix is located. It
-                should comply with RFC1035.
+                The name of theregion where
+                the public delegated prefix is located.
+                It should comply with RFC1035.
 
                 This corresponds to the ``region`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -2533,9 +2535,9 @@ class PublicDelegatedPrefixesClient(metaclass=PublicDelegatedPrefixesClientMeta)
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
             region (str):
-                The name of the region where the
-                public delegated prefix is located. It
-                should comply with RFC1035.
+                The name of theregion where
+                the public delegated prefix is located.
+                It should comply with RFC1035.
 
                 This corresponds to the ``region`` field
                 on the ``request`` instance; if ``request`` is provided, this

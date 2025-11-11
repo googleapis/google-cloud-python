@@ -178,6 +178,11 @@ class InstanceGroupManagersTransport(abc.ABC):
                 default_timeout=None,
                 client_info=client_info,
             ),
+            self.get_available_accelerator_topologies: gapic_v1.method.wrap_method(
+                self.get_available_accelerator_topologies,
+                default_timeout=None,
+                client_info=client_info,
+            ),
             self.insert: gapic_v1.method.wrap_method(
                 self.insert,
                 default_timeout=None,
@@ -361,6 +366,20 @@ class InstanceGroupManagersTransport(abc.ABC):
     ) -> Callable[
         [compute.GetInstanceGroupManagerRequest],
         Union[compute.InstanceGroupManager, Awaitable[compute.InstanceGroupManager]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def get_available_accelerator_topologies(
+        self,
+    ) -> Callable[
+        [compute.GetAvailableAcceleratorTopologiesInstanceGroupManagerRequest],
+        Union[
+            compute.InstanceGroupManagersGetAvailableAcceleratorTopologiesResponse,
+            Awaitable[
+                compute.InstanceGroupManagersGetAvailableAcceleratorTopologiesResponse
+            ],
+        ],
     ]:
         raise NotImplementedError()
 

@@ -1035,10 +1035,11 @@ class CrossSiteNetworksClient(metaclass=CrossSiteNetworksClientMeta):
         Returns:
             google.cloud.compute_v1beta.types.CrossSiteNetwork:
                 A resource that represents a
-                cross-site network. You can use
-                cross-site networks to connect your
-                on-premises networks to each other
-                through Interconnect connections.
+                cross-site network.
+                You can use cross-site networks to
+                connect your on-premises networks to
+                each other through Interconnect
+                connections.
 
         """
         # Create or coerce a protobuf request object.
@@ -1487,9 +1488,9 @@ class CrossSiteNetworksClient(metaclass=CrossSiteNetworksClientMeta):
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> compute.Operation:
         r"""Updates the specified cross-site network with the
-        data included in the request. This method supports PATCH
-        semantics and uses the JSON merge patch format and
-        processing rules.
+        data included in the request. This method supportsPATCH
+        semantics and uses theJSON merge
+        patch format and processing rules.
 
         .. code-block:: python
 
@@ -1621,9 +1622,9 @@ class CrossSiteNetworksClient(metaclass=CrossSiteNetworksClientMeta):
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> extended_operation.ExtendedOperation:
         r"""Updates the specified cross-site network with the
-        data included in the request. This method supports PATCH
-        semantics and uses the JSON merge patch format and
-        processing rules.
+        data included in the request. This method supportsPATCH
+        semantics and uses theJSON merge
+        patch format and processing rules.
 
         .. code-block:: python
 
