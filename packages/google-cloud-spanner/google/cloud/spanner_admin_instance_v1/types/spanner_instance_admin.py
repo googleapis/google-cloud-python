@@ -1765,6 +1765,12 @@ class InstancePartition(proto.Message):
             that are not yet in the ``READY`` state.
 
             This field is a member of `oneof`_ ``compute_capacity``.
+        autoscaling_config (google.cloud.spanner_admin_instance_v1.types.AutoscalingConfig):
+            Optional. The autoscaling configuration. Autoscaling is
+            enabled if this field is set. When autoscaling is enabled,
+            fields in compute_capacity are treated as OUTPUT_ONLY fields
+            and reflect the current compute capacity allocated to the
+            instance partition.
         state (google.cloud.spanner_admin_instance_v1.types.InstancePartition.State):
             Output only. The current instance partition
             state.
@@ -1847,6 +1853,11 @@ class InstancePartition(proto.Message):
         proto.INT32,
         number=6,
         oneof="compute_capacity",
+    )
+    autoscaling_config: "AutoscalingConfig" = proto.Field(
+        proto.MESSAGE,
+        number=13,
+        message="AutoscalingConfig",
     )
     state: State = proto.Field(
         proto.ENUM,
