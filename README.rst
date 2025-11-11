@@ -1567,6 +1567,12 @@ Libraries
      -
      -
      - `Client Library Issues <https://github.com/googleapis/google-cloud-python/issues>`_
+   * - `Vector Search API <https://github.com/googleapis/google-cloud-python/tree/main/packages/google-cloud-vectorsearch>`_
+     - preview
+     - |PyPI-google-cloud-vectorsearch|
+     - `API Issues <https://issuetracker.google.com/issues?q=componentid:1899904>`_
+     - `File an API Issue <https://issuetracker.google.com/issues/new?component=1899904>`_
+     - `Client Library Issues <https://github.com/googleapis/google-cloud-python/issues>`_
    * - `Video Stitcher <https://github.com/googleapis/google-cloud-python/tree/main/packages/google-cloud-video-stitcher>`_
      - preview
      - |PyPI-google-cloud-video-stitcher|
@@ -2096,6 +2102,8 @@ Libraries
      :target: https://pypi.org/project/google-cloud-telcoautomation
 .. |PyPI-google-cloud-vmwareengine| image:: https://img.shields.io/pypi/v/google-cloud-vmwareengine.svg
      :target: https://pypi.org/project/google-cloud-vmwareengine
+.. |PyPI-google-cloud-vectorsearch| image:: https://img.shields.io/pypi/v/google-cloud-vectorsearch.svg
+     :target: https://pypi.org/project/google-cloud-vectorsearch
 .. |PyPI-google-cloud-video-stitcher| image:: https://img.shields.io/pypi/v/google-cloud-video-stitcher.svg
      :target: https://pypi.org/project/google-cloud-video-stitcher
 .. |PyPI-google-cloud-visionai| image:: https://img.shields.io/pypi/v/google-cloud-visionai.svg
