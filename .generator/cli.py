@@ -929,7 +929,7 @@ def _run_individual_session(nox_session: str, library_id: str, repo: str):
         "-f",
         f"{repo}/packages/{library_id}/noxfile.py",
     ]
-    result = subprocess.run(command, text=True, check=True)
+    result = subprocess.run(command, text=True, check=True, timeout=1200)
     logger.info(result)
 
 
@@ -1199,8 +1199,7 @@ def _update_version_for_library(
 
     # Find and update version.py or gapic_version.py files
     search_base = Path(f"{repo}/{path_to_library}")
-    version_files = []
-    patterns = ["**/gapic_version.py", "**/version.py"]
+    version_files = list(search_base.rglob("**/gapic_version.py"))
     excluded_dirs = {
         ".nox",
         ".venv",
@@ -1210,16 +1209,14 @@ def _update_version_for_library(
         "build",
         "dist",
         "__pycache__",
-        "tests",
     }
-    for pattern in patterns:
-        version_files.extend(
-            [
-                p
-                for p in search_base.rglob(pattern)
-                if not any(part in excluded_dirs for part in p.parts)
-            ]
-        )
+    version_files.extend(
+        [
+            p
+            for p in search_base.rglob("**/version.py")
+            if not any(part in excluded_dirs for part in p.parts)
+        ]
+    )
 
     if not version_files:
         # Fallback to `pyproject.toml`` or `setup.py``. Proto-only libraries have
@@ -1241,8 +1238,8 @@ def _update_version_for_library(
         _write_text_file(output_path, updated_content)
 
     # Find and update snippet_metadata.json files
-    snippet_metadata_files = Path(f"{repo}/{path_to_library}/samples").rglob(
-        "**/*snippet*.json"
+    snippet_metadata_files = Path(f"{repo}/{path_to_library}").rglob(
+        "samples/**/*snippet*.json"
     )
     for metadata_file in snippet_metadata_files:
         output_path = f"{output}/{metadata_file.relative_to(repo)}"
