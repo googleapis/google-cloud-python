@@ -1,22 +1,22 @@
 WITH `bfcte_1` AS (
   SELECT
-    `bool_col` AS `bfcol_0`,
-    `rowindex` AS `bfcol_1`
+    `bool_col`,
+    `rowindex`
   FROM `bigframes-dev`.`sqlglot_test`.`scalar_types`
 ), `bfcte_2` AS (
   SELECT
-    `bfcol_1` AS `bfcol_2`,
-    `bfcol_0` AS `bfcol_3`
+    `rowindex` AS `bfcol_2`,
+    `bool_col` AS `bfcol_3`
   FROM `bfcte_1`
 ), `bfcte_0` AS (
   SELECT
-    `bool_col` AS `bfcol_4`,
-    `rowindex` AS `bfcol_5`
+    `bool_col`,
+    `rowindex`
   FROM `bigframes-dev`.`sqlglot_test`.`scalar_types`
 ), `bfcte_3` AS (
   SELECT
-    `bfcol_5` AS `bfcol_6`,
-    `bfcol_4` AS `bfcol_7`
+    `rowindex` AS `bfcol_6`,
+    `bool_col` AS `bfcol_7`
   FROM `bfcte_0`
 ), `bfcte_4` AS (
   SELECT

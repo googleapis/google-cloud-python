@@ -1,14 +1,14 @@
 WITH `bfcte_0` AS (
   SELECT
-    `bool_col` AS `bfcol_0`,
-    `float64_col` AS `bfcol_1`
+    `bool_col`,
+    `float64_col`
   FROM `bigframes-dev`.`sqlglot_test`.`scalar_types`
 ), `bfcte_1` AS (
   SELECT
     *,
-    `bfcol_0` AS `bfcol_2`,
-    `bfcol_1` <> 0 AS `bfcol_3`,
-    `bfcol_1` <> 0 AS `bfcol_4`
+    `bool_col` AS `bfcol_2`,
+    `float64_col` <> 0 AS `bfcol_3`,
+    `float64_col` <> 0 AS `bfcol_4`
   FROM `bfcte_0`
 )
 SELECT

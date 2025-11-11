@@ -1,16 +1,16 @@
 WITH `bfcte_0` AS (
   SELECT
-    `bool_col` AS `bfcol_0`,
-    `int64_col` AS `bfcol_1`,
-    `rowindex` AS `bfcol_2`
+    `bool_col`,
+    `int64_col`,
+    `rowindex`
   FROM `bigframes-dev`.`sqlglot_test`.`scalar_types`
 ), `bfcte_1` AS (
   SELECT
     *,
-    `bfcol_2` AS `bfcol_6`,
-    `bfcol_0` AS `bfcol_7`,
-    `bfcol_1` AS `bfcol_8`,
-    `bfcol_0` AS `bfcol_9`
+    `rowindex` AS `bfcol_6`,
+    `bool_col` AS `bfcol_7`,
+    `int64_col` AS `bfcol_8`,
+    `bool_col` AS `bfcol_9`
   FROM `bfcte_0`
 ), `bfcte_2` AS (
   SELECT
@@ -24,14 +24,14 @@ WITH `bfcte_0` AS (
     CASE
       WHEN SUM(CAST(NOT `bfcol_7` IS NULL AS INT64)) OVER (
         PARTITION BY `bfcol_9`
-        ORDER BY `bfcol_9` ASC NULLS LAST, `bfcol_2` ASC NULLS LAST
+        ORDER BY `bfcol_9` ASC NULLS LAST, `rowindex` ASC NULLS LAST
         ROWS BETWEEN 3 PRECEDING AND CURRENT ROW
       ) < 3
       THEN NULL
       ELSE COALESCE(
         SUM(CAST(`bfcol_7` AS INT64)) OVER (
           PARTITION BY `bfcol_9`
-          ORDER BY `bfcol_9` ASC NULLS LAST, `bfcol_2` ASC NULLS LAST
+          ORDER BY `bfcol_9` ASC NULLS LAST, `rowindex` ASC NULLS LAST
           ROWS BETWEEN 3 PRECEDING AND CURRENT ROW
         ),
         0
@@ -50,14 +50,14 @@ WITH `bfcte_0` AS (
     CASE
       WHEN SUM(CAST(NOT `bfcol_8` IS NULL AS INT64)) OVER (
         PARTITION BY `bfcol_9`
-        ORDER BY `bfcol_9` ASC NULLS LAST, `bfcol_2` ASC NULLS LAST
+        ORDER BY `bfcol_9` ASC NULLS LAST, `rowindex` ASC NULLS LAST
         ROWS BETWEEN 3 PRECEDING AND CURRENT ROW
       ) < 3
       THEN NULL
       ELSE COALESCE(
         SUM(`bfcol_8`) OVER (
           PARTITION BY `bfcol_9`
-          ORDER BY `bfcol_9` ASC NULLS LAST, `bfcol_2` ASC NULLS LAST
+          ORDER BY `bfcol_9` ASC NULLS LAST, `rowindex` ASC NULLS LAST
           ROWS BETWEEN 3 PRECEDING AND CURRENT ROW
         ),
         0
@@ -73,4 +73,4 @@ SELECT
 FROM `bfcte_5`
 ORDER BY
   `bfcol_9` ASC NULLS LAST,
-  `bfcol_2` ASC NULLS LAST
+  `rowindex` ASC NULLS LAST

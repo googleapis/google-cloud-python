@@ -1,8 +1,8 @@
 WITH `bfcte_1` AS (
   SELECT
-    `int64_col` AS `bfcol_0`,
-    `rowindex` AS `bfcol_1`,
-    `string_col` AS `bfcol_2`
+    `int64_col`,
+    `rowindex`,
+    `string_col`
   FROM `bigframes-dev`.`sqlglot_test`.`scalar_types`
 ), `bfcte_3` AS (
   SELECT
@@ -16,18 +16,18 @@ WITH `bfcte_1` AS (
   FROM `bfcte_3`
 ), `bfcte_6` AS (
   SELECT
-    `bfcol_1` AS `bfcol_9`,
-    `bfcol_1` AS `bfcol_10`,
-    `bfcol_0` AS `bfcol_11`,
-    `bfcol_2` AS `bfcol_12`,
+    `rowindex` AS `bfcol_9`,
+    `rowindex` AS `bfcol_10`,
+    `int64_col` AS `bfcol_11`,
+    `string_col` AS `bfcol_12`,
     `bfcol_8` AS `bfcol_13`,
     `bfcol_7` AS `bfcol_14`
   FROM `bfcte_5`
 ), `bfcte_0` AS (
   SELECT
-    `int64_col` AS `bfcol_15`,
-    `rowindex` AS `bfcol_16`,
-    `string_col` AS `bfcol_17`
+    `int64_col`,
+    `rowindex`,
+    `string_col`
   FROM `bigframes-dev`.`sqlglot_test`.`scalar_types`
 ), `bfcte_2` AS (
   SELECT
@@ -41,10 +41,10 @@ WITH `bfcte_1` AS (
   FROM `bfcte_2`
 ), `bfcte_7` AS (
   SELECT
-    `bfcol_16` AS `bfcol_24`,
-    `bfcol_16` AS `bfcol_25`,
-    `bfcol_15` AS `bfcol_26`,
-    `bfcol_17` AS `bfcol_27`,
+    `rowindex` AS `bfcol_24`,
+    `rowindex` AS `bfcol_25`,
+    `int64_col` AS `bfcol_26`,
+    `string_col` AS `bfcol_27`,
     `bfcol_23` AS `bfcol_28`,
     `bfcol_22` AS `bfcol_29`
   FROM `bfcte_4`

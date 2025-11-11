@@ -1,18 +1,18 @@
 WITH `bfcte_0` AS (
   SELECT
-    `bool_col` AS `bfcol_0`,
-    `int64_col` AS `bfcol_1`,
-    `float64_col` AS `bfcol_2`,
-    `rowindex` AS `bfcol_3`
+    `bool_col`,
+    `float64_col`,
+    `int64_col`,
+    `rowindex`
   FROM `bigframes-dev`.`sqlglot_test`.`scalar_types`
 ), `bfcte_1` AS (
   SELECT
     *,
-    `bfcol_3` AS `bfcol_8`,
-    `bfcol_1` AS `bfcol_9`,
-    `bfcol_0` AS `bfcol_10`,
-    `bfcol_2` AS `bfcol_11`,
-    IEEE_DIVIDE(`bfcol_1`, `bfcol_1`) AS `bfcol_12`
+    `rowindex` AS `bfcol_8`,
+    `int64_col` AS `bfcol_9`,
+    `bool_col` AS `bfcol_10`,
+    `float64_col` AS `bfcol_11`,
+    IEEE_DIVIDE(`int64_col`, `int64_col`) AS `bfcol_12`
   FROM `bfcte_0`
 ), `bfcte_2` AS (
   SELECT

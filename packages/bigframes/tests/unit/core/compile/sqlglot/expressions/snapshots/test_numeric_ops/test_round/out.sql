@@ -1,16 +1,16 @@
 WITH `bfcte_0` AS (
   SELECT
-    `int64_col` AS `bfcol_0`,
-    `float64_col` AS `bfcol_1`,
-    `rowindex` AS `bfcol_2`
+    `float64_col`,
+    `int64_col`,
+    `rowindex`
   FROM `bigframes-dev`.`sqlglot_test`.`scalar_types`
 ), `bfcte_1` AS (
   SELECT
     *,
-    `bfcol_2` AS `bfcol_6`,
-    `bfcol_0` AS `bfcol_7`,
-    `bfcol_1` AS `bfcol_8`,
-    CAST(ROUND(`bfcol_0`, 0) AS INT64) AS `bfcol_9`
+    `rowindex` AS `bfcol_6`,
+    `int64_col` AS `bfcol_7`,
+    `float64_col` AS `bfcol_8`,
+    CAST(ROUND(`int64_col`, 0) AS INT64) AS `bfcol_9`
   FROM `bfcte_0`
 ), `bfcte_2` AS (
   SELECT

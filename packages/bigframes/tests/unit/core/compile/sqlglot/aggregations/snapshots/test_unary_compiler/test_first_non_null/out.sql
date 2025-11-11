@@ -1,12 +1,12 @@
 WITH `bfcte_0` AS (
   SELECT
-    `int64_col` AS `bfcol_0`
+    `int64_col`
   FROM `bigframes-dev`.`sqlglot_test`.`scalar_types`
 ), `bfcte_1` AS (
   SELECT
     *,
-    FIRST_VALUE(`bfcol_0` IGNORE NULLS) OVER (
-      ORDER BY `bfcol_0` ASC NULLS LAST
+    FIRST_VALUE(`int64_col` IGNORE NULLS) OVER (
+      ORDER BY `int64_col` ASC NULLS LAST
       ROWS BETWEEN UNBOUNDED PRECEDING AND UNBOUNDED FOLLOWING
     ) AS `bfcol_1`
   FROM `bfcte_0`

@@ -1,17 +1,17 @@
 WITH `bfcte_0` AS (
   SELECT
-    `int64_col` AS `bfcol_0`,
-    `rowindex` AS `bfcol_1`,
-    `timestamp_col` AS `bfcol_2`,
-    `duration_col` AS `bfcol_3`
+    `duration_col`,
+    `int64_col`,
+    `rowindex`,
+    `timestamp_col`
   FROM `bigframes-dev`.`sqlglot_test`.`scalar_types`
 ), `bfcte_1` AS (
   SELECT
     *,
-    `bfcol_1` AS `bfcol_8`,
-    `bfcol_2` AS `bfcol_9`,
-    `bfcol_0` AS `bfcol_10`,
-    `bfcol_3` AS `bfcol_11`
+    `rowindex` AS `bfcol_8`,
+    `timestamp_col` AS `bfcol_9`,
+    `int64_col` AS `bfcol_10`,
+    `duration_col` AS `bfcol_11`
   FROM `bfcte_0`
 ), `bfcte_2` AS (
   SELECT

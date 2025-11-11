@@ -134,6 +134,8 @@ class SQLGlotIR:
                 this=sge.to_identifier(col_name, quoted=cls.quoted),
                 alias=sge.to_identifier(alias_name, quoted=cls.quoted),
             )
+            if col_name != alias_name
+            else sge.to_identifier(col_name, quoted=cls.quoted)
             for col_name, alias_name in zip(col_names, alias_names)
         ]
         table_expr = sge.Table(
@@ -227,6 +229,8 @@ class SQLGlotIR:
                 this=expr,
                 alias=sge.to_identifier(id, quoted=self.quoted),
             )
+            if expr.alias_or_name != id
+            else expr
             for id, expr in selected_cols
         ]
 

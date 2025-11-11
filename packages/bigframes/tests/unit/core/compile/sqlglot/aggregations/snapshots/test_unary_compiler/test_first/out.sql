@@ -1,14 +1,17 @@
 WITH `bfcte_0` AS (
   SELECT
-    `int64_col` AS `bfcol_0`
+    `int64_col`
   FROM `bigframes-dev`.`sqlglot_test`.`scalar_types`
 ), `bfcte_1` AS (
   SELECT
     *,
     CASE
-      WHEN `bfcol_0` IS NULL
+      WHEN `int64_col` IS NULL
       THEN NULL
-      ELSE FIRST_VALUE(`bfcol_0`) OVER (ORDER BY `bfcol_0` DESC ROWS BETWEEN UNBOUNDED PRECEDING AND UNBOUNDED FOLLOWING)
+      ELSE FIRST_VALUE(`int64_col`) OVER (
+        ORDER BY `int64_col` DESC
+        ROWS BETWEEN UNBOUNDED PRECEDING AND UNBOUNDED FOLLOWING
+      )
     END AS `bfcol_1`
   FROM `bfcte_0`
 )

@@ -1,11 +1,11 @@
 WITH `bfcte_0` AS (
   SELECT
-    `timestamp_col` AS `bfcol_0`
+    `timestamp_col`
   FROM `bigframes-dev`.`sqlglot_test`.`scalar_types`
 ), `bfcte_1` AS (
   SELECT
     *,
-    FORMAT_TIMESTAMP('%Y-%m-%d', `bfcol_0`) AS `bfcol_1`
+    FORMAT_TIMESTAMP('%Y-%m-%d', `timestamp_col`) AS `bfcol_1`
   FROM `bfcte_0`
 )
 SELECT

@@ -1,12 +1,12 @@
 WITH `bfcte_0` AS (
   SELECT
-    `bool_col` AS `bfcol_0`,
-    `int64_col` AS `bfcol_1`
+    `bool_col`,
+    `int64_col`
   FROM `bigframes-dev`.`sqlglot_test`.`scalar_types`
 ), `bfcte_1` AS (
   SELECT
-    VAR_POP(`bfcol_1`) AS `bfcol_4`,
-    VAR_POP(CAST(`bfcol_0` AS INT64)) AS `bfcol_5`
+    VAR_POP(`int64_col`) AS `bfcol_4`,
+    VAR_POP(CAST(`bool_col` AS INT64)) AS `bfcol_5`
   FROM `bfcte_0`
 )
 SELECT

@@ -1,12 +1,12 @@
 WITH `bfcte_0` AS (
   SELECT
-    `people` AS `bfcol_0`
+    `people`
   FROM `bigframes-dev`.`sqlglot_test`.`nested_structs_types`
 ), `bfcte_1` AS (
   SELECT
     *,
-    `bfcol_0`.`name` AS `bfcol_1`,
-    `bfcol_0`.`name` AS `bfcol_2`
+    `people`.`name` AS `bfcol_1`,
+    `people`.`name` AS `bfcol_2`
   FROM `bfcte_0`
 )
 SELECT

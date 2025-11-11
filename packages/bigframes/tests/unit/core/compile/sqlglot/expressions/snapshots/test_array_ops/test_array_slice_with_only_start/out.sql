@@ -1,6 +1,6 @@
 WITH `bfcte_0` AS (
   SELECT
-    `string_list_col` AS `bfcol_0`
+    `string_list_col`
   FROM `bigframes-dev`.`sqlglot_test`.`repeated_types`
 ), `bfcte_1` AS (
   SELECT
@@ -8,7 +8,7 @@ WITH `bfcte_0` AS (
     ARRAY(
       SELECT
         el
-      FROM UNNEST(`bfcol_0`) AS el WITH OFFSET AS slice_idx
+      FROM UNNEST(`string_list_col`) AS el WITH OFFSET AS slice_idx
       WHERE
         slice_idx >= 1
     ) AS `bfcol_1`

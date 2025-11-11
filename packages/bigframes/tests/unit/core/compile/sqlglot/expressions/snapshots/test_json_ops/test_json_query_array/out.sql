@@ -1,11 +1,11 @@
 WITH `bfcte_0` AS (
   SELECT
-    `json_col` AS `bfcol_0`
+    `json_col`
   FROM `bigframes-dev`.`sqlglot_test`.`json_types`
 ), `bfcte_1` AS (
   SELECT
     *,
-    JSON_QUERY_ARRAY(`bfcol_0`, '$') AS `bfcol_1`
+    JSON_QUERY_ARRAY(`json_col`, '$') AS `bfcol_1`
   FROM `bfcte_0`
 )
 SELECT

@@ -1,11 +1,11 @@
 WITH `bfcte_0` AS (
   SELECT
-    `string_col` AS `bfcol_0`
+    `string_col`
   FROM `bigframes-dev`.`sqlglot_test`.`scalar_types`
 ), `bfcte_1` AS (
   SELECT
     *,
-    LOWER(`bfcol_0`) = `bfcol_0` AND UPPER(`bfcol_0`) <> `bfcol_0` AS `bfcol_1`
+    LOWER(`string_col`) = `string_col` AND UPPER(`string_col`) <> `string_col` AS `bfcol_1`
   FROM `bfcte_0`
 )
 SELECT

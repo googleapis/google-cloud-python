@@ -1,11 +1,11 @@
 WITH `bfcte_0` AS (
   SELECT
-    `string_col` AS `bfcol_0`
+    `string_col`
   FROM `bigframes-dev`.`sqlglot_test`.`scalar_types`
 ), `bfcte_1` AS (
   SELECT
     *,
-    SUBSTRING(`bfcol_0`, 2, 2) AS `bfcol_1`
+    SUBSTRING(`string_col`, 2, 2) AS `bfcol_1`
   FROM `bfcte_0`
 )
 SELECT

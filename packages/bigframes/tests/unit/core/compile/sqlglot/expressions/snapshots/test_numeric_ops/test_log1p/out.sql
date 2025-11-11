@@ -1,11 +1,15 @@
 WITH `bfcte_0` AS (
   SELECT
-    `float64_col` AS `bfcol_0`
+    `float64_col`
   FROM `bigframes-dev`.`sqlglot_test`.`scalar_types`
 ), `bfcte_1` AS (
   SELECT
     *,
-    CASE WHEN `bfcol_0` <= -1 THEN CAST('NaN' AS FLOAT64) ELSE LN(1 + `bfcol_0`) END AS `bfcol_1`
+    CASE
+      WHEN `float64_col` <= -1
+      THEN CAST('NaN' AS FLOAT64)
+      ELSE LN(1 + `float64_col`)
+    END AS `bfcol_1`
   FROM `bfcte_0`
 )
 SELECT

@@ -1,19 +1,19 @@
 WITH `bfcte_0` AS (
   SELECT
-    `bool_col` AS `bfcol_0`,
-    `int64_col` AS `bfcol_1`,
-    `float64_col` AS `bfcol_2`,
-    `string_col` AS `bfcol_3`
+    `bool_col`,
+    `float64_col`,
+    `int64_col`,
+    `string_col`
   FROM `bigframes-dev`.`sqlglot_test`.`scalar_types`
 ), `bfcte_1` AS (
   SELECT
     *,
-    PARSE_JSON(CAST(`bfcol_1` AS STRING)) AS `bfcol_4`,
-    PARSE_JSON(CAST(`bfcol_2` AS STRING)) AS `bfcol_5`,
-    PARSE_JSON(CAST(`bfcol_0` AS STRING)) AS `bfcol_6`,
-    PARSE_JSON(`bfcol_3`) AS `bfcol_7`,
-    PARSE_JSON(CAST(`bfcol_0` AS STRING)) AS `bfcol_8`,
-    PARSE_JSON_IN_SAFE(`bfcol_3`) AS `bfcol_9`
+    PARSE_JSON(CAST(`int64_col` AS STRING)) AS `bfcol_4`,
+    PARSE_JSON(CAST(`float64_col` AS STRING)) AS `bfcol_5`,
+    PARSE_JSON(CAST(`bool_col` AS STRING)) AS `bfcol_6`,
+    PARSE_JSON(`string_col`) AS `bfcol_7`,
+    PARSE_JSON(CAST(`bool_col` AS STRING)) AS `bfcol_8`,
+    PARSE_JSON_IN_SAFE(`string_col`) AS `bfcol_9`
   FROM `bfcte_0`
 )
 SELECT

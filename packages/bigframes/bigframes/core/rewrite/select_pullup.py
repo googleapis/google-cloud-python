@@ -13,9 +13,10 @@
 # limitations under the License.
 
 import dataclasses
+import functools
 from typing import cast
 
-from bigframes.core import expression, nodes
+from bigframes.core import expression, identifiers, nodes
 
 
 def defer_selection(
@@ -26,12 +27,19 @@ def defer_selection(
 
     In many cases, these nodes will be merged or eliminated entirely, simplifying the overall tree.
     """
-    return nodes.bottom_up(root, pull_up_select)
+    return nodes.bottom_up(
+        root, functools.partial(pull_up_select, prefer_source_names=True)
+    )
 
 
-def pull_up_select(node: nodes.BigFrameNode) -> nodes.BigFrameNode:
+def pull_up_select(
+    node: nodes.BigFrameNode, prefer_source_names: bool
+) -> nodes.BigFrameNode:
     if isinstance(node, nodes.LeafNode):
-        return node
+        if prefer_source_names and isinstance(node, nodes.ReadTableNode):
+            return pull_up_source_ids(node)
+        else:
+            return node
     if isinstance(node, nodes.JoinNode):
         return pull_up_selects_under_join(node)
     if isinstance(node, nodes.ConcatNode):
@@ -40,6 +48,32 @@ def pull_up_select(node: nodes.BigFrameNode) -> nodes.BigFrameNode:
         return pull_up_select_unary(node)
     # shouldn't hit this, but not worth crashing over
     return node
+
+
+def pull_up_source_ids(node: nodes.ReadTableNode) -> nodes.BigFrameNode:
+    if all(id.sql == source_id for id, source_id in node.scan_list.items):
+        return node
+    else:
+        source_ids = sorted(
+            set(scan_item.source_id for scan_item in node.scan_list.items)
+        )
+        new_scan_list = nodes.ScanList.from_items(
+            [
+                nodes.ScanItem(identifiers.ColumnId(source_id), source_id)
+                for source_id in source_ids
+            ]
+        )
+        new_source = dataclasses.replace(node, scan_list=new_scan_list)
+        new_selection = nodes.SelectionNode(
+            new_source,
+            tuple(
+                nodes.AliasedRef(
+                    expression.DerefOp(identifiers.ColumnId(source_id)), id
+                )
+                for id, source_id in node.scan_list.items
+            ),
+        )
+        return new_selection
 
 
 def pull_up_select_unary(node: nodes.UnaryNode) -> nodes.BigFrameNode:

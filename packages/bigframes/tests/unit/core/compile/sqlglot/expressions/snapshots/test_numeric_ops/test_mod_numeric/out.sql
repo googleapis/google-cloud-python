@@ -1,33 +1,33 @@
 WITH `bfcte_0` AS (
   SELECT
-    `int64_col` AS `bfcol_0`,
-    `float64_col` AS `bfcol_1`,
-    `rowindex` AS `bfcol_2`
+    `float64_col`,
+    `int64_col`,
+    `rowindex`
   FROM `bigframes-dev`.`sqlglot_test`.`scalar_types`
 ), `bfcte_1` AS (
   SELECT
     *,
-    `bfcol_2` AS `bfcol_6`,
-    `bfcol_0` AS `bfcol_7`,
-    `bfcol_1` AS `bfcol_8`,
+    `rowindex` AS `bfcol_6`,
+    `int64_col` AS `bfcol_7`,
+    `float64_col` AS `bfcol_8`,
     CASE
-      WHEN `bfcol_0` = CAST(0 AS INT64)
-      THEN CAST(0 AS INT64) * `bfcol_0`
-      WHEN `bfcol_0` < CAST(0 AS INT64)
+      WHEN `int64_col` = CAST(0 AS INT64)
+      THEN CAST(0 AS INT64) * `int64_col`
+      WHEN `int64_col` < CAST(0 AS INT64)
       AND (
-        MOD(`bfcol_0`, `bfcol_0`)
+        MOD(`int64_col`, `int64_col`)
       ) > CAST(0 AS INT64)
-      THEN `bfcol_0` + (
-        MOD(`bfcol_0`, `bfcol_0`)
+      THEN `int64_col` + (
+        MOD(`int64_col`, `int64_col`)
       )
-      WHEN `bfcol_0` > CAST(0 AS INT64)
+      WHEN `int64_col` > CAST(0 AS INT64)
       AND (
-        MOD(`bfcol_0`, `bfcol_0`)
+        MOD(`int64_col`, `int64_col`)
       ) < CAST(0 AS INT64)
-      THEN `bfcol_0` + (
-        MOD(`bfcol_0`, `bfcol_0`)
+      THEN `int64_col` + (
+        MOD(`int64_col`, `int64_col`)
       )
-      ELSE MOD(`bfcol_0`, `bfcol_0`)
+      ELSE MOD(`int64_col`, `int64_col`)
     END AS `bfcol_9`
   FROM `bfcte_0`
 ), `bfcte_2` AS (

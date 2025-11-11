@@ -1,16 +1,16 @@
 WITH `bfcte_0` AS (
   SELECT
-    `date_col` AS `bfcol_0`,
-    `rowindex` AS `bfcol_1`,
-    `timestamp_col` AS `bfcol_2`
+    `date_col`,
+    `rowindex`,
+    `timestamp_col`
   FROM `bigframes-dev`.`sqlglot_test`.`scalar_types`
 ), `bfcte_1` AS (
   SELECT
     *,
-    `bfcol_1` AS `bfcol_6`,
-    `bfcol_2` AS `bfcol_7`,
-    `bfcol_0` AS `bfcol_8`,
-    TIMESTAMP_ADD(CAST(`bfcol_0` AS DATETIME), INTERVAL 86400000000 MICROSECOND) AS `bfcol_9`
+    `rowindex` AS `bfcol_6`,
+    `timestamp_col` AS `bfcol_7`,
+    `date_col` AS `bfcol_8`,
+    TIMESTAMP_ADD(CAST(`date_col` AS DATETIME), INTERVAL 86400000000 MICROSECOND) AS `bfcol_9`
   FROM `bfcte_0`
 ), `bfcte_2` AS (
   SELECT

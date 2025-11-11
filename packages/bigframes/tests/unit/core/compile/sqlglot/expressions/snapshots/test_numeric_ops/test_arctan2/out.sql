@@ -1,14 +1,14 @@
 WITH `bfcte_0` AS (
   SELECT
-    `bool_col` AS `bfcol_0`,
-    `int64_col` AS `bfcol_1`,
-    `float64_col` AS `bfcol_2`
+    `bool_col`,
+    `float64_col`,
+    `int64_col`
   FROM `bigframes-dev`.`sqlglot_test`.`scalar_types`
 ), `bfcte_1` AS (
   SELECT
     *,
-    ATAN2(`bfcol_1`, `bfcol_2`) AS `bfcol_6`,
-    ATAN2(CAST(`bfcol_0` AS INT64), `bfcol_2`) AS `bfcol_7`
+    ATAN2(`int64_col`, `float64_col`) AS `bfcol_6`,
+    ATAN2(CAST(`bool_col` AS INT64), `float64_col`) AS `bfcol_7`
   FROM `bfcte_0`
 )
 SELECT

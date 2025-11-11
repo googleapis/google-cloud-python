@@ -1,12 +1,12 @@
 WITH `bfcte_0` AS (
   SELECT
-    `int64_col` AS `bfcol_0`,
-    `string_col` AS `bfcol_1`
+    `int64_col`,
+    `string_col`
   FROM `bigframes-dev`.`sqlglot_test`.`scalar_types`
 ), `bfcte_1` AS (
   SELECT
     *,
-    COUNT(`bfcol_0`) OVER (PARTITION BY `bfcol_1`) AS `bfcol_2`
+    COUNT(`int64_col`) OVER (PARTITION BY `string_col`) AS `bfcol_2`
   FROM `bfcte_0`
 )
 SELECT

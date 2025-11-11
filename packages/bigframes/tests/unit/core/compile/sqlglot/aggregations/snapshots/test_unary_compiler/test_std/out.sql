@@ -1,15 +1,15 @@
 WITH `bfcte_0` AS (
   SELECT
-    `bool_col` AS `bfcol_0`,
-    `int64_col` AS `bfcol_1`,
-    `duration_col` AS `bfcol_2`
+    `bool_col`,
+    `duration_col`,
+    `int64_col`
   FROM `bigframes-dev`.`sqlglot_test`.`scalar_types`
 ), `bfcte_1` AS (
   SELECT
     *,
-    `bfcol_1` AS `bfcol_6`,
-    `bfcol_0` AS `bfcol_7`,
-    `bfcol_2` AS `bfcol_8`
+    `int64_col` AS `bfcol_6`,
+    `bool_col` AS `bfcol_7`,
+    `duration_col` AS `bfcol_8`
   FROM `bfcte_0`
 ), `bfcte_2` AS (
   SELECT

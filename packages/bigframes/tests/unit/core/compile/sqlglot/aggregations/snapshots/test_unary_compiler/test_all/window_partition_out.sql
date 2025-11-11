@@ -1,15 +1,15 @@
 WITH `bfcte_0` AS (
   SELECT
-    `bool_col` AS `bfcol_0`,
-    `string_col` AS `bfcol_1`
+    `bool_col`,
+    `string_col`
   FROM `bigframes-dev`.`sqlglot_test`.`scalar_types`
 ), `bfcte_1` AS (
   SELECT
     *,
     CASE
-      WHEN `bfcol_0` IS NULL
+      WHEN `bool_col` IS NULL
       THEN NULL
-      ELSE COALESCE(LOGICAL_AND(`bfcol_0`) OVER (PARTITION BY `bfcol_1`), TRUE)
+      ELSE COALESCE(LOGICAL_AND(`bool_col`) OVER (PARTITION BY `string_col`), TRUE)
     END AS `bfcol_2`
   FROM `bfcte_0`
 )

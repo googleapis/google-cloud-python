@@ -1,19 +1,19 @@
 WITH `bfcte_0` AS (
   SELECT
-    `string_col` AS `bfcol_0`
+    `string_col`
   FROM `bigframes-dev`.`sqlglot_test`.`scalar_types`
 ), `bfcte_1` AS (
   SELECT
     *,
-    LPAD(`bfcol_0`, GREATEST(LENGTH(`bfcol_0`), 10), '-') AS `bfcol_1`,
-    RPAD(`bfcol_0`, GREATEST(LENGTH(`bfcol_0`), 10), '-') AS `bfcol_2`,
+    LPAD(`string_col`, GREATEST(LENGTH(`string_col`), 10), '-') AS `bfcol_1`,
+    RPAD(`string_col`, GREATEST(LENGTH(`string_col`), 10), '-') AS `bfcol_2`,
     RPAD(
       LPAD(
-        `bfcol_0`,
-        CAST(SAFE_DIVIDE(GREATEST(LENGTH(`bfcol_0`), 10) - LENGTH(`bfcol_0`), 2) AS INT64) + LENGTH(`bfcol_0`),
+        `string_col`,
+        CAST(SAFE_DIVIDE(GREATEST(LENGTH(`string_col`), 10) - LENGTH(`string_col`), 2) AS INT64) + LENGTH(`string_col`),
         '-'
       ),
-      GREATEST(LENGTH(`bfcol_0`), 10),
+      GREATEST(LENGTH(`string_col`), 10),
       '-'
     ) AS `bfcol_3`
   FROM `bfcte_0`

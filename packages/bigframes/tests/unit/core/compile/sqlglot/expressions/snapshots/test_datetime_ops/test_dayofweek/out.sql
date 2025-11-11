@@ -1,15 +1,15 @@
 WITH `bfcte_0` AS (
   SELECT
-    `date_col` AS `bfcol_0`,
-    `datetime_col` AS `bfcol_1`,
-    `timestamp_col` AS `bfcol_2`
+    `date_col`,
+    `datetime_col`,
+    `timestamp_col`
   FROM `bigframes-dev`.`sqlglot_test`.`scalar_types`
 ), `bfcte_1` AS (
   SELECT
     *,
-    CAST(MOD(EXTRACT(DAYOFWEEK FROM `bfcol_1`) + 5, 7) AS INT64) AS `bfcol_6`,
-    CAST(MOD(EXTRACT(DAYOFWEEK FROM `bfcol_2`) + 5, 7) AS INT64) AS `bfcol_7`,
-    CAST(MOD(EXTRACT(DAYOFWEEK FROM `bfcol_0`) + 5, 7) AS INT64) AS `bfcol_8`
+    CAST(MOD(EXTRACT(DAYOFWEEK FROM `datetime_col`) + 5, 7) AS INT64) AS `bfcol_6`,
+    CAST(MOD(EXTRACT(DAYOFWEEK FROM `timestamp_col`) + 5, 7) AS INT64) AS `bfcol_7`,
+    CAST(MOD(EXTRACT(DAYOFWEEK FROM `date_col`) + 5, 7) AS INT64) AS `bfcol_8`
   FROM `bfcte_0`
 )
 SELECT
