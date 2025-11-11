@@ -4,6 +4,19 @@
 
 [1]: https://pypi.org/project/google-resumable-media/#history
 
+## [2.8.0](https://github.com/googleapis/google-cloud-python/compare/google-resumable-media-v2.7.2...google-resumable-media-v2.8.0) (2025-11-11)
+
+
+### Features
+
+* Add support for Python 3.13 and 3.14 (#485) ([9937233ded26924179d717b69df7c76c93f8c133](https://github.com/googleapis/google-cloud-python/commit/9937233ded26924179d717b69df7c76c93f8c133))
+
+
+### Bug Fixes
+
+* remove setup.cfg configuration for creating universal wheels (#484) ([75dbecf8d140483da27dffc970e2e87338e71432](https://github.com/googleapis/google-cloud-python/commit/75dbecf8d140483da27dffc970e2e87338e71432))
+* resolve issue where pre-release versions of dependencies are installed (#481) ([23dafcf3f216a090a0d0c6941048c7da13cbe496](https://github.com/googleapis/google-cloud-python/commit/23dafcf3f216a090a0d0c6941048c7da13cbe496))
+
 ## [2.7.2](https://github.com/googleapis/google-resumable-media-python/compare/v2.7.1...v2.7.2) (2024-08-07)
 
 
