@@ -1908,6 +1908,10 @@ def test_map_field_name_disambiguation():
 
 
 def test_gapic_metadata():
+    apiVersion = "2025-11-03"
+    serviceOptions = descriptor_pb2.ServiceOptions()
+    serviceOptions.Extensions[client_pb2.api_version] = apiVersion
+
     api_schema = api.API.build(
         file_descriptors=[
             descriptor_pb2.FileDescriptorProto(
@@ -1941,6 +1945,7 @@ def test_gapic_metadata():
                                 output_type="animalia.mollusca.v1.Mollusc",
                             ),
                         ],
+                        options=serviceOptions,
                     ),
                     descriptor_pb2.ServiceDescriptorProto(
                         name="Octopus",
@@ -1997,6 +2002,7 @@ def test_gapic_metadata():
                 }
             ),
             "Squid": gapic_metadata_pb2.GapicMetadata.ServiceForTransport(
+                api_version=apiVersion,
                 clients={
                     "grpc": gapic_metadata_pb2.GapicMetadata.ServiceAsClient(
                         library_client="SquidClient",
@@ -2026,7 +2032,7 @@ def test_gapic_metadata():
                             ),
                         },
                     ),
-                }
+                },
             ),
         },
     )
@@ -2060,6 +2066,7 @@ def test_gapic_metadata():
                 }
             ),
             "Squid": gapic_metadata_pb2.GapicMetadata.ServiceForTransport(
+                api_version=apiVersion,
                 clients={
                     "rest": gapic_metadata_pb2.GapicMetadata.ServiceAsClient(
                         library_client="SquidClient",
@@ -2075,7 +2082,7 @@ def test_gapic_metadata():
                             ),
                         },
                     ),
-                }
+                },
             ),
         },
     )
@@ -2131,6 +2138,7 @@ def test_gapic_metadata():
                 }
             ),
             "Squid": gapic_metadata_pb2.GapicMetadata.ServiceForTransport(
+                api_version=apiVersion,
                 clients={
                     "grpc": gapic_metadata_pb2.GapicMetadata.ServiceAsClient(
                         library_client="SquidClient",
@@ -2174,7 +2182,7 @@ def test_gapic_metadata():
                             ),
                         },
                     ),
-                }
+                },
             ),
         },
     )
