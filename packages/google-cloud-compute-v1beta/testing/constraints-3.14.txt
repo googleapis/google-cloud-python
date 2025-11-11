@@ -6,7 +6,7 @@
 # e.g., if setup.py has "google-cloud-foo >= 1.14.0, < 2.0.0",
 # Then this file should have google-cloud-foo>=1
 google-api-core>=2
-google-auth>=2
+google-auth==2.42.1
 grpcio>=1
 proto-plus>=1
 protobuf>=6
