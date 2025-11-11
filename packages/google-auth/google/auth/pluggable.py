@@ -37,6 +37,7 @@ except ImportError:  # pragma: NO COVER
     from collections import Mapping  # type: ignore
 import json
 import os
+import shlex
 import subprocess
 import sys
 import time
@@ -220,7 +221,7 @@ class Credentials(external_account.Credentials):
         exe_stderr = sys.stdout if self.interactive else subprocess.STDOUT
 
         result = subprocess.run(
-            self._credential_source_executable_command.split(),
+            shlex.split(self._credential_source_executable_command),
             timeout=exe_timeout,
             stdin=exe_stdin,
             stdout=exe_stdout,
@@ -273,7 +274,7 @@ class Credentials(external_account.Credentials):
 
         # Run executable
         result = subprocess.run(
-            self._credential_source_executable_command.split(),
+            shlex.split(self._credential_source_executable_command),
             timeout=self._credential_source_executable_interactive_timeout_millis
             / 1000,
             stdout=subprocess.PIPE,

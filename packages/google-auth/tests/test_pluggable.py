@@ -1240,6 +1240,36 @@ class TestCredentials(object):
             assert excinfo.match(r"Pluggable auth is only supported for python 3.7+")
 
     @mock.patch.dict(os.environ, {"GOOGLE_EXTERNAL_ACCOUNT_ALLOW_EXECUTABLES": "1"})
+    def test_retrieve_subject_token_with_quoted_command(self):
+        command_with_spaces = '"/path/with spaces/to/executable" "arg with spaces"'
+        credential_source = {
+            "executable": {"command": command_with_spaces, "timeout_millis": 30000}
+        }
+
+        with mock.patch(
+            "subprocess.run",
+            return_value=subprocess.CompletedProcess(
+                args=[],
+                stdout=json.dumps(
+                    self.EXECUTABLE_SUCCESSFUL_OIDC_RESPONSE_ID_TOKEN
+                ).encode("UTF-8"),
+                returncode=0,
+            ),
+        ) as mock_run:
+            credentials = self.make_pluggable(credential_source=credential_source)
+            subject_token = credentials.retrieve_subject_token(None)
+
+            assert subject_token == self.EXECUTABLE_OIDC_TOKEN
+            mock_run.assert_called_once_with(
+                ["/path/with spaces/to/executable", "arg with spaces"],
+                timeout=30.0,
+                stdin=None,
+                stdout=subprocess.PIPE,
+                stderr=subprocess.STDOUT,
+                env=mock.ANY,
+            )
+
+    @mock.patch.dict(os.environ, {"GOOGLE_EXTERNAL_ACCOUNT_ALLOW_EXECUTABLES": "1"})
     def test_revoke_subject_token_python_2(self):
         with mock.patch("sys.version_info", (2, 7)):
             credentials = self.make_pluggable(
