@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.4.4](https://github.com/googleapis/python-db-dtypes-pandas/compare/v1.4.3...v1.4.4) (2025-09-08)
+
+
+### Dependencies
+
+* Adds limits to numpy installs under 3.10 for dataproc ([#370](https://github.com/googleapis/python-db-dtypes-pandas/issues/370)) ([6d79280](https://github.com/googleapis/python-db-dtypes-pandas/commit/6d79280f54b662accd80a571412ac0fcae206abb))
+
 ## [1.4.3](https://github.com/googleapis/python-db-dtypes-pandas/compare/v1.4.2...v1.4.3) (2025-05-12)
 
 
