@@ -929,7 +929,7 @@ def _run_individual_session(nox_session: str, library_id: str, repo: str):
         "-f",
         f"{repo}/packages/{library_id}/noxfile.py",
     ]
-    result = subprocess.run(command, text=True, check=True, timeout=1200)
+    result = subprocess.run(command, text=True, check=True, timeout=600)
     logger.info(result)
 
 
