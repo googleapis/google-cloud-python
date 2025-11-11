@@ -1642,8 +1642,8 @@ class RegionDisksClient(metaclass=RegionDisksClientMeta):
         r"""Deletes the specified regional persistent disk.
         Deleting a regional disk removes all the replicas of its
         data permanently and is irreversible. However, deleting
-        a disk does not delete any snapshots previously made
-        from the disk. You must separately delete snapshots.
+        a disk does not delete anysnapshots previously made from
+        the disk. You must separatelydelete snapshots.
 
         .. code-block:: python
 
@@ -1779,8 +1779,8 @@ class RegionDisksClient(metaclass=RegionDisksClientMeta):
         r"""Deletes the specified regional persistent disk.
         Deleting a regional disk removes all the replicas of its
         data permanently and is irreversible. However, deleting
-        a disk does not delete any snapshots previously made
-        from the disk. You must separately delete snapshots.
+        a disk does not delete anysnapshots previously made from
+        the disk. You must separatelydelete snapshots.
 
         .. code-block:: python
 
@@ -2000,18 +2000,26 @@ class RegionDisksClient(metaclass=RegionDisksClientMeta):
 
         Returns:
             google.cloud.compute_v1beta.types.Disk:
-                Represents a Persistent Disk resource. Google Compute
-                Engine has two Disk resources: \*
-                [Zonal](/compute/docs/reference/rest/beta/disks) \*
-                [Regional](/compute/docs/reference/rest/beta/regionDisks)
-                Persistent disks are required for running your VM
-                instances. Create both boot and non-boot (data)
-                persistent disks. For more information, read Persistent
-                Disks. For more storage options, read Storage options.
-                The disks resource represents a zonal persistent disk.
-                For more information, read Zonal persistent disks. The
-                regionDisks resource represents a regional persistent
-                disk. For more information, read Regional resources.
+                Represents a Persistent Disk resource.
+
+                   Google Compute Engine has two Disk resources:
+
+                   - [Zonal](/compute/docs/reference/rest/beta/disks)
+                   - [Regional](/compute/docs/reference/rest/beta/regionDisks)
+
+                   Persistent disks are required for running your VM
+                   instances. Create both boot and non-boot (data)
+                   persistent disks. For more information, read
+                   Persistent Disks. For more storage options, read
+                   Storage options.
+
+                   The disks resource represents a zonal persistent
+                   disk. For more information, readZonal persistent
+                   disks.
+
+                   The regionDisks resource represents a regional
+                   persistent disk. For more information, read Regional
+                   resources.
 
         """
         # Create or coerce a protobuf request object.
@@ -2146,28 +2154,36 @@ class RegionDisksClient(metaclass=RegionDisksClientMeta):
 
         Returns:
             google.cloud.compute_v1beta.types.Policy:
-                An Identity and Access Management (IAM) policy, which
-                specifies access controls for Google Cloud resources. A
-                Policy is a collection of bindings. A binding binds one
-                or more members, or principals, to a single role.
-                Principals can be user accounts, service accounts,
-                Google groups, and domains (such as G Suite). A role is
-                a named list of permissions; each role can be an IAM
-                predefined role or a user-created custom role. For some
-                types of Google Cloud resources, a binding can also
-                specify a condition, which is a logical expression that
-                allows access to a resource only if the expression
-                evaluates to true. A condition can add constraints based
-                on attributes of the request, the resource, or both. To
-                learn which resources support conditions in their IAM
-                policies, see the [IAM
-                documentation](https://cloud.google.com/iam/help/conditions/resource-policies).
-                **JSON example:**
-                :literal:`` { "bindings": [ { "role": "roles/resourcemanager.organizationAdmin", "members": [ "user:mike@example.com", "group:admins@example.com", "domain:google.com", "serviceAccount:my-project-id@appspot.gserviceaccount.com" ] }, { "role": "roles/resourcemanager.organizationViewer", "members": [ "user:eve@example.com" ], "condition": { "title": "expirable access", "description": "Does not grant access after Sep 2020", "expression": "request.time < timestamp('2020-10-01T00:00:00.000Z')", } } ], "etag": "BwWWja0YfJA=", "version": 3 }`\
-                \**YAML example:\*\*
-                \ ``bindings: - members: - user:mike@example.com - group:admins@example.com - domain:google.com - serviceAccount:my-project-id@appspot.gserviceaccount.com role: roles/resourcemanager.organizationAdmin - members: - user:eve@example.com role: roles/resourcemanager.organizationViewer condition: title: expirable access description: Does not grant access after Sep 2020 expression: request.time < timestamp('2020-10-01T00:00:00.000Z') etag: BwWWja0YfJA= version: 3``\ \`
-                For a description of IAM and its features, see the [IAM
-                documentation](https://cloud.google.com/iam/docs/).
+                An Identity and Access Management (IAM) policy, which specifies access
+                   controls for Google Cloud resources.
+
+                   A Policy is a collection of bindings. A binding binds
+                   one or more members, or principals, to a single role.
+                   Principals can be user accounts, service accounts,
+                   Google groups, and domains (such as G Suite). A role
+                   is a named list of permissions; each role can be an
+                   IAM predefined role or a user-created custom role.
+
+                   For some types of Google Cloud resources, a binding
+                   can also specify a condition, which is a logical
+                   expression that allows access to a resource only if
+                   the expression evaluates to true. A condition can add
+                   constraints based on attributes of the request, the
+                   resource, or both. To learn which resources support
+                   conditions in their IAM policies, see the [IAM
+                   documentation](https://cloud.google.com/iam/help/conditions/resource-policies).
+
+                   **JSON example:**
+
+                   :literal:``     {       "bindings": [         {           "role": "roles/resourcemanager.organizationAdmin",           "members": [             "user:mike@example.com",             "group:admins@example.com",             "domain:google.com",             "serviceAccount:my-project-id@appspot.gserviceaccount.com"           ]         },         {           "role": "roles/resourcemanager.organizationViewer",           "members": [             "user:eve@example.com"           ],           "condition": {             "title": "expirable access",             "description": "Does not grant access after Sep 2020",             "expression": "request.time < timestamp('2020-10-01T00:00:00.000Z')",           }         }       ],       "etag": "BwWWja0YfJA=",       "version": 3     }`\ \`
+
+                   **YAML example:**
+
+                   :literal:``     bindings:     - members:       - user:mike@example.com       - group:admins@example.com       - domain:google.com       - serviceAccount:my-project-id@appspot.gserviceaccount.com       role: roles/resourcemanager.organizationAdmin     - members:       - user:eve@example.com       role: roles/resourcemanager.organizationViewer       condition:         title: expirable access         description: Does not grant access after Sep 2020         expression: request.time < timestamp('2020-10-01T00:00:00.000Z')     etag: BwWWja0YfJA=     version: 3`\ \`
+
+                   For a description of IAM and its features, see the
+                   [IAM
+                   documentation](https://cloud.google.com/iam/docs/).
 
         """
         # Create or coerce a protobuf request object.
@@ -3372,28 +3388,36 @@ class RegionDisksClient(metaclass=RegionDisksClientMeta):
 
         Returns:
             google.cloud.compute_v1beta.types.Policy:
-                An Identity and Access Management (IAM) policy, which
-                specifies access controls for Google Cloud resources. A
-                Policy is a collection of bindings. A binding binds one
-                or more members, or principals, to a single role.
-                Principals can be user accounts, service accounts,
-                Google groups, and domains (such as G Suite). A role is
-                a named list of permissions; each role can be an IAM
-                predefined role or a user-created custom role. For some
-                types of Google Cloud resources, a binding can also
-                specify a condition, which is a logical expression that
-                allows access to a resource only if the expression
-                evaluates to true. A condition can add constraints based
-                on attributes of the request, the resource, or both. To
-                learn which resources support conditions in their IAM
-                policies, see the [IAM
-                documentation](https://cloud.google.com/iam/help/conditions/resource-policies).
-                **JSON example:**
-                :literal:`` { "bindings": [ { "role": "roles/resourcemanager.organizationAdmin", "members": [ "user:mike@example.com", "group:admins@example.com", "domain:google.com", "serviceAccount:my-project-id@appspot.gserviceaccount.com" ] }, { "role": "roles/resourcemanager.organizationViewer", "members": [ "user:eve@example.com" ], "condition": { "title": "expirable access", "description": "Does not grant access after Sep 2020", "expression": "request.time < timestamp('2020-10-01T00:00:00.000Z')", } } ], "etag": "BwWWja0YfJA=", "version": 3 }`\
-                \**YAML example:\*\*
-                \ ``bindings: - members: - user:mike@example.com - group:admins@example.com - domain:google.com - serviceAccount:my-project-id@appspot.gserviceaccount.com role: roles/resourcemanager.organizationAdmin - members: - user:eve@example.com role: roles/resourcemanager.organizationViewer condition: title: expirable access description: Does not grant access after Sep 2020 expression: request.time < timestamp('2020-10-01T00:00:00.000Z') etag: BwWWja0YfJA= version: 3``\ \`
-                For a description of IAM and its features, see the [IAM
-                documentation](https://cloud.google.com/iam/docs/).
+                An Identity and Access Management (IAM) policy, which specifies access
+                   controls for Google Cloud resources.
+
+                   A Policy is a collection of bindings. A binding binds
+                   one or more members, or principals, to a single role.
+                   Principals can be user accounts, service accounts,
+                   Google groups, and domains (such as G Suite). A role
+                   is a named list of permissions; each role can be an
+                   IAM predefined role or a user-created custom role.
+
+                   For some types of Google Cloud resources, a binding
+                   can also specify a condition, which is a logical
+                   expression that allows access to a resource only if
+                   the expression evaluates to true. A condition can add
+                   constraints based on attributes of the request, the
+                   resource, or both. To learn which resources support
+                   conditions in their IAM policies, see the [IAM
+                   documentation](https://cloud.google.com/iam/help/conditions/resource-policies).
+
+                   **JSON example:**
+
+                   :literal:``     {       "bindings": [         {           "role": "roles/resourcemanager.organizationAdmin",           "members": [             "user:mike@example.com",             "group:admins@example.com",             "domain:google.com",             "serviceAccount:my-project-id@appspot.gserviceaccount.com"           ]         },         {           "role": "roles/resourcemanager.organizationViewer",           "members": [             "user:eve@example.com"           ],           "condition": {             "title": "expirable access",             "description": "Does not grant access after Sep 2020",             "expression": "request.time < timestamp('2020-10-01T00:00:00.000Z')",           }         }       ],       "etag": "BwWWja0YfJA=",       "version": 3     }`\ \`
+
+                   **YAML example:**
+
+                   :literal:``     bindings:     - members:       - user:mike@example.com       - group:admins@example.com       - domain:google.com       - serviceAccount:my-project-id@appspot.gserviceaccount.com       role: roles/resourcemanager.organizationAdmin     - members:       - user:eve@example.com       role: roles/resourcemanager.organizationViewer       condition:         title: expirable access         description: Does not grant access after Sep 2020         expression: request.time < timestamp('2020-10-01T00:00:00.000Z')     etag: BwWWja0YfJA=     version: 3`\ \`
+
+                   For a description of IAM and its features, see the
+                   [IAM
+                   documentation](https://cloud.google.com/iam/docs/).
 
         """
         # Create or coerce a protobuf request object.
@@ -3802,8 +3826,8 @@ class RegionDisksClient(metaclass=RegionDisksClientMeta):
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> compute.Operation:
-        r"""Starts asynchronous replication. Must be invoked on
-        the primary disk.
+        r"""Starts asynchronous replication.
+        Must be invoked on the primary disk.
 
         .. code-block:: python
 
@@ -3955,8 +3979,8 @@ class RegionDisksClient(metaclass=RegionDisksClientMeta):
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> extended_operation.ExtendedOperation:
-        r"""Starts asynchronous replication. Must be invoked on
-        the primary disk.
+        r"""Starts asynchronous replication.
+        Must be invoked on the primary disk.
 
         .. code-block:: python
 
@@ -4130,8 +4154,9 @@ class RegionDisksClient(metaclass=RegionDisksClientMeta):
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> compute.Operation:
-        r"""Stops asynchronous replication. Can be invoked either
-        on the primary or on the secondary disk.
+        r"""Stops asynchronous replication.
+        Can be invoked either on the primary or on the secondary
+        disk.
 
         .. code-block:: python
 
@@ -4266,8 +4291,9 @@ class RegionDisksClient(metaclass=RegionDisksClientMeta):
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> extended_operation.ExtendedOperation:
-        r"""Stops asynchronous replication. Can be invoked either
-        on the primary or on the secondary disk.
+        r"""Stops asynchronous replication.
+        Can be invoked either on the primary or on the secondary
+        disk.
 
         .. code-block:: python
 

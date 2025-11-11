@@ -703,8 +703,9 @@ class TargetInstancesClient(metaclass=TargetInstancesClientMeta):
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> pagers.AggregatedListPager:
-        r"""Retrieves an aggregated list of target instances. To prevent
-        failure, Google recommends that you set the
+        r"""Retrieves an aggregated list of target instances.
+
+        To prevent failure, Google recommends that you set the
         ``returnPartialSuccess`` parameter to ``true``.
 
         .. code-block:: python
@@ -1187,13 +1188,15 @@ class TargetInstancesClient(metaclass=TargetInstancesClientMeta):
         Returns:
             google.cloud.compute_v1beta.types.TargetInstance:
                 Represents a Target Instance
-                resource. You can use a target instance
-                to handle traffic for one or more
-                forwarding rules, which is ideal for
-                forwarding protocol traffic that is
-                managed by a single source. For example,
-                ESP, AH, TCP, or UDP. For more
-                information, read Target instances.
+                resource.
+                You can use a target instance to handle
+                traffic for one or more forwarding
+                rules, which is ideal for forwarding
+                protocol traffic that is managed by a
+                single source. For example, ESP, AH,
+                TCP, or UDP. For more information,
+                readTarget
+                instances.
 
         """
         # Create or coerce a protobuf request object.
@@ -1697,8 +1700,8 @@ class TargetInstancesClient(metaclass=TargetInstancesClientMeta):
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> compute.Operation:
         r"""Sets the Google Cloud Armor security policy for the
-        specified target instance. For more information, see
-        Google Cloud Armor Overview
+        specified target instance. For more information,
+        seeGoogle Cloud Armor Overview
 
         .. code-block:: python
 
@@ -1854,8 +1857,8 @@ class TargetInstancesClient(metaclass=TargetInstancesClientMeta):
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> extended_operation.ExtendedOperation:
         r"""Sets the Google Cloud Armor security policy for the
-        specified target instance. For more information, see
-        Google Cloud Armor Overview
+        specified target instance. For more information,
+        seeGoogle Cloud Armor Overview
 
         .. code-block:: python
 

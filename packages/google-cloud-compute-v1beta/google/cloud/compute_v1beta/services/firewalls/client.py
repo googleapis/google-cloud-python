@@ -1015,10 +1015,11 @@ class FirewallsClient(metaclass=FirewallsClientMeta):
         Returns:
             google.cloud.compute_v1beta.types.Firewall:
                 Represents a Firewall Rule resource.
+
                 Firewall rules allow or deny ingress
                 traffic to, and egress traffic from your
-                instances. For more information, read
-                Firewall rules.
+                instances. For more information,
+                readFirewall rules.
 
         """
         # Create or coerce a protobuf request object.
@@ -1464,9 +1465,9 @@ class FirewallsClient(metaclass=FirewallsClientMeta):
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> compute.Operation:
         r"""Updates the specified firewall rule with the data
-        included in the request. This method supports PATCH
-        semantics and uses the JSON merge patch format and
-        processing rules.
+        included in the request. This method supportsPATCH
+        semantics and uses theJSON merge
+        patch format and processing rules.
 
         .. code-block:: python
 
@@ -1596,9 +1597,9 @@ class FirewallsClient(metaclass=FirewallsClientMeta):
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> extended_operation.ExtendedOperation:
         r"""Updates the specified firewall rule with the data
-        included in the request. This method supports PATCH
-        semantics and uses the JSON merge patch format and
-        processing rules.
+        included in the request. This method supportsPATCH
+        semantics and uses theJSON merge
+        patch format and processing rules.
 
         .. code-block:: python
 
@@ -1888,10 +1889,10 @@ class FirewallsClient(metaclass=FirewallsClientMeta):
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> compute.Operation:
         r"""Updates the specified firewall rule with the data
-        included in the request. Note that all fields will be
-        updated if using PUT, even fields that are not
-        specified. To update individual fields, please use PATCH
-        instead.
+        included in the request.
+        Note that all fields will be updated if using PUT, even
+        fields that are not specified. To update individual
+        fields, please use PATCH instead.
 
         .. code-block:: python
 
@@ -2021,10 +2022,10 @@ class FirewallsClient(metaclass=FirewallsClientMeta):
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> extended_operation.ExtendedOperation:
         r"""Updates the specified firewall rule with the data
-        included in the request. Note that all fields will be
-        updated if using PUT, even fields that are not
-        specified. To update individual fields, please use PATCH
-        instead.
+        included in the request.
+        Note that all fields will be updated if using PUT, even
+        fields that are not specified. To update individual
+        fields, please use PATCH instead.
 
         .. code-block:: python
 

@@ -1082,13 +1082,15 @@ class RegionNotificationEndpointsClient(
 
         Returns:
             google.cloud.compute_v1beta.types.NotificationEndpoint:
-                Represents a notification endpoint. A
-                notification endpoint resource defines
+                Represents a notification endpoint.
+
+                A notification endpoint resource defines
                 an endpoint to receive notifications
                 when there are status changes detected
                 by the associated health check service.
-                For more information, see Health checks
-                overview.
+
+                For more information, see
+                Health checks overview.
 
         """
         # Create or coerce a protobuf request object.

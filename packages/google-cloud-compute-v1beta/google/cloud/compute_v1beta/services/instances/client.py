@@ -1690,11 +1690,14 @@ class InstancesClient(metaclass=InstancesClientMeta):
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> pagers.AggregatedListPager:
         r"""Retrieves an aggregated list of all of the instances in your
-        project across all regions and zones. The performance of this
-        method degrades when a filter is specified on a project that has
-        a very large number of instances. To prevent failure, Google
-        recommends that you set the ``returnPartialSuccess`` parameter
-        to ``true``.
+        project across all regions and zones.
+
+        The performance of this method degrades when a filter is
+        specified on a project that has a very large number of
+        instances.
+
+        To prevent failure, Google recommends that you set the
+        ``returnPartialSuccess`` parameter to ``true``.
 
         .. code-block:: python
 
@@ -1820,8 +1823,8 @@ class InstancesClient(metaclass=InstancesClientMeta):
         r"""Attaches an existing Disk resource to an instance.
         You must first create the disk before you can attach it.
         It is not possible to create and attach a disk at the
-        same time. For more information, read Adding a
-        persistent disk to your instance.
+        same time. For more information, readAdding a persistent
+        disk to your instance.
 
         .. code-block:: python
 
@@ -1965,8 +1968,8 @@ class InstancesClient(metaclass=InstancesClientMeta):
         r"""Attaches an existing Disk resource to an instance.
         You must first create the disk before you can attach it.
         It is not possible to create and attach a disk at the
-        same time. For more information, read Adding a
-        persistent disk to your instance.
+        same time. For more information, readAdding a persistent
+        disk to your instance.
 
         .. code-block:: python
 
@@ -2134,8 +2137,8 @@ class InstancesClient(metaclass=InstancesClientMeta):
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> compute.Operation:
         r"""Creates multiple instances. Count specifies the
-        number of instances to create. For more information, see
-        About bulk creation of VMs.
+        number of instances to create. For more information,
+        seeAbout bulk creation of VMs.
 
         .. code-block:: python
 
@@ -2271,8 +2274,8 @@ class InstancesClient(metaclass=InstancesClientMeta):
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> extended_operation.ExtendedOperation:
         r"""Creates multiple instances. Count specifies the
-        number of instances to create. For more information, see
-        About bulk creation of VMs.
+        number of instances to create. For more information,
+        seeAbout bulk creation of VMs.
 
         .. code-block:: python
 
@@ -2431,7 +2434,7 @@ class InstancesClient(metaclass=InstancesClientMeta):
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> compute.Operation:
         r"""Deletes the specified Instance resource. For more
-        information, see Deleting an instance.
+        information, seeDeleting an instance.
 
         .. code-block:: python
 
@@ -2567,7 +2570,7 @@ class InstancesClient(metaclass=InstancesClientMeta):
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> extended_operation.ExtendedOperation:
         r"""Deletes the specified Instance resource. For more
-        information, see Deleting an instance.
+        information, seeDeleting an instance.
 
         .. code-block:: python
 
@@ -3068,10 +3071,12 @@ class InstancesClient(metaclass=InstancesClientMeta):
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> compute.Operation:
         r"""Deletes one dynamic network interface from an active instance.
-        InstancesDeleteNetworkInterfaceRequest indicates: - instance
-        from which to delete, using project+zone+resource_id fields; -
-        dynamic network interface to be deleted, using
-        network_interface_name field;
+        InstancesDeleteNetworkInterfaceRequest indicates:
+
+        - instance from which to delete, using project+zone+resource_id
+          fields;
+        - dynamic network interface to be deleted, using
+          network_interface_name field;
 
         .. code-block:: python
 
@@ -3222,10 +3227,12 @@ class InstancesClient(metaclass=InstancesClientMeta):
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> extended_operation.ExtendedOperation:
         r"""Deletes one dynamic network interface from an active instance.
-        InstancesDeleteNetworkInterfaceRequest indicates: - instance
-        from which to delete, using project+zone+resource_id fields; -
-        dynamic network interface to be deleted, using
-        network_interface_name field;
+        InstancesDeleteNetworkInterfaceRequest indicates:
+
+        - instance from which to delete, using project+zone+resource_id
+          fields;
+        - dynamic network interface to be deleted, using
+          network_interface_name field;
 
         .. code-block:: python
 
@@ -3777,10 +3784,11 @@ class InstancesClient(metaclass=InstancesClientMeta):
 
         Returns:
             google.cloud.compute_v1beta.types.Instance:
-                Represents an Instance resource. An
-                instance is a virtual machine that is
+                Represents an Instance resource.
+
+                An instance is a virtual machine that is
                 hosted on Google Cloud Platform. For
-                more information, read Virtual Machine
+                more information, readVirtual Machine
                 Instances.
 
         """
@@ -4198,28 +4206,36 @@ class InstancesClient(metaclass=InstancesClientMeta):
 
         Returns:
             google.cloud.compute_v1beta.types.Policy:
-                An Identity and Access Management (IAM) policy, which
-                specifies access controls for Google Cloud resources. A
-                Policy is a collection of bindings. A binding binds one
-                or more members, or principals, to a single role.
-                Principals can be user accounts, service accounts,
-                Google groups, and domains (such as G Suite). A role is
-                a named list of permissions; each role can be an IAM
-                predefined role or a user-created custom role. For some
-                types of Google Cloud resources, a binding can also
-                specify a condition, which is a logical expression that
-                allows access to a resource only if the expression
-                evaluates to true. A condition can add constraints based
-                on attributes of the request, the resource, or both. To
-                learn which resources support conditions in their IAM
-                policies, see the [IAM
-                documentation](https://cloud.google.com/iam/help/conditions/resource-policies).
-                **JSON example:**
-                :literal:`` { "bindings": [ { "role": "roles/resourcemanager.organizationAdmin", "members": [ "user:mike@example.com", "group:admins@example.com", "domain:google.com", "serviceAccount:my-project-id@appspot.gserviceaccount.com" ] }, { "role": "roles/resourcemanager.organizationViewer", "members": [ "user:eve@example.com" ], "condition": { "title": "expirable access", "description": "Does not grant access after Sep 2020", "expression": "request.time < timestamp('2020-10-01T00:00:00.000Z')", } } ], "etag": "BwWWja0YfJA=", "version": 3 }`\
-                \**YAML example:\*\*
-                \ ``bindings: - members: - user:mike@example.com - group:admins@example.com - domain:google.com - serviceAccount:my-project-id@appspot.gserviceaccount.com role: roles/resourcemanager.organizationAdmin - members: - user:eve@example.com role: roles/resourcemanager.organizationViewer condition: title: expirable access description: Does not grant access after Sep 2020 expression: request.time < timestamp('2020-10-01T00:00:00.000Z') etag: BwWWja0YfJA= version: 3``\ \`
-                For a description of IAM and its features, see the [IAM
-                documentation](https://cloud.google.com/iam/docs/).
+                An Identity and Access Management (IAM) policy, which specifies access
+                   controls for Google Cloud resources.
+
+                   A Policy is a collection of bindings. A binding binds
+                   one or more members, or principals, to a single role.
+                   Principals can be user accounts, service accounts,
+                   Google groups, and domains (such as G Suite). A role
+                   is a named list of permissions; each role can be an
+                   IAM predefined role or a user-created custom role.
+
+                   For some types of Google Cloud resources, a binding
+                   can also specify a condition, which is a logical
+                   expression that allows access to a resource only if
+                   the expression evaluates to true. A condition can add
+                   constraints based on attributes of the request, the
+                   resource, or both. To learn which resources support
+                   conditions in their IAM policies, see the [IAM
+                   documentation](https://cloud.google.com/iam/help/conditions/resource-policies).
+
+                   **JSON example:**
+
+                   :literal:``     {       "bindings": [         {           "role": "roles/resourcemanager.organizationAdmin",           "members": [             "user:mike@example.com",             "group:admins@example.com",             "domain:google.com",             "serviceAccount:my-project-id@appspot.gserviceaccount.com"           ]         },         {           "role": "roles/resourcemanager.organizationViewer",           "members": [             "user:eve@example.com"           ],           "condition": {             "title": "expirable access",             "description": "Does not grant access after Sep 2020",             "expression": "request.time < timestamp('2020-10-01T00:00:00.000Z')",           }         }       ],       "etag": "BwWWja0YfJA=",       "version": 3     }`\ \`
+
+                   **YAML example:**
+
+                   :literal:``     bindings:     - members:       - user:mike@example.com       - group:admins@example.com       - domain:google.com       - serviceAccount:my-project-id@appspot.gserviceaccount.com       role: roles/resourcemanager.organizationAdmin     - members:       - user:eve@example.com       role: roles/resourcemanager.organizationViewer       condition:         title: expirable access         description: Does not grant access after Sep 2020         expression: request.time < timestamp('2020-10-01T00:00:00.000Z')     etag: BwWWja0YfJA=     version: 3`\ \`
+
+                   For a description of IAM and its features, see the
+                   [IAM
+                   documentation](https://cloud.google.com/iam/docs/).
 
         """
         # Create or coerce a protobuf request object.
@@ -4356,9 +4372,10 @@ class InstancesClient(metaclass=InstancesClientMeta):
 
         Returns:
             google.cloud.compute_v1beta.types.PartnerMetadata:
-                Model definition of partner_metadata field. To be used
-                in dedicated Partner Metadata methods and to be inlined
-                in the Instance and InstanceTemplate resources.
+                Model definition of partner_metadata field.
+                   To be used in dedicated Partner Metadata methods and
+                   to be inlined in the Instance and InstanceTemplate
+                   resources.
 
         """
         # Create or coerce a protobuf request object.
@@ -5257,8 +5274,8 @@ class InstancesClient(metaclass=InstancesClientMeta):
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> pagers.ListPager:
-        r"""Retrieves the list of instances contained within the
-        specified zone.
+        r"""Retrieves the list of instances contained within
+        the specified zone.
 
         .. code-block:: python
 
@@ -5400,8 +5417,8 @@ class InstancesClient(metaclass=InstancesClientMeta):
         instance specified in the request. For example, if the
         VM instance is part of a managed or unmanaged instance
         group, the referrers list includes the instance group.
-        For more information, read Viewing referrers to VM
-        instances.
+        For more information, readViewing
+        referrers to VM instances.
 
         .. code-block:: python
 
@@ -6833,7 +6850,7 @@ class InstancesClient(metaclass=InstancesClientMeta):
     ) -> compute.Operation:
         r"""Performs a reset on the instance. This is a hard
         reset. The VM does not do a graceful shutdown. For more
-        information, see Resetting an instance.
+        information, seeResetting an instance.
 
         .. code-block:: python
 
@@ -6970,7 +6987,7 @@ class InstancesClient(metaclass=InstancesClientMeta):
     ) -> extended_operation.ExtendedOperation:
         r"""Performs a reset on the instance. This is a hard
         reset. The VM does not do a graceful shutdown. For more
-        information, see Resetting an instance.
+        information, seeResetting an instance.
 
         .. code-block:: python
 
@@ -7130,8 +7147,8 @@ class InstancesClient(metaclass=InstancesClientMeta):
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> compute.Operation:
-        r"""Resumes an instance that was suspended using the
-        instances().suspend method.
+        r"""Resumes an instance that was suspended using
+        theinstances().suspend method.
 
         .. code-block:: python
 
@@ -7266,8 +7283,8 @@ class InstancesClient(metaclass=InstancesClientMeta):
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> extended_operation.ExtendedOperation:
-        r"""Resumes an instance that was suspended using the
-        instances().suspend method.
+        r"""Resumes an instance that was suspended using
+        theinstances().suspend method.
 
         .. code-block:: python
 
@@ -8278,28 +8295,36 @@ class InstancesClient(metaclass=InstancesClientMeta):
 
         Returns:
             google.cloud.compute_v1beta.types.Policy:
-                An Identity and Access Management (IAM) policy, which
-                specifies access controls for Google Cloud resources. A
-                Policy is a collection of bindings. A binding binds one
-                or more members, or principals, to a single role.
-                Principals can be user accounts, service accounts,
-                Google groups, and domains (such as G Suite). A role is
-                a named list of permissions; each role can be an IAM
-                predefined role or a user-created custom role. For some
-                types of Google Cloud resources, a binding can also
-                specify a condition, which is a logical expression that
-                allows access to a resource only if the expression
-                evaluates to true. A condition can add constraints based
-                on attributes of the request, the resource, or both. To
-                learn which resources support conditions in their IAM
-                policies, see the [IAM
-                documentation](https://cloud.google.com/iam/help/conditions/resource-policies).
-                **JSON example:**
-                :literal:`` { "bindings": [ { "role": "roles/resourcemanager.organizationAdmin", "members": [ "user:mike@example.com", "group:admins@example.com", "domain:google.com", "serviceAccount:my-project-id@appspot.gserviceaccount.com" ] }, { "role": "roles/resourcemanager.organizationViewer", "members": [ "user:eve@example.com" ], "condition": { "title": "expirable access", "description": "Does not grant access after Sep 2020", "expression": "request.time < timestamp('2020-10-01T00:00:00.000Z')", } } ], "etag": "BwWWja0YfJA=", "version": 3 }`\
-                \**YAML example:\*\*
-                \ ``bindings: - members: - user:mike@example.com - group:admins@example.com - domain:google.com - serviceAccount:my-project-id@appspot.gserviceaccount.com role: roles/resourcemanager.organizationAdmin - members: - user:eve@example.com role: roles/resourcemanager.organizationViewer condition: title: expirable access description: Does not grant access after Sep 2020 expression: request.time < timestamp('2020-10-01T00:00:00.000Z') etag: BwWWja0YfJA= version: 3``\ \`
-                For a description of IAM and its features, see the [IAM
-                documentation](https://cloud.google.com/iam/docs/).
+                An Identity and Access Management (IAM) policy, which specifies access
+                   controls for Google Cloud resources.
+
+                   A Policy is a collection of bindings. A binding binds
+                   one or more members, or principals, to a single role.
+                   Principals can be user accounts, service accounts,
+                   Google groups, and domains (such as G Suite). A role
+                   is a named list of permissions; each role can be an
+                   IAM predefined role or a user-created custom role.
+
+                   For some types of Google Cloud resources, a binding
+                   can also specify a condition, which is a logical
+                   expression that allows access to a resource only if
+                   the expression evaluates to true. A condition can add
+                   constraints based on attributes of the request, the
+                   resource, or both. To learn which resources support
+                   conditions in their IAM policies, see the [IAM
+                   documentation](https://cloud.google.com/iam/help/conditions/resource-policies).
+
+                   **JSON example:**
+
+                   :literal:``     {       "bindings": [         {           "role": "roles/resourcemanager.organizationAdmin",           "members": [             "user:mike@example.com",             "group:admins@example.com",             "domain:google.com",             "serviceAccount:my-project-id@appspot.gserviceaccount.com"           ]         },         {           "role": "roles/resourcemanager.organizationViewer",           "members": [             "user:eve@example.com"           ],           "condition": {             "title": "expirable access",             "description": "Does not grant access after Sep 2020",             "expression": "request.time < timestamp('2020-10-01T00:00:00.000Z')",           }         }       ],       "etag": "BwWWja0YfJA=",       "version": 3     }`\ \`
+
+                   **YAML example:**
+
+                   :literal:``     bindings:     - members:       - user:mike@example.com       - group:admins@example.com       - domain:google.com       - serviceAccount:my-project-id@appspot.gserviceaccount.com       role: roles/resourcemanager.organizationAdmin     - members:       - user:eve@example.com       role: roles/resourcemanager.organizationViewer       condition:         title: expirable access         description: Does not grant access after Sep 2020         expression: request.time < timestamp('2020-10-01T00:00:00.000Z')     etag: BwWWja0YfJA=     version: 3`\ \`
+
+                   For a description of IAM and its features, see the
+                   [IAM
+                   documentation](https://cloud.google.com/iam/docs/).
 
         """
         # Create or coerce a protobuf request object.
@@ -8376,8 +8401,8 @@ class InstancesClient(metaclass=InstancesClientMeta):
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> compute.Operation:
-        r"""Sets labels on an instance. To learn more about
-        labels, read the Labeling Resources documentation.
+        r"""Sets labels on an instance.  To learn more about
+        labels, read theLabeling Resources documentation.
 
         .. code-block:: python
 
@@ -8529,8 +8554,8 @@ class InstancesClient(metaclass=InstancesClientMeta):
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> extended_operation.ExtendedOperation:
-        r"""Sets labels on an instance. To learn more about
-        labels, read the Labeling Resources documentation.
+        r"""Sets labels on an instance.  To learn more about
+        labels, read theLabeling Resources documentation.
 
         .. code-block:: python
 
@@ -9687,9 +9712,9 @@ class InstancesClient(metaclass=InstancesClientMeta):
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> compute.Operation:
         r"""Changes the minimum CPU platform that this instance
-        should use. This method can only be called on a stopped
-        instance. For more information, read Specifying a
-        Minimum CPU Platform.
+        should use. This method can only
+        be called on a stopped instance. For more information,
+        readSpecifying a Minimum CPU Platform.
 
         .. code-block:: python
 
@@ -9842,9 +9867,9 @@ class InstancesClient(metaclass=InstancesClientMeta):
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> extended_operation.ExtendedOperation:
         r"""Changes the minimum CPU platform that this instance
-        should use. This method can only be called on a stopped
-        instance. For more information, read Specifying a
-        Minimum CPU Platform.
+        should use. This method can only
+        be called on a stopped instance. For more information,
+        readSpecifying a Minimum CPU Platform.
 
         .. code-block:: python
 
@@ -10345,11 +10370,11 @@ class InstancesClient(metaclass=InstancesClientMeta):
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> compute.Operation:
         r"""Sets an instance's scheduling options. You can only call this
-        method on a stopped instance, that is, a VM instance that is in
-        a ``TERMINATED`` state. See Instance Life Cycle for more
+        method on astopped instance, that is, a VM instance that is in a
+        ``TERMINATED`` state. SeeInstance Life Cycle for more
         information on the possible instance states. For more
-        information about setting scheduling options for a VM, see Set
-        VM host maintenance policy.
+        information about setting scheduling options for a VM, seeSet VM
+        host maintenance policy.
 
         .. code-block:: python
 
@@ -10491,11 +10516,11 @@ class InstancesClient(metaclass=InstancesClientMeta):
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> extended_operation.ExtendedOperation:
         r"""Sets an instance's scheduling options. You can only call this
-        method on a stopped instance, that is, a VM instance that is in
-        a ``TERMINATED`` state. See Instance Life Cycle for more
+        method on astopped instance, that is, a VM instance that is in a
+        ``TERMINATED`` state. SeeInstance Life Cycle for more
         information on the possible instance states. For more
-        information about setting scheduling options for a VM, see Set
-        VM host maintenance policy.
+        information about setting scheduling options for a VM, seeSet VM
+        host maintenance policy.
 
         .. code-block:: python
 
@@ -10664,7 +10689,7 @@ class InstancesClient(metaclass=InstancesClientMeta):
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> compute.Operation:
         r"""Sets the Google Cloud Armor security policy for the
-        specified instance. For more information, see Google
+        specified instance. For more information, seeGoogle
         Cloud Armor Overview
 
         .. code-block:: python
@@ -10819,7 +10844,7 @@ class InstancesClient(metaclass=InstancesClientMeta):
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> extended_operation.ExtendedOperation:
         r"""Sets the Google Cloud Armor security policy for the
-        specified instance. For more information, see Google
+        specified instance. For more information, seeGoogle
         Cloud Armor Overview
 
         .. code-block:: python
@@ -10999,8 +11024,8 @@ class InstancesClient(metaclass=InstancesClientMeta):
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> compute.Operation:
         r"""Sets the service account on the instance. For more
-        information, read Changing the service account and
-        access scopes for an instance.
+        information, readChanging
+        the service account and access scopes for an instance.
 
         .. code-block:: python
 
@@ -11153,8 +11178,8 @@ class InstancesClient(metaclass=InstancesClientMeta):
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> extended_operation.ExtendedOperation:
         r"""Sets the service account on the instance. For more
-        information, read Changing the service account and
-        access scopes for an instance.
+        information, readChanging
+        the service account and access scopes for an instance.
 
         .. code-block:: python
 
@@ -12019,8 +12044,9 @@ class InstancesClient(metaclass=InstancesClientMeta):
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> compute.Operation:
-        r"""Sets network tags for the specified instance to the
-        data included in the request.
+        r"""Sets network tags
+        for the specified instance to the data included in the
+        request.
 
         .. code-block:: python
 
@@ -12163,8 +12189,9 @@ class InstancesClient(metaclass=InstancesClientMeta):
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> extended_operation.ExtendedOperation:
-        r"""Sets network tags for the specified instance to the
-        data included in the request.
+        r"""Sets network tags
+        for the specified instance to the data included in the
+        request.
 
         .. code-block:: python
 
@@ -12636,9 +12663,9 @@ class InstancesClient(metaclass=InstancesClientMeta):
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> compute.Operation:
-        r"""Starts an instance that was stopped using the
-        instances().stop method. For more information, see
-        Restart an instance.
+        r"""Starts an instance that was stopped using
+        theinstances().stop method. For more information,
+        seeRestart an instance.
 
         .. code-block:: python
 
@@ -12773,9 +12800,9 @@ class InstancesClient(metaclass=InstancesClientMeta):
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> extended_operation.ExtendedOperation:
-        r"""Starts an instance that was stopped using the
-        instances().stop method. For more information, see
-        Restart an instance.
+        r"""Starts an instance that was stopped using
+        theinstances().stop method. For more information,
+        seeRestart an instance.
 
         .. code-block:: python
 
@@ -12940,9 +12967,9 @@ class InstancesClient(metaclass=InstancesClientMeta):
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> compute.Operation:
-        r"""Starts an instance that was stopped using the
-        instances().stop method. For more information, see
-        Restart an instance.
+        r"""Starts an instance that was stopped using
+        theinstances().stop method. For more information,
+        seeRestart an instance.
 
         .. code-block:: python
 
@@ -13098,9 +13125,9 @@ class InstancesClient(metaclass=InstancesClientMeta):
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> extended_operation.ExtendedOperation:
-        r"""Starts an instance that was stopped using the
-        instances().stop method. For more information, see
-        Restart an instance.
+        r"""Starts an instance that was stopped using
+        theinstances().stop method. For more information,
+        seeRestart an instance.
 
         .. code-block:: python
 
@@ -13282,7 +13309,7 @@ class InstancesClient(metaclass=InstancesClientMeta):
         they are stopped. However, resources that the VM is
         using, such as persistent disks and static IP addresses,
         will continue to be charged until they are deleted. For
-        more information, see Stopping an instance.
+        more information, seeStopping an instance.
 
         .. code-block:: python
 
@@ -13422,7 +13449,7 @@ class InstancesClient(metaclass=InstancesClientMeta):
         they are stopped. However, resources that the VM is
         using, such as persistent disks and static IP addresses,
         will continue to be charged until they are deleted. For
-        more information, see Stopping an instance.
+        more information, seeStopping an instance.
 
         .. code-block:: python
 
@@ -13589,7 +13616,8 @@ class InstancesClient(metaclass=InstancesClientMeta):
         charged resources the virtual machine was using, such as
         persistent disks and static IP addresses, will continue
         to be charged while the instance is suspended. For more
-        information, see Suspending and resuming an instance.
+        information, see
+        Suspending and resuming an instance.
 
         .. code-block:: python
 
@@ -13732,7 +13760,8 @@ class InstancesClient(metaclass=InstancesClientMeta):
         charged resources the virtual machine was using, such as
         persistent disks and static IP addresses, will continue
         to be charged while the instance is suspended. For more
-        information, see Suspending and resuming an instance.
+        information, see
+        Suspending and resuming an instance.
 
         .. code-block:: python
 
@@ -14363,8 +14392,9 @@ class InstancesClient(metaclass=InstancesClientMeta):
     ) -> compute.Operation:
         r"""Updates the specified access config from an
         instance's network interface with the data included in
-        the request. This method supports PATCH semantics and
-        uses the JSON merge patch format and processing rules.
+        the request. This method supportsPATCH semantics and
+        uses theJSON merge
+        patch format and processing rules.
 
         .. code-block:: python
 
@@ -14526,8 +14556,9 @@ class InstancesClient(metaclass=InstancesClientMeta):
     ) -> extended_operation.ExtendedOperation:
         r"""Updates the specified access config from an
         instance's network interface with the data included in
-        the request. This method supports PATCH semantics and
-        uses the JSON merge patch format and processing rules.
+        the request. This method supportsPATCH semantics and
+        uses theJSON merge
+        patch format and processing rules.
 
         .. code-block:: python
 
@@ -14713,7 +14744,7 @@ class InstancesClient(metaclass=InstancesClientMeta):
     ) -> compute.Operation:
         r"""Updates the Display config for a VM instance. You can
         only use this method on a stopped VM instance. This
-        method supports PATCH semantics and uses the JSON merge
+        method supportsPATCH semantics and uses theJSON merge
         patch format and processing rules.
 
         .. code-block:: python
@@ -14861,7 +14892,7 @@ class InstancesClient(metaclass=InstancesClientMeta):
     ) -> extended_operation.ExtendedOperation:
         r"""Updates the Display config for a VM instance. You can
         only use this method on a stopped VM instance. This
-        method supports PATCH semantics and uses the JSON merge
+        method supportsPATCH semantics and uses theJSON merge
         patch format and processing rules.
 
         .. code-block:: python
@@ -15037,9 +15068,9 @@ class InstancesClient(metaclass=InstancesClientMeta):
         can only update an interface's alias IP range and
         attached network. See Modifying alias IP ranges for an
         existing instance for instructions on changing alias IP
-        ranges. See Migrating a VM between networks for
-        instructions on migrating an interface. This method
-        follows PATCH semantics.
+        ranges. See Migrating
+        a VM between networks for instructions on migrating an
+        interface. This method follows PATCH semantics.
 
         .. code-block:: python
 
@@ -15203,9 +15234,9 @@ class InstancesClient(metaclass=InstancesClientMeta):
         can only update an interface's alias IP range and
         attached network. See Modifying alias IP ranges for an
         existing instance for instructions on changing alias IP
-        ranges. See Migrating a VM between networks for
-        instructions on migrating an interface. This method
-        follows PATCH semantics.
+        ranges. See Migrating
+        a VM between networks for instructions on migrating an
+        interface. This method follows PATCH semantics.
 
         .. code-block:: python
 
@@ -15393,7 +15424,7 @@ class InstancesClient(metaclass=InstancesClientMeta):
     ) -> compute.Operation:
         r"""Updates the Shielded Instance config for an instance.
         You can only use this method on a stopped instance. This
-        method supports PATCH semantics and uses the JSON merge
+        method supportsPATCH semantics and uses theJSON merge
         patch format and processing rules.
 
         .. code-block:: python
@@ -15547,7 +15578,7 @@ class InstancesClient(metaclass=InstancesClientMeta):
     ) -> extended_operation.ExtendedOperation:
         r"""Updates the Shielded Instance config for an instance.
         You can only use this method on a stopped instance. This
-        method supports PATCH semantics and uses the JSON merge
+        method supportsPATCH semantics and uses theJSON merge
         patch format and processing rules.
 
         .. code-block:: python
@@ -15724,7 +15755,7 @@ class InstancesClient(metaclass=InstancesClientMeta):
     ) -> compute.Operation:
         r"""Updates the Shielded VM config for a VM instance. You
         can only use this method on a stopped VM instance. This
-        method supports PATCH semantics and uses the JSON merge
+        method supportsPATCH semantics and uses theJSON merge
         patch format and processing rules.
 
         .. code-block:: python
@@ -15874,7 +15905,7 @@ class InstancesClient(metaclass=InstancesClientMeta):
     ) -> extended_operation.ExtendedOperation:
         r"""Updates the Shielded VM config for a VM instance. You
         can only use this method on a stopped VM instance. This
-        method supports PATCH semantics and uses the JSON merge
+        method supportsPATCH semantics and uses theJSON merge
         patch format and processing rules.
 
         .. code-block:: python

@@ -706,8 +706,9 @@ class FutureReservationsClient(metaclass=FutureReservationsClientMeta):
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> pagers.AggregatedListPager:
-        r"""Retrieves an aggregated list of future reservations. To prevent
-        failure, Google recommends that you set the
+        r"""Retrieves an aggregated list of future reservations.
+
+        To prevent failure, it is recommended that you set the
         ``returnPartialSuccess`` parameter to ``true``.
 
         .. code-block:: python

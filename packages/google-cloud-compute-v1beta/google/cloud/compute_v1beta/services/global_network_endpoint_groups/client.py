@@ -1704,13 +1704,14 @@ class GlobalNetworkEndpointGroupsClient(
         Returns:
             google.cloud.compute_v1beta.types.NetworkEndpointGroup:
                 Represents a collection of network
-                endpoints. A network endpoint group
-                (NEG) defines how a set of endpoints
-                should be reached, whether they are
-                reachable, and where they are located.
-                For more information about using NEGs
-                for different use cases, see Network
-                endpoint groups overview.
+                endpoints.
+                A network endpoint group (NEG) defines
+                how a set of endpoints should be
+                reached, whether they are reachable, and
+                where they are located. For more
+                information about using NEGs for
+                different use cases, seeNetwork endpoint
+                groups overview.
 
         """
         # Create or coerce a protobuf request object.

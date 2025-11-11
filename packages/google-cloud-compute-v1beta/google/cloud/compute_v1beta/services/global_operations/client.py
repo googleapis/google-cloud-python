@@ -701,8 +701,9 @@ class GlobalOperationsClient(metaclass=GlobalOperationsClientMeta):
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> pagers.AggregatedListPager:
-        r"""Retrieves an aggregated list of all operations. To prevent
-        failure, Google recommends that you set the
+        r"""Retrieves an aggregated list of all operations.
+
+        To prevent failure, Google recommends that you set the
         ``returnPartialSuccess`` parameter to ``true``.
 
         .. code-block:: python
@@ -1006,23 +1007,30 @@ class GlobalOperationsClient(metaclass=GlobalOperationsClientMeta):
 
         Returns:
             google.cloud.compute_v1beta.types.Operation:
-                Represents an Operation resource. Google Compute Engine
-                has three Operation resources: \*
-                [Global](/compute/docs/reference/rest/beta/globalOperations)
-                \*
-                [Regional](/compute/docs/reference/rest/beta/regionOperations)
-                \*
-                [Zonal](/compute/docs/reference/rest/beta/zoneOperations)
-                You can use an operation resource to manage asynchronous
-                API requests. For more information, read Handling API
-                responses. Operations can be global, regional or zonal.
-                - For global operations, use the globalOperations
-                resource. - For regional operations, use the
-                regionOperations resource. - For zonal operations, use
-                the zoneOperations resource. For more information, read
-                Global, Regional, and Zonal Resources. Note that
-                completed Operation resources have a limited retention
-                period.
+                Represents an Operation resource.
+
+                   Google Compute Engine has three Operation resources:
+
+                   - [Global](/compute/docs/reference/rest/beta/globalOperations)
+                   - [Regional](/compute/docs/reference/rest/beta/regionOperations)
+                   - [Zonal](/compute/docs/reference/rest/beta/zoneOperations)
+
+                   You can use an operation resource to manage
+                   asynchronous API requests. For more information,
+                   readHandling API responses.
+
+                   Operations can be global, regional or zonal.
+
+                      - For global operations, use the globalOperations
+                      resource. - For regional operations, use the
+                      regionOperations resource. - For zonal operations,
+                      use the zoneOperations resource.
+
+                   For more information, read Global, Regional, and
+                   Zonal Resources.
+
+                   Note that completed Operation resources have a
+                   limited retention period.
 
         """
         # Create or coerce a protobuf request object.
@@ -1217,13 +1225,17 @@ class GlobalOperationsClient(metaclass=GlobalOperationsClientMeta):
         from the ``GET`` method in that it waits for no more than the
         default deadline (2 minutes) and then returns the current state
         of the operation, which might be ``DONE`` or still in progress.
-        This method is called on a best-effort basis. Specifically: - In
-        uncommon cases, when the server is overloaded, the request might
-        return before the default deadline is reached, or might return
-        after zero seconds. - If the default deadline is reached, there
-        is no guarantee that the operation is actually done when the
-        method returns. Be prepared to retry if the operation is not
-        ``DONE``.
+
+        This method is called on a best-effort basis. Specifically:
+
+        ::
+
+            - In uncommon cases, when the server is overloaded, the request might
+            return before the default deadline is reached, or might return after zero
+            seconds.
+           - If the default deadline is reached, there is no guarantee that the
+            operation is actually done when the method returns. Be prepared to retry
+            if the operation is not `DONE`.
 
         .. code-block:: python
 
@@ -1280,23 +1292,30 @@ class GlobalOperationsClient(metaclass=GlobalOperationsClientMeta):
 
         Returns:
             google.cloud.compute_v1beta.types.Operation:
-                Represents an Operation resource. Google Compute Engine
-                has three Operation resources: \*
-                [Global](/compute/docs/reference/rest/beta/globalOperations)
-                \*
-                [Regional](/compute/docs/reference/rest/beta/regionOperations)
-                \*
-                [Zonal](/compute/docs/reference/rest/beta/zoneOperations)
-                You can use an operation resource to manage asynchronous
-                API requests. For more information, read Handling API
-                responses. Operations can be global, regional or zonal.
-                - For global operations, use the globalOperations
-                resource. - For regional operations, use the
-                regionOperations resource. - For zonal operations, use
-                the zoneOperations resource. For more information, read
-                Global, Regional, and Zonal Resources. Note that
-                completed Operation resources have a limited retention
-                period.
+                Represents an Operation resource.
+
+                   Google Compute Engine has three Operation resources:
+
+                   - [Global](/compute/docs/reference/rest/beta/globalOperations)
+                   - [Regional](/compute/docs/reference/rest/beta/regionOperations)
+                   - [Zonal](/compute/docs/reference/rest/beta/zoneOperations)
+
+                   You can use an operation resource to manage
+                   asynchronous API requests. For more information,
+                   readHandling API responses.
+
+                   Operations can be global, regional or zonal.
+
+                      - For global operations, use the globalOperations
+                      resource. - For regional operations, use the
+                      regionOperations resource. - For zonal operations,
+                      use the zoneOperations resource.
+
+                   For more information, read Global, Regional, and
+                   Zonal Resources.
+
+                   Note that completed Operation resources have a
+                   limited retention period.
 
         """
         # Create or coerce a protobuf request object.

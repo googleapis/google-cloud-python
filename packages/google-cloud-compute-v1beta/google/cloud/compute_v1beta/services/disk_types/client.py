@@ -691,9 +691,10 @@ class DiskTypesClient(metaclass=DiskTypesClientMeta):
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> pagers.AggregatedListPager:
-        r"""Retrieves an aggregated list of disk types. To prevent failure,
-        Google recommends that you set the ``returnPartialSuccess``
-        parameter to ``true``.
+        r"""Retrieves an aggregated list of disk types.
+
+        To prevent failure, it is recommended that you set the
+        ``returnPartialSuccess`` parameter to ``true``.
 
         .. code-block:: python
 
@@ -876,17 +877,24 @@ class DiskTypesClient(metaclass=DiskTypesClientMeta):
 
         Returns:
             google.cloud.compute_v1beta.types.DiskType:
-                Represents a Disk Type resource. Google Compute Engine
-                has two Disk Type resources: \*
-                [Regional](/compute/docs/reference/rest/beta/regionDiskTypes)
-                \* [Zonal](/compute/docs/reference/rest/beta/diskTypes)
-                You can choose from a variety of disk types based on
-                your needs. For more information, read Storage options.
-                The diskTypes resource represents disk types for a zonal
-                persistent disk. For more information, read Zonal
-                persistent disks. The regionDiskTypes resource
-                represents disk types for a regional persistent disk.
-                For more information, read Regional persistent disks.
+                Represents a Disk Type resource.
+
+                   Google Compute Engine has two Disk Type resources:
+
+                   - [Regional](/compute/docs/reference/rest/beta/regionDiskTypes)
+                   - [Zonal](/compute/docs/reference/rest/beta/diskTypes)
+
+                   You can choose from a variety of disk types based on
+                   your needs. For more information, readStorage
+                   options.
+
+                   The diskTypes resource represents disk types for a
+                   zonal persistent disk. For more information,
+                   readZonal persistent disks.
+
+                   The regionDiskTypes resource represents disk types
+                   for a regional persistent disk. For more information,
+                   read Regional persistent disks.
 
         """
         # Create or coerce a protobuf request object.

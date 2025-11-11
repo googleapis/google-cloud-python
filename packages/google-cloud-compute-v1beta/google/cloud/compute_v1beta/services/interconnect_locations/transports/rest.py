@@ -339,12 +339,12 @@ class InterconnectLocationsRestTransport(_BaseInterconnectLocationsRestTransport
             Returns:
                 ~.compute.InterconnectLocation:
                     Represents an Interconnect Attachment
-                (VLAN) Location resource. You can use
-                this resource to find location details
-                about an Interconnect attachment (VLAN).
-                For more information about interconnect
-                attachments, read Creating VLAN
-                Attachments.
+                (VLAN) Location resource.
+                You can use this resource to find
+                location details about an Interconnect
+                attachment (VLAN). For more information
+                about interconnect attachments, read
+                Creating VLAN Attachments.
 
             """
 

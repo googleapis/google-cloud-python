@@ -707,21 +707,32 @@ class SslCertificatesRestTransport(_BaseSslCertificatesRestTransport):
 
             Returns:
                 ~.compute.Operation:
-                    Represents an Operation resource. Google Compute Engine
-                has three Operation resources: \*
-                `Global </compute/docs/reference/rest/beta/globalOperations>`__
-                \*
-                `Regional </compute/docs/reference/rest/beta/regionOperations>`__
-                \*
-                `Zonal </compute/docs/reference/rest/beta/zoneOperations>`__
+                    Represents an Operation resource.
+
+                Google Compute Engine has three Operation resources:
+
+                - `Global </compute/docs/reference/rest/beta/globalOperations>`__
+                - `Regional </compute/docs/reference/rest/beta/regionOperations>`__
+                - `Zonal </compute/docs/reference/rest/beta/zoneOperations>`__
+
                 You can use an operation resource to manage asynchronous
-                API requests. For more information, read Handling API
-                responses. Operations can be global, regional or zonal.
-                - For global operations, use the ``globalOperations``
-                resource. - For regional operations, use the
-                ``regionOperations`` resource. - For zonal operations,
-                use the ``zoneOperations`` resource. For more
-                information, read Global, Regional, and Zonal Resources.
+                API requests. For more information, readHandling API
+                responses.
+
+                Operations can be global, regional or zonal.
+
+                ::
+
+                   - For global operations, use the `globalOperations`
+                   resource.
+                   - For regional operations, use the
+                   `regionOperations` resource.
+                   - For zonal operations, use
+                   the `zoneOperations` resource.
+
+                For more information, read Global, Regional, and Zonal
+                Resources.
+
                 Note that completed Operation resources have a limited
                 retention period.
 
@@ -872,26 +883,38 @@ class SslCertificatesRestTransport(_BaseSslCertificatesRestTransport):
 
             Returns:
                 ~.compute.SslCertificate:
-                    Represents an SSL certificate resource. Google Compute
-                Engine has two SSL certificate resources: \*
-                `Global </compute/docs/reference/rest/beta/sslCertificates>`__
-                \*
-                `Regional </compute/docs/reference/rest/beta/regionSslCertificates>`__
+                    Represents an SSL certificate resource.
+
+                Google Compute Engine has two SSL certificate resources:
+
+                - `Global </compute/docs/reference/rest/beta/sslCertificates>`__
+                - `Regional </compute/docs/reference/rest/beta/regionSslCertificates>`__
+
                 The global SSL certificates (sslCertificates) are used
-                by: - Global external Application Load Balancers -
-                Classic Application Load Balancers - Proxy Network Load
-                Balancers (with target SSL proxies) The regional SSL
-                certificates (regionSslCertificates) are used by: -
-                Regional external Application Load Balancers - Regional
-                internal Application Load Balancers Optionally,
-                certificate file contents that you upload can contain a
-                set of up to five PEM-encoded certificates. The API call
-                creates an object (sslCertificate) that holds this data.
-                You can use SSL keys and certificates to secure
-                connections to a load balancer. For more information,
-                read Creating and using SSL certificates, SSL
-                certificates quotas and limits, and Troubleshooting SSL
-                certificates.
+                by:
+
+                ::
+
+                   - Global external Application Load Balancers
+                   - Classic Application Load Balancers
+                   - Proxy Network Load Balancers (with target SSL proxies)
+
+                The regional SSL certificates (regionSslCertificates)
+                are used by:
+
+                ::
+
+                   - Regional external Application Load Balancers
+                   - Regional internal Application Load Balancers
+
+                Optionally, certificate file contents that you upload
+                can contain a set of up to five PEM-encoded
+                certificates. The API call creates an object
+                (sslCertificate) that holds this data. You can use SSL
+                keys and certificates to secure connections to a load
+                balancer. For more information, read Creating and using
+                SSL certificates,SSL certificates quotas and limits, and
+                Troubleshooting SSL certificates.
 
             """
 
@@ -1041,21 +1064,32 @@ class SslCertificatesRestTransport(_BaseSslCertificatesRestTransport):
 
             Returns:
                 ~.compute.Operation:
-                    Represents an Operation resource. Google Compute Engine
-                has three Operation resources: \*
-                `Global </compute/docs/reference/rest/beta/globalOperations>`__
-                \*
-                `Regional </compute/docs/reference/rest/beta/regionOperations>`__
-                \*
-                `Zonal </compute/docs/reference/rest/beta/zoneOperations>`__
+                    Represents an Operation resource.
+
+                Google Compute Engine has three Operation resources:
+
+                - `Global </compute/docs/reference/rest/beta/globalOperations>`__
+                - `Regional </compute/docs/reference/rest/beta/regionOperations>`__
+                - `Zonal </compute/docs/reference/rest/beta/zoneOperations>`__
+
                 You can use an operation resource to manage asynchronous
-                API requests. For more information, read Handling API
-                responses. Operations can be global, regional or zonal.
-                - For global operations, use the ``globalOperations``
-                resource. - For regional operations, use the
-                ``regionOperations`` resource. - For zonal operations,
-                use the ``zoneOperations`` resource. For more
-                information, read Global, Regional, and Zonal Resources.
+                API requests. For more information, readHandling API
+                responses.
+
+                Operations can be global, regional or zonal.
+
+                ::
+
+                   - For global operations, use the `globalOperations`
+                   resource.
+                   - For regional operations, use the
+                   `regionOperations` resource.
+                   - For zonal operations, use
+                   the `zoneOperations` resource.
+
+                For more information, read Global, Regional, and Zonal
+                Resources.
+
                 Note that completed Operation resources have a limited
                 retention period.
 

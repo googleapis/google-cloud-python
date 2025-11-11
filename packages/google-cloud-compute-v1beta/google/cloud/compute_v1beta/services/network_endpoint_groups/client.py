@@ -709,7 +709,9 @@ class NetworkEndpointGroupsClient(metaclass=NetworkEndpointGroupsClientMeta):
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> pagers.AggregatedListPager:
         r"""Retrieves the list of network endpoint groups and sorts them by
-        zone. To prevent failure, Google recommends that you set the
+        zone.
+
+        To prevent failure, Google recommends that you set the
         ``returnPartialSuccess`` parameter to ``true``.
 
         .. code-block:: python
@@ -879,9 +881,9 @@ class NetworkEndpointGroupsClient(metaclass=NetworkEndpointGroupsClientMeta):
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
             zone (str):
-                The name of the zone where the
-                network endpoint group is located. It
-                should comply with RFC1035.
+                The name of the zone where
+                the network endpoint group is located.
+                It should comply with RFC1035.
 
                 This corresponds to the ``zone`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -1039,9 +1041,9 @@ class NetworkEndpointGroupsClient(metaclass=NetworkEndpointGroupsClientMeta):
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
             zone (str):
-                The name of the zone where the
-                network endpoint group is located. It
-                should comply with RFC1035.
+                The name of the zone where
+                the network endpoint group is located.
+                It should comply with RFC1035.
 
                 This corresponds to the ``zone`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -1224,9 +1226,9 @@ class NetworkEndpointGroupsClient(metaclass=NetworkEndpointGroupsClientMeta):
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
             zone (str):
-                The name of the zone where the
-                network endpoint group is located. It
-                should comply with RFC1035.
+                The name of the zone where
+                the network endpoint group is located.
+                It should comply with RFC1035.
 
                 This corresponds to the ``zone`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -1367,9 +1369,9 @@ class NetworkEndpointGroupsClient(metaclass=NetworkEndpointGroupsClientMeta):
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
             zone (str):
-                The name of the zone where the
-                network endpoint group is located. It
-                should comply with RFC1035.
+                The name of the zone where
+                the network endpoint group is located.
+                It should comply with RFC1035.
 
                 This corresponds to the ``zone`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -1535,9 +1537,9 @@ class NetworkEndpointGroupsClient(metaclass=NetworkEndpointGroupsClientMeta):
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
             zone (str):
-                The name of the zone where the
-                network endpoint group is located. It
-                should comply with RFC1035.
+                The name of the zone where
+                the network endpoint group is located.
+                It should comply with RFC1035.
 
                 This corresponds to the ``zone`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -1695,9 +1697,9 @@ class NetworkEndpointGroupsClient(metaclass=NetworkEndpointGroupsClientMeta):
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
             zone (str):
-                The name of the zone where the
-                network endpoint group is located. It
-                should comply with RFC1035.
+                The name of the zone where
+                the network endpoint group is located.
+                It should comply with RFC1035.
 
                 This corresponds to the ``zone`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -1874,9 +1876,9 @@ class NetworkEndpointGroupsClient(metaclass=NetworkEndpointGroupsClientMeta):
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
             zone (str):
-                The name of the zone where the
-                network endpoint group is located. It
-                should comply with RFC1035.
+                The name of the zone where
+                the network endpoint group is located.
+                It should comply with RFC1035.
 
                 This corresponds to the ``zone`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -1899,13 +1901,14 @@ class NetworkEndpointGroupsClient(metaclass=NetworkEndpointGroupsClientMeta):
         Returns:
             google.cloud.compute_v1beta.types.NetworkEndpointGroup:
                 Represents a collection of network
-                endpoints. A network endpoint group
-                (NEG) defines how a set of endpoints
-                should be reached, whether they are
-                reachable, and where they are located.
-                For more information about using NEGs
-                for different use cases, see Network
-                endpoint groups overview.
+                endpoints.
+                A network endpoint group (NEG) defines
+                how a set of endpoints should be
+                reached, whether they are reachable, and
+                where they are located. For more
+                information about using NEGs for
+                different use cases, seeNetwork endpoint
+                groups overview.
 
         """
         # Create or coerce a protobuf request object.
@@ -2019,9 +2022,9 @@ class NetworkEndpointGroupsClient(metaclass=NetworkEndpointGroupsClientMeta):
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
             zone (str):
-                The name of the zone where you want
-                to create the network endpoint group. It
-                should comply with RFC1035.
+                The name of the zone where
+                you want to create the network endpoint
+                group. It should comply with RFC1035.
 
                 This corresponds to the ``zone`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -2157,9 +2160,9 @@ class NetworkEndpointGroupsClient(metaclass=NetworkEndpointGroupsClientMeta):
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
             zone (str):
-                The name of the zone where you want
-                to create the network endpoint group. It
-                should comply with RFC1035.
+                The name of the zone where
+                you want to create the network endpoint
+                group. It should comply with RFC1035.
 
                 This corresponds to the ``zone`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -2317,9 +2320,9 @@ class NetworkEndpointGroupsClient(metaclass=NetworkEndpointGroupsClientMeta):
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
             zone (str):
-                The name of the zone where the
-                network endpoint group is located. It
-                should comply with RFC1035.
+                The name of thezone
+                where the network endpoint group is
+                located. It should comply with RFC1035.
 
                 This corresponds to the ``zone`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -2462,9 +2465,9 @@ class NetworkEndpointGroupsClient(metaclass=NetworkEndpointGroupsClientMeta):
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
             zone (str):
-                The name of the zone where the
-                network endpoint group is located. It
-                should comply with RFC1035.
+                The name of the zone where
+                the network endpoint group is located.
+                It should comply with RFC1035.
 
                 This corresponds to the ``zone`` field
                 on the ``request`` instance; if ``request`` is provided, this
