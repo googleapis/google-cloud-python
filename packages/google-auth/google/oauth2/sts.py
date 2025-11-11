@@ -57,7 +57,7 @@ class Client(utils.OAuthClientAuthHandler):
         super(Client, self).__init__(client_authentication)
         self._token_exchange_endpoint = token_exchange_endpoint
 
-    def _make_request(self, request, headers, request_body):
+    def _make_request(self, request, headers, request_body, url=None):
         # Initialize request headers.
         request_headers = _URLENCODED_HEADERS.copy()
 
@@ -69,9 +69,12 @@ class Client(utils.OAuthClientAuthHandler):
         # Apply OAuth client authentication.
         self.apply_client_authentication_options(request_headers, request_body)
 
+        # Use default token exchange endpoint if no url is provided.
+        url = url or self._token_exchange_endpoint
+
         # Execute request.
         response = request(
-            url=self._token_exchange_endpoint,
+            url=url,
             method="POST",
             headers=request_headers,
             body=urllib.parse.urlencode(request_body).encode("utf-8"),
@@ -87,10 +90,12 @@ class Client(utils.OAuthClientAuthHandler):
         if response.status != http_client.OK:
             utils.handle_error_response(response_body)
 
-        response_data = json.loads(response_body)
+        # A successful token revocation returns an empty response body.
+        if not response_body:
+            return {}
 
-        # Return successful response.
-        return response_data
+        # Other successful responses should be valid JSON.
+        return json.loads(response_body)
 
     def exchange_token(
         self,
@@ -174,3 +179,23 @@ class Client(utils.OAuthClientAuthHandler):
             None,
             {"grant_type": "refresh_token", "refresh_token": refresh_token},
         )
+
+    def revoke_token(self, request, token, token_type_hint, revoke_url):
+        """Revokes the provided token based on the RFC7009 spec.
+
+        Args:
+            request (google.auth.transport.Request): A callable used to make
+                HTTP requests.
+            token (str): The OAuth 2.0 token to revoke.
+            token_type_hint (str): Hint for the type of token being revoked.
+            revoke_url (str): The STS endpoint URL for revoking tokens.
+
+        Raises:
+            google.auth.exceptions.OAuthError: If the token revocation endpoint
+                returned an error.
+        """
+        request_body = {"token": token}
+        if token_type_hint:
+            request_body["token_type_hint"] = token_type_hint
+
+        return self._make_request(request, None, request_body, revoke_url)

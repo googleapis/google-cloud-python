@@ -321,6 +321,30 @@ class Credentials(
             universe_domain=self._universe_domain, pool_id=pool_id
         )
 
+    def revoke(self, request):
+        """Revokes the refresh token.
+
+        Args:
+            request (google.auth.transport.Request): The object used to make
+                HTTP requests.
+
+        Raises:
+            google.auth.exceptions.OAuthError: If the token could not be
+                revoked.
+        """
+        if not self._revoke_url or not self._refresh_token_val:
+            raise exceptions.OAuthError(
+                "The credentials do not contain the necessary fields to "
+                "revoke the refresh token. You must specify revoke_url and "
+                "refresh_token."
+            )
+
+        self._sts_client.revoke_token(
+            request, self._refresh_token_val, "refresh_token", self._revoke_url
+        )
+        self.token = None
+        self._refresh_token = None
+
     @_helpers.copy_docstring(credentials.Credentials)
     def get_cred_info(self):
         if self._cred_file_path:
