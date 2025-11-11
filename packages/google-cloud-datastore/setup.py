@@ -38,6 +38,8 @@ dependencies = [
     "proto-plus >= 1.22.2, <2.0.0; python_version>='3.11'",
     "proto-plus >= 1.25.0, <2.0.0; python_version>='3.13'",
     "protobuf>=3.20.2,<7.0.0,!=3.20.0,!=3.20.1,!=4.21.0,!=4.21.1,!=4.21.2,!=4.21.3,!=4.21.4,!=4.21.5",
+    "grpcio >= 1.38.0, < 2.0.0",
+    "grpcio >= 1.75.1, < 2.0.0; python_version >= '3.14'",
 ]
 extras = {"libcst": "libcst >= 0.2.5"}
 
@@ -84,6 +86,8 @@ setuptools.setup(
         "Programming Language :: Python :: 3.10",
         "Programming Language :: Python :: 3.11",
         "Programming Language :: Python :: 3.12",
+        "Programming Language :: Python :: 3.13",
+        "Programming Language :: Python :: 3.14",
         "Operating System :: OS Independent",
         "Topic :: Internet",
         "Topic :: Software Development :: Libraries :: Python Modules",
