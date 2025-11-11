@@ -48,7 +48,7 @@ class Index(proto.Message):
 
             Requires:
 
-            -  A maximum of 100 properties.
+            - A maximum of 100 properties.
         state (google.cloud.datastore_admin_v1.types.Index.State):
             Output only. The state of the index.
     """

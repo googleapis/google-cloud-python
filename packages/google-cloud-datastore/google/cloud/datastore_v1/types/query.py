@@ -164,9 +164,9 @@ class Query(proto.Message):
 
             Requires:
 
-            -  If ``order`` is specified, the set of distinct on
-               properties must appear before the non-distinct on
-               properties in ``order``.
+            - If ``order`` is specified, the set of distinct on
+              properties must appear before the non-distinct on
+              properties in ``order``.
         start_cursor (bytes):
             A starting point for the query results. Query cursors are
             returned in query result batches and `can only be used to
@@ -262,8 +262,8 @@ class AggregationQuery(proto.Message):
 
             Requires:
 
-            -  A minimum of one and maximum of five aggregations per
-               query.
+            - A minimum of one and maximum of five aggregations per
+              query.
     """
 
     class Aggregation(proto.Message):
@@ -323,9 +323,9 @@ class AggregationQuery(proto.Message):
 
                 Requires:
 
-                -  Must be unique across all aggregation aliases.
-                -  Conform to [entity property
-                   name][google.datastore.v1.Entity.properties] limitations.
+                - Must be unique across all aggregation aliases.
+                - Conform to [entity property
+                  name][google.datastore.v1.Entity.properties] limitations.
         """
 
         class Count(proto.Message):
@@ -355,7 +355,7 @@ class AggregationQuery(proto.Message):
 
                     Requires:
 
-                    -  Must be non-negative when present.
+                    - Must be non-negative when present.
             """
 
             up_to: wrappers_pb2.Int64Value = proto.Field(
@@ -367,26 +367,26 @@ class AggregationQuery(proto.Message):
         class Sum(proto.Message):
             r"""Sum of the values of the requested property.
 
-            -  Only numeric values will be aggregated. All non-numeric values
-               including ``NULL`` are skipped.
+            - Only numeric values will be aggregated. All non-numeric values
+              including ``NULL`` are skipped.
 
-            -  If the aggregated values contain ``NaN``, returns ``NaN``.
-               Infinity math follows IEEE-754 standards.
+            - If the aggregated values contain ``NaN``, returns ``NaN``.
+              Infinity math follows IEEE-754 standards.
 
-            -  If the aggregated value set is empty, returns 0.
+            - If the aggregated value set is empty, returns 0.
 
-            -  Returns a 64-bit integer if all aggregated numbers are integers
-               and the sum result does not overflow. Otherwise, the result is
-               returned as a double. Note that even if all the aggregated values
-               are integers, the result is returned as a double if it cannot fit
-               within a 64-bit signed integer. When this occurs, the returned
-               value will lose precision.
+            - Returns a 64-bit integer if all aggregated numbers are integers
+              and the sum result does not overflow. Otherwise, the result is
+              returned as a double. Note that even if all the aggregated values
+              are integers, the result is returned as a double if it cannot fit
+              within a 64-bit signed integer. When this occurs, the returned
+              value will lose precision.
 
-            -  When underflow occurs, floating-point aggregation is
-               non-deterministic. This means that running the same query
-               repeatedly without any changes to the underlying values could
-               produce slightly different results each time. In those cases,
-               values should be stored as integers over floating-point numbers.
+            - When underflow occurs, floating-point aggregation is
+              non-deterministic. This means that running the same query
+              repeatedly without any changes to the underlying values could
+              produce slightly different results each time. In those cases,
+              values should be stored as integers over floating-point numbers.
 
             Attributes:
                 property (google.cloud.datastore_v1.types.PropertyReference):
@@ -402,15 +402,15 @@ class AggregationQuery(proto.Message):
         class Avg(proto.Message):
             r"""Average of the values of the requested property.
 
-            -  Only numeric values will be aggregated. All non-numeric values
-               including ``NULL`` are skipped.
+            - Only numeric values will be aggregated. All non-numeric values
+              including ``NULL`` are skipped.
 
-            -  If the aggregated values contain ``NaN``, returns ``NaN``.
-               Infinity math follows IEEE-754 standards.
+            - If the aggregated values contain ``NaN``, returns ``NaN``.
+              Infinity math follows IEEE-754 standards.
 
-            -  If the aggregated value set is empty, returns ``NULL``.
+            - If the aggregated value set is empty, returns ``NULL``.
 
-            -  Always returns the result as a double.
+            - Always returns the result as a double.
 
             Attributes:
                 property (google.cloud.datastore_v1.types.PropertyReference):
@@ -482,9 +482,9 @@ class PropertyReference(proto.Message):
 
             Requires:
 
-            -  MUST be a dot-delimited (``.``) string of segments, where
-               each segment conforms to [entity property
-               name][google.datastore.v1.Entity.properties] limitations.
+            - MUST be a dot-delimited (``.``) string of segments, where
+              each segment conforms to [entity property
+              name][google.datastore.v1.Entity.properties] limitations.
     """
 
     name: str = proto.Field(
@@ -592,7 +592,7 @@ class CompositeFilter(proto.Message):
 
             Requires:
 
-            -  At least one filter is present.
+            - At least one filter is present.
     """
 
     class Operator(proto.Enum):
@@ -647,27 +647,27 @@ class PropertyFilter(proto.Message):
 
                 Requires:
 
-                -  That ``property`` comes first in ``order_by``.
+                - That ``property`` comes first in ``order_by``.
             LESS_THAN_OR_EQUAL (2):
                 The given ``property`` is less than or equal to the given
                 ``value``.
 
                 Requires:
 
-                -  That ``property`` comes first in ``order_by``.
+                - That ``property`` comes first in ``order_by``.
             GREATER_THAN (3):
                 The given ``property`` is greater than the given ``value``.
 
                 Requires:
 
-                -  That ``property`` comes first in ``order_by``.
+                - That ``property`` comes first in ``order_by``.
             GREATER_THAN_OR_EQUAL (4):
                 The given ``property`` is greater than or equal to the given
                 ``value``.
 
                 Requires:
 
-                -  That ``property`` comes first in ``order_by``.
+                - That ``property`` comes first in ``order_by``.
             EQUAL (5):
                 The given ``property`` is equal to the given ``value``.
             IN (6):
@@ -676,36 +676,35 @@ class PropertyFilter(proto.Message):
 
                 Requires:
 
-                -  That ``value`` is a non-empty ``ArrayValue``, subject to
-                   disjunction limits.
-                -  No ``NOT_IN`` is in the same query.
+                - That ``value`` is a non-empty ``ArrayValue``, subject to
+                  disjunction limits.
+                - No ``NOT_IN`` is in the same query.
             NOT_EQUAL (9):
                 The given ``property`` is not equal to the given ``value``.
 
                 Requires:
 
-                -  No other ``NOT_EQUAL`` or ``NOT_IN`` is in the same
-                   query.
-                -  That ``property`` comes first in the ``order_by``.
+                - No other ``NOT_EQUAL`` or ``NOT_IN`` is in the same query.
+                - That ``property`` comes first in the ``order_by``.
             HAS_ANCESTOR (11):
                 Limit the result set to the given entity and its
                 descendants.
 
                 Requires:
 
-                -  That ``value`` is an entity key.
-                -  All evaluated disjunctions must have the same
-                   ``HAS_ANCESTOR`` filter.
+                - That ``value`` is an entity key.
+                - All evaluated disjunctions must have the same
+                  ``HAS_ANCESTOR`` filter.
             NOT_IN (13):
                 The value of the ``property`` is not in the given array.
 
                 Requires:
 
-                -  That ``value`` is a non-empty ``ArrayValue`` with at most
-                   10 values.
-                -  No other ``OR``, ``IN``, ``NOT_IN``, ``NOT_EQUAL`` is in
-                   the same query.
-                -  That ``field`` comes first in the ``order_by``.
+                - That ``value`` is a non-empty ``ArrayValue`` with at most
+                  10 values.
+                - No other ``OR``, ``IN``, ``NOT_IN``, ``NOT_EQUAL`` is in
+                  the same query.
+                - That ``field`` comes first in the ``order_by``.
         """
         OPERATOR_UNSPECIFIED = 0
         LESS_THAN = 1

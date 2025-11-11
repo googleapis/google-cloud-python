@@ -1201,10 +1201,10 @@ class DatastoreClient(metaclass=DatastoreClientMeta):
                 sequences of mutations affecting a single entity are not
                 permitted in a single ``Commit`` request:
 
-                -  ``insert`` followed by ``insert``
-                -  ``update`` followed by ``insert``
-                -  ``upsert`` followed by ``insert``
-                -  ``delete`` followed by ``update``
+                - ``insert`` followed by ``insert``
+                - ``update`` followed by ``insert``
+                - ``upsert`` followed by ``insert``
+                - ``delete`` followed by ``update``
 
                 When mode is ``NON_TRANSACTIONAL``, no two mutations may
                 affect a single entity.

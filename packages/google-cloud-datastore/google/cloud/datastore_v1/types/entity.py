@@ -46,12 +46,12 @@ class PartitionId(proto.Message):
 
     Partition dimensions:
 
-    -  May be ``""``.
-    -  Must be valid UTF-8 bytes.
-    -  Must have values that match regex ``[A-Za-z\d\.\-_]{1,100}`` If
-       the value of any dimension matches regex ``__.*__``, the
-       partition is reserved/read-only. A reserved/read-only partition
-       ID is forbidden in certain documented contexts.
+    - May be ``""``.
+    - Must be valid UTF-8 bytes.
+    - Must have values that match regex ``[A-Za-z\d\.\-_]{1,100}`` If
+      the value of any dimension matches regex ``__.*__``, the partition
+      is reserved/read-only. A reserved/read-only partition ID is
+      forbidden in certain documented contexts.
 
     Foreign partition IDs (in which the project ID does not match the
     context project ID ) are discouraged. Reads and writes of foreign
