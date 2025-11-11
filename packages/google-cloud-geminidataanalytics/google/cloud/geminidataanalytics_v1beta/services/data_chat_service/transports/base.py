@@ -26,6 +26,7 @@ from google.cloud.location import locations_pb2  # type: ignore
 from google.longrunning import operations_pb2  # type: ignore
 from google.oauth2 import service_account  # type: ignore
 import google.protobuf
+from google.protobuf import empty_pb2  # type: ignore
 
 from google.cloud.geminidataanalytics_v1beta import gapic_version as package_version
 from google.cloud.geminidataanalytics_v1beta.types import (
@@ -149,6 +150,11 @@ class DataChatServiceTransport(abc.ABC):
                 default_timeout=None,
                 client_info=client_info,
             ),
+            self.delete_conversation: gapic_v1.method.wrap_method(
+                self.delete_conversation,
+                default_timeout=None,
+                client_info=client_info,
+            ),
             self.get_conversation: gapic_v1.method.wrap_method(
                 self.get_conversation,
                 default_timeout=None,
@@ -220,6 +226,15 @@ class DataChatServiceTransport(abc.ABC):
     ) -> Callable[
         [gcg_conversation.CreateConversationRequest],
         Union[gcg_conversation.Conversation, Awaitable[gcg_conversation.Conversation]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def delete_conversation(
+        self,
+    ) -> Callable[
+        [conversation.DeleteConversationRequest],
+        Union[empty_pb2.Empty, Awaitable[empty_pb2.Empty]],
     ]:
         raise NotImplementedError()
 

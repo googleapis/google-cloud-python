@@ -68,6 +68,7 @@ from google.ads.datamanager_v1.types import (
     event,
     experimental_field,
     ingestion_service,
+    item_parameter,
     request_status_per_destination,
     terms_of_service,
     user_data,

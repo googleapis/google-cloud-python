@@ -90,6 +90,7 @@ from .types.changelog import (
     ListChangelogsRequest,
     ListChangelogsResponse,
 )
+from .types.code_block import CodeBlock
 from .types.conversation_history import (
     Conversation,
     DeleteConversationRequest,
@@ -468,6 +469,7 @@ __all__ = (
     "Changelog",
     "ChangelogsClient",
     "CloudConversationDebuggingInfo",
+    "CodeBlock",
     "CompareVersionsRequest",
     "CompareVersionsResponse",
     "ContinuousTestResult",

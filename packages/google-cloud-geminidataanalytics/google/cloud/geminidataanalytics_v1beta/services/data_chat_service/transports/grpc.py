@@ -25,6 +25,7 @@ from google.auth import credentials as ga_credentials  # type: ignore
 from google.auth.transport.grpc import SslCredentials  # type: ignore
 from google.cloud.location import locations_pb2  # type: ignore
 from google.longrunning import operations_pb2  # type: ignore
+from google.protobuf import empty_pb2  # type: ignore
 from google.protobuf.json_format import MessageToJson
 import google.protobuf.message
 import grpc  # type: ignore
@@ -386,6 +387,32 @@ class DataChatServiceGrpcTransport(DataChatServiceTransport):
                 response_deserializer=gcg_conversation.Conversation.deserialize,
             )
         return self._stubs["create_conversation"]
+
+    @property
+    def delete_conversation(
+        self,
+    ) -> Callable[[conversation.DeleteConversationRequest], empty_pb2.Empty]:
+        r"""Return a callable for the delete conversation method over gRPC.
+
+        Deletes a conversation.
+
+        Returns:
+            Callable[[~.DeleteConversationRequest],
+                    ~.Empty]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "delete_conversation" not in self._stubs:
+            self._stubs["delete_conversation"] = self._logged_channel.unary_unary(
+                "/google.cloud.geminidataanalytics.v1beta.DataChatService/DeleteConversation",
+                request_serializer=conversation.DeleteConversationRequest.serialize,
+                response_deserializer=empty_pb2.Empty.FromString,
+            )
+        return self._stubs["delete_conversation"]
 
     @property
     def get_conversation(

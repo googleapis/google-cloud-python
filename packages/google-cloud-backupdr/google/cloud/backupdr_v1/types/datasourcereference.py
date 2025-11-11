@@ -275,6 +275,8 @@ class ListDataSourceReferencesResponse(proto.Message):
             A token, which can be sent as ``page_token`` to retrieve the
             next page. If this field is omitted, there are no subsequent
             pages.
+        unreachable (MutableSequence[str]):
+            Locations that could not be reached.
     """
 
     @property
@@ -291,6 +293,10 @@ class ListDataSourceReferencesResponse(proto.Message):
     next_page_token: str = proto.Field(
         proto.STRING,
         number=2,
+    )
+    unreachable: MutableSequence[str] = proto.RepeatedField(
+        proto.STRING,
+        number=3,
     )
 
 

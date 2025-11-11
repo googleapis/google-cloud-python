@@ -39,7 +39,7 @@ def partition(
 class geminidataanalyticsCallTransformer(cst.CSTTransformer):
     CTRL_PARAMS: Tuple[str] = ('retry', 'timeout', 'metadata')
     METHOD_TO_PARAMS: Dict[str, Tuple[str]] = {
-        'chat': ('parent', 'messages', 'inline_context', 'conversation_reference', 'data_agent_context', 'project', ),
+        'chat': ('parent', 'messages', 'inline_context', 'conversation_reference', 'data_agent_context', 'client_managed_resource_context', 'project', ),
         'create_conversation': ('parent', 'conversation', 'conversation_id', 'request_id', ),
         'create_data_agent': ('parent', 'data_agent', 'data_agent_id', 'request_id', ),
         'delete_conversation': ('name', ),

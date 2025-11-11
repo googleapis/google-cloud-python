@@ -68,6 +68,7 @@ from google.oauth2 import service_account
 from google.protobuf import empty_pb2  # type: ignore
 from google.protobuf import field_mask_pb2  # type: ignore
 from google.protobuf import timestamp_pb2  # type: ignore
+from google.protobuf import wrappers_pb2  # type: ignore
 from google.type import expr_pb2  # type: ignore
 
 from google.cloud.geminidataanalytics_v1beta.services.data_agent_service import (
@@ -7126,11 +7127,30 @@ def test_create_data_agent_rest_call_success(request_type):
                 "options": {
                     "chart": {"image": {"no_image": {}, "svg": {}}},
                     "analysis": {"python": {"enabled": True}},
+                    "datasource": {"big_query_max_billed_bytes": {"value": 541}},
                 },
                 "example_queries": [
                     {
                         "sql_query": "sql_query_value",
                         "natural_language_question": "natural_language_question_value",
+                    }
+                ],
+                "glossary_terms": [
+                    {
+                        "display_name": "display_name_value",
+                        "description": "description_value",
+                        "labels": ["labels_value1", "labels_value2"],
+                    }
+                ],
+                "schema_relationships": [
+                    {
+                        "left_schema_paths": {
+                            "table_fqn": "table_fqn_value",
+                            "paths": ["paths_value1", "paths_value2"],
+                        },
+                        "right_schema_paths": {},
+                        "sources": [1],
+                        "confidence_score": 0.1673,
                     }
                 ],
             },
@@ -7415,11 +7435,30 @@ def test_update_data_agent_rest_call_success(request_type):
                 "options": {
                     "chart": {"image": {"no_image": {}, "svg": {}}},
                     "analysis": {"python": {"enabled": True}},
+                    "datasource": {"big_query_max_billed_bytes": {"value": 541}},
                 },
                 "example_queries": [
                     {
                         "sql_query": "sql_query_value",
                         "natural_language_question": "natural_language_question_value",
+                    }
+                ],
+                "glossary_terms": [
+                    {
+                        "display_name": "display_name_value",
+                        "description": "description_value",
+                        "labels": ["labels_value1", "labels_value2"],
+                    }
+                ],
+                "schema_relationships": [
+                    {
+                        "left_schema_paths": {
+                            "table_fqn": "table_fqn_value",
+                            "paths": ["paths_value1", "paths_value2"],
+                        },
+                        "right_schema_paths": {},
+                        "sources": [1],
+                        "confidence_score": 0.1673,
                     }
                 ],
             },

@@ -75,6 +75,7 @@ from google.cloud.dialogflowcx_v3beta1.services.playbooks import (
 )
 from google.cloud.dialogflowcx_v3beta1.types import (
     advanced_settings,
+    code_block,
     data_store_connection,
     example,
     fulfillment,
@@ -1123,6 +1124,7 @@ def test_create_playbook(request_type, transport: str = "grpc"):
             referenced_playbooks=["referenced_playbooks_value"],
             referenced_flows=["referenced_flows_value"],
             referenced_tools=["referenced_tools_value"],
+            inline_actions=["inline_actions_value"],
             playbook_type=gcdc_playbook.Playbook.PlaybookType.TASK,
         )
         response = client.create_playbook(request)
@@ -1142,6 +1144,7 @@ def test_create_playbook(request_type, transport: str = "grpc"):
     assert response.referenced_playbooks == ["referenced_playbooks_value"]
     assert response.referenced_flows == ["referenced_flows_value"]
     assert response.referenced_tools == ["referenced_tools_value"]
+    assert response.inline_actions == ["inline_actions_value"]
     assert response.playbook_type == gcdc_playbook.Playbook.PlaybookType.TASK
 
 
@@ -1275,6 +1278,7 @@ async def test_create_playbook_async(
                 referenced_playbooks=["referenced_playbooks_value"],
                 referenced_flows=["referenced_flows_value"],
                 referenced_tools=["referenced_tools_value"],
+                inline_actions=["inline_actions_value"],
                 playbook_type=gcdc_playbook.Playbook.PlaybookType.TASK,
             )
         )
@@ -1295,6 +1299,7 @@ async def test_create_playbook_async(
     assert response.referenced_playbooks == ["referenced_playbooks_value"]
     assert response.referenced_flows == ["referenced_flows_value"]
     assert response.referenced_tools == ["referenced_tools_value"]
+    assert response.inline_actions == ["inline_actions_value"]
     assert response.playbook_type == gcdc_playbook.Playbook.PlaybookType.TASK
 
 
@@ -2314,6 +2319,7 @@ def test_get_playbook(request_type, transport: str = "grpc"):
             referenced_playbooks=["referenced_playbooks_value"],
             referenced_flows=["referenced_flows_value"],
             referenced_tools=["referenced_tools_value"],
+            inline_actions=["inline_actions_value"],
             playbook_type=playbook.Playbook.PlaybookType.TASK,
         )
         response = client.get_playbook(request)
@@ -2333,6 +2339,7 @@ def test_get_playbook(request_type, transport: str = "grpc"):
     assert response.referenced_playbooks == ["referenced_playbooks_value"]
     assert response.referenced_flows == ["referenced_flows_value"]
     assert response.referenced_tools == ["referenced_tools_value"]
+    assert response.inline_actions == ["inline_actions_value"]
     assert response.playbook_type == playbook.Playbook.PlaybookType.TASK
 
 
@@ -2466,6 +2473,7 @@ async def test_get_playbook_async(
                 referenced_playbooks=["referenced_playbooks_value"],
                 referenced_flows=["referenced_flows_value"],
                 referenced_tools=["referenced_tools_value"],
+                inline_actions=["inline_actions_value"],
                 playbook_type=playbook.Playbook.PlaybookType.TASK,
             )
         )
@@ -2486,6 +2494,7 @@ async def test_get_playbook_async(
     assert response.referenced_playbooks == ["referenced_playbooks_value"]
     assert response.referenced_flows == ["referenced_flows_value"]
     assert response.referenced_tools == ["referenced_tools_value"]
+    assert response.inline_actions == ["inline_actions_value"]
     assert response.playbook_type == playbook.Playbook.PlaybookType.TASK
 
 
@@ -3155,6 +3164,7 @@ def test_update_playbook(request_type, transport: str = "grpc"):
             referenced_playbooks=["referenced_playbooks_value"],
             referenced_flows=["referenced_flows_value"],
             referenced_tools=["referenced_tools_value"],
+            inline_actions=["inline_actions_value"],
             playbook_type=gcdc_playbook.Playbook.PlaybookType.TASK,
         )
         response = client.update_playbook(request)
@@ -3174,6 +3184,7 @@ def test_update_playbook(request_type, transport: str = "grpc"):
     assert response.referenced_playbooks == ["referenced_playbooks_value"]
     assert response.referenced_flows == ["referenced_flows_value"]
     assert response.referenced_tools == ["referenced_tools_value"]
+    assert response.inline_actions == ["inline_actions_value"]
     assert response.playbook_type == gcdc_playbook.Playbook.PlaybookType.TASK
 
 
@@ -3303,6 +3314,7 @@ async def test_update_playbook_async(
                 referenced_playbooks=["referenced_playbooks_value"],
                 referenced_flows=["referenced_flows_value"],
                 referenced_tools=["referenced_tools_value"],
+                inline_actions=["inline_actions_value"],
                 playbook_type=gcdc_playbook.Playbook.PlaybookType.TASK,
             )
         )
@@ -3323,6 +3335,7 @@ async def test_update_playbook_async(
     assert response.referenced_playbooks == ["referenced_playbooks_value"]
     assert response.referenced_flows == ["referenced_flows_value"]
     assert response.referenced_tools == ["referenced_tools_value"]
+    assert response.inline_actions == ["inline_actions_value"]
     assert response.playbook_type == gcdc_playbook.Playbook.PlaybookType.TASK
 
 
@@ -8033,6 +8046,7 @@ async def test_create_playbook_empty_call_grpc_asyncio():
                 referenced_playbooks=["referenced_playbooks_value"],
                 referenced_flows=["referenced_flows_value"],
                 referenced_tools=["referenced_tools_value"],
+                inline_actions=["inline_actions_value"],
                 playbook_type=gcdc_playbook.Playbook.PlaybookType.TASK,
             )
         )
@@ -8117,6 +8131,7 @@ async def test_get_playbook_empty_call_grpc_asyncio():
                 referenced_playbooks=["referenced_playbooks_value"],
                 referenced_flows=["referenced_flows_value"],
                 referenced_tools=["referenced_tools_value"],
+                inline_actions=["inline_actions_value"],
                 playbook_type=playbook.Playbook.PlaybookType.TASK,
             )
         )
@@ -8201,6 +8216,7 @@ async def test_update_playbook_empty_call_grpc_asyncio():
                 referenced_playbooks=["referenced_playbooks_value"],
                 referenced_flows=["referenced_flows_value"],
                 referenced_tools=["referenced_tools_value"],
+                inline_actions=["inline_actions_value"],
                 playbook_type=gcdc_playbook.Playbook.PlaybookType.TASK,
             )
         )
@@ -8433,6 +8449,8 @@ def test_create_playbook_rest_call_success(request_type):
         ],
         "referenced_flows": ["referenced_flows_value1", "referenced_flows_value2"],
         "referenced_tools": ["referenced_tools_value1", "referenced_tools_value2"],
+        "inline_actions": ["inline_actions_value1", "inline_actions_value2"],
+        "code_block": {"code": "code_value"},
         "llm_model_settings": {
             "model": "model_value",
             "prompt_text": "prompt_text_value",
@@ -8637,6 +8655,7 @@ def test_create_playbook_rest_call_success(request_type):
             referenced_playbooks=["referenced_playbooks_value"],
             referenced_flows=["referenced_flows_value"],
             referenced_tools=["referenced_tools_value"],
+            inline_actions=["inline_actions_value"],
             playbook_type=gcdc_playbook.Playbook.PlaybookType.TASK,
         )
 
@@ -8661,6 +8680,7 @@ def test_create_playbook_rest_call_success(request_type):
     assert response.referenced_playbooks == ["referenced_playbooks_value"]
     assert response.referenced_flows == ["referenced_flows_value"]
     assert response.referenced_tools == ["referenced_tools_value"]
+    assert response.inline_actions == ["inline_actions_value"]
     assert response.playbook_type == gcdc_playbook.Playbook.PlaybookType.TASK
 
 
@@ -9008,6 +9028,7 @@ def test_get_playbook_rest_call_success(request_type):
             referenced_playbooks=["referenced_playbooks_value"],
             referenced_flows=["referenced_flows_value"],
             referenced_tools=["referenced_tools_value"],
+            inline_actions=["inline_actions_value"],
             playbook_type=playbook.Playbook.PlaybookType.TASK,
         )
 
@@ -9032,6 +9053,7 @@ def test_get_playbook_rest_call_success(request_type):
     assert response.referenced_playbooks == ["referenced_playbooks_value"]
     assert response.referenced_flows == ["referenced_flows_value"]
     assert response.referenced_tools == ["referenced_tools_value"]
+    assert response.inline_actions == ["inline_actions_value"]
     assert response.playbook_type == playbook.Playbook.PlaybookType.TASK
 
 
@@ -9410,6 +9432,8 @@ def test_update_playbook_rest_call_success(request_type):
         ],
         "referenced_flows": ["referenced_flows_value1", "referenced_flows_value2"],
         "referenced_tools": ["referenced_tools_value1", "referenced_tools_value2"],
+        "inline_actions": ["inline_actions_value1", "inline_actions_value2"],
+        "code_block": {"code": "code_value"},
         "llm_model_settings": {
             "model": "model_value",
             "prompt_text": "prompt_text_value",
@@ -9614,6 +9638,7 @@ def test_update_playbook_rest_call_success(request_type):
             referenced_playbooks=["referenced_playbooks_value"],
             referenced_flows=["referenced_flows_value"],
             referenced_tools=["referenced_tools_value"],
+            inline_actions=["inline_actions_value"],
             playbook_type=gcdc_playbook.Playbook.PlaybookType.TASK,
         )
 
@@ -9638,6 +9663,7 @@ def test_update_playbook_rest_call_success(request_type):
     assert response.referenced_playbooks == ["referenced_playbooks_value"]
     assert response.referenced_flows == ["referenced_flows_value"]
     assert response.referenced_tools == ["referenced_tools_value"]
+    assert response.inline_actions == ["inline_actions_value"]
     assert response.playbook_type == gcdc_playbook.Playbook.PlaybookType.TASK
 
 
@@ -9779,6 +9805,8 @@ def test_create_playbook_version_rest_call_success(request_type):
             ],
             "referenced_flows": ["referenced_flows_value1", "referenced_flows_value2"],
             "referenced_tools": ["referenced_tools_value1", "referenced_tools_value2"],
+            "inline_actions": ["inline_actions_value1", "inline_actions_value2"],
+            "code_block": {"code": "code_value"},
             "llm_model_settings": {
                 "model": "model_value",
                 "prompt_text": "prompt_text_value",

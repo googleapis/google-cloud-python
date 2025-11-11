@@ -7332,6 +7332,9 @@ def test_create_environment_rest_call_success(request_type):
                             "scopes": ["scopes_value1", "scopes_value2"],
                         },
                         "service_agent_auth": 1,
+                        "service_account_auth_config": {
+                            "service_account": "service_account_value"
+                        },
                         "webhook_type": 1,
                         "http_method": 1,
                         "request_body": "request_body_value",
@@ -7580,6 +7583,9 @@ def test_update_environment_rest_call_success(request_type):
                             "scopes": ["scopes_value1", "scopes_value2"],
                         },
                         "service_agent_auth": 1,
+                        "service_account_auth_config": {
+                            "service_account": "service_account_value"
+                        },
                         "webhook_type": 1,
                         "http_method": 1,
                         "request_body": "request_body_value",

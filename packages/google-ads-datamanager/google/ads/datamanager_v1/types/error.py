@@ -122,13 +122,46 @@ class ErrorReason(proto.Enum):
         DUPLICATE_DESTINATION_REFERENCE (36):
             Two or more destinations in the request have
             the same reference.
+        UNSUPPORTED_OPERATING_ACCOUNT_FOR_DATA_PARTNER (37):
+            Unsupported operating account for data
+            partner authorization.
+        UNSUPPORTED_LINKED_ACCOUNT_FOR_DATA_PARTNER (38):
+            Unsupported linked account for data partner
+            authorization.
         NO_IDENTIFIERS_PROVIDED (39):
             Events data contains no user identifiers or
             ad identifiers.
+        INVALID_PROPERTY_TYPE (40):
+            The property type is not supported.
+        INVALID_STREAM_TYPE (41):
+            The stream type is not supported.
+        LINKED_ACCOUNT_ONLY_ALLOWED_WITH_DATA_PARTNER_LOGIN_ACCOUNT (42):
+            Linked account is only supported when the login account is a
+            ``DATA_PARTNER`` account.
+        OPERATING_ACCOUNT_LOGIN_ACCOUNT_MISMATCH (43):
+            The login account must be the same as the
+            operating account for the given use case.
+        EVENT_TIME_INVALID (44):
+            Event did not occur within the acceptable
+            time window.
+        RESERVED_NAME_USED (45):
+            Parameter uses a reserved name.
+        INVALID_EVENT_NAME (46):
+            The event name is not supported.
+        NOT_ALLOWLISTED (47):
+            The account is not allowlisted for the given
+            feature.
         INVALID_REQUEST_ID (48):
             The request ID used to retrieve the status of a request is
             not valid. Status can only be retrieved for requests that
             succeed and don't have ``validate_only=true``.
+        MULTIPLE_DESTINATIONS_FOR_GOOGLE_ANALYTICS_EVENT (49):
+            An event had 2 or more Google Analytics
+            destinations.
+        FIELD_VALUE_TOO_LONG (50):
+            The field value is too long.
+        TOO_MANY_ELEMENTS (51):
+            Too many elements in a list in the request.
     """
     ERROR_REASON_UNSPECIFIED = 0
     INTERNAL_ERROR = 1
@@ -167,8 +200,21 @@ class ErrorReason(proto.Enum):
     DESTINATION_ACCOUNT_DATA_POLICY_PROHIBITS_ENHANCED_CONVERSIONS = 34
     DESTINATION_ACCOUNT_ENHANCED_CONVERSIONS_TERMS_NOT_SIGNED = 35
     DUPLICATE_DESTINATION_REFERENCE = 36
+    UNSUPPORTED_OPERATING_ACCOUNT_FOR_DATA_PARTNER = 37
+    UNSUPPORTED_LINKED_ACCOUNT_FOR_DATA_PARTNER = 38
     NO_IDENTIFIERS_PROVIDED = 39
+    INVALID_PROPERTY_TYPE = 40
+    INVALID_STREAM_TYPE = 41
+    LINKED_ACCOUNT_ONLY_ALLOWED_WITH_DATA_PARTNER_LOGIN_ACCOUNT = 42
+    OPERATING_ACCOUNT_LOGIN_ACCOUNT_MISMATCH = 43
+    EVENT_TIME_INVALID = 44
+    RESERVED_NAME_USED = 45
+    INVALID_EVENT_NAME = 46
+    NOT_ALLOWLISTED = 47
     INVALID_REQUEST_ID = 48
+    MULTIPLE_DESTINATIONS_FOR_GOOGLE_ANALYTICS_EVENT = 49
+    FIELD_VALUE_TOO_LONG = 50
+    TOO_MANY_ELEMENTS = 51
 
 
 __all__ = tuple(sorted(__protobuf__.manifest))

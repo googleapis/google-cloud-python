@@ -38,6 +38,7 @@ from google.ads.datamanager_v1.types.destination import (
 )
 from google.ads.datamanager_v1.types.device_info import DeviceInfo
 from google.ads.datamanager_v1.types.encryption_info import (
+    AwsWrappedKeyInfo,
     EncryptionInfo,
     GcpWrappedKeyInfo,
 )
@@ -46,6 +47,7 @@ from google.ads.datamanager_v1.types.event import (
     AdIdentifiers,
     CustomVariable,
     Event,
+    EventParameter,
     EventSource,
 )
 from google.ads.datamanager_v1.types.experimental_field import ExperimentalField
@@ -60,6 +62,7 @@ from google.ads.datamanager_v1.types.ingestion_service import (
     RetrieveRequestStatusRequest,
     RetrieveRequestStatusResponse,
 )
+from google.ads.datamanager_v1.types.item_parameter import ItemParameter
 from google.ads.datamanager_v1.types.match_rate import MatchRateRange
 from google.ads.datamanager_v1.types.processing_errors import (
     ErrorCount,
@@ -85,6 +88,7 @@ from google.ads.datamanager_v1.types.user_properties import (
     CustomerType,
     CustomerValueBucket,
     UserProperties,
+    UserProperty,
 )
 
 __all__ = (
@@ -101,12 +105,14 @@ __all__ = (
     "ProductAccount",
     "Product",
     "DeviceInfo",
+    "AwsWrappedKeyInfo",
     "EncryptionInfo",
     "GcpWrappedKeyInfo",
     "ErrorReason",
     "AdIdentifiers",
     "CustomVariable",
     "Event",
+    "EventParameter",
     "EventSource",
     "ExperimentalField",
     "IngestAudienceMembersRequest",
@@ -118,6 +124,7 @@ __all__ = (
     "RetrieveRequestStatusRequest",
     "RetrieveRequestStatusResponse",
     "Encoding",
+    "ItemParameter",
     "MatchRateRange",
     "ErrorCount",
     "ErrorInfo",
@@ -132,6 +139,7 @@ __all__ = (
     "UserData",
     "UserIdentifier",
     "UserProperties",
+    "UserProperty",
     "CustomerType",
     "CustomerValueBucket",
 )

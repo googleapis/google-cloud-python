@@ -27,9 +27,15 @@ from .types.cart_data import CartData, Item
 from .types.consent import Consent, ConsentStatus
 from .types.destination import Destination, Product, ProductAccount
 from .types.device_info import DeviceInfo
-from .types.encryption_info import EncryptionInfo, GcpWrappedKeyInfo
+from .types.encryption_info import AwsWrappedKeyInfo, EncryptionInfo, GcpWrappedKeyInfo
 from .types.error import ErrorReason
-from .types.event import AdIdentifiers, CustomVariable, Event, EventSource
+from .types.event import (
+    AdIdentifiers,
+    CustomVariable,
+    Event,
+    EventParameter,
+    EventSource,
+)
 from .types.experimental_field import ExperimentalField
 from .types.ingestion_service import (
     Encoding,
@@ -42,6 +48,7 @@ from .types.ingestion_service import (
     RetrieveRequestStatusRequest,
     RetrieveRequestStatusResponse,
 )
+from .types.item_parameter import ItemParameter
 from .types.match_rate import MatchRateRange
 from .types.processing_errors import (
     ErrorCount,
@@ -54,13 +61,19 @@ from .types.processing_errors import (
 from .types.request_status_per_destination import RequestStatusPerDestination
 from .types.terms_of_service import TermsOfService, TermsOfServiceStatus
 from .types.user_data import AddressInfo, UserData, UserIdentifier
-from .types.user_properties import CustomerType, CustomerValueBucket, UserProperties
+from .types.user_properties import (
+    CustomerType,
+    CustomerValueBucket,
+    UserProperties,
+    UserProperty,
+)
 
 __all__ = (
     "IngestionServiceAsyncClient",
     "AdIdentifiers",
     "AddressInfo",
     "AudienceMember",
+    "AwsWrappedKeyInfo",
     "CartData",
     "Consent",
     "ConsentStatus",
@@ -75,6 +88,7 @@ __all__ = (
     "ErrorInfo",
     "ErrorReason",
     "Event",
+    "EventParameter",
     "EventSource",
     "ExperimentalField",
     "GcpWrappedKeyInfo",
@@ -84,6 +98,7 @@ __all__ = (
     "IngestEventsResponse",
     "IngestionServiceClient",
     "Item",
+    "ItemParameter",
     "MatchRateRange",
     "MobileData",
     "PairData",
@@ -101,6 +116,7 @@ __all__ = (
     "UserData",
     "UserIdentifier",
     "UserProperties",
+    "UserProperty",
     "WarningCount",
     "WarningInfo",
 )

@@ -103,6 +103,8 @@ class ProcessingErrorReason(proto.Enum):
         PROCESSING_ERROR_REASON_KEK_PERMISSION_DENIED (24):
             The system did not have the permissions
             needed to access the KEK.
+        PROCESSING_ERROR_REASON_AWS_AUTH_FAILED (27):
+            The system failed to authenticate with AWS.
         PROCESSING_ERROR_REASON_USER_IDENTIFIER_DECRYPTION_ERROR (25):
             Failed to decrypt the
             [UserIdentifier][google.ads.datamanager.v1.UserIdentifier]
@@ -139,6 +141,7 @@ class ProcessingErrorReason(proto.Enum):
     PROCESSING_ERROR_REASON_INVALID_KEK = 22
     PROCESSING_ERROR_REASON_WIP_AUTH_FAILED = 23
     PROCESSING_ERROR_REASON_KEK_PERMISSION_DENIED = 24
+    PROCESSING_ERROR_REASON_AWS_AUTH_FAILED = 27
     PROCESSING_ERROR_REASON_USER_IDENTIFIER_DECRYPTION_ERROR = 25
     PROCESSING_ERROR_OPERATING_ACCOUNT_MISMATCH_FOR_AD_IDENTIFIER = 26
 
@@ -171,6 +174,8 @@ class ProcessingWarningReason(proto.Enum):
             data using the DEK.
         PROCESSING_WARNING_REASON_INTERNAL_ERROR (8):
             Internal error.
+        PROCESSING_WARNING_REASON_AWS_AUTH_FAILED (9):
+            The system failed to authenticate with AWS.
     """
     PROCESSING_WARNING_REASON_UNSPECIFIED = 0
     PROCESSING_WARNING_REASON_KEK_PERMISSION_DENIED = 1
@@ -181,6 +186,7 @@ class ProcessingWarningReason(proto.Enum):
     PROCESSING_WARNING_REASON_INVALID_KEK = 6
     PROCESSING_WARNING_REASON_USER_IDENTIFIER_DECRYPTION_ERROR = 7
     PROCESSING_WARNING_REASON_INTERNAL_ERROR = 8
+    PROCESSING_WARNING_REASON_AWS_AUTH_FAILED = 9
 
 
 class ErrorInfo(proto.Message):

@@ -953,7 +953,7 @@ class GeneratorEvaluationConfig(proto.Message):
                 completeness. This will determine the prompt and
                 model used at backend.
             evaluator_version (str):
-                Output only. Version for summarization
+                Optional. Version for summarization
                 evaluation.
 
                 This field is a member of `oneof`_ ``_evaluator_version``.

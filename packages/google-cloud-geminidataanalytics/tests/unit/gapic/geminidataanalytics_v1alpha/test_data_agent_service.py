@@ -68,6 +68,7 @@ from google.oauth2 import service_account
 from google.protobuf import empty_pb2  # type: ignore
 from google.protobuf import field_mask_pb2  # type: ignore
 from google.protobuf import timestamp_pb2  # type: ignore
+from google.protobuf import wrappers_pb2  # type: ignore
 from google.type import expr_pb2  # type: ignore
 
 from google.cloud.geminidataanalytics_v1alpha.services.data_agent_service import (
@@ -7126,6 +7127,7 @@ def test_create_data_agent_rest_call_success(request_type):
                 "options": {
                     "chart": {"image": {"no_image": {}, "svg": {}}},
                     "analysis": {"python": {"enabled": True}},
+                    "datasource": {"big_query_max_billed_bytes": {"value": 541}},
                 },
                 "example_queries": [
                     {
@@ -7433,6 +7435,7 @@ def test_update_data_agent_rest_call_success(request_type):
                 "options": {
                     "chart": {"image": {"no_image": {}, "svg": {}}},
                     "analysis": {"python": {"enabled": True}},
+                    "datasource": {"big_query_max_billed_bytes": {"value": 541}},
                 },
                 "example_queries": [
                     {

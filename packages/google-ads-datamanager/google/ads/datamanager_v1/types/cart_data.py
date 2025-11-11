@@ -19,6 +19,8 @@ from typing import MutableMapping, MutableSequence
 
 import proto  # type: ignore
 
+from google.ads.datamanager_v1.types import item_parameter
+
 __protobuf__ = proto.module(
     package="google.ads.datamanager.v1",
     manifest={
@@ -86,6 +88,14 @@ class Item(proto.Message):
         unit_price (float):
             Optional. The unit price excluding tax,
             shipping, and any transaction level discounts.
+        item_id (str):
+            Optional. A unique identifier to reference
+            the item.
+        additional_item_parameters (MutableSequence[google.ads.datamanager_v1.types.ItemParameter]):
+            Optional. A bucket of any `event parameters related to an
+            item <https://developers.google.com/analytics/devguides/collection/protocol/ga4/reference/events>`__
+            to be included within the event that were not already
+            specified using other structured fields.
     """
 
     merchant_product_id: str = proto.Field(
@@ -99,6 +109,17 @@ class Item(proto.Message):
     unit_price: float = proto.Field(
         proto.DOUBLE,
         number=3,
+    )
+    item_id: str = proto.Field(
+        proto.STRING,
+        number=4,
+    )
+    additional_item_parameters: MutableSequence[
+        item_parameter.ItemParameter
+    ] = proto.RepeatedField(
+        proto.MESSAGE,
+        number=5,
+        message=item_parameter.ItemParameter,
     )
 
 

@@ -539,6 +539,105 @@ class DataChatServiceAsyncClient:
         # Done; return the response.
         return response
 
+    async def delete_conversation(
+        self,
+        request: Optional[Union[conversation.DeleteConversationRequest, dict]] = None,
+        *,
+        name: Optional[str] = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+    ) -> None:
+        r"""Deletes a conversation.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import geminidataanalytics_v1beta
+
+            async def sample_delete_conversation():
+                # Create a client
+                client = geminidataanalytics_v1beta.DataChatServiceAsyncClient()
+
+                # Initialize request argument(s)
+                request = geminidataanalytics_v1beta.DeleteConversationRequest(
+                    name="name_value",
+                )
+
+                # Make the request
+                await client.delete_conversation(request=request)
+
+        Args:
+            request (Optional[Union[google.cloud.geminidataanalytics_v1beta.types.DeleteConversationRequest, dict]]):
+                The request object. Request for deleting a conversation
+                based on parent and conversation id.
+            name (:class:`str`):
+                Required. Name of the resource. Format:
+                ``projects/{project}/locations/{location}/conversations/{conversation}``
+
+                This corresponds to the ``name`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry_async.AsyncRetry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                sent along with the request as metadata. Normally, each value must be of type `str`,
+                but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                be of type `bytes`.
+        """
+        # Create or coerce a protobuf request object.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
+        flattened_params = [name]
+        has_flattened_params = (
+            len([param for param in flattened_params if param is not None]) > 0
+        )
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, conversation.DeleteConversationRequest):
+            request = conversation.DeleteConversationRequest(request)
+
+        # If we have keyword arguments corresponding to fields on the
+        # request, apply these.
+        if name is not None:
+            request.name = name
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.delete_conversation
+        ]
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
+        )
+
+        # Validate the universe domain.
+        self._client._validate_universe_domain()
+
+        # Send the request.
+        await rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
     async def get_conversation(
         self,
         request: Optional[Union[conversation.GetConversationRequest, dict]] = None,
