@@ -17,6 +17,7 @@ from __future__ import annotations
 
 from typing import MutableMapping, MutableSequence
 
+from google.protobuf import struct_pb2  # type: ignore
 import proto  # type: ignore
 
 from google.cloud.geminidataanalytics_v1alpha.types import (
@@ -318,6 +319,14 @@ class Datasource(proto.Message):
             This field is a member of `oneof`_ ``reference``.
         schema (google.cloud.geminidataanalytics_v1alpha.types.Schema):
             Optional. The schema of the datasource.
+        struct_schema (google.protobuf.struct_pb2.Struct):
+            Optional. A struct representation of the schema. This is
+            populated for datasources with schemas that cannot be fully
+            represented by the strongly-typed ``schema`` field.
+
+            For Looker datasources, this maps to the LookmlModelExplore
+            type:
+            https://cloud.google.com/looker/docs/reference/looker-api/latest/types/LookmlModelExplore
     """
 
     bigquery_table_reference: "BigQueryTableReference" = proto.Field(
@@ -341,6 +350,11 @@ class Datasource(proto.Message):
         proto.MESSAGE,
         number=7,
         message="Schema",
+    )
+    struct_schema: struct_pb2.Struct = proto.Field(
+        proto.MESSAGE,
+        number=10,
+        message=struct_pb2.Struct,
     )
 
 

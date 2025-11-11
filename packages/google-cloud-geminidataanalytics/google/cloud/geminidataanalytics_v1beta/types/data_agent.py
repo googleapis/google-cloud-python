@@ -51,7 +51,7 @@ class DataAgent(proto.Message):
             https://google.aip.dev/122#resource-id-segments
 
             Example:
-            ``projects/1234567890/locations/us-central1/dataAgents/my-agent``.
+            ``projects/1234567890/locations/global/dataAgents/my-agent``.
 
             It is recommended to skip setting this field during agent
             creation as it will be inferred automatically and

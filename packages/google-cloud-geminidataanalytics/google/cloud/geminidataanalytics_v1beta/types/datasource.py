@@ -17,6 +17,7 @@ from __future__ import annotations
 
 from typing import MutableMapping, MutableSequence
 
+from google.protobuf import struct_pb2  # type: ignore
 import proto  # type: ignore
 
 from google.cloud.geminidataanalytics_v1beta.types import credentials as gcg_credentials
@@ -316,6 +317,14 @@ class Datasource(proto.Message):
             This field is a member of `oneof`_ ``reference``.
         schema (google.cloud.geminidataanalytics_v1beta.types.Schema):
             Optional. The schema of the datasource.
+        struct_schema (google.protobuf.struct_pb2.Struct):
+            Optional. A struct representation of the schema. This is
+            populated for datasources with schemas that cannot be fully
+            represented by the strongly-typed ``schema`` field.
+
+            For Looker datasources, this maps to the LookmlModelExplore
+            type:
+            https://cloud.google.com/looker/docs/reference/looker-api/latest/types/LookmlModelExplore
     """
 
     bigquery_table_reference: "BigQueryTableReference" = proto.Field(
@@ -340,6 +349,11 @@ class Datasource(proto.Message):
         number=7,
         message="Schema",
     )
+    struct_schema: struct_pb2.Struct = proto.Field(
+        proto.MESSAGE,
+        number=10,
+        message=struct_pb2.Struct,
+    )
 
 
 class Schema(proto.Message):
@@ -352,15 +366,18 @@ class Schema(proto.Message):
             Optional. A textual description of the
             table's content and purpose. For example:
             "Contains information about customer orders in
-            our e-commerce store.".
+            our e-commerce store." Currently only used for
+            BigQuery data sources.
         synonyms (MutableSequence[str]):
             Optional. A list of alternative names or synonyms that can
             be used to refer to the table. For example: ["sales",
-            "orders", "purchases"]
+            "orders", "purchases"]. Currently only used for BigQuery
+            data sources.
         tags (MutableSequence[str]):
             Optional. A list of tags or keywords associated with the
             table, used for categorization. For example: ["transaction",
-            "revenue", "customer_data"]
+            "revenue", "customer_data"]. Currently only used for
+            BigQuery data sources.
         display_name (str):
             Optional. Table display_name (same as label in
             cloud/data_analytics/anarres/data/looker/proto/model_explore.proto),
@@ -415,11 +432,13 @@ class Field(proto.Message):
         synonyms (MutableSequence[str]):
             Optional. A list of alternative names or synonyms that can
             be used to refer to this field. For example: ["id",
-            "customerid", "cust_id"]
+            "customerid", "cust_id"]. Currently only used for BigQuery
+            data sources.
         tags (MutableSequence[str]):
             Optional. A list of tags or keywords associated with the
             field, used for categorization. For example: ["identifier",
-            "customer", "pii"]
+            "customer", "pii"]. Currently only used for BigQuery data
+            sources.
         display_name (str):
             Optional. Field display_name (same as label in
         subfields (MutableSequence[google.cloud.geminidataanalytics_v1beta.types.Field]):
