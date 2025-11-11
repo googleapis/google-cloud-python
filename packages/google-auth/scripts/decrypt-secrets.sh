@@ -20,6 +20,10 @@ ROOT=$( dirname "$DIR" )
 # Work from the project root.
 cd $ROOT
 
+# Create working directory if not exists. system_tests/data is not tracked by
+# Git to prevent the secrets from being leaked online.
+mkdir -p system_tests/data
+
 gcloud kms decrypt \
   --location=global \
   --keyring=ci \

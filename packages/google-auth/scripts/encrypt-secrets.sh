@@ -30,3 +30,5 @@ gcloud kms encrypt \
   --ciphertext-file=system_tests/secrets.tar.enc
 
 rm system_tests/secrets.tar
+
+rm system_tests/data
