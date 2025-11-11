@@ -730,7 +730,7 @@ def test_run_individual_session_success(mocker, caplog):
         "-f",
         f"{REPO_DIR}/packages/{test_library_id}/noxfile.py",
     ]
-    mock_subprocess_run.assert_called_once_with(expected_command, text=True, check=True)
+    mock_subprocess_run.assert_called_once_with(expected_command, text=True, check=True, timeout=600)
 
 
 def test_run_individual_session_failure(mocker):
