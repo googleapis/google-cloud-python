@@ -137,7 +137,6 @@ class Decoder:
         )
 
     def getVarInt32(self):
-
         b = self.get8()
         if not (b & 128):
             return b

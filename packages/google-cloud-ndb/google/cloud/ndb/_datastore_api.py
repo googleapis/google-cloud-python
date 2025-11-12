@@ -196,7 +196,6 @@ class _LookupBatch(object):
         self.todo = {}
 
     def full(self):
-
         """Indicates whether more work can be added to this batch.
 
         Returns:

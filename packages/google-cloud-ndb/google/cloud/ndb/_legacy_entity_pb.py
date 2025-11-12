@@ -343,7 +343,6 @@ class PropertyValue(ProtocolBuffer.ProtocolMessage):
 
 
 class Property(ProtocolBuffer.ProtocolMessage):
-
     NO_MEANING = 0
     BLOB = 14
     TEXT = 15
@@ -691,7 +690,6 @@ class Reference(ProtocolBuffer.ProtocolMessage):
 
 
 class EntityProto(ProtocolBuffer.ProtocolMessage):
-
     has_key_ = 0
     has_owner_ = 0
     owner_ = None

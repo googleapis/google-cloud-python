@@ -115,7 +115,6 @@ class GQL(object):
             raise error
 
     def _InitializeParseState(self):
-
         self._kind = None
         self._keys_only = False
         self._projection = None
@@ -330,9 +329,7 @@ class GQL(object):
         self._CheckFilterSyntax(identifier, condition)
 
         if not self._AddSimpleFilter(identifier, condition, self._Reference()):
-
             if not self._AddSimpleFilter(identifier, condition, self._Literal()):
-
                 type_cast = self._TypeCast()
                 if not type_cast or not self._AddProcessedParameterFilter(
                     identifier, condition, *type_cast
@@ -378,7 +375,6 @@ class GQL(object):
         condition = raw_condition.lower()
         if identifier.lower() == "ancestor":
             if condition == "is":
-
                 if self._has_ancestor:
                     self._Error('Only one ANCESTOR IS" clause allowed')
             else:
@@ -508,13 +504,11 @@ class GQL(object):
                     self._next_symbol += 1
 
         if literal is None:
-
             literal = self._AcceptRegex(self._quoted_string_regex)
             if literal:
                 literal = literal[1:-1].replace("''", "'")
 
         if literal is None:
-
             if self._Accept("TRUE"):
                 literal = True
             elif self._Accept("FALSE"):
@@ -548,7 +542,6 @@ class GQL(object):
         cast_op = self._AcceptRegex(self._cast_regex)
         if not cast_op:
             if can_cast_list and self._Accept("("):
-
                 cast_op = "list"
             else:
                 return None
@@ -588,11 +581,9 @@ class GQL(object):
     def _Limit(self):
         """Consume the LIMIT clause."""
         if self._Accept("LIMIT"):
-
             maybe_limit = self._AcceptRegex(self._number_regex)
 
             if maybe_limit:
-
                 if self._Accept(","):
                     self._offset = int(maybe_limit)
                     maybe_limit = self._AcceptRegex(self._number_regex)
@@ -674,7 +665,7 @@ class GQL(object):
             name, op = name_op
             values = gql_filters[name_op]
             op = op.lower()
-            for (func, args) in values:
+            for func, args in values:
                 prop = model_class._properties.get(name)
                 val = self._args_to_val(func, args)
                 if isinstance(val, query_module.ParameterizedThing):

@@ -200,7 +200,6 @@ class TestIndex:
 
 
 class TestIndexState:
-
     INDEX = mock.sentinel.index
 
     def test_constructor(self):
@@ -6565,7 +6564,6 @@ def test_get_indexes():
 
 @pytest.mark.usefixtures("in_context")
 def test_serialization():
-
     # This is needed because pickle can't serialize local objects
     global SomeKind, OtherKind
 

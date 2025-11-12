@@ -808,7 +808,6 @@ class _Result(object):
             return NotImplemented
 
         for order in self.order_by:
-
             if order.name == "__key__":
                 this_value = helpers.key_from_protobuf(
                     self.result_pb.entity.key

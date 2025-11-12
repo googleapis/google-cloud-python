@@ -28,11 +28,12 @@ import nox
 
 LOCAL_DEPS = ("google-api-core", "google-cloud-core")
 NOX_DIR = os.path.abspath(os.path.dirname(__file__))
-DEFAULT_INTERPRETER = "3.8"
-ALL_INTERPRETERS = ("3.7", "3.8", "3.9", "3.10", "3.11", "3.12", "3.13")
+DEFAULT_INTERPRETER = "3.14"
+ALL_INTERPRETERS = ("3.7", "3.8", "3.9", "3.10", "3.11", "3.12", "3.13", "3.14")
+EMULTATOR_INTERPRETERS = ("3.9", "3.10", "3.11", "3.12", "3.13", "3.14")
 CURRENT_DIRECTORY = pathlib.Path(__file__).parent.absolute()
 
-BLACK_VERSION = "black==22.3.0"
+BLACK_VERSION = "black[jupyter]==23.7.0"
 UNIT_TEST_STANDARD_DEPENDENCIES = [
     "mock",
     "asyncmock",
@@ -44,6 +45,24 @@ UNIT_TEST_STANDARD_DEPENDENCIES = [
 
 # Error if a python version is missing
 nox.options.error_on_missing_interpreters = True
+
+nox.options.sessions = [
+    "prerelease_deps",
+    "unit-3.9",
+    "unit-3.10",
+    "unit-3.11",
+    "unit-3.12",
+    "unit-3.13",
+    "unit-3.14",
+    "cover",
+    "old-emulator-system",
+    "emulator-system",
+    "lint",
+    "blacken",
+    "docs",
+    "doctest",
+    "system",
+]
 
 
 def get_path(*names):
@@ -78,7 +97,7 @@ def default(session):
     )
 
 
-@nox.session(python="3.13")
+@nox.session(python=DEFAULT_INTERPRETER)
 @nox.parametrize(
     "protobuf_implementation",
     ["python", "upb", "cpp"],
@@ -86,7 +105,12 @@ def default(session):
 def prerelease_deps(session, protobuf_implementation):
     """Run all tests with prerelease versions of dependencies installed."""
 
-    if protobuf_implementation == "cpp" and session.python in ("3.11", "3.12", "3.13"):
+    if protobuf_implementation == "cpp" and session.python in (
+        "3.11",
+        "3.12",
+        "3.13",
+        "3.14",
+    ):
         session.skip("cpp implementation is not supported in python 3.11+")
 
     # Install all dependencies
@@ -174,13 +198,13 @@ def cover(session):
     session.run("coverage", "erase")
 
 
-@nox.session(name="old-emulator-system", python=ALL_INTERPRETERS)
+@nox.session(name="old-emulator-system", python=EMULTATOR_INTERPRETERS)
 def old_emulator_system(session):
     emulator_args = ["gcloud", "beta", "emulators", "datastore", "start"]
     _run_emulator(session, emulator_args)
 
 
-@nox.session(name="emulator-system", python=ALL_INTERPRETERS)
+@nox.session(name="emulator-system", python=EMULTATOR_INTERPRETERS)
 def emulator_system(session):
     emulator_args = [
         "gcloud",
@@ -252,7 +276,7 @@ def lint(session):
     Returns a failure if the linters find linting errors or sufficiently
     serious code quality issues.
     """
-    session.install("flake8", BLACK_VERSION, "click<8.1.0")
+    session.install("flake8", BLACK_VERSION)
     run_black(session, use_check=True)
     session.run("flake8", "google", "tests")
 
@@ -260,7 +284,7 @@ def lint(session):
 @nox.session(py=DEFAULT_INTERPRETER)
 def blacken(session):
     # Install all dependencies.
-    session.install(BLACK_VERSION, "click<8.1.0")
+    session.install(BLACK_VERSION)
     # Run ``black``.
     run_black(session)
 
@@ -316,7 +340,7 @@ def doctest(session):
         "sphinx==4.0.1",
     )
     session.install(".")
-    # Run the script for building docs and running doctests.
+    # Run the script for building docs and running doctest.
     run_args = [
         "sphinx-build",
         "-W",
