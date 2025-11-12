@@ -1330,10 +1330,10 @@ class ExecuteQueryRequest(proto.Message):
             Setting this field also places restrictions on several other
             fields:
 
-            -  ``data_format`` must be empty.
-            -  ``validate_only`` must be false.
-            -  ``params`` must match the ``param_types`` set in the
-               ``PrepareQueryRequest``.
+            - ``data_format`` must be empty.
+            - ``validate_only`` must be false.
+            - ``params`` must match the ``param_types`` set in the
+              ``PrepareQueryRequest``.
         proto_format (google.cloud.bigtable_v2.types.ProtoFormat):
             Protocol buffer format as described by
             ProtoSchema and ProtoRows messages.

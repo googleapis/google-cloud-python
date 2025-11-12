@@ -154,9 +154,9 @@ class Table(proto.Message):
             i.e. deleting the following resources through Admin APIs are
             prohibited:
 
-            -  The table.
-            -  The column families in the table.
-            -  The instance containing the table.
+            - The table.
+            - The column families in the table.
+            - The instance containing the table.
 
             Note one can still delete the data stored in the table
             through Data APIs.
@@ -181,37 +181,22 @@ class Table(proto.Message):
             they encounter an invalid row key.
 
             For example, if \_key =
-            "some_id#2024-04-30#\x00\x13\x00\xf3" with the following
-            schema:
+            "some_id#2024-04-30#\\x00\\x13\\x00\\xf3" with the following
+            schema: { fields { field_name: "id" type { string {
+            encoding: utf8_bytes {} } } } fields { field_name: "date"
+            type { string { encoding: utf8_bytes {} } } } fields {
+            field_name: "product_code" type { int64 { encoding:
+            big_endian_bytes {} } } } encoding { delimited_bytes {
+            delimiter: "#" } } }
 
-            .. code-block::
-
-                {
-                  fields {
-                    field_name: "id"
-                    type { string { encoding: utf8_bytes {} } }
-                  }
-                  fields {
-                    field_name: "date"
-                    type { string { encoding: utf8_bytes {} } }
-                  }
-                  fields {
-                    field_name: "product_code"
-                    type { int64 { encoding: big_endian_bytes {} } }
-                  }
-                  encoding { delimited_bytes { delimiter: "#" } }
-                }
-
-            The decoded key parts would be:
-            id = "some_id", date = "2024-04-30", product_code = 1245427
-            The query "SELECT \_key, product_code FROM table" will return
-            two columns:
-
-            +========================================+==============+
-            | \_key                                  | product_code |
-            +========================================+==============+
-            | "some_id#2024-04-30#\x00\x13\x00\xf3"  |    1245427   |
-            +----------------------------------------+--------------+
+            | The decoded key parts would be: id = "some_id", date =
+              "2024-04-30", product_code = 1245427 The query "SELECT
+              \_key, product_code FROM table" will return two columns:
+              /------------------------------------------------------
+            | \| \_key \| product_code \| \|
+              --------------------------------------\|--------------\|
+              \| "some_id#2024-04-30#\\x00\\x13\\x00\\xf3" \| 1245427 \|
+              ------------------------------------------------------/
 
             The schema has the following invariants: (1) The decoded
             field values are order-preserved. For read, the field values
@@ -221,19 +206,19 @@ class Table(proto.Message):
             type is limited to scalar types only: Array, Map, Aggregate,
             and Struct are not allowed. (4) The field names must not
             collide with existing column family names and reserved
-            keywords "_key" and "_timestamp".
+            keywords "\_key" and "\_timestamp".
 
             The following update operations are allowed for
             row_key_schema:
 
-            -  Update from an empty schema to a new schema.
-            -  Remove the existing schema. This operation requires
-               setting the ``ignore_warnings`` flag to ``true``, since
-               it might be a backward incompatible change. Without the
-               flag, the update request will fail with an
-               INVALID_ARGUMENT error. Any other row key schema update
-               operation (e.g. update existing schema columns names or
-               types) is currently unsupported.
+            - Update from an empty schema to a new schema.
+            - Remove the existing schema. This operation requires
+              setting the ``ignore_warnings`` flag to ``true``, since it
+              might be a backward incompatible change. Without the flag,
+              the update request will fail with an INVALID_ARGUMENT
+              error. Any other row key schema update operation (e.g.
+              update existing schema columns names or types) is
+              currently unsupported.
     """
 
     class TimestampGranularity(proto.Enum):
@@ -572,7 +557,7 @@ class ColumnFamily(proto.Message):
             If ``value_type`` is ``Aggregate``, written data must be
             compatible with:
 
-            -  ``value_type.input_type`` for ``AddInput`` mutations
+            - ``value_type.input_type`` for ``AddInput`` mutations
     """
 
     gc_rule: "GcRule" = proto.Field(
@@ -864,8 +849,8 @@ class Backup(proto.Message):
             backup or updating its ``expire_time``, the value must be
             greater than the backup creation time by:
 
-            -  At least 6 hours
-            -  At most 90 days
+            - At least 6 hours
+            - At most 90 days
 
             Once the ``expire_time`` has passed, Cloud Bigtable will
             delete the backup.
@@ -895,7 +880,7 @@ class Backup(proto.Message):
             standard backup. This value must be greater than the backup
             creation time by:
 
-            -  At least 24 hours
+            - At least 24 hours
 
             This field only applies for hot backups. When creating or
             updating a standard backup, attempting to set this field

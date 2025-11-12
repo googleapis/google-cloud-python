@@ -235,20 +235,20 @@ class CreateTableRequest(proto.Message):
 
             Example:
 
-            -  Row keys :=
-               ``["a", "apple", "custom", "customer_1", "customer_2",``
-               ``"other", "zz"]``
-            -  initial_split_keys :=
-               ``["apple", "customer_1", "customer_2", "other"]``
-            -  Key assignment:
+            - Row keys :=
+              ``["a", "apple", "custom", "customer_1", "customer_2",``
+              ``"other", "zz"]``
+            - initial_split_keys :=
+              ``["apple", "customer_1", "customer_2", "other"]``
+            - Key assignment:
 
-               -  Tablet 1 ``[, apple) => {"a"}.``
-               -  Tablet 2
-                  ``[apple, customer_1) => {"apple", "custom"}.``
-               -  Tablet 3
-                  ``[customer_1, customer_2) => {"customer_1"}.``
-               -  Tablet 4 ``[customer_2, other) => {"customer_2"}.``
-               -  Tablet 5 ``[other, ) => {"other", "zz"}.``
+              - Tablet 1 ``[, apple)                => {"a"}.``
+              - Tablet 2
+                ``[apple, customer_1)      => {"apple", "custom"}.``
+              - Tablet 3 ``[customer_1, customer_2) => {"customer_1"}.``
+              - Tablet 4 ``[customer_2, other)      => {"customer_2"}.``
+              - Tablet 5
+                ``[other, )                => {"other", "zz"}.``
     """
 
     class Split(proto.Message):
@@ -482,13 +482,13 @@ class UpdateTableRequest(proto.Message):
             which fields (e.g. ``change_stream_config``) in the
             ``table`` field should be updated. This mask is relative to
             the ``table`` field, not to the request message. The
-            wildcard (*) path is currently not supported. Currently
+            wildcard (\*) path is currently not supported. Currently
             UpdateTable is only supported for the following fields:
 
-            -  ``change_stream_config``
-            -  ``change_stream_config.retention_period``
-            -  ``deletion_protection``
-            -  ``row_key_schema``
+            - ``change_stream_config``
+            - ``change_stream_config.retention_period``
+            - ``deletion_protection``
+            - ``row_key_schema``
 
             If ``column_families`` is set in ``update_mask``, it will
             return an UNIMPLEMENTED error.
@@ -1099,7 +1099,7 @@ class CreateBackupRequest(proto.Message):
             name, of the form:
             ``projects/{project}/instances/{instance}/clusters/{cluster}/backups/{backup_id}``.
             This string must be between 1 and 50 characters in length
-            and match the regex [*a-zA-Z0-9][-*.a-zA-Z0-9]*.
+            and match the regex [*a-zA-Z0-9][-*.a-zA-Z0-9]\*.
         backup (google.cloud.bigtable_admin_v2.types.Backup):
             Required. The backup to create.
     """
@@ -1167,7 +1167,7 @@ class UpdateBackupRequest(proto.Message):
             required. Other fields are ignored. Update is only supported
             for the following fields:
 
-            -  ``backup.expire_time``.
+            - ``backup.expire_time``.
         update_mask (google.protobuf.field_mask_pb2.FieldMask):
             Required. A mask specifying which fields (e.g.
             ``expire_time``) in the Backup resource should be updated.
@@ -1246,16 +1246,16 @@ class ListBackupsRequest(proto.Message):
 
             The fields eligible for filtering are:
 
-            -  ``name``
-            -  ``source_table``
-            -  ``state``
-            -  ``start_time`` (and values are of the format
-               YYYY-MM-DDTHH:MM:SSZ)
-            -  ``end_time`` (and values are of the format
-               YYYY-MM-DDTHH:MM:SSZ)
-            -  ``expire_time`` (and values are of the format
-               YYYY-MM-DDTHH:MM:SSZ)
-            -  ``size_bytes``
+            - ``name``
+            - ``source_table``
+            - ``state``
+            - ``start_time`` (and values are of the format
+              YYYY-MM-DDTHH:MM:SSZ)
+            - ``end_time`` (and values are of the format
+              YYYY-MM-DDTHH:MM:SSZ)
+            - ``expire_time`` (and values are of the format
+              YYYY-MM-DDTHH:MM:SSZ)
+            - ``size_bytes``
 
             To filter on multiple expressions, provide each separate
             expression within parentheses. By default, each expression
@@ -1264,20 +1264,20 @@ class ListBackupsRequest(proto.Message):
 
             Some examples of using filters are:
 
-            -  ``name:"exact"`` --> The backup's name is the string
-               "exact".
-            -  ``name:howl`` --> The backup's name contains the string
-               "howl".
-            -  ``source_table:prod`` --> The source_table's name
-               contains the string "prod".
-            -  ``state:CREATING`` --> The backup is pending creation.
-            -  ``state:READY`` --> The backup is fully created and ready
-               for use.
-            -  ``(name:howl) AND (start_time < \"2018-03-28T14:50:00Z\")``
-               --> The backup name contains the string "howl" and
-               start_time of the backup is before 2018-03-28T14:50:00Z.
-            -  ``size_bytes > 10000000000`` --> The backup's size is
-               greater than 10GB
+            - ``name:"exact"`` --> The backup's name is the string
+              "exact".
+            - ``name:howl`` --> The backup's name contains the string
+              "howl".
+            - ``source_table:prod`` --> The source_table's name contains
+              the string "prod".
+            - ``state:CREATING`` --> The backup is pending creation.
+            - ``state:READY`` --> The backup is fully created and ready
+              for use.
+            - ``(name:howl) AND (start_time < \"2018-03-28T14:50:00Z\")``
+              --> The backup name contains the string "howl" and
+              start_time of the backup is before 2018-03-28T14:50:00Z.
+            - ``size_bytes > 10000000000`` --> The backup's size is
+              greater than 10GB
         order_by (str):
             An expression for specifying the sort order of the results
             of the request. The string value should specify one or more
@@ -1286,13 +1286,13 @@ class ListBackupsRequest(proto.Message):
 
             Fields supported are:
 
-            -  name
-            -  source_table
-            -  expire_time
-            -  start_time
-            -  end_time
-            -  size_bytes
-            -  state
+            - name
+            - source_table
+            - expire_time
+            - start_time
+            - end_time
+            - size_bytes
+            - state
 
             For example, "start_time". The default sorting order is
             ascending. To specify descending order for the field, a
@@ -1381,7 +1381,7 @@ class CopyBackupRequest(proto.Message):
             to create the full backup name, of the form:
             ``projects/{project}/instances/{instance}/clusters/{cluster}/backups/{backup_id}``.
             This string must be between 1 and 50 characters in length
-            and match the regex [*a-zA-Z0-9][-*.a-zA-Z0-9]*.
+            and match the regex [*a-zA-Z0-9][-*.a-zA-Z0-9]\*.
         source_backup (str):
             Required. The source backup to be copied from. The source
             backup needs to be in READY state for it to be copied.

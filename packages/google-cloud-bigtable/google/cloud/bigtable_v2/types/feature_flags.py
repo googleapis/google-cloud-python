@@ -76,6 +76,9 @@ class FeatureFlags(proto.Message):
         direct_access_requested (bool):
             Notify the server that the client explicitly
             opted in for Direct Access.
+        peer_info (bool):
+            If the client can support using
+            BigtablePeerInfo.
     """
 
     reverse_scans: bool = proto.Field(
@@ -113,6 +116,10 @@ class FeatureFlags(proto.Message):
     direct_access_requested: bool = proto.Field(
         proto.BOOL,
         number=10,
+    )
+    peer_info: bool = proto.Field(
+        proto.BOOL,
+        number=11,
     )
 
 

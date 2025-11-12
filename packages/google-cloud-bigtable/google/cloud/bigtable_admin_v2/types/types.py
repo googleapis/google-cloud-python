@@ -40,15 +40,15 @@ class Type(proto.Message):
 
     Each encoding can operate in one of two modes:
 
-    -  Sorted: In this mode, Bigtable guarantees that
-       ``Encode(X) <= Encode(Y)`` if and only if ``X <= Y``. This is
-       useful anywhere sort order is important, for example when
-       encoding keys.
-    -  Distinct: In this mode, Bigtable guarantees that if ``X != Y``
-       then ``Encode(X) != Encode(Y)``. However, the converse is not
-       guaranteed. For example, both "{'foo': '1', 'bar': '2'}" and
-       "{'bar': '2', 'foo': '1'}" are valid encodings of the same JSON
-       value.
+    - Sorted: In this mode, Bigtable guarantees that
+      ``Encode(X) <= Encode(Y)`` if and only if ``X <= Y``. This is
+      useful anywhere sort order is important, for example when encoding
+      keys.
+    - Distinct: In this mode, Bigtable guarantees that if ``X != Y``
+      then ``Encode(X) != Encode(Y)``. However, the converse is not
+      guaranteed. For example, both "{'foo': '1', 'bar': '2'}" and
+      "{'bar': '2', 'foo': '1'}" are valid encodings of the same JSON
+      value.
 
     The API clearly documents which mode is used wherever an encoding
     can be configured. Each encoding also documents which values are
@@ -205,16 +205,16 @@ class Type(proto.Message):
 
                 Sorted mode:
 
-                -  All values are supported.
-                -  Code point order is preserved.
+                - All values are supported.
+                - Code point order is preserved.
 
                 Distinct mode: all values are supported.
 
                 Compatible with:
 
-                -  BigQuery ``TEXT`` encoding
-                -  HBase ``Bytes.toBytes``
-                -  Java ``String#getBytes(StandardCharsets.UTF_8)``
+                - BigQuery ``TEXT`` encoding
+                - HBase ``Bytes.toBytes``
+                - Java ``String#getBytes(StandardCharsets.UTF_8)``
 
                 """
 
@@ -276,9 +276,9 @@ class Type(proto.Message):
 
                 Compatible with:
 
-                -  BigQuery ``BINARY`` encoding
-                -  HBase ``Bytes.toBytes``
-                -  Java ``ByteBuffer.putLong()`` with ``ByteOrder.BIG_ENDIAN``
+                - BigQuery ``BINARY`` encoding
+                - HBase ``Bytes.toBytes``
+                - Java ``ByteBuffer.putLong()`` with ``ByteOrder.BIG_ENDIAN``
 
                 Attributes:
                     bytes_type (google.cloud.bigtable_admin_v2.types.Type.Bytes):
@@ -358,7 +358,7 @@ class Type(proto.Message):
 
                     Compatible with:
 
-                    -  Java ``Instant.truncatedTo()`` with ``ChronoUnit.MICROS``
+                    - Java ``Instant.truncatedTo()`` with ``ChronoUnit.MICROS``
 
                     This field is a member of `oneof`_ ``encoding``.
             """
@@ -455,17 +455,17 @@ class Type(proto.Message):
 
                 Sorted mode:
 
-                -  Fields are encoded in sorted mode.
-                -  Encoded field values must not contain any bytes <=
-                   ``delimiter[0]``
-                -  Element-wise order is preserved: ``A < B`` if ``A[0] < B[0]``, or
-                   if ``A[0] == B[0] && A[1] < B[1]``, etc. Strict prefixes sort
-                   first.
+                - Fields are encoded in sorted mode.
+                - Encoded field values must not contain any bytes <=
+                  ``delimiter[0]``
+                - Element-wise order is preserved: ``A < B`` if ``A[0] < B[0]``, or
+                  if ``A[0] == B[0] && A[1] < B[1]``, etc. Strict prefixes sort
+                  first.
 
                 Distinct mode:
 
-                -  Fields are encoded in distinct mode.
-                -  Encoded field values must not contain ``delimiter[0]``.
+                - Fields are encoded in distinct mode.
+                - Encoded field values must not contain ``delimiter[0]``.
 
                 Attributes:
                     delimiter (bytes):
@@ -488,24 +488,23 @@ class Type(proto.Message):
 
                 Fields that encode to the empty string "" have special handling:
 
-                -  If *every* field encodes to "", or if the STRUCT has no fields
-                   defined, then the STRUCT is encoded as the fixed byte pair {0x00,
-                   0x00}.
-                -  Otherwise, the STRUCT only encodes until the last non-empty
-                   field, omitting any trailing empty fields. Any empty fields that
-                   aren't omitted are replaced with the fixed byte pair {0x00,
-                   0x00}.
+                - If *every* field encodes to "", or if the STRUCT has no fields
+                  defined, then the STRUCT is encoded as the fixed byte pair {0x00,
+                  0x00}.
+                - Otherwise, the STRUCT only encodes until the last non-empty field,
+                  omitting any trailing empty fields. Any empty fields that aren't
+                  omitted are replaced with the fixed byte pair {0x00, 0x00}.
 
                 Examples:
 
-                -  STRUCT() -> "\00\00"
-                -  STRUCT("") -> "\00\00"
-                -  STRUCT("", "") -> "\00\00"
-                -  STRUCT("", "B") -> "\00\00" + "\00\01" + "B"
-                -  STRUCT("A", "") -> "A"
-                -  STRUCT("", "B", "") -> "\00\00" + "\00\01" + "B"
-                -  STRUCT("A", "", "C") -> "A" + "\00\01" + "\00\00" + "\00\01" +
-                   "C"
+                - STRUCT() -> "\\00\\00"
+                - STRUCT("") -> "\\00\\00"
+                - STRUCT("", "") -> "\\00\\00"
+                - STRUCT("", "B") -> "\\00\\00" + "\\00\\01" + "B"
+                - STRUCT("A", "") -> "A"
+                - STRUCT("", "B", "") -> "\\00\\00" + "\\00\\01" + "B"
+                - STRUCT("A", "", "C") -> "A" + "\\00\\01" + "\\00\\00" + "\\00\\01"
+                  + "C"
 
                 Since null bytes are always escaped, this encoding can cause size
                 blowup for encodings like ``Int64.BigEndianBytes`` that are likely
@@ -513,16 +512,16 @@ class Type(proto.Message):
 
                 Sorted mode:
 
-                -  Fields are encoded in sorted mode.
-                -  All values supported by the field encodings are allowed
-                -  Element-wise order is preserved: ``A < B`` if ``A[0] < B[0]``, or
-                   if ``A[0] == B[0] && A[1] < B[1]``, etc. Strict prefixes sort
-                   first.
+                - Fields are encoded in sorted mode.
+                - All values supported by the field encodings are allowed
+                - Element-wise order is preserved: ``A < B`` if ``A[0] < B[0]``, or
+                  if ``A[0] == B[0] && A[1] < B[1]``, etc. Strict prefixes sort
+                  first.
 
                 Distinct mode:
 
-                -  Fields are encoded in distinct mode.
-                -  All values supported by the field encodings are allowed.
+                - Fields are encoded in distinct mode.
+                - All values supported by the field encodings are allowed.
 
                 """
 
