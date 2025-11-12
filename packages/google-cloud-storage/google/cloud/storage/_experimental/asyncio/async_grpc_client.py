@@ -69,7 +69,6 @@ class AsyncGrpcClient:
         transport = transport_cls(credentials=credentials, channel=channel)
 
         return storage_v2.StorageAsyncClient(
-            credentials=credentials,
             transport=transport,
             client_info=client_info,
             client_options=client_options,

@@ -46,7 +46,6 @@ class TestAsyncGrpcClient(unittest.TestCase):
         )
         mock_transport = mock_transport_cls.return_value
         mock_async_storage_client.assert_called_once_with(
-            credentials=mock_creds,
             transport=mock_transport,
             client_options=None,
             client_info=None,
