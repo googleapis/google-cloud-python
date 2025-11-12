@@ -1,5 +1,9 @@
 # Changelog
 
+[PyPI History][1]
+
+[1]: https://pypi.org/project/gcp-sphinx-docfx-yaml/#history
+
 ## [3.2.4](https://github.com/googleapis/sphinx-docfx-yaml/compare/v3.2.3...v3.2.4) (2025-10-22)
 
 
