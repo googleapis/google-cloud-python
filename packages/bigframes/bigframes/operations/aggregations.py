@@ -717,9 +717,15 @@ _CALLABLE_TO_AGG_OP: typing.Dict[
     np.all: all_op,
     np.any: any_op,
     np.unique: nunique_op,
-    # TODO(b/443252872): Solve
-    # list: ArrayAggOp(),
     np.size: size_op,
+    # TODO(b/443252872): Solve
+    list: ArrayAggOp(),
+    len: size_op,
+    sum: sum_op,
+    min: min_op,
+    max: max_op,
+    any: any_op,
+    all: all_op,
 }
 
 

@@ -593,6 +593,7 @@ class DataFrameGroupBy(vendored_pandas_groupby.DataFrameGroupBy):
     def _agg_dict(self, func: typing.Mapping) -> df.DataFrame:
         aggregations: typing.List[agg_expressions.Aggregation] = []
         column_labels = []
+        function_labels = []
 
         want_aggfunc_level = any(utils.is_list_like(aggs) for aggs in func.values())
 
@@ -602,8 +603,10 @@ class DataFrameGroupBy(vendored_pandas_groupby.DataFrameGroupBy):
                 funcs_for_id if utils.is_list_like(funcs_for_id) else [funcs_for_id]
             )
             for f in func_list:
-                aggregations.append(aggs.agg(col_id, agg_ops.lookup_agg_func(f)[0]))
+                f_op, f_label = agg_ops.lookup_agg_func(f)
+                aggregations.append(aggs.agg(col_id, f_op))
                 column_labels.append(label)
+                function_labels.append(f_label)
         agg_block, _ = self._block.aggregate(
             by_column_ids=self._by_col_ids,
             aggregations=aggregations,
@@ -613,10 +616,7 @@ class DataFrameGroupBy(vendored_pandas_groupby.DataFrameGroupBy):
             agg_block = agg_block.with_column_labels(
                 utils.combine_indices(
                     pd.Index(column_labels),
-                    pd.Index(
-                        typing.cast(agg_ops.AggregateOp, agg.op).name
-                        for agg in aggregations
-                    ),
+                    pd.Index(function_labels),
                 )
             )
         else:

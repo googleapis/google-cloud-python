@@ -6151,6 +6151,28 @@ def test_agg_with_dict_strs(scalars_dfs):
     )
 
 
+def test_df_agg_with_builtins(scalars_dfs):
+    bf_df, pd_df = scalars_dfs
+
+    bf_result = (
+        bf_df[["int64_col", "bool_col"]]
+        .dropna()
+        .groupby(bf_df.int64_too % 2)
+        .agg({"int64_col": [len, sum, min, max, list], "bool_col": [all, any, max]})
+        .to_pandas()
+    )
+    pd_result = (
+        pd_df[["int64_col", "bool_col"]]
+        .dropna()
+        .groupby(pd_df.int64_too % 2)
+        .agg({"int64_col": [len, sum, min, max, list], "bool_col": [all, any, max]})
+    )
+
+    pd.testing.assert_frame_equal(
+        bf_result, pd_result, check_dtype=False, check_index_type=False
+    )
+
+
 def test_agg_with_dict_containing_non_existing_col_raise_key_error(scalars_dfs):
     bf_df, _ = scalars_dfs
     agg_funcs = {
