@@ -2224,7 +2224,7 @@ class TestClient(unittest.TestCase):
 
     def test_list_buckets_wo_project(self):
         from google.cloud.exceptions import BadRequest
-        from google.cloud.storage.client import _item_to_bucket
+        from google.cloud.storage.client import _item_to_bucket, _buckets_page_start
 
         credentials = _make_credentials()
         client = self._make_one(project=None, credentials=credentials)
@@ -2253,10 +2253,11 @@ class TestClient(unittest.TestCase):
             page_size=expected_page_size,
             timeout=self._get_default_timeout(),
             retry=DEFAULT_RETRY,
+            page_start=_buckets_page_start,
         )
 
     def test_list_buckets_wo_project_w_emulator(self):
-        from google.cloud.storage.client import _item_to_bucket
+        from google.cloud.storage.client import _item_to_bucket, _buckets_page_start
 
         # mock STORAGE_EMULATOR_ENV_VAR is set
         host = "http://localhost:8080"
@@ -2288,10 +2289,11 @@ class TestClient(unittest.TestCase):
             page_size=expected_page_size,
             timeout=self._get_default_timeout(),
             retry=DEFAULT_RETRY,
+            page_start=_buckets_page_start,
         )
 
     def test_list_buckets_w_environ_project_w_emulator(self):
-        from google.cloud.storage.client import _item_to_bucket
+        from google.cloud.storage.client import _item_to_bucket, _buckets_page_start
 
         # mock STORAGE_EMULATOR_ENV_VAR is set
         host = "http://localhost:8080"
@@ -2327,10 +2329,11 @@ class TestClient(unittest.TestCase):
             page_size=expected_page_size,
             timeout=self._get_default_timeout(),
             retry=DEFAULT_RETRY,
+            page_start=_buckets_page_start,
         )
 
     def test_list_buckets_w_custom_endpoint(self):
-        from google.cloud.storage.client import _item_to_bucket
+        from google.cloud.storage.client import _item_to_bucket, _buckets_page_start
 
         custom_endpoint = "storage-example.p.googleapis.com"
         client = self._make_one(client_options={"api_endpoint": custom_endpoint})
@@ -2358,10 +2361,11 @@ class TestClient(unittest.TestCase):
             page_size=expected_page_size,
             timeout=self._get_default_timeout(),
             retry=DEFAULT_RETRY,
+            page_start=_buckets_page_start,
         )
 
     def test_list_buckets_w_defaults(self):
-        from google.cloud.storage.client import _item_to_bucket
+        from google.cloud.storage.client import _item_to_bucket, _buckets_page_start
 
         project = "PROJECT"
         credentials = _make_credentials()
@@ -2390,10 +2394,11 @@ class TestClient(unittest.TestCase):
             page_size=expected_page_size,
             timeout=self._get_default_timeout(),
             retry=DEFAULT_RETRY,
+            page_start=_buckets_page_start,
         )
 
     def test_list_buckets_w_soft_deleted(self):
-        from google.cloud.storage.client import _item_to_bucket
+        from google.cloud.storage.client import _item_to_bucket, _buckets_page_start
 
         project = "PROJECT"
         credentials = _make_credentials()
@@ -2423,10 +2428,11 @@ class TestClient(unittest.TestCase):
             page_size=expected_page_size,
             timeout=self._get_default_timeout(),
             retry=DEFAULT_RETRY,
+            page_start=_buckets_page_start,
         )
 
     def test_list_buckets_w_explicit(self):
-        from google.cloud.storage.client import _item_to_bucket
+        from google.cloud.storage.client import _item_to_bucket, _buckets_page_start
 
         project = "foo-bar"
         other_project = "OTHER_PROJECT"
@@ -2476,6 +2482,7 @@ class TestClient(unittest.TestCase):
             page_size=expected_page_size,
             timeout=timeout,
             retry=retry,
+            page_start=_buckets_page_start,
         )
 
     def test_restore_bucket(self):
@@ -3086,6 +3093,57 @@ class TestClient(unittest.TestCase):
         self.assertEqual(fields["x-goog-signature"], EXPECTED_SIGN)
         self.assertEqual(fields["policy"], EXPECTED_POLICY)
 
+    def test_list_buckets_w_partial_success(self):
+        from google.cloud.storage.client import _item_to_bucket
+        from google.cloud.storage.client import _buckets_page_start
+
+        PROJECT = "project"
+        bucket_name = "bucket-name"
+        unreachable_bucket = "projects/_/buckets/unreachable-bucket"
+
+        client = self._make_one(project=PROJECT)
+
+        mock_bucket = mock.Mock()
+        mock_bucket.name = bucket_name
+
+        mock_page = mock.Mock()
+        mock_page.unreachable = [unreachable_bucket]
+        mock_page.__iter__ = mock.Mock(return_value=iter([mock_bucket]))
+
+        mock_iterator = mock.Mock()
+        mock_iterator.pages = iter([mock_page])
+
+        client._list_resource = mock.Mock(return_value=mock_iterator)
+
+        iterator = client.list_buckets(return_partial_success=True)
+
+        page = next(iterator.pages)
+
+        self.assertEqual(page.unreachable, [unreachable_bucket])
+
+        buckets = list(page)
+        self.assertEqual(len(buckets), 1)
+        self.assertEqual(buckets[0].name, bucket_name)
+
+        expected_path = "/b"
+        expected_item_to_value = _item_to_bucket
+        expected_extra_params = {
+            "project": PROJECT,
+            "projection": "noAcl",
+            "returnPartialSuccess": True,
+        }
+
+        client._list_resource.assert_called_once_with(
+            expected_path,
+            expected_item_to_value,
+            page_token=None,
+            max_results=None,
+            extra_params=expected_extra_params,
+            page_size=None,
+            timeout=self._get_default_timeout(),
+            retry=DEFAULT_RETRY,
+            page_start=_buckets_page_start,
+        )
 
 class Test__item_to_bucket(unittest.TestCase):
     def _call_fut(self, iterator, item):
