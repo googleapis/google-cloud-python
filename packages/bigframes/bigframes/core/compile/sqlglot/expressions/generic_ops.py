@@ -134,6 +134,11 @@ def _(
     )
 
 
+@register_binary_op(ops.fillna_op)
+def _(left: TypedExpr, right: TypedExpr) -> sge.Expression:
+    return sge.Coalesce(this=left.expr, expressions=[right.expr])
+
+
 @register_nary_op(ops.case_when_op)
 def _(*cases_and_outputs: TypedExpr) -> sge.Expression:
     # Need to upcast BOOL to INT if any output is numeric

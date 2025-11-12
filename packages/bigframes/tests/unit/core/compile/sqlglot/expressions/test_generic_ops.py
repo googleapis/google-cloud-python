@@ -239,6 +239,12 @@ def test_clip(scalar_types_df: bpd.DataFrame, snapshot):
     snapshot.assert_match(sql, "out.sql")
 
 
+def test_fillna(scalar_types_df: bpd.DataFrame, snapshot):
+    bf_df = scalar_types_df[["int64_col", "float64_col"]]
+    sql = utils._apply_binary_op(bf_df, ops.fillna_op, "int64_col", "float64_col")
+    snapshot.assert_match(sql, "out.sql")
+
+
 def test_hash(scalar_types_df: bpd.DataFrame, snapshot):
     col_name = "string_col"
     bf_df = scalar_types_df[[col_name]]
