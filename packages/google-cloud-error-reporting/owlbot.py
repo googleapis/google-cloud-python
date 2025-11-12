@@ -56,6 +56,7 @@ templated_files = gcp.CommonTemplates().py_library(
     cov_level=100,
     microgenerator=True,
     versions=gcp.common.detect_versions(path="./google", default_first=True),
+    default_python_version="3.14"
 )
 s.move(
     templated_files,
