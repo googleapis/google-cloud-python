@@ -97,7 +97,10 @@ def scalar_types_table_schema() -> typing.Sequence[bigquery.SchemaField]:
 def scalar_types_df(compiler_session) -> bpd.DataFrame:
     """Returns a BigFrames DataFrame containing all scalar types and using the `rowindex`
     column as the index."""
-    bf_df = compiler_session.read_gbq_table("bigframes-dev.sqlglot_test.scalar_types")
+    bf_df = compiler_session._loader.read_gbq_table(
+        "bigframes-dev.sqlglot_test.scalar_types",
+        enable_snapshot=False,
+    )
     bf_df = bf_df.set_index("rowindex", drop=False)
     return bf_df
 
@@ -154,8 +157,9 @@ def nested_structs_types_table_schema() -> typing.Sequence[bigquery.SchemaField]
 def nested_structs_types_df(compiler_session_w_nested_structs_types) -> bpd.DataFrame:
     """Returns a BigFrames DataFrame containing all scalar types and using the `rowindex`
     column as the index."""
-    bf_df = compiler_session_w_nested_structs_types.read_gbq_table(
-        "bigframes-dev.sqlglot_test.nested_structs_types"
+    bf_df = compiler_session_w_nested_structs_types._loader.read_gbq_table(
+        "bigframes-dev.sqlglot_test.nested_structs_types",
+        enable_snapshot=False,
     )
     bf_df = bf_df.set_index("id", drop=False)
     return bf_df
@@ -204,8 +208,9 @@ def repeated_types_table_schema() -> typing.Sequence[bigquery.SchemaField]:
 def repeated_types_df(compiler_session_w_repeated_types) -> bpd.DataFrame:
     """Returns a BigFrames DataFrame containing all scalar types and using the `rowindex`
     column as the index."""
-    bf_df = compiler_session_w_repeated_types.read_gbq_table(
-        "bigframes-dev.sqlglot_test.repeated_types"
+    bf_df = compiler_session_w_repeated_types._loader.read_gbq_table(
+        "bigframes-dev.sqlglot_test.repeated_types",
+        enable_snapshot=False,
     )
     bf_df = bf_df.set_index("rowindex", drop=False)
     return bf_df
@@ -237,8 +242,9 @@ def json_types_table_schema() -> typing.Sequence[bigquery.SchemaField]:
 def json_types_df(compiler_session_w_json_types) -> bpd.DataFrame:
     """Returns a BigFrames DataFrame containing JSON types and using the `rowindex`
     column as the index."""
-    bf_df = compiler_session_w_json_types.read_gbq_table(
-        "bigframes-dev.sqlglot_test.json_types"
+    bf_df = compiler_session_w_json_types._loader.read_gbq_table(
+        "bigframes-dev.sqlglot_test.json_types",
+        enable_snapshot=False,
     )
     # TODO(b/427305807): Why `drop=False` will produce two "rowindex" columns?
     bf_df = bf_df.set_index("rowindex", drop=True)

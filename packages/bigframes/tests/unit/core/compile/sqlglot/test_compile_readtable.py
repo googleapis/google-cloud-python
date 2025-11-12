@@ -12,6 +12,9 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+import datetime
+
+import google.cloud.bigquery as bigquery
 import pytest
 
 import bigframes.pandas as bpd
@@ -46,4 +49,21 @@ def test_compile_readtable_w_ordering(scalar_types_df: bpd.DataFrame, snapshot):
 def test_compile_readtable_w_limit(scalar_types_df: bpd.DataFrame, snapshot):
     bf_df = scalar_types_df[["int64_col"]]
     bf_df = bf_df.sort_index().head(10)
+    snapshot.assert_match(bf_df.sql, "out.sql")
+
+
+def test_compile_readtable_w_system_time(
+    compiler_session, scalar_types_table_schema, snapshot
+):
+    table_ref = bigquery.TableReference(
+        bigquery.DatasetReference("bigframes-dev", "sqlglot_test"),
+        "scalar_types",
+    )
+    table = bigquery.Table(table_ref, tuple(scalar_types_table_schema))
+    table._properties["location"] = compiler_session._location
+    compiler_session._loader._df_snapshot[str(table_ref)] = (
+        datetime.datetime(2025, 11, 9, 3, 4, 5, 678901, tzinfo=datetime.timezone.utc),
+        table,
+    )
+    bf_df = compiler_session.read_gbq_table(str(table_ref))
     snapshot.assert_match(bf_df.sql, "out.sql")

@@ -15,6 +15,7 @@
 from __future__ import annotations
 
 import dataclasses
+import datetime
 import functools
 import typing
 
@@ -118,6 +119,7 @@ class SQLGlotIR:
         col_names: typing.Sequence[str],
         alias_names: typing.Sequence[str],
         uid_gen: guid.SequentialUIDGenerator,
+        system_time: typing.Optional[datetime.datetime] = None,
     ) -> SQLGlotIR:
         """Builds a SQLGlotIR expression from a BigQuery table.
 
@@ -128,6 +130,7 @@ class SQLGlotIR:
             col_names (typing.Sequence[str]): The names of the columns to select.
             alias_names (typing.Sequence[str]): The aliases for the selected columns.
             uid_gen (guid.SequentialUIDGenerator): A generator for unique identifiers.
+            system_time (typing.Optional[str]): An optional system time for time-travel queries.
         """
         selections = [
             sge.Alias(
@@ -138,10 +141,20 @@ class SQLGlotIR:
             else sge.to_identifier(col_name, quoted=cls.quoted)
             for col_name, alias_name in zip(col_names, alias_names)
         ]
+        version = (
+            sge.Version(
+                this="TIMESTAMP",
+                expression=sge.Literal(this=system_time.isoformat(), is_string=True),
+                kind="AS OF",
+            )
+            if system_time
+            else None
+        )
         table_expr = sge.Table(
             this=sg.to_identifier(table_id, quoted=cls.quoted),
             db=sg.to_identifier(dataset_id, quoted=cls.quoted),
             catalog=sg.to_identifier(project_id, quoted=cls.quoted),
+            version=version,
         )
         select_expr = sge.Select().select(*selections).from_(table_expr)
         return cls(expr=select_expr, uid_gen=uid_gen)

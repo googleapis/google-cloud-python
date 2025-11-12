@@ -240,7 +240,6 @@ def test_read_gbq_cached_table():
     )
     table._properties["location"] = session._location
     table._properties["numRows"] = "1000000000"
-    table._properties["location"] = session._location
     table._properties["type"] = "TABLE"
     session._loader._df_snapshot[str(table_ref)] = (
         datetime.datetime(1999, 1, 2, 3, 4, 5, 678901, tzinfo=datetime.timezone.utc),
