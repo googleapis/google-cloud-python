@@ -4,6 +4,18 @@
 
 [1]: https://pypi.org/project/google-cloud-error-reporting/#history
 
+## [1.13.0](https://github.com/googleapis/python-error-reporting/compare/v1.12.0...v1.13.0) (2025-11-12)
+
+
+### Features
+
+* Add support for Python 3.14 ([#712](https://github.com/googleapis/python-error-reporting/issues/712)) ([e8b4762](https://github.com/googleapis/python-error-reporting/commit/e8b4762d289755377acb7c69744a347fbe6651d6))
+
+
+### Bug Fixes
+
+* Deprecate credentials_file argument ([f86c964](https://github.com/googleapis/python-error-reporting/commit/f86c964200cc16488e46fdd95ad78e7975760b53))
+
 ## [1.12.0](https://github.com/googleapis/python-error-reporting/compare/v1.11.1...v1.12.0) (2025-05-21)
 
 
