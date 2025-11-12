@@ -1040,6 +1040,9 @@ def _verify_library_namespace(library_id: str, repo: str, is_mono_repo: bool):
     # Find all parent directories for '*.proto' files
     for proto_file in library_path.rglob(proto_file):
         proto_path = str(proto_file.parent.relative_to(library_path))
+        # Exclude proto paths which are not intended to be used for code generation.
+        # Generally any protos under the `samples` directory or in a
+        # directory called `proto` are not used for code generation.
         if proto_path.startswith("samples") or proto_path.endswith("proto"):
             continue
         relevant_dirs.add(proto_file.parent)
