@@ -70,6 +70,7 @@ from .types.data import TimestampRange
 from .types.data import Value
 from .types.data import ValueRange
 from .types.feature_flags import FeatureFlags
+from .types.peer_info import PeerInfo
 from .types.request_stats import FullReadStatsView
 from .types.request_stats import ReadIterationStats
 from .types.request_stats import RequestLatencyStats
@@ -101,6 +102,7 @@ __all__ = (
     "MutateRowsResponse",
     "Mutation",
     "PartialResultSet",
+    "PeerInfo",
     "PingAndWarmRequest",
     "PingAndWarmResponse",
     "PrepareQueryRequest",

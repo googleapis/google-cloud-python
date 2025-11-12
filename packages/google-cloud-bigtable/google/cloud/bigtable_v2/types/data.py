@@ -573,26 +573,26 @@ class RowFilter(proto.Message):
     transformers), as well as two ways to compose simple filters into
     more complex ones (chains and interleaves). They work as follows:
 
-    -  True filters alter the input row by excluding some of its cells
-       wholesale from the output row. An example of a true filter is the
-       ``value_regex_filter``, which excludes cells whose values don't
-       match the specified pattern. All regex true filters use RE2
-       syntax (https://github.com/google/re2/wiki/Syntax) in raw byte
-       mode (RE2::Latin1), and are evaluated as full matches. An
-       important point to keep in mind is that ``RE2(.)`` is equivalent
-       by default to ``RE2([^\n])``, meaning that it does not match
-       newlines. When attempting to match an arbitrary byte, you should
-       therefore use the escape sequence ``\C``, which may need to be
-       further escaped as ``\\C`` in your client language.
+    - True filters alter the input row by excluding some of its cells
+      wholesale from the output row. An example of a true filter is the
+      ``value_regex_filter``, which excludes cells whose values don't
+      match the specified pattern. All regex true filters use RE2 syntax
+      (https://github.com/google/re2/wiki/Syntax) in raw byte mode
+      (RE2::Latin1), and are evaluated as full matches. An important
+      point to keep in mind is that ``RE2(.)`` is equivalent by default
+      to ``RE2([^\n])``, meaning that it does not match newlines. When
+      attempting to match an arbitrary byte, you should therefore use
+      the escape sequence ``\C``, which may need to be further escaped
+      as ``\\C`` in your client language.
 
-    -  Transformers alter the input row by changing the values of some
-       of its cells in the output, without excluding them completely.
-       Currently, the only supported transformer is the
-       ``strip_value_transformer``, which replaces every cell's value
-       with the empty string.
+    - Transformers alter the input row by changing the values of some of
+      its cells in the output, without excluding them completely.
+      Currently, the only supported transformer is the
+      ``strip_value_transformer``, which replaces every cell's value
+      with the empty string.
 
-    -  Chains and interleaves are described in more detail in the
-       RowFilter.Chain and RowFilter.Interleave documentation.
+    - Chains and interleaves are described in more detail in the
+      RowFilter.Chain and RowFilter.Interleave documentation.
 
     The total serialized size of a RowFilter message must not exceed
     20480 bytes, and RowFilters may not be nested within each other (in
@@ -1493,21 +1493,20 @@ class PartialResultSet(proto.Message):
 
     Having:
 
-    -  queue of row results waiting to be returned ``queue``
-    -  extensible buffer of bytes ``buffer``
-    -  a place to keep track of the most recent ``resume_token`` for
-       each PartialResultSet ``p`` received { if p.reset { ensure
-       ``queue`` is empty ensure ``buffer`` is empty } if
-       p.estimated_batch_size != 0 { (optional) ensure ``buffer`` is
-       sized to at least ``p.estimated_batch_size`` } if
-       ``p.proto_rows_batch`` is set { append
-       ``p.proto_rows_batch.bytes`` to ``buffer`` } if p.batch_checksum
-       is set and ``buffer`` is not empty { validate the checksum
-       matches the contents of ``buffer`` (see comments on
-       ``batch_checksum``) parse ``buffer`` as ``ProtoRows`` message,
-       clearing ``buffer`` add parsed rows to end of ``queue`` } if
-       p.resume_token is set { release results in ``queue`` save
-       ``p.resume_token`` in ``resume_token`` } }
+    - queue of row results waiting to be returned ``queue``
+    - extensible buffer of bytes ``buffer``
+    - a place to keep track of the most recent ``resume_token`` for each
+      PartialResultSet ``p`` received { if p.reset { ensure ``queue`` is
+      empty ensure ``buffer`` is empty } if p.estimated_batch_size != 0
+      { (optional) ensure ``buffer`` is sized to at least
+      ``p.estimated_batch_size`` } if ``p.proto_rows_batch`` is set {
+      append ``p.proto_rows_batch.bytes`` to ``buffer`` } if
+      p.batch_checksum is set and ``buffer`` is not empty { validate the
+      checksum matches the contents of ``buffer`` (see comments on
+      ``batch_checksum``) parse ``buffer`` as ``ProtoRows`` message,
+      clearing ``buffer`` add parsed rows to end of ``queue`` } if
+      p.resume_token is set { release results in ``queue`` save
+      ``p.resume_token`` in ``resume_token`` } }
 
 
     .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields

@@ -68,6 +68,9 @@ from .data import (
 from .feature_flags import (
     FeatureFlags,
 )
+from .peer_info import (
+    PeerInfo,
+)
 from .request_stats import (
     FullReadStatsView,
     ReadIterationStats,
@@ -131,6 +134,7 @@ __all__ = (
     "Value",
     "ValueRange",
     "FeatureFlags",
+    "PeerInfo",
     "FullReadStatsView",
     "ReadIterationStats",
     "RequestLatencyStats",

@@ -641,6 +641,11 @@ class _BaseBigtableRestTransport(BigtableTransport):
                     "uri": "/v2/{authorized_view_name=projects/*/instances/*/tables/*/authorizedViews/*}:readRows",
                     "body": "*",
                 },
+                {
+                    "method": "post",
+                    "uri": "/v2/{materialized_view_name=projects/*/instances/*/materializedViews/*}:readRows",
+                    "body": "*",
+                },
             ]
             return http_options
 
@@ -685,6 +690,10 @@ class _BaseBigtableRestTransport(BigtableTransport):
                 {
                     "method": "get",
                     "uri": "/v2/{authorized_view_name=projects/*/instances/*/tables/*/authorizedViews/*}:sampleRowKeys",
+                },
+                {
+                    "method": "get",
+                    "uri": "/v2/{materialized_view_name=projects/*/instances/*/materializedViews/*}:sampleRowKeys",
                 },
             ]
             return http_options

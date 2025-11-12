@@ -44,6 +44,11 @@ class ResponseParams(proto.Message):
             of bigtable resources.
 
             This field is a member of `oneof`_ ``_cluster_id``.
+        afe_id (int):
+            The AFE ID for the AFE that is served this
+            request.
+
+            This field is a member of `oneof`_ ``_afe_id``.
     """
 
     zone_id: str = proto.Field(
@@ -54,6 +59,11 @@ class ResponseParams(proto.Message):
     cluster_id: str = proto.Field(
         proto.STRING,
         number=2,
+        optional=True,
+    )
+    afe_id: int = proto.Field(
+        proto.INT64,
+        number=3,
         optional=True,
     )
 
