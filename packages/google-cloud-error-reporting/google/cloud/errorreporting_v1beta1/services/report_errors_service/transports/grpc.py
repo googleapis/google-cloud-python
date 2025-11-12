@@ -151,9 +151,10 @@ class ReportErrorsServiceGrpcTransport(ReportErrorsServiceTransport):
                 are specified, the client will attempt to ascertain the
                 credentials from the environment.
                 This argument is ignored if a ``channel`` instance is provided.
-            credentials_file (Optional[str]): A file with credentials that can
+            credentials_file (Optional[str]): Deprecated. A file with credentials that can
                 be loaded with :func:`google.auth.load_credentials_from_file`.
                 This argument is ignored if a ``channel`` instance is provided.
+                This argument will be removed in the next major version of this library.
             scopes (Optional(Sequence[str])): A list of scopes. This argument is
                 ignored if a ``channel`` instance is provided.
             channel (Optional[Union[grpc.Channel, Callable[..., grpc.Channel]]]):
@@ -286,9 +287,10 @@ class ReportErrorsServiceGrpcTransport(ReportErrorsServiceTransport):
                 credentials identify this application to the service. If
                 none are specified, the client will attempt to ascertain
                 the credentials from the environment.
-            credentials_file (Optional[str]): A file with credentials that can
+            credentials_file (Optional[str]): Deprecated. A file with credentials that can
                 be loaded with :func:`google.auth.load_credentials_from_file`.
-                This argument is mutually exclusive with credentials.
+                This argument is mutually exclusive with credentials.  This argument will be
+                removed in the next major version of this library.
             scopes (Optional[Sequence[str]]): A optional list of scopes needed for this
                 service. These are only used when credentials are not specified and
                 are passed to :func:`google.auth.default`.
@@ -343,14 +345,14 @@ class ReportErrorsServiceGrpcTransport(ReportErrorsServiceTransport):
         Cloud Logging and can analyze log entries when all of the
         following are true:
 
-        -  Customer-managed encryption keys (CMEK) are disabled on the
-           log bucket.
-        -  The log bucket satisfies one of the following:
+        - Customer-managed encryption keys (CMEK) are disabled on the
+          log bucket.
+        - The log bucket satisfies one of the following:
 
-           -  The log bucket is stored in the same project where the
-              logs originated.
-           -  The logs were routed to a project, and then that project
-              stored those logs in a log bucket that it owns.
+          - The log bucket is stored in the same project where the logs
+            originated.
+          - The logs were routed to a project, and then that project
+            stored those logs in a log bucket that it owns.
 
         Returns:
             Callable[[~.ReportErrorEventRequest],

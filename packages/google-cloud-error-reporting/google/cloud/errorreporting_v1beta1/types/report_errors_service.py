@@ -91,23 +91,23 @@ class ReportedErrorEvent(proto.Message):
             Supported languages are Java, Python, JavaScript, Ruby, C#,
             PHP, and Go. Supported stack trace formats are:
 
-            -  **Java**: Must be the return value of
-               ```Throwable.printStackTrace()`` <https://docs.oracle.com/javase/7/docs/api/java/lang/Throwable.html#printStackTrace%28%29>`__.
-            -  **Python**: Must be the return value of
-               ```traceback.format_exc()`` <https://docs.python.org/2/library/traceback.html#traceback.format_exc>`__.
-            -  **JavaScript**: Must be the value of
-               ```error.stack`` <https://github.com/v8/v8/wiki/Stack-Trace-API>`__
-               as returned by V8.
-            -  **Ruby**: Must contain frames returned by
-               ```Exception.backtrace`` <https://ruby-doc.org/core-2.2.0/Exception.html#method-i-backtrace>`__.
-            -  **C#**: Must be the return value of
-               ```Exception.ToString()`` <https://msdn.microsoft.com/en-us/library/system.exception.tostring.aspx>`__.
-            -  **PHP**: Must be prefixed with
-               ``"PHP (Notice|Parse error|Fatal error|Warning): "`` and
-               contain the result of
-               ```(string)$exception`` <https://php.net/manual/en/exception.tostring.php>`__.
-            -  **Go**: Must be the return value of
-               ```runtime.Stack()`` <https://golang.org/pkg/runtime/debug/#Stack>`__.
+            - **Java**: Must be the return value of
+              ```Throwable.printStackTrace()`` <https://docs.oracle.com/javase/7/docs/api/java/lang/Throwable.html#printStackTrace%28%29>`__.
+            - **Python**: Must be the return value of
+              ```traceback.format_exc()`` <https://docs.python.org/2/library/traceback.html#traceback.format_exc>`__.
+            - **JavaScript**: Must be the value of
+              ```error.stack`` <https://github.com/v8/v8/wiki/Stack-Trace-API>`__
+              as returned by V8.
+            - **Ruby**: Must contain frames returned by
+              ```Exception.backtrace`` <https://ruby-doc.org/core-2.2.0/Exception.html#method-i-backtrace>`__.
+            - **C#**: Must be the return value of
+              ```Exception.ToString()`` <https://msdn.microsoft.com/en-us/library/system.exception.tostring.aspx>`__.
+            - **PHP**: Must be prefixed with
+              ``"PHP (Notice|Parse error|Fatal error|Warning): "`` and
+              contain the result of
+              ```(string)$exception`` <https://php.net/manual/en/exception.tostring.php>`__.
+            - **Go**: Must be the return value of
+              ```runtime.Stack()`` <https://golang.org/pkg/runtime/debug/#Stack>`__.
         context (google.cloud.errorreporting_v1beta1.types.ErrorContext):
             Optional. A description of the context in
             which the error occurred.
