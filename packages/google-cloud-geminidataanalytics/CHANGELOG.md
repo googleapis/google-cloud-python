@@ -4,6 +4,21 @@
 
 [1]: https://pypi.org/project/google-cloud-geminidataanalytics/#history
 
+## [0.6.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-geminidataanalytics-v0.5.0...google-cloud-geminidataanalytics-v0.6.0) (2025-11-12)
+
+
+### Features
+
+* Adding a new SchemaRelationship message to define relationships between table schema ([5797f43bd1009b50b0afc62d873118d8b92b4edd](https://github.com/googleapis/google-cloud-python/commit/5797f43bd1009b50b0afc62d873118d8b92b4edd))
+* Adding an ExampleQueries message to surface derived and authored example queries ([5797f43bd1009b50b0afc62d873118d8b92b4edd](https://github.com/googleapis/google-cloud-python/commit/5797f43bd1009b50b0afc62d873118d8b92b4edd))
+* Adding DatasourceOptions to provide configuration options for datasources ([5797f43bd1009b50b0afc62d873118d8b92b4edd](https://github.com/googleapis/google-cloud-python/commit/5797f43bd1009b50b0afc62d873118d8b92b4edd))
+* Adding a new TextType PROGRESS to provide informational messages about an agent&#39;s progress for supporting more granular Agent RAG tools ([5797f43bd1009b50b0afc62d873118d8b92b4edd](https://github.com/googleapis/google-cloud-python/commit/5797f43bd1009b50b0afc62d873118d8b92b4edd))
+* Adding struct_schema to Datasource to support flexible schemas, particularly for Looker datasources ([5797f43bd1009b50b0afc62d873118d8b92b4edd](https://github.com/googleapis/google-cloud-python/commit/5797f43bd1009b50b0afc62d873118d8b92b4edd))
+* Adding client_managed_resource_context to allow clients to manage their own conversation and agent resources ([5797f43bd1009b50b0afc62d873118d8b92b4edd](https://github.com/googleapis/google-cloud-python/commit/5797f43bd1009b50b0afc62d873118d8b92b4edd))
+* Adding a DeleteConversation RPC to allow for the deletion of conversations ([5797f43bd1009b50b0afc62d873118d8b92b4edd](https://github.com/googleapis/google-cloud-python/commit/5797f43bd1009b50b0afc62d873118d8b92b4edd))
+* Adding a GlossaryTerm message to allow users to provide definitions for domain-specific terms ([5797f43bd1009b50b0afc62d873118d8b92b4edd](https://github.com/googleapis/google-cloud-python/commit/5797f43bd1009b50b0afc62d873118d8b92b4edd))
+* Adding support for LookerQuery within the DataQuery message for retrieving data from Looker explores ([5797f43bd1009b50b0afc62d873118d8b92b4edd](https://github.com/googleapis/google-cloud-python/commit/5797f43bd1009b50b0afc62d873118d8b92b4edd))
+
 ## [0.5.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-geminidataanalytics-v0.4.0...google-cloud-geminidataanalytics-v0.5.0) (2025-10-16)
 
 
