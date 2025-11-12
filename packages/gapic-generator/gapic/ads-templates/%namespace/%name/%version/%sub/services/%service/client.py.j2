@@ -279,9 +279,20 @@ class {{ service.client_name }}(metaclass={{ service.client_name }}Meta):
         client_options = cast(client_options_lib.ClientOptions, client_options)
 
         # Create SSL credentials for mutual TLS if needed.
-        if os.getenv("GOOGLE_API_USE_CLIENT_CERTIFICATE", "false") not in ("true", "false"):
-            raise ValueError("Environment variable `GOOGLE_API_USE_CLIENT_CERTIFICATE` must be either `true` or `false`")
-        use_client_cert = os.getenv("GOOGLE_API_USE_CLIENT_CERTIFICATE", "false") == "true"
+
+        # Check if google-auth version supports should_use_client_cert for automatic
+        # mTLS enablement
+        if hasattr(mtls,"should_use_client_cert"):
+            use_client_cert = mtls.should_use_client_cert()
+        else:  # pragma: NO COVER
+            # if unsupported, fallback to reading from env var
+            use_client_cert_str = os.getenv("GOOGLE_API_USE_CLIENT_CERTIFICATE", "false").lower()
+            if use_client_cert_str not in ("true", "false"):
+                raise ValueError(
+                    "Environment variable `GOOGLE_API_USE_CLIENT_CERTIFICATE` must be"
+                    " either `true` or `false`"
+                )
+            use_client_cert = use_client_cert_str == "true"
 
         client_cert_source_func = None
         is_mtls = False

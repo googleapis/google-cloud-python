@@ -278,8 +278,9 @@ def test_{{ service.client_name|snake_case }}_client_options(client_class, trans
 
     # Check the case GOOGLE_API_USE_CLIENT_CERTIFICATE has unsupported value.
     with mock.patch.dict(os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": "Unsupported"}):
-        with pytest.raises(ValueError):
-            client = client_class(transport=transport_name)
+       if not hasattr(google.auth.transport.mtls, "should_use_client_cert"):
+           with pytest.raises(ValueError):
+               client = client_class(transport=transport_name)
 
     # Check the case quota_project_id is provided
     options = client_options.ClientOptions(quota_project_id="octopus")
