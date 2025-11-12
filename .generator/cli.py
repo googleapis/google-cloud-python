@@ -888,7 +888,7 @@ def _generate_api(
             _stage_gapic_library(tmp_dir, staging_dir)
 
 
-def _run_nox_sessions(library_id: str, repo: str):
+def _run_nox_sessions(library_id: str, repo: str, is_mono_repo: bool):
     """Calls nox for all specified sessions.
 
     Args:
@@ -896,6 +896,7 @@ def _run_nox_sessions(library_id: str, repo: str):
         repo(str): This directory will contain all directories that make up a
             library, the .librarian folder, and any global files declared in
             the config.yaml.
+        is_mono_repo(bool): True if the current repository is a mono-repo.
     """
     sessions = [
         "unit-3.14(protobuf_implementation='upb')",
@@ -904,13 +905,15 @@ def _run_nox_sessions(library_id: str, repo: str):
     try:
         for nox_session in sessions:
             current_session = nox_session
-            _run_individual_session(nox_session, library_id, repo)
+            _run_individual_session(nox_session, library_id, repo, is_mono_repo)
 
     except Exception as e:
         raise ValueError(f"Failed to run the nox session: {current_session}") from e
 
 
-def _run_individual_session(nox_session: str, library_id: str, repo: str):
+def _run_individual_session(
+    nox_session: str, library_id: str, repo: str, is_mono_repo: bool
+):
     """
     Calls nox with the specified sessions.
 
@@ -920,14 +923,20 @@ def _run_individual_session(nox_session: str, library_id: str, repo: str):
         repo(str): This directory will contain all directories that make up a
             library, the .librarian folder, and any global file declared in
             the config.yaml.
+        is_mono_repo(bool): True if the current repository is a mono-repo.
     """
 
+    if is_mono_repo:
+        path_to_library = f"packages/{library_id}"
+        library_path = f"{repo}/{path_to_library}"
+    else:
+        library_path = repo
     command = [
         "nox",
         "-s",
         nox_session,
         "-f",
-        f"{repo}/packages/{library_id}/noxfile.py",
+        f"{library_path}/noxfile.py",
     ]
     result = subprocess.run(command, text=True, check=True, timeout=600)
     logger.info(result)
@@ -961,7 +970,7 @@ def _determine_library_namespace(
     return ".".join(namespace_parts)
 
 
-def _verify_library_namespace(library_id: str, repo: str):
+def _verify_library_namespace(library_id: str, repo: str, is_mono_repo: bool):
     """
     Verifies that all found package namespaces are one of
     the hardcoded `exception_namespaces` or
@@ -970,6 +979,7 @@ def _verify_library_namespace(library_id: str, repo: str):
     Args:
         library_id (str): The library id under test (e.g., "google-cloud-language").
         repo (str): The path to the root of the repository.
+        is_mono_repo(bool): True if the current repository is a mono-repo.
     """
     # TODO(https://github.com/googleapis/google-cloud-python/issues/14376): Update the list of namespaces which are exceptions.
     exception_namespaces = [
@@ -1003,6 +1013,7 @@ def _verify_library_namespace(library_id: str, repo: str):
         "google.cloud",
         "google.geo",
         "google.maps",
+        "google.pubsub",
         "google.shopping",
         "grafeas",
         *exception_namespaces,
@@ -1010,7 +1021,11 @@ def _verify_library_namespace(library_id: str, repo: str):
     gapic_version_file = "gapic_version.py"
     proto_file = "*.proto"
 
-    library_path = Path(f"{repo}/packages/{library_id}")
+    if is_mono_repo:
+        path_to_library = f"packages/{library_id}"
+        library_path = Path(f"{repo}/{path_to_library}")
+    else:
+        library_path = Path(repo)
 
     if not library_path.is_dir():
         raise ValueError(f"Error: Path is not a directory: {library_path}")
@@ -1024,6 +1039,12 @@ def _verify_library_namespace(library_id: str, repo: str):
 
     # Find all parent directories for '*.proto' files
     for proto_file in library_path.rglob(proto_file):
+        proto_path = str(proto_file.parent.relative_to(library_path))
+        # Exclude proto paths which are not intended to be used for code generation.
+        # Generally any protos under the `samples` directory or in a
+        # directory called `proto` are not used for code generation.
+        if proto_path.startswith("samples") or proto_path.endswith("proto"):
+            continue
         relevant_dirs.add(proto_file.parent)
 
     if not relevant_dirs:
@@ -1041,7 +1062,7 @@ def _verify_library_namespace(library_id: str, repo: str):
             )
 
 
-def _get_library_dist_name(library_id: str, repo: str) -> str:
+def _get_library_dist_name(library_id: str, repo: str, is_mono_repo: bool) -> str:
     """
     Gets the package name by programmatically building the metadata.
 
@@ -1050,16 +1071,20 @@ def _get_library_dist_name(library_id: str, repo: str) -> str:
         repo: This directory will contain all directories that make up a
             library, the .librarian folder, and any global file declared in
             the config.yaml.
-
+        is_mono_repo(bool): True if the current repository is a mono-repo.
     Returns:
         str: The library name string if found, otherwise None.
     """
-    library_path = f"{repo}/packages/{library_id}"
+    if is_mono_repo:
+        path_to_library = f"packages/{library_id}"
+        library_path = Path(f"{repo}/{path_to_library}")
+    else:
+        library_path = Path(repo)
     metadata = build.util.project_wheel_metadata(library_path)
     return metadata.get("name")
 
 
-def _verify_library_dist_name(library_id: str, repo: str):
+def _verify_library_dist_name(library_id: str, repo: str, is_mono_repo: bool):
     """Verifies the library distribution name against its config files.
 
     This function ensures that:
@@ -1071,11 +1096,12 @@ def _verify_library_dist_name(library_id: str, repo: str):
         repo: This directory will contain all directories that make up a
             library, the .librarian folder, and any global file declared in
             the config.yaml.
+        is_mono_repo(bool): True if the current repository is a mono-repo.
 
     Raises:
         ValueError: If a name in an existing config file does not match the `library_id`.
     """
-    dist_name = _get_library_dist_name(library_id, repo)
+    dist_name = _get_library_dist_name(library_id, repo, is_mono_repo)
     if dist_name != library_id:
         raise ValueError(
             f"The distribution name `{dist_name}` does not match the folder `{library_id}`."
@@ -1085,11 +1111,12 @@ def _verify_library_dist_name(library_id: str, repo: str):
 def handle_build(librarian: str = LIBRARIAN_DIR, repo: str = REPO_DIR):
     """The main coordinator for validating client library generation."""
     try:
+        is_mono_repo = _is_mono_repo(repo)
         request_data = _read_json_file(f"{librarian}/{BUILD_REQUEST_FILE}")
         library_id = _get_library_id(request_data)
-        _verify_library_namespace(library_id, repo)
-        _verify_library_dist_name(library_id, repo)
-        _run_nox_sessions(library_id, repo)
+        _verify_library_namespace(library_id, repo, is_mono_repo)
+        _verify_library_dist_name(library_id, repo, is_mono_repo)
+        _run_nox_sessions(library_id, repo, is_mono_repo)
     except Exception as e:
         raise ValueError("Build failed.") from e
 
@@ -1357,9 +1384,7 @@ def _process_changelog(
             entry_parts.append(f"\n\n### {change_type_map[adjusted_change_type]}\n")
             for change in library_changes:
                 commit_link = f"([{change[commit_hash_key]}]({_REPO_URL}/commit/{change[commit_hash_key]}))"
-                entry_parts.append(
-                    f"* {change[subject_key]} {commit_link}"
-                )
+                entry_parts.append(f"* {change[subject_key]} {commit_link}")
 
     new_entry_text = "\n".join(entry_parts)
     anchor_pattern = re.compile(

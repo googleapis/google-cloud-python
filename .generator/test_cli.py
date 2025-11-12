@@ -710,7 +710,8 @@ def test_handle_generate_fail(caplog):
         handle_generate()
 
 
-def test_run_individual_session_success(mocker, caplog):
+@pytest.mark.parametrize("is_mono_repo", [False, True])
+def test_run_individual_session_success(mocker, caplog, is_mono_repo):
     """Tests that _run_individual_session calls nox with correct arguments and logs success."""
     caplog.set_level(logging.INFO)
 
@@ -721,16 +722,22 @@ def test_run_individual_session_success(mocker, caplog):
     test_session = "unit-3.9"
     test_library_id = "test-library"
     repo = "repo"
-    _run_individual_session(test_session, test_library_id, repo)
+    _run_individual_session(test_session, test_library_id, repo, is_mono_repo)
 
     expected_command = [
         "nox",
         "-s",
         test_session,
         "-f",
-        f"{REPO_DIR}/packages/{test_library_id}/noxfile.py",
+        (
+            f"{REPO_DIR}/packages/{test_library_id}/noxfile.py"
+            if is_mono_repo
+            else f"{REPO_DIR}/noxfile.py"
+        ),
     ]
-    mock_subprocess_run.assert_called_once_with(expected_command, text=True, check=True, timeout=600)
+    mock_subprocess_run.assert_called_once_with(
+        expected_command, text=True, check=True, timeout=600
+    )
 
 
 def test_run_individual_session_failure(mocker):
@@ -743,10 +750,13 @@ def test_run_individual_session_failure(mocker):
     )
 
     with pytest.raises(subprocess.CalledProcessError):
-        _run_individual_session("lint", "another-library", "repo")
+        _run_individual_session("lint", "another-library", "repo", True)
 
 
-def test_run_nox_sessions_success(mocker, mock_generate_request_data_for_nox):
+@pytest.mark.parametrize("is_mono_repo", [False, True])
+def test_run_nox_sessions_success(
+    mocker, mock_generate_request_data_for_nox, is_mono_repo
+):
     """Tests that _run_nox_sessions successfully runs all specified sessions."""
     mocker.patch("cli._read_json_file", return_value=mock_generate_request_data_for_nox)
     mocker.patch("cli._get_library_id", return_value="mock-library")
@@ -755,13 +765,16 @@ def test_run_nox_sessions_success(mocker, mock_generate_request_data_for_nox):
     sessions_to_run = [
         "unit-3.14(protobuf_implementation='upb')",
     ]
-    _run_nox_sessions("mock-library", "repo")
+    _run_nox_sessions("mock-library", "repo", is_mono_repo)
 
     assert mock_run_individual_session.call_count == len(sessions_to_run)
     mock_run_individual_session.assert_has_calls(
         [
             mocker.call(
-                "unit-3.14(protobuf_implementation='upb')", "mock-library", "repo"
+                "unit-3.14(protobuf_implementation='upb')",
+                "mock-library",
+                "repo",
+                is_mono_repo,
             ),
         ]
     )
@@ -772,7 +785,7 @@ def test_run_nox_sessions_read_file_failure(mocker):
     mocker.patch("cli._read_json_file", side_effect=FileNotFoundError("file not found"))
 
     with pytest.raises(ValueError, match="Failed to run the nox session"):
-        _run_nox_sessions("mock-library", "repo")
+        _run_nox_sessions("mock-library", "repo", True)
 
 
 def test_run_nox_sessions_get_library_id_failure(mocker):
@@ -784,11 +797,12 @@ def test_run_nox_sessions_get_library_id_failure(mocker):
     )
 
     with pytest.raises(ValueError, match="Failed to run the nox session"):
-        _run_nox_sessions("mock-library", "repo")
+        _run_nox_sessions("mock-library", "repo", True)
 
 
+@pytest.mark.parametrize("is_mono_repo", [False, True])
 def test_run_nox_sessions_individual_session_failure(
-    mocker, mock_generate_request_data_for_nox
+    mocker, mock_generate_request_data_for_nox, is_mono_repo
 ):
     """Tests that _run_nox_sessions raises ValueError if _run_individual_session fails."""
     mocker.patch("cli._read_json_file", return_value=mock_generate_request_data_for_nox)
@@ -799,7 +813,7 @@ def test_run_nox_sessions_individual_session_failure(
     )
 
     with pytest.raises(ValueError, match="Failed to run the nox session"):
-        _run_nox_sessions("mock-library", "repo")
+        _run_nox_sessions("mock-library", "repo", is_mono_repo)
 
     # Check that _run_individual_session was called at least once
     assert mock_run_individual_session.call_count > 0
@@ -1037,7 +1051,10 @@ def test_update_version_for_library_success_gapic(mocker):
 
     mock_rglob = mocker.patch("pathlib.Path.rglob")
     mock_rglob.side_effect = [
-        [pathlib.Path("repo/gapic_version.py"), pathlib.Path("repo/tests/gapic_version.py")],  # 1st call (gapic_version.py)
+        [
+            pathlib.Path("repo/gapic_version.py"),
+            pathlib.Path("repo/tests/gapic_version.py"),
+        ],  # 1st call (gapic_version.py)
         [pathlib.Path("repo/types/version.py")],  # 2nd call (types/version.py).
         [pathlib.Path("repo/samples/snippet_metadata.json")],  # 3rd call (snippets)
     ]
@@ -1485,48 +1502,109 @@ def test_determine_library_namespace_fails_not_subpath():
         _determine_library_namespace(gapic_parent_path, pkg_root_path)
 
 
-def test_get_library_dist_name_success(mocker):
+@pytest.mark.parametrize("is_mono_repo", [False, True])
+def test_get_library_dist_name_success(mocker, is_mono_repo):
     mock_metadata = {"name": "my-lib", "version": "1.0.0"}
     mocker.patch("build.util.project_wheel_metadata", return_value=mock_metadata)
-    assert _get_library_dist_name("my-lib", "repo") == "my-lib"
+    assert _get_library_dist_name("my-lib", "repo", is_mono_repo) == "my-lib"
 
 
-def test_verify_library_dist_name_setup_success(mocker):
+@pytest.mark.parametrize("is_mono_repo", [False, True])
+def test_verify_library_dist_name_setup_success(mocker, is_mono_repo):
     """Tests success when a library distribution name in setup.py is valid."""
     mock_setup_file = mocker.patch("cli._get_library_dist_name", return_value="my-lib")
-    _verify_library_dist_name("my-lib", "repo")
-    mock_setup_file.assert_called_once_with("my-lib", "repo")
+    _verify_library_dist_name("my-lib", "repo", is_mono_repo)
+    mock_setup_file.assert_called_once_with("my-lib", "repo", is_mono_repo)
 
 
 def test_verify_library_dist_name_fail(mocker):
     """Tests failure when a library-id does not match the libary distribution name."""
     mocker.patch("cli._get_library_dist_name", return_value="invalid-lib")
     with pytest.raises(ValueError):
-        _verify_library_dist_name("my-lib", "repo")
+        _verify_library_dist_name("my-lib", "repo", True)
 
 
-def test_verify_library_namespace_success_valid(mocker, mock_path_class):
+@pytest.mark.parametrize("is_mono_repo", [False, True])
+def test_verify_library_namespace_success_valid(mocker, mock_path_class, is_mono_repo):
     """Tests success when a single valid namespace is found."""
+
     # 1. Get the mock instance from the mock class's return_value
-    mock_instance = mock_path_class.return_value
+    mock_instance = mock_path_class.return_value  # This is library_path
 
     # 2. Configure the mock instance
     mock_instance.is_dir.return_value = True
-    mock_file = MagicMock(spec=Path)
-    mock_file.parent = Path("/abs/repo/packages/my-lib/google/cloud/language")
-    mock_instance.rglob.return_value = [mock_file]
+    mock_files_gapic_version = MagicMock(spec=Path)
+    mock_gapic_parent = MagicMock(spec=Path)
+    mock_gapic_parent.__str__.return_value = (
+        "/abs/repo/packages/my-lib/google/cloud/language"
+        if is_mono_repo
+        else "/abs/repo/google/cloud/language"
+    )
+    mock_files_gapic_version.parent = mock_gapic_parent
+    mock_files_proto = MagicMock(spec=Path)
+    mock_proto_parent = MagicMock(spec=Path)
+    mock_files_proto.parent = mock_proto_parent
+    mock_proto_parent.relative_to.return_value = MagicMock()
+    mock_proto_parent.relative_to.return_value.__str__.return_value = (
+        "google/cloud/language/v1"
+    )
+    mock_proto_parent.__str__.return_value = (
+        "/abs/repo/packages/my-lib/google/cloud/language/v1/proto"
+        if is_mono_repo
+        else "/abs/repo/google/cloud/language/v1/proto"
+    )
+    mock_instance.rglob.return_value = [mock_files_gapic_version, mock_files_proto]
 
     mock_determine_ns = mocker.patch(
         "cli._determine_library_namespace", return_value="google.cloud"
     )
 
-    _verify_library_namespace("my-lib", "/abs/repo")
+    _verify_library_namespace("my-lib", "/abs/repo", is_mono_repo)
 
     # 3. Assert against the mock CLASS (from the fixture)
-    mock_path_class.assert_called_once_with("/abs/repo/packages/my-lib")
+    mock_path_class.assert_called_once_with(
+        "/abs/repo/packages/my-lib" if is_mono_repo else "/abs/repo"
+    )
 
     # 4. Verify the helper was called with the correct instance
-    mock_determine_ns.assert_called_once_with(mock_file.parent, mock_instance)
+    assert mock_determine_ns.call_count == 2
+    mock_determine_ns.assert_any_call(mock_gapic_parent, mock_instance)
+    mock_determine_ns.assert_any_call(mock_proto_parent, mock_instance)
+
+
+@pytest.mark.parametrize("is_mono_repo", [False, True])
+def test_verify_library_namespace_excludes_proto_dir(
+    mocker, mock_path_class, is_mono_repo
+):
+    """Tests that a proto file path ending in 'proto' is correctly excluded."""
+
+    mock_instance = mock_path_class.return_value  # This is library_path
+    mock_instance.is_dir.return_value = True
+
+    mock_exclude_file = MagicMock(spec=Path)
+    mock_exclude_parent = MagicMock(spec=Path)
+    mock_exclude_file.parent = mock_exclude_parent
+
+    mock_relative_result = MagicMock()
+    mock_relative_result.__str__.return_value = "google/cloud/language/v1/proto"
+    mock_exclude_parent.relative_to.return_value = mock_relative_result
+    mock_exclude_parent.__str__.return_value = (
+        "/abs/repo/packages/my-lib/google/cloud/language/v1/proto"
+        if is_mono_repo
+        else "/abs/repo/google/cloud/language/v1/proto"
+    )
+
+    mock_instance.rglob.side_effect = [[], [mock_exclude_file]]
+    mock_determine_ns = mocker.patch("cli._determine_library_namespace", autospec=True)
+
+    with pytest.raises(ValueError) as excinfo:
+        _verify_library_namespace("my-lib", "/abs/repo", is_mono_repo)
+
+    assert "namespace cannot be determined" in str(excinfo.value)
+    mock_determine_ns.assert_not_called()
+    mock_path_class.assert_called_once_with(
+        "/abs/repo/packages/my-lib" if is_mono_repo else "/abs/repo"
+    )
 
 
 def test_verify_library_namespace_failure_invalid(mocker, mock_path_class):
@@ -1535,44 +1613,63 @@ def test_verify_library_namespace_failure_invalid(mocker, mock_path_class):
     mock_instance.is_dir.return_value = True
 
     mock_file = MagicMock(spec=Path)
-    mock_file.parent = Path("/abs/repo/packages/my-lib/google/api/core")
-    mock_instance.rglob.return_value = [mock_file]
-
-    mock_determine_ns = mocker.patch(
-        "cli._determine_library_namespace", return_value="google.apis"
+    mock_parent = MagicMock(spec=Path)
+    mock_parent.__str__.return_value = "/abs/repo/packages/my-lib/google/api/core"
+    mock_file.parent = mock_parent
+    mock_relative_result = MagicMock()
+    mock_relative_result.__str__.return_value = (
+        "google/api/core"  # Does not end with 'proto' or start with 'samples'
     )
-
-    with pytest.raises(ValueError):
-        _verify_library_namespace("my-lib", "/abs/repo")
+    mock_parent.relative_to.return_value = mock_relative_result
+    mock_instance.rglob.return_value = [mock_file]
+    mock_determine_ns = mocker.patch(
+        "cli._determine_library_namespace",
+        return_value="google.apis",  # NOT in valid_namespaces
+    )
+    with pytest.raises(ValueError) as excinfo:
+        _verify_library_namespace("my-lib", "/abs/repo", True)
+    assert "The namespace `google.apis` for `my-lib` must be one of" in str(
+        excinfo.value
+    )
 
     # Verify the class was still called correctly
     mock_path_class.assert_called_once_with("/abs/repo/packages/my-lib")
-    mock_determine_ns.assert_called_once_with(mock_file.parent, mock_instance)
+    mock_determine_ns.assert_called_once_with(mock_parent, mock_instance)
 
 
-def test_verify_library_namespace_error_no_directory(mocker, mock_path_class):
+@pytest.mark.parametrize("is_mono_repo", [False, True])
+def test_verify_library_namespace_error_no_directory(
+    mocker, mock_path_class, is_mono_repo
+):
     """Tests that the specific ValueError is raised if the path isn't a directory."""
     mock_instance = mock_path_class.return_value
     mock_instance.is_dir.return_value = False  # Configure the failure case
 
     with pytest.raises(ValueError, match="Error: Path is not a directory"):
-        _verify_library_namespace("my-lib", "repo")
+        _verify_library_namespace("my-lib", "repo", is_mono_repo)
 
     # Verify the function was called and triggered the check
-    mock_path_class.assert_called_once_with("repo/packages/my-lib")
+    mock_path_class.assert_called_once_with(
+        "repo/packages/my-lib" if is_mono_repo else "repo"
+    )
 
 
-def test_verify_library_namespace_error_no_gapic_file(mocker, mock_path_class):
+@pytest.mark.parametrize("is_mono_repo", [False, True])
+def test_verify_library_namespace_error_no_gapic_file(
+    mocker, mock_path_class, is_mono_repo
+):
     """Tests that the specific ValueError is raised if no gapic files are found."""
     mock_instance = mock_path_class.return_value
     mock_instance.is_dir.return_value = True
     mock_instance.rglob.return_value = []  # rglob returns an empty list
 
     with pytest.raises(ValueError, match="Library is missing a `gapic_version.py`"):
-        _verify_library_namespace("my-lib", "repo")
+        _verify_library_namespace("my-lib", "repo", is_mono_repo)
 
     # Verify the initial path logic still ran
-    mock_path_class.assert_called_once_with("repo/packages/my-lib")
+    mock_path_class.assert_called_once_with(
+        "repo/packages/my-lib" if is_mono_repo else "repo"
+    )
 
 
 def test_get_staging_child_directory_gapic_versioned():
