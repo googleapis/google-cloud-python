@@ -30,6 +30,7 @@ from google.cloud import spanner_v1
 from google.cloud.spanner_admin_database_v1 import DatabaseDialect
 from google.cloud._helpers import UTC
 
+from google.cloud.spanner_v1._helpers import _get_cloud_region
 from google.cloud.spanner_v1._helpers import AtomicCounter
 from google.cloud.spanner_v1.data_types import JsonObject
 from google.cloud.spanner_v1.database_sessions_manager import TransactionType
@@ -356,6 +357,7 @@ def _make_attributes(db_instance, **kwargs):
         "db.url": "spanner.googleapis.com",
         "net.host.name": "spanner.googleapis.com",
         "db.instance": db_instance,
+        "cloud.region": _get_cloud_region(),
         "gcp.client.service": "spanner",
         "gcp.client.version": ot_helpers.LIB_VERSION,
         "gcp.client.repo": "googleapis/python-spanner",

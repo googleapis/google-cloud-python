@@ -409,7 +409,11 @@ class _SnapshotBase(_SessionWrapper):
             method=streaming_read_method,
             request=read_request,
             metadata=metadata,
-            trace_attributes={"table_id": table, "columns": columns},
+            trace_attributes={
+                "table_id": table,
+                "columns": columns,
+                "request_options": request_options,
+            },
             column_info=column_info,
             lazy_decode=lazy_decode,
         )
@@ -601,7 +605,7 @@ class _SnapshotBase(_SessionWrapper):
             method=execute_streaming_sql_method,
             request=execute_sql_request,
             metadata=metadata,
-            trace_attributes={"db.statement": sql},
+            trace_attributes={"db.statement": sql, "request_options": request_options},
             column_info=column_info,
             lazy_decode=lazy_decode,
         )

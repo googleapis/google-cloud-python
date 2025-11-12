@@ -20,6 +20,7 @@ import math
 import time
 import base64
 import threading
+import logging
 
 from google.protobuf.struct_pb2 import ListValue
 from google.protobuf.struct_pb2 import Value
@@ -29,16 +30,27 @@ from google.protobuf.internal.enum_type_wrapper import EnumTypeWrapper
 from google.api_core import datetime_helpers
 from google.api_core.exceptions import Aborted
 from google.cloud._helpers import _date_from_iso8601_date
-from google.cloud.spanner_v1 import TypeCode
-from google.cloud.spanner_v1 import ExecuteSqlRequest
-from google.cloud.spanner_v1 import JsonObject, Interval
-from google.cloud.spanner_v1 import TransactionOptions
+from google.cloud.spanner_v1.types import ExecuteSqlRequest
+from google.cloud.spanner_v1.types import TransactionOptions
+from google.cloud.spanner_v1.data_types import JsonObject, Interval
 from google.cloud.spanner_v1.request_id_header import with_request_id
+from google.cloud.spanner_v1.types import TypeCode
+
 from google.rpc.error_details_pb2 import RetryInfo
 
 try:
     from opentelemetry.propagate import inject
     from opentelemetry.propagators.textmap import Setter
+    from opentelemetry.semconv.resource import ResourceAttributes
+    from opentelemetry.resourcedetector import gcp_resource_detector
+    from opentelemetry.resourcedetector.gcp_resource_detector import (
+        GoogleCloudResourceDetector,
+    )
+
+    # Overwrite the requests timeout for the detector.
+    # This is necessary as the client will wait the full timeout if the
+    # code is not run in a GCP environment, with the location endpoints available.
+    gcp_resource_detector._TIMEOUT_SEC = 0.2
 
     HAS_OPENTELEMETRY_INSTALLED = True
 except ImportError:
@@ -54,6 +66,12 @@ NUMERIC_MAX_PRECISION_ERR_MSG = (
     "Max precision for the whole component of a numeric is 29. The requested "
     + "numeric has a whole component with precision {}"
 )
+
+GOOGLE_CLOUD_REGION_GLOBAL = "global"
+
+log = logging.getLogger(__name__)
+
+_cloud_region: str = None
 
 
 if HAS_OPENTELEMETRY_INSTALLED:
@@ -77,6 +95,33 @@ if HAS_OPENTELEMETRY_INSTALLED:
                 None
             """
             carrier.append((key, value))
+
+
+def _get_cloud_region() -> str:
+    """Get the location of the resource, caching the result.
+
+    Returns:
+        str: The location of the resource. If OpenTelemetry is not installed, returns a global region.
+    """
+    global _cloud_region
+    if _cloud_region is not None:
+        return _cloud_region
+
+    try:
+        detector = GoogleCloudResourceDetector()
+        resources = detector.detect()
+        if ResourceAttributes.CLOUD_REGION in resources.attributes:
+            _cloud_region = resources.attributes[ResourceAttributes.CLOUD_REGION]
+        else:
+            _cloud_region = GOOGLE_CLOUD_REGION_GLOBAL
+    except Exception as e:
+        log.warning(
+            "Failed to detect GCP resource location for Spanner metrics, defaulting to 'global'. Error: %s",
+            e,
+        )
+        _cloud_region = GOOGLE_CLOUD_REGION_GLOBAL
+
+    return _cloud_region
 
 
 def _try_to_coerce_bytes(bytestring):

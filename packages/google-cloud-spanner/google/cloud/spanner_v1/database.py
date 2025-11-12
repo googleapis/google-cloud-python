@@ -1025,8 +1025,14 @@ class Database(object):
             reraises any non-ABORT exceptions raised by ``func``.
         """
         observability_options = getattr(self, "observability_options", None)
+        transaction_tag = kw.get("transaction_tag")
+        extra_attributes = {}
+        if transaction_tag:
+            extra_attributes["transaction.tag"] = transaction_tag
+
         with trace_call(
             "CloudSpanner.Database.run_in_transaction",
+            extra_attributes=extra_attributes,
             observability_options=observability_options,
         ), MetricsCapture():
             # Sanity check: Is there a transaction already running?

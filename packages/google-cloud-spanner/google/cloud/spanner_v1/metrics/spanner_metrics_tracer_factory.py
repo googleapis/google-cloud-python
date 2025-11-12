@@ -18,20 +18,9 @@
 from .metrics_tracer_factory import MetricsTracerFactory
 import os
 import logging
-from .constants import (
-    SPANNER_SERVICE_NAME,
-    GOOGLE_CLOUD_REGION_KEY,
-    GOOGLE_CLOUD_REGION_GLOBAL,
-)
+from .constants import SPANNER_SERVICE_NAME
 
 try:
-    from opentelemetry.resourcedetector import gcp_resource_detector
-
-    # Overwrite the requests timeout for the detector.
-    # This is necessary as the client will wait the full timeout if the
-    # code is not run in a GCP environment, with the location endpoints available.
-    gcp_resource_detector._TIMEOUT_SEC = 0.2
-
     import mmh3
 
     logging.getLogger("opentelemetry.resourcedetector.gcp_resource_detector").setLevel(
@@ -44,6 +33,7 @@ except ImportError:  # pragma: NO COVER
 
 from .metrics_tracer import MetricsTracer
 from google.cloud.spanner_v1 import __version__
+from google.cloud.spanner_v1._helpers import _get_cloud_region
 from uuid import uuid4
 
 log = logging.getLogger(__name__)
@@ -86,7 +76,7 @@ class SpannerMetricsTracerFactory(MetricsTracerFactory):
             cls._metrics_tracer_factory.set_client_hash(
                 cls._generate_client_hash(client_uid)
             )
-            cls._metrics_tracer_factory.set_location(cls._get_location())
+            cls._metrics_tracer_factory.set_location(_get_cloud_region())
             cls._metrics_tracer_factory.gfe_enabled = gfe_enabled
 
             if cls._metrics_tracer_factory.enabled != enabled:
@@ -153,28 +143,3 @@ class SpannerMetricsTracerFactory(MetricsTracerFactory):
 
         # Return as 6 digit zero padded hex string
         return f"{sig_figs:06x}"
-
-    @staticmethod
-    def _get_location() -> str:
-        """Get the location of the resource.
-
-        In case of any error during detection, this method will log a warning
-        and default to the "global" location.
-
-        Returns:
-            str: The location of the resource. If OpenTelemetry is not installed, returns a global region.
-        """
-        if not HAS_OPENTELEMETRY_INSTALLED:
-            return GOOGLE_CLOUD_REGION_GLOBAL
-        try:
-            detector = gcp_resource_detector.GoogleCloudResourceDetector()
-            resources = detector.detect()
-
-            if GOOGLE_CLOUD_REGION_KEY in resources.attributes:
-                return resources.attributes[GOOGLE_CLOUD_REGION_KEY]
-        except Exception as e:
-            log.warning(
-                "Failed to detect GCP resource location for Spanner metrics, defaulting to 'global'. Error: %s",
-                e,
-            )
-        return GOOGLE_CLOUD_REGION_GLOBAL
