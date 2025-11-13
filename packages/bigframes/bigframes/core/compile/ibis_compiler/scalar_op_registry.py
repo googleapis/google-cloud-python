@@ -1722,10 +1722,7 @@ def fillna_op(
     x: ibis_types.Value,
     y: ibis_types.Value,
 ):
-    if hasattr(x, "fill_null"):
-        return x.fill_null(typing.cast(ibis_types.Scalar, y))
-    else:
-        return x.fill_null(typing.cast(ibis_types.Scalar, y))
+    return x.fill_null(typing.cast(ibis_types.Scalar, y))
 
 
 @scalar_op_compiler.register_binary_op(ops.round_op)
