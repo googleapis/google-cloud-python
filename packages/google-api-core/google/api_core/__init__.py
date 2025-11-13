@@ -30,6 +30,7 @@ __version__ = api_core_version.__version__
 # expose dependency checks for external callers
 check_python_version = _python_version_support.check_python_version
 check_dependency_versions = _python_package_support.check_dependency_versions
+parse_version_to_tuple = _python_package_support.parse_version_to_tuple
 warn_deprecation_for_versions_less_than = (
     _python_package_support.warn_deprecation_for_versions_less_than
 )
