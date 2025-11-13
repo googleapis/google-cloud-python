@@ -1,0 +1,49 @@
+image: us-central1-docker.pkg.dev/cloud-sdk-librarian-prod/images-prod/python-librarian-generator@sha256:c8612d3fffb3f6a32353b2d1abd16b61e87811866f7ec9d65b59b02eb452a620
+libraries:
+  - id: google-cloud-firestore
+    version: 2.21.0
+    last_generated_commit: 659ea6e98acc7d58661ce2aa7b4cf76a7ef3fd42
+    apis:
+      - path: google/firestore/v1
+        service_config: firestore_v1.yaml
+      - path: google/firestore/admin/v1
+        service_config: firestore_v1.yaml
+      - path: google/firestore/bundle
+        service_config: ""
+    source_roots:
+      - .
+    preserve_regex: []
+    remove_regex:
+      - ^google/cloud/firestore_v1/services
+      - ^google/cloud/firestore_v1/types
+      - ^google/cloud/firestore_v1/gapic
+      - ^google/cloud/firestore_v1/py.typed
+      - ^google/cloud/firestore_admin_v1/services
+      - ^google/cloud/firestore_admin_v1/types
+      - ^google/cloud/firestore_admin_v1/gapic
+      - ^google/cloud/firestore_admin_v1/py.typed
+      - ^google/cloud/firestore_bundle/services
+      - ^google/cloud/firestore_bundle/types
+      - ^google/cloud/firestore_bundle/__init__.py
+      - ^google/cloud/firestore_bundle/gapic
+      - ^google/cloud/firestore_bundle/py.typed
+      - ^tests/unit/gapic
+      - ^tests/__init__.py
+      - ^tests/unit/__init__.py
+      - ^.pre-commit-config.yaml
+      - ^.repo-metadata.json
+      - ^.trampolinerc
+      - ^.coveragerc
+      - ^SECURITY.md
+      - ^noxfile.py
+      - ^owlbot.py
+      - ^samples/AUTHORING_GUIDE.md
+      - ^samples/CONTRIBUTING.md
+      - ^samples/generated_samples
+      - ^scripts/fixup_firestore_v1_keywords.py
+      - ^scripts/fixup_firestore_admin_v1_keywords.py
+      - ^setup.py
+      - ^README.rst
+      - ^docs/README.rst
+      - ^docs/summary_overview.md
+    tag_format: v{version}
