@@ -354,6 +354,21 @@ def test_floordiv_timedelta(scalar_types_df: bpd.DataFrame, snapshot):
     snapshot.assert_match(bf_df.sql, "out.sql")
 
 
+def test_manhattan_distance(repeated_types_df: bpd.DataFrame, snapshot):
+    col_names = ["float_list_col", "numeric_list_col"]
+    bf_df = repeated_types_df[col_names]
+
+    sql = utils._apply_ops_to_sql(
+        bf_df,
+        [
+            ops.manhattan_distance_op.as_expr("float_list_col", "float_list_col"),
+            ops.manhattan_distance_op.as_expr("numeric_list_col", "numeric_list_col"),
+        ],
+        ["float_list_col", "numeric_list_col"],
+    )
+    snapshot.assert_match(sql, "out.sql")
+
+
 def test_mul_numeric(scalar_types_df: bpd.DataFrame, snapshot):
     bf_df = scalar_types_df[["int64_col", "bool_col"]]
 
