@@ -114,3 +114,8 @@ def _(expr: TypedExpr) -> sge.Expression:
 @register_binary_op(ops.geo_st_difference_op)
 def _(left: TypedExpr, right: TypedExpr) -> sge.Expression:
     return sge.func("ST_DIFFERENCE", left.expr, right.expr)
+
+
+@register_binary_op(ops.geo_st_intersection_op)
+def _(left: TypedExpr, right: TypedExpr) -> sge.Expression:
+    return sge.func("ST_INTERSECTION", left.expr, right.expr)
