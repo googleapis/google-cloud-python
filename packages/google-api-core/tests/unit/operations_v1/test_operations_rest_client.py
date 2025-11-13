@@ -23,6 +23,7 @@ except ImportError:  # pragma: NO COVER
 
 import pytest
 from typing import Any, List
+from ...helpers import warn_deprecated_credentials_file
 
 try:
     import grpc  # noqa: F401
@@ -369,7 +370,8 @@ def test_operations_client_client_options(
         )
 
     # Check the case credentials_file is provided
-    options = client_options.ClientOptions(credentials_file="credentials.json")
+    with warn_deprecated_credentials_file():
+        options = client_options.ClientOptions(credentials_file="credentials.json")
     with mock.patch.object(transport_class, "__init__") as patched:
         patched.return_value = None
         client = client_class(client_options=options, transport=transport_name)
@@ -539,11 +541,14 @@ def test_operations_client_client_options_credentials_file(
     client_class, transport_class, transport_name
 ):
     # Check the case credentials file is provided.
-    options = client_options.ClientOptions(credentials_file="credentials.json")
+    with warn_deprecated_credentials_file():
+        options = client_options.ClientOptions(credentials_file="credentials.json")
     if "async" in str(client_class):
         # TODO(): Add support for credentials file to async REST transport.
         with pytest.raises(core_exceptions.AsyncRestUnsupportedParameterError):
-            client_class(client_options=options, transport=transport_name)
+            with warn_deprecated_credentials_file():
+
+                client_class(client_options=options, transport=transport_name)
     else:
         with mock.patch.object(transport_class, "__init__") as patched:
             patched.return_value = None
@@ -570,10 +575,18 @@ def test_operations_client_client_options_credentials_file(
     return_value=(mock.sentinel.credentials, mock.sentinel.project),
 )
 def test_list_operations_rest(google_auth_default, credentials_file):
-    sync_transport = transports.rest.OperationsRestTransport(
-        credentials_file=credentials_file,
-        http_options=HTTP_OPTIONS,
-    )
+    if credentials_file:
+        with warn_deprecated_credentials_file():
+            sync_transport = transports.rest.OperationsRestTransport(
+                credentials_file=credentials_file,
+                http_options=HTTP_OPTIONS,
+            )
+    else:
+        # no warning expected
+        sync_transport = transports.rest.OperationsRestTransport(
+            credentials_file=credentials_file,
+            http_options=HTTP_OPTIONS,
+        )
 
     client = AbstractOperationsClient(transport=sync_transport)
 
@@ -1130,10 +1143,11 @@ def test_transport_adc(client_class, transport_class, credentials):
 def test_operations_base_transport_error():
     # Passing both a credentials object and credentials_file should raise an error
     with pytest.raises(core_exceptions.DuplicateCredentialArgs):
-        transports.OperationsTransport(
-            credentials=ga_credentials.AnonymousCredentials(),
-            credentials_file="credentials.json",
-        )
+        with warn_deprecated_credentials_file():
+            transports.OperationsTransport(
+                credentials=ga_credentials.AnonymousCredentials(),
+                credentials_file="credentials.json",
+            )
 
 
 def test_operations_base_transport():
@@ -1171,10 +1185,11 @@ def test_operations_base_transport_with_credentials_file():
     ) as Transport:
         Transport.return_value = None
         load_creds.return_value = (ga_credentials.AnonymousCredentials(), None)
-        transports.OperationsTransport(
-            credentials_file="credentials.json",
-            quota_project_id="octopus",
-        )
+        with warn_deprecated_credentials_file():
+            transports.OperationsTransport(
+                credentials_file="credentials.json",
+                quota_project_id="octopus",
+            )
         load_creds.assert_called_once_with(
             "credentials.json",
             scopes=None,

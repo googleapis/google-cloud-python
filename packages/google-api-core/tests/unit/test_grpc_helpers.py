@@ -15,6 +15,7 @@
 from unittest import mock
 
 import pytest
+from ..helpers import warn_deprecated_credentials_file
 
 try:
     import grpc
@@ -581,11 +582,12 @@ def test_create_channel_explicit_with_duplicate_credentials():
     target = "example.com:443"
 
     with pytest.raises(exceptions.DuplicateCredentialArgs):
-        grpc_helpers.create_channel(
-            target,
-            credentials_file="credentials.json",
-            credentials=mock.sentinel.credentials,
-        )
+        with warn_deprecated_credentials_file():
+            grpc_helpers.create_channel(
+                target,
+                credentials_file="credentials.json",
+                credentials=mock.sentinel.credentials,
+            )
 
 
 @mock.patch("grpc.compute_engine_channel_credentials")
@@ -710,7 +712,8 @@ def test_create_channel_with_credentials_file(
     credentials_file = "/path/to/credentials/file.json"
     composite_creds = composite_creds_call.return_value
 
-    channel = grpc_helpers.create_channel(target, credentials_file=credentials_file)
+    with warn_deprecated_credentials_file():
+        channel = grpc_helpers.create_channel(target, credentials_file=credentials_file)
 
     google.auth.load_credentials_from_file.assert_called_once_with(
         credentials_file, scopes=None, default_scopes=None
@@ -742,9 +745,10 @@ def test_create_channel_with_credentials_file_and_scopes(
     credentials_file = "/path/to/credentials/file.json"
     composite_creds = composite_creds_call.return_value
 
-    channel = grpc_helpers.create_channel(
-        target, credentials_file=credentials_file, scopes=scopes
-    )
+    with warn_deprecated_credentials_file():
+        channel = grpc_helpers.create_channel(
+            target, credentials_file=credentials_file, scopes=scopes
+        )
 
     google.auth.load_credentials_from_file.assert_called_once_with(
         credentials_file, scopes=scopes, default_scopes=None
@@ -776,9 +780,10 @@ def test_create_channel_with_credentials_file_and_default_scopes(
     credentials_file = "/path/to/credentials/file.json"
     composite_creds = composite_creds_call.return_value
 
-    channel = grpc_helpers.create_channel(
-        target, credentials_file=credentials_file, default_scopes=default_scopes
-    )
+    with warn_deprecated_credentials_file():
+        channel = grpc_helpers.create_channel(
+            target, credentials_file=credentials_file, default_scopes=default_scopes
+        )
 
     load_credentials_from_file.assert_called_once_with(
         credentials_file, scopes=None, default_scopes=default_scopes

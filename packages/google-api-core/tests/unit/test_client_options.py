@@ -14,6 +14,7 @@
 
 from re import match
 import pytest
+from ..helpers import warn_deprecated_credentials_file
 
 from google.api_core import client_options
 
@@ -27,19 +28,19 @@ def get_client_encrypted_cert():
 
 
 def test_constructor():
-
-    options = client_options.ClientOptions(
-        api_endpoint="foo.googleapis.com",
-        client_cert_source=get_client_cert,
-        quota_project_id="quote-proj",
-        credentials_file="path/to/credentials.json",
-        scopes=[
-            "https://www.googleapis.com/auth/cloud-platform",
-            "https://www.googleapis.com/auth/cloud-platform.read-only",
-        ],
-        api_audience="foo2.googleapis.com",
-        universe_domain="googleapis.com",
-    )
+    with warn_deprecated_credentials_file():
+        options = client_options.ClientOptions(
+            api_endpoint="foo.googleapis.com",
+            client_cert_source=get_client_cert,
+            quota_project_id="quote-proj",
+            credentials_file="path/to/credentials.json",
+            scopes=[
+                "https://www.googleapis.com/auth/cloud-platform",
+                "https://www.googleapis.com/auth/cloud-platform.read-only",
+            ],
+            api_audience="foo2.googleapis.com",
+            universe_domain="googleapis.com",
+        )
 
     assert options.api_endpoint == "foo.googleapis.com"
     assert options.client_cert_source() == (b"cert", b"key")
@@ -102,10 +103,11 @@ def test_constructor_with_api_key():
 
 def test_constructor_with_both_api_key_and_credentials_file():
     with pytest.raises(ValueError):
-        client_options.ClientOptions(
-            api_key="api-key",
-            credentials_file="path/to/credentials.json",
-        )
+        with warn_deprecated_credentials_file():
+            client_options.ClientOptions(
+                api_key="api-key",
+                credentials_file="path/to/credentials.json",
+            )
 
 
 def test_from_dict():

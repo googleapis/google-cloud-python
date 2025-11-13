@@ -14,7 +14,9 @@
 
 """Helpers for tests"""
 
+import functools
 import logging
+import pytest  # noqa: I202
 from typing import List
 
 import proto
@@ -69,3 +71,12 @@ def parse_responses(response_message_cls, all_responses: List[proto.Message]) ->
     logging.info(f"Sending JSON stream: {json_responses}")
     ret_val = "[{}]".format(",".join(json_responses))
     return bytes(ret_val, "utf-8")
+
+
+warn_deprecated_credentials_file = functools.partial(
+    # This is used to test that the auth credentials file deprecation
+    # warning is emitted as expected.
+    pytest.warns,
+    DeprecationWarning,
+    match="argument is deprecated because of a potential security risk",
+)

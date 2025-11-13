@@ -91,6 +91,8 @@ ignore_missing_imports = true
 filterwarnings = [
   # treat all warnings as errors
   "error",
+  # Prevent Python version warnings from interfering with tests
+  "ignore:.* Python version .*:FutureWarning",
   # Remove once https://github.com/pytest-dev/pytest-cov/issues/621 is fixed
   "ignore:.*The --rsyncdir command line argument and rsyncdirs config variable are deprecated:DeprecationWarning",
   # Remove once https://github.com/protocolbuffers/protobuf/issues/12186 is fixed
