@@ -399,15 +399,18 @@ def pct_change(block: blocks.Block, periods: int = 1) -> blocks.Block:
     window_spec = windows.unbound()
 
     original_columns = block.value_columns
-    block, shift_columns = block.multi_apply_window_op(
-        original_columns, agg_ops.ShiftOp(periods), window_spec=window_spec
-    )
     exprs = []
-    for original_col, shifted_col in zip(original_columns, shift_columns):
-        change_expr = ops.sub_op.as_expr(original_col, shifted_col)
-        pct_change_expr = ops.div_op.as_expr(change_expr, shifted_col)
+    for original_col in original_columns:
+        shift_expr = agg_expressions.WindowExpression(
+            agg_expressions.UnaryAggregation(
+                agg_ops.ShiftOp(periods), ex.deref(original_col)
+            ),
+            window_spec,
+        )
+        change_expr = ops.sub_op.as_expr(original_col, shift_expr)
+        pct_change_expr = ops.div_op.as_expr(change_expr, shift_expr)
         exprs.append(pct_change_expr)
-    return block.project_exprs(exprs, labels=column_labels, drop=True)
+    return block.project_block_exprs(exprs, labels=column_labels, drop=True)
 
 
 def rank(
@@ -428,16 +431,11 @@ def rank(
 
     columns = columns or tuple(col for col in block.value_columns)
     labels = [block.col_id_to_label[id] for id in columns]
-    # Step 1: Calculate row numbers for each row
-    # Identify null values to be treated according to na_option param
-    rownum_col_ids = []
-    nullity_col_ids = []
+
+    result_exprs = []
     for col in columns:
-        block, nullity_col_id = block.apply_unary_op(
-            col,
-            ops.isnull_op,
-        )
-        nullity_col_ids.append(nullity_col_id)
+        # Step 1: Calculate row numbers for each row
+        # Identify null values to be treated according to na_option param
         window_ordering = (
             ordering.OrderingExpression(
                 ex.deref(col),
@@ -448,87 +446,66 @@ def rank(
             ),
         )
         # Count_op ignores nulls, so if na_option is "top" or "bottom", we instead count the nullity columns, where nulls have been mapped to bools
-        block, rownum_id = block.apply_window_op(
-            col if na_option == "keep" else nullity_col_id,
-            agg_ops.dense_rank_op if method == "dense" else agg_ops.count_op,
-            window_spec=windows.unbound(
-                grouping_keys=grouping_cols, ordering=window_ordering
-            )
+        target_expr = (
+            ex.deref(col) if na_option == "keep" else ops.isnull_op.as_expr(col)
+        )
+        window_op = agg_ops.dense_rank_op if method == "dense" else agg_ops.count_op
+        window_spec = (
+            windows.unbound(grouping_keys=grouping_cols, ordering=window_ordering)
             if method == "dense"
             else windows.rows(
                 end=0, ordering=window_ordering, grouping_keys=grouping_cols
-            ),
-            skip_reproject_unsafe=(col != columns[-1]),
+            )
+        )
+        result_expr: ex.Expression = agg_expressions.WindowExpression(
+            agg_expressions.UnaryAggregation(window_op, target_expr), window_spec
         )
         if pct:
-            block, max_id = block.apply_window_op(
-                rownum_id, agg_ops.max_op, windows.unbound(grouping_keys=grouping_cols)
+            result_expr = ops.div_op.as_expr(
+                result_expr,
+                agg_expressions.WindowExpression(
+                    agg_expressions.UnaryAggregation(agg_ops.max_op, result_expr),
+                    windows.unbound(grouping_keys=grouping_cols),
+                ),
             )
-            block, rownum_id = block.project_expr(ops.div_op.as_expr(rownum_id, max_id))
-
-        rownum_col_ids.append(rownum_id)
-
-    # Step 2: Apply aggregate to groups of like input values.
-    # This step is skipped for method=='first' or 'dense'
-    if method in ["average", "min", "max"]:
-        agg_op = {
-            "average": agg_ops.mean_op,
-            "min": agg_ops.min_op,
-            "max": agg_ops.max_op,
-        }[method]
-        post_agg_rownum_col_ids = []
-        for i in range(len(columns)):
-            block, result_id = block.apply_window_op(
-                rownum_col_ids[i],
-                agg_op,
-                window_spec=windows.unbound(grouping_keys=(columns[i], *grouping_cols)),
-                skip_reproject_unsafe=(i < (len(columns) - 1)),
+        # Step 2: Apply aggregate to groups of like input values.
+        # This step is skipped for method=='first' or 'dense'
+        if method in ["average", "min", "max"]:
+            agg_op = {
+                "average": agg_ops.mean_op,
+                "min": agg_ops.min_op,
+                "max": agg_ops.max_op,
+            }[method]
+            result_expr = agg_expressions.WindowExpression(
+                agg_expressions.UnaryAggregation(agg_op, result_expr),
+                windows.unbound(grouping_keys=(col, *grouping_cols)),
             )
-            post_agg_rownum_col_ids.append(result_id)
-        rownum_col_ids = post_agg_rownum_col_ids
-
-    # Pandas masks all values where any grouping column is null
-    # Note: we use pd.NA instead of float('nan')
-    if grouping_cols:
-        predicate = functools.reduce(
-            ops.and_op.as_expr,
-            [ops.notnull_op.as_expr(column_id) for column_id in grouping_cols],
-        )
-        block = block.project_exprs(
-            [
-                ops.where_op.as_expr(
-                    ex.deref(col),
-                    predicate,
-                    ex.const(None),
-                )
-                for col in rownum_col_ids
-            ],
-            labels=labels,
-        )
-        rownum_col_ids = list(block.value_columns[-len(rownum_col_ids) :])
-
-    # Step 3: post processing: mask null values and cast to float
-    if method in ["min", "max", "first", "dense"]:
-        # Pandas rank always produces Float64, so must cast for aggregation types that produce ints
-        return (
-            block.select_columns(rownum_col_ids)
-            .multi_apply_unary_op(ops.AsTypeOp(pd.Float64Dtype()))
-            .with_column_labels(labels)
-        )
-    if na_option == "keep":
-        # For na_option "keep", null inputs must produce null outputs
-        exprs = []
-        for i in range(len(columns)):
-            exprs.append(
-                ops.where_op.as_expr(
-                    ex.const(pd.NA, dtype=pd.Float64Dtype()),
-                    nullity_col_ids[i],
-                    rownum_col_ids[i],
-                )
+        # Pandas masks all values where any grouping column is null
+        # Note: we use pd.NA instead of float('nan')
+        if grouping_cols:
+            predicate = functools.reduce(
+                ops.and_op.as_expr,
+                [ops.notnull_op.as_expr(column_id) for column_id in grouping_cols],
             )
-        return block.project_exprs(exprs, labels=labels, drop=True)
+            result_expr = ops.where_op.as_expr(
+                result_expr,
+                predicate,
+                ex.const(None),
+            )
 
-    return block.select_columns(rownum_col_ids).with_column_labels(labels)
+        # Step 3: post processing: mask null values and cast to float
+        if method in ["min", "max", "first", "dense"]:
+            # Pandas rank always produces Float64, so must cast for aggregation types that produce ints
+            result_expr = ops.AsTypeOp(pd.Float64Dtype()).as_expr(result_expr)
+        elif na_option == "keep":
+            # For na_option "keep", null inputs must produce null outputs
+            result_expr = ops.where_op.as_expr(
+                ex.const(pd.NA, dtype=pd.Float64Dtype()),
+                ops.isnull_op.as_expr(col),
+                result_expr,
+            )
+        result_exprs.append(result_expr)
+    return block.project_block_exprs(result_exprs, labels=labels, drop=True)
 
 
 def dropna(

@@ -1154,6 +1154,27 @@ class Block:
             index_labels=self._index_labels,
         )
 
+    # This is a new experimental version of the project_exprs that supports mixing analytic and scalar expressions
+    def project_block_exprs(
+        self,
+        exprs: Sequence[ex.Expression],
+        labels: Union[Sequence[Label], pd.Index],
+        drop=False,
+    ) -> Block:
+        new_array, _ = self.expr.compute_general_expression(exprs)
+        if drop:
+            new_array = new_array.drop_columns(self.value_columns)
+
+        new_array.node.validate_tree()
+        return Block(
+            new_array,
+            index_columns=self.index_columns,
+            column_labels=labels
+            if drop
+            else self.column_labels.append(pd.Index(labels)),
+            index_labels=self._index_labels,
+        )
+
     def apply_window_op(
         self,
         column: str,

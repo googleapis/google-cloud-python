@@ -19,7 +19,7 @@ import dataclasses
 import functools
 import itertools
 import typing
-from typing import Callable, Mapping, TypeVar
+from typing import Callable, Mapping, Tuple, TypeVar
 
 from bigframes import dtypes
 from bigframes.core import expression, window_spec
@@ -64,6 +64,10 @@ class Aggregation(expression.Expression):
         ...
 
     @property
+    def children(self) -> Tuple[expression.Expression, ...]:
+        return self.inputs
+
+    @property
     def free_variables(self) -> typing.Tuple[str, ...]:
         return tuple(
             itertools.chain.from_iterable(map(lambda x: x.free_variables, self.inputs))
@@ -72,6 +76,10 @@ class Aggregation(expression.Expression):
     @property
     def is_const(self) -> bool:
         return all(child.is_const for child in self.inputs)
+
+    @functools.cached_property
+    def is_scalar_expr(self) -> bool:
+        return False
 
     @abc.abstractmethod
     def replace_args(self: TExpression, *arg) -> TExpression:
@@ -176,7 +184,12 @@ class WindowExpression(expression.Expression):
     def inputs(
         self,
     ) -> typing.Tuple[expression.Expression, ...]:
+        # TODO: Maybe make the window spec itself an expression?
         return (self.analytic_expr, *self.window.expressions)
+
+    @property
+    def children(self) -> Tuple[expression.Expression, ...]:
+        return self.inputs
 
     @property
     def free_variables(self) -> typing.Tuple[str, ...]:
@@ -188,12 +201,16 @@ class WindowExpression(expression.Expression):
     def is_const(self) -> bool:
         return all(child.is_const for child in self.inputs)
 
+    @functools.cached_property
+    def is_scalar_expr(self) -> bool:
+        return False
+
     def transform_children(
         self: WindowExpression,
         t: Callable[[expression.Expression], expression.Expression],
     ) -> WindowExpression:
         return WindowExpression(
-            self.analytic_expr.transform_children(t),
+            t(self.analytic_expr),  # type: ignore
             self.window.transform_exprs(t),
         )
 

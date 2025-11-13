@@ -1199,6 +1199,7 @@ class ProjectionNode(UnaryNode, AdditiveNode):
         for expression, _ in self.assignments:
             # throws TypeError if invalid
             _ = ex.bind_schema_fields(expression, self.child.field_by_id).output_type
+            assert expression.is_scalar_expr
         # Cannot assign to existing variables - append only!
         assert all(name not in self.child.schema.names for _, name in self.assignments)
 
@@ -1404,6 +1405,11 @@ class WindowOpNode(UnaryNode, AdditiveNode):
             not self.window_spec.is_row_bounded
         ) or self.expression.op.implicitly_inherits_order
         assert all(ref in self.child.ids for ref in self.expression.column_references)
+        assert self.added_field.dtype is not None
+        for agg_child in self.expression.children:
+            assert agg_child.is_scalar_expr
+        for window_expr in self.window_spec.expressions:
+            assert window_expr.is_scalar_expr
 
     @property
     def non_local(self) -> bool:
