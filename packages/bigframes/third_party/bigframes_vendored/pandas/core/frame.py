@@ -6414,6 +6414,10 @@ class DataFrame(generic.NDFrame):
             aggfunc (str, default "mean"):
                 Aggregation function name to compute summary statistics (e.g., 'sum', 'mean').
 
+            fill_value (scalar, default None):
+                Value to replace missing values with (in the resulting pivot table, after
+                aggregation).
+
         Returns:
             bigframes.pandas.DataFrame: An Excel style pivot table.
         """

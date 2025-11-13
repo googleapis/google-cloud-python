@@ -71,12 +71,11 @@ def crosstab(
         columns=tmp_col_names,
         aggfunc=aggfunc or "count",
         sort=False,
+        fill_value=0 if (aggfunc is None) else None,
     )
+    # Undo temporary unique level labels
     pivot_table.index.names = rownames or [i.name for i in index]
     pivot_table.columns.names = colnames or [c.name for c in columns]
-    if aggfunc is None:
-        # TODO: Push this into pivot_table itself
-        pivot_table = pivot_table.fillna(0)
     return pivot_table
 
 
