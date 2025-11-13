@@ -1,5 +1,9 @@
 # Changelog
 
+[PyPI History][1]
+
+[1]: https://pypi.org/project/sqlalchemy-spanner/#history
+
 ## [1.17.1](https://github.com/googleapis/python-spanner-sqlalchemy/compare/v1.17.0...v1.17.1) (2025-10-21)
 
 
