@@ -69,9 +69,6 @@ def remap_variables(
             left_col=new_root.left_col.remap_column_refs(
                 new_child_mappings[0], allow_partial_bindings=True
             ),
-            right_col=new_root.right_col.remap_column_refs(
-                new_child_mappings[1], allow_partial_bindings=True
-            ),
         )
     else:
         new_root = new_root.remap_refs(downstream_mappings)

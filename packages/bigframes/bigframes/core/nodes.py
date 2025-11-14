@@ -200,13 +200,10 @@ class InNode(BigFrameNode, AdditiveNode):
     left_child: BigFrameNode
     right_child: BigFrameNode
     left_col: ex.DerefOp
-    right_col: ex.DerefOp
     indicator_col: identifiers.ColumnId
 
     def _validate(self):
-        assert not (
-            set(self.left_child.ids) & set(self.right_child.ids)
-        ), "Join ids collide"
+        assert len(self.right_child.fields) == 1
 
     @property
     def row_preserving(self) -> bool:
@@ -259,7 +256,11 @@ class InNode(BigFrameNode, AdditiveNode):
 
     @property
     def referenced_ids(self) -> COLUMN_SET:
-        return frozenset({self.left_col.id, self.right_col.id})
+        return frozenset(
+            {
+                self.left_col.id,
+            }
+        )
 
     @property
     def additive_base(self) -> BigFrameNode:
@@ -268,12 +269,13 @@ class InNode(BigFrameNode, AdditiveNode):
     @property
     def joins_nulls(self) -> bool:
         left_nullable = self.left_child.field_by_id[self.left_col.id].nullable
-        right_nullable = self.right_child.field_by_id[self.right_col.id].nullable
+        # assumption: right side has one column
+        right_nullable = self.right_child.fields[0].nullable
         return left_nullable or right_nullable
 
     @property
     def _node_expressions(self):
-        return (self.left_col, self.right_col)
+        return (self.left_col,)
 
     def replace_additive_base(self, node: BigFrameNode):
         return dataclasses.replace(self, left_child=node)
@@ -300,9 +302,6 @@ class InNode(BigFrameNode, AdditiveNode):
         return dataclasses.replace(
             self,
             left_col=self.left_col.remap_column_refs(
-                mappings, allow_partial_bindings=True
-            ),
-            right_col=self.right_col.remap_column_refs(
                 mappings, allow_partial_bindings=True
             ),
         )  # type: ignore

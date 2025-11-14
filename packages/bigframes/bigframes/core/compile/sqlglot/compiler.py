@@ -230,14 +230,17 @@ def compile_join(
 def compile_isin_join(
     node: nodes.InNode, left: ir.SQLGlotIR, right: ir.SQLGlotIR
 ) -> ir.SQLGlotIR:
+    right_field = node.right_child.fields[0]
     conditions = (
         typed_expr.TypedExpr(
             scalar_compiler.scalar_op_compiler.compile_expression(node.left_col),
             node.left_col.output_type,
         ),
         typed_expr.TypedExpr(
-            scalar_compiler.scalar_op_compiler.compile_expression(node.right_col),
-            node.right_col.output_type,
+            scalar_compiler.scalar_op_compiler.compile_expression(
+                expression.DerefOp(right_field.id)
+            ),
+            right_field.dtype,
         ),
     )
 

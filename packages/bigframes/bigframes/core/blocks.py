@@ -2326,7 +2326,7 @@ class Block:
         return block
 
     def _isin_inner(self: Block, col: str, unique_values: core.ArrayValue) -> Block:
-        expr, matches = self._expr.isin(unique_values, col, unique_values.column_ids[0])
+        expr, matches = self._expr.isin(unique_values, col)
 
         new_value_cols = tuple(
             val_col if val_col != col else matches for val_col in self.value_columns

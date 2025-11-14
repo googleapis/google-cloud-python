@@ -450,13 +450,15 @@ class ArrayValue:
         )
 
     def isin(
-        self, other: ArrayValue, lcol: str, rcol: str
+        self,
+        other: ArrayValue,
+        lcol: str,
     ) -> typing.Tuple[ArrayValue, str]:
+        assert len(other.column_ids) == 1
         node = nodes.InNode(
             self.node,
             other.node,
             ex.deref(lcol),
-            ex.deref(rcol),
             indicator_col=ids.ColumnId.unique(),
         )
         return ArrayValue(node), node.indicator_col.name

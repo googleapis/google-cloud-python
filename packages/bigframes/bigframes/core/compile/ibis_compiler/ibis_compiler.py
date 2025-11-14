@@ -128,7 +128,7 @@ def compile_isin(
     return left.isin_join(
         right=right,
         indicator_col=node.indicator_col.sql,
-        conditions=(node.left_col.id.sql, node.right_col.id.sql),
+        conditions=(node.left_col.id.sql, list(node.right_child.ids)[0].sql),
         join_nulls=node.joins_nulls,
     )
 

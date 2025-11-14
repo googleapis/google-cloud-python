@@ -134,11 +134,13 @@ def test_remap_variables_concat_self_stability(leaf):
 
 def test_remap_variables_in_node_converts_dag_to_tree(leaf, leaf_too):
     # Create an InNode with the same child twice, should create a tree from a DAG
+    right = nodes.SelectionNode(
+        leaf_too, (nodes.AliasedRef.identity(identifiers.ColumnId("col_a")),)
+    )
     node = nodes.InNode(
         left_child=leaf,
-        right_child=leaf_too,
+        right_child=right,
         left_col=ex.DerefOp(identifiers.ColumnId("col_a")),
-        right_col=ex.DerefOp(identifiers.ColumnId("col_a")),
         indicator_col=identifiers.ColumnId("indicator"),
     )
 
@@ -147,7 +149,5 @@ def test_remap_variables_in_node_converts_dag_to_tree(leaf, leaf_too):
     new_node = typing.cast(nodes.InNode, new_node)
 
     left_col_id = new_node.left_col.id.name
-    right_col_id = new_node.right_col.id.name
+    new_node.validate_tree()
     assert left_col_id.startswith("id_")
-    assert right_col_id.startswith("id_")
-    assert left_col_id != right_col_id

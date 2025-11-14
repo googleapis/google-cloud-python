@@ -15,7 +15,7 @@ from __future__ import annotations
 
 import dataclasses
 import itertools
-from typing import cast, Optional, Sequence, Set, Tuple
+from typing import Optional, Sequence, Set, Tuple
 
 import bigframes.core.expression
 import bigframes.core.identifiers
@@ -152,35 +152,6 @@ def pull_up_selection(
         return node, tuple(
             bigframes.core.nodes.AliasedRef.identity(field.id) for field in node.fields
         )
-    # InNode needs special handling, as its a binary node, but row identity is from left side only.
-    # TODO: Merge code with unary op paths
-    if isinstance(node, bigframes.core.nodes.InNode):
-        child_node, child_selections = pull_up_selection(
-            node.left_child, stop=stop, rename_vars=rename_vars
-        )
-        mapping = {out: ref.id for ref, out in child_selections}
-
-        new_in_node: bigframes.core.nodes.InNode = dataclasses.replace(
-            node, left_child=child_node
-        )
-        new_in_node = new_in_node.remap_refs(mapping)
-        if rename_vars:
-            new_in_node = cast(
-                bigframes.core.nodes.InNode,
-                new_in_node.remap_vars(
-                    {node.indicator_col: bigframes.core.identifiers.ColumnId.unique()}
-                ),
-            )
-        added_selection = tuple(
-            (
-                bigframes.core.nodes.AliasedRef(
-                    bigframes.core.expression.DerefOp(new_in_node.indicator_col),
-                    node.indicator_col,
-                ),
-            )
-        )
-        new_selection = child_selections + added_selection
-        return new_in_node, new_selection
 
     if isinstance(node, bigframes.core.nodes.AdditiveNode):
         child_node, child_selections = pull_up_selection(

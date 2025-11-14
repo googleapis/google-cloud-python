@@ -102,8 +102,10 @@ def test_engines_cross_join(
 def test_engines_isin(
     scalars_array_value: array_value.ArrayValue, engine, left_key, right_key
 ):
+    other = scalars_array_value.select_columns([right_key])
     result, _ = scalars_array_value.isin(
-        scalars_array_value, lcol=left_key, rcol=right_key
+        other,
+        lcol=left_key,
     )
 
     assert_equivalence_execution(result.node, REFERENCE_ENGINE, engine)

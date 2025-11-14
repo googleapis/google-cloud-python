@@ -55,11 +55,6 @@ def prune_columns(node: nodes.BigFrameNode):
         result = node.replace_child(prune_node(node.child, node.consumed_ids))
     elif isinstance(node, nodes.AggregateNode):
         result = node.replace_child(prune_node(node.child, node.consumed_ids))
-    elif isinstance(node, nodes.InNode):
-        result = dataclasses.replace(
-            node,
-            right_child=prune_node(node.right_child, frozenset([node.right_col.id])),
-        )
     else:
         result = node
     return result
