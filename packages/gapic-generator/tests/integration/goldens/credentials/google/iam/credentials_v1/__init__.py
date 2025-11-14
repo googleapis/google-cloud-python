@@ -15,10 +15,30 @@
 #
 from google.iam.credentials_v1 import gapic_version as package_version
 
+import google.api_core as api_core
+import sys
+
 __version__ = package_version.__version__
 
+if sys.version_info >= (3, 8):  # pragma: NO COVER
+    from importlib import metadata
+else:  # pragma: NO COVER
+    # TODO(https://github.com/googleapis/python-api-core/issues/835): Remove
+    # this code path once we drop support for Python 3.7
+    import importlib_metadata as metadata
 
-import google.api_core as api_core
+
+from .services.iam_credentials import IAMCredentialsClient
+from .services.iam_credentials import IAMCredentialsAsyncClient
+
+from .types.common import GenerateAccessTokenRequest
+from .types.common import GenerateAccessTokenResponse
+from .types.common import GenerateIdTokenRequest
+from .types.common import GenerateIdTokenResponse
+from .types.common import SignBlobRequest
+from .types.common import SignBlobResponse
+from .types.common import SignJwtRequest
+from .types.common import SignJwtResponse
 
 if hasattr(api_core, "check_python_version") and hasattr(api_core, "check_dependency_versions"):   # pragma: NO COVER
     api_core.check_python_version("google.iam.credentials_v1") # type: ignore
@@ -48,27 +68,35 @@ else:   # pragma: NO COVER
                           f"then update {_package_label}.",
                           FutureWarning)
 
-        from packaging.version import parse as parse_version
-
-        if sys.version_info < (3, 8):
-            import pkg_resources
-
-            def _get_version(dependency_name):
-              try:
-                version_string = pkg_resources.get_distribution(dependency_name).version
-                return (parse_version(version_string), version_string)
-              except pkg_resources.DistributionNotFound:
-                return (None, "--")
-        else:
-            from importlib import metadata
-
-            def _get_version(dependency_name):
+        def parse_version_to_tuple(version_string: str):
+            """Safely converts a semantic version string to a comparable tuple of integers.
+            Example: "4.25.8" -> (4, 25, 8)
+            Ignores non-numeric parts and handles common version formats.
+            Args:
+                version_string: Version string in the format "x.y.z" or "x.y.z<suffix>"
+            Returns:
+                Tuple of integers for the parsed version string.
+            """
+            parts = []
+            for part in version_string.split("."):
                 try:
-                    version_string = metadata.version("requests")
-                    parsed_version = parse_version(version_string)
-                    return (parsed_version.release, version_string)
-                except metadata.PackageNotFoundError:
-                    return (None, "--")
+                    parts.append(int(part))
+                except ValueError:
+                    # If it's a non-numeric part (e.g., '1.0.0b1' -> 'b1'), stop here.
+                    # This is a simplification compared to 'packaging.parse_version', but sufficient
+                    # for comparing strictly numeric semantic versions.
+                    break
+            return tuple(parts)
+
+        def _get_version(dependency_name):
+            try:
+                version_string: str = metadata.version(dependency_name)
+                parsed_version = parse_version_to_tuple(version_string)
+                return (parsed_version, version_string)
+            except Exception:
+                # Catch exceptions from metadata.version() (e.g., PackageNotFoundError)
+                # or errors during parse_version_to_tuple
+                return (None, "--")
 
         _dependency_package = "google.protobuf"
         _next_supported_version = "4.25.8"
@@ -95,19 +123,6 @@ else:   # pragma: NO COVER
                           "updates for {_package_label}, ensure you are " +
                           "using a supported version of Python; see " +
                           "https://devguide.python.org/versions/")
-
-
-from .services.iam_credentials import IAMCredentialsClient
-from .services.iam_credentials import IAMCredentialsAsyncClient
-
-from .types.common import GenerateAccessTokenRequest
-from .types.common import GenerateAccessTokenResponse
-from .types.common import GenerateIdTokenRequest
-from .types.common import GenerateIdTokenResponse
-from .types.common import SignBlobRequest
-from .types.common import SignBlobResponse
-from .types.common import SignJwtRequest
-from .types.common import SignJwtResponse
 
 __all__ = (
     'IAMCredentialsAsyncClient',
