@@ -99,6 +99,16 @@ def test_geo_st_geogfromtext(scalar_types_df: bpd.DataFrame, snapshot):
     snapshot.assert_match(sql, "out.sql")
 
 
+def test_geo_st_geogpoint(scalar_types_df: bpd.DataFrame, snapshot):
+    col_names = ["rowindex", "rowindex_2"]
+    bf_df = scalar_types_df[col_names]
+    sql = utils._apply_binary_op(
+        bf_df, ops.geo_st_geogpoint_op, col_names[0], col_names[1]
+    )
+
+    snapshot.assert_match(sql, "out.sql")
+
+
 def test_geo_st_intersection(scalar_types_df: bpd.DataFrame, snapshot):
     col_name = "geography_col"
     bf_df = scalar_types_df[[col_name]]
