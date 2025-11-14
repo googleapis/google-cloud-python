@@ -27,7 +27,7 @@ def compile(
     op: agg_ops.WindowOp,
     column: typed_expr.TypedExpr,
     *,
-    order_by: tuple[sge.Expression, ...],
+    order_by: tuple[sge.Expression, ...] = (),
 ) -> sge.Expression:
     return ORDERED_UNARY_OP_REGISTRATION[op](op, column, order_by=order_by)
 

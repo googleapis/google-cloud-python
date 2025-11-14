@@ -49,6 +49,19 @@ def _(
     return sge.func("IFNULL", result, sge.true())
 
 
+@UNARY_OP_REGISTRATION.register(agg_ops.AnyOp)
+def _(
+    op: agg_ops.AnyOp,
+    column: typed_expr.TypedExpr,
+    window: typing.Optional[window_spec.WindowSpec] = None,
+) -> sge.Expression:
+    expr = column.expr
+    expr = apply_window_if_present(sge.func("LOGICAL_OR", expr), window)
+
+    # BQ will return null for empty column, result would be false in pandas.
+    return sge.func("COALESCE", expr, sge.convert(False))
+
+
 @UNARY_OP_REGISTRATION.register(agg_ops.ApproxQuartilesOp)
 def _(
     op: agg_ops.ApproxQuartilesOp,

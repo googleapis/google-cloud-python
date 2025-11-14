@@ -26,7 +26,7 @@ pytest.importorskip("polars")
 REFERENCE_ENGINE = polars_executor.PolarsExecutor()
 
 
-@pytest.mark.parametrize("engine", ["polars", "bq"], indirect=True)
+@pytest.mark.parametrize("engine", ["polars", "bq", "bq-sqlglot"], indirect=True)
 def test_engines_to_array_op(scalars_array_value: array_value.ArrayValue, engine):
     # Bigquery won't allow you to materialize arrays with null, so use non-nullable
     int64_non_null = ops.coalesce_op.as_expr("int64_col", expression.const(0))
@@ -46,7 +46,7 @@ def test_engines_to_array_op(scalars_array_value: array_value.ArrayValue, engine
     assert_equivalence_execution(arr.node, REFERENCE_ENGINE, engine)
 
 
-@pytest.mark.parametrize("engine", ["polars", "bq"], indirect=True)
+@pytest.mark.parametrize("engine", ["polars", "bq", "bq-sqlglot"], indirect=True)
 def test_engines_array_reduce_op(arrays_array_value: array_value.ArrayValue, engine):
     arr, _ = arrays_array_value.compute_values(
         [
