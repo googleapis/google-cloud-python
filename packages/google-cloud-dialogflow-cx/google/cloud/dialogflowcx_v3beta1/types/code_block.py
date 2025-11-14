@@ -13,28 +13,32 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-from .accountlimits import (
-    AccountLimit,
-    GetAccountLimitRequest,
-    ListAccountLimitsRequest,
-    ListAccountLimitsResponse,
-    ProductLimit,
-)
-from .quota import (
-    ListQuotaGroupsRequest,
-    ListQuotaGroupsResponse,
-    MethodDetails,
-    QuotaGroup,
+from __future__ import annotations
+
+from typing import MutableMapping, MutableSequence
+
+import proto  # type: ignore
+
+__protobuf__ = proto.module(
+    package="google.cloud.dialogflow.cx.v3beta1",
+    manifest={
+        "CodeBlock",
+    },
 )
 
-__all__ = (
-    "AccountLimit",
-    "GetAccountLimitRequest",
-    "ListAccountLimitsRequest",
-    "ListAccountLimitsResponse",
-    "ProductLimit",
-    "ListQuotaGroupsRequest",
-    "ListQuotaGroupsResponse",
-    "MethodDetails",
-    "QuotaGroup",
-)
+
+class CodeBlock(proto.Message):
+    r"""Represents a code block.
+
+    Attributes:
+        code (str):
+            Optional. Source code of the block in Python.
+    """
+
+    code: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+
+
+__all__ = tuple(sorted(__protobuf__.manifest))

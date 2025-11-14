@@ -142,6 +142,9 @@ class Webhook(proto.Message):
                 `Diglogflow service
                 agent <https://cloud.google.com/iam/docs/service-agents#dialogflow-service-agent>`__.
                 The generated token is sent in the Authorization header.
+            service_account_auth_config (google.cloud.dialogflowcx_v3beta1.types.Webhook.GenericWebService.ServiceAccountAuthConfig):
+                Optional. Configuration for service account
+                authentication.
             webhook_type (google.cloud.dialogflowcx_v3beta1.types.Webhook.GenericWebService.WebhookType):
                 Optional. Type of the webhook.
             http_method (google.cloud.dialogflowcx_v3beta1.types.Webhook.GenericWebService.HttpMethod):
@@ -291,6 +294,28 @@ class Webhook(proto.Message):
                 number=4,
             )
 
+        class ServiceAccountAuthConfig(proto.Message):
+            r"""Configuration for authentication using a service account.
+
+            Attributes:
+                service_account (str):
+                    Required. The email address of the service account used to
+                    authenticate the webhook call. Dialogflow uses this service
+                    account to exchange an access token and the access token is
+                    then sent in the ``Authorization`` header of the webhook
+                    request.
+
+                    The service account must have the
+                    ``roles/iam.serviceAccountTokenCreator`` role granted to the
+                    `Dialogflow service
+                    agent <https://cloud.google.com/iam/docs/service-agents#dialogflow-service-agent>`__.
+            """
+
+            service_account: str = proto.Field(
+                proto.STRING,
+                number=1,
+            )
+
         uri: str = proto.Field(
             proto.STRING,
             number=1,
@@ -333,6 +358,11 @@ class Webhook(proto.Message):
             proto.ENUM,
             number=12,
             enum="Webhook.GenericWebService.ServiceAgentAuth",
+        )
+        service_account_auth_config: "Webhook.GenericWebService.ServiceAccountAuthConfig" = proto.Field(
+            proto.MESSAGE,
+            number=18,
+            message="Webhook.GenericWebService.ServiceAccountAuthConfig",
         )
         webhook_type: "Webhook.GenericWebService.WebhookType" = proto.Field(
             proto.ENUM,

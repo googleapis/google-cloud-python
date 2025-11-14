@@ -151,12 +151,15 @@ class ProductAccount(proto.Message):
                 Display & Video 360 advertiser.
             DATA_PARTNER (4):
                 Data Partner.
+            GOOGLE_ANALYTICS_PROPERTY (5):
+                Google Analytics.
         """
         ACCOUNT_TYPE_UNSPECIFIED = 0
         GOOGLE_ADS = 1
         DISPLAY_VIDEO_PARTNER = 2
         DISPLAY_VIDEO_ADVERTISER = 3
         DATA_PARTNER = 4
+        GOOGLE_ANALYTICS_PROPERTY = 5
 
     product: "Product" = proto.Field(
         proto.ENUM,

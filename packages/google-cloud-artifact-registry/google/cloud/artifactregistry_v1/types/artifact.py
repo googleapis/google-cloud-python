@@ -24,6 +24,7 @@ __protobuf__ = proto.module(
     package="google.devtools.artifactregistry.v1",
     manifest={
         "DockerImage",
+        "ImageManifest",
         "ListDockerImagesRequest",
         "ListDockerImagesResponse",
         "GetDockerImageRequest",
@@ -56,7 +57,7 @@ class DockerImage(proto.Message):
         name (str):
             Required. registry_location, project_id, repository_name and
             image id forms a unique image
-            name:``projects/<project_id>/locations/<location>/repository/<repository_name>/dockerImages/<docker_image>``.
+            name:``projects/<project_id>/locations/<location>/repositories/<repository_name>/dockerImages/<docker_image>``.
             For example,
             "projects/test-project/locations/us-west4/repositories/test-repo/dockerImages/
             nginx@sha256:e9954c1fc875017be1c3e36eca16be2d9e9bccc4bf072163515467d6a823c7cf",
@@ -95,6 +96,17 @@ class DockerImage(proto.Message):
         update_time (google.protobuf.timestamp_pb2.Timestamp):
             Output only. The time when the docker image
             was last updated.
+        artifact_type (str):
+            ArtifactType of this image, e.g.
+            "application/vnd.example+type". If the ``subject_digest`` is
+            set and no ``artifact_type`` is given, the ``media_type``
+            will be considered as the ``artifact_type``. This field is
+            returned as the ``metadata.artifactType`` field in the
+            Version resource.
+        image_manifests (MutableSequence[google.cloud.artifactregistry_v1.types.ImageManifest]):
+            Optional. For multi-arch images (manifest
+            lists), this field contains the list of image
+            manifests.
     """
 
     name: str = proto.Field(
@@ -131,6 +143,79 @@ class DockerImage(proto.Message):
         proto.MESSAGE,
         number=8,
         message=timestamp_pb2.Timestamp,
+    )
+    artifact_type: str = proto.Field(
+        proto.STRING,
+        number=9,
+    )
+    image_manifests: MutableSequence["ImageManifest"] = proto.RepeatedField(
+        proto.MESSAGE,
+        number=11,
+        message="ImageManifest",
+    )
+
+
+class ImageManifest(proto.Message):
+    r"""Details of a single image manifest within a multi-arch image.
+
+    Attributes:
+        architecture (str):
+            Optional. The CPU architecture of the image.
+            Values are provided by the Docker client and are
+            not validated by Artifact Registry. Example
+            values include "amd64", "arm64", "ppc64le",
+            "s390x", "riscv64", "mips64le", etc.
+        os (str):
+            Optional. The operating system of the image.
+            Values are provided by the Docker client and are
+            not validated by Artifact Registry. Example
+            values include "linux", "windows", "darwin",
+            "aix", etc.
+        digest (str):
+            Optional. The manifest digest, in the format
+            "sha256:<sha256_hex_digest>".
+        media_type (str):
+            Optional. The media type of the manifest,
+            e.g.,
+            "application/vnd.docker.distribution.manifest.v2+json".
+        os_version (str):
+            Optional. The OS version of the image, for example on
+            Windows ``10.0.14393.1066``.
+        os_features (MutableSequence[str]):
+            Optional. The required OS features for the image, for
+            example on Windows ``win32k``.
+        variant (str):
+            Optional. The variant of the CPU in the image, for example
+            ``v7`` to specify ARMv7 when architecture is ``arm``.
+    """
+
+    architecture: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    os: str = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+    digest: str = proto.Field(
+        proto.STRING,
+        number=3,
+    )
+    media_type: str = proto.Field(
+        proto.STRING,
+        number=4,
+    )
+    os_version: str = proto.Field(
+        proto.STRING,
+        number=5,
+    )
+    os_features: MutableSequence[str] = proto.RepeatedField(
+        proto.STRING,
+        number=6,
+    )
+    variant: str = proto.Field(
+        proto.STRING,
+        number=7,
     )
 
 

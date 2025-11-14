@@ -15173,6 +15173,7 @@ def test_list_data_source_references(request_type, transport: str = "grpc"):
         # Designate an appropriate return value for the call.
         call.return_value = datasourcereference.ListDataSourceReferencesResponse(
             next_page_token="next_page_token_value",
+            unreachable=["unreachable_value"],
         )
         response = client.list_data_source_references(request)
 
@@ -15185,6 +15186,7 @@ def test_list_data_source_references(request_type, transport: str = "grpc"):
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListDataSourceReferencesPager)
     assert response.next_page_token == "next_page_token_value"
+    assert response.unreachable == ["unreachable_value"]
 
 
 def test_list_data_source_references_non_empty_request_with_auto_populated_field():
@@ -15327,6 +15329,7 @@ async def test_list_data_source_references_async(
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
             datasourcereference.ListDataSourceReferencesResponse(
                 next_page_token="next_page_token_value",
+                unreachable=["unreachable_value"],
             )
         )
         response = await client.list_data_source_references(request)
@@ -15340,6 +15343,7 @@ async def test_list_data_source_references_async(
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListDataSourceReferencesAsyncPager)
     assert response.next_page_token == "next_page_token_value"
+    assert response.unreachable == ["unreachable_value"]
 
 
 @pytest.mark.asyncio
@@ -26722,6 +26726,7 @@ async def test_list_data_source_references_empty_call_grpc_asyncio():
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
             datasourcereference.ListDataSourceReferencesResponse(
                 next_page_token="next_page_token_value",
+                unreachable=["unreachable_value"],
             )
         )
         await client.list_data_source_references(request=None)
@@ -32380,6 +32385,7 @@ def test_list_data_source_references_rest_call_success(request_type):
         # Designate an appropriate value for the returned response.
         return_value = datasourcereference.ListDataSourceReferencesResponse(
             next_page_token="next_page_token_value",
+            unreachable=["unreachable_value"],
         )
 
         # Wrap the value into a proper Response obj
@@ -32399,6 +32405,7 @@ def test_list_data_source_references_rest_call_success(request_type):
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListDataSourceReferencesPager)
     assert response.next_page_token == "next_page_token_value"
+    assert response.unreachable == ["unreachable_value"]
 
 
 @pytest.mark.parametrize("null_interceptor", [True, False])

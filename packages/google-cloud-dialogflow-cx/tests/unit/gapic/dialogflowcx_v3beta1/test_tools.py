@@ -7864,6 +7864,9 @@ def test_create_tool_rest_call_success(request_type):
                     "token": "token_value",
                     "secret_version_for_token": "secret_version_for_token_value",
                 },
+                "service_account_auth_config": {
+                    "service_account": "service_account_value"
+                },
             },
             "tls_config": {
                 "ca_certs": [
@@ -8505,6 +8508,9 @@ def test_update_tool_rest_call_success(request_type):
                     "token": "token_value",
                     "secret_version_for_token": "secret_version_for_token_value",
                 },
+                "service_account_auth_config": {
+                    "service_account": "service_account_value"
+                },
             },
             "tls_config": {
                 "ca_certs": [
@@ -9011,6 +9017,9 @@ def test_create_tool_version_rest_call_success(request_type):
                     "bearer_token_config": {
                         "token": "token_value",
                         "secret_version_for_token": "secret_version_for_token_value",
+                    },
+                    "service_account_auth_config": {
+                        "service_account": "service_account_value"
                     },
                 },
                 "tls_config": {

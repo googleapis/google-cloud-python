@@ -18,9 +18,9 @@ from .cart_data import CartData, Item
 from .consent import Consent, ConsentStatus
 from .destination import Destination, Product, ProductAccount
 from .device_info import DeviceInfo
-from .encryption_info import EncryptionInfo, GcpWrappedKeyInfo
+from .encryption_info import AwsWrappedKeyInfo, EncryptionInfo, GcpWrappedKeyInfo
 from .error import ErrorReason
-from .event import AdIdentifiers, CustomVariable, Event, EventSource
+from .event import AdIdentifiers, CustomVariable, Event, EventParameter, EventSource
 from .experimental_field import ExperimentalField
 from .ingestion_service import (
     Encoding,
@@ -33,6 +33,7 @@ from .ingestion_service import (
     RetrieveRequestStatusRequest,
     RetrieveRequestStatusResponse,
 )
+from .item_parameter import ItemParameter
 from .match_rate import MatchRateRange
 from .processing_errors import (
     ErrorCount,
@@ -45,7 +46,12 @@ from .processing_errors import (
 from .request_status_per_destination import RequestStatusPerDestination
 from .terms_of_service import TermsOfService, TermsOfServiceStatus
 from .user_data import AddressInfo, UserData, UserIdentifier
-from .user_properties import CustomerType, CustomerValueBucket, UserProperties
+from .user_properties import (
+    CustomerType,
+    CustomerValueBucket,
+    UserProperties,
+    UserProperty,
+)
 
 __all__ = (
     "AudienceMember",
@@ -59,12 +65,14 @@ __all__ = (
     "ProductAccount",
     "Product",
     "DeviceInfo",
+    "AwsWrappedKeyInfo",
     "EncryptionInfo",
     "GcpWrappedKeyInfo",
     "ErrorReason",
     "AdIdentifiers",
     "CustomVariable",
     "Event",
+    "EventParameter",
     "EventSource",
     "ExperimentalField",
     "IngestAudienceMembersRequest",
@@ -76,6 +84,7 @@ __all__ = (
     "RetrieveRequestStatusRequest",
     "RetrieveRequestStatusResponse",
     "Encoding",
+    "ItemParameter",
     "MatchRateRange",
     "ErrorCount",
     "ErrorInfo",
@@ -90,6 +99,7 @@ __all__ = (
     "UserData",
     "UserIdentifier",
     "UserProperties",
+    "UserProperty",
     "CustomerType",
     "CustomerValueBucket",
 )

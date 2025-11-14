@@ -52,6 +52,7 @@ from .changelog import (
     ListChangelogsRequest,
     ListChangelogsResponse,
 )
+from .code_block import CodeBlock
 from .conversation_history import (
     Conversation,
     DeleteConversationRequest,
@@ -420,6 +421,7 @@ __all__ = (
     "GetChangelogRequest",
     "ListChangelogsRequest",
     "ListChangelogsResponse",
+    "CodeBlock",
     "Conversation",
     "DeleteConversationRequest",
     "GetConversationRequest",

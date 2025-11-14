@@ -18,11 +18,24 @@ from google.shopping.merchant_quota import gapic_version as package_version
 __version__ = package_version.__version__
 
 
+from google.shopping.merchant_quota_v1.services.account_limits_service.async_client import (
+    AccountLimitsServiceAsyncClient,
+)
+from google.shopping.merchant_quota_v1.services.account_limits_service.client import (
+    AccountLimitsServiceClient,
+)
 from google.shopping.merchant_quota_v1.services.quota_service.async_client import (
     QuotaServiceAsyncClient,
 )
 from google.shopping.merchant_quota_v1.services.quota_service.client import (
     QuotaServiceClient,
+)
+from google.shopping.merchant_quota_v1.types.accountlimits import (
+    AccountLimit,
+    GetAccountLimitRequest,
+    ListAccountLimitsRequest,
+    ListAccountLimitsResponse,
+    ProductLimit,
 )
 from google.shopping.merchant_quota_v1.types.quota import (
     ListQuotaGroupsRequest,
@@ -32,8 +45,15 @@ from google.shopping.merchant_quota_v1.types.quota import (
 )
 
 __all__ = (
+    "AccountLimitsServiceClient",
+    "AccountLimitsServiceAsyncClient",
     "QuotaServiceClient",
     "QuotaServiceAsyncClient",
+    "AccountLimit",
+    "GetAccountLimitRequest",
+    "ListAccountLimitsRequest",
+    "ListAccountLimitsResponse",
+    "ProductLimit",
     "ListQuotaGroupsRequest",
     "ListQuotaGroupsResponse",
     "MethodDetails",

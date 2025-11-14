@@ -39,6 +39,8 @@ def partition(
 class merchant_quotaCallTransformer(cst.CSTTransformer):
     CTRL_PARAMS: Tuple[str] = ('retry', 'timeout', 'metadata')
     METHOD_TO_PARAMS: Dict[str, Tuple[str]] = {
+        'get_account_limit': ('name', ),
+        'list_account_limits': ('parent', 'filter', 'page_size', 'page_token', ),
         'list_quota_groups': ('parent', 'page_size', 'page_token', ),
     }
 

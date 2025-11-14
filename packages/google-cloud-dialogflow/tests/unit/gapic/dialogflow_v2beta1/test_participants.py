@@ -1131,6 +1131,7 @@ def test_create_participant(request_type, transport: str = "grpc"):
             name="name_value",
             role=gcd_participant.Participant.Role.HUMAN_AGENT,
             obfuscated_external_user_id="obfuscated_external_user_id_value",
+            agent_desktop_source=gcd_participant.Participant.AgentDesktopSource.LIVE_PERSON,
         )
         response = client.create_participant(request)
 
@@ -1145,6 +1146,10 @@ def test_create_participant(request_type, transport: str = "grpc"):
     assert response.name == "name_value"
     assert response.role == gcd_participant.Participant.Role.HUMAN_AGENT
     assert response.obfuscated_external_user_id == "obfuscated_external_user_id_value"
+    assert (
+        response.agent_desktop_source
+        == gcd_participant.Participant.AgentDesktopSource.LIVE_PERSON
+    )
 
 
 def test_create_participant_non_empty_request_with_auto_populated_field():
@@ -1282,6 +1287,7 @@ async def test_create_participant_async(
                 name="name_value",
                 role=gcd_participant.Participant.Role.HUMAN_AGENT,
                 obfuscated_external_user_id="obfuscated_external_user_id_value",
+                agent_desktop_source=gcd_participant.Participant.AgentDesktopSource.LIVE_PERSON,
             )
         )
         response = await client.create_participant(request)
@@ -1297,6 +1303,10 @@ async def test_create_participant_async(
     assert response.name == "name_value"
     assert response.role == gcd_participant.Participant.Role.HUMAN_AGENT
     assert response.obfuscated_external_user_id == "obfuscated_external_user_id_value"
+    assert (
+        response.agent_desktop_source
+        == gcd_participant.Participant.AgentDesktopSource.LIVE_PERSON
+    )
 
 
 @pytest.mark.asyncio
@@ -1489,6 +1499,7 @@ def test_get_participant(request_type, transport: str = "grpc"):
             name="name_value",
             role=participant.Participant.Role.HUMAN_AGENT,
             obfuscated_external_user_id="obfuscated_external_user_id_value",
+            agent_desktop_source=participant.Participant.AgentDesktopSource.LIVE_PERSON,
         )
         response = client.get_participant(request)
 
@@ -1503,6 +1514,10 @@ def test_get_participant(request_type, transport: str = "grpc"):
     assert response.name == "name_value"
     assert response.role == participant.Participant.Role.HUMAN_AGENT
     assert response.obfuscated_external_user_id == "obfuscated_external_user_id_value"
+    assert (
+        response.agent_desktop_source
+        == participant.Participant.AgentDesktopSource.LIVE_PERSON
+    )
 
 
 def test_get_participant_non_empty_request_with_auto_populated_field():
@@ -1631,6 +1646,7 @@ async def test_get_participant_async(
                 name="name_value",
                 role=participant.Participant.Role.HUMAN_AGENT,
                 obfuscated_external_user_id="obfuscated_external_user_id_value",
+                agent_desktop_source=participant.Participant.AgentDesktopSource.LIVE_PERSON,
             )
         )
         response = await client.get_participant(request)
@@ -1646,6 +1662,10 @@ async def test_get_participant_async(
     assert response.name == "name_value"
     assert response.role == participant.Participant.Role.HUMAN_AGENT
     assert response.obfuscated_external_user_id == "obfuscated_external_user_id_value"
+    assert (
+        response.agent_desktop_source
+        == participant.Participant.AgentDesktopSource.LIVE_PERSON
+    )
 
 
 @pytest.mark.asyncio
@@ -2365,6 +2385,7 @@ def test_update_participant(request_type, transport: str = "grpc"):
             name="name_value",
             role=gcd_participant.Participant.Role.HUMAN_AGENT,
             obfuscated_external_user_id="obfuscated_external_user_id_value",
+            agent_desktop_source=gcd_participant.Participant.AgentDesktopSource.LIVE_PERSON,
         )
         response = client.update_participant(request)
 
@@ -2379,6 +2400,10 @@ def test_update_participant(request_type, transport: str = "grpc"):
     assert response.name == "name_value"
     assert response.role == gcd_participant.Participant.Role.HUMAN_AGENT
     assert response.obfuscated_external_user_id == "obfuscated_external_user_id_value"
+    assert (
+        response.agent_desktop_source
+        == gcd_participant.Participant.AgentDesktopSource.LIVE_PERSON
+    )
 
 
 def test_update_participant_non_empty_request_with_auto_populated_field():
@@ -2512,6 +2537,7 @@ async def test_update_participant_async(
                 name="name_value",
                 role=gcd_participant.Participant.Role.HUMAN_AGENT,
                 obfuscated_external_user_id="obfuscated_external_user_id_value",
+                agent_desktop_source=gcd_participant.Participant.AgentDesktopSource.LIVE_PERSON,
             )
         )
         response = await client.update_participant(request)
@@ -2527,6 +2553,10 @@ async def test_update_participant_async(
     assert response.name == "name_value"
     assert response.role == gcd_participant.Participant.Role.HUMAN_AGENT
     assert response.obfuscated_external_user_id == "obfuscated_external_user_id_value"
+    assert (
+        response.agent_desktop_source
+        == gcd_participant.Participant.AgentDesktopSource.LIVE_PERSON
+    )
 
 
 @pytest.mark.asyncio
@@ -7632,6 +7662,7 @@ async def test_create_participant_empty_call_grpc_asyncio():
                 name="name_value",
                 role=gcd_participant.Participant.Role.HUMAN_AGENT,
                 obfuscated_external_user_id="obfuscated_external_user_id_value",
+                agent_desktop_source=gcd_participant.Participant.AgentDesktopSource.LIVE_PERSON,
             )
         )
         await client.create_participant(request=None)
@@ -7661,6 +7692,7 @@ async def test_get_participant_empty_call_grpc_asyncio():
                 name="name_value",
                 role=participant.Participant.Role.HUMAN_AGENT,
                 obfuscated_external_user_id="obfuscated_external_user_id_value",
+                agent_desktop_source=participant.Participant.AgentDesktopSource.LIVE_PERSON,
             )
         )
         await client.get_participant(request=None)
@@ -7721,6 +7753,7 @@ async def test_update_participant_empty_call_grpc_asyncio():
                 name="name_value",
                 role=gcd_participant.Participant.Role.HUMAN_AGENT,
                 obfuscated_external_user_id="obfuscated_external_user_id_value",
+                agent_desktop_source=gcd_participant.Participant.AgentDesktopSource.LIVE_PERSON,
             )
         )
         await client.update_participant(request=None)
@@ -7986,6 +8019,7 @@ def test_create_participant_rest_call_success(request_type):
         "role": 1,
         "obfuscated_external_user_id": "obfuscated_external_user_id_value",
         "documents_metadata_filters": {},
+        "agent_desktop_source": 1,
     }
     # The version of a generated dependency at test runtime may differ from the version used during generation.
     # Delete any fields which are not present in the current runtime dependency
@@ -8063,6 +8097,7 @@ def test_create_participant_rest_call_success(request_type):
             name="name_value",
             role=gcd_participant.Participant.Role.HUMAN_AGENT,
             obfuscated_external_user_id="obfuscated_external_user_id_value",
+            agent_desktop_source=gcd_participant.Participant.AgentDesktopSource.LIVE_PERSON,
         )
 
         # Wrap the value into a proper Response obj
@@ -8082,6 +8117,10 @@ def test_create_participant_rest_call_success(request_type):
     assert response.name == "name_value"
     assert response.role == gcd_participant.Participant.Role.HUMAN_AGENT
     assert response.obfuscated_external_user_id == "obfuscated_external_user_id_value"
+    assert (
+        response.agent_desktop_source
+        == gcd_participant.Participant.AgentDesktopSource.LIVE_PERSON
+    )
 
 
 @pytest.mark.parametrize("null_interceptor", [True, False])
@@ -8200,6 +8239,7 @@ def test_get_participant_rest_call_success(request_type):
             name="name_value",
             role=participant.Participant.Role.HUMAN_AGENT,
             obfuscated_external_user_id="obfuscated_external_user_id_value",
+            agent_desktop_source=participant.Participant.AgentDesktopSource.LIVE_PERSON,
         )
 
         # Wrap the value into a proper Response obj
@@ -8219,6 +8259,10 @@ def test_get_participant_rest_call_success(request_type):
     assert response.name == "name_value"
     assert response.role == participant.Participant.Role.HUMAN_AGENT
     assert response.obfuscated_external_user_id == "obfuscated_external_user_id_value"
+    assert (
+        response.agent_desktop_source
+        == participant.Participant.AgentDesktopSource.LIVE_PERSON
+    )
 
 
 @pytest.mark.parametrize("null_interceptor", [True, False])
@@ -8467,6 +8511,7 @@ def test_update_participant_rest_call_success(request_type):
         "role": 1,
         "obfuscated_external_user_id": "obfuscated_external_user_id_value",
         "documents_metadata_filters": {},
+        "agent_desktop_source": 1,
     }
     # The version of a generated dependency at test runtime may differ from the version used during generation.
     # Delete any fields which are not present in the current runtime dependency
@@ -8544,6 +8589,7 @@ def test_update_participant_rest_call_success(request_type):
             name="name_value",
             role=gcd_participant.Participant.Role.HUMAN_AGENT,
             obfuscated_external_user_id="obfuscated_external_user_id_value",
+            agent_desktop_source=gcd_participant.Participant.AgentDesktopSource.LIVE_PERSON,
         )
 
         # Wrap the value into a proper Response obj
@@ -8563,6 +8609,10 @@ def test_update_participant_rest_call_success(request_type):
     assert response.name == "name_value"
     assert response.role == gcd_participant.Participant.Role.HUMAN_AGENT
     assert response.obfuscated_external_user_id == "obfuscated_external_user_id_value"
+    assert (
+        response.agent_desktop_source
+        == gcd_participant.Participant.AgentDesktopSource.LIVE_PERSON
+    )
 
 
 @pytest.mark.parametrize("null_interceptor", [True, False])
