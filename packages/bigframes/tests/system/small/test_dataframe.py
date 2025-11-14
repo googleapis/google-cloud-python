@@ -671,11 +671,57 @@ def test_df_info(scalars_dfs):
         "dtypes: Float64(1), Int64(3), binary[pyarrow](1), boolean(1), date32[day][pyarrow](1), decimal128(38, 9)[pyarrow](1), duration[us][pyarrow](1), geometry(1), string(1), time64[us][pyarrow](1), timestamp[us, tz=UTC][pyarrow](1), timestamp[us][pyarrow](1)\n"
         "memory usage: 1341 bytes\n"
     )
-
     scalars_df, _ = scalars_dfs
-    bf_result = io.StringIO()
 
+    bf_result = io.StringIO()
     scalars_df.info(buf=bf_result)
+
+    assert expected == bf_result.getvalue()
+
+
+def test_df_info_no_rows(session):
+    expected = (
+        "<class 'bigframes.dataframe.DataFrame'>\n"
+        "Index: 0 entries\n"
+        "Data columns (total 1 columns):\n"
+        "  #  Column    Non-Null Count    Dtype\n"
+        "---  --------  ----------------  -------\n"
+        "  0  col       0 non-null        Float64\n"
+        "dtypes: Float64(1)\n"
+        "memory usage: 0 bytes\n"
+    )
+    df = session.DataFrame({"col": []})
+
+    bf_result = io.StringIO()
+    df.info(buf=bf_result)
+
+    assert expected == bf_result.getvalue()
+
+
+def test_df_info_no_cols(session):
+    expected = (
+        "<class 'bigframes.dataframe.DataFrame'>\n"
+        "Index: 3 entries, 1 to 3\n"
+        "Empty DataFrame\n"
+    )
+    df = session.DataFrame({}, index=[1, 2, 3])
+
+    bf_result = io.StringIO()
+    df.info(buf=bf_result)
+
+    assert expected == bf_result.getvalue()
+
+
+def test_df_info_no_cols_no_rows(session):
+    expected = (
+        "<class 'bigframes.dataframe.DataFrame'>\n"
+        "Index: 0 entries\n"
+        "Empty DataFrame\n"
+    )
+    df = session.DataFrame({})
+
+    bf_result = io.StringIO()
+    df.info(buf=bf_result)
 
     assert expected == bf_result.getvalue()
 

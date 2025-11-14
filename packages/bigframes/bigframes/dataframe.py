@@ -521,14 +521,20 @@ class DataFrame(vendored_pandas_frame.DataFrame):
         if self._block.has_index:
             index_type = "MultiIndex" if self.index.nlevels > 1 else "Index"
 
-            # These accessses are kind of expensive, maybe should try to skip?
-            first_indice = self.index[0]
-            last_indice = self.index[-1]
-            obuf.write(
-                f"{index_type}: {n_rows} entries, {first_indice} to {last_indice}\n"
-            )
+            index_stats = f"{n_rows} entries"
+            if n_rows > 0:
+                # These accessses are kind of expensive, maybe should try to skip?
+                first_indice = self.index[0]
+                last_indice = self.index[-1]
+                index_stats += f", {first_indice} to {last_indice}"
+            obuf.write(f"{index_type}: {index_stats}\n")
         else:
             obuf.write("NullIndex\n")
+
+        if n_columns == 0:
+            # We don't display any more information if the dataframe has no columns
+            obuf.write("Empty DataFrame\n")
+            return
 
         dtype_strings = self.dtypes.astype("string")
         if show_all_columns:
