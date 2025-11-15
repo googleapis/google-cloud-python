@@ -20,7 +20,7 @@ libraries:
     tag_format: '{id}-v{version}'
   - id: google-ads-datamanager
     version: 0.1.0
-    last_generated_commit: faa7932e61d781ccb0647d4b25c2b452cb206af4
+    last_generated_commit: c2db528a3e4d12b95666c719ee0db30a3d4c78ad
     apis:
       - path: google/ads/datamanager/v1
         service_config: datamanager_v1.yaml
@@ -497,7 +497,7 @@ libraries:
     tag_format: '{id}-v{version}'
   - id: google-cloud-artifact-registry
     version: 1.17.0
-    last_generated_commit: 3322511885371d2b2253f209ccc3aa60d4100cfd
+    last_generated_commit: c2db528a3e4d12b95666c719ee0db30a3d4c78ad
     apis:
       - path: google/devtools/artifactregistry/v1
         service_config: artifactregistry_v1.yaml
@@ -601,7 +601,7 @@ libraries:
     tag_format: '{id}-v{version}'
   - id: google-cloud-backupdr
     version: 0.4.0
-    last_generated_commit: 53f97391f3451398f7b53c7f86dabd325d205677
+    last_generated_commit: c2db528a3e4d12b95666c719ee0db30a3d4c78ad
     apis:
       - path: google/cloud/backupdr/v1
         service_config: backupdr_v1.yaml
@@ -1640,7 +1640,7 @@ libraries:
     tag_format: '{id}-v{version}'
   - id: google-cloud-dialogflow
     version: 2.43.0
-    last_generated_commit: e8365a7f88fabe8717cb8322b8ce784b03b6daea
+    last_generated_commit: c2db528a3e4d12b95666c719ee0db30a3d4c78ad
     apis:
       - path: google/cloud/dialogflow/v2beta1
         service_config: dialogflow_v2beta1.yaml
@@ -1660,7 +1660,7 @@ libraries:
     tag_format: '{id}-v{version}'
   - id: google-cloud-dialogflow-cx
     version: 2.0.0
-    last_generated_commit: b153a9181ce3a5e76009ab69988889cc91fa4530
+    last_generated_commit: c2db528a3e4d12b95666c719ee0db30a3d4c78ad
     apis:
       - path: google/cloud/dialogflow/cx/v3
         service_config: dialogflow_v3.yaml
@@ -4393,7 +4393,7 @@ libraries:
     tag_format: '{id}-v{version}'
   - id: google-shopping-merchant-quota
     version: 1.1.0
-    last_generated_commit: 3322511885371d2b2253f209ccc3aa60d4100cfd
+    last_generated_commit: c2db528a3e4d12b95666c719ee0db30a3d4c78ad
     apis:
       - path: google/shopping/merchant/quota/v1beta
         service_config: merchantapi_v1beta.yaml
@@ -4472,7 +4472,7 @@ libraries:
     tag_format: '{id}-v{version}'
   - id: googleapis-common-protos
     version: 1.72.0
-    last_generated_commit: 53af3b727f84acc34e31c23f3b6e7b8aa4b7e837
+    last_generated_commit: c2db528a3e4d12b95666c719ee0db30a3d4c78ad
     apis:
       - path: google/api
         service_config: serviceconfig.yaml

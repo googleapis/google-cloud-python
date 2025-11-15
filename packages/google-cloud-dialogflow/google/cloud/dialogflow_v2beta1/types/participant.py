@@ -150,6 +150,18 @@ class Participant(proto.Message):
                  key: "user"
                  value: "agent"
                }
+        agent_desktop_source (google.cloud.dialogflow_v2beta1.types.Participant.AgentDesktopSource):
+            Optional. For tracking the utilization of prebuilt Agent
+            Assist integration modules. This field is only inscope for
+            Integration type that include UI Modules, Backend Modules,
+            and Agent Desktop connector, it is out of scope for CCaaS
+            and Direct Integration. For each human agent, prebuilt UI
+            Modules needs to trigger the UpdateParticipant API to update
+            this field. Both
+            [CreateParticipantRequest][google.cloud.dialogflow.v2beta1.CreateParticipantRequest.participant]
+            and
+            [UpdateParticipantRequest][google.cloud.dialogflow.v2beta1.UpdateParticipantRequest.participant]
+            will be supported.
     """
 
     class Role(proto.Enum):
@@ -173,6 +185,33 @@ class Participant(proto.Message):
         AUTOMATED_AGENT = 2
         END_USER = 3
 
+    class AgentDesktopSource(proto.Enum):
+        r"""Enumeration of the Agent Desktop Source when using prebuilt
+        Agent Assist integration modules.
+
+        Values:
+            AGENT_DESKTOP_SOURCE_UNSPECIFIED (0):
+                Agent Desktop Source is not specified.
+            LIVE_PERSON (1):
+                Agent Desktop Source is Live Person.
+            GENESYS_CLOUD (2):
+                Agent Desktop Source is Genesys Cloud.
+            TWILIO (3):
+                Agent Desktop Source is Twilio.
+            SALESFORCE (4):
+                Agent Desktop Source is Salesforce.
+            OTHER (8):
+                UI Modules are in use but the desktop is
+                either not currently released or setting this
+                field to the applicable desktop.
+        """
+        AGENT_DESKTOP_SOURCE_UNSPECIFIED = 0
+        LIVE_PERSON = 1
+        GENESYS_CLOUD = 2
+        TWILIO = 3
+        SALESFORCE = 4
+        OTHER = 8
+
     name: str = proto.Field(
         proto.STRING,
         number=1,
@@ -190,6 +229,11 @@ class Participant(proto.Message):
         proto.STRING,
         proto.STRING,
         number=8,
+    )
+    agent_desktop_source: AgentDesktopSource = proto.Field(
+        proto.ENUM,
+        number=10,
+        enum=AgentDesktopSource,
     )
 
 

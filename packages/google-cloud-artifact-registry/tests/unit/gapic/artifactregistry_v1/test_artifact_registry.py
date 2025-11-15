@@ -1754,6 +1754,7 @@ def test_get_docker_image(request_type, transport: str = "grpc"):
             tags=["tags_value"],
             image_size_bytes=1699,
             media_type="media_type_value",
+            artifact_type="artifact_type_value",
         )
         response = client.get_docker_image(request)
 
@@ -1770,6 +1771,7 @@ def test_get_docker_image(request_type, transport: str = "grpc"):
     assert response.tags == ["tags_value"]
     assert response.image_size_bytes == 1699
     assert response.media_type == "media_type_value"
+    assert response.artifact_type == "artifact_type_value"
 
 
 def test_get_docker_image_non_empty_request_with_auto_populated_field():
@@ -1902,6 +1904,7 @@ async def test_get_docker_image_async(
                 tags=["tags_value"],
                 image_size_bytes=1699,
                 media_type="media_type_value",
+                artifact_type="artifact_type_value",
             )
         )
         response = await client.get_docker_image(request)
@@ -1919,6 +1922,7 @@ async def test_get_docker_image_async(
     assert response.tags == ["tags_value"]
     assert response.image_size_bytes == 1699
     assert response.media_type == "media_type_value"
+    assert response.artifact_type == "artifact_type_value"
 
 
 @pytest.mark.asyncio
@@ -29128,6 +29132,7 @@ async def test_get_docker_image_empty_call_grpc_asyncio():
                 tags=["tags_value"],
                 image_size_bytes=1699,
                 media_type="media_type_value",
+                artifact_type="artifact_type_value",
             )
         )
         await client.get_docker_image(request=None)
@@ -30669,6 +30674,7 @@ def test_get_docker_image_rest_call_success(request_type):
             tags=["tags_value"],
             image_size_bytes=1699,
             media_type="media_type_value",
+            artifact_type="artifact_type_value",
         )
 
         # Wrap the value into a proper Response obj
@@ -30690,6 +30696,7 @@ def test_get_docker_image_rest_call_success(request_type):
     assert response.tags == ["tags_value"]
     assert response.image_size_bytes == 1699
     assert response.media_type == "media_type_value"
+    assert response.artifact_type == "artifact_type_value"
 
 
 @pytest.mark.parametrize("null_interceptor", [True, False])

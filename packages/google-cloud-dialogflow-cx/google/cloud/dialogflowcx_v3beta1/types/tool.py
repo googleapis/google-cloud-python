@@ -666,6 +666,11 @@ class Tool(proto.Message):
                 Config for bearer token auth.
 
                 This field is a member of `oneof`_ ``auth_config``.
+            service_account_auth_config (google.cloud.dialogflowcx_v3beta1.types.Tool.Authentication.ServiceAccountAuthConfig):
+                Configuration for service account
+                authentication.
+
+                This field is a member of `oneof`_ ``auth_config``.
         """
 
         class RequestLocation(proto.Enum):
@@ -858,6 +863,28 @@ class Tool(proto.Message):
                 number=2,
             )
 
+        class ServiceAccountAuthConfig(proto.Message):
+            r"""Configuration for authentication using a service account.
+
+            Attributes:
+                service_account (str):
+                    Required. The email address of the service account used to
+                    authenticate the tool call. Dialogflow uses this service
+                    account to exchange an access token and the access token is
+                    then sent in the ``Authorization`` header of the tool
+                    request.
+
+                    The service account must have the
+                    ``roles/iam.serviceAccountTokenCreator`` role granted to the
+                    `Dialogflow service
+                    agent <https://cloud.google.com/iam/docs/service-agents#dialogflow-service-agent>`__.
+            """
+
+            service_account: str = proto.Field(
+                proto.STRING,
+                number=1,
+            )
+
         api_key_config: "Tool.Authentication.ApiKeyConfig" = proto.Field(
             proto.MESSAGE,
             number=1,
@@ -883,6 +910,14 @@ class Tool(proto.Message):
             number=4,
             oneof="auth_config",
             message="Tool.Authentication.BearerTokenConfig",
+        )
+        service_account_auth_config: "Tool.Authentication.ServiceAccountAuthConfig" = (
+            proto.Field(
+                proto.MESSAGE,
+                number=5,
+                oneof="auth_config",
+                message="Tool.Authentication.ServiceAccountAuthConfig",
+            )
         )
 
     class TLSConfig(proto.Message):

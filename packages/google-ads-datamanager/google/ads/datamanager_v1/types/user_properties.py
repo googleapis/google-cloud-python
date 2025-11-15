@@ -25,6 +25,7 @@ __protobuf__ = proto.module(
         "CustomerType",
         "CustomerValueBucket",
         "UserProperties",
+        "UserProperty",
     },
 )
 
@@ -83,6 +84,10 @@ class UserProperties(proto.Message):
         customer_value_bucket (google.ads.datamanager_v1.types.CustomerValueBucket):
             Optional. The advertiser-assessed value of
             the customer.
+        additional_user_properties (MutableSequence[google.ads.datamanager_v1.types.UserProperty]):
+            Optional. A bucket of any additional `user
+            properties <https://developers.google.com/analytics/devguides/collection/protocol/ga4/user-properties>`__
+            for the user associated with this event.
     """
 
     customer_type: "CustomerType" = proto.Field(
@@ -94,6 +99,35 @@ class UserProperties(proto.Message):
         proto.ENUM,
         number=2,
         enum="CustomerValueBucket",
+    )
+    additional_user_properties: MutableSequence["UserProperty"] = proto.RepeatedField(
+        proto.MESSAGE,
+        number=3,
+        message="UserProperty",
+    )
+
+
+class UserProperty(proto.Message):
+    r"""A bucket of any additional `user
+    properties <https://developers.google.com/analytics/devguides/collection/protocol/ga4/user-properties>`__
+    for the user associated with this event.
+
+    Attributes:
+        property_name (str):
+            Required. The name of the user property to
+            use.
+        value (str):
+            Required. The string representation of the
+            value of the user property to use.
+    """
+
+    property_name: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    value: str = proto.Field(
+        proto.STRING,
+        number=2,
     )
 
 

@@ -33,6 +33,7 @@ __protobuf__ = proto.module(
         "Event",
         "AdIdentifiers",
         "CustomVariable",
+        "EventParameter",
     },
 )
 
@@ -123,6 +124,21 @@ class Event(proto.Message):
             Optional. Advertiser-assessed information
             about the user at the time that the event
             happened.
+        event_name (str):
+            Optional. The name of the event. Required for
+            GA4 events.
+        client_id (str):
+            Optional. A unique identifier for the user
+            instance of a web client for this GA4 web
+            stream.
+        user_id (str):
+            Optional. A unique identifier for a user, as
+            defined by the advertiser.
+        additional_event_parameters (MutableSequence[google.ads.datamanager_v1.types.EventParameter]):
+            Optional. A bucket of any `event
+            parameters <https://developers.google.com/analytics/devguides/collection/protocol/ga4/reference/events>`__
+            to be included within the event that were not already
+            specified using other structured fields.
     """
 
     destination_references: MutableSequence[str] = proto.RepeatedField(
@@ -197,6 +213,25 @@ class Event(proto.Message):
         proto.MESSAGE,
         number=15,
         message=gad_user_properties.UserProperties,
+    )
+    event_name: str = proto.Field(
+        proto.STRING,
+        number=16,
+    )
+    client_id: str = proto.Field(
+        proto.STRING,
+        number=17,
+    )
+    user_id: str = proto.Field(
+        proto.STRING,
+        number=18,
+    )
+    additional_event_parameters: MutableSequence[
+        "EventParameter"
+    ] = proto.RepeatedField(
+        proto.MESSAGE,
+        number=19,
+        message="EventParameter",
     )
 
 
@@ -279,6 +314,27 @@ class CustomVariable(proto.Message):
     destination_references: MutableSequence[str] = proto.RepeatedField(
         proto.STRING,
         number=3,
+    )
+
+
+class EventParameter(proto.Message):
+    r"""Event parameter for GA4 events.
+
+    Attributes:
+        parameter_name (str):
+            Required. The name of the parameter to use.
+        value (str):
+            Required. The string representation of the
+            value of the parameter to set.
+    """
+
+    parameter_name: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    value: str = proto.Field(
+        proto.STRING,
+        number=2,
     )
 
 

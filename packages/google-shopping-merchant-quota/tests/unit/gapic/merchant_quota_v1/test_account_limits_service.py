@@ -51,29 +51,14 @@ import google.auth
 from google.auth import credentials as ga_credentials
 from google.auth.exceptions import MutualTLSChannelError
 from google.oauth2 import service_account
-from google.protobuf import timestamp_pb2  # type: ignore
 
-from google.ads.datamanager_v1.services.ingestion_service import (
-    IngestionServiceAsyncClient,
-    IngestionServiceClient,
+from google.shopping.merchant_quota_v1.services.account_limits_service import (
+    AccountLimitsServiceAsyncClient,
+    AccountLimitsServiceClient,
+    pagers,
     transports,
 )
-from google.ads.datamanager_v1.types import (
-    audience,
-    cart_data,
-    consent,
-    destination,
-    device_info,
-    encryption_info,
-    event,
-    experimental_field,
-    ingestion_service,
-    item_parameter,
-    request_status_per_destination,
-    terms_of_service,
-    user_data,
-    user_properties,
-)
+from google.shopping.merchant_quota_v1.types import accountlimits
 
 CRED_INFO_JSON = {
     "credential_source": "/path/to/file",
@@ -130,41 +115,45 @@ def test__get_default_mtls_endpoint():
     sandbox_mtls_endpoint = "example.mtls.sandbox.googleapis.com"
     non_googleapi = "api.example.com"
 
-    assert IngestionServiceClient._get_default_mtls_endpoint(None) is None
+    assert AccountLimitsServiceClient._get_default_mtls_endpoint(None) is None
     assert (
-        IngestionServiceClient._get_default_mtls_endpoint(api_endpoint)
+        AccountLimitsServiceClient._get_default_mtls_endpoint(api_endpoint)
         == api_mtls_endpoint
     )
     assert (
-        IngestionServiceClient._get_default_mtls_endpoint(api_mtls_endpoint)
+        AccountLimitsServiceClient._get_default_mtls_endpoint(api_mtls_endpoint)
         == api_mtls_endpoint
     )
     assert (
-        IngestionServiceClient._get_default_mtls_endpoint(sandbox_endpoint)
+        AccountLimitsServiceClient._get_default_mtls_endpoint(sandbox_endpoint)
         == sandbox_mtls_endpoint
     )
     assert (
-        IngestionServiceClient._get_default_mtls_endpoint(sandbox_mtls_endpoint)
+        AccountLimitsServiceClient._get_default_mtls_endpoint(sandbox_mtls_endpoint)
         == sandbox_mtls_endpoint
     )
     assert (
-        IngestionServiceClient._get_default_mtls_endpoint(non_googleapi)
+        AccountLimitsServiceClient._get_default_mtls_endpoint(non_googleapi)
         == non_googleapi
     )
 
 
 def test__read_environment_variables():
-    assert IngestionServiceClient._read_environment_variables() == (False, "auto", None)
+    assert AccountLimitsServiceClient._read_environment_variables() == (
+        False,
+        "auto",
+        None,
+    )
 
     with mock.patch.dict(os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": "true"}):
-        assert IngestionServiceClient._read_environment_variables() == (
+        assert AccountLimitsServiceClient._read_environment_variables() == (
             True,
             "auto",
             None,
         )
 
     with mock.patch.dict(os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": "false"}):
-        assert IngestionServiceClient._read_environment_variables() == (
+        assert AccountLimitsServiceClient._read_environment_variables() == (
             False,
             "auto",
             None,
@@ -174,28 +163,28 @@ def test__read_environment_variables():
         os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": "Unsupported"}
     ):
         with pytest.raises(ValueError) as excinfo:
-            IngestionServiceClient._read_environment_variables()
+            AccountLimitsServiceClient._read_environment_variables()
     assert (
         str(excinfo.value)
         == "Environment variable `GOOGLE_API_USE_CLIENT_CERTIFICATE` must be either `true` or `false`"
     )
 
     with mock.patch.dict(os.environ, {"GOOGLE_API_USE_MTLS_ENDPOINT": "never"}):
-        assert IngestionServiceClient._read_environment_variables() == (
+        assert AccountLimitsServiceClient._read_environment_variables() == (
             False,
             "never",
             None,
         )
 
     with mock.patch.dict(os.environ, {"GOOGLE_API_USE_MTLS_ENDPOINT": "always"}):
-        assert IngestionServiceClient._read_environment_variables() == (
+        assert AccountLimitsServiceClient._read_environment_variables() == (
             False,
             "always",
             None,
         )
 
     with mock.patch.dict(os.environ, {"GOOGLE_API_USE_MTLS_ENDPOINT": "auto"}):
-        assert IngestionServiceClient._read_environment_variables() == (
+        assert AccountLimitsServiceClient._read_environment_variables() == (
             False,
             "auto",
             None,
@@ -203,14 +192,14 @@ def test__read_environment_variables():
 
     with mock.patch.dict(os.environ, {"GOOGLE_API_USE_MTLS_ENDPOINT": "Unsupported"}):
         with pytest.raises(MutualTLSChannelError) as excinfo:
-            IngestionServiceClient._read_environment_variables()
+            AccountLimitsServiceClient._read_environment_variables()
     assert (
         str(excinfo.value)
         == "Environment variable `GOOGLE_API_USE_MTLS_ENDPOINT` must be `never`, `auto` or `always`"
     )
 
     with mock.patch.dict(os.environ, {"GOOGLE_CLOUD_UNIVERSE_DOMAIN": "foo.com"}):
-        assert IngestionServiceClient._read_environment_variables() == (
+        assert AccountLimitsServiceClient._read_environment_variables() == (
             False,
             "auto",
             "foo.com",
@@ -221,13 +210,17 @@ def test__get_client_cert_source():
     mock_provided_cert_source = mock.Mock()
     mock_default_cert_source = mock.Mock()
 
-    assert IngestionServiceClient._get_client_cert_source(None, False) is None
+    assert AccountLimitsServiceClient._get_client_cert_source(None, False) is None
     assert (
-        IngestionServiceClient._get_client_cert_source(mock_provided_cert_source, False)
+        AccountLimitsServiceClient._get_client_cert_source(
+            mock_provided_cert_source, False
+        )
         is None
     )
     assert (
-        IngestionServiceClient._get_client_cert_source(mock_provided_cert_source, True)
+        AccountLimitsServiceClient._get_client_cert_source(
+            mock_provided_cert_source, True
+        )
         == mock_provided_cert_source
     )
 
@@ -239,11 +232,11 @@ def test__get_client_cert_source():
             return_value=mock_default_cert_source,
         ):
             assert (
-                IngestionServiceClient._get_client_cert_source(None, True)
+                AccountLimitsServiceClient._get_client_cert_source(None, True)
                 is mock_default_cert_source
             )
             assert (
-                IngestionServiceClient._get_client_cert_source(
+                AccountLimitsServiceClient._get_client_cert_source(
                     mock_provided_cert_source, "true"
                 )
                 is mock_provided_cert_source
@@ -251,64 +244,70 @@ def test__get_client_cert_source():
 
 
 @mock.patch.object(
-    IngestionServiceClient,
+    AccountLimitsServiceClient,
     "_DEFAULT_ENDPOINT_TEMPLATE",
-    modify_default_endpoint_template(IngestionServiceClient),
+    modify_default_endpoint_template(AccountLimitsServiceClient),
 )
 @mock.patch.object(
-    IngestionServiceAsyncClient,
+    AccountLimitsServiceAsyncClient,
     "_DEFAULT_ENDPOINT_TEMPLATE",
-    modify_default_endpoint_template(IngestionServiceAsyncClient),
+    modify_default_endpoint_template(AccountLimitsServiceAsyncClient),
 )
 def test__get_api_endpoint():
     api_override = "foo.com"
     mock_client_cert_source = mock.Mock()
-    default_universe = IngestionServiceClient._DEFAULT_UNIVERSE
-    default_endpoint = IngestionServiceClient._DEFAULT_ENDPOINT_TEMPLATE.format(
+    default_universe = AccountLimitsServiceClient._DEFAULT_UNIVERSE
+    default_endpoint = AccountLimitsServiceClient._DEFAULT_ENDPOINT_TEMPLATE.format(
         UNIVERSE_DOMAIN=default_universe
     )
     mock_universe = "bar.com"
-    mock_endpoint = IngestionServiceClient._DEFAULT_ENDPOINT_TEMPLATE.format(
+    mock_endpoint = AccountLimitsServiceClient._DEFAULT_ENDPOINT_TEMPLATE.format(
         UNIVERSE_DOMAIN=mock_universe
     )
 
     assert (
-        IngestionServiceClient._get_api_endpoint(
+        AccountLimitsServiceClient._get_api_endpoint(
             api_override, mock_client_cert_source, default_universe, "always"
         )
         == api_override
     )
     assert (
-        IngestionServiceClient._get_api_endpoint(
+        AccountLimitsServiceClient._get_api_endpoint(
             None, mock_client_cert_source, default_universe, "auto"
         )
-        == IngestionServiceClient.DEFAULT_MTLS_ENDPOINT
+        == AccountLimitsServiceClient.DEFAULT_MTLS_ENDPOINT
     )
     assert (
-        IngestionServiceClient._get_api_endpoint(None, None, default_universe, "auto")
+        AccountLimitsServiceClient._get_api_endpoint(
+            None, None, default_universe, "auto"
+        )
         == default_endpoint
     )
     assert (
-        IngestionServiceClient._get_api_endpoint(None, None, default_universe, "always")
-        == IngestionServiceClient.DEFAULT_MTLS_ENDPOINT
+        AccountLimitsServiceClient._get_api_endpoint(
+            None, None, default_universe, "always"
+        )
+        == AccountLimitsServiceClient.DEFAULT_MTLS_ENDPOINT
     )
     assert (
-        IngestionServiceClient._get_api_endpoint(
+        AccountLimitsServiceClient._get_api_endpoint(
             None, mock_client_cert_source, default_universe, "always"
         )
-        == IngestionServiceClient.DEFAULT_MTLS_ENDPOINT
+        == AccountLimitsServiceClient.DEFAULT_MTLS_ENDPOINT
     )
     assert (
-        IngestionServiceClient._get_api_endpoint(None, None, mock_universe, "never")
+        AccountLimitsServiceClient._get_api_endpoint(None, None, mock_universe, "never")
         == mock_endpoint
     )
     assert (
-        IngestionServiceClient._get_api_endpoint(None, None, default_universe, "never")
+        AccountLimitsServiceClient._get_api_endpoint(
+            None, None, default_universe, "never"
+        )
         == default_endpoint
     )
 
     with pytest.raises(MutualTLSChannelError) as excinfo:
-        IngestionServiceClient._get_api_endpoint(
+        AccountLimitsServiceClient._get_api_endpoint(
             None, mock_client_cert_source, mock_universe, "auto"
         )
     assert (
@@ -322,22 +321,22 @@ def test__get_universe_domain():
     universe_domain_env = "bar.com"
 
     assert (
-        IngestionServiceClient._get_universe_domain(
+        AccountLimitsServiceClient._get_universe_domain(
             client_universe_domain, universe_domain_env
         )
         == client_universe_domain
     )
     assert (
-        IngestionServiceClient._get_universe_domain(None, universe_domain_env)
+        AccountLimitsServiceClient._get_universe_domain(None, universe_domain_env)
         == universe_domain_env
     )
     assert (
-        IngestionServiceClient._get_universe_domain(None, None)
-        == IngestionServiceClient._DEFAULT_UNIVERSE
+        AccountLimitsServiceClient._get_universe_domain(None, None)
+        == AccountLimitsServiceClient._DEFAULT_UNIVERSE
     )
 
     with pytest.raises(ValueError) as excinfo:
-        IngestionServiceClient._get_universe_domain("", None)
+        AccountLimitsServiceClient._get_universe_domain("", None)
     assert str(excinfo.value) == "Universe Domain cannot be an empty string."
 
 
@@ -357,7 +356,7 @@ def test__get_universe_domain():
 def test__add_cred_info_for_auth_errors(error_code, cred_info_json, show_cred_info):
     cred = mock.Mock(["get_cred_info"])
     cred.get_cred_info = mock.Mock(return_value=cred_info_json)
-    client = IngestionServiceClient(credentials=cred)
+    client = AccountLimitsServiceClient(credentials=cred)
     client._transport._credentials = cred
 
     error = core_exceptions.GoogleAPICallError("message", details=["foo"])
@@ -374,7 +373,7 @@ def test__add_cred_info_for_auth_errors(error_code, cred_info_json, show_cred_in
 def test__add_cred_info_for_auth_errors_no_get_cred_info(error_code):
     cred = mock.Mock([])
     assert not hasattr(cred, "get_cred_info")
-    client = IngestionServiceClient(credentials=cred)
+    client = AccountLimitsServiceClient(credentials=cred)
     client._transport._credentials = cred
 
     error = core_exceptions.GoogleAPICallError("message", details=[])
@@ -387,12 +386,12 @@ def test__add_cred_info_for_auth_errors_no_get_cred_info(error_code):
 @pytest.mark.parametrize(
     "client_class,transport_name",
     [
-        (IngestionServiceClient, "grpc"),
-        (IngestionServiceAsyncClient, "grpc_asyncio"),
-        (IngestionServiceClient, "rest"),
+        (AccountLimitsServiceClient, "grpc"),
+        (AccountLimitsServiceAsyncClient, "grpc_asyncio"),
+        (AccountLimitsServiceClient, "rest"),
     ],
 )
-def test_ingestion_service_client_from_service_account_info(
+def test_account_limits_service_client_from_service_account_info(
     client_class, transport_name
 ):
     creds = ga_credentials.AnonymousCredentials()
@@ -406,21 +405,21 @@ def test_ingestion_service_client_from_service_account_info(
         assert isinstance(client, client_class)
 
         assert client.transport._host == (
-            "datamanager.googleapis.com:443"
+            "merchantapi.googleapis.com:443"
             if transport_name in ["grpc", "grpc_asyncio"]
-            else "https://datamanager.googleapis.com"
+            else "https://merchantapi.googleapis.com"
         )
 
 
 @pytest.mark.parametrize(
     "transport_class,transport_name",
     [
-        (transports.IngestionServiceGrpcTransport, "grpc"),
-        (transports.IngestionServiceGrpcAsyncIOTransport, "grpc_asyncio"),
-        (transports.IngestionServiceRestTransport, "rest"),
+        (transports.AccountLimitsServiceGrpcTransport, "grpc"),
+        (transports.AccountLimitsServiceGrpcAsyncIOTransport, "grpc_asyncio"),
+        (transports.AccountLimitsServiceRestTransport, "rest"),
     ],
 )
-def test_ingestion_service_client_service_account_always_use_jwt(
+def test_account_limits_service_client_service_account_always_use_jwt(
     transport_class, transport_name
 ):
     with mock.patch.object(
@@ -441,12 +440,12 @@ def test_ingestion_service_client_service_account_always_use_jwt(
 @pytest.mark.parametrize(
     "client_class,transport_name",
     [
-        (IngestionServiceClient, "grpc"),
-        (IngestionServiceAsyncClient, "grpc_asyncio"),
-        (IngestionServiceClient, "rest"),
+        (AccountLimitsServiceClient, "grpc"),
+        (AccountLimitsServiceAsyncClient, "grpc_asyncio"),
+        (AccountLimitsServiceClient, "rest"),
     ],
 )
-def test_ingestion_service_client_from_service_account_file(
+def test_account_limits_service_client_from_service_account_file(
     client_class, transport_name
 ):
     creds = ga_credentials.AnonymousCredentials()
@@ -467,57 +466,65 @@ def test_ingestion_service_client_from_service_account_file(
         assert isinstance(client, client_class)
 
         assert client.transport._host == (
-            "datamanager.googleapis.com:443"
+            "merchantapi.googleapis.com:443"
             if transport_name in ["grpc", "grpc_asyncio"]
-            else "https://datamanager.googleapis.com"
+            else "https://merchantapi.googleapis.com"
         )
 
 
-def test_ingestion_service_client_get_transport_class():
-    transport = IngestionServiceClient.get_transport_class()
+def test_account_limits_service_client_get_transport_class():
+    transport = AccountLimitsServiceClient.get_transport_class()
     available_transports = [
-        transports.IngestionServiceGrpcTransport,
-        transports.IngestionServiceRestTransport,
+        transports.AccountLimitsServiceGrpcTransport,
+        transports.AccountLimitsServiceRestTransport,
     ]
     assert transport in available_transports
 
-    transport = IngestionServiceClient.get_transport_class("grpc")
-    assert transport == transports.IngestionServiceGrpcTransport
+    transport = AccountLimitsServiceClient.get_transport_class("grpc")
+    assert transport == transports.AccountLimitsServiceGrpcTransport
 
 
 @pytest.mark.parametrize(
     "client_class,transport_class,transport_name",
     [
-        (IngestionServiceClient, transports.IngestionServiceGrpcTransport, "grpc"),
         (
-            IngestionServiceAsyncClient,
-            transports.IngestionServiceGrpcAsyncIOTransport,
+            AccountLimitsServiceClient,
+            transports.AccountLimitsServiceGrpcTransport,
+            "grpc",
+        ),
+        (
+            AccountLimitsServiceAsyncClient,
+            transports.AccountLimitsServiceGrpcAsyncIOTransport,
             "grpc_asyncio",
         ),
-        (IngestionServiceClient, transports.IngestionServiceRestTransport, "rest"),
+        (
+            AccountLimitsServiceClient,
+            transports.AccountLimitsServiceRestTransport,
+            "rest",
+        ),
     ],
 )
 @mock.patch.object(
-    IngestionServiceClient,
+    AccountLimitsServiceClient,
     "_DEFAULT_ENDPOINT_TEMPLATE",
-    modify_default_endpoint_template(IngestionServiceClient),
+    modify_default_endpoint_template(AccountLimitsServiceClient),
 )
 @mock.patch.object(
-    IngestionServiceAsyncClient,
+    AccountLimitsServiceAsyncClient,
     "_DEFAULT_ENDPOINT_TEMPLATE",
-    modify_default_endpoint_template(IngestionServiceAsyncClient),
+    modify_default_endpoint_template(AccountLimitsServiceAsyncClient),
 )
-def test_ingestion_service_client_client_options(
+def test_account_limits_service_client_client_options(
     client_class, transport_class, transport_name
 ):
     # Check that if channel is provided we won't create a new one.
-    with mock.patch.object(IngestionServiceClient, "get_transport_class") as gtc:
+    with mock.patch.object(AccountLimitsServiceClient, "get_transport_class") as gtc:
         transport = transport_class(credentials=ga_credentials.AnonymousCredentials())
         client = client_class(transport=transport)
         gtc.assert_not_called()
 
     # Check that if channel is provided via str we will create a new one.
-    with mock.patch.object(IngestionServiceClient, "get_transport_class") as gtc:
+    with mock.patch.object(AccountLimitsServiceClient, "get_transport_class") as gtc:
         client = client_class(transport=transport_name)
         gtc.assert_called()
 
@@ -641,55 +648,55 @@ def test_ingestion_service_client_client_options(
     "client_class,transport_class,transport_name,use_client_cert_env",
     [
         (
-            IngestionServiceClient,
-            transports.IngestionServiceGrpcTransport,
+            AccountLimitsServiceClient,
+            transports.AccountLimitsServiceGrpcTransport,
             "grpc",
             "true",
         ),
         (
-            IngestionServiceAsyncClient,
-            transports.IngestionServiceGrpcAsyncIOTransport,
+            AccountLimitsServiceAsyncClient,
+            transports.AccountLimitsServiceGrpcAsyncIOTransport,
             "grpc_asyncio",
             "true",
         ),
         (
-            IngestionServiceClient,
-            transports.IngestionServiceGrpcTransport,
+            AccountLimitsServiceClient,
+            transports.AccountLimitsServiceGrpcTransport,
             "grpc",
             "false",
         ),
         (
-            IngestionServiceAsyncClient,
-            transports.IngestionServiceGrpcAsyncIOTransport,
+            AccountLimitsServiceAsyncClient,
+            transports.AccountLimitsServiceGrpcAsyncIOTransport,
             "grpc_asyncio",
             "false",
         ),
         (
-            IngestionServiceClient,
-            transports.IngestionServiceRestTransport,
+            AccountLimitsServiceClient,
+            transports.AccountLimitsServiceRestTransport,
             "rest",
             "true",
         ),
         (
-            IngestionServiceClient,
-            transports.IngestionServiceRestTransport,
+            AccountLimitsServiceClient,
+            transports.AccountLimitsServiceRestTransport,
             "rest",
             "false",
         ),
     ],
 )
 @mock.patch.object(
-    IngestionServiceClient,
+    AccountLimitsServiceClient,
     "_DEFAULT_ENDPOINT_TEMPLATE",
-    modify_default_endpoint_template(IngestionServiceClient),
+    modify_default_endpoint_template(AccountLimitsServiceClient),
 )
 @mock.patch.object(
-    IngestionServiceAsyncClient,
+    AccountLimitsServiceAsyncClient,
     "_DEFAULT_ENDPOINT_TEMPLATE",
-    modify_default_endpoint_template(IngestionServiceAsyncClient),
+    modify_default_endpoint_template(AccountLimitsServiceAsyncClient),
 )
 @mock.patch.dict(os.environ, {"GOOGLE_API_USE_MTLS_ENDPOINT": "auto"})
-def test_ingestion_service_client_mtls_env_auto(
+def test_account_limits_service_client_mtls_env_auto(
     client_class, transport_class, transport_name, use_client_cert_env
 ):
     # This tests the endpoint autoswitch behavior. Endpoint is autoswitched to the default
@@ -792,19 +799,19 @@ def test_ingestion_service_client_mtls_env_auto(
 
 
 @pytest.mark.parametrize(
-    "client_class", [IngestionServiceClient, IngestionServiceAsyncClient]
+    "client_class", [AccountLimitsServiceClient, AccountLimitsServiceAsyncClient]
 )
 @mock.patch.object(
-    IngestionServiceClient,
+    AccountLimitsServiceClient,
     "DEFAULT_ENDPOINT",
-    modify_default_endpoint(IngestionServiceClient),
+    modify_default_endpoint(AccountLimitsServiceClient),
 )
 @mock.patch.object(
-    IngestionServiceAsyncClient,
+    AccountLimitsServiceAsyncClient,
     "DEFAULT_ENDPOINT",
-    modify_default_endpoint(IngestionServiceAsyncClient),
+    modify_default_endpoint(AccountLimitsServiceAsyncClient),
 )
-def test_ingestion_service_client_get_mtls_endpoint_and_cert_source(client_class):
+def test_account_limits_service_client_get_mtls_endpoint_and_cert_source(client_class):
     mock_client_cert_source = mock.Mock()
 
     # Test the case GOOGLE_API_USE_CLIENT_CERTIFICATE is "true".
@@ -896,27 +903,27 @@ def test_ingestion_service_client_get_mtls_endpoint_and_cert_source(client_class
 
 
 @pytest.mark.parametrize(
-    "client_class", [IngestionServiceClient, IngestionServiceAsyncClient]
+    "client_class", [AccountLimitsServiceClient, AccountLimitsServiceAsyncClient]
 )
 @mock.patch.object(
-    IngestionServiceClient,
+    AccountLimitsServiceClient,
     "_DEFAULT_ENDPOINT_TEMPLATE",
-    modify_default_endpoint_template(IngestionServiceClient),
+    modify_default_endpoint_template(AccountLimitsServiceClient),
 )
 @mock.patch.object(
-    IngestionServiceAsyncClient,
+    AccountLimitsServiceAsyncClient,
     "_DEFAULT_ENDPOINT_TEMPLATE",
-    modify_default_endpoint_template(IngestionServiceAsyncClient),
+    modify_default_endpoint_template(AccountLimitsServiceAsyncClient),
 )
-def test_ingestion_service_client_client_api_endpoint(client_class):
+def test_account_limits_service_client_client_api_endpoint(client_class):
     mock_client_cert_source = client_cert_source_callback
     api_override = "foo.com"
-    default_universe = IngestionServiceClient._DEFAULT_UNIVERSE
-    default_endpoint = IngestionServiceClient._DEFAULT_ENDPOINT_TEMPLATE.format(
+    default_universe = AccountLimitsServiceClient._DEFAULT_UNIVERSE
+    default_endpoint = AccountLimitsServiceClient._DEFAULT_ENDPOINT_TEMPLATE.format(
         UNIVERSE_DOMAIN=default_universe
     )
     mock_universe = "bar.com"
-    mock_endpoint = IngestionServiceClient._DEFAULT_ENDPOINT_TEMPLATE.format(
+    mock_endpoint = AccountLimitsServiceClient._DEFAULT_ENDPOINT_TEMPLATE.format(
         UNIVERSE_DOMAIN=mock_universe
     )
 
@@ -984,16 +991,24 @@ def test_ingestion_service_client_client_api_endpoint(client_class):
 @pytest.mark.parametrize(
     "client_class,transport_class,transport_name",
     [
-        (IngestionServiceClient, transports.IngestionServiceGrpcTransport, "grpc"),
         (
-            IngestionServiceAsyncClient,
-            transports.IngestionServiceGrpcAsyncIOTransport,
+            AccountLimitsServiceClient,
+            transports.AccountLimitsServiceGrpcTransport,
+            "grpc",
+        ),
+        (
+            AccountLimitsServiceAsyncClient,
+            transports.AccountLimitsServiceGrpcAsyncIOTransport,
             "grpc_asyncio",
         ),
-        (IngestionServiceClient, transports.IngestionServiceRestTransport, "rest"),
+        (
+            AccountLimitsServiceClient,
+            transports.AccountLimitsServiceRestTransport,
+            "rest",
+        ),
     ],
 )
-def test_ingestion_service_client_client_options_scopes(
+def test_account_limits_service_client_client_options_scopes(
     client_class, transport_class, transport_name
 ):
     # Check the case scopes are provided.
@@ -1022,26 +1037,26 @@ def test_ingestion_service_client_client_options_scopes(
     "client_class,transport_class,transport_name,grpc_helpers",
     [
         (
-            IngestionServiceClient,
-            transports.IngestionServiceGrpcTransport,
+            AccountLimitsServiceClient,
+            transports.AccountLimitsServiceGrpcTransport,
             "grpc",
             grpc_helpers,
         ),
         (
-            IngestionServiceAsyncClient,
-            transports.IngestionServiceGrpcAsyncIOTransport,
+            AccountLimitsServiceAsyncClient,
+            transports.AccountLimitsServiceGrpcAsyncIOTransport,
             "grpc_asyncio",
             grpc_helpers_async,
         ),
         (
-            IngestionServiceClient,
-            transports.IngestionServiceRestTransport,
+            AccountLimitsServiceClient,
+            transports.AccountLimitsServiceRestTransport,
             "rest",
             None,
         ),
     ],
 )
-def test_ingestion_service_client_client_options_credentials_file(
+def test_account_limits_service_client_client_options_credentials_file(
     client_class, transport_class, transport_name, grpc_helpers
 ):
     # Check the case credentials file is provided.
@@ -1065,12 +1080,12 @@ def test_ingestion_service_client_client_options_credentials_file(
         )
 
 
-def test_ingestion_service_client_client_options_from_dict():
+def test_account_limits_service_client_client_options_from_dict():
     with mock.patch(
-        "google.ads.datamanager_v1.services.ingestion_service.transports.IngestionServiceGrpcTransport.__init__"
+        "google.shopping.merchant_quota_v1.services.account_limits_service.transports.AccountLimitsServiceGrpcTransport.__init__"
     ) as grpc_transport:
         grpc_transport.return_value = None
-        client = IngestionServiceClient(
+        client = AccountLimitsServiceClient(
             client_options={"api_endpoint": "squid.clam.whelk"}
         )
         grpc_transport.assert_called_once_with(
@@ -1090,20 +1105,20 @@ def test_ingestion_service_client_client_options_from_dict():
     "client_class,transport_class,transport_name,grpc_helpers",
     [
         (
-            IngestionServiceClient,
-            transports.IngestionServiceGrpcTransport,
+            AccountLimitsServiceClient,
+            transports.AccountLimitsServiceGrpcTransport,
             "grpc",
             grpc_helpers,
         ),
         (
-            IngestionServiceAsyncClient,
-            transports.IngestionServiceGrpcAsyncIOTransport,
+            AccountLimitsServiceAsyncClient,
+            transports.AccountLimitsServiceGrpcAsyncIOTransport,
             "grpc_asyncio",
             grpc_helpers_async,
         ),
     ],
 )
-def test_ingestion_service_client_create_channel_credentials_file(
+def test_account_limits_service_client_create_channel_credentials_file(
     client_class, transport_class, transport_name, grpc_helpers
 ):
     # Check the case credentials file is provided.
@@ -1140,13 +1155,13 @@ def test_ingestion_service_client_create_channel_credentials_file(
         adc.return_value = (creds, None)
         client = client_class(client_options=options, transport=transport_name)
         create_channel.assert_called_with(
-            "datamanager.googleapis.com:443",
+            "merchantapi.googleapis.com:443",
             credentials=file_creds,
             credentials_file=None,
             quota_project_id=None,
-            default_scopes=("https://www.googleapis.com/auth/datamanager",),
+            default_scopes=("https://www.googleapis.com/auth/content",),
             scopes=None,
-            default_host="datamanager.googleapis.com",
+            default_host="merchantapi.googleapis.com",
             ssl_credentials=None,
             options=[
                 ("grpc.max_send_message_length", -1),
@@ -1158,12 +1173,12 @@ def test_ingestion_service_client_create_channel_credentials_file(
 @pytest.mark.parametrize(
     "request_type",
     [
-        ingestion_service.IngestAudienceMembersRequest,
+        accountlimits.GetAccountLimitRequest,
         dict,
     ],
 )
-def test_ingest_audience_members(request_type, transport: str = "grpc"):
-    client = IngestionServiceClient(
+def test_get_account_limit(request_type, transport: str = "grpc"):
+    client = AccountLimitsServiceClient(
         credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
@@ -1174,29 +1189,29 @@ def test_ingest_audience_members(request_type, transport: str = "grpc"):
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
-        type(client.transport.ingest_audience_members), "__call__"
+        type(client.transport.get_account_limit), "__call__"
     ) as call:
         # Designate an appropriate return value for the call.
-        call.return_value = ingestion_service.IngestAudienceMembersResponse(
-            request_id="request_id_value",
+        call.return_value = accountlimits.AccountLimit(
+            name="name_value",
         )
-        response = client.ingest_audience_members(request)
+        response = client.get_account_limit(request)
 
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        request = ingestion_service.IngestAudienceMembersRequest()
+        request = accountlimits.GetAccountLimitRequest()
         assert args[0] == request
 
     # Establish that the response is the type that we expect.
-    assert isinstance(response, ingestion_service.IngestAudienceMembersResponse)
-    assert response.request_id == "request_id_value"
+    assert isinstance(response, accountlimits.AccountLimit)
+    assert response.name == "name_value"
 
 
-def test_ingest_audience_members_non_empty_request_with_auto_populated_field():
+def test_get_account_limit_non_empty_request_with_auto_populated_field():
     # This test is a coverage failsafe to make sure that UUID4 fields are
     # automatically populated, according to AIP-4235, with non-empty requests.
-    client = IngestionServiceClient(
+    client = AccountLimitsServiceClient(
         credentials=ga_credentials.AnonymousCredentials(),
         transport="grpc",
     )
@@ -1204,26 +1219,30 @@ def test_ingest_audience_members_non_empty_request_with_auto_populated_field():
     # Populate all string fields in the request which are not UUID4
     # since we want to check that UUID4 are populated automatically
     # if they meet the requirements of AIP 4235.
-    request = ingestion_service.IngestAudienceMembersRequest()
+    request = accountlimits.GetAccountLimitRequest(
+        name="name_value",
+    )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
-        type(client.transport.ingest_audience_members), "__call__"
+        type(client.transport.get_account_limit), "__call__"
     ) as call:
         call.return_value.name = (
             "foo"  # operation_request.operation in compute client(s) expect a string.
         )
-        client.ingest_audience_members(request=request)
+        client.get_account_limit(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == ingestion_service.IngestAudienceMembersRequest()
+        assert args[0] == accountlimits.GetAccountLimitRequest(
+            name="name_value",
+        )
 
 
-def test_ingest_audience_members_use_cached_wrapped_rpc():
+def test_get_account_limit_use_cached_wrapped_rpc():
     # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method.wrap_method") as wrapper_fn:
-        client = IngestionServiceClient(
+        client = AccountLimitsServiceClient(
             credentials=ga_credentials.AnonymousCredentials(),
             transport="grpc",
         )
@@ -1233,10 +1252,7 @@ def test_ingest_audience_members_use_cached_wrapped_rpc():
         wrapper_fn.reset_mock()
 
         # Ensure method has been cached
-        assert (
-            client._transport.ingest_audience_members
-            in client._transport._wrapped_methods
-        )
+        assert client._transport.get_account_limit in client._transport._wrapped_methods
 
         # Replace cached wrapped function with mock
         mock_rpc = mock.Mock()
@@ -1244,15 +1260,15 @@ def test_ingest_audience_members_use_cached_wrapped_rpc():
             "foo"  # operation_request.operation in compute client(s) expect a string.
         )
         client._transport._wrapped_methods[
-            client._transport.ingest_audience_members
+            client._transport.get_account_limit
         ] = mock_rpc
         request = {}
-        client.ingest_audience_members(request)
+        client.get_account_limit(request)
 
         # Establish that the underlying gRPC stub method was called.
         assert mock_rpc.call_count == 1
 
-        client.ingest_audience_members(request)
+        client.get_account_limit(request)
 
         # Establish that a new wrapper was not created for this call
         assert wrapper_fn.call_count == 0
@@ -1260,13 +1276,13 @@ def test_ingest_audience_members_use_cached_wrapped_rpc():
 
 
 @pytest.mark.asyncio
-async def test_ingest_audience_members_async_use_cached_wrapped_rpc(
+async def test_get_account_limit_async_use_cached_wrapped_rpc(
     transport: str = "grpc_asyncio",
 ):
     # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
-        client = IngestionServiceAsyncClient(
+        client = AccountLimitsServiceAsyncClient(
             credentials=async_anonymous_credentials(),
             transport=transport,
         )
@@ -1277,7 +1293,7 @@ async def test_ingest_audience_members_async_use_cached_wrapped_rpc(
 
         # Ensure method has been cached
         assert (
-            client._client._transport.ingest_audience_members
+            client._client._transport.get_account_limit
             in client._client._transport._wrapped_methods
         )
 
@@ -1285,16 +1301,16 @@ async def test_ingest_audience_members_async_use_cached_wrapped_rpc(
         mock_rpc = mock.AsyncMock()
         mock_rpc.return_value = mock.Mock()
         client._client._transport._wrapped_methods[
-            client._client._transport.ingest_audience_members
+            client._client._transport.get_account_limit
         ] = mock_rpc
 
         request = {}
-        await client.ingest_audience_members(request)
+        await client.get_account_limit(request)
 
         # Establish that the underlying gRPC stub method was called.
         assert mock_rpc.call_count == 1
 
-        await client.ingest_audience_members(request)
+        await client.get_account_limit(request)
 
         # Establish that a new wrapper was not created for this call
         assert wrapper_fn.call_count == 0
@@ -1302,11 +1318,10 @@ async def test_ingest_audience_members_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_ingest_audience_members_async(
-    transport: str = "grpc_asyncio",
-    request_type=ingestion_service.IngestAudienceMembersRequest,
+async def test_get_account_limit_async(
+    transport: str = "grpc_asyncio", request_type=accountlimits.GetAccountLimitRequest
 ):
-    client = IngestionServiceAsyncClient(
+    client = AccountLimitsServiceAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
     )
@@ -1317,41 +1332,192 @@ async def test_ingest_audience_members_async(
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
-        type(client.transport.ingest_audience_members), "__call__"
+        type(client.transport.get_account_limit), "__call__"
     ) as call:
         # Designate an appropriate return value for the call.
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            ingestion_service.IngestAudienceMembersResponse(
-                request_id="request_id_value",
+            accountlimits.AccountLimit(
+                name="name_value",
             )
         )
-        response = await client.ingest_audience_members(request)
+        response = await client.get_account_limit(request)
 
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        request = ingestion_service.IngestAudienceMembersRequest()
+        request = accountlimits.GetAccountLimitRequest()
         assert args[0] == request
 
     # Establish that the response is the type that we expect.
-    assert isinstance(response, ingestion_service.IngestAudienceMembersResponse)
-    assert response.request_id == "request_id_value"
+    assert isinstance(response, accountlimits.AccountLimit)
+    assert response.name == "name_value"
 
 
 @pytest.mark.asyncio
-async def test_ingest_audience_members_async_from_dict():
-    await test_ingest_audience_members_async(request_type=dict)
+async def test_get_account_limit_async_from_dict():
+    await test_get_account_limit_async(request_type=dict)
+
+
+def test_get_account_limit_field_headers():
+    client = AccountLimitsServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = accountlimits.GetAccountLimitRequest()
+
+    request.name = "name_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_account_limit), "__call__"
+    ) as call:
+        call.return_value = accountlimits.AccountLimit()
+        client.get_account_limit(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "name=name_value",
+    ) in kw["metadata"]
+
+
+@pytest.mark.asyncio
+async def test_get_account_limit_field_headers_async():
+    client = AccountLimitsServiceAsyncClient(
+        credentials=async_anonymous_credentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = accountlimits.GetAccountLimitRequest()
+
+    request.name = "name_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_account_limit), "__call__"
+    ) as call:
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            accountlimits.AccountLimit()
+        )
+        await client.get_account_limit(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "name=name_value",
+    ) in kw["metadata"]
+
+
+def test_get_account_limit_flattened():
+    client = AccountLimitsServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_account_limit), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = accountlimits.AccountLimit()
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        client.get_account_limit(
+            name="name_value",
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].name
+        mock_val = "name_value"
+        assert arg == mock_val
+
+
+def test_get_account_limit_flattened_error():
+    client = AccountLimitsServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.get_account_limit(
+            accountlimits.GetAccountLimitRequest(),
+            name="name_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_get_account_limit_flattened_async():
+    client = AccountLimitsServiceAsyncClient(
+        credentials=async_anonymous_credentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_account_limit), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = accountlimits.AccountLimit()
+
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            accountlimits.AccountLimit()
+        )
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        response = await client.get_account_limit(
+            name="name_value",
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].name
+        mock_val = "name_value"
+        assert arg == mock_val
+
+
+@pytest.mark.asyncio
+async def test_get_account_limit_flattened_error_async():
+    client = AccountLimitsServiceAsyncClient(
+        credentials=async_anonymous_credentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        await client.get_account_limit(
+            accountlimits.GetAccountLimitRequest(),
+            name="name_value",
+        )
 
 
 @pytest.mark.parametrize(
     "request_type",
     [
-        ingestion_service.RemoveAudienceMembersRequest,
+        accountlimits.ListAccountLimitsRequest,
         dict,
     ],
 )
-def test_remove_audience_members(request_type, transport: str = "grpc"):
-    client = IngestionServiceClient(
+def test_list_account_limits(request_type, transport: str = "grpc"):
+    client = AccountLimitsServiceClient(
         credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
@@ -1362,29 +1528,29 @@ def test_remove_audience_members(request_type, transport: str = "grpc"):
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
-        type(client.transport.remove_audience_members), "__call__"
+        type(client.transport.list_account_limits), "__call__"
     ) as call:
         # Designate an appropriate return value for the call.
-        call.return_value = ingestion_service.RemoveAudienceMembersResponse(
-            request_id="request_id_value",
+        call.return_value = accountlimits.ListAccountLimitsResponse(
+            next_page_token="next_page_token_value",
         )
-        response = client.remove_audience_members(request)
+        response = client.list_account_limits(request)
 
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        request = ingestion_service.RemoveAudienceMembersRequest()
+        request = accountlimits.ListAccountLimitsRequest()
         assert args[0] == request
 
     # Establish that the response is the type that we expect.
-    assert isinstance(response, ingestion_service.RemoveAudienceMembersResponse)
-    assert response.request_id == "request_id_value"
+    assert isinstance(response, pagers.ListAccountLimitsPager)
+    assert response.next_page_token == "next_page_token_value"
 
 
-def test_remove_audience_members_non_empty_request_with_auto_populated_field():
+def test_list_account_limits_non_empty_request_with_auto_populated_field():
     # This test is a coverage failsafe to make sure that UUID4 fields are
     # automatically populated, according to AIP-4235, with non-empty requests.
-    client = IngestionServiceClient(
+    client = AccountLimitsServiceClient(
         credentials=ga_credentials.AnonymousCredentials(),
         transport="grpc",
     )
@@ -1392,26 +1558,34 @@ def test_remove_audience_members_non_empty_request_with_auto_populated_field():
     # Populate all string fields in the request which are not UUID4
     # since we want to check that UUID4 are populated automatically
     # if they meet the requirements of AIP 4235.
-    request = ingestion_service.RemoveAudienceMembersRequest()
+    request = accountlimits.ListAccountLimitsRequest(
+        parent="parent_value",
+        page_token="page_token_value",
+        filter="filter_value",
+    )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
-        type(client.transport.remove_audience_members), "__call__"
+        type(client.transport.list_account_limits), "__call__"
     ) as call:
         call.return_value.name = (
             "foo"  # operation_request.operation in compute client(s) expect a string.
         )
-        client.remove_audience_members(request=request)
+        client.list_account_limits(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == ingestion_service.RemoveAudienceMembersRequest()
+        assert args[0] == accountlimits.ListAccountLimitsRequest(
+            parent="parent_value",
+            page_token="page_token_value",
+            filter="filter_value",
+        )
 
 
-def test_remove_audience_members_use_cached_wrapped_rpc():
+def test_list_account_limits_use_cached_wrapped_rpc():
     # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method.wrap_method") as wrapper_fn:
-        client = IngestionServiceClient(
+        client = AccountLimitsServiceClient(
             credentials=ga_credentials.AnonymousCredentials(),
             transport="grpc",
         )
@@ -1422,8 +1596,7 @@ def test_remove_audience_members_use_cached_wrapped_rpc():
 
         # Ensure method has been cached
         assert (
-            client._transport.remove_audience_members
-            in client._transport._wrapped_methods
+            client._transport.list_account_limits in client._transport._wrapped_methods
         )
 
         # Replace cached wrapped function with mock
@@ -1432,15 +1605,15 @@ def test_remove_audience_members_use_cached_wrapped_rpc():
             "foo"  # operation_request.operation in compute client(s) expect a string.
         )
         client._transport._wrapped_methods[
-            client._transport.remove_audience_members
+            client._transport.list_account_limits
         ] = mock_rpc
         request = {}
-        client.remove_audience_members(request)
+        client.list_account_limits(request)
 
         # Establish that the underlying gRPC stub method was called.
         assert mock_rpc.call_count == 1
 
-        client.remove_audience_members(request)
+        client.list_account_limits(request)
 
         # Establish that a new wrapper was not created for this call
         assert wrapper_fn.call_count == 0
@@ -1448,13 +1621,13 @@ def test_remove_audience_members_use_cached_wrapped_rpc():
 
 
 @pytest.mark.asyncio
-async def test_remove_audience_members_async_use_cached_wrapped_rpc(
+async def test_list_account_limits_async_use_cached_wrapped_rpc(
     transport: str = "grpc_asyncio",
 ):
     # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
-        client = IngestionServiceAsyncClient(
+        client = AccountLimitsServiceAsyncClient(
             credentials=async_anonymous_credentials(),
             transport=transport,
         )
@@ -1465,7 +1638,7 @@ async def test_remove_audience_members_async_use_cached_wrapped_rpc(
 
         # Ensure method has been cached
         assert (
-            client._client._transport.remove_audience_members
+            client._client._transport.list_account_limits
             in client._client._transport._wrapped_methods
         )
 
@@ -1473,16 +1646,16 @@ async def test_remove_audience_members_async_use_cached_wrapped_rpc(
         mock_rpc = mock.AsyncMock()
         mock_rpc.return_value = mock.Mock()
         client._client._transport._wrapped_methods[
-            client._client._transport.remove_audience_members
+            client._client._transport.list_account_limits
         ] = mock_rpc
 
         request = {}
-        await client.remove_audience_members(request)
+        await client.list_account_limits(request)
 
         # Establish that the underlying gRPC stub method was called.
         assert mock_rpc.call_count == 1
 
-        await client.remove_audience_members(request)
+        await client.list_account_limits(request)
 
         # Establish that a new wrapper was not created for this call
         assert wrapper_fn.call_count == 0
@@ -1490,11 +1663,10 @@ async def test_remove_audience_members_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_remove_audience_members_async(
-    transport: str = "grpc_asyncio",
-    request_type=ingestion_service.RemoveAudienceMembersRequest,
+async def test_list_account_limits_async(
+    transport: str = "grpc_asyncio", request_type=accountlimits.ListAccountLimitsRequest
 ):
-    client = IngestionServiceAsyncClient(
+    client = AccountLimitsServiceAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
     )
@@ -1505,399 +1677,390 @@ async def test_remove_audience_members_async(
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
-        type(client.transport.remove_audience_members), "__call__"
+        type(client.transport.list_account_limits), "__call__"
     ) as call:
         # Designate an appropriate return value for the call.
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            ingestion_service.RemoveAudienceMembersResponse(
-                request_id="request_id_value",
+            accountlimits.ListAccountLimitsResponse(
+                next_page_token="next_page_token_value",
             )
         )
-        response = await client.remove_audience_members(request)
+        response = await client.list_account_limits(request)
 
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        request = ingestion_service.RemoveAudienceMembersRequest()
+        request = accountlimits.ListAccountLimitsRequest()
         assert args[0] == request
 
     # Establish that the response is the type that we expect.
-    assert isinstance(response, ingestion_service.RemoveAudienceMembersResponse)
-    assert response.request_id == "request_id_value"
+    assert isinstance(response, pagers.ListAccountLimitsAsyncPager)
+    assert response.next_page_token == "next_page_token_value"
 
 
 @pytest.mark.asyncio
-async def test_remove_audience_members_async_from_dict():
-    await test_remove_audience_members_async(request_type=dict)
+async def test_list_account_limits_async_from_dict():
+    await test_list_account_limits_async(request_type=dict)
 
 
-@pytest.mark.parametrize(
-    "request_type",
-    [
-        ingestion_service.IngestEventsRequest,
-        dict,
-    ],
-)
-def test_ingest_events(request_type, transport: str = "grpc"):
-    client = IngestionServiceClient(
+def test_list_account_limits_field_headers():
+    client = AccountLimitsServiceClient(
         credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
     )
 
-    # Everything is optional in proto3 as far as the runtime is concerned,
-    # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = accountlimits.ListAccountLimitsRequest()
+
+    request.parent = "parent_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.ingest_events), "__call__") as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = ingestion_service.IngestEventsResponse(
-            request_id="request_id_value",
-        )
-        response = client.ingest_events(request)
+    with mock.patch.object(
+        type(client.transport.list_account_limits), "__call__"
+    ) as call:
+        call.return_value = accountlimits.ListAccountLimitsResponse()
+        client.list_account_limits(request)
 
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        request = ingestion_service.IngestEventsRequest()
         assert args[0] == request
 
-    # Establish that the response is the type that we expect.
-    assert isinstance(response, ingestion_service.IngestEventsResponse)
-    assert response.request_id == "request_id_value"
-
-
-def test_ingest_events_non_empty_request_with_auto_populated_field():
-    # This test is a coverage failsafe to make sure that UUID4 fields are
-    # automatically populated, according to AIP-4235, with non-empty requests.
-    client = IngestionServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc",
-    )
-
-    # Populate all string fields in the request which are not UUID4
-    # since we want to check that UUID4 are populated automatically
-    # if they meet the requirements of AIP 4235.
-    request = ingestion_service.IngestEventsRequest()
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.ingest_events), "__call__") as call:
-        call.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client.ingest_events(request=request)
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == ingestion_service.IngestEventsRequest()
-
-
-def test_ingest_events_use_cached_wrapped_rpc():
-    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
-    # instead of constructing them on each call
-    with mock.patch("google.api_core.gapic_v1.method.wrap_method") as wrapper_fn:
-        client = IngestionServiceClient(
-            credentials=ga_credentials.AnonymousCredentials(),
-            transport="grpc",
-        )
-
-        # Should wrap all calls on client creation
-        assert wrapper_fn.call_count > 0
-        wrapper_fn.reset_mock()
-
-        # Ensure method has been cached
-        assert client._transport.ingest_events in client._transport._wrapped_methods
-
-        # Replace cached wrapped function with mock
-        mock_rpc = mock.Mock()
-        mock_rpc.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client._transport._wrapped_methods[client._transport.ingest_events] = mock_rpc
-        request = {}
-        client.ingest_events(request)
-
-        # Establish that the underlying gRPC stub method was called.
-        assert mock_rpc.call_count == 1
-
-        client.ingest_events(request)
-
-        # Establish that a new wrapper was not created for this call
-        assert wrapper_fn.call_count == 0
-        assert mock_rpc.call_count == 2
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "parent=parent_value",
+    ) in kw["metadata"]
 
 
 @pytest.mark.asyncio
-async def test_ingest_events_async_use_cached_wrapped_rpc(
-    transport: str = "grpc_asyncio",
-):
-    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
-    # instead of constructing them on each call
-    with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
-        client = IngestionServiceAsyncClient(
-            credentials=async_anonymous_credentials(),
-            transport=transport,
-        )
-
-        # Should wrap all calls on client creation
-        assert wrapper_fn.call_count > 0
-        wrapper_fn.reset_mock()
-
-        # Ensure method has been cached
-        assert (
-            client._client._transport.ingest_events
-            in client._client._transport._wrapped_methods
-        )
-
-        # Replace cached wrapped function with mock
-        mock_rpc = mock.AsyncMock()
-        mock_rpc.return_value = mock.Mock()
-        client._client._transport._wrapped_methods[
-            client._client._transport.ingest_events
-        ] = mock_rpc
-
-        request = {}
-        await client.ingest_events(request)
-
-        # Establish that the underlying gRPC stub method was called.
-        assert mock_rpc.call_count == 1
-
-        await client.ingest_events(request)
-
-        # Establish that a new wrapper was not created for this call
-        assert wrapper_fn.call_count == 0
-        assert mock_rpc.call_count == 2
-
-
-@pytest.mark.asyncio
-async def test_ingest_events_async(
-    transport: str = "grpc_asyncio", request_type=ingestion_service.IngestEventsRequest
-):
-    client = IngestionServiceAsyncClient(
+async def test_list_account_limits_field_headers_async():
+    client = AccountLimitsServiceAsyncClient(
         credentials=async_anonymous_credentials(),
-        transport=transport,
     )
 
-    # Everything is optional in proto3 as far as the runtime is concerned,
-    # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = accountlimits.ListAccountLimitsRequest()
+
+    request.parent = "parent_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.ingest_events), "__call__") as call:
-        # Designate an appropriate return value for the call.
+    with mock.patch.object(
+        type(client.transport.list_account_limits), "__call__"
+    ) as call:
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            ingestion_service.IngestEventsResponse(
-                request_id="request_id_value",
-            )
+            accountlimits.ListAccountLimitsResponse()
         )
-        response = await client.ingest_events(request)
+        await client.list_account_limits(request)
 
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        request = ingestion_service.IngestEventsRequest()
         assert args[0] == request
 
-    # Establish that the response is the type that we expect.
-    assert isinstance(response, ingestion_service.IngestEventsResponse)
-    assert response.request_id == "request_id_value"
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "parent=parent_value",
+    ) in kw["metadata"]
 
 
-@pytest.mark.asyncio
-async def test_ingest_events_async_from_dict():
-    await test_ingest_events_async(request_type=dict)
-
-
-@pytest.mark.parametrize(
-    "request_type",
-    [
-        ingestion_service.RetrieveRequestStatusRequest,
-        dict,
-    ],
-)
-def test_retrieve_request_status(request_type, transport: str = "grpc"):
-    client = IngestionServiceClient(
+def test_list_account_limits_flattened():
+    client = AccountLimitsServiceClient(
         credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
     )
-
-    # Everything is optional in proto3 as far as the runtime is concerned,
-    # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
-        type(client.transport.retrieve_request_status), "__call__"
+        type(client.transport.list_account_limits), "__call__"
     ) as call:
         # Designate an appropriate return value for the call.
-        call.return_value = ingestion_service.RetrieveRequestStatusResponse()
-        response = client.retrieve_request_status(request)
+        call.return_value = accountlimits.ListAccountLimitsResponse()
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        client.list_account_limits(
+            parent="parent_value",
+        )
 
-        # Establish that the underlying gRPC stub method was called.
+        # Establish that the underlying call was made with the expected
+        # request object values.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        request = ingestion_service.RetrieveRequestStatusRequest()
-        assert args[0] == request
-
-    # Establish that the response is the type that we expect.
-    assert isinstance(response, ingestion_service.RetrieveRequestStatusResponse)
+        arg = args[0].parent
+        mock_val = "parent_value"
+        assert arg == mock_val
 
 
-def test_retrieve_request_status_non_empty_request_with_auto_populated_field():
-    # This test is a coverage failsafe to make sure that UUID4 fields are
-    # automatically populated, according to AIP-4235, with non-empty requests.
-    client = IngestionServiceClient(
+def test_list_account_limits_flattened_error():
+    client = AccountLimitsServiceClient(
         credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc",
     )
 
-    # Populate all string fields in the request which are not UUID4
-    # since we want to check that UUID4 are populated automatically
-    # if they meet the requirements of AIP 4235.
-    request = ingestion_service.RetrieveRequestStatusRequest(
-        request_id="request_id_value",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.retrieve_request_status), "__call__"
-    ) as call:
-        call.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.list_account_limits(
+            accountlimits.ListAccountLimitsRequest(),
+            parent="parent_value",
         )
-        client.retrieve_request_status(request=request)
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == ingestion_service.RetrieveRequestStatusRequest(
-            request_id="request_id_value",
-        )
-
-
-def test_retrieve_request_status_use_cached_wrapped_rpc():
-    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
-    # instead of constructing them on each call
-    with mock.patch("google.api_core.gapic_v1.method.wrap_method") as wrapper_fn:
-        client = IngestionServiceClient(
-            credentials=ga_credentials.AnonymousCredentials(),
-            transport="grpc",
-        )
-
-        # Should wrap all calls on client creation
-        assert wrapper_fn.call_count > 0
-        wrapper_fn.reset_mock()
-
-        # Ensure method has been cached
-        assert (
-            client._transport.retrieve_request_status
-            in client._transport._wrapped_methods
-        )
-
-        # Replace cached wrapped function with mock
-        mock_rpc = mock.Mock()
-        mock_rpc.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client._transport._wrapped_methods[
-            client._transport.retrieve_request_status
-        ] = mock_rpc
-        request = {}
-        client.retrieve_request_status(request)
-
-        # Establish that the underlying gRPC stub method was called.
-        assert mock_rpc.call_count == 1
-
-        client.retrieve_request_status(request)
-
-        # Establish that a new wrapper was not created for this call
-        assert wrapper_fn.call_count == 0
-        assert mock_rpc.call_count == 2
 
 
 @pytest.mark.asyncio
-async def test_retrieve_request_status_async_use_cached_wrapped_rpc(
-    transport: str = "grpc_asyncio",
-):
-    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
-    # instead of constructing them on each call
-    with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
-        client = IngestionServiceAsyncClient(
-            credentials=async_anonymous_credentials(),
-            transport=transport,
-        )
-
-        # Should wrap all calls on client creation
-        assert wrapper_fn.call_count > 0
-        wrapper_fn.reset_mock()
-
-        # Ensure method has been cached
-        assert (
-            client._client._transport.retrieve_request_status
-            in client._client._transport._wrapped_methods
-        )
-
-        # Replace cached wrapped function with mock
-        mock_rpc = mock.AsyncMock()
-        mock_rpc.return_value = mock.Mock()
-        client._client._transport._wrapped_methods[
-            client._client._transport.retrieve_request_status
-        ] = mock_rpc
-
-        request = {}
-        await client.retrieve_request_status(request)
-
-        # Establish that the underlying gRPC stub method was called.
-        assert mock_rpc.call_count == 1
-
-        await client.retrieve_request_status(request)
-
-        # Establish that a new wrapper was not created for this call
-        assert wrapper_fn.call_count == 0
-        assert mock_rpc.call_count == 2
-
-
-@pytest.mark.asyncio
-async def test_retrieve_request_status_async(
-    transport: str = "grpc_asyncio",
-    request_type=ingestion_service.RetrieveRequestStatusRequest,
-):
-    client = IngestionServiceAsyncClient(
+async def test_list_account_limits_flattened_async():
+    client = AccountLimitsServiceAsyncClient(
         credentials=async_anonymous_credentials(),
-        transport=transport,
     )
-
-    # Everything is optional in proto3 as far as the runtime is concerned,
-    # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
-        type(client.transport.retrieve_request_status), "__call__"
+        type(client.transport.list_account_limits), "__call__"
     ) as call:
         # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            ingestion_service.RetrieveRequestStatusResponse()
-        )
-        response = await client.retrieve_request_status(request)
+        call.return_value = accountlimits.ListAccountLimitsResponse()
 
-        # Establish that the underlying gRPC stub method was called.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            accountlimits.ListAccountLimitsResponse()
+        )
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        response = await client.list_account_limits(
+            parent="parent_value",
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        request = ingestion_service.RetrieveRequestStatusRequest()
-        assert args[0] == request
-
-    # Establish that the response is the type that we expect.
-    assert isinstance(response, ingestion_service.RetrieveRequestStatusResponse)
+        arg = args[0].parent
+        mock_val = "parent_value"
+        assert arg == mock_val
 
 
 @pytest.mark.asyncio
-async def test_retrieve_request_status_async_from_dict():
-    await test_retrieve_request_status_async(request_type=dict)
+async def test_list_account_limits_flattened_error_async():
+    client = AccountLimitsServiceAsyncClient(
+        credentials=async_anonymous_credentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        await client.list_account_limits(
+            accountlimits.ListAccountLimitsRequest(),
+            parent="parent_value",
+        )
 
 
-def test_ingest_audience_members_rest_use_cached_wrapped_rpc():
+def test_list_account_limits_pager(transport_name: str = "grpc"):
+    client = AccountLimitsServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport_name,
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_account_limits), "__call__"
+    ) as call:
+        # Set the response to a series of pages.
+        call.side_effect = (
+            accountlimits.ListAccountLimitsResponse(
+                account_limits=[
+                    accountlimits.AccountLimit(),
+                    accountlimits.AccountLimit(),
+                    accountlimits.AccountLimit(),
+                ],
+                next_page_token="abc",
+            ),
+            accountlimits.ListAccountLimitsResponse(
+                account_limits=[],
+                next_page_token="def",
+            ),
+            accountlimits.ListAccountLimitsResponse(
+                account_limits=[
+                    accountlimits.AccountLimit(),
+                ],
+                next_page_token="ghi",
+            ),
+            accountlimits.ListAccountLimitsResponse(
+                account_limits=[
+                    accountlimits.AccountLimit(),
+                    accountlimits.AccountLimit(),
+                ],
+            ),
+            RuntimeError,
+        )
+
+        expected_metadata = ()
+        retry = retries.Retry()
+        timeout = 5
+        expected_metadata = tuple(expected_metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("parent", ""),)),
+        )
+        pager = client.list_account_limits(request={}, retry=retry, timeout=timeout)
+
+        assert pager._metadata == expected_metadata
+        assert pager._retry == retry
+        assert pager._timeout == timeout
+
+        results = list(pager)
+        assert len(results) == 6
+        assert all(isinstance(i, accountlimits.AccountLimit) for i in results)
+
+
+def test_list_account_limits_pages(transport_name: str = "grpc"):
+    client = AccountLimitsServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport_name,
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_account_limits), "__call__"
+    ) as call:
+        # Set the response to a series of pages.
+        call.side_effect = (
+            accountlimits.ListAccountLimitsResponse(
+                account_limits=[
+                    accountlimits.AccountLimit(),
+                    accountlimits.AccountLimit(),
+                    accountlimits.AccountLimit(),
+                ],
+                next_page_token="abc",
+            ),
+            accountlimits.ListAccountLimitsResponse(
+                account_limits=[],
+                next_page_token="def",
+            ),
+            accountlimits.ListAccountLimitsResponse(
+                account_limits=[
+                    accountlimits.AccountLimit(),
+                ],
+                next_page_token="ghi",
+            ),
+            accountlimits.ListAccountLimitsResponse(
+                account_limits=[
+                    accountlimits.AccountLimit(),
+                    accountlimits.AccountLimit(),
+                ],
+            ),
+            RuntimeError,
+        )
+        pages = list(client.list_account_limits(request={}).pages)
+        for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
+            assert page_.raw_page.next_page_token == token
+
+
+@pytest.mark.asyncio
+async def test_list_account_limits_async_pager():
+    client = AccountLimitsServiceAsyncClient(
+        credentials=async_anonymous_credentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_account_limits),
+        "__call__",
+        new_callable=mock.AsyncMock,
+    ) as call:
+        # Set the response to a series of pages.
+        call.side_effect = (
+            accountlimits.ListAccountLimitsResponse(
+                account_limits=[
+                    accountlimits.AccountLimit(),
+                    accountlimits.AccountLimit(),
+                    accountlimits.AccountLimit(),
+                ],
+                next_page_token="abc",
+            ),
+            accountlimits.ListAccountLimitsResponse(
+                account_limits=[],
+                next_page_token="def",
+            ),
+            accountlimits.ListAccountLimitsResponse(
+                account_limits=[
+                    accountlimits.AccountLimit(),
+                ],
+                next_page_token="ghi",
+            ),
+            accountlimits.ListAccountLimitsResponse(
+                account_limits=[
+                    accountlimits.AccountLimit(),
+                    accountlimits.AccountLimit(),
+                ],
+            ),
+            RuntimeError,
+        )
+        async_pager = await client.list_account_limits(
+            request={},
+        )
+        assert async_pager.next_page_token == "abc"
+        responses = []
+        async for response in async_pager:  # pragma: no branch
+            responses.append(response)
+
+        assert len(responses) == 6
+        assert all(isinstance(i, accountlimits.AccountLimit) for i in responses)
+
+
+@pytest.mark.asyncio
+async def test_list_account_limits_async_pages():
+    client = AccountLimitsServiceAsyncClient(
+        credentials=async_anonymous_credentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_account_limits),
+        "__call__",
+        new_callable=mock.AsyncMock,
+    ) as call:
+        # Set the response to a series of pages.
+        call.side_effect = (
+            accountlimits.ListAccountLimitsResponse(
+                account_limits=[
+                    accountlimits.AccountLimit(),
+                    accountlimits.AccountLimit(),
+                    accountlimits.AccountLimit(),
+                ],
+                next_page_token="abc",
+            ),
+            accountlimits.ListAccountLimitsResponse(
+                account_limits=[],
+                next_page_token="def",
+            ),
+            accountlimits.ListAccountLimitsResponse(
+                account_limits=[
+                    accountlimits.AccountLimit(),
+                ],
+                next_page_token="ghi",
+            ),
+            accountlimits.ListAccountLimitsResponse(
+                account_limits=[
+                    accountlimits.AccountLimit(),
+                    accountlimits.AccountLimit(),
+                ],
+            ),
+            RuntimeError,
+        )
+        pages = []
+        # Workaround issue in python 3.9 related to code coverage by adding `# pragma: no branch`
+        # See https://github.com/googleapis/gapic-generator-python/pull/1174#issuecomment-1025132372
+        async for page_ in (  # pragma: no branch
+            await client.list_account_limits(request={})
+        ).pages:
+            pages.append(page_)
+        for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
+            assert page_.raw_page.next_page_token == token
+
+
+def test_get_account_limit_rest_use_cached_wrapped_rpc():
     # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method.wrap_method") as wrapper_fn:
-        client = IngestionServiceClient(
+        client = AccountLimitsServiceClient(
             credentials=ga_credentials.AnonymousCredentials(),
             transport="rest",
         )
@@ -1907,10 +2070,7 @@ def test_ingest_audience_members_rest_use_cached_wrapped_rpc():
         wrapper_fn.reset_mock()
 
         # Ensure method has been cached
-        assert (
-            client._transport.ingest_audience_members
-            in client._transport._wrapped_methods
-        )
+        assert client._transport.get_account_limit in client._transport._wrapped_methods
 
         # Replace cached wrapped function with mock
         mock_rpc = mock.Mock()
@@ -1918,28 +2078,29 @@ def test_ingest_audience_members_rest_use_cached_wrapped_rpc():
             "foo"  # operation_request.operation in compute client(s) expect a string.
         )
         client._transport._wrapped_methods[
-            client._transport.ingest_audience_members
+            client._transport.get_account_limit
         ] = mock_rpc
 
         request = {}
-        client.ingest_audience_members(request)
+        client.get_account_limit(request)
 
         # Establish that the underlying gRPC stub method was called.
         assert mock_rpc.call_count == 1
 
-        client.ingest_audience_members(request)
+        client.get_account_limit(request)
 
         # Establish that a new wrapper was not created for this call
         assert wrapper_fn.call_count == 0
         assert mock_rpc.call_count == 2
 
 
-def test_ingest_audience_members_rest_required_fields(
-    request_type=ingestion_service.IngestAudienceMembersRequest,
+def test_get_account_limit_rest_required_fields(
+    request_type=accountlimits.GetAccountLimitRequest,
 ):
-    transport_class = transports.IngestionServiceRestTransport
+    transport_class = transports.AccountLimitsServiceRestTransport
 
     request_init = {}
+    request_init["name"] = ""
     request = request_type(**request_init)
     pb_request = request_type.pb(request)
     jsonified_request = json.loads(
@@ -1950,422 +2111,30 @@ def test_ingest_audience_members_rest_required_fields(
 
     unset_fields = transport_class(
         credentials=ga_credentials.AnonymousCredentials()
-    ).ingest_audience_members._get_unset_required_fields(jsonified_request)
+    ).get_account_limit._get_unset_required_fields(jsonified_request)
     jsonified_request.update(unset_fields)
 
     # verify required fields with default values are now present
 
+    jsonified_request["name"] = "name_value"
+
     unset_fields = transport_class(
         credentials=ga_credentials.AnonymousCredentials()
-    ).ingest_audience_members._get_unset_required_fields(jsonified_request)
+    ).get_account_limit._get_unset_required_fields(jsonified_request)
     jsonified_request.update(unset_fields)
 
     # verify required fields with non-default values are left alone
+    assert "name" in jsonified_request
+    assert jsonified_request["name"] == "name_value"
 
-    client = IngestionServiceClient(
+    client = AccountLimitsServiceClient(
         credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
     request = request_type(**request_init)
 
     # Designate an appropriate value for the returned response.
-    return_value = ingestion_service.IngestAudienceMembersResponse()
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(Session, "request") as req:
-        # We need to mock transcode() because providing default values
-        # for required fields will fail the real version if the http_options
-        # expect actual values for those fields.
-        with mock.patch.object(path_template, "transcode") as transcode:
-            # A uri without fields and an empty body will force all the
-            # request fields to show up in the query_params.
-            pb_request = request_type.pb(request)
-            transcode_result = {
-                "uri": "v1/sample_method",
-                "method": "post",
-                "query_params": pb_request,
-            }
-            transcode_result["body"] = pb_request
-            transcode.return_value = transcode_result
-
-            response_value = Response()
-            response_value.status_code = 200
-
-            # Convert return value to protobuf type
-            return_value = ingestion_service.IngestAudienceMembersResponse.pb(
-                return_value
-            )
-            json_return_value = json_format.MessageToJson(return_value)
-
-            response_value._content = json_return_value.encode("UTF-8")
-            req.return_value = response_value
-            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
-
-            response = client.ingest_audience_members(request)
-
-            expected_params = [("$alt", "json;enum-encoding=int")]
-            actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
-
-
-def test_ingest_audience_members_rest_unset_required_fields():
-    transport = transports.IngestionServiceRestTransport(
-        credentials=ga_credentials.AnonymousCredentials
-    )
-
-    unset_fields = transport.ingest_audience_members._get_unset_required_fields({})
-    assert set(unset_fields) == (
-        set(())
-        & set(
-            (
-                "destinations",
-                "audienceMembers",
-            )
-        )
-    )
-
-
-def test_remove_audience_members_rest_use_cached_wrapped_rpc():
-    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
-    # instead of constructing them on each call
-    with mock.patch("google.api_core.gapic_v1.method.wrap_method") as wrapper_fn:
-        client = IngestionServiceClient(
-            credentials=ga_credentials.AnonymousCredentials(),
-            transport="rest",
-        )
-
-        # Should wrap all calls on client creation
-        assert wrapper_fn.call_count > 0
-        wrapper_fn.reset_mock()
-
-        # Ensure method has been cached
-        assert (
-            client._transport.remove_audience_members
-            in client._transport._wrapped_methods
-        )
-
-        # Replace cached wrapped function with mock
-        mock_rpc = mock.Mock()
-        mock_rpc.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client._transport._wrapped_methods[
-            client._transport.remove_audience_members
-        ] = mock_rpc
-
-        request = {}
-        client.remove_audience_members(request)
-
-        # Establish that the underlying gRPC stub method was called.
-        assert mock_rpc.call_count == 1
-
-        client.remove_audience_members(request)
-
-        # Establish that a new wrapper was not created for this call
-        assert wrapper_fn.call_count == 0
-        assert mock_rpc.call_count == 2
-
-
-def test_remove_audience_members_rest_required_fields(
-    request_type=ingestion_service.RemoveAudienceMembersRequest,
-):
-    transport_class = transports.IngestionServiceRestTransport
-
-    request_init = {}
-    request = request_type(**request_init)
-    pb_request = request_type.pb(request)
-    jsonified_request = json.loads(
-        json_format.MessageToJson(pb_request, use_integers_for_enums=False)
-    )
-
-    # verify fields with default values are dropped
-
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).remove_audience_members._get_unset_required_fields(jsonified_request)
-    jsonified_request.update(unset_fields)
-
-    # verify required fields with default values are now present
-
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).remove_audience_members._get_unset_required_fields(jsonified_request)
-    jsonified_request.update(unset_fields)
-
-    # verify required fields with non-default values are left alone
-
-    client = IngestionServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-    request = request_type(**request_init)
-
-    # Designate an appropriate value for the returned response.
-    return_value = ingestion_service.RemoveAudienceMembersResponse()
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(Session, "request") as req:
-        # We need to mock transcode() because providing default values
-        # for required fields will fail the real version if the http_options
-        # expect actual values for those fields.
-        with mock.patch.object(path_template, "transcode") as transcode:
-            # A uri without fields and an empty body will force all the
-            # request fields to show up in the query_params.
-            pb_request = request_type.pb(request)
-            transcode_result = {
-                "uri": "v1/sample_method",
-                "method": "post",
-                "query_params": pb_request,
-            }
-            transcode_result["body"] = pb_request
-            transcode.return_value = transcode_result
-
-            response_value = Response()
-            response_value.status_code = 200
-
-            # Convert return value to protobuf type
-            return_value = ingestion_service.RemoveAudienceMembersResponse.pb(
-                return_value
-            )
-            json_return_value = json_format.MessageToJson(return_value)
-
-            response_value._content = json_return_value.encode("UTF-8")
-            req.return_value = response_value
-            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
-
-            response = client.remove_audience_members(request)
-
-            expected_params = [("$alt", "json;enum-encoding=int")]
-            actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
-
-
-def test_remove_audience_members_rest_unset_required_fields():
-    transport = transports.IngestionServiceRestTransport(
-        credentials=ga_credentials.AnonymousCredentials
-    )
-
-    unset_fields = transport.remove_audience_members._get_unset_required_fields({})
-    assert set(unset_fields) == (
-        set(())
-        & set(
-            (
-                "destinations",
-                "audienceMembers",
-            )
-        )
-    )
-
-
-def test_ingest_events_rest_use_cached_wrapped_rpc():
-    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
-    # instead of constructing them on each call
-    with mock.patch("google.api_core.gapic_v1.method.wrap_method") as wrapper_fn:
-        client = IngestionServiceClient(
-            credentials=ga_credentials.AnonymousCredentials(),
-            transport="rest",
-        )
-
-        # Should wrap all calls on client creation
-        assert wrapper_fn.call_count > 0
-        wrapper_fn.reset_mock()
-
-        # Ensure method has been cached
-        assert client._transport.ingest_events in client._transport._wrapped_methods
-
-        # Replace cached wrapped function with mock
-        mock_rpc = mock.Mock()
-        mock_rpc.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client._transport._wrapped_methods[client._transport.ingest_events] = mock_rpc
-
-        request = {}
-        client.ingest_events(request)
-
-        # Establish that the underlying gRPC stub method was called.
-        assert mock_rpc.call_count == 1
-
-        client.ingest_events(request)
-
-        # Establish that a new wrapper was not created for this call
-        assert wrapper_fn.call_count == 0
-        assert mock_rpc.call_count == 2
-
-
-def test_ingest_events_rest_required_fields(
-    request_type=ingestion_service.IngestEventsRequest,
-):
-    transport_class = transports.IngestionServiceRestTransport
-
-    request_init = {}
-    request = request_type(**request_init)
-    pb_request = request_type.pb(request)
-    jsonified_request = json.loads(
-        json_format.MessageToJson(pb_request, use_integers_for_enums=False)
-    )
-
-    # verify fields with default values are dropped
-
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).ingest_events._get_unset_required_fields(jsonified_request)
-    jsonified_request.update(unset_fields)
-
-    # verify required fields with default values are now present
-
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).ingest_events._get_unset_required_fields(jsonified_request)
-    jsonified_request.update(unset_fields)
-
-    # verify required fields with non-default values are left alone
-
-    client = IngestionServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-    request = request_type(**request_init)
-
-    # Designate an appropriate value for the returned response.
-    return_value = ingestion_service.IngestEventsResponse()
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(Session, "request") as req:
-        # We need to mock transcode() because providing default values
-        # for required fields will fail the real version if the http_options
-        # expect actual values for those fields.
-        with mock.patch.object(path_template, "transcode") as transcode:
-            # A uri without fields and an empty body will force all the
-            # request fields to show up in the query_params.
-            pb_request = request_type.pb(request)
-            transcode_result = {
-                "uri": "v1/sample_method",
-                "method": "post",
-                "query_params": pb_request,
-            }
-            transcode_result["body"] = pb_request
-            transcode.return_value = transcode_result
-
-            response_value = Response()
-            response_value.status_code = 200
-
-            # Convert return value to protobuf type
-            return_value = ingestion_service.IngestEventsResponse.pb(return_value)
-            json_return_value = json_format.MessageToJson(return_value)
-
-            response_value._content = json_return_value.encode("UTF-8")
-            req.return_value = response_value
-            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
-
-            response = client.ingest_events(request)
-
-            expected_params = [("$alt", "json;enum-encoding=int")]
-            actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
-
-
-def test_ingest_events_rest_unset_required_fields():
-    transport = transports.IngestionServiceRestTransport(
-        credentials=ga_credentials.AnonymousCredentials
-    )
-
-    unset_fields = transport.ingest_events._get_unset_required_fields({})
-    assert set(unset_fields) == (
-        set(())
-        & set(
-            (
-                "destinations",
-                "events",
-            )
-        )
-    )
-
-
-def test_retrieve_request_status_rest_use_cached_wrapped_rpc():
-    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
-    # instead of constructing them on each call
-    with mock.patch("google.api_core.gapic_v1.method.wrap_method") as wrapper_fn:
-        client = IngestionServiceClient(
-            credentials=ga_credentials.AnonymousCredentials(),
-            transport="rest",
-        )
-
-        # Should wrap all calls on client creation
-        assert wrapper_fn.call_count > 0
-        wrapper_fn.reset_mock()
-
-        # Ensure method has been cached
-        assert (
-            client._transport.retrieve_request_status
-            in client._transport._wrapped_methods
-        )
-
-        # Replace cached wrapped function with mock
-        mock_rpc = mock.Mock()
-        mock_rpc.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client._transport._wrapped_methods[
-            client._transport.retrieve_request_status
-        ] = mock_rpc
-
-        request = {}
-        client.retrieve_request_status(request)
-
-        # Establish that the underlying gRPC stub method was called.
-        assert mock_rpc.call_count == 1
-
-        client.retrieve_request_status(request)
-
-        # Establish that a new wrapper was not created for this call
-        assert wrapper_fn.call_count == 0
-        assert mock_rpc.call_count == 2
-
-
-def test_retrieve_request_status_rest_required_fields(
-    request_type=ingestion_service.RetrieveRequestStatusRequest,
-):
-    transport_class = transports.IngestionServiceRestTransport
-
-    request_init = {}
-    request_init["request_id"] = ""
-    request = request_type(**request_init)
-    pb_request = request_type.pb(request)
-    jsonified_request = json.loads(
-        json_format.MessageToJson(pb_request, use_integers_for_enums=False)
-    )
-
-    # verify fields with default values are dropped
-    assert "requestId" not in jsonified_request
-
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).retrieve_request_status._get_unset_required_fields(jsonified_request)
-    jsonified_request.update(unset_fields)
-
-    # verify required fields with default values are now present
-    assert "requestId" in jsonified_request
-    assert jsonified_request["requestId"] == request_init["request_id"]
-
-    jsonified_request["requestId"] = "request_id_value"
-
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).retrieve_request_status._get_unset_required_fields(jsonified_request)
-    # Check that path parameters and body parameters are not mixing in.
-    assert not set(unset_fields) - set(("request_id",))
-    jsonified_request.update(unset_fields)
-
-    # verify required fields with non-default values are left alone
-    assert "requestId" in jsonified_request
-    assert jsonified_request["requestId"] == "request_id_value"
-
-    client = IngestionServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-    request = request_type(**request_init)
-
-    # Designate an appropriate value for the returned response.
-    return_value = ingestion_service.RetrieveRequestStatusResponse()
+    return_value = accountlimits.AccountLimit()
     # Mock the http request call within the method and fake a response.
     with mock.patch.object(Session, "request") as req:
         # We need to mock transcode() because providing default values
@@ -2386,20 +2155,214 @@ def test_retrieve_request_status_rest_required_fields(
             response_value.status_code = 200
 
             # Convert return value to protobuf type
-            return_value = ingestion_service.RetrieveRequestStatusResponse.pb(
-                return_value
-            )
+            return_value = accountlimits.AccountLimit.pb(return_value)
             json_return_value = json_format.MessageToJson(return_value)
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
             req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
-            response = client.retrieve_request_status(request)
+            response = client.get_account_limit(request)
+
+            expected_params = [("$alt", "json;enum-encoding=int")]
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_get_account_limit_rest_unset_required_fields():
+    transport = transports.AccountLimitsServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.get_account_limit._get_unset_required_fields({})
+    assert set(unset_fields) == (set(()) & set(("name",)))
+
+
+def test_get_account_limit_rest_flattened():
+    client = AccountLimitsServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = accountlimits.AccountLimit()
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {"name": "accounts/sample1/limits/sample2"}
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            name="name_value",
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        # Convert return value to protobuf type
+        return_value = accountlimits.AccountLimit.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
+
+        client.get_account_limit(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/accounts/v1/{name=accounts/*/limits/*}" % client.transport._host,
+            args[1],
+        )
+
+
+def test_get_account_limit_rest_flattened_error(transport: str = "rest"):
+    client = AccountLimitsServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.get_account_limit(
+            accountlimits.GetAccountLimitRequest(),
+            name="name_value",
+        )
+
+
+def test_list_account_limits_rest_use_cached_wrapped_rpc():
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method.wrap_method") as wrapper_fn:
+        client = AccountLimitsServiceClient(
+            credentials=ga_credentials.AnonymousCredentials(),
+            transport="rest",
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert (
+            client._transport.list_account_limits in client._transport._wrapped_methods
+        )
+
+        # Replace cached wrapped function with mock
+        mock_rpc = mock.Mock()
+        mock_rpc.return_value.name = (
+            "foo"  # operation_request.operation in compute client(s) expect a string.
+        )
+        client._transport._wrapped_methods[
+            client._transport.list_account_limits
+        ] = mock_rpc
+
+        request = {}
+        client.list_account_limits(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_rpc.call_count == 1
+
+        client.list_account_limits(request)
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
+        assert mock_rpc.call_count == 2
+
+
+def test_list_account_limits_rest_required_fields(
+    request_type=accountlimits.ListAccountLimitsRequest,
+):
+    transport_class = transports.AccountLimitsServiceRestTransport
+
+    request_init = {}
+    request_init["parent"] = ""
+    request_init["filter"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(pb_request, use_integers_for_enums=False)
+    )
+
+    # verify fields with default values are dropped
+    assert "filter" not in jsonified_request
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).list_account_limits._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+    assert "filter" in jsonified_request
+    assert jsonified_request["filter"] == request_init["filter"]
+
+    jsonified_request["parent"] = "parent_value"
+    jsonified_request["filter"] = "filter_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).list_account_limits._get_unset_required_fields(jsonified_request)
+    # Check that path parameters and body parameters are not mixing in.
+    assert not set(unset_fields) - set(
+        (
+            "filter",
+            "page_size",
+            "page_token",
+        )
+    )
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "parent" in jsonified_request
+    assert jsonified_request["parent"] == "parent_value"
+    assert "filter" in jsonified_request
+    assert jsonified_request["filter"] == "filter_value"
+
+    client = AccountLimitsServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = accountlimits.ListAccountLimitsResponse()
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "get",
+                "query_params": pb_request,
+            }
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+
+            # Convert return value to protobuf type
+            return_value = accountlimits.ListAccountLimitsResponse.pb(return_value)
+            json_return_value = json_format.MessageToJson(return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
+
+            response = client.list_account_limits(request)
 
             expected_params = [
                 (
-                    "requestId",
+                    "filter",
                     "",
                 ),
                 ("$alt", "json;enum-encoding=int"),
@@ -2408,44 +2371,178 @@ def test_retrieve_request_status_rest_required_fields(
             assert expected_params == actual_params
 
 
-def test_retrieve_request_status_rest_unset_required_fields():
-    transport = transports.IngestionServiceRestTransport(
+def test_list_account_limits_rest_unset_required_fields():
+    transport = transports.AccountLimitsServiceRestTransport(
         credentials=ga_credentials.AnonymousCredentials
     )
 
-    unset_fields = transport.retrieve_request_status._get_unset_required_fields({})
-    assert set(unset_fields) == (set(("requestId",)) & set(("requestId",)))
+    unset_fields = transport.list_account_limits._get_unset_required_fields({})
+    assert set(unset_fields) == (
+        set(
+            (
+                "filter",
+                "pageSize",
+                "pageToken",
+            )
+        )
+        & set(
+            (
+                "parent",
+                "filter",
+            )
+        )
+    )
+
+
+def test_list_account_limits_rest_flattened():
+    client = AccountLimitsServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = accountlimits.ListAccountLimitsResponse()
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {"parent": "accounts/sample1"}
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            parent="parent_value",
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        # Convert return value to protobuf type
+        return_value = accountlimits.ListAccountLimitsResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
+
+        client.list_account_limits(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/accounts/v1/{parent=accounts/*}/limits" % client.transport._host,
+            args[1],
+        )
+
+
+def test_list_account_limits_rest_flattened_error(transport: str = "rest"):
+    client = AccountLimitsServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.list_account_limits(
+            accountlimits.ListAccountLimitsRequest(),
+            parent="parent_value",
+        )
+
+
+def test_list_account_limits_rest_pager(transport: str = "rest"):
+    client = AccountLimitsServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # TODO(kbandes): remove this mock unless there's a good reason for it.
+        # with mock.patch.object(path_template, 'transcode') as transcode:
+        # Set the response as a series of pages
+        response = (
+            accountlimits.ListAccountLimitsResponse(
+                account_limits=[
+                    accountlimits.AccountLimit(),
+                    accountlimits.AccountLimit(),
+                    accountlimits.AccountLimit(),
+                ],
+                next_page_token="abc",
+            ),
+            accountlimits.ListAccountLimitsResponse(
+                account_limits=[],
+                next_page_token="def",
+            ),
+            accountlimits.ListAccountLimitsResponse(
+                account_limits=[
+                    accountlimits.AccountLimit(),
+                ],
+                next_page_token="ghi",
+            ),
+            accountlimits.ListAccountLimitsResponse(
+                account_limits=[
+                    accountlimits.AccountLimit(),
+                    accountlimits.AccountLimit(),
+                ],
+            ),
+        )
+        # Two responses for two calls
+        response = response + response
+
+        # Wrap the values into proper Response objs
+        response = tuple(
+            accountlimits.ListAccountLimitsResponse.to_json(x) for x in response
+        )
+        return_values = tuple(Response() for i in response)
+        for return_val, response_val in zip(return_values, response):
+            return_val._content = response_val.encode("UTF-8")
+            return_val.status_code = 200
+        req.side_effect = return_values
+
+        sample_request = {"parent": "accounts/sample1"}
+
+        pager = client.list_account_limits(request=sample_request)
+
+        results = list(pager)
+        assert len(results) == 6
+        assert all(isinstance(i, accountlimits.AccountLimit) for i in results)
+
+        pages = list(client.list_account_limits(request=sample_request).pages)
+        for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
+            assert page_.raw_page.next_page_token == token
 
 
 def test_credentials_transport_error():
     # It is an error to provide credentials and a transport instance.
-    transport = transports.IngestionServiceGrpcTransport(
+    transport = transports.AccountLimitsServiceGrpcTransport(
         credentials=ga_credentials.AnonymousCredentials(),
     )
     with pytest.raises(ValueError):
-        client = IngestionServiceClient(
+        client = AccountLimitsServiceClient(
             credentials=ga_credentials.AnonymousCredentials(),
             transport=transport,
         )
 
     # It is an error to provide a credentials file and a transport instance.
-    transport = transports.IngestionServiceGrpcTransport(
+    transport = transports.AccountLimitsServiceGrpcTransport(
         credentials=ga_credentials.AnonymousCredentials(),
     )
     with pytest.raises(ValueError):
-        client = IngestionServiceClient(
+        client = AccountLimitsServiceClient(
             client_options={"credentials_file": "credentials.json"},
             transport=transport,
         )
 
     # It is an error to provide an api_key and a transport instance.
-    transport = transports.IngestionServiceGrpcTransport(
+    transport = transports.AccountLimitsServiceGrpcTransport(
         credentials=ga_credentials.AnonymousCredentials(),
     )
     options = client_options.ClientOptions()
     options.api_key = "api_key"
     with pytest.raises(ValueError):
-        client = IngestionServiceClient(
+        client = AccountLimitsServiceClient(
             client_options=options,
             transport=transport,
         )
@@ -2454,16 +2551,16 @@ def test_credentials_transport_error():
     options = client_options.ClientOptions()
     options.api_key = "api_key"
     with pytest.raises(ValueError):
-        client = IngestionServiceClient(
+        client = AccountLimitsServiceClient(
             client_options=options, credentials=ga_credentials.AnonymousCredentials()
         )
 
     # It is an error to provide scopes and a transport instance.
-    transport = transports.IngestionServiceGrpcTransport(
+    transport = transports.AccountLimitsServiceGrpcTransport(
         credentials=ga_credentials.AnonymousCredentials(),
     )
     with pytest.raises(ValueError):
-        client = IngestionServiceClient(
+        client = AccountLimitsServiceClient(
             client_options={"scopes": ["1", "2"]},
             transport=transport,
         )
@@ -2471,22 +2568,22 @@ def test_credentials_transport_error():
 
 def test_transport_instance():
     # A client may be instantiated with a custom transport instance.
-    transport = transports.IngestionServiceGrpcTransport(
+    transport = transports.AccountLimitsServiceGrpcTransport(
         credentials=ga_credentials.AnonymousCredentials(),
     )
-    client = IngestionServiceClient(transport=transport)
+    client = AccountLimitsServiceClient(transport=transport)
     assert client.transport is transport
 
 
 def test_transport_get_channel():
     # A client may be instantiated with a custom transport instance.
-    transport = transports.IngestionServiceGrpcTransport(
+    transport = transports.AccountLimitsServiceGrpcTransport(
         credentials=ga_credentials.AnonymousCredentials(),
     )
     channel = transport.grpc_channel
     assert channel
 
-    transport = transports.IngestionServiceGrpcAsyncIOTransport(
+    transport = transports.AccountLimitsServiceGrpcAsyncIOTransport(
         credentials=ga_credentials.AnonymousCredentials(),
     )
     channel = transport.grpc_channel
@@ -2496,9 +2593,9 @@ def test_transport_get_channel():
 @pytest.mark.parametrize(
     "transport_class",
     [
-        transports.IngestionServiceGrpcTransport,
-        transports.IngestionServiceGrpcAsyncIOTransport,
-        transports.IngestionServiceRestTransport,
+        transports.AccountLimitsServiceGrpcTransport,
+        transports.AccountLimitsServiceGrpcAsyncIOTransport,
+        transports.AccountLimitsServiceRestTransport,
     ],
 )
 def test_transport_adc(transport_class):
@@ -2510,14 +2607,14 @@ def test_transport_adc(transport_class):
 
 
 def test_transport_kind_grpc():
-    transport = IngestionServiceClient.get_transport_class("grpc")(
+    transport = AccountLimitsServiceClient.get_transport_class("grpc")(
         credentials=ga_credentials.AnonymousCredentials()
     )
     assert transport.kind == "grpc"
 
 
 def test_initialize_client_w_grpc():
-    client = IngestionServiceClient(
+    client = AccountLimitsServiceClient(
         credentials=ga_credentials.AnonymousCredentials(), transport="grpc"
     )
     assert client is not None
@@ -2525,103 +2622,59 @@ def test_initialize_client_w_grpc():
 
 # This test is a coverage failsafe to make sure that totally empty calls,
 # i.e. request == None and no flattened fields passed, work.
-def test_ingest_audience_members_empty_call_grpc():
-    client = IngestionServiceClient(
+def test_get_account_limit_empty_call_grpc():
+    client = AccountLimitsServiceClient(
         credentials=ga_credentials.AnonymousCredentials(),
         transport="grpc",
     )
 
     # Mock the actual call, and fake the request.
     with mock.patch.object(
-        type(client.transport.ingest_audience_members), "__call__"
+        type(client.transport.get_account_limit), "__call__"
     ) as call:
-        call.return_value = ingestion_service.IngestAudienceMembersResponse()
-        client.ingest_audience_members(request=None)
+        call.return_value = accountlimits.AccountLimit()
+        client.get_account_limit(request=None)
 
         # Establish that the underlying stub method was called.
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        request_msg = ingestion_service.IngestAudienceMembersRequest()
+        request_msg = accountlimits.GetAccountLimitRequest()
 
         assert args[0] == request_msg
 
 
 # This test is a coverage failsafe to make sure that totally empty calls,
 # i.e. request == None and no flattened fields passed, work.
-def test_remove_audience_members_empty_call_grpc():
-    client = IngestionServiceClient(
+def test_list_account_limits_empty_call_grpc():
+    client = AccountLimitsServiceClient(
         credentials=ga_credentials.AnonymousCredentials(),
         transport="grpc",
     )
 
     # Mock the actual call, and fake the request.
     with mock.patch.object(
-        type(client.transport.remove_audience_members), "__call__"
+        type(client.transport.list_account_limits), "__call__"
     ) as call:
-        call.return_value = ingestion_service.RemoveAudienceMembersResponse()
-        client.remove_audience_members(request=None)
+        call.return_value = accountlimits.ListAccountLimitsResponse()
+        client.list_account_limits(request=None)
 
         # Establish that the underlying stub method was called.
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        request_msg = ingestion_service.RemoveAudienceMembersRequest()
-
-        assert args[0] == request_msg
-
-
-# This test is a coverage failsafe to make sure that totally empty calls,
-# i.e. request == None and no flattened fields passed, work.
-def test_ingest_events_empty_call_grpc():
-    client = IngestionServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc",
-    )
-
-    # Mock the actual call, and fake the request.
-    with mock.patch.object(type(client.transport.ingest_events), "__call__") as call:
-        call.return_value = ingestion_service.IngestEventsResponse()
-        client.ingest_events(request=None)
-
-        # Establish that the underlying stub method was called.
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        request_msg = ingestion_service.IngestEventsRequest()
-
-        assert args[0] == request_msg
-
-
-# This test is a coverage failsafe to make sure that totally empty calls,
-# i.e. request == None and no flattened fields passed, work.
-def test_retrieve_request_status_empty_call_grpc():
-    client = IngestionServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc",
-    )
-
-    # Mock the actual call, and fake the request.
-    with mock.patch.object(
-        type(client.transport.retrieve_request_status), "__call__"
-    ) as call:
-        call.return_value = ingestion_service.RetrieveRequestStatusResponse()
-        client.retrieve_request_status(request=None)
-
-        # Establish that the underlying stub method was called.
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        request_msg = ingestion_service.RetrieveRequestStatusRequest()
+        request_msg = accountlimits.ListAccountLimitsRequest()
 
         assert args[0] == request_msg
 
 
 def test_transport_kind_grpc_asyncio():
-    transport = IngestionServiceAsyncClient.get_transport_class("grpc_asyncio")(
+    transport = AccountLimitsServiceAsyncClient.get_transport_class("grpc_asyncio")(
         credentials=async_anonymous_credentials()
     )
     assert transport.kind == "grpc_asyncio"
 
 
 def test_initialize_client_w_grpc_asyncio():
-    client = IngestionServiceAsyncClient(
+    client = AccountLimitsServiceAsyncClient(
         credentials=async_anonymous_credentials(), transport="grpc_asyncio"
     )
     assert client is not None
@@ -2630,28 +2683,28 @@ def test_initialize_client_w_grpc_asyncio():
 # This test is a coverage failsafe to make sure that totally empty calls,
 # i.e. request == None and no flattened fields passed, work.
 @pytest.mark.asyncio
-async def test_ingest_audience_members_empty_call_grpc_asyncio():
-    client = IngestionServiceAsyncClient(
+async def test_get_account_limit_empty_call_grpc_asyncio():
+    client = AccountLimitsServiceAsyncClient(
         credentials=async_anonymous_credentials(),
         transport="grpc_asyncio",
     )
 
     # Mock the actual call, and fake the request.
     with mock.patch.object(
-        type(client.transport.ingest_audience_members), "__call__"
+        type(client.transport.get_account_limit), "__call__"
     ) as call:
         # Designate an appropriate return value for the call.
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            ingestion_service.IngestAudienceMembersResponse(
-                request_id="request_id_value",
+            accountlimits.AccountLimit(
+                name="name_value",
             )
         )
-        await client.ingest_audience_members(request=None)
+        await client.get_account_limit(request=None)
 
         # Establish that the underlying stub method was called.
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        request_msg = ingestion_service.IngestAudienceMembersRequest()
+        request_msg = accountlimits.GetAccountLimitRequest()
 
         assert args[0] == request_msg
 
@@ -2659,101 +2712,47 @@ async def test_ingest_audience_members_empty_call_grpc_asyncio():
 # This test is a coverage failsafe to make sure that totally empty calls,
 # i.e. request == None and no flattened fields passed, work.
 @pytest.mark.asyncio
-async def test_remove_audience_members_empty_call_grpc_asyncio():
-    client = IngestionServiceAsyncClient(
+async def test_list_account_limits_empty_call_grpc_asyncio():
+    client = AccountLimitsServiceAsyncClient(
         credentials=async_anonymous_credentials(),
         transport="grpc_asyncio",
     )
 
     # Mock the actual call, and fake the request.
     with mock.patch.object(
-        type(client.transport.remove_audience_members), "__call__"
+        type(client.transport.list_account_limits), "__call__"
     ) as call:
         # Designate an appropriate return value for the call.
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            ingestion_service.RemoveAudienceMembersResponse(
-                request_id="request_id_value",
+            accountlimits.ListAccountLimitsResponse(
+                next_page_token="next_page_token_value",
             )
         )
-        await client.remove_audience_members(request=None)
+        await client.list_account_limits(request=None)
 
         # Establish that the underlying stub method was called.
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        request_msg = ingestion_service.RemoveAudienceMembersRequest()
-
-        assert args[0] == request_msg
-
-
-# This test is a coverage failsafe to make sure that totally empty calls,
-# i.e. request == None and no flattened fields passed, work.
-@pytest.mark.asyncio
-async def test_ingest_events_empty_call_grpc_asyncio():
-    client = IngestionServiceAsyncClient(
-        credentials=async_anonymous_credentials(),
-        transport="grpc_asyncio",
-    )
-
-    # Mock the actual call, and fake the request.
-    with mock.patch.object(type(client.transport.ingest_events), "__call__") as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            ingestion_service.IngestEventsResponse(
-                request_id="request_id_value",
-            )
-        )
-        await client.ingest_events(request=None)
-
-        # Establish that the underlying stub method was called.
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        request_msg = ingestion_service.IngestEventsRequest()
-
-        assert args[0] == request_msg
-
-
-# This test is a coverage failsafe to make sure that totally empty calls,
-# i.e. request == None and no flattened fields passed, work.
-@pytest.mark.asyncio
-async def test_retrieve_request_status_empty_call_grpc_asyncio():
-    client = IngestionServiceAsyncClient(
-        credentials=async_anonymous_credentials(),
-        transport="grpc_asyncio",
-    )
-
-    # Mock the actual call, and fake the request.
-    with mock.patch.object(
-        type(client.transport.retrieve_request_status), "__call__"
-    ) as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            ingestion_service.RetrieveRequestStatusResponse()
-        )
-        await client.retrieve_request_status(request=None)
-
-        # Establish that the underlying stub method was called.
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        request_msg = ingestion_service.RetrieveRequestStatusRequest()
+        request_msg = accountlimits.ListAccountLimitsRequest()
 
         assert args[0] == request_msg
 
 
 def test_transport_kind_rest():
-    transport = IngestionServiceClient.get_transport_class("rest")(
+    transport = AccountLimitsServiceClient.get_transport_class("rest")(
         credentials=ga_credentials.AnonymousCredentials()
     )
     assert transport.kind == "rest"
 
 
-def test_ingest_audience_members_rest_bad_request(
-    request_type=ingestion_service.IngestAudienceMembersRequest,
+def test_get_account_limit_rest_bad_request(
+    request_type=accountlimits.GetAccountLimitRequest,
 ):
-    client = IngestionServiceClient(
+    client = AccountLimitsServiceClient(
         credentials=ga_credentials.AnonymousCredentials(), transport="rest"
     )
     # send a request that will satisfy transcoding
-    request_init = {}
+    request_init = {"name": "accounts/sample1/limits/sample2"}
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
@@ -2768,30 +2767,30 @@ def test_ingest_audience_members_rest_bad_request(
         response_value.request = mock.Mock()
         req.return_value = response_value
         req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
-        client.ingest_audience_members(request)
+        client.get_account_limit(request)
 
 
 @pytest.mark.parametrize(
     "request_type",
     [
-        ingestion_service.IngestAudienceMembersRequest,
+        accountlimits.GetAccountLimitRequest,
         dict,
     ],
 )
-def test_ingest_audience_members_rest_call_success(request_type):
-    client = IngestionServiceClient(
+def test_get_account_limit_rest_call_success(request_type):
+    client = AccountLimitsServiceClient(
         credentials=ga_credentials.AnonymousCredentials(), transport="rest"
     )
 
     # send a request that will satisfy transcoding
-    request_init = {}
+    request_init = {"name": "accounts/sample1/limits/sample2"}
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a response.
     with mock.patch.object(type(client.transport._session), "request") as req:
         # Designate an appropriate value for the returned response.
-        return_value = ingestion_service.IngestAudienceMembersResponse(
-            request_id="request_id_value",
+        return_value = accountlimits.AccountLimit(
+            name="name_value",
         )
 
         # Wrap the value into a proper Response obj
@@ -2799,45 +2798,45 @@ def test_ingest_audience_members_rest_call_success(request_type):
         response_value.status_code = 200
 
         # Convert return value to protobuf type
-        return_value = ingestion_service.IngestAudienceMembersResponse.pb(return_value)
+        return_value = accountlimits.AccountLimit.pb(return_value)
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
         req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
-        response = client.ingest_audience_members(request)
+        response = client.get_account_limit(request)
 
     # Establish that the response is the type that we expect.
-    assert isinstance(response, ingestion_service.IngestAudienceMembersResponse)
-    assert response.request_id == "request_id_value"
+    assert isinstance(response, accountlimits.AccountLimit)
+    assert response.name == "name_value"
 
 
 @pytest.mark.parametrize("null_interceptor", [True, False])
-def test_ingest_audience_members_rest_interceptors(null_interceptor):
-    transport = transports.IngestionServiceRestTransport(
+def test_get_account_limit_rest_interceptors(null_interceptor):
+    transport = transports.AccountLimitsServiceRestTransport(
         credentials=ga_credentials.AnonymousCredentials(),
         interceptor=None
         if null_interceptor
-        else transports.IngestionServiceRestInterceptor(),
+        else transports.AccountLimitsServiceRestInterceptor(),
     )
-    client = IngestionServiceClient(transport=transport)
+    client = AccountLimitsServiceClient(transport=transport)
 
     with mock.patch.object(
         type(client.transport._session), "request"
     ) as req, mock.patch.object(
         path_template, "transcode"
     ) as transcode, mock.patch.object(
-        transports.IngestionServiceRestInterceptor, "post_ingest_audience_members"
+        transports.AccountLimitsServiceRestInterceptor, "post_get_account_limit"
     ) as post, mock.patch.object(
-        transports.IngestionServiceRestInterceptor,
-        "post_ingest_audience_members_with_metadata",
+        transports.AccountLimitsServiceRestInterceptor,
+        "post_get_account_limit_with_metadata",
     ) as post_with_metadata, mock.patch.object(
-        transports.IngestionServiceRestInterceptor, "pre_ingest_audience_members"
+        transports.AccountLimitsServiceRestInterceptor, "pre_get_account_limit"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
-        pb_message = ingestion_service.IngestAudienceMembersRequest.pb(
-            ingestion_service.IngestAudienceMembersRequest()
+        pb_message = accountlimits.GetAccountLimitRequest.pb(
+            accountlimits.GetAccountLimitRequest()
         )
         transcode.return_value = {
             "method": "post",
@@ -2849,24 +2848,19 @@ def test_ingest_audience_members_rest_interceptors(null_interceptor):
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
         req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
-        return_value = ingestion_service.IngestAudienceMembersResponse.to_json(
-            ingestion_service.IngestAudienceMembersResponse()
-        )
+        return_value = accountlimits.AccountLimit.to_json(accountlimits.AccountLimit())
         req.return_value.content = return_value
 
-        request = ingestion_service.IngestAudienceMembersRequest()
+        request = accountlimits.GetAccountLimitRequest()
         metadata = [
             ("key", "val"),
             ("cephalopod", "squid"),
         ]
         pre.return_value = request, metadata
-        post.return_value = ingestion_service.IngestAudienceMembersResponse()
-        post_with_metadata.return_value = (
-            ingestion_service.IngestAudienceMembersResponse(),
-            metadata,
-        )
+        post.return_value = accountlimits.AccountLimit()
+        post_with_metadata.return_value = accountlimits.AccountLimit(), metadata
 
-        client.ingest_audience_members(
+        client.get_account_limit(
             request,
             metadata=[
                 ("key", "val"),
@@ -2879,14 +2873,14 @@ def test_ingest_audience_members_rest_interceptors(null_interceptor):
         post_with_metadata.assert_called_once()
 
 
-def test_remove_audience_members_rest_bad_request(
-    request_type=ingestion_service.RemoveAudienceMembersRequest,
+def test_list_account_limits_rest_bad_request(
+    request_type=accountlimits.ListAccountLimitsRequest,
 ):
-    client = IngestionServiceClient(
+    client = AccountLimitsServiceClient(
         credentials=ga_credentials.AnonymousCredentials(), transport="rest"
     )
     # send a request that will satisfy transcoding
-    request_init = {}
+    request_init = {"parent": "accounts/sample1"}
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
@@ -2901,30 +2895,30 @@ def test_remove_audience_members_rest_bad_request(
         response_value.request = mock.Mock()
         req.return_value = response_value
         req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
-        client.remove_audience_members(request)
+        client.list_account_limits(request)
 
 
 @pytest.mark.parametrize(
     "request_type",
     [
-        ingestion_service.RemoveAudienceMembersRequest,
+        accountlimits.ListAccountLimitsRequest,
         dict,
     ],
 )
-def test_remove_audience_members_rest_call_success(request_type):
-    client = IngestionServiceClient(
+def test_list_account_limits_rest_call_success(request_type):
+    client = AccountLimitsServiceClient(
         credentials=ga_credentials.AnonymousCredentials(), transport="rest"
     )
 
     # send a request that will satisfy transcoding
-    request_init = {}
+    request_init = {"parent": "accounts/sample1"}
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a response.
     with mock.patch.object(type(client.transport._session), "request") as req:
         # Designate an appropriate value for the returned response.
-        return_value = ingestion_service.RemoveAudienceMembersResponse(
-            request_id="request_id_value",
+        return_value = accountlimits.ListAccountLimitsResponse(
+            next_page_token="next_page_token_value",
         )
 
         # Wrap the value into a proper Response obj
@@ -2932,45 +2926,45 @@ def test_remove_audience_members_rest_call_success(request_type):
         response_value.status_code = 200
 
         # Convert return value to protobuf type
-        return_value = ingestion_service.RemoveAudienceMembersResponse.pb(return_value)
+        return_value = accountlimits.ListAccountLimitsResponse.pb(return_value)
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
         req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
-        response = client.remove_audience_members(request)
+        response = client.list_account_limits(request)
 
     # Establish that the response is the type that we expect.
-    assert isinstance(response, ingestion_service.RemoveAudienceMembersResponse)
-    assert response.request_id == "request_id_value"
+    assert isinstance(response, pagers.ListAccountLimitsPager)
+    assert response.next_page_token == "next_page_token_value"
 
 
 @pytest.mark.parametrize("null_interceptor", [True, False])
-def test_remove_audience_members_rest_interceptors(null_interceptor):
-    transport = transports.IngestionServiceRestTransport(
+def test_list_account_limits_rest_interceptors(null_interceptor):
+    transport = transports.AccountLimitsServiceRestTransport(
         credentials=ga_credentials.AnonymousCredentials(),
         interceptor=None
         if null_interceptor
-        else transports.IngestionServiceRestInterceptor(),
+        else transports.AccountLimitsServiceRestInterceptor(),
     )
-    client = IngestionServiceClient(transport=transport)
+    client = AccountLimitsServiceClient(transport=transport)
 
     with mock.patch.object(
         type(client.transport._session), "request"
     ) as req, mock.patch.object(
         path_template, "transcode"
     ) as transcode, mock.patch.object(
-        transports.IngestionServiceRestInterceptor, "post_remove_audience_members"
+        transports.AccountLimitsServiceRestInterceptor, "post_list_account_limits"
     ) as post, mock.patch.object(
-        transports.IngestionServiceRestInterceptor,
-        "post_remove_audience_members_with_metadata",
+        transports.AccountLimitsServiceRestInterceptor,
+        "post_list_account_limits_with_metadata",
     ) as post_with_metadata, mock.patch.object(
-        transports.IngestionServiceRestInterceptor, "pre_remove_audience_members"
+        transports.AccountLimitsServiceRestInterceptor, "pre_list_account_limits"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
-        pb_message = ingestion_service.RemoveAudienceMembersRequest.pb(
-            ingestion_service.RemoveAudienceMembersRequest()
+        pb_message = accountlimits.ListAccountLimitsRequest.pb(
+            accountlimits.ListAccountLimitsRequest()
         )
         transcode.return_value = {
             "method": "post",
@@ -2982,286 +2976,24 @@ def test_remove_audience_members_rest_interceptors(null_interceptor):
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
         req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
-        return_value = ingestion_service.RemoveAudienceMembersResponse.to_json(
-            ingestion_service.RemoveAudienceMembersResponse()
+        return_value = accountlimits.ListAccountLimitsResponse.to_json(
+            accountlimits.ListAccountLimitsResponse()
         )
         req.return_value.content = return_value
 
-        request = ingestion_service.RemoveAudienceMembersRequest()
+        request = accountlimits.ListAccountLimitsRequest()
         metadata = [
             ("key", "val"),
             ("cephalopod", "squid"),
         ]
         pre.return_value = request, metadata
-        post.return_value = ingestion_service.RemoveAudienceMembersResponse()
+        post.return_value = accountlimits.ListAccountLimitsResponse()
         post_with_metadata.return_value = (
-            ingestion_service.RemoveAudienceMembersResponse(),
+            accountlimits.ListAccountLimitsResponse(),
             metadata,
         )
 
-        client.remove_audience_members(
-            request,
-            metadata=[
-                ("key", "val"),
-                ("cephalopod", "squid"),
-            ],
-        )
-
-        pre.assert_called_once()
-        post.assert_called_once()
-        post_with_metadata.assert_called_once()
-
-
-def test_ingest_events_rest_bad_request(
-    request_type=ingestion_service.IngestEventsRequest,
-):
-    client = IngestionServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
-    )
-    # send a request that will satisfy transcoding
-    request_init = {}
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
-    ):
-        # Wrap the value into a proper Response obj
-        response_value = mock.Mock()
-        json_return_value = ""
-        response_value.json = mock.Mock(return_value={})
-        response_value.status_code = 400
-        response_value.request = mock.Mock()
-        req.return_value = response_value
-        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
-        client.ingest_events(request)
-
-
-@pytest.mark.parametrize(
-    "request_type",
-    [
-        ingestion_service.IngestEventsRequest,
-        dict,
-    ],
-)
-def test_ingest_events_rest_call_success(request_type):
-    client = IngestionServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {}
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(type(client.transport._session), "request") as req:
-        # Designate an appropriate value for the returned response.
-        return_value = ingestion_service.IngestEventsResponse(
-            request_id="request_id_value",
-        )
-
-        # Wrap the value into a proper Response obj
-        response_value = mock.Mock()
-        response_value.status_code = 200
-
-        # Convert return value to protobuf type
-        return_value = ingestion_service.IngestEventsResponse.pb(return_value)
-        json_return_value = json_format.MessageToJson(return_value)
-        response_value.content = json_return_value.encode("UTF-8")
-        req.return_value = response_value
-        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
-        response = client.ingest_events(request)
-
-    # Establish that the response is the type that we expect.
-    assert isinstance(response, ingestion_service.IngestEventsResponse)
-    assert response.request_id == "request_id_value"
-
-
-@pytest.mark.parametrize("null_interceptor", [True, False])
-def test_ingest_events_rest_interceptors(null_interceptor):
-    transport = transports.IngestionServiceRestTransport(
-        credentials=ga_credentials.AnonymousCredentials(),
-        interceptor=None
-        if null_interceptor
-        else transports.IngestionServiceRestInterceptor(),
-    )
-    client = IngestionServiceClient(transport=transport)
-
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.IngestionServiceRestInterceptor, "post_ingest_events"
-    ) as post, mock.patch.object(
-        transports.IngestionServiceRestInterceptor, "post_ingest_events_with_metadata"
-    ) as post_with_metadata, mock.patch.object(
-        transports.IngestionServiceRestInterceptor, "pre_ingest_events"
-    ) as pre:
-        pre.assert_not_called()
-        post.assert_not_called()
-        post_with_metadata.assert_not_called()
-        pb_message = ingestion_service.IngestEventsRequest.pb(
-            ingestion_service.IngestEventsRequest()
-        )
-        transcode.return_value = {
-            "method": "post",
-            "uri": "my_uri",
-            "body": pb_message,
-            "query_params": pb_message,
-        }
-
-        req.return_value = mock.Mock()
-        req.return_value.status_code = 200
-        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
-        return_value = ingestion_service.IngestEventsResponse.to_json(
-            ingestion_service.IngestEventsResponse()
-        )
-        req.return_value.content = return_value
-
-        request = ingestion_service.IngestEventsRequest()
-        metadata = [
-            ("key", "val"),
-            ("cephalopod", "squid"),
-        ]
-        pre.return_value = request, metadata
-        post.return_value = ingestion_service.IngestEventsResponse()
-        post_with_metadata.return_value = (
-            ingestion_service.IngestEventsResponse(),
-            metadata,
-        )
-
-        client.ingest_events(
-            request,
-            metadata=[
-                ("key", "val"),
-                ("cephalopod", "squid"),
-            ],
-        )
-
-        pre.assert_called_once()
-        post.assert_called_once()
-        post_with_metadata.assert_called_once()
-
-
-def test_retrieve_request_status_rest_bad_request(
-    request_type=ingestion_service.RetrieveRequestStatusRequest,
-):
-    client = IngestionServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
-    )
-    # send a request that will satisfy transcoding
-    request_init = {}
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
-    ):
-        # Wrap the value into a proper Response obj
-        response_value = mock.Mock()
-        json_return_value = ""
-        response_value.json = mock.Mock(return_value={})
-        response_value.status_code = 400
-        response_value.request = mock.Mock()
-        req.return_value = response_value
-        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
-        client.retrieve_request_status(request)
-
-
-@pytest.mark.parametrize(
-    "request_type",
-    [
-        ingestion_service.RetrieveRequestStatusRequest,
-        dict,
-    ],
-)
-def test_retrieve_request_status_rest_call_success(request_type):
-    client = IngestionServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {}
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(type(client.transport._session), "request") as req:
-        # Designate an appropriate value for the returned response.
-        return_value = ingestion_service.RetrieveRequestStatusResponse()
-
-        # Wrap the value into a proper Response obj
-        response_value = mock.Mock()
-        response_value.status_code = 200
-
-        # Convert return value to protobuf type
-        return_value = ingestion_service.RetrieveRequestStatusResponse.pb(return_value)
-        json_return_value = json_format.MessageToJson(return_value)
-        response_value.content = json_return_value.encode("UTF-8")
-        req.return_value = response_value
-        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
-        response = client.retrieve_request_status(request)
-
-    # Establish that the response is the type that we expect.
-    assert isinstance(response, ingestion_service.RetrieveRequestStatusResponse)
-
-
-@pytest.mark.parametrize("null_interceptor", [True, False])
-def test_retrieve_request_status_rest_interceptors(null_interceptor):
-    transport = transports.IngestionServiceRestTransport(
-        credentials=ga_credentials.AnonymousCredentials(),
-        interceptor=None
-        if null_interceptor
-        else transports.IngestionServiceRestInterceptor(),
-    )
-    client = IngestionServiceClient(transport=transport)
-
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.IngestionServiceRestInterceptor, "post_retrieve_request_status"
-    ) as post, mock.patch.object(
-        transports.IngestionServiceRestInterceptor,
-        "post_retrieve_request_status_with_metadata",
-    ) as post_with_metadata, mock.patch.object(
-        transports.IngestionServiceRestInterceptor, "pre_retrieve_request_status"
-    ) as pre:
-        pre.assert_not_called()
-        post.assert_not_called()
-        post_with_metadata.assert_not_called()
-        pb_message = ingestion_service.RetrieveRequestStatusRequest.pb(
-            ingestion_service.RetrieveRequestStatusRequest()
-        )
-        transcode.return_value = {
-            "method": "post",
-            "uri": "my_uri",
-            "body": pb_message,
-            "query_params": pb_message,
-        }
-
-        req.return_value = mock.Mock()
-        req.return_value.status_code = 200
-        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
-        return_value = ingestion_service.RetrieveRequestStatusResponse.to_json(
-            ingestion_service.RetrieveRequestStatusResponse()
-        )
-        req.return_value.content = return_value
-
-        request = ingestion_service.RetrieveRequestStatusRequest()
-        metadata = [
-            ("key", "val"),
-            ("cephalopod", "squid"),
-        ]
-        pre.return_value = request, metadata
-        post.return_value = ingestion_service.RetrieveRequestStatusResponse()
-        post_with_metadata.return_value = (
-            ingestion_service.RetrieveRequestStatusResponse(),
-            metadata,
-        )
-
-        client.retrieve_request_status(
+        client.list_account_limits(
             request,
             metadata=[
                 ("key", "val"),
@@ -3275,7 +3007,7 @@ def test_retrieve_request_status_rest_interceptors(null_interceptor):
 
 
 def test_initialize_client_w_rest():
-    client = IngestionServiceClient(
+    client = AccountLimitsServiceClient(
         credentials=ga_credentials.AnonymousCredentials(), transport="rest"
     )
     assert client is not None
@@ -3283,127 +3015,83 @@ def test_initialize_client_w_rest():
 
 # This test is a coverage failsafe to make sure that totally empty calls,
 # i.e. request == None and no flattened fields passed, work.
-def test_ingest_audience_members_empty_call_rest():
-    client = IngestionServiceClient(
+def test_get_account_limit_empty_call_rest():
+    client = AccountLimitsServiceClient(
         credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
 
     # Mock the actual call, and fake the request.
     with mock.patch.object(
-        type(client.transport.ingest_audience_members), "__call__"
+        type(client.transport.get_account_limit), "__call__"
     ) as call:
-        client.ingest_audience_members(request=None)
+        client.get_account_limit(request=None)
 
         # Establish that the underlying stub method was called.
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        request_msg = ingestion_service.IngestAudienceMembersRequest()
+        request_msg = accountlimits.GetAccountLimitRequest()
 
         assert args[0] == request_msg
 
 
 # This test is a coverage failsafe to make sure that totally empty calls,
 # i.e. request == None and no flattened fields passed, work.
-def test_remove_audience_members_empty_call_rest():
-    client = IngestionServiceClient(
+def test_list_account_limits_empty_call_rest():
+    client = AccountLimitsServiceClient(
         credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
 
     # Mock the actual call, and fake the request.
     with mock.patch.object(
-        type(client.transport.remove_audience_members), "__call__"
+        type(client.transport.list_account_limits), "__call__"
     ) as call:
-        client.remove_audience_members(request=None)
+        client.list_account_limits(request=None)
 
         # Establish that the underlying stub method was called.
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        request_msg = ingestion_service.RemoveAudienceMembersRequest()
-
-        assert args[0] == request_msg
-
-
-# This test is a coverage failsafe to make sure that totally empty calls,
-# i.e. request == None and no flattened fields passed, work.
-def test_ingest_events_empty_call_rest():
-    client = IngestionServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-
-    # Mock the actual call, and fake the request.
-    with mock.patch.object(type(client.transport.ingest_events), "__call__") as call:
-        client.ingest_events(request=None)
-
-        # Establish that the underlying stub method was called.
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        request_msg = ingestion_service.IngestEventsRequest()
-
-        assert args[0] == request_msg
-
-
-# This test is a coverage failsafe to make sure that totally empty calls,
-# i.e. request == None and no flattened fields passed, work.
-def test_retrieve_request_status_empty_call_rest():
-    client = IngestionServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-
-    # Mock the actual call, and fake the request.
-    with mock.patch.object(
-        type(client.transport.retrieve_request_status), "__call__"
-    ) as call:
-        client.retrieve_request_status(request=None)
-
-        # Establish that the underlying stub method was called.
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        request_msg = ingestion_service.RetrieveRequestStatusRequest()
+        request_msg = accountlimits.ListAccountLimitsRequest()
 
         assert args[0] == request_msg
 
 
 def test_transport_grpc_default():
     # A client should use the gRPC transport by default.
-    client = IngestionServiceClient(
+    client = AccountLimitsServiceClient(
         credentials=ga_credentials.AnonymousCredentials(),
     )
     assert isinstance(
         client.transport,
-        transports.IngestionServiceGrpcTransport,
+        transports.AccountLimitsServiceGrpcTransport,
     )
 
 
-def test_ingestion_service_base_transport_error():
+def test_account_limits_service_base_transport_error():
     # Passing both a credentials object and credentials_file should raise an error
     with pytest.raises(core_exceptions.DuplicateCredentialArgs):
-        transport = transports.IngestionServiceTransport(
+        transport = transports.AccountLimitsServiceTransport(
             credentials=ga_credentials.AnonymousCredentials(),
             credentials_file="credentials.json",
         )
 
 
-def test_ingestion_service_base_transport():
+def test_account_limits_service_base_transport():
     # Instantiate the base transport.
     with mock.patch(
-        "google.ads.datamanager_v1.services.ingestion_service.transports.IngestionServiceTransport.__init__"
+        "google.shopping.merchant_quota_v1.services.account_limits_service.transports.AccountLimitsServiceTransport.__init__"
     ) as Transport:
         Transport.return_value = None
-        transport = transports.IngestionServiceTransport(
+        transport = transports.AccountLimitsServiceTransport(
             credentials=ga_credentials.AnonymousCredentials(),
         )
 
     # Every method on the transport should just blindly
     # raise NotImplementedError.
     methods = (
-        "ingest_audience_members",
-        "remove_audience_members",
-        "ingest_events",
-        "retrieve_request_status",
+        "get_account_limit",
+        "list_account_limits",
     )
     for method in methods:
         with pytest.raises(NotImplementedError):
@@ -3421,46 +3109,46 @@ def test_ingestion_service_base_transport():
             getattr(transport, r)()
 
 
-def test_ingestion_service_base_transport_with_credentials_file():
+def test_account_limits_service_base_transport_with_credentials_file():
     # Instantiate the base transport with a credentials file
     with mock.patch.object(
         google.auth, "load_credentials_from_file", autospec=True
     ) as load_creds, mock.patch(
-        "google.ads.datamanager_v1.services.ingestion_service.transports.IngestionServiceTransport._prep_wrapped_messages"
+        "google.shopping.merchant_quota_v1.services.account_limits_service.transports.AccountLimitsServiceTransport._prep_wrapped_messages"
     ) as Transport:
         Transport.return_value = None
         load_creds.return_value = (ga_credentials.AnonymousCredentials(), None)
-        transport = transports.IngestionServiceTransport(
+        transport = transports.AccountLimitsServiceTransport(
             credentials_file="credentials.json",
             quota_project_id="octopus",
         )
         load_creds.assert_called_once_with(
             "credentials.json",
             scopes=None,
-            default_scopes=("https://www.googleapis.com/auth/datamanager",),
+            default_scopes=("https://www.googleapis.com/auth/content",),
             quota_project_id="octopus",
         )
 
 
-def test_ingestion_service_base_transport_with_adc():
+def test_account_limits_service_base_transport_with_adc():
     # Test the default credentials are used if credentials and credentials_file are None.
     with mock.patch.object(google.auth, "default", autospec=True) as adc, mock.patch(
-        "google.ads.datamanager_v1.services.ingestion_service.transports.IngestionServiceTransport._prep_wrapped_messages"
+        "google.shopping.merchant_quota_v1.services.account_limits_service.transports.AccountLimitsServiceTransport._prep_wrapped_messages"
     ) as Transport:
         Transport.return_value = None
         adc.return_value = (ga_credentials.AnonymousCredentials(), None)
-        transport = transports.IngestionServiceTransport()
+        transport = transports.AccountLimitsServiceTransport()
         adc.assert_called_once()
 
 
-def test_ingestion_service_auth_adc():
+def test_account_limits_service_auth_adc():
     # If no credentials are provided, we should use ADC credentials.
     with mock.patch.object(google.auth, "default", autospec=True) as adc:
         adc.return_value = (ga_credentials.AnonymousCredentials(), None)
-        IngestionServiceClient()
+        AccountLimitsServiceClient()
         adc.assert_called_once_with(
             scopes=None,
-            default_scopes=("https://www.googleapis.com/auth/datamanager",),
+            default_scopes=("https://www.googleapis.com/auth/content",),
             quota_project_id=None,
         )
 
@@ -3468,11 +3156,11 @@ def test_ingestion_service_auth_adc():
 @pytest.mark.parametrize(
     "transport_class",
     [
-        transports.IngestionServiceGrpcTransport,
-        transports.IngestionServiceGrpcAsyncIOTransport,
+        transports.AccountLimitsServiceGrpcTransport,
+        transports.AccountLimitsServiceGrpcAsyncIOTransport,
     ],
 )
-def test_ingestion_service_transport_auth_adc(transport_class):
+def test_account_limits_service_transport_auth_adc(transport_class):
     # If credentials and host are not provided, the transport class should use
     # ADC credentials.
     with mock.patch.object(google.auth, "default", autospec=True) as adc:
@@ -3480,7 +3168,7 @@ def test_ingestion_service_transport_auth_adc(transport_class):
         transport_class(quota_project_id="octopus", scopes=["1", "2"])
         adc.assert_called_once_with(
             scopes=["1", "2"],
-            default_scopes=("https://www.googleapis.com/auth/datamanager",),
+            default_scopes=("https://www.googleapis.com/auth/content",),
             quota_project_id="octopus",
         )
 
@@ -3488,12 +3176,12 @@ def test_ingestion_service_transport_auth_adc(transport_class):
 @pytest.mark.parametrize(
     "transport_class",
     [
-        transports.IngestionServiceGrpcTransport,
-        transports.IngestionServiceGrpcAsyncIOTransport,
-        transports.IngestionServiceRestTransport,
+        transports.AccountLimitsServiceGrpcTransport,
+        transports.AccountLimitsServiceGrpcAsyncIOTransport,
+        transports.AccountLimitsServiceRestTransport,
     ],
 )
-def test_ingestion_service_transport_auth_gdch_credentials(transport_class):
+def test_account_limits_service_transport_auth_gdch_credentials(transport_class):
     host = "https://language.com"
     api_audience_tests = [None, "https://language2.com"]
     api_audience_expect = [host, "https://language2.com"]
@@ -3511,11 +3199,11 @@ def test_ingestion_service_transport_auth_gdch_credentials(transport_class):
 @pytest.mark.parametrize(
     "transport_class,grpc_helpers",
     [
-        (transports.IngestionServiceGrpcTransport, grpc_helpers),
-        (transports.IngestionServiceGrpcAsyncIOTransport, grpc_helpers_async),
+        (transports.AccountLimitsServiceGrpcTransport, grpc_helpers),
+        (transports.AccountLimitsServiceGrpcAsyncIOTransport, grpc_helpers_async),
     ],
 )
-def test_ingestion_service_transport_create_channel(transport_class, grpc_helpers):
+def test_account_limits_service_transport_create_channel(transport_class, grpc_helpers):
     # If credentials and host are not provided, the transport class should use
     # ADC credentials.
     with mock.patch.object(
@@ -3528,13 +3216,13 @@ def test_ingestion_service_transport_create_channel(transport_class, grpc_helper
         transport_class(quota_project_id="octopus", scopes=["1", "2"])
 
         create_channel.assert_called_with(
-            "datamanager.googleapis.com:443",
+            "merchantapi.googleapis.com:443",
             credentials=creds,
             credentials_file=None,
             quota_project_id="octopus",
-            default_scopes=("https://www.googleapis.com/auth/datamanager",),
+            default_scopes=("https://www.googleapis.com/auth/content",),
             scopes=["1", "2"],
-            default_host="datamanager.googleapis.com",
+            default_host="merchantapi.googleapis.com",
             ssl_credentials=None,
             options=[
                 ("grpc.max_send_message_length", -1),
@@ -3546,11 +3234,13 @@ def test_ingestion_service_transport_create_channel(transport_class, grpc_helper
 @pytest.mark.parametrize(
     "transport_class",
     [
-        transports.IngestionServiceGrpcTransport,
-        transports.IngestionServiceGrpcAsyncIOTransport,
+        transports.AccountLimitsServiceGrpcTransport,
+        transports.AccountLimitsServiceGrpcAsyncIOTransport,
     ],
 )
-def test_ingestion_service_grpc_transport_client_cert_source_for_mtls(transport_class):
+def test_account_limits_service_grpc_transport_client_cert_source_for_mtls(
+    transport_class,
+):
     cred = ga_credentials.AnonymousCredentials()
 
     # Check ssl_channel_credentials is used if provided.
@@ -3588,12 +3278,12 @@ def test_ingestion_service_grpc_transport_client_cert_source_for_mtls(transport_
             )
 
 
-def test_ingestion_service_http_transport_client_cert_source_for_mtls():
+def test_account_limits_service_http_transport_client_cert_source_for_mtls():
     cred = ga_credentials.AnonymousCredentials()
     with mock.patch(
         "google.auth.transport.requests.AuthorizedSession.configure_mtls_channel"
     ) as mock_configure_mtls_channel:
-        transports.IngestionServiceRestTransport(
+        transports.AccountLimitsServiceRestTransport(
             credentials=cred, client_cert_source_for_mtls=client_cert_source_callback
         )
         mock_configure_mtls_channel.assert_called_once_with(client_cert_source_callback)
@@ -3607,18 +3297,18 @@ def test_ingestion_service_http_transport_client_cert_source_for_mtls():
         "rest",
     ],
 )
-def test_ingestion_service_host_no_port(transport_name):
-    client = IngestionServiceClient(
+def test_account_limits_service_host_no_port(transport_name):
+    client = AccountLimitsServiceClient(
         credentials=ga_credentials.AnonymousCredentials(),
         client_options=client_options.ClientOptions(
-            api_endpoint="datamanager.googleapis.com"
+            api_endpoint="merchantapi.googleapis.com"
         ),
         transport=transport_name,
     )
     assert client.transport._host == (
-        "datamanager.googleapis.com:443"
+        "merchantapi.googleapis.com:443"
         if transport_name in ["grpc", "grpc_asyncio"]
-        else "https://datamanager.googleapis.com"
+        else "https://merchantapi.googleapis.com"
     )
 
 
@@ -3630,18 +3320,18 @@ def test_ingestion_service_host_no_port(transport_name):
         "rest",
     ],
 )
-def test_ingestion_service_host_with_port(transport_name):
-    client = IngestionServiceClient(
+def test_account_limits_service_host_with_port(transport_name):
+    client = AccountLimitsServiceClient(
         credentials=ga_credentials.AnonymousCredentials(),
         client_options=client_options.ClientOptions(
-            api_endpoint="datamanager.googleapis.com:8000"
+            api_endpoint="merchantapi.googleapis.com:8000"
         ),
         transport=transport_name,
     )
     assert client.transport._host == (
-        "datamanager.googleapis.com:8000"
+        "merchantapi.googleapis.com:8000"
         if transport_name in ["grpc", "grpc_asyncio"]
-        else "https://datamanager.googleapis.com:8000"
+        else "https://merchantapi.googleapis.com:8000"
     )
 
 
@@ -3651,36 +3341,30 @@ def test_ingestion_service_host_with_port(transport_name):
         "rest",
     ],
 )
-def test_ingestion_service_client_transport_session_collision(transport_name):
+def test_account_limits_service_client_transport_session_collision(transport_name):
     creds1 = ga_credentials.AnonymousCredentials()
     creds2 = ga_credentials.AnonymousCredentials()
-    client1 = IngestionServiceClient(
+    client1 = AccountLimitsServiceClient(
         credentials=creds1,
         transport=transport_name,
     )
-    client2 = IngestionServiceClient(
+    client2 = AccountLimitsServiceClient(
         credentials=creds2,
         transport=transport_name,
     )
-    session1 = client1.transport.ingest_audience_members._session
-    session2 = client2.transport.ingest_audience_members._session
+    session1 = client1.transport.get_account_limit._session
+    session2 = client2.transport.get_account_limit._session
     assert session1 != session2
-    session1 = client1.transport.remove_audience_members._session
-    session2 = client2.transport.remove_audience_members._session
-    assert session1 != session2
-    session1 = client1.transport.ingest_events._session
-    session2 = client2.transport.ingest_events._session
-    assert session1 != session2
-    session1 = client1.transport.retrieve_request_status._session
-    session2 = client2.transport.retrieve_request_status._session
+    session1 = client1.transport.list_account_limits._session
+    session2 = client2.transport.list_account_limits._session
     assert session1 != session2
 
 
-def test_ingestion_service_grpc_transport_channel():
+def test_account_limits_service_grpc_transport_channel():
     channel = grpc.secure_channel("http://localhost/", grpc.local_channel_credentials())
 
     # Check that channel is used if provided.
-    transport = transports.IngestionServiceGrpcTransport(
+    transport = transports.AccountLimitsServiceGrpcTransport(
         host="squid.clam.whelk",
         channel=channel,
     )
@@ -3689,11 +3373,11 @@ def test_ingestion_service_grpc_transport_channel():
     assert transport._ssl_channel_credentials == None
 
 
-def test_ingestion_service_grpc_asyncio_transport_channel():
+def test_account_limits_service_grpc_asyncio_transport_channel():
     channel = aio.secure_channel("http://localhost/", grpc.local_channel_credentials())
 
     # Check that channel is used if provided.
-    transport = transports.IngestionServiceGrpcAsyncIOTransport(
+    transport = transports.AccountLimitsServiceGrpcAsyncIOTransport(
         host="squid.clam.whelk",
         channel=channel,
     )
@@ -3707,11 +3391,11 @@ def test_ingestion_service_grpc_asyncio_transport_channel():
 @pytest.mark.parametrize(
     "transport_class",
     [
-        transports.IngestionServiceGrpcTransport,
-        transports.IngestionServiceGrpcAsyncIOTransport,
+        transports.AccountLimitsServiceGrpcTransport,
+        transports.AccountLimitsServiceGrpcAsyncIOTransport,
     ],
 )
-def test_ingestion_service_transport_channel_mtls_with_client_cert_source(
+def test_account_limits_service_transport_channel_mtls_with_client_cert_source(
     transport_class,
 ):
     with mock.patch(
@@ -3761,11 +3445,11 @@ def test_ingestion_service_transport_channel_mtls_with_client_cert_source(
 @pytest.mark.parametrize(
     "transport_class",
     [
-        transports.IngestionServiceGrpcTransport,
-        transports.IngestionServiceGrpcAsyncIOTransport,
+        transports.AccountLimitsServiceGrpcTransport,
+        transports.AccountLimitsServiceGrpcAsyncIOTransport,
     ],
 )
-def test_ingestion_service_transport_channel_mtls_with_adc(transport_class):
+def test_account_limits_service_transport_channel_mtls_with_adc(transport_class):
     mock_ssl_cred = mock.Mock()
     with mock.patch.multiple(
         "google.auth.transport.grpc.SslCredentials",
@@ -3802,106 +3486,149 @@ def test_ingestion_service_transport_channel_mtls_with_adc(transport_class):
             assert transport.grpc_channel == mock_grpc_channel
 
 
+def test_account_path():
+    account = "squid"
+    expected = "accounts/{account}".format(
+        account=account,
+    )
+    actual = AccountLimitsServiceClient.account_path(account)
+    assert expected == actual
+
+
+def test_parse_account_path():
+    expected = {
+        "account": "clam",
+    }
+    path = AccountLimitsServiceClient.account_path(**expected)
+
+    # Check that the path construction is reversible.
+    actual = AccountLimitsServiceClient.parse_account_path(path)
+    assert expected == actual
+
+
+def test_account_limit_path():
+    account = "whelk"
+    limit = "octopus"
+    expected = "accounts/{account}/limits/{limit}".format(
+        account=account,
+        limit=limit,
+    )
+    actual = AccountLimitsServiceClient.account_limit_path(account, limit)
+    assert expected == actual
+
+
+def test_parse_account_limit_path():
+    expected = {
+        "account": "oyster",
+        "limit": "nudibranch",
+    }
+    path = AccountLimitsServiceClient.account_limit_path(**expected)
+
+    # Check that the path construction is reversible.
+    actual = AccountLimitsServiceClient.parse_account_limit_path(path)
+    assert expected == actual
+
+
 def test_common_billing_account_path():
-    billing_account = "squid"
+    billing_account = "cuttlefish"
     expected = "billingAccounts/{billing_account}".format(
         billing_account=billing_account,
     )
-    actual = IngestionServiceClient.common_billing_account_path(billing_account)
+    actual = AccountLimitsServiceClient.common_billing_account_path(billing_account)
     assert expected == actual
 
 
 def test_parse_common_billing_account_path():
     expected = {
-        "billing_account": "clam",
+        "billing_account": "mussel",
     }
-    path = IngestionServiceClient.common_billing_account_path(**expected)
+    path = AccountLimitsServiceClient.common_billing_account_path(**expected)
 
     # Check that the path construction is reversible.
-    actual = IngestionServiceClient.parse_common_billing_account_path(path)
+    actual = AccountLimitsServiceClient.parse_common_billing_account_path(path)
     assert expected == actual
 
 
 def test_common_folder_path():
-    folder = "whelk"
+    folder = "winkle"
     expected = "folders/{folder}".format(
         folder=folder,
     )
-    actual = IngestionServiceClient.common_folder_path(folder)
+    actual = AccountLimitsServiceClient.common_folder_path(folder)
     assert expected == actual
 
 
 def test_parse_common_folder_path():
     expected = {
-        "folder": "octopus",
+        "folder": "nautilus",
     }
-    path = IngestionServiceClient.common_folder_path(**expected)
+    path = AccountLimitsServiceClient.common_folder_path(**expected)
 
     # Check that the path construction is reversible.
-    actual = IngestionServiceClient.parse_common_folder_path(path)
+    actual = AccountLimitsServiceClient.parse_common_folder_path(path)
     assert expected == actual
 
 
 def test_common_organization_path():
-    organization = "oyster"
+    organization = "scallop"
     expected = "organizations/{organization}".format(
         organization=organization,
     )
-    actual = IngestionServiceClient.common_organization_path(organization)
+    actual = AccountLimitsServiceClient.common_organization_path(organization)
     assert expected == actual
 
 
 def test_parse_common_organization_path():
     expected = {
-        "organization": "nudibranch",
+        "organization": "abalone",
     }
-    path = IngestionServiceClient.common_organization_path(**expected)
+    path = AccountLimitsServiceClient.common_organization_path(**expected)
 
     # Check that the path construction is reversible.
-    actual = IngestionServiceClient.parse_common_organization_path(path)
+    actual = AccountLimitsServiceClient.parse_common_organization_path(path)
     assert expected == actual
 
 
 def test_common_project_path():
-    project = "cuttlefish"
+    project = "squid"
     expected = "projects/{project}".format(
         project=project,
     )
-    actual = IngestionServiceClient.common_project_path(project)
+    actual = AccountLimitsServiceClient.common_project_path(project)
     assert expected == actual
 
 
 def test_parse_common_project_path():
     expected = {
-        "project": "mussel",
+        "project": "clam",
     }
-    path = IngestionServiceClient.common_project_path(**expected)
+    path = AccountLimitsServiceClient.common_project_path(**expected)
 
     # Check that the path construction is reversible.
-    actual = IngestionServiceClient.parse_common_project_path(path)
+    actual = AccountLimitsServiceClient.parse_common_project_path(path)
     assert expected == actual
 
 
 def test_common_location_path():
-    project = "winkle"
-    location = "nautilus"
+    project = "whelk"
+    location = "octopus"
     expected = "projects/{project}/locations/{location}".format(
         project=project,
         location=location,
     )
-    actual = IngestionServiceClient.common_location_path(project, location)
+    actual = AccountLimitsServiceClient.common_location_path(project, location)
     assert expected == actual
 
 
 def test_parse_common_location_path():
     expected = {
-        "project": "scallop",
-        "location": "abalone",
+        "project": "oyster",
+        "location": "nudibranch",
     }
-    path = IngestionServiceClient.common_location_path(**expected)
+    path = AccountLimitsServiceClient.common_location_path(**expected)
 
     # Check that the path construction is reversible.
-    actual = IngestionServiceClient.parse_common_location_path(path)
+    actual = AccountLimitsServiceClient.parse_common_location_path(path)
     assert expected == actual
 
 
@@ -3909,18 +3636,18 @@ def test_client_with_default_client_info():
     client_info = gapic_v1.client_info.ClientInfo()
 
     with mock.patch.object(
-        transports.IngestionServiceTransport, "_prep_wrapped_messages"
+        transports.AccountLimitsServiceTransport, "_prep_wrapped_messages"
     ) as prep:
-        client = IngestionServiceClient(
+        client = AccountLimitsServiceClient(
             credentials=ga_credentials.AnonymousCredentials(),
             client_info=client_info,
         )
         prep.assert_called_once_with(client_info)
 
     with mock.patch.object(
-        transports.IngestionServiceTransport, "_prep_wrapped_messages"
+        transports.AccountLimitsServiceTransport, "_prep_wrapped_messages"
     ) as prep:
-        transport_class = IngestionServiceClient.get_transport_class()
+        transport_class = AccountLimitsServiceClient.get_transport_class()
         transport = transport_class(
             credentials=ga_credentials.AnonymousCredentials(),
             client_info=client_info,
@@ -3929,7 +3656,7 @@ def test_client_with_default_client_info():
 
 
 def test_transport_close_grpc():
-    client = IngestionServiceClient(
+    client = AccountLimitsServiceClient(
         credentials=ga_credentials.AnonymousCredentials(), transport="grpc"
     )
     with mock.patch.object(
@@ -3942,7 +3669,7 @@ def test_transport_close_grpc():
 
 @pytest.mark.asyncio
 async def test_transport_close_grpc_asyncio():
-    client = IngestionServiceAsyncClient(
+    client = AccountLimitsServiceAsyncClient(
         credentials=async_anonymous_credentials(), transport="grpc_asyncio"
     )
     with mock.patch.object(
@@ -3954,7 +3681,7 @@ async def test_transport_close_grpc_asyncio():
 
 
 def test_transport_close_rest():
-    client = IngestionServiceClient(
+    client = AccountLimitsServiceClient(
         credentials=ga_credentials.AnonymousCredentials(), transport="rest"
     )
     with mock.patch.object(
@@ -3971,7 +3698,7 @@ def test_client_ctx():
         "grpc",
     ]
     for transport in transports:
-        client = IngestionServiceClient(
+        client = AccountLimitsServiceClient(
             credentials=ga_credentials.AnonymousCredentials(), transport=transport
         )
         # Test client calls underlying transport.
@@ -3985,8 +3712,11 @@ def test_client_ctx():
 @pytest.mark.parametrize(
     "client_class,transport_class",
     [
-        (IngestionServiceClient, transports.IngestionServiceGrpcTransport),
-        (IngestionServiceAsyncClient, transports.IngestionServiceGrpcAsyncIOTransport),
+        (AccountLimitsServiceClient, transports.AccountLimitsServiceGrpcTransport),
+        (
+            AccountLimitsServiceAsyncClient,
+            transports.AccountLimitsServiceGrpcAsyncIOTransport,
+        ),
     ],
 )
 def test_api_key_credentials(client_class, transport_class):

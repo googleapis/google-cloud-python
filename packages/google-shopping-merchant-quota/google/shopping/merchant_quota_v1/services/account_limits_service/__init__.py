@@ -13,28 +13,10 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-from .accountlimits import (
-    AccountLimit,
-    GetAccountLimitRequest,
-    ListAccountLimitsRequest,
-    ListAccountLimitsResponse,
-    ProductLimit,
-)
-from .quota import (
-    ListQuotaGroupsRequest,
-    ListQuotaGroupsResponse,
-    MethodDetails,
-    QuotaGroup,
-)
+from .async_client import AccountLimitsServiceAsyncClient
+from .client import AccountLimitsServiceClient
 
 __all__ = (
-    "AccountLimit",
-    "GetAccountLimitRequest",
-    "ListAccountLimitsRequest",
-    "ListAccountLimitsResponse",
-    "ProductLimit",
-    "ListQuotaGroupsRequest",
-    "ListQuotaGroupsResponse",
-    "MethodDetails",
-    "QuotaGroup",
+    "AccountLimitsServiceClient",
+    "AccountLimitsServiceAsyncClient",
 )

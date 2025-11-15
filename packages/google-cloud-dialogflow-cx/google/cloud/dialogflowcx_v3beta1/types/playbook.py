@@ -21,11 +21,13 @@ from google.protobuf import field_mask_pb2  # type: ignore
 from google.protobuf import timestamp_pb2  # type: ignore
 import proto  # type: ignore
 
+from google.cloud.dialogflowcx_v3beta1.types import code_block as gcdc_code_block
 from google.cloud.dialogflowcx_v3beta1.types import fulfillment as gcdc_fulfillment
 from google.cloud.dialogflowcx_v3beta1.types import (
     import_strategy as gcdc_import_strategy,
 )
-from google.cloud.dialogflowcx_v3beta1.types import advanced_settings, example
+from google.cloud.dialogflowcx_v3beta1.types import advanced_settings
+from google.cloud.dialogflowcx_v3beta1.types import example
 from google.cloud.dialogflowcx_v3beta1.types import generative_settings
 from google.cloud.dialogflowcx_v3beta1.types import parameter_definition
 
@@ -251,6 +253,15 @@ class Playbook(proto.Message):
             instructions. If not provided explicitly, they
             are will be implied using the tool being
             referenced in goal and steps.
+        inline_actions (MutableSequence[str]):
+            Optional. Output only. Names of inline
+            actions scoped to this playbook. These actions
+            are in addition to those belonging to referenced
+            tools, child playbooks, and flows, e.g. actions
+            that are defined in the playbook's code block.
+        code_block (google.cloud.dialogflowcx_v3beta1.types.CodeBlock):
+            Optional. The playbook's scoped code block,
+            which may implement handlers and actions.
         llm_model_settings (google.cloud.dialogflowcx_v3beta1.types.LlmModelSettings):
             Optional. Llm model settings for the
             playbook.
@@ -386,6 +397,15 @@ class Playbook(proto.Message):
     referenced_tools: MutableSequence[str] = proto.RepeatedField(
         proto.STRING,
         number=13,
+    )
+    inline_actions: MutableSequence[str] = proto.RepeatedField(
+        proto.STRING,
+        number=22,
+    )
+    code_block: gcdc_code_block.CodeBlock = proto.Field(
+        proto.MESSAGE,
+        number=21,
+        message=gcdc_code_block.CodeBlock,
     )
     llm_model_settings: generative_settings.LlmModelSettings = proto.Field(
         proto.MESSAGE,
