@@ -49,6 +49,7 @@ from cli import (
     _get_libraries_to_prepare_for_release,
     _get_new_library_config,
     _get_previous_version,
+    _get_repo_name_from_repo_metadata,
     _get_staging_child_directory,
     _add_new_library_version,
     _prepare_new_library_config,
@@ -139,6 +140,13 @@ _MOCK_BAZEL_CONTENT_PY_PROTO = """load(
 py_proto_library(
     name = "language_py_proto",
 )"""
+
+
+@pytest.fixture(autouse=True)
+def _clear_lru_cache():
+    """Automatically clears the cache of all LRU-cached functions after each test."""
+    yield
+    _get_repo_name_from_repo_metadata.cache_clear()
 
 
 @pytest.fixture
@@ -1265,6 +1273,9 @@ def test_update_changelog_for_library_single_repo(mocker):
     mock_read = mocker.patch("cli._read_text_file", return_value=mock_content)
     mock_write = mocker.patch("cli._write_text_file")
     mock_path_exists = mocker.patch("cli.os.path.lexists", return_value=True)
+    mocker.patch(
+        "cli._get_repo_name_from_repo_metadata", return_value="google-cloud-python"
+    )
     _update_changelog_for_library(
         "repo",
         "output",
@@ -1300,7 +1311,12 @@ def test_process_changelog_success():
     library_id = "google-cloud-language"
 
     result = _process_changelog(
-        mock_content, _MOCK_LIBRARY_CHANGES, version, previous_version, library_id
+        mock_content,
+        _MOCK_LIBRARY_CHANGES,
+        version,
+        previous_version,
+        library_id,
+        "google-cloud-python",
     )
     assert result == expected_result
 
@@ -1308,7 +1324,7 @@ def test_process_changelog_success():
 def test_process_changelog_failure():
     """Tests that value error is raised if the changelog anchor string cannot be found"""
     with pytest.raises(ValueError):
-        _process_changelog("", [], "", "", "")
+        _process_changelog("", [], "", "", "", "google-cloud-python")
 
 
 def test_update_changelog_for_library_failure(mocker):
@@ -1351,7 +1367,9 @@ def test_create_main_version_header():
     previous_version = "1.2.2"
     version = "1.2.3"
     library_id = "google-cloud-language"
-    actual_header = _create_main_version_header(version, previous_version, library_id)
+    actual_header = _create_main_version_header(
+        version, previous_version, library_id, "google-cloud-python"
+    )
     assert actual_header == expected_header
 
 
@@ -1885,3 +1903,19 @@ def test_copy_readme_to_docs_source_not_exists(mocker, is_mono_repo):
     mock_os_remove.assert_not_called()
     mock_makedirs.assert_not_called()
     mock_shutil_copy.assert_not_called()
+
+
+def test_get_repo_name_from_repo_metadata_success(mocker):
+    """Tests that the repo name is returned when it exists."""
+    mocker.patch(
+        "cli._read_json_file", return_value={"repo": "googleapis/google-cloud-python"}
+    )
+    repo_name = _get_repo_name_from_repo_metadata("base", "library_id", False)
+    assert repo_name == "googleapis/google-cloud-python"
+
+
+def test_get_repo_name_from_repo_metadata_missing_repo(mocker):
+    """Tests that a ValueError is raised when the repo field is missing."""
+    mocker.patch("cli._read_json_file", return_value={})
+    with pytest.raises(ValueError):
+        _get_repo_name_from_repo_metadata("base", "library_id", False)
