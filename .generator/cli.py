@@ -55,7 +55,7 @@ LIBRARIAN_DIR = "librarian"
 OUTPUT_DIR = "output"
 REPO_DIR = "repo"
 SOURCE_DIR = "source"
-_GITHUB_BASE = f"https://github.com"
+_GITHUB_BASE = "https://github.com"
 
 
 def _read_text_file(path: str) -> str:
