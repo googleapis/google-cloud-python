@@ -3145,6 +3145,7 @@ class TestClient(unittest.TestCase):
             page_start=_buckets_page_start,
         )
 
+
 class Test__item_to_bucket(unittest.TestCase):
     def _call_fut(self, iterator, item):
         from google.cloud.storage.client import _item_to_bucket

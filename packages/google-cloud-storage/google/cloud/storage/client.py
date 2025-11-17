@@ -73,6 +73,7 @@ def _buckets_page_start(iterator, page, response):
         )
     page.unreachable = unreachable
 
+
 class Client(ClientWithProject):
     """Client to bundle configuration needed for API requests.
 
