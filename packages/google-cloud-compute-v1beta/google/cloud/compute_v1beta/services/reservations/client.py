@@ -696,8 +696,9 @@ class ReservationsClient(metaclass=ReservationsClientMeta):
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> pagers.AggregatedListPager:
-        r"""Retrieves an aggregated list of reservations. To prevent
-        failure, Google recommends that you set the
+        r"""Retrieves an aggregated list of reservations.
+
+        To prevent failure, it is recommended that you set the
         ``returnPartialSuccess`` parameter to ``true``.
 
         .. code-block:: python
@@ -1170,11 +1171,11 @@ class ReservationsClient(metaclass=ReservationsClientMeta):
 
         Returns:
             google.cloud.compute_v1beta.types.Reservation:
-                Represents a reservation resource. A
+                Represents a reservation resource.  A
                 reservation ensures that capacity is
                 held in a specific zone even if the
                 reserved VMs are not running. For more
-                information, read Reserving zonal
+                information, read  Reserving zonal
                 resources.
 
         """
@@ -1310,28 +1311,36 @@ class ReservationsClient(metaclass=ReservationsClientMeta):
 
         Returns:
             google.cloud.compute_v1beta.types.Policy:
-                An Identity and Access Management (IAM) policy, which
-                specifies access controls for Google Cloud resources. A
-                Policy is a collection of bindings. A binding binds one
-                or more members, or principals, to a single role.
-                Principals can be user accounts, service accounts,
-                Google groups, and domains (such as G Suite). A role is
-                a named list of permissions; each role can be an IAM
-                predefined role or a user-created custom role. For some
-                types of Google Cloud resources, a binding can also
-                specify a condition, which is a logical expression that
-                allows access to a resource only if the expression
-                evaluates to true. A condition can add constraints based
-                on attributes of the request, the resource, or both. To
-                learn which resources support conditions in their IAM
-                policies, see the [IAM
-                documentation](https://cloud.google.com/iam/help/conditions/resource-policies).
-                **JSON example:**
-                :literal:`` { "bindings": [ { "role": "roles/resourcemanager.organizationAdmin", "members": [ "user:mike@example.com", "group:admins@example.com", "domain:google.com", "serviceAccount:my-project-id@appspot.gserviceaccount.com" ] }, { "role": "roles/resourcemanager.organizationViewer", "members": [ "user:eve@example.com" ], "condition": { "title": "expirable access", "description": "Does not grant access after Sep 2020", "expression": "request.time < timestamp('2020-10-01T00:00:00.000Z')", } } ], "etag": "BwWWja0YfJA=", "version": 3 }`\
-                \**YAML example:\*\*
-                \ ``bindings: - members: - user:mike@example.com - group:admins@example.com - domain:google.com - serviceAccount:my-project-id@appspot.gserviceaccount.com role: roles/resourcemanager.organizationAdmin - members: - user:eve@example.com role: roles/resourcemanager.organizationViewer condition: title: expirable access description: Does not grant access after Sep 2020 expression: request.time < timestamp('2020-10-01T00:00:00.000Z') etag: BwWWja0YfJA= version: 3``\ \`
-                For a description of IAM and its features, see the [IAM
-                documentation](https://cloud.google.com/iam/docs/).
+                An Identity and Access Management (IAM) policy, which specifies access
+                   controls for Google Cloud resources.
+
+                   A Policy is a collection of bindings. A binding binds
+                   one or more members, or principals, to a single role.
+                   Principals can be user accounts, service accounts,
+                   Google groups, and domains (such as G Suite). A role
+                   is a named list of permissions; each role can be an
+                   IAM predefined role or a user-created custom role.
+
+                   For some types of Google Cloud resources, a binding
+                   can also specify a condition, which is a logical
+                   expression that allows access to a resource only if
+                   the expression evaluates to true. A condition can add
+                   constraints based on attributes of the request, the
+                   resource, or both. To learn which resources support
+                   conditions in their IAM policies, see the [IAM
+                   documentation](https://cloud.google.com/iam/help/conditions/resource-policies).
+
+                   **JSON example:**
+
+                   :literal:``     {       "bindings": [         {           "role": "roles/resourcemanager.organizationAdmin",           "members": [             "user:mike@example.com",             "group:admins@example.com",             "domain:google.com",             "serviceAccount:my-project-id@appspot.gserviceaccount.com"           ]         },         {           "role": "roles/resourcemanager.organizationViewer",           "members": [             "user:eve@example.com"           ],           "condition": {             "title": "expirable access",             "description": "Does not grant access after Sep 2020",             "expression": "request.time < timestamp('2020-10-01T00:00:00.000Z')",           }         }       ],       "etag": "BwWWja0YfJA=",       "version": 3     }`\ \`
+
+                   **YAML example:**
+
+                   :literal:``     bindings:     - members:       - user:mike@example.com       - group:admins@example.com       - domain:google.com       - serviceAccount:my-project-id@appspot.gserviceaccount.com       role: roles/resourcemanager.organizationAdmin     - members:       - user:eve@example.com       role: roles/resourcemanager.organizationViewer       condition:         title: expirable access         description: Does not grant access after Sep 2020         expression: request.time < timestamp('2020-10-01T00:00:00.000Z')     etag: BwWWja0YfJA=     version: 3`\ \`
+
+                   For a description of IAM and its features, see the
+                   [IAM
+                   documentation](https://cloud.google.com/iam/docs/).
 
         """
         # Create or coerce a protobuf request object.
@@ -1401,8 +1410,8 @@ class ReservationsClient(metaclass=ReservationsClientMeta):
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> compute.Operation:
-        r"""Creates a new reservation. For more information, read
-        Reserving zonal resources.
+        r"""Creates a new reservation. For more information,
+        readReserving zonal resources.
 
         .. code-block:: python
 
@@ -1531,8 +1540,8 @@ class ReservationsClient(metaclass=ReservationsClientMeta):
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> extended_operation.ExtendedOperation:
-        r"""Creates a new reservation. For more information, read
-        Reserving zonal resources.
+        r"""Creates a new reservation. For more information,
+        readReserving zonal resources.
 
         .. code-block:: python
 
@@ -1874,8 +1883,8 @@ class ReservationsClient(metaclass=ReservationsClientMeta):
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
             reservation (str):
-                The name of the reservation. Name
-                should conform to RFC1035 or be a
+                The name of the reservation.
+                Name should conform to RFC1035 or be a
                 resource ID.
 
                 This corresponds to the ``reservation`` field
@@ -2029,8 +2038,8 @@ class ReservationsClient(metaclass=ReservationsClientMeta):
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
             reservation (str):
-                The name of the reservation. Name
-                should conform to RFC1035 or be a
+                The name of the reservation.
+                Name should conform to RFC1035 or be a
                 resource ID.
 
                 This corresponds to the ``reservation`` field
@@ -2160,7 +2169,7 @@ class ReservationsClient(metaclass=ReservationsClientMeta):
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> compute.Operation:
         r"""Resizes the reservation (applicable to standalone
-        reservations only). For more information, read Modifying
+        reservations only). For more information, readModifying
         reservations.
 
         .. code-block:: python
@@ -2310,7 +2319,7 @@ class ReservationsClient(metaclass=ReservationsClientMeta):
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> extended_operation.ExtendedOperation:
         r"""Resizes the reservation (applicable to standalone
-        reservations only). For more information, read Modifying
+        reservations only). For more information, readModifying
         reservations.
 
         .. code-block:: python
@@ -2552,28 +2561,36 @@ class ReservationsClient(metaclass=ReservationsClientMeta):
 
         Returns:
             google.cloud.compute_v1beta.types.Policy:
-                An Identity and Access Management (IAM) policy, which
-                specifies access controls for Google Cloud resources. A
-                Policy is a collection of bindings. A binding binds one
-                or more members, or principals, to a single role.
-                Principals can be user accounts, service accounts,
-                Google groups, and domains (such as G Suite). A role is
-                a named list of permissions; each role can be an IAM
-                predefined role or a user-created custom role. For some
-                types of Google Cloud resources, a binding can also
-                specify a condition, which is a logical expression that
-                allows access to a resource only if the expression
-                evaluates to true. A condition can add constraints based
-                on attributes of the request, the resource, or both. To
-                learn which resources support conditions in their IAM
-                policies, see the [IAM
-                documentation](https://cloud.google.com/iam/help/conditions/resource-policies).
-                **JSON example:**
-                :literal:`` { "bindings": [ { "role": "roles/resourcemanager.organizationAdmin", "members": [ "user:mike@example.com", "group:admins@example.com", "domain:google.com", "serviceAccount:my-project-id@appspot.gserviceaccount.com" ] }, { "role": "roles/resourcemanager.organizationViewer", "members": [ "user:eve@example.com" ], "condition": { "title": "expirable access", "description": "Does not grant access after Sep 2020", "expression": "request.time < timestamp('2020-10-01T00:00:00.000Z')", } } ], "etag": "BwWWja0YfJA=", "version": 3 }`\
-                \**YAML example:\*\*
-                \ ``bindings: - members: - user:mike@example.com - group:admins@example.com - domain:google.com - serviceAccount:my-project-id@appspot.gserviceaccount.com role: roles/resourcemanager.organizationAdmin - members: - user:eve@example.com role: roles/resourcemanager.organizationViewer condition: title: expirable access description: Does not grant access after Sep 2020 expression: request.time < timestamp('2020-10-01T00:00:00.000Z') etag: BwWWja0YfJA= version: 3``\ \`
-                For a description of IAM and its features, see the [IAM
-                documentation](https://cloud.google.com/iam/docs/).
+                An Identity and Access Management (IAM) policy, which specifies access
+                   controls for Google Cloud resources.
+
+                   A Policy is a collection of bindings. A binding binds
+                   one or more members, or principals, to a single role.
+                   Principals can be user accounts, service accounts,
+                   Google groups, and domains (such as G Suite). A role
+                   is a named list of permissions; each role can be an
+                   IAM predefined role or a user-created custom role.
+
+                   For some types of Google Cloud resources, a binding
+                   can also specify a condition, which is a logical
+                   expression that allows access to a resource only if
+                   the expression evaluates to true. A condition can add
+                   constraints based on attributes of the request, the
+                   resource, or both. To learn which resources support
+                   conditions in their IAM policies, see the [IAM
+                   documentation](https://cloud.google.com/iam/help/conditions/resource-policies).
+
+                   **JSON example:**
+
+                   :literal:``     {       "bindings": [         {           "role": "roles/resourcemanager.organizationAdmin",           "members": [             "user:mike@example.com",             "group:admins@example.com",             "domain:google.com",             "serviceAccount:my-project-id@appspot.gserviceaccount.com"           ]         },         {           "role": "roles/resourcemanager.organizationViewer",           "members": [             "user:eve@example.com"           ],           "condition": {             "title": "expirable access",             "description": "Does not grant access after Sep 2020",             "expression": "request.time < timestamp('2020-10-01T00:00:00.000Z')",           }         }       ],       "etag": "BwWWja0YfJA=",       "version": 3     }`\ \`
+
+                   **YAML example:**
+
+                   :literal:``     bindings:     - members:       - user:mike@example.com       - group:admins@example.com       - domain:google.com       - serviceAccount:my-project-id@appspot.gserviceaccount.com       role: roles/resourcemanager.organizationAdmin     - members:       - user:eve@example.com       role: roles/resourcemanager.organizationViewer       condition:         title: expirable access         description: Does not grant access after Sep 2020         expression: request.time < timestamp('2020-10-01T00:00:00.000Z')     etag: BwWWja0YfJA=     version: 3`\ \`
+
+                   For a description of IAM and its features, see the
+                   [IAM
+                   documentation](https://cloud.google.com/iam/docs/).
 
         """
         # Create or coerce a protobuf request object.

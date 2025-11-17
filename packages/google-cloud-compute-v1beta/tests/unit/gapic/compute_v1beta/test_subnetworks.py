@@ -1004,6 +1004,7 @@ def test_aggregated_list_rest_required_fields(
             "page_token",
             "return_partial_success",
             "service_project_number",
+            "views",
         )
     )
     jsonified_request.update(unset_fields)
@@ -1070,6 +1071,7 @@ def test_aggregated_list_rest_unset_required_fields():
                 "pageToken",
                 "returnPartialSuccess",
                 "serviceProjectNumber",
+                "views",
             )
         )
         & set(("project",))

@@ -151,6 +151,11 @@
                 "add_signed_url_key"
               ]
             },
+            "AggregatedList": {
+              "methods": [
+                "aggregated_list"
+              ]
+            },
             "Delete": {
               "methods": [
                 "delete"
@@ -1019,6 +1024,25 @@
         }
       }
     },
+    "GlobalVmExtensionPolicies": {
+      "clients": {
+        "rest": {
+          "libraryClient": "GlobalVmExtensionPoliciesClient",
+          "rpcs": {
+            "AggregatedList": {
+              "methods": [
+                "aggregated_list"
+              ]
+            },
+            "Get": {
+              "methods": [
+                "get"
+              ]
+            }
+          }
+        }
+      }
+    },
     "HealthChecks": {
       "clients": {
         "rest": {
@@ -1223,6 +1247,11 @@
             "Get": {
               "methods": [
                 "get"
+              ]
+            },
+            "GetAvailableAcceleratorTopologies": {
+              "methods": [
+                "get_available_accelerator_topologies"
               ]
             },
             "Insert": {
@@ -3078,6 +3107,60 @@
         }
       }
     },
+    "RegionBackendBuckets": {
+      "clients": {
+        "rest": {
+          "libraryClient": "RegionBackendBucketsClient",
+          "rpcs": {
+            "Delete": {
+              "methods": [
+                "delete"
+              ]
+            },
+            "Get": {
+              "methods": [
+                "get"
+              ]
+            },
+            "GetIamPolicy": {
+              "methods": [
+                "get_iam_policy"
+              ]
+            },
+            "Insert": {
+              "methods": [
+                "insert"
+              ]
+            },
+            "List": {
+              "methods": [
+                "list"
+              ]
+            },
+            "ListUsable": {
+              "methods": [
+                "list_usable"
+              ]
+            },
+            "Patch": {
+              "methods": [
+                "patch"
+              ]
+            },
+            "SetIamPolicy": {
+              "methods": [
+                "set_iam_policy"
+              ]
+            },
+            "TestIamPermissions": {
+              "methods": [
+                "test_iam_permissions"
+              ]
+            }
+          }
+        }
+      }
+    },
     "RegionBackendServices": {
       "clients": {
         "rest": {
@@ -3185,6 +3268,50 @@
             "UpdateReservations": {
               "methods": [
                 "update_reservations"
+              ]
+            }
+          }
+        }
+      }
+    },
+    "RegionCompositeHealthChecks": {
+      "clients": {
+        "rest": {
+          "libraryClient": "RegionCompositeHealthChecksClient",
+          "rpcs": {
+            "AggregatedList": {
+              "methods": [
+                "aggregated_list"
+              ]
+            },
+            "Delete": {
+              "methods": [
+                "delete"
+              ]
+            },
+            "Get": {
+              "methods": [
+                "get"
+              ]
+            },
+            "Insert": {
+              "methods": [
+                "insert"
+              ]
+            },
+            "List": {
+              "methods": [
+                "list"
+              ]
+            },
+            "Patch": {
+              "methods": [
+                "patch"
+              ]
+            },
+            "TestIamPermissions": {
+              "methods": [
+                "test_iam_permissions"
               ]
             }
           }
@@ -3317,6 +3444,50 @@
             "Update": {
               "methods": [
                 "update"
+              ]
+            }
+          }
+        }
+      }
+    },
+    "RegionHealthAggregationPolicies": {
+      "clients": {
+        "rest": {
+          "libraryClient": "RegionHealthAggregationPoliciesClient",
+          "rpcs": {
+            "AggregatedList": {
+              "methods": [
+                "aggregated_list"
+              ]
+            },
+            "Delete": {
+              "methods": [
+                "delete"
+              ]
+            },
+            "Get": {
+              "methods": [
+                "get"
+              ]
+            },
+            "Insert": {
+              "methods": [
+                "insert"
+              ]
+            },
+            "List": {
+              "methods": [
+                "list"
+              ]
+            },
+            "Patch": {
+              "methods": [
+                "patch"
+              ]
+            },
+            "TestIamPermissions": {
+              "methods": [
+                "test_iam_permissions"
               ]
             }
           }
@@ -4487,6 +4658,11 @@
                 "get"
               ]
             },
+            "GetIamPolicy": {
+              "methods": [
+                "get_iam_policy"
+              ]
+            },
             "List": {
               "methods": [
                 "list"
@@ -4495,6 +4671,16 @@
             "PerformMaintenance": {
               "methods": [
                 "perform_maintenance"
+              ]
+            },
+            "SetIamPolicy": {
+              "methods": [
+                "set_iam_policy"
+              ]
+            },
+            "TestIamPermissions": {
+              "methods": [
+                "test_iam_permissions"
               ]
             }
           }
@@ -4511,6 +4697,11 @@
                 "get"
               ]
             },
+            "GetIamPolicy": {
+              "methods": [
+                "get_iam_policy"
+              ]
+            },
             "List": {
               "methods": [
                 "list"
@@ -4524,6 +4715,16 @@
             "ReportFaulty": {
               "methods": [
                 "report_faulty"
+              ]
+            },
+            "SetIamPolicy": {
+              "methods": [
+                "set_iam_policy"
+              ]
+            },
+            "TestIamPermissions": {
+              "methods": [
+                "test_iam_permissions"
               ]
             }
           }
@@ -5858,6 +6059,40 @@
             "Wait": {
               "methods": [
                 "wait"
+              ]
+            }
+          }
+        }
+      }
+    },
+    "ZoneVmExtensionPolicies": {
+      "clients": {
+        "rest": {
+          "libraryClient": "ZoneVmExtensionPoliciesClient",
+          "rpcs": {
+            "Delete": {
+              "methods": [
+                "delete"
+              ]
+            },
+            "Get": {
+              "methods": [
+                "get"
+              ]
+            },
+            "Insert": {
+              "methods": [
+                "insert"
+              ]
+            },
+            "List": {
+              "methods": [
+                "list"
+              ]
+            },
+            "Update": {
+              "methods": [
+                "update"
               ]
             }
           }

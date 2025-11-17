@@ -704,8 +704,9 @@ class PacketMirroringsClient(metaclass=PacketMirroringsClientMeta):
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> pagers.AggregatedListPager:
-        r"""Retrieves an aggregated list of packetMirrorings. To prevent
-        failure, Google recommends that you set the
+        r"""Retrieves an aggregated list of packetMirrorings.
+
+        To prevent failure, Google recommends that you set the
         ``returnPartialSuccess`` parameter to ``true``.
 
         .. code-block:: python
@@ -1184,15 +1185,17 @@ class PacketMirroringsClient(metaclass=PacketMirroringsClientMeta):
         Returns:
             google.cloud.compute_v1beta.types.PacketMirroring:
                 Represents a Packet Mirroring
-                resource. Packet Mirroring clones the
-                traffic of specified instances in your
-                Virtual Private Cloud (VPC) network and
-                forwards it to a collector destination,
-                such as an instance group of an internal
-                TCP/UDP load balancer, for analysis or
-                examination. For more information about
-                setting up Packet Mirroring, see Using
-                Packet Mirroring.
+                resource.
+                Packet Mirroring clones the traffic of
+                specified instances in your Virtual
+                Private Cloud (VPC) network and forwards
+                it to a collector destination, such as
+                an instance group of an internal TCP/UDP
+                load balancer, for analysis or
+                examination.
+                For more information about setting up
+                Packet Mirroring, seeUsing Packet
+                Mirroring.
 
         """
         # Create or coerce a protobuf request object.
@@ -1688,9 +1691,9 @@ class PacketMirroringsClient(metaclass=PacketMirroringsClientMeta):
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> compute.Operation:
         r"""Patches the specified PacketMirroring resource with
-        the data included in the request. This method supports
-        PATCH semantics and uses JSON merge patch format and
-        processing rules.
+        the data included in the request. This method
+        supportsPATCH semantics and usesJSON merge
+        patch format and processing rules.
 
         .. code-block:: python
 
@@ -1837,9 +1840,9 @@ class PacketMirroringsClient(metaclass=PacketMirroringsClientMeta):
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> extended_operation.ExtendedOperation:
         r"""Patches the specified PacketMirroring resource with
-        the data included in the request. This method supports
-        PATCH semantics and uses JSON merge patch format and
-        processing rules.
+        the data included in the request. This method
+        supportsPATCH semantics and usesJSON merge
+        patch format and processing rules.
 
         .. code-block:: python
 

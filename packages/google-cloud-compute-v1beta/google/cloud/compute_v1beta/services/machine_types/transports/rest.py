@@ -535,10 +535,11 @@ class MachineTypesRestTransport(_BaseMachineTypesRestTransport):
             Returns:
                 ~.compute.MachineType:
                     Represents a Machine Type resource.
+
                 You can use specific machine types for
                 your VM instances based on performance
                 and pricing requirements. For more
-                information, read Machine Types.
+                information, readMachine Types.
 
             """
 

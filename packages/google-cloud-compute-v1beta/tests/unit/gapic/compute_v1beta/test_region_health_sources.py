@@ -3352,6 +3352,7 @@ def test_aggregated_list_rest_call_success(request_type):
             kind="kind_value",
             next_page_token="next_page_token_value",
             self_link="self_link_value",
+            unreachables=["unreachables_value"],
         )
 
         # Wrap the value into a proper Response obj
@@ -3372,6 +3373,7 @@ def test_aggregated_list_rest_call_success(request_type):
     assert response.kind == "kind_value"
     assert response.next_page_token == "next_page_token_value"
     assert response.self_link == "self_link_value"
+    assert response.unreachables == ["unreachables_value"]
 
 
 @pytest.mark.parametrize("null_interceptor", [True, False])

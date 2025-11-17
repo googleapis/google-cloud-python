@@ -256,6 +256,7 @@ def unit(session, protobuf_implementation):
     # Run py.test against the unit tests.
     session.run(
         "py.test",
+        "-vvv",
         "--quiet",
         f"--junitxml=unit_{session.python}_sponge_log.xml",
         "--cov=google",

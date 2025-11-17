@@ -720,12 +720,15 @@ class OrganizationSecurityPoliciesClient(
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> compute.Operation:
         r"""Inserts an association for the specified security
-        policy. This has billing implications. Projects in the
+        policy.
+        This has billing implications.  Projects in the
         hierarchy with effective hierarchical security policies
         will be automatically enrolled into Cloud Armor
-        Enterprise if not already enrolled. Use of this API to
-        modify firewall policies is deprecated. Use
-        firewallPolicies.addAssociation instead if possible.
+        Enterprise if not already enrolled.
+
+        Use of this API to modify firewall policies is
+        deprecated. Use firewallPolicies.addAssociation instead
+        if possible.
 
         .. code-block:: python
 
@@ -853,12 +856,15 @@ class OrganizationSecurityPoliciesClient(
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> extended_operation.ExtendedOperation:
         r"""Inserts an association for the specified security
-        policy. This has billing implications. Projects in the
+        policy.
+        This has billing implications.  Projects in the
         hierarchy with effective hierarchical security policies
         will be automatically enrolled into Cloud Armor
-        Enterprise if not already enrolled. Use of this API to
-        modify firewall policies is deprecated. Use
-        firewallPolicies.addAssociation instead if possible.
+        Enterprise if not already enrolled.
+
+        Use of this API to modify firewall policies is
+        deprecated. Use firewallPolicies.addAssociation instead
+        if possible.
 
         .. code-block:: python
 
@@ -1270,9 +1276,10 @@ class OrganizationSecurityPoliciesClient(
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> compute.Operation:
-        r"""Copies rules to the specified security policy. Use of
-        this API to modify firewall policies is deprecated. Use
-        firewallPolicies.copyRules instead.
+        r"""Copies rules to the specified security policy.
+
+        Use of this API to modify firewall policies is
+        deprecated. Use firewallPolicies.copyRules instead.
 
         .. code-block:: python
 
@@ -1385,9 +1392,10 @@ class OrganizationSecurityPoliciesClient(
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> extended_operation.ExtendedOperation:
-        r"""Copies rules to the specified security policy. Use of
-        this API to modify firewall policies is deprecated. Use
-        firewallPolicies.copyRules instead.
+        r"""Copies rules to the specified security policy.
+
+        Use of this API to modify firewall policies is
+        deprecated. Use firewallPolicies.copyRules instead.
 
         .. code-block:: python
 
@@ -1523,9 +1531,10 @@ class OrganizationSecurityPoliciesClient(
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> compute.Operation:
-        r"""Deletes the specified policy. Use of this API to
-        remove firewall policies is deprecated. Use
-        firewallPolicies.delete instead.
+        r"""Deletes the specified policy.
+
+        Use of this API to remove firewall policies is
+        deprecated. Use firewallPolicies.delete instead.
 
         .. code-block:: python
 
@@ -1638,9 +1647,10 @@ class OrganizationSecurityPoliciesClient(
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> extended_operation.ExtendedOperation:
-        r"""Deletes the specified policy. Use of this API to
-        remove firewall policies is deprecated. Use
-        firewallPolicies.delete instead.
+        r"""Deletes the specified policy.
+
+        Use of this API to remove firewall policies is
+        deprecated. Use firewallPolicies.delete instead.
 
         .. code-block:: python
 
@@ -1777,9 +1787,9 @@ class OrganizationSecurityPoliciesClient(
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> compute.SecurityPolicy:
         r"""List all of the ordered rules present in a single
-        specified policy. Use of this API to read firewall
-        policies is deprecated. Use firewallPolicies.get
-        instead.
+        specified policy.
+        Use of this API to read firewall policies is deprecated.
+        Use firewallPolicies.get instead.
 
         .. code-block:: python
 
@@ -1828,11 +1838,11 @@ class OrganizationSecurityPoliciesClient(
         Returns:
             google.cloud.compute_v1beta.types.SecurityPolicy:
                 Represents a Google Cloud Armor
-                security policy resource. Only external
-                backend services that use load balancers
-                can reference a security policy. For
-                more information, see Google Cloud Armor
-                security policy overview.
+                security policy resource.
+                Only external backend services that use
+                load balancers can reference a security
+                policy. For more information, see Google
+                Cloud Armor security policy overview.
 
         """
         # Create or coerce a protobuf request object.
@@ -1894,9 +1904,10 @@ class OrganizationSecurityPoliciesClient(
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> compute.SecurityPolicyAssociation:
-        r"""Gets an association with the specified name. Use of
-        this API to read firewall policies is deprecated. Use
-        firewallPolicies.getAssociation instead if possible.
+        r"""Gets an association with the specified name.
+
+        Use of this API to read firewall policies is deprecated.
+        Use firewallPolicies.getAssociation instead if possible.
 
         .. code-block:: python
 
@@ -2009,9 +2020,10 @@ class OrganizationSecurityPoliciesClient(
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> compute.SecurityPolicyRule:
-        r"""Gets a rule at the specified priority. Use of this
-        API to read firewall policies is deprecated. Use
-        firewallPolicies.getRule instead.
+        r"""Gets a rule at the specified priority.
+
+        Use of this API to read firewall policies is deprecated.
+        Use firewallPolicies.getRule instead.
 
         .. code-block:: python
 
@@ -2126,10 +2138,11 @@ class OrganizationSecurityPoliciesClient(
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> compute.Operation:
-        r"""Creates a new policy in the specified project using
-        the data included in the request. Use of this API to
-        insert firewall policies is deprecated. Use
-        firewallPolicies.insert instead.
+        r"""Creates a new policy in the specified organization
+        using the data included in the request.
+
+        Use of this API to insert firewall policies is
+        deprecated. Use firewallPolicies.insert instead.
 
         .. code-block:: python
 
@@ -2231,10 +2244,11 @@ class OrganizationSecurityPoliciesClient(
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> extended_operation.ExtendedOperation:
-        r"""Creates a new policy in the specified project using
-        the data included in the request. Use of this API to
-        insert firewall policies is deprecated. Use
-        firewallPolicies.insert instead.
+        r"""Creates a new policy in the specified organization
+        using the data included in the request.
+
+        Use of this API to insert firewall policies is
+        deprecated. Use firewallPolicies.insert instead.
 
         .. code-block:: python
 
@@ -2360,9 +2374,10 @@ class OrganizationSecurityPoliciesClient(
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> pagers.ListPager:
         r"""List all the policies that have been configured for
-        the specified project. Use of this API to read firewall
-        policies is deprecated. Use firewallPolicies.list
-        instead.
+        the specified organization.
+
+        Use of this API to read firewall policies is deprecated.
+        Use firewallPolicies.list instead.
 
         .. code-block:: python
 
@@ -2456,9 +2471,10 @@ class OrganizationSecurityPoliciesClient(
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> compute.OrganizationSecurityPoliciesListAssociationsResponse:
         r"""Lists associations of a specified target, i.e.,
-        organization or folder. Use of this API to read firewall
-        policies is deprecated. Use
-        firewallPolicies.listAssociations instead if possible.
+        organization or folder.
+        Use of this API to read firewall policies is deprecated.
+        Use firewallPolicies.listAssociations instead if
+        possible.
 
         .. code-block:: python
 
@@ -2628,9 +2644,10 @@ class OrganizationSecurityPoliciesClient(
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> compute.Operation:
-        r"""Moves the specified security policy. Use of this API
-        to modify firewall policies is deprecated. Use
-        firewallPolicies.move instead.
+        r"""Moves the specified security policy.
+
+        Use of this API to modify firewall policies is
+        deprecated. Use firewallPolicies.move instead.
 
         .. code-block:: python
 
@@ -2743,9 +2760,10 @@ class OrganizationSecurityPoliciesClient(
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> extended_operation.ExtendedOperation:
-        r"""Moves the specified security policy. Use of this API
-        to modify firewall policies is deprecated. Use
-        firewallPolicies.move instead.
+        r"""Moves the specified security policy.
+
+        Use of this API to modify firewall policies is
+        deprecated. Use firewallPolicies.move instead.
 
         .. code-block:: python
 
@@ -2884,9 +2902,9 @@ class OrganizationSecurityPoliciesClient(
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> compute.Operation:
         r"""Patches the specified policy with the data included
-        in the request. Use of this API to modify firewall
-        policies is deprecated. Use firewallPolicies.patch
-        instead.
+        in the request.
+        Use of this API to modify firewall policies is
+        deprecated. Use firewallPolicies.patch instead.
 
         .. code-block:: python
 
@@ -3008,9 +3026,9 @@ class OrganizationSecurityPoliciesClient(
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> extended_operation.ExtendedOperation:
         r"""Patches the specified policy with the data included
-        in the request. Use of this API to modify firewall
-        policies is deprecated. Use firewallPolicies.patch
-        instead.
+        in the request.
+        Use of this API to modify firewall policies is
+        deprecated. Use firewallPolicies.patch instead.
 
         .. code-block:: python
 
@@ -3154,9 +3172,10 @@ class OrganizationSecurityPoliciesClient(
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> compute.Operation:
-        r"""Patches a rule at the specified priority. Use of this
-        API to modify firewall policies is deprecated. Use
-        firewallPolicies.patchRule instead.
+        r"""Patches a rule at the specified priority.
+
+        Use of this API to modify firewall policies is
+        deprecated. Use firewallPolicies.patchRule instead.
 
         .. code-block:: python
 
@@ -3277,9 +3296,10 @@ class OrganizationSecurityPoliciesClient(
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> extended_operation.ExtendedOperation:
-        r"""Patches a rule at the specified priority. Use of this
-        API to modify firewall policies is deprecated. Use
-        firewallPolicies.patchRule instead.
+        r"""Patches a rule at the specified priority.
+
+        Use of this API to modify firewall policies is
+        deprecated. Use firewallPolicies.patchRule instead.
 
         .. code-block:: python
 
@@ -3423,7 +3443,8 @@ class OrganizationSecurityPoliciesClient(
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> compute.Operation:
         r"""Removes an association for the specified security
-        policy. Use of this API to modify firewall policies is
+        policy.
+        Use of this API to modify firewall policies is
         deprecated. Use firewallPolicies.removeAssociation
         instead if possible.
 
@@ -3543,7 +3564,8 @@ class OrganizationSecurityPoliciesClient(
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> extended_operation.ExtendedOperation:
         r"""Removes an association for the specified security
-        policy. Use of this API to modify firewall policies is
+        policy.
+        Use of this API to modify firewall policies is
         deprecated. Use firewallPolicies.removeAssociation
         instead if possible.
 

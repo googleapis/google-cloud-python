@@ -554,21 +554,32 @@ class TargetGrpcProxiesRestTransport(_BaseTargetGrpcProxiesRestTransport):
 
             Returns:
                 ~.compute.Operation:
-                    Represents an Operation resource. Google Compute Engine
-                has three Operation resources: \*
-                `Global </compute/docs/reference/rest/beta/globalOperations>`__
-                \*
-                `Regional </compute/docs/reference/rest/beta/regionOperations>`__
-                \*
-                `Zonal </compute/docs/reference/rest/beta/zoneOperations>`__
+                    Represents an Operation resource.
+
+                Google Compute Engine has three Operation resources:
+
+                - `Global </compute/docs/reference/rest/beta/globalOperations>`__
+                - `Regional </compute/docs/reference/rest/beta/regionOperations>`__
+                - `Zonal </compute/docs/reference/rest/beta/zoneOperations>`__
+
                 You can use an operation resource to manage asynchronous
-                API requests. For more information, read Handling API
-                responses. Operations can be global, regional or zonal.
-                - For global operations, use the ``globalOperations``
-                resource. - For regional operations, use the
-                ``regionOperations`` resource. - For zonal operations,
-                use the ``zoneOperations`` resource. For more
-                information, read Global, Regional, and Zonal Resources.
+                API requests. For more information, readHandling API
+                responses.
+
+                Operations can be global, regional or zonal.
+
+                ::
+
+                   - For global operations, use the `globalOperations`
+                   resource.
+                   - For regional operations, use the
+                   `regionOperations` resource.
+                   - For zonal operations, use
+                   the `zoneOperations` resource.
+
+                For more information, read Global, Regional, and Zonal
+                Resources.
+
                 Note that completed Operation resources have a limited
                 retention period.
 
@@ -719,13 +730,15 @@ class TargetGrpcProxiesRestTransport(_BaseTargetGrpcProxiesRestTransport):
 
             Returns:
                 ~.compute.TargetGrpcProxy:
-                    Represents a Target gRPC Proxy resource. A target gRPC
-                proxy is a component of load balancers intended for load
-                balancing gRPC traffic. Only global forwarding rules
-                with load balancing scheme INTERNAL_SELF_MANAGED can
-                reference a target gRPC proxy. The target gRPC Proxy
-                references a URL map that specifies how traffic is
-                routed to gRPC backend services.
+                    Represents a Target gRPC Proxy resource.
+
+                A target gRPC proxy is a component of load balancers
+                intended for load balancing gRPC traffic. Only global
+                forwarding rules with load balancing scheme
+                INTERNAL_SELF_MANAGED can reference a target gRPC proxy.
+                The target gRPC Proxy references a URL map that
+                specifies how traffic is routed to gRPC backend
+                services.
 
             """
 
@@ -875,21 +888,32 @@ class TargetGrpcProxiesRestTransport(_BaseTargetGrpcProxiesRestTransport):
 
             Returns:
                 ~.compute.Operation:
-                    Represents an Operation resource. Google Compute Engine
-                has three Operation resources: \*
-                `Global </compute/docs/reference/rest/beta/globalOperations>`__
-                \*
-                `Regional </compute/docs/reference/rest/beta/regionOperations>`__
-                \*
-                `Zonal </compute/docs/reference/rest/beta/zoneOperations>`__
+                    Represents an Operation resource.
+
+                Google Compute Engine has three Operation resources:
+
+                - `Global </compute/docs/reference/rest/beta/globalOperations>`__
+                - `Regional </compute/docs/reference/rest/beta/regionOperations>`__
+                - `Zonal </compute/docs/reference/rest/beta/zoneOperations>`__
+
                 You can use an operation resource to manage asynchronous
-                API requests. For more information, read Handling API
-                responses. Operations can be global, regional or zonal.
-                - For global operations, use the ``globalOperations``
-                resource. - For regional operations, use the
-                ``regionOperations`` resource. - For zonal operations,
-                use the ``zoneOperations`` resource. For more
-                information, read Global, Regional, and Zonal Resources.
+                API requests. For more information, readHandling API
+                responses.
+
+                Operations can be global, regional or zonal.
+
+                ::
+
+                   - For global operations, use the `globalOperations`
+                   resource.
+                   - For regional operations, use the
+                   `regionOperations` resource.
+                   - For zonal operations, use
+                   the `zoneOperations` resource.
+
+                For more information, read Global, Regional, and Zonal
+                Resources.
+
                 Note that completed Operation resources have a limited
                 retention period.
 
@@ -1198,21 +1222,32 @@ class TargetGrpcProxiesRestTransport(_BaseTargetGrpcProxiesRestTransport):
 
             Returns:
                 ~.compute.Operation:
-                    Represents an Operation resource. Google Compute Engine
-                has three Operation resources: \*
-                `Global </compute/docs/reference/rest/beta/globalOperations>`__
-                \*
-                `Regional </compute/docs/reference/rest/beta/regionOperations>`__
-                \*
-                `Zonal </compute/docs/reference/rest/beta/zoneOperations>`__
+                    Represents an Operation resource.
+
+                Google Compute Engine has three Operation resources:
+
+                - `Global </compute/docs/reference/rest/beta/globalOperations>`__
+                - `Regional </compute/docs/reference/rest/beta/regionOperations>`__
+                - `Zonal </compute/docs/reference/rest/beta/zoneOperations>`__
+
                 You can use an operation resource to manage asynchronous
-                API requests. For more information, read Handling API
-                responses. Operations can be global, regional or zonal.
-                - For global operations, use the ``globalOperations``
-                resource. - For regional operations, use the
-                ``regionOperations`` resource. - For zonal operations,
-                use the ``zoneOperations`` resource. For more
-                information, read Global, Regional, and Zonal Resources.
+                API requests. For more information, readHandling API
+                responses.
+
+                Operations can be global, regional or zonal.
+
+                ::
+
+                   - For global operations, use the `globalOperations`
+                   resource.
+                   - For regional operations, use the
+                   `regionOperations` resource.
+                   - For zonal operations, use
+                   the `zoneOperations` resource.
+
+                For more information, read Global, Regional, and Zonal
+                Resources.
+
                 Note that completed Operation resources have a limited
                 retention period.
 

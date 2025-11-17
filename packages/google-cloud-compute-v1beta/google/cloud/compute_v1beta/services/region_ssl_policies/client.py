@@ -1074,6 +1074,7 @@ class RegionSslPoliciesClient(metaclass=RegionSslPoliciesClientMeta):
         Returns:
             google.cloud.compute_v1beta.types.SslPolicy:
                 Represents an SSL Policy resource.
+
                 Use SSL policies to control SSL
                 features, such as versions and cipher
                 suites, that are offered by Application

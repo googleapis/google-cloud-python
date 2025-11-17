@@ -714,7 +714,7 @@ class InterconnectRemoteLocationsClient(
     ) -> compute.InterconnectRemoteLocation:
         r"""Returns the details for the specified interconnect
         remote location. Gets a list of available interconnect
-        remote locations by making a list() request.
+        remote locations by making alist() request.
 
         .. code-block:: python
 
@@ -771,10 +771,10 @@ class InterconnectRemoteLocationsClient(
         Returns:
             google.cloud.compute_v1beta.types.InterconnectRemoteLocation:
                 Represents a Cross-Cloud Interconnect
-                Remote Location resource. You can use
-                this resource to find remote location
-                details about an Interconnect attachment
-                (VLAN).
+                Remote Location resource.
+                You can use this resource to find remote
+                location details about an Interconnect
+                attachment (VLAN).
 
         """
         # Create or coerce a protobuf request object.
@@ -896,9 +896,11 @@ class InterconnectRemoteLocationsClient(
             google.cloud.compute_v1beta.services.interconnect_remote_locations.pagers.ListPager:
                 Response to the list request, and
                 contains a list of interconnect remote
-                locations.  Iterating over this object
-                will yield results and resolve
-                additional pages automatically.
+                locations.
+
+                Iterating over this object will yield
+                results and resolve additional pages
+                automatically.
 
         """
         # Create or coerce a protobuf request object.

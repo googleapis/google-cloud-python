@@ -662,21 +662,32 @@ class RegionSnapshotsRestTransport(_BaseRegionSnapshotsRestTransport):
 
             Returns:
                 ~.compute.Operation:
-                    Represents an Operation resource. Google Compute Engine
-                has three Operation resources: \*
-                `Global </compute/docs/reference/rest/beta/globalOperations>`__
-                \*
-                `Regional </compute/docs/reference/rest/beta/regionOperations>`__
-                \*
-                `Zonal </compute/docs/reference/rest/beta/zoneOperations>`__
+                    Represents an Operation resource.
+
+                Google Compute Engine has three Operation resources:
+
+                - `Global </compute/docs/reference/rest/beta/globalOperations>`__
+                - `Regional </compute/docs/reference/rest/beta/regionOperations>`__
+                - `Zonal </compute/docs/reference/rest/beta/zoneOperations>`__
+
                 You can use an operation resource to manage asynchronous
-                API requests. For more information, read Handling API
-                responses. Operations can be global, regional or zonal.
-                - For global operations, use the ``globalOperations``
-                resource. - For regional operations, use the
-                ``regionOperations`` resource. - For zonal operations,
-                use the ``zoneOperations`` resource. For more
-                information, read Global, Regional, and Zonal Resources.
+                API requests. For more information, readHandling API
+                responses.
+
+                Operations can be global, regional or zonal.
+
+                ::
+
+                   - For global operations, use the `globalOperations`
+                   resource.
+                   - For regional operations, use the
+                   `regionOperations` resource.
+                   - For zonal operations, use
+                   the `zoneOperations` resource.
+
+                For more information, read Global, Regional, and Zonal
+                Resources.
+
                 Note that completed Operation resources have a limited
                 retention period.
 
@@ -828,10 +839,11 @@ class RegionSnapshotsRestTransport(_BaseRegionSnapshotsRestTransport):
             Returns:
                 ~.compute.Snapshot:
                     Represents a Persistent Disk Snapshot
-                resource. You can use snapshots to back
-                up data on a regular interval. For more
-                information, read Creating persistent
-                disk snapshots.
+                resource.
+                You can use snapshots to back up data on
+                a regular interval. For more
+                information, read  Creating
+                persistent disk snapshots.
 
             """
 
@@ -981,26 +993,77 @@ class RegionSnapshotsRestTransport(_BaseRegionSnapshotsRestTransport):
             Returns:
                 ~.compute.Policy:
                     An Identity and Access Management (IAM) policy, which
-                specifies access controls for Google Cloud resources. A
-                ``Policy`` is a collection of ``bindings``. A
+                specifies access controls for Google Cloud resources.
+
+                A ``Policy`` is a collection of ``bindings``. A
                 ``binding`` binds one or more ``members``, or
                 principals, to a single ``role``. Principals can be user
                 accounts, service accounts, Google groups, and domains
                 (such as G Suite). A ``role`` is a named list of
                 permissions; each ``role`` can be an IAM predefined role
-                or a user-created custom role. For some types of Google
-                Cloud resources, a ``binding`` can also specify a
-                ``condition``, which is a logical expression that allows
-                access to a resource only if the expression evaluates to
-                ``true``. A condition can add constraints based on
-                attributes of the request, the resource, or both. To
-                learn which resources support conditions in their IAM
-                policies, see the `IAM
+                or a user-created custom role.
+
+                For some types of Google Cloud resources, a ``binding``
+                can also specify a ``condition``, which is a logical
+                expression that allows access to a resource only if the
+                expression evaluates to ``true``. A condition can add
+                constraints based on attributes of the request, the
+                resource, or both. To learn which resources support
+                conditions in their IAM policies, see the `IAM
                 documentation <https://cloud.google.com/iam/help/conditions/resource-policies>`__.
+
                 **JSON example:**
-                ``{ "bindings": [ { "role": "roles/resourcemanager.organizationAdmin", "members": [ "user:mike@example.com", "group:admins@example.com", "domain:google.com", "serviceAccount:my-project-id@appspot.gserviceaccount.com" ] }, { "role": "roles/resourcemanager.organizationViewer", "members": [ "user:eve@example.com" ], "condition": { "title": "expirable access", "description": "Does not grant access after Sep 2020", "expression": "request.time < timestamp('2020-10-01T00:00:00.000Z')", } } ], "etag": "BwWWja0YfJA=", "version": 3 }``
+
+                ::
+
+                       {
+                         "bindings": [
+                           {
+                             "role": "roles/resourcemanager.organizationAdmin",
+                             "members": [
+                               "user:mike@example.com",
+                               "group:admins@example.com",
+                               "domain:google.com",
+                               "serviceAccount:my-project-id@appspot.gserviceaccount.com"
+                             ]
+                           },
+                           {
+                             "role": "roles/resourcemanager.organizationViewer",
+                             "members": [
+                               "user:eve@example.com"
+                             ],
+                             "condition": {
+                               "title": "expirable access",
+                               "description": "Does not grant access after Sep 2020",
+                               "expression": "request.time < timestamp('2020-10-01T00:00:00.000Z')",
+                             }
+                           }
+                         ],
+                         "etag": "BwWWja0YfJA=",
+                         "version": 3
+                       }
+
                 **YAML example:**
-                ``bindings: - members: - user:mike@example.com - group:admins@example.com - domain:google.com - serviceAccount:my-project-id@appspot.gserviceaccount.com role: roles/resourcemanager.organizationAdmin - members: - user:eve@example.com role: roles/resourcemanager.organizationViewer condition: title: expirable access description: Does not grant access after Sep 2020 expression: request.time < timestamp('2020-10-01T00:00:00.000Z') etag: BwWWja0YfJA= version: 3``
+
+                ::
+
+                       bindings:
+                       - members:
+                         - user:mike@example.com
+                         - group:admins@example.com
+                         - domain:google.com
+                         - serviceAccount:my-project-id@appspot.gserviceaccount.com
+                         role: roles/resourcemanager.organizationAdmin
+                       - members:
+                         - user:eve@example.com
+                         role: roles/resourcemanager.organizationViewer
+                         condition:
+                           title: expirable access
+                           description: Does not grant access after Sep 2020
+                           expression: request.time < timestamp('2020-10-01T00:00:00.000Z')
+                       etag: BwWWja0YfJA=
+                       version: 3
+
                 For a description of IAM and its features, see the `IAM
                 documentation <https://cloud.google.com/iam/docs/>`__.
 
@@ -1150,21 +1213,32 @@ class RegionSnapshotsRestTransport(_BaseRegionSnapshotsRestTransport):
 
             Returns:
                 ~.compute.Operation:
-                    Represents an Operation resource. Google Compute Engine
-                has three Operation resources: \*
-                `Global </compute/docs/reference/rest/beta/globalOperations>`__
-                \*
-                `Regional </compute/docs/reference/rest/beta/regionOperations>`__
-                \*
-                `Zonal </compute/docs/reference/rest/beta/zoneOperations>`__
+                    Represents an Operation resource.
+
+                Google Compute Engine has three Operation resources:
+
+                - `Global </compute/docs/reference/rest/beta/globalOperations>`__
+                - `Regional </compute/docs/reference/rest/beta/regionOperations>`__
+                - `Zonal </compute/docs/reference/rest/beta/zoneOperations>`__
+
                 You can use an operation resource to manage asynchronous
-                API requests. For more information, read Handling API
-                responses. Operations can be global, regional or zonal.
-                - For global operations, use the ``globalOperations``
-                resource. - For regional operations, use the
-                ``regionOperations`` resource. - For zonal operations,
-                use the ``zoneOperations`` resource. For more
-                information, read Global, Regional, and Zonal Resources.
+                API requests. For more information, readHandling API
+                responses.
+
+                Operations can be global, regional or zonal.
+
+                ::
+
+                   - For global operations, use the `globalOperations`
+                   resource.
+                   - For regional operations, use the
+                   `regionOperations` resource.
+                   - For zonal operations, use
+                   the `zoneOperations` resource.
+
+                For more information, read Global, Regional, and Zonal
+                Resources.
+
                 Note that completed Operation resources have a limited
                 retention period.
 
@@ -1472,26 +1546,77 @@ class RegionSnapshotsRestTransport(_BaseRegionSnapshotsRestTransport):
             Returns:
                 ~.compute.Policy:
                     An Identity and Access Management (IAM) policy, which
-                specifies access controls for Google Cloud resources. A
-                ``Policy`` is a collection of ``bindings``. A
+                specifies access controls for Google Cloud resources.
+
+                A ``Policy`` is a collection of ``bindings``. A
                 ``binding`` binds one or more ``members``, or
                 principals, to a single ``role``. Principals can be user
                 accounts, service accounts, Google groups, and domains
                 (such as G Suite). A ``role`` is a named list of
                 permissions; each ``role`` can be an IAM predefined role
-                or a user-created custom role. For some types of Google
-                Cloud resources, a ``binding`` can also specify a
-                ``condition``, which is a logical expression that allows
-                access to a resource only if the expression evaluates to
-                ``true``. A condition can add constraints based on
-                attributes of the request, the resource, or both. To
-                learn which resources support conditions in their IAM
-                policies, see the `IAM
+                or a user-created custom role.
+
+                For some types of Google Cloud resources, a ``binding``
+                can also specify a ``condition``, which is a logical
+                expression that allows access to a resource only if the
+                expression evaluates to ``true``. A condition can add
+                constraints based on attributes of the request, the
+                resource, or both. To learn which resources support
+                conditions in their IAM policies, see the `IAM
                 documentation <https://cloud.google.com/iam/help/conditions/resource-policies>`__.
+
                 **JSON example:**
-                ``{ "bindings": [ { "role": "roles/resourcemanager.organizationAdmin", "members": [ "user:mike@example.com", "group:admins@example.com", "domain:google.com", "serviceAccount:my-project-id@appspot.gserviceaccount.com" ] }, { "role": "roles/resourcemanager.organizationViewer", "members": [ "user:eve@example.com" ], "condition": { "title": "expirable access", "description": "Does not grant access after Sep 2020", "expression": "request.time < timestamp('2020-10-01T00:00:00.000Z')", } } ], "etag": "BwWWja0YfJA=", "version": 3 }``
+
+                ::
+
+                       {
+                         "bindings": [
+                           {
+                             "role": "roles/resourcemanager.organizationAdmin",
+                             "members": [
+                               "user:mike@example.com",
+                               "group:admins@example.com",
+                               "domain:google.com",
+                               "serviceAccount:my-project-id@appspot.gserviceaccount.com"
+                             ]
+                           },
+                           {
+                             "role": "roles/resourcemanager.organizationViewer",
+                             "members": [
+                               "user:eve@example.com"
+                             ],
+                             "condition": {
+                               "title": "expirable access",
+                               "description": "Does not grant access after Sep 2020",
+                               "expression": "request.time < timestamp('2020-10-01T00:00:00.000Z')",
+                             }
+                           }
+                         ],
+                         "etag": "BwWWja0YfJA=",
+                         "version": 3
+                       }
+
                 **YAML example:**
-                ``bindings: - members: - user:mike@example.com - group:admins@example.com - domain:google.com - serviceAccount:my-project-id@appspot.gserviceaccount.com role: roles/resourcemanager.organizationAdmin - members: - user:eve@example.com role: roles/resourcemanager.organizationViewer condition: title: expirable access description: Does not grant access after Sep 2020 expression: request.time < timestamp('2020-10-01T00:00:00.000Z') etag: BwWWja0YfJA= version: 3``
+
+                ::
+
+                       bindings:
+                       - members:
+                         - user:mike@example.com
+                         - group:admins@example.com
+                         - domain:google.com
+                         - serviceAccount:my-project-id@appspot.gserviceaccount.com
+                         role: roles/resourcemanager.organizationAdmin
+                       - members:
+                         - user:eve@example.com
+                         role: roles/resourcemanager.organizationViewer
+                         condition:
+                           title: expirable access
+                           description: Does not grant access after Sep 2020
+                           expression: request.time < timestamp('2020-10-01T00:00:00.000Z')
+                       etag: BwWWja0YfJA=
+                       version: 3
+
                 For a description of IAM and its features, see the `IAM
                 documentation <https://cloud.google.com/iam/docs/>`__.
 
@@ -1646,21 +1771,32 @@ class RegionSnapshotsRestTransport(_BaseRegionSnapshotsRestTransport):
 
             Returns:
                 ~.compute.Operation:
-                    Represents an Operation resource. Google Compute Engine
-                has three Operation resources: \*
-                `Global </compute/docs/reference/rest/beta/globalOperations>`__
-                \*
-                `Regional </compute/docs/reference/rest/beta/regionOperations>`__
-                \*
-                `Zonal </compute/docs/reference/rest/beta/zoneOperations>`__
+                    Represents an Operation resource.
+
+                Google Compute Engine has three Operation resources:
+
+                - `Global </compute/docs/reference/rest/beta/globalOperations>`__
+                - `Regional </compute/docs/reference/rest/beta/regionOperations>`__
+                - `Zonal </compute/docs/reference/rest/beta/zoneOperations>`__
+
                 You can use an operation resource to manage asynchronous
-                API requests. For more information, read Handling API
-                responses. Operations can be global, regional or zonal.
-                - For global operations, use the ``globalOperations``
-                resource. - For regional operations, use the
-                ``regionOperations`` resource. - For zonal operations,
-                use the ``zoneOperations`` resource. For more
-                information, read Global, Regional, and Zonal Resources.
+                API requests. For more information, readHandling API
+                responses.
+
+                Operations can be global, regional or zonal.
+
+                ::
+
+                   - For global operations, use the `globalOperations`
+                   resource.
+                   - For regional operations, use the
+                   `regionOperations` resource.
+                   - For zonal operations, use
+                   the `zoneOperations` resource.
+
+                For more information, read Global, Regional, and Zonal
+                Resources.
+
                 Note that completed Operation resources have a limited
                 retention period.
 

@@ -694,7 +694,7 @@ class LicenseCodesClient(metaclass=LicenseCodesClientMeta):
         r"""Return a specified license code. License codes are mirrored
         across all projects that have permissions to read the License
         Code. *Caution* This resource is intended for use only by
-        third-party partners who are creating Cloud Marketplace images.
+        third-party partners who are creatingCloud Marketplace images.
 
         .. code-block:: python
 
@@ -750,11 +750,12 @@ class LicenseCodesClient(metaclass=LicenseCodesClientMeta):
 
         Returns:
             google.cloud.compute_v1beta.types.LicenseCode:
-                Represents a License Code resource. A License Code is a
-                unique identifier used to represent a license resource.
-                *Caution* This resource is intended for use only by
-                third-party partners who are creating Cloud Marketplace
-                images.
+                Represents a License Code resource.
+
+                   A License Code is a unique identifier used to
+                   represent alicense resource. *Caution* This resource
+                   is intended for use only by third-party partners who
+                   are creatingCloud Marketplace images.
 
         """
         # Create or coerce a protobuf request object.
@@ -827,7 +828,7 @@ class LicenseCodesClient(metaclass=LicenseCodesClientMeta):
     ) -> compute.TestPermissionsResponse:
         r"""Returns permissions that a caller has on the specified resource.
         *Caution* This resource is intended for use only by third-party
-        partners who are creating Cloud Marketplace images.
+        partners who are creatingCloud Marketplace images.
 
         .. code-block:: python
 

@@ -706,8 +706,9 @@ class TargetVpnGatewaysClient(metaclass=TargetVpnGatewaysClientMeta):
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> pagers.AggregatedListPager:
-        r"""Retrieves an aggregated list of target VPN gateways. To prevent
-        failure, Google recommends that you set the
+        r"""Retrieves an aggregated list of target VPN gateways.
+
+        To prevent failure, Google recommends that you set the
         ``returnPartialSuccess`` parameter to ``true``.
 
         .. code-block:: python
@@ -1184,10 +1185,11 @@ class TargetVpnGatewaysClient(metaclass=TargetVpnGatewaysClientMeta):
         Returns:
             google.cloud.compute_v1beta.types.TargetVpnGateway:
                 Represents a Target VPN Gateway
-                resource. The target VPN gateway
-                resource represents a Classic Cloud VPN
-                gateway. For more information, read the
-                the Cloud VPN Overview.
+                resource.
+                The target VPN gateway resource
+                represents a Classic Cloud VPN gateway.
+                For more information, read thethe
+                Cloud VPN Overview.
 
         """
         # Create or coerce a protobuf request object.
@@ -1683,7 +1685,7 @@ class TargetVpnGatewaysClient(metaclass=TargetVpnGatewaysClientMeta):
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> compute.Operation:
         r"""Sets the labels on a TargetVpnGateway. To learn more
-        about labels, read the Labeling Resources documentation.
+        about labels, read theLabeling Resources documentation.
 
         .. code-block:: python
 
@@ -1834,7 +1836,7 @@ class TargetVpnGatewaysClient(metaclass=TargetVpnGatewaysClientMeta):
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> extended_operation.ExtendedOperation:
         r"""Sets the labels on a TargetVpnGateway. To learn more
-        about labels, read the Labeling Resources documentation.
+        about labels, read theLabeling Resources documentation.
 
         .. code-block:: python
 

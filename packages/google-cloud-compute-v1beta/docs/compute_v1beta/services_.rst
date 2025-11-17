@@ -24,6 +24,7 @@ Services for Google Cloud Compute v1beta API
     global_operations
     global_organization_operations
     global_public_delegated_prefixes
+    global_vm_extension_policies
     health_checks
     image_family_views
     images
@@ -60,11 +61,14 @@ Services for Google Cloud Compute v1beta API
     public_advertised_prefixes
     public_delegated_prefixes
     region_autoscalers
+    region_backend_buckets
     region_backend_services
     region_commitments
+    region_composite_health_checks
     region_disks
     region_disk_settings
     region_disk_types
+    region_health_aggregation_policies
     region_health_checks
     region_health_check_services
     region_health_sources
@@ -120,3 +124,4 @@ Services for Google Cloud Compute v1beta API
     wire_groups
     zone_operations
     zones
+    zone_vm_extension_policies

@@ -710,8 +710,9 @@ class InterconnectAttachmentsClient(metaclass=InterconnectAttachmentsClientMeta)
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> pagers.AggregatedListPager:
-        r"""Retrieves an aggregated list of interconnect attachments. To
-        prevent failure, Google recommends that you set the
+        r"""Retrieves an aggregated list of interconnect attachments.
+
+        To prevent failure, Google recommends that you set the
         ``returnPartialSuccess`` parameter to ``true``.
 
         .. code-block:: python
@@ -1194,13 +1195,13 @@ class InterconnectAttachmentsClient(metaclass=InterconnectAttachmentsClientMeta)
         Returns:
             google.cloud.compute_v1beta.types.InterconnectAttachment:
                 Represents an Interconnect Attachment
-                (VLAN) resource. You can use
-                Interconnect attachments (VLANS) to
-                connect your Virtual Private Cloud
-                networks to your on-premises networks
-                through an Interconnect. For more
-                information, read Creating VLAN
-                Attachments.
+                (VLAN) resource.
+                You can use Interconnect attachments
+                (VLANS) to connect your Virtual Private
+                Cloud networks to your on-premises
+                networks through an Interconnect. For
+                more information, read
+                Creating VLAN Attachments.
 
         """
         # Create or coerce a protobuf request object.
@@ -1626,9 +1627,11 @@ class InterconnectAttachmentsClient(metaclass=InterconnectAttachmentsClientMeta)
             google.cloud.compute_v1beta.services.interconnect_attachments.pagers.ListPager:
                 Response to the list request, and
                 contains a list of interconnect
-                attachments.  Iterating over this object
-                will yield results and resolve
-                additional pages automatically.
+                attachments.
+
+                Iterating over this object will yield
+                results and resolve additional pages
+                automatically.
 
         """
         # Create or coerce a protobuf request object.
@@ -1712,9 +1715,9 @@ class InterconnectAttachmentsClient(metaclass=InterconnectAttachmentsClientMeta)
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> compute.Operation:
         r"""Updates the specified interconnect attachment with
-        the data included in the request. This method supports
-        PATCH semantics and uses the JSON merge patch format and
-        processing rules.
+        the data included in the request. This method
+        supportsPATCH semantics and uses theJSON merge
+        patch format and processing rules.
 
         .. code-block:: python
 
@@ -1869,9 +1872,9 @@ class InterconnectAttachmentsClient(metaclass=InterconnectAttachmentsClientMeta)
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> extended_operation.ExtendedOperation:
         r"""Updates the specified interconnect attachment with
-        the data included in the request. This method supports
-        PATCH semantics and uses the JSON merge patch format and
-        processing rules.
+        the data included in the request. This method
+        supportsPATCH semantics and uses theJSON merge
+        patch format and processing rules.
 
         .. code-block:: python
 
@@ -2051,8 +2054,8 @@ class InterconnectAttachmentsClient(metaclass=InterconnectAttachmentsClientMeta)
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> compute.Operation:
         r"""Sets the labels on an InterconnectAttachment. To
-        learn more about labels, read the Labeling Resources
-        documentation.
+        learn more about labels, read the Labeling
+        Resources documentation.
 
         .. code-block:: python
 
@@ -2205,8 +2208,8 @@ class InterconnectAttachmentsClient(metaclass=InterconnectAttachmentsClientMeta)
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> extended_operation.ExtendedOperation:
         r"""Sets the labels on an InterconnectAttachment. To
-        learn more about labels, read the Labeling Resources
-        documentation.
+        learn more about labels, read the Labeling
+        Resources documentation.
 
         .. code-block:: python
 

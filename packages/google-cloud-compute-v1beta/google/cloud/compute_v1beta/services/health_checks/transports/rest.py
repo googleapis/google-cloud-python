@@ -809,21 +809,32 @@ class HealthChecksRestTransport(_BaseHealthChecksRestTransport):
 
             Returns:
                 ~.compute.Operation:
-                    Represents an Operation resource. Google Compute Engine
-                has three Operation resources: \*
-                `Global </compute/docs/reference/rest/beta/globalOperations>`__
-                \*
-                `Regional </compute/docs/reference/rest/beta/regionOperations>`__
-                \*
-                `Zonal </compute/docs/reference/rest/beta/zoneOperations>`__
+                    Represents an Operation resource.
+
+                Google Compute Engine has three Operation resources:
+
+                - `Global </compute/docs/reference/rest/beta/globalOperations>`__
+                - `Regional </compute/docs/reference/rest/beta/regionOperations>`__
+                - `Zonal </compute/docs/reference/rest/beta/zoneOperations>`__
+
                 You can use an operation resource to manage asynchronous
-                API requests. For more information, read Handling API
-                responses. Operations can be global, regional or zonal.
-                - For global operations, use the ``globalOperations``
-                resource. - For regional operations, use the
-                ``regionOperations`` resource. - For zonal operations,
-                use the ``zoneOperations`` resource. For more
-                information, read Global, Regional, and Zonal Resources.
+                API requests. For more information, readHandling API
+                responses.
+
+                Operations can be global, regional or zonal.
+
+                ::
+
+                   - For global operations, use the `globalOperations`
+                   resource.
+                   - For regional operations, use the
+                   `regionOperations` resource.
+                   - For zonal operations, use
+                   the `zoneOperations` resource.
+
+                For more information, read Global, Regional, and Zonal
+                Resources.
+
                 Note that completed Operation resources have a limited
                 retention period.
 
@@ -974,23 +985,33 @@ class HealthChecksRestTransport(_BaseHealthChecksRestTransport):
 
             Returns:
                 ~.compute.HealthCheck:
-                    Represents a health check resource. Google Compute
-                Engine has two health check resources: \*
-                `Regional </compute/docs/reference/rest/beta/regionHealthChecks>`__
-                \*
-                `Global </compute/docs/reference/rest/beta/healthChecks>`__
+                    Represents a health check resource.
+
+                Google Compute Engine has two health check resources:
+
+                - `Regional </compute/docs/reference/rest/beta/regionHealthChecks>`__
+                - `Global </compute/docs/reference/rest/beta/healthChecks>`__
+
                 These health check resources can be used for load
                 balancing and for autohealing VMs in a managed instance
-                group (MIG). **Load balancing** Health check
-                requirements vary depending on the type of load
-                balancer. For details about the type of health check
-                supported for each load balancer and corresponding
+                group (MIG).
+
+                **Load balancing**
+
+                Health check requirements vary depending on the type of
+                load balancer. For details about the type of health
+                check supported for each load balancer and corresponding
                 backend type, see Health checks overview: Load balancer
-                guide. **Autohealing in MIGs** The health checks that
-                you use for autohealing VMs in a MIG can be either
-                regional or global. For more information, see Set up an
-                application health check and autohealing. For more
-                information, see Health checks overview.
+                guide.
+
+                **Autohealing in MIGs**
+
+                The health checks that you use for autohealing VMs in a
+                MIG can be either regional or global. For more
+                information, see Set up an application health check and
+                autohealing.
+
+                For more information, seeHealth checks overview.
 
             """
 
@@ -1136,21 +1157,32 @@ class HealthChecksRestTransport(_BaseHealthChecksRestTransport):
 
             Returns:
                 ~.compute.Operation:
-                    Represents an Operation resource. Google Compute Engine
-                has three Operation resources: \*
-                `Global </compute/docs/reference/rest/beta/globalOperations>`__
-                \*
-                `Regional </compute/docs/reference/rest/beta/regionOperations>`__
-                \*
-                `Zonal </compute/docs/reference/rest/beta/zoneOperations>`__
+                    Represents an Operation resource.
+
+                Google Compute Engine has three Operation resources:
+
+                - `Global </compute/docs/reference/rest/beta/globalOperations>`__
+                - `Regional </compute/docs/reference/rest/beta/regionOperations>`__
+                - `Zonal </compute/docs/reference/rest/beta/zoneOperations>`__
+
                 You can use an operation resource to manage asynchronous
-                API requests. For more information, read Handling API
-                responses. Operations can be global, regional or zonal.
-                - For global operations, use the ``globalOperations``
-                resource. - For regional operations, use the
-                ``regionOperations`` resource. - For zonal operations,
-                use the ``zoneOperations`` resource. For more
-                information, read Global, Regional, and Zonal Resources.
+                API requests. For more information, readHandling API
+                responses.
+
+                Operations can be global, regional or zonal.
+
+                ::
+
+                   - For global operations, use the `globalOperations`
+                   resource.
+                   - For regional operations, use the
+                   `regionOperations` resource.
+                   - For zonal operations, use
+                   the `zoneOperations` resource.
+
+                For more information, read Global, Regional, and Zonal
+                Resources.
+
                 Note that completed Operation resources have a limited
                 retention period.
 
@@ -1453,21 +1485,32 @@ class HealthChecksRestTransport(_BaseHealthChecksRestTransport):
 
             Returns:
                 ~.compute.Operation:
-                    Represents an Operation resource. Google Compute Engine
-                has three Operation resources: \*
-                `Global </compute/docs/reference/rest/beta/globalOperations>`__
-                \*
-                `Regional </compute/docs/reference/rest/beta/regionOperations>`__
-                \*
-                `Zonal </compute/docs/reference/rest/beta/zoneOperations>`__
+                    Represents an Operation resource.
+
+                Google Compute Engine has three Operation resources:
+
+                - `Global </compute/docs/reference/rest/beta/globalOperations>`__
+                - `Regional </compute/docs/reference/rest/beta/regionOperations>`__
+                - `Zonal </compute/docs/reference/rest/beta/zoneOperations>`__
+
                 You can use an operation resource to manage asynchronous
-                API requests. For more information, read Handling API
-                responses. Operations can be global, regional or zonal.
-                - For global operations, use the ``globalOperations``
-                resource. - For regional operations, use the
-                ``regionOperations`` resource. - For zonal operations,
-                use the ``zoneOperations`` resource. For more
-                information, read Global, Regional, and Zonal Resources.
+                API requests. For more information, readHandling API
+                responses.
+
+                Operations can be global, regional or zonal.
+
+                ::
+
+                   - For global operations, use the `globalOperations`
+                   resource.
+                   - For regional operations, use the
+                   `regionOperations` resource.
+                   - For zonal operations, use
+                   the `zoneOperations` resource.
+
+                For more information, read Global, Regional, and Zonal
+                Resources.
+
                 Note that completed Operation resources have a limited
                 retention period.
 
@@ -1776,21 +1819,32 @@ class HealthChecksRestTransport(_BaseHealthChecksRestTransport):
 
             Returns:
                 ~.compute.Operation:
-                    Represents an Operation resource. Google Compute Engine
-                has three Operation resources: \*
-                `Global </compute/docs/reference/rest/beta/globalOperations>`__
-                \*
-                `Regional </compute/docs/reference/rest/beta/regionOperations>`__
-                \*
-                `Zonal </compute/docs/reference/rest/beta/zoneOperations>`__
+                    Represents an Operation resource.
+
+                Google Compute Engine has three Operation resources:
+
+                - `Global </compute/docs/reference/rest/beta/globalOperations>`__
+                - `Regional </compute/docs/reference/rest/beta/regionOperations>`__
+                - `Zonal </compute/docs/reference/rest/beta/zoneOperations>`__
+
                 You can use an operation resource to manage asynchronous
-                API requests. For more information, read Handling API
-                responses. Operations can be global, regional or zonal.
-                - For global operations, use the ``globalOperations``
-                resource. - For regional operations, use the
-                ``regionOperations`` resource. - For zonal operations,
-                use the ``zoneOperations`` resource. For more
-                information, read Global, Regional, and Zonal Resources.
+                API requests. For more information, readHandling API
+                responses.
+
+                Operations can be global, regional or zonal.
+
+                ::
+
+                   - For global operations, use the `globalOperations`
+                   resource.
+                   - For regional operations, use the
+                   `regionOperations` resource.
+                   - For zonal operations, use
+                   the `zoneOperations` resource.
+
+                For more information, read Global, Regional, and Zonal
+                Resources.
+
                 Note that completed Operation resources have a limited
                 retention period.
 
