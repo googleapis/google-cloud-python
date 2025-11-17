@@ -145,9 +145,10 @@ class _AsyncWriteObjectStream(_AsyncAbstractObjectStream):
 
     async def close(self) -> None:
         """Closes the bidi-gRPC connection."""
-        raise NotImplementedError(
-            "close() is not implemented yet in _AsyncWriteObjectStream"
-        )
+        if not self._is_stream_open:
+            raise ValueError("Stream is not open")
+        await self.socket_like_rpc.close()
+        self._is_stream_open = False
 
     async def send(
         self, bidi_write_object_request: _storage_v2.BidiWriteObjectRequest
