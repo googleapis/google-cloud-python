@@ -54,8 +54,7 @@ LIBRARIAN_DIR = "librarian"
 OUTPUT_DIR = "output"
 REPO_DIR = "repo"
 SOURCE_DIR = "source"
-
-_REPO_URL = "https://github.com/googleapis/google-cloud-python"
+_REPO_URL_SUFFIX = f"https://github.com/googleapis"
 
 
 def _read_text_file(path: str) -> str:
@@ -494,6 +493,17 @@ def _create_repo_metadata_from_service_config(
         "api_shortname": api_shortname,
     }
 
+def _get_repo_metadata_file_path(output: str, library_id: str, is_mono_repo: bool):
+    path_to_library = f"packages/{library_id}" if is_mono_repo else "."
+    return f"{output}/{path_to_library}/.repo-metadata.json"
+
+def _get_repo_name_from_repo_metadata(output: str, library_id: str, is_mono_repo: bool):
+    file_path = _get_repo_metadata_file_path(output, library_id, is_mono_repo)
+    repo_metadata = _read_json_file(file_path)
+    repo_name = repo_metadata.get("repo")
+    if not repo_name:
+        raise ValueError("`.repo-metadata.json` file is missing required 'repo' field.")
+    return repo_name
 
 def _generate_repo_metadata_file(
     output: str, library_id: str, source: str, apis: List[Dict], is_mono_repo: bool
@@ -508,7 +518,7 @@ def _generate_repo_metadata_file(
         is_mono_repo(bool): True if the current repository is a mono-repo.
     """
     path_to_library = f"packages/{library_id}" if is_mono_repo else "."
-    output_repo_metadata = f"{output}/{path_to_library}/.repo-metadata.json"
+    output_repo_metadata = _get_repo_metadata_file_path(output, library_id, is_mono_repo)
 
     # TODO(https://github.com/googleapis/librarian/issues/2334)): If `.repo-metadata.json`
     # already exists in the `output` dir, then this means that it has been successfully copied
@@ -1306,7 +1316,7 @@ def _get_previous_version(library_id: str, librarian: str) -> str:
 
 
 def _create_main_version_header(
-    version: str, previous_version: str, library_id: str
+    version: str, previous_version: str, library_id: str, repo_name: str
 ) -> str:
     """This function creates a header to be used in a changelog. The header has the following format:
     `## [{version}](https://github.com/googleapis/google-cloud-python/compare/{library_id}-v{previous_version}...{library_id}-v{version}) (YYYY-MM-DD)`
@@ -1323,7 +1333,7 @@ def _create_main_version_header(
     current_date = datetime.now().strftime("%Y-%m-%d")
     # Return the main version header
     return (
-        f"## [{version}]({_REPO_URL}/compare/{library_id}-v{previous_version}"
+        f"## [{version}]({_REPO_URL_SUFFIX}/{repo_name}/compare/{library_id}-v{previous_version}"
         f"...{library_id}-v{version}) ({current_date})"
     )
 
@@ -1334,6 +1344,7 @@ def _process_changelog(
     version: str,
     previous_version: str,
     library_id: str,
+    repo_name: str
 ):
     """This function searches the given content for the anchor pattern
     `[1]: https://pypi.org/project/{library_id}/#history`
@@ -1361,7 +1372,7 @@ def _process_changelog(
     entry_parts = []
     entry_parts.append(
         _create_main_version_header(
-            version=version, previous_version=previous_version, library_id=library_id
+            version=version, previous_version=previous_version, library_id=library_id, repo_name=repo_name
         )
     )
 
@@ -1383,7 +1394,7 @@ def _process_changelog(
         if adjusted_change_type in change_type_map:
             entry_parts.append(f"\n\n### {change_type_map[adjusted_change_type]}\n")
             for change in library_changes:
-                commit_link = f"([{change[commit_hash_key]}]({_REPO_URL}/commit/{change[commit_hash_key]}))"
+                commit_link = f"([{change[commit_hash_key]}]({_REPO_URL_SUFFIX}/{repo_name}/commit/{change[commit_hash_key]}))"
                 entry_parts.append(f"* {change[subject_key]} {commit_link}")
 
     new_entry_text = "\n".join(entry_parts)
@@ -1433,12 +1444,14 @@ def _update_changelog_for_library(
 
     changelog_src = f"{repo}/{relative_path}"
     changelog_dest = f"{output}/{relative_path}"
+    repo_name = _get_repo_name_from_repo_metadata(output, library_id, is_mono_repo)
     updated_content = _process_changelog(
         _read_text_file(changelog_src),
         library_changes,
         version,
         previous_version,
         library_id,
+        repo_name,
     )
     _write_text_file(changelog_dest, updated_content)
 
