@@ -160,9 +160,9 @@ class _AsyncWriteObjectStream(_AsyncAbstractObjectStream):
                 The request message to send. This is typically used to specify
                 the read offset and limit.
         """
-        raise NotImplementedError(
-            "send() is not implemented yet in _AsyncWriteObjectStream"
-        )
+        if not self._is_stream_open:
+            raise ValueError("Stream is not open")
+        await self.socket_like_rpc.send(bidi_write_object_request)
 
     async def recv(self) -> _storage_v2.BidiWriteObjectResponse:
         """Receives a response from the stream.
@@ -174,9 +174,9 @@ class _AsyncWriteObjectStream(_AsyncAbstractObjectStream):
             :class:`~google.cloud._storage_v2.types.BidiWriteObjectResponse`:
                 The response message from the server.
         """
-        raise NotImplementedError(
-            "recv() is not implemented yet in _AsyncWriteObjectStream"
-        )
+        if not self._is_stream_open:
+            raise ValueError("Stream is not open")
+        return await self.socket_like_rpc.recv()
 
     @property
     def is_stream_open(self) -> bool:
