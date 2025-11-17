@@ -1403,6 +1403,7 @@ def _process_changelog(
         previous_version(str): The previous version of the library.
         library_id(str): The id of the library where the changelog should
             be updated.
+        repo_name(str): The name of the repository (e.g., 'googleapis/google-cloud-python').
 
     Raises: ValueError if the anchor pattern string could not be found in the given content
 
