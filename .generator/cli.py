@@ -55,7 +55,7 @@ LIBRARIAN_DIR = "librarian"
 OUTPUT_DIR = "output"
 REPO_DIR = "repo"
 SOURCE_DIR = "source"
-_REPO_URL_SUFFIX = f"https://github.com/googleapis"
+_GITHUB_BASE = f"https://github.com"
 
 
 def _read_text_file(path: str) -> str:
@@ -528,7 +528,7 @@ def _get_repo_name_from_repo_metadata(base: str, library_id: str, is_mono_repo: 
         ValueError: If the '.repo-metadata.json' file is missing the 'repo' field.
     """
     if is_mono_repo:
-        return "google-cloud-python"
+        return "googleapis/google-cloud-python"
     file_path = _get_repo_metadata_file_path(base, library_id, is_mono_repo)
     repo_metadata = _read_json_file(file_path)
     repo_name = repo_metadata.get("repo")
@@ -1364,6 +1364,7 @@ def _create_main_version_header(
         previous_version(str): The previous version of the library.
         library_id(str): The id of the library where the changelog should
             be updated.
+        repo_name(str): The name of the repository (e.g., 'googleapis/google-cloud-python').
 
     Returns:
         A header to be used in the changelog.
@@ -1371,7 +1372,7 @@ def _create_main_version_header(
     current_date = datetime.now().strftime("%Y-%m-%d")
     # Return the main version header
     return (
-        f"## [{version}]({_REPO_URL_SUFFIX}/{repo_name}/compare/{library_id}-v{previous_version}"
+        f"## [{version}]({_GITHUB_BASE}/{repo_name}/compare/{library_id}-v{previous_version}"
         f"...{library_id}-v{version}) ({current_date})"
     )
 
@@ -1435,7 +1436,7 @@ def _process_changelog(
         if adjusted_change_type in change_type_map:
             entry_parts.append(f"\n\n### {change_type_map[adjusted_change_type]}\n")
             for change in library_changes:
-                commit_link = f"([{change[commit_hash_key]}]({_REPO_URL_SUFFIX}/{repo_name}/commit/{change[commit_hash_key]}))"
+                commit_link = f"([{change[commit_hash_key]}]({_GITHUB_BASE}/{repo_name}/commit/{change[commit_hash_key]}))"
                 entry_parts.append(f"* {change[subject_key]} {commit_link}")
 
     new_entry_text = "\n".join(entry_parts)
