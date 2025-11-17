@@ -1274,7 +1274,7 @@ def test_update_changelog_for_library_single_repo(mocker):
     mock_write = mocker.patch("cli._write_text_file")
     mock_path_exists = mocker.patch("cli.os.path.lexists", return_value=True)
     mocker.patch(
-        "cli._get_repo_name_from_repo_metadata", return_value="google-cloud-python"
+        "cli._get_repo_name_from_repo_metadata", return_value="googleapis/google-cloud-python"
     )
     _update_changelog_for_library(
         "repo",
@@ -1316,7 +1316,7 @@ def test_process_changelog_success():
         version,
         previous_version,
         library_id,
-        "google-cloud-python",
+        "googleapis/google-cloud-python",
     )
     assert result == expected_result
 
@@ -1324,7 +1324,7 @@ def test_process_changelog_success():
 def test_process_changelog_failure():
     """Tests that value error is raised if the changelog anchor string cannot be found"""
     with pytest.raises(ValueError):
-        _process_changelog("", [], "", "", "", "google-cloud-python")
+        _process_changelog("", [], "", "", "", "googleapis/google-cloud-python")
 
 
 def test_update_changelog_for_library_failure(mocker):
@@ -1368,7 +1368,7 @@ def test_create_main_version_header():
     version = "1.2.3"
     library_id = "google-cloud-language"
     actual_header = _create_main_version_header(
-        version, previous_version, library_id, "google-cloud-python"
+        version, previous_version, library_id, "googleapis/google-cloud-python"
     )
     assert actual_header == expected_header
 
