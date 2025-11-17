@@ -2,10 +2,12 @@
 # Use of this source code is governed by a BSD-style
 # license that can be found in the LICENSE file.
 
+import logging
 import warnings
 
 from pandas_gbq import version as pandas_gbq_version
 from pandas_gbq.contexts import Context, context
+from pandas_gbq.core.sample import sample
 
 from . import _versions_helpers
 from .gbq import read_gbq, to_gbq  # noqa
@@ -21,6 +23,8 @@ if sys_major == 3 and sys_minor < 9:
         FutureWarning,
     )
 
+logger = logging.Logger(__name__)
+
 __version__ = pandas_gbq_version.__version__
 
 __all__ = [
@@ -29,4 +33,5 @@ __all__ = [
     "read_gbq",
     "Context",
     "context",
+    "sample",
 ]

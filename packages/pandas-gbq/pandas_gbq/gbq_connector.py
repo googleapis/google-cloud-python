@@ -2,14 +2,13 @@
 # Use of this source code is governed by a BSD-style
 # license that can be found in the LICENSE file.
 
+from __future__ import annotations
 
 import logging
 import time
 import typing
-from typing import Any, Dict, Optional, Sequence, Union
+from typing import Any, Dict, Optional, Union
 import warnings
-
-import numpy as np
 
 # Only import at module-level at type checking time to avoid circular
 # dependencies in the pandas package, which has an optional dependency on
@@ -19,17 +18,12 @@ if typing.TYPE_CHECKING:  # pragma: NO COVER
 
 import pandas_gbq.constants
 from pandas_gbq.contexts import context
+import pandas_gbq.core.read
 import pandas_gbq.environment as environment
 import pandas_gbq.exceptions
-from pandas_gbq.exceptions import (
-    GenericGBQException,
-    InvalidSchema,
-    QueryTimeout,
-    TableCreationError,
-)
+from pandas_gbq.exceptions import QueryTimeout
 from pandas_gbq.features import FEATURES
 import pandas_gbq.query
-import pandas_gbq.timestamp
 
 try:
     import tqdm  # noqa
@@ -57,11 +51,9 @@ class GbqConnector:
         rfc9110_delimiter=False,
         bigquery_client=None,
     ):
-        from google.api_core.exceptions import ClientError, GoogleAPIError
-
         from pandas_gbq import auth
 
-        self.http_error = (ClientError, GoogleAPIError)
+        self.http_error = pandas_gbq.constants.HTTP_ERRORS
         self.project_id = project_id
         self.location = location
         self.reauth = reauth
@@ -156,22 +148,7 @@ class GbqConnector:
     def process_http_error(ex):
         # See `BigQuery Troubleshooting Errors
         # <https://cloud.google.com/bigquery/troubleshooting-errors>`__
-
-        message = (
-            ex.message.casefold()
-            if hasattr(ex, "message") and ex.message is not None
-            else ""
-        )
-        if "cancelled" in message:
-            raise QueryTimeout("Reason: {0}".format(ex))
-        elif "schema does not match" in message:
-            error_message = ex.errors[0]["message"]
-            raise InvalidSchema(f"Reason: {error_message}")
-        elif "already exists: table" in message:
-            error_message = ex.errors[0]["message"]
-            raise TableCreationError(f"Reason: {error_message}")
-        else:
-            raise GenericGBQException("Reason: {0}".format(ex)) from ex
+        raise pandas_gbq.exceptions.translate_exception(ex) from ex
 
     def download_table(
         self,
@@ -179,7 +156,7 @@ class GbqConnector:
         max_results: Optional[int] = None,
         progress_bar_type: Optional[str] = None,
         dtypes: Optional[Dict[str, Union[str, Any]]] = None,
-    ) -> "pandas.DataFrame":
+    ) -> Optional[pandas.DataFrame]:
         from google.cloud import bigquery
 
         self._start_timer()
@@ -274,61 +251,15 @@ class GbqConnector:
         progress_bar_type=None,
         user_dtypes=None,
     ):
-        # No results are desired, so don't bother downloading anything.
-        if max_results == 0:
-            return None
-
-        if user_dtypes is None:
-            user_dtypes = {}
-
-        create_bqstorage_client = self.use_bqstorage_api
-        if max_results is not None:
-            create_bqstorage_client = False
-
-        # If we're downloading a large table, BigQuery DataFrames might be a
-        # better fit. Not all code paths will populate rows_iter._table, but
-        # if it's not populated that means we are working with a small result
-        # set.
-        if (table_ref := getattr(rows_iter, "_table", None)) is not None:
-            table = self.client.get_table(table_ref)
-            if (
-                isinstance((num_bytes := table.num_bytes), int)
-                and num_bytes > pandas_gbq.constants.BYTES_TO_RECOMMEND_BIGFRAMES
-            ):
-                num_gib = num_bytes / pandas_gbq.constants.BYTES_IN_GIB
-                warnings.warn(
-                    f"Recommendation: Your results are {num_gib:.1f} GiB. "
-                    "Consider using BigQuery DataFrames (https://bit.ly/bigframes-intro)"
-                    "to process large results with pandas compatible APIs with transparent SQL "
-                    "pushdown to BigQuery engine. This provides an opportunity to save on costs "
-                    "and improve performance. "
-                    "Please reach out to bigframes-feedback@google.com with any "
-                    "questions or concerns. To disable this message, run "
-                    "warnings.simplefilter('ignore', category=pandas_gbq.exceptions.LargeResultsWarning)",
-                    category=pandas_gbq.exceptions.LargeResultsWarning,
-                    # user's code
-                    # -> read_gbq
-                    # -> run_query
-                    # -> download_results
-                    stacklevel=4,
-                )
-
-        try:
-            schema_fields = [field.to_api_repr() for field in rows_iter.schema]
-            conversion_dtypes = _bqschema_to_nullsafe_dtypes(schema_fields)
-            conversion_dtypes.update(user_dtypes)
-            df = rows_iter.to_dataframe(
-                dtypes=conversion_dtypes,
-                progress_bar_type=progress_bar_type,
-                create_bqstorage_client=create_bqstorage_client,
-            )
-        except self.http_error as ex:
-            self.process_http_error(ex)
-
-        df = _finalize_dtypes(df, schema_fields)
-
-        logger.debug("Got {} rows.\n".format(rows_iter.total_rows))
-        return df
+        return pandas_gbq.core.read.download_results(
+            rows_iter,
+            bqclient=self.get_client(),
+            progress_bar_type=progress_bar_type,
+            warn_on_large_results=True,
+            max_results=max_results,
+            user_dtypes=user_dtypes,
+            use_bqstorage_api=self.use_bqstorage_api,
+        )
 
     def load_data(
         self,
@@ -367,90 +298,6 @@ class GbqConnector:
                 )
         except self.http_error as ex:
             self.process_http_error(ex)
-
-
-def _bqschema_to_nullsafe_dtypes(schema_fields):
-    """Specify explicit dtypes based on BigQuery schema.
-
-    This function only specifies a dtype when the dtype allows nulls.
-    Otherwise, use pandas's default dtype choice.
-
-    See: http://pandas.pydata.org/pandas-docs/dev/missing_data.html
-    #missing-data-casting-rules-and-indexing
-    """
-    import db_dtypes
-
-    # If you update this mapping, also update the table at
-    # `docs/reading.rst`.
-    dtype_map = {
-        "FLOAT": np.dtype(float),
-        "INTEGER": "Int64",
-        "TIME": db_dtypes.TimeDtype(),
-        # Note: Other types such as 'datetime64[ns]' and db_types.DateDtype()
-        # are not included because the pandas range does not align with the
-        # BigQuery range. We need to attempt a conversion to those types and
-        # fall back to 'object' when there are out-of-range values.
-    }
-
-    # Amend dtype_map with newer extension types if pandas version allows.
-    if FEATURES.pandas_has_boolean_dtype:
-        dtype_map["BOOLEAN"] = "boolean"
-
-    dtypes = {}
-    for field in schema_fields:
-        name = str(field["name"])
-        # Array BigQuery type is represented as an object column containing
-        # list objects.
-        if field["mode"].upper() == "REPEATED":
-            dtypes[name] = "object"
-            continue
-
-        dtype = dtype_map.get(field["type"].upper())
-        if dtype:
-            dtypes[name] = dtype
-
-    return dtypes
-
-
-def _finalize_dtypes(
-    df: "pandas.DataFrame", schema_fields: Sequence[Dict[str, Any]]
-) -> "pandas.DataFrame":
-    """
-    Attempt to change the dtypes of those columns that don't map exactly.
-
-    For example db_dtypes.DateDtype() and datetime64[ns] cannot represent
-    0001-01-01, but they can represent dates within a couple hundred years of
-    1970. See:
-    https://github.com/googleapis/python-bigquery-pandas/issues/365
-    """
-    import db_dtypes
-    import pandas.api.types
-
-    # If you update this mapping, also update the table at
-    # `docs/reading.rst`.
-    dtype_map = {
-        "DATE": db_dtypes.DateDtype(),
-        "DATETIME": "datetime64[ns]",
-        "TIMESTAMP": "datetime64[ns]",
-    }
-
-    for field in schema_fields:
-        # This method doesn't modify ARRAY/REPEATED columns.
-        if field["mode"].upper() == "REPEATED":
-            continue
-
-        name = str(field["name"])
-        dtype = dtype_map.get(field["type"].upper())
-
-        # Avoid deprecated conversion to timezone-naive dtype by only casting
-        # object dtypes.
-        if dtype and pandas.api.types.is_object_dtype(df[name]):
-            df[name] = df[name].astype(dtype, errors="ignore")
-
-    # Ensure any TIMESTAMP columns are tz-aware.
-    df = pandas_gbq.timestamp.localize_df(df, schema_fields)
-
-    return df
 
 
 def _get_client(user_agent, rfc9110_delimiter, project_id, credentials):

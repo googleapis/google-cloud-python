@@ -206,7 +206,7 @@ def test_to_gbq_with_if_exists_unknown():
     ],
 )
 def test_create_user_agent(user_agent, rfc9110_delimiter, expected):
-    from pandas_gbq.gbq import create_user_agent
+    from pandas_gbq.gbq_connector import create_user_agent
 
     result = create_user_agent(user_agent, rfc9110_delimiter)
     assert result == expected
@@ -214,14 +214,14 @@ def test_create_user_agent(user_agent, rfc9110_delimiter, expected):
 
 @mock.patch.dict(os.environ, {"VSCODE_PID": "1234"}, clear=True)
 def test_create_user_agent_vscode():
-    from pandas_gbq.gbq import create_user_agent
+    from pandas_gbq.gbq_connector import create_user_agent
 
     assert create_user_agent() == f"pandas-{pd.__version__} vscode"
 
 
 @mock.patch.dict(os.environ, {"VSCODE_PID": "1234"}, clear=True)
 def test_create_user_agent_vscode_plugin():
-    from pandas_gbq.gbq import create_user_agent
+    from pandas_gbq.gbq_connector import create_user_agent
 
     with tempfile.TemporaryDirectory() as tmpdir:
         user_home = Path(tmpdir)
@@ -247,14 +247,14 @@ def test_create_user_agent_vscode_plugin():
 
 @mock.patch.dict(os.environ, {"JPY_PARENT_PID": "1234"}, clear=True)
 def test_create_user_agent_jupyter():
-    from pandas_gbq.gbq import create_user_agent
+    from pandas_gbq.gbq_connector import create_user_agent
 
     assert create_user_agent() == f"pandas-{pd.__version__} jupyter"
 
 
 @mock.patch.dict(os.environ, {"JPY_PARENT_PID": "1234"}, clear=True)
 def test_create_user_agent_jupyter_extension():
-    from pandas_gbq.gbq import create_user_agent
+    from pandas_gbq.gbq_connector import create_user_agent
 
     def custom_import_module_side_effect(name, package=None):
         if name == "bigquery_jupyter_plugin":

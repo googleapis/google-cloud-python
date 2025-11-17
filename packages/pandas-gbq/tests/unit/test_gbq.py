@@ -21,6 +21,7 @@ import pytest
 
 from pandas_gbq import gbq
 import pandas_gbq.constants
+import pandas_gbq.core.read
 import pandas_gbq.exceptions
 import pandas_gbq.features
 from pandas_gbq.features import FEATURES
@@ -104,7 +105,7 @@ def default_bigquery_client(mock_bigquery_client, mock_query_job, mock_row_itera
     ],
 )
 def test__bqschema_to_nullsafe_dtypes(type_, expected):
-    result = gbq._bqschema_to_nullsafe_dtypes(
+    result = pandas_gbq.core.read._bqschema_to_nullsafe_dtypes(
         [dict(name="x", type=type_, mode="NULLABLE")]
     )
     if not expected:

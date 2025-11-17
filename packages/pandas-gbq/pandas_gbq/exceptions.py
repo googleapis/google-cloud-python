@@ -110,3 +110,24 @@ class QueryTimeout(ValueError):
     Raised when the query request exceeds the timeoutMs value specified in the
     BigQuery configuration.
     """
+
+
+def translate_exception(ex):
+    # See `BigQuery Troubleshooting Errors
+    # <https://cloud.google.com/bigquery/troubleshooting-errors>`__
+
+    message = (
+        ex.message.casefold()
+        if hasattr(ex, "message") and ex.message is not None
+        else ""
+    )
+    if "cancelled" in message:
+        return QueryTimeout("Reason: {0}".format(ex))
+    elif "schema does not match" in message:
+        error_message = ex.errors[0]["message"]
+        return InvalidSchema(f"Reason: {error_message}")
+    elif "already exists: table" in message:
+        error_message = ex.errors[0]["message"]
+        return TableCreationError(f"Reason: {error_message}")
+    else:
+        return GenericGBQException("Reason: {0}".format(ex))

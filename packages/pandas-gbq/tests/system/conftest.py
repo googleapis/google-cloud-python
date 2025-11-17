@@ -46,6 +46,29 @@ def project(project_id):
 
 
 @pytest.fixture
+def external_table(bigquery_client, random_dataset, project_id):
+    table_id = prefixer.create_prefix()
+    full_table_id = str(random_dataset.table(table_id))
+    table = bigquery.Table(
+        full_table_id,
+        [
+            bigquery.SchemaField("name", "STRING"),
+            bigquery.SchemaField("post_abbr", "STRING"),
+        ],
+    )
+    external_data_configuration = bigquery.ExternalConfig("CSV")
+    csv_options = bigquery.CSVOptions()
+    csv_options.skip_leading_rows = 1
+    external_data_configuration.csv_options = csv_options
+    external_data_configuration.source_uris = [
+        "gs://cloud-samples-data/bigquery/us-states/us-states.csv"
+    ]
+    table.external_data_configuration = external_data_configuration
+    bigquery_client.create_table(table)
+    return full_table_id
+
+
+@pytest.fixture
 def to_gbq(credentials, project_id):
     import pandas_gbq
 
