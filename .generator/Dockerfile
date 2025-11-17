@@ -32,6 +32,10 @@ RUN apt-get update && \
     libffi-dev \
     libsqlite3-dev \
     libreadline-dev \
+    # Needed for `google-cloud-bigquery-storage` to avoid
+    # the error `ModuleNotFoundError: No module named '_lzma'`
+    # described in https://github.com/googleapis/google-cloud-python/issues/14884
+    liblzma-dev \
     # ------------------------------------------------------
     && apt-get clean && \
     rm -rf /var/lib/apt/lists/*
