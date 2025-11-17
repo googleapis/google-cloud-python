@@ -90,8 +90,8 @@ def test__urlencode_param(key, value, expected):
 def test__urlencode_param_caching_performance():
     import time
 
-    key = "key" * 100
-    value = "value" * 100
+    key = "key" * 10000
+    value = "value" * 10000
     # time with empty cache
     start_time = time.perf_counter()
     routing_header._urlencode_param(key, value)
