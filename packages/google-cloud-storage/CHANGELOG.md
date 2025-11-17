@@ -4,6 +4,21 @@
 
 [1]: https://pypi.org/project/google-cloud-storage/#history
 
+## [3.6.0](https://github.com/googleapis/python-storage/compare/v3.5.0...v3.6.0) (2025-11-17)
+
+
+### Features
+
+* Add support for partial list buckets ([#1606](https://github.com/googleapis/python-storage/issues/1606)) ([92fc2b0](https://github.com/googleapis/python-storage/commit/92fc2b00429415b9fbe7cba0167778eee60449e2))
+* Make return_partial_success and unreachable fields public for list Bucket ([#1601](https://github.com/googleapis/python-storage/issues/1601)) ([323cddd](https://github.com/googleapis/python-storage/commit/323cddd5d439e04e12614106eab1928fd4008c0b))
+* **zb-experimental:** Add async write object stream ([5ab8103](https://github.com/googleapis/python-storage/commit/5ab81032268e875f82a66431d666fe61c9eb394b))
+* **zb-experimental:** Add async write object stream ([#1612](https://github.com/googleapis/python-storage/issues/1612)) ([5ab8103](https://github.com/googleapis/python-storage/commit/5ab81032268e875f82a66431d666fe61c9eb394b))
+
+
+### Bug Fixes
+
+* Dont pass credentials to StorageClient ([#1608](https://github.com/googleapis/python-storage/issues/1608)) ([195d644](https://github.com/googleapis/python-storage/commit/195d644c4d4feec98e9a9cd9fad67fc774c50dc8))
+
 ## [3.5.0](https://github.com/googleapis/python-storage/compare/v3.4.1...v3.5.0) (2025-11-05)
 
 
