@@ -4,6 +4,17 @@
 
 [1]: https://pypi.org/project/gapic-generator/#history
 
+## [1.30.0](https://github.com/googleapis/gapic-generator-python/compare/v1.29.0...v1.30.0) (2025-11-14)
+
+### Features
+
+* auto-enable mTLS when supported certificates are detected (#2472) ([4748760fe6d489d80cb17306157edb43d25f72b3](https://github.com/googleapis/gapic-generator-python/commit/4748760fe6d489d80cb17306157edb43d25f72b3))
+
+### Bug Fixes
+
+* drop packaging and pkg_resources (#2477) ([b4824c50ce06642d7c5bf5cb04e7a4adc02892a8](https://github.com/googleapis/gapic-generator-python/commit/b4824c50ce06642d7c5bf5cb04e7a4adc02892a8))
+* add api_version to gapic_metadata.json (#2476) ([c424e33d5e9cfd75b383b4b0c7b77211f3604b79](https://github.com/googleapis/gapic-generator-python/commit/c424e33d5e9cfd75b383b4b0c7b77211f3604b79))
+
 
 ## [1.29.0](https://github.com/googleapis/gapic-generator-python/compare/v1.28.3...v1.29.0) (2025-10-23)
 
