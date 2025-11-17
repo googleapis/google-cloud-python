@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/pandas-gbq/#history
 
+## [0.31.0](https://github.com/googleapis/python-bigquery-pandas/compare/v0.30.0...v0.31.0) (2025-11-17)
+
+
+### Features
+
+* add pandas_gbq.sample (#983) ([ac771c12f58b7378a8550515c9c656da7fa980a8](https://github.com/googleapis/python-bigquery-pandas/commit/ac771c12f58b7378a8550515c9c656da7fa980a8))
+
 ## [0.30.0](https://github.com/googleapis/python-bigquery-pandas/compare/v0.29.2...v0.30.0) (2025-10-31)
 
 
