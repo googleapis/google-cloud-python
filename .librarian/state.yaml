@@ -938,7 +938,7 @@ libraries:
     tag_format: '{id}-v{version}'
   - id: google-cloud-bigquery-storage
     version: 2.34.0
-    last_generated_commit: 0654a03c3f7a6cb46e36227d17cfcc6f4b71fa5a
+    last_generated_commit: 136201b66f70829232b7ec63fa6e35ca765bcacb
     apis:
       - path: google/cloud/bigquery/storage/v1beta2
         service_config: bigquerystorage_v1beta2.yaml

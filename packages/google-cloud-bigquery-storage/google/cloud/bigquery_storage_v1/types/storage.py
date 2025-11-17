@@ -442,8 +442,7 @@ class AppendRowsRequest(proto.Message):
 
             This field is a member of `oneof`_ ``rows``.
         arrow_rows (google.cloud.bigquery_storage_v1.types.AppendRowsRequest.ArrowData):
-            Rows in arrow format. This is an experimental
-            feature only selected for allowlisted customers.
+            Rows in arrow format.
 
             This field is a member of `oneof`_ ``rows``.
         trace_id (str):
@@ -471,9 +470,9 @@ class AppendRowsRequest(proto.Message):
         default_missing_value_interpretation (google.cloud.bigquery_storage_v1.types.AppendRowsRequest.MissingValueInterpretation):
             Optional. Default missing value interpretation for all
             columns in the table. When a value is specified on an
-            ``AppendRowsRequest``, it is applied to all requests on the
-            connection from that point forward, until a subsequent
-            ``AppendRowsRequest`` sets it to a different value.
+            ``AppendRowsRequest``, it is applied to all requests from
+            that point forward, until a subsequent ``AppendRowsRequest``
+            sets it to a different value.
             ``missing_value_interpretation`` can override
             ``default_missing_value_interpretation``. For example, if
             you want to write ``NULL`` instead of using default values
@@ -507,8 +506,6 @@ class AppendRowsRequest(proto.Message):
 
     class ArrowData(proto.Message):
         r"""Arrow schema and data.
-        Arrow format is an experimental feature only selected for
-        allowlisted customers.
 
         Attributes:
             writer_schema (google.cloud.bigquery_storage_v1.types.ArrowSchema):
@@ -536,8 +533,8 @@ class AppendRowsRequest(proto.Message):
 
         Attributes:
             writer_schema (google.cloud.bigquery_storage_v1.types.ProtoSchema):
-                The protocol buffer schema used to serialize the data.
-                Provide this value whenever:
+                Optional. The protocol buffer schema used to serialize the
+                data. Provide this value whenever:
 
                 - You send the first request of an RPC connection.
 
@@ -545,11 +542,11 @@ class AppendRowsRequest(proto.Message):
 
                 - You specify a new destination table.
             rows (google.cloud.bigquery_storage_v1.types.ProtoRows):
-                Serialized row data in protobuf message
-                format. Currently, the backend expects the
-                serialized rows to adhere to proto2 semantics
-                when appending rows, particularly with respect
-                to how default values are encoded.
+                Required. Serialized row data in protobuf
+                message format. Currently, the backend expects
+                the serialized rows to adhere to proto2
+                semantics when appending rows, particularly with
+                respect to how default values are encoded.
         """
 
         writer_schema: protobuf.ProtoSchema = proto.Field(

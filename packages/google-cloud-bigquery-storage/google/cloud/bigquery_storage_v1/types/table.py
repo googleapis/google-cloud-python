@@ -17,6 +17,7 @@ from __future__ import annotations
 
 from typing import MutableMapping, MutableSequence
 
+from google.protobuf import wrappers_pb2  # type: ignore
 import proto  # type: ignore
 
 __protobuf__ = proto.module(
@@ -125,6 +126,14 @@ class TableFieldSchema(proto.Message):
             Optional. A SQL expression to specify the [default value]
             (https://cloud.google.com/bigquery/docs/default-values) for
             this field.
+        timestamp_precision (google.protobuf.wrappers_pb2.Int64Value):
+            Optional. Precision (maximum number of total digits in base
+            10) for seconds of TIMESTAMP type.
+
+            Possible values include:
+
+            - 6 (Default, for TIMESTAMP type with microsecond precision)
+            - 12 (For TIMESTAMP type with picosecond precision)
         range_element_type (google.cloud.bigquery_storage_v1.types.TableFieldSchema.FieldElementType):
             Optional. The subtype of the RANGE, if the type of this
             field is RANGE. If the type is RANGE, this field is
@@ -264,6 +273,11 @@ class TableFieldSchema(proto.Message):
     default_value_expression: str = proto.Field(
         proto.STRING,
         number=10,
+    )
+    timestamp_precision: wrappers_pb2.Int64Value = proto.Field(
+        proto.MESSAGE,
+        number=27,
+        message=wrappers_pb2.Int64Value,
     )
     range_element_type: FieldElementType = proto.Field(
         proto.MESSAGE,
