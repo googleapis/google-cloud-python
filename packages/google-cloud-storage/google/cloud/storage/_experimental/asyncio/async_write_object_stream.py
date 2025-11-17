@@ -95,9 +95,53 @@ class _AsyncWriteObjectStream(_AsyncAbstractObjectStream):
         """Opening an object for write , should do it's state lookup
         to know what's the persisted size is.
         """
-        raise NotImplementedError(
-            "open() is not implemented yet in _AsyncWriteObjectStream"
+        if self._is_stream_open:
+            raise ValueError("Stream is already open")
+
+        # Create a new object or overwrite existing one if generation_number
+        # is None. This makes it consistent with GCS JSON API behavior.
+        # Created object type would be Appendable Object.
+        if self.generation_number is None:
+            self.first_bidi_write_req = _storage_v2.BidiWriteObjectRequest(
+                write_object_spec=_storage_v2.WriteObjectSpec(
+                    resource=_storage_v2.Object(
+                        name=self.object_name, bucket=self._full_bucket_name
+                    ),
+                    appendable=True,
+                ),
+            )
+        else:
+            self.first_bidi_write_req = _storage_v2.BidiWriteObjectRequest(
+                append_object_spec=_storage_v2.AppendObjectSpec(
+                    bucket=self._full_bucket_name,
+                    object=self.object_name,
+                    generation=self.generation_number,
+                ),
+                state_lookup=True,
+            )
+
+        self.socket_like_rpc = AsyncBidiRpc(
+            self.rpc, initial_request=self.first_bidi_write_req, metadata=self.metadata
         )
+
+        await self.socket_like_rpc.open()  # this is actually 1 send
+        response = await self.socket_like_rpc.recv()
+        self._is_stream_open = True
+
+        if not response.resource:
+            raise ValueError(
+                "Failed to obtain object resource after opening the stream"
+            )
+        if not response.resource.generation:
+            raise ValueError(
+                "Failed to obtain object generation after opening the stream"
+            )
+        self.generation_number = response.resource.generation
+
+        if not response.write_handle:
+            raise ValueError("Failed to obtain write_handle after opening the stream")
+
+        self.write_handle = response.write_handle
 
     async def close(self) -> None:
         """Closes the bidi-gRPC connection."""
@@ -132,3 +176,7 @@ class _AsyncWriteObjectStream(_AsyncAbstractObjectStream):
         raise NotImplementedError(
             "recv() is not implemented yet in _AsyncWriteObjectStream"
         )
+
+    @property
+    def is_stream_open(self) -> bool:
+        return self._is_stream_open
