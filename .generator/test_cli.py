@@ -259,6 +259,7 @@ def mock_release_stage_request_file(tmp_path, monkeypatch):
                 "release_triggered": False,
                 "version": "1.2.3",
                 "changes": [],
+                "tag_format": "{id}-v{version}",
             },
             {
                 "id": "google-cloud-language",
@@ -266,6 +267,7 @@ def mock_release_stage_request_file(tmp_path, monkeypatch):
                 "release_triggered": True,
                 "version": "1.2.3",
                 "changes": [],
+                "tag_format": "{id}-v{version}",
             },
         ]
     }
@@ -958,6 +960,7 @@ def test_handle_release_stage_fail_value_error_version(mocker):
                 "release_triggered": True,
                 "version": "1.2.2",
                 "changes": [],
+                "tag_format": "{id}-v{version}",
             },
         ]
     }
@@ -1250,7 +1253,8 @@ def test_update_changelog_for_library_writes_both_changelogs(mocker):
         "1.2.3",
         "1.2.2",
         "google-cloud-language",
-        is_mono_repo=True,
+        True,
+        "{id}-v{version}",
     )
 
     assert mock_write.call_count == 2
@@ -1274,7 +1278,8 @@ def test_update_changelog_for_library_single_repo(mocker):
     mock_write = mocker.patch("cli._write_text_file")
     mock_path_exists = mocker.patch("cli.os.path.lexists", return_value=True)
     mocker.patch(
-        "cli._get_repo_name_from_repo_metadata", return_value="googleapis/google-cloud-python"
+        "cli._get_repo_name_from_repo_metadata",
+        return_value="googleapis/google-cloud-python",
     )
     _update_changelog_for_library(
         "repo",
@@ -1283,7 +1288,8 @@ def test_update_changelog_for_library_single_repo(mocker):
         "1.2.3",
         "1.2.2",
         "google-cloud-language",
-        is_mono_repo=False,
+        False,
+        "v{version}",
     )
 
     assert mock_write.call_count == 2
@@ -1309,6 +1315,7 @@ def test_process_changelog_success():
     version = "1.2.3"
     previous_version = "1.2.2"
     library_id = "google-cloud-language"
+    tag_format = "{id}-v{version}"
 
     result = _process_changelog(
         mock_content,
@@ -1317,6 +1324,7 @@ def test_process_changelog_success():
         previous_version,
         library_id,
         "googleapis/google-cloud-python",
+        tag_format,
     )
     assert result == expected_result
 
@@ -1324,7 +1332,7 @@ def test_process_changelog_success():
 def test_process_changelog_failure():
     """Tests that value error is raised if the changelog anchor string cannot be found"""
     with pytest.raises(ValueError):
-        _process_changelog("", [], "", "", "", "googleapis/google-cloud-python")
+        _process_changelog("", [], "", "", "", "googleapis/google-cloud-python", "")
 
 
 def test_update_changelog_for_library_failure(mocker):
@@ -1342,7 +1350,8 @@ def test_update_changelog_for_library_failure(mocker):
                 "1.2.3",
                 "1.2.2",
                 "google-cloud-language",
-                "CHANGELOG.md",
+                True,
+                "{id}-v{version}",
             )
 
 
@@ -1361,14 +1370,23 @@ def test_process_version_file_failure():
         _process_version_file("", "", Path(""))
 
 
-def test_create_main_version_header():
+@pytest.mark.parametrize(
+    "tag_format,expected_tag_result",
+    [(r"{id}-v{version}", "google-cloud-language-v"), (r"v{version}", "v")],
+)
+def test_create_main_version_header(tag_format, expected_tag_result):
     current_date = datetime.now().strftime("%Y-%m-%d")
-    expected_header = f"## [1.2.3](https://github.com/googleapis/google-cloud-python/compare/google-cloud-language-v1.2.2...google-cloud-language-v1.2.3) ({current_date})"
+    expected_header = f"## [1.2.3](https://github.com/googleapis/google-cloud-python/compare/{expected_tag_result}1.2.2...{expected_tag_result}1.2.3) ({current_date})"
     previous_version = "1.2.2"
     version = "1.2.3"
     library_id = "google-cloud-language"
+    tag_format = tag_format
     actual_header = _create_main_version_header(
-        version, previous_version, library_id, "googleapis/google-cloud-python"
+        version,
+        previous_version,
+        library_id,
+        "googleapis/google-cloud-python",
+        tag_format,
     )
     assert actual_header == expected_header
 

@@ -1354,10 +1354,14 @@ def _get_previous_version(library_id: str, librarian: str) -> str:
 
 
 def _create_main_version_header(
-    version: str, previous_version: str, library_id: str, repo_name: str
+    version: str,
+    previous_version: str,
+    library_id: str,
+    repo_name: str,
+    tag_format: str,
 ) -> str:
     """This function creates a header to be used in a changelog. The header has the following format:
-    `## [{version}](https://github.com/googleapis/google-cloud-python/compare/{library_id}-v{previous_version}...{library_id}-v{version}) (YYYY-MM-DD)`
+    `## [{version}](https://github.com/googleapis/google-cloud-python/compare/{tag_format}{previous_version}...{tag_format}{version}) (YYYY-MM-DD)`
 
     Args:
         version(str): The new version of the library.
@@ -1365,15 +1369,23 @@ def _create_main_version_header(
         library_id(str): The id of the library where the changelog should
             be updated.
         repo_name(str): The name of the repository (e.g., 'googleapis/google-cloud-python').
+        tag_format(str): The format of the git tag.
 
     Returns:
         A header to be used in the changelog.
     """
     current_date = datetime.now().strftime("%Y-%m-%d")
+
+    # We will assume that version is always at the end of the tag.
+    tag_format = tag_format.replace("{version}", "")
+
+    if "{id}" in tag_format:
+        tag_format = tag_format.format(**{"id": library_id})
+
     # Return the main version header
     return (
-        f"## [{version}]({_GITHUB_BASE}/{repo_name}/compare/{library_id}-v{previous_version}"
-        f"...{library_id}-v{version}) ({current_date})"
+        f"## [{version}]({_GITHUB_BASE}/{repo_name}/compare/{tag_format}{previous_version}"
+        f"...{tag_format}{version}) ({current_date})"
     )
 
 
@@ -1384,12 +1396,13 @@ def _process_changelog(
     previous_version: str,
     library_id: str,
     repo_name: str,
+    tag_format: str,
 ):
     """This function searches the given content for the anchor pattern
     `[1]: https://pypi.org/project/{library_id}/#history`
     and adds an entry in the following format:
 
-    ## [{version}](https://github.com/googleapis/google-cloud-python/compare/{library_id}-v{previous_version}...{library_id}-v{version}) (YYYY-MM-DD)
+    ## [{version}](https://github.com/googleapis/google-cloud-python/compare/{tag_format}{previous_version}...{tag_format}{version}) (YYYY-MM-DD)
 
     ### Documentation
 
@@ -1404,6 +1417,7 @@ def _process_changelog(
         library_id(str): The id of the library where the changelog should
             be updated.
         repo_name(str): The name of the repository (e.g., 'googleapis/google-cloud-python').
+        tag_format(str): The format of the git tag.
 
     Raises: ValueError if the anchor pattern string could not be found in the given content
 
@@ -1416,6 +1430,7 @@ def _process_changelog(
             previous_version=previous_version,
             library_id=library_id,
             repo_name=repo_name,
+            tag_format=tag_format,
         )
     )
 
@@ -1461,6 +1476,7 @@ def _update_changelog_for_library(
     previous_version: str,
     library_id: str,
     is_mono_repo: bool,
+    tag_format: str,
 ):
     """Prepends a new release entry with multiple, grouped changes, to a changelog.
 
@@ -1477,6 +1493,7 @@ def _update_changelog_for_library(
         library_id(str): The id of the library where the changelog should
             be updated.
         is_mono_repo(bool): True if the current repository is a mono-repo.
+        tag_format(str): The format of the git tag.
     """
     if is_mono_repo:
         relative_path = f"packages/{library_id}/CHANGELOG.md"
@@ -1495,6 +1512,7 @@ def _update_changelog_for_library(
         previous_version,
         library_id,
         repo_name,
+        tag_format,
     )
     _write_text_file(changelog_dest, updated_content)
 
@@ -1567,6 +1585,7 @@ def handle_release_stage(
             version = library_release_data["version"]
             library_id = library_release_data["id"]
             library_changes = library_release_data["changes"]
+            tag_format = library_release_data["tag_format"]
 
             # Get previous version from state.yaml
             previous_version = _get_previous_version(library_id, librarian)
@@ -1586,7 +1605,8 @@ def handle_release_stage(
                 version,
                 previous_version,
                 library_id,
-                is_mono_repo=is_mono_repo,
+                is_mono_repo,
+                tag_format,
             )
 
     except Exception as e:
