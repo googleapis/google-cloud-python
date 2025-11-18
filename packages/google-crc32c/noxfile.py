@@ -52,10 +52,10 @@ def check(session):
 @nox.session(python="3.13")
 def mypy(session):
     """Verify type hints are mypy compatible."""
-    session.install("-e", ".")
     session.install(
         "mypy",
         "types-mock",
         "types-setuptools",
     )
+    session.env["MYPYPATH"] = "src"
     session.run("mypy", "src/google_crc32c/", "tests/")

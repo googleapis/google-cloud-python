@@ -13,47 +13,16 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-# Build a **single** Python wheel for a specified version. The version and
-# associated paths should be set as environment variables; the expected
-# environment variables will be verified below.
-
-set -e -x
-
-# Check that the REPO_ROOT, PY_BIN and PY_TAG environment variables are set.
-if [[ -z "${REPO_ROOT}" ]]; then
-    echo "REPO_ROOT environment variable should be set by the caller."
-    exit 1
-fi
-if [[ -z "${PY_BIN}" ]]; then
-    echo "PY_BIN environment variable should be set by the caller."
-    exit 1
-fi
-if [[ -z "${PY_TAG}" ]]; then
-    echo "PY_TAG environment variable should be set by the caller."
-    exit 1
-fi
-
-# set up pyenv & shell environment for switching across python versions
-eval "$(pyenv init -)"
-eval "$(pyenv init --path)"
-
-install_python_pyenv() {
-    version=$1
-
-    if [ -z "$(pyenv versions --bare | grep $version)" ]; then
-        echo "Python $version is not installed. Installing..."
-        pyenv install $version
-        echo "Python $version installed."
-    else
-        echo "Python $version is already installed."
-    fi
-    pyenv shell $version
-}
-install_python_pyenv ${PY_BIN}
+# ``readlink -f`` is not our friend on OS X. This relies on **some**
+# ``python`` being installed.
+SCRIPT_FI=$(python3 -c "import os; print(os.path.realpath('${0}'))")
+OSX_DIR=$(dirname ${SCRIPT_FI})
+SCRIPTS_DIR=$(dirname ${OSX_DIR})
+export REPO_ROOT=$(dirname ${SCRIPTS_DIR})
 
 # Create a virtualenv where we can install Python build dependencies.
-VENV=${REPO_ROOT}/venv${PY_BIN}
-"python${PY_BIN}" -m venv ${VENV}
+VENV=${REPO_ROOT}/venv_build
+"python3" -m venv ${VENV}
 
 curl https://bootstrap.pypa.io/get-pip.py | ${VENV}/bin/python
 ${VENV}/bin/python -m pip install \
@@ -76,11 +45,7 @@ ${VENV}/bin/delocate-wheel \
     --wheel-dir ${FIXED_WHEELS} \
     --verbose \
     --check-archs \
-    ${DIST_WHEELS}/google_crc32c*${PY_TAG}*.whl
-
-if [[ "${PUBLISH_WHEELS}" == "true" ]]; then
-    . /${OSX_DIR}/publish_python_wheel.sh
-fi
+    ${DIST_WHEELS}/google_crc32c*.whl
 
 # Clean up.
 rm -fr ${DIST_WHEELS}
