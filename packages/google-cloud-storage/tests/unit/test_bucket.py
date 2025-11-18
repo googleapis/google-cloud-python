@@ -18,6 +18,7 @@ import unittest
 import mock
 import pytest
 
+from google.cloud.storage.blob import _quote
 from google.cloud.storage.retry import DEFAULT_RETRY
 from google.cloud.storage.retry import DEFAULT_RETRY_IF_ETAG_IN_JSON
 from google.cloud.storage.retry import DEFAULT_RETRY_IF_GENERATION_SPECIFIED
@@ -2319,6 +2320,37 @@ class Test_Bucket(unittest.TestCase):
             retry=None,
             _target_object=new_blob,
         )
+
+    def test_move_blob_needs_url_encoding(self):
+        source_name = "source"
+        blob_name = "blob-name"
+        new_name = "new/name"
+        api_response = {}
+        client = mock.Mock(spec=["_post_resource"])
+        client._post_resource.return_value = api_response
+        source = self._make_one(client=client, name=source_name)
+        blob = self._make_blob(source_name, blob_name)
+
+        new_blob = source.move_blob(
+            blob, new_name, if_generation_match=0, retry=None, timeout=30
+        )
+
+        self.assertIs(new_blob.bucket, source)
+        self.assertEqual(new_blob.name, new_name)
+
+        expected_path = "/b/{}/o/{}/moveTo/o/{}".format(
+            source_name, blob_name, _quote(new_name)
+        )
+        expected_data = None
+        expected_query_params = {"ifGenerationMatch": 0}
+        client._post_resource.assert_called_once_with(
+            expected_path,
+            expected_data,
+            query_params=expected_query_params,
+            timeout=30,
+            retry=None,
+            _target_object=new_blob,
+        )        
 
     def test_move_blob_w_user_project(self):
         source_name = "source"

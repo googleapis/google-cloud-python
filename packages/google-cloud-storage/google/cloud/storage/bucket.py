@@ -41,6 +41,7 @@ from google.cloud.storage._helpers import _virtual_hosted_style_base_url
 from google.cloud.storage._opentelemetry_tracing import create_trace_span
 from google.cloud.storage.acl import BucketACL
 from google.cloud.storage.acl import DefaultObjectACL
+from google.cloud.storage.blob import _quote
 from google.cloud.storage.blob import Blob
 from google.cloud.storage.constants import _DEFAULT_TIMEOUT
 from google.cloud.storage.constants import ARCHIVE_STORAGE_CLASS
@@ -2360,7 +2361,10 @@ class Bucket(_PropertyMixin):
             )
 
             new_blob = Blob(bucket=self, name=new_name)
-            api_path = blob.path + "/moveTo/o/" + new_blob.name
+            api_path = "{blob_path}/moveTo/o/{new_name}".format(
+                blob_path=blob.path, new_name=_quote(new_blob.name)
+            )
+
             move_result = client._post_resource(
                 api_path,
                 None,
