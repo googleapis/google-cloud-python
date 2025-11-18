@@ -55,7 +55,11 @@ class TableWidget(WIDGET_BASE):
 
     page = traitlets.Int(0).tag(sync=True)
     page_size = traitlets.Int(0).tag(sync=True)
-    row_count = traitlets.Int(0).tag(sync=True)
+    row_count = traitlets.Union(
+        [traitlets.Int(), traitlets.Instance(type(None))],
+        default_value=None,
+        allow_none=True,
+    ).tag(sync=True)
     table_html = traitlets.Unicode().tag(sync=True)
     _initial_load_complete = traitlets.Bool(False).tag(sync=True)
     _batches: Optional[blocks.PandasBatches] = None
@@ -94,12 +98,17 @@ class TableWidget(WIDGET_BASE):
         # SELECT COUNT(*) query. It is a must have however.
         # TODO(b/428238610): Start iterating over the result of `to_pandas_batches()`
         # before we get here so that the count might already be cached.
-        # TODO(b/452747934): Allow row_count to be None and check to see if
-        # there are multiple pages and show "page 1 of many" in this case
         self._reset_batches_for_new_page_size()
-        if self._batches is None or self._batches.total_rows is None:
-            self._error_message = "Could not determine total row count. Data might be unavailable or an error occurred."
-            self.row_count = 0
+
+        if self._batches is None:
+            self._error_message = "Could not retrieve data batches. Data might be unavailable or an error occurred."
+            self.row_count = None
+        elif self._batches.total_rows is None:
+            # Total rows is unknown, this is an expected state.
+            # TODO(b/461536343): Cheaply discover if we have exactly 1 page.
+            # There are cases where total rows is not set, but there are no additional
+            # pages. We could disable the "next" button in these cases.
+            self.row_count = None
         else:
             self.row_count = self._batches.total_rows
 
@@ -131,10 +140,21 @@ class TableWidget(WIDGET_BASE):
         Returns:
             The validated and clamped page number as an integer.
         """
-
         value = proposal["value"]
+
+        if value < 0:
+            raise ValueError("Page number cannot be negative.")
+
+        # If truly empty or invalid page size, stay on page 0.
+        # This handles cases where row_count is 0 or page_size is 0, preventing
+        # division by zero or nonsensical pagination, regardless of row_count being None.
         if self.row_count == 0 or self.page_size == 0:
             return 0
+
+        # If row count is unknown, allow any non-negative page. The previous check
+        # ensures that invalid page_size (0) is already handled.
+        if self.row_count is None:
+            return value
 
         # Calculate the zero-indexed maximum page number.
         max_page = max(0, math.ceil(self.row_count / self.page_size) - 1)
@@ -228,6 +248,23 @@ class TableWidget(WIDGET_BASE):
 
         # Get the data for the current page
         page_data = cached_data.iloc[start:end]
+
+        # Handle case where user navigated beyond available data with unknown row count
+        is_unknown_count = self.row_count is None
+        is_beyond_data = self._all_data_loaded and len(page_data) == 0 and self.page > 0
+        if is_unknown_count and is_beyond_data:
+            # Calculate the last valid page (zero-indexed)
+            total_rows = len(cached_data)
+            if total_rows > 0:
+                last_valid_page = max(0, math.ceil(total_rows / self.page_size) - 1)
+                # Navigate back to the last valid page
+                self.page = last_valid_page
+                # Recursively call to display the correct page
+                return self._set_table_html()
+            else:
+                # If no data at all, stay on page 0 with empty display
+                self.page = 0
+                return self._set_table_html()
 
         # Generate HTML table
         self.table_html = bigframes.display.html.render_html(

@@ -85,14 +85,21 @@ function render({ model, el }) {
 		const rowCount = model.get(ModelProperty.ROW_COUNT);
 		const pageSize = model.get(ModelProperty.PAGE_SIZE);
 		const currentPage = model.get(ModelProperty.PAGE);
-		const totalPages = Math.ceil(rowCount / pageSize);
 
-		rowCountLabel.textContent = `${rowCount.toLocaleString()} total rows`;
-		paginationLabel.textContent = `Page ${(
-			currentPage + 1
-		).toLocaleString()} of ${(totalPages || 1).toLocaleString()}`;
-		prevPage.disabled = currentPage === 0;
-		nextPage.disabled = currentPage >= totalPages - 1;
+		if (rowCount === null) {
+			// Unknown total rows
+			rowCountLabel.textContent = "Total rows unknown";
+			paginationLabel.textContent = `Page ${(currentPage + 1).toLocaleString()} of many`;
+			prevPage.disabled = currentPage === 0;
+			nextPage.disabled = false; // Allow navigation until we hit the end
+		} else {
+			// Known total rows
+			const totalPages = Math.ceil(rowCount / pageSize);
+			rowCountLabel.textContent = `${rowCount.toLocaleString()} total rows`;
+			paginationLabel.textContent = `Page ${(currentPage + 1).toLocaleString()} of ${rowCount.toLocaleString()}`;
+			prevPage.disabled = currentPage === 0;
+			nextPage.disabled = currentPage >= totalPages - 1;
+		}
 		pageSizeSelect.value = pageSize;
 	}
 
