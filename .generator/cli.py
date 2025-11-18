@@ -331,10 +331,10 @@ def _run_post_processor(output: str, library_id: str, is_mono_repo: bool):
         if is_mono_repo:
             python_mono_repo.owlbot_main(path_to_library)
         else:
-            # Some repositories have customizations in `owlbot.py`. If this file exists,
-            # run those customizations instead of `owlbot_main`
-            if Path(f"{output}/owlbot.py").exists():
-                subprocess.run(["python3.14", f"{output}/owlbot.py"])
+            # Some repositories have customizations in `librarian.py`.
+            # If this file exists, run those customizations instead of `owlbot_main`
+            if Path(f"{output}/librarian.py").exists():
+                subprocess.run(["python3.14", f"{output}/librarian.py"])
             else:
                 python.owlbot_main()
     else:
