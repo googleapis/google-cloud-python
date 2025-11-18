@@ -1370,13 +1370,17 @@ def test_process_version_file_failure():
         _process_version_file("", "", Path(""))
 
 
-def test_create_main_version_header():
+@pytest.mark.parametrize(
+    "tag_format,expected_tag_result",
+    [(r"{id}-v{version}", "google-cloud-language-v"), (r"v{version}", "v")],
+)
+def test_create_main_version_header(tag_format, expected_tag_result):
     current_date = datetime.now().strftime("%Y-%m-%d")
-    expected_header = f"## [1.2.3](https://github.com/googleapis/google-cloud-python/compare/google-cloud-language-v1.2.2...google-cloud-language-v1.2.3) ({current_date})"
+    expected_header = f"## [1.2.3](https://github.com/googleapis/google-cloud-python/compare/{expected_tag_result}1.2.2...{expected_tag_result}1.2.3) ({current_date})"
     previous_version = "1.2.2"
     version = "1.2.3"
     library_id = "google-cloud-language"
-    tag_format = "{id}-v{version}"
+    tag_format = tag_format
     actual_header = _create_main_version_header(
         version,
         previous_version,
