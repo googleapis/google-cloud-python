@@ -32,6 +32,25 @@ def test_ai_generate(scalar_types_df: dataframe.DataFrame, snapshot):
 
     op = ops.AIGenerate(
         prompt_context=(None, " is the same as ", None),
+        connection_id=None,
+        endpoint="gemini-2.5-flash",
+        request_type="shared",
+        model_params=None,
+        output_schema=None,
+    )
+
+    sql = utils._apply_ops_to_sql(
+        scalar_types_df, [op.as_expr(col_name, col_name)], ["result"]
+    )
+
+    snapshot.assert_match(sql, "out.sql")
+
+
+def test_ai_generate_with_connection_id(scalar_types_df: dataframe.DataFrame, snapshot):
+    col_name = "string_col"
+
+    op = ops.AIGenerate(
+        prompt_context=(None, " is the same as ", None),
         connection_id=CONNECTION_ID,
         endpoint="gemini-2.5-flash",
         request_type="shared",
@@ -51,7 +70,7 @@ def test_ai_generate_with_output_schema(scalar_types_df: dataframe.DataFrame, sn
 
     op = ops.AIGenerate(
         prompt_context=(None, " is the same as ", None),
-        connection_id=CONNECTION_ID,
+        connection_id=None,
         endpoint="gemini-2.5-flash",
         request_type="shared",
         model_params=None,
@@ -75,7 +94,7 @@ def test_ai_generate_with_model_param(scalar_types_df: dataframe.DataFrame, snap
 
     op = ops.AIGenerate(
         prompt_context=(None, " is the same as ", None),
-        connection_id=CONNECTION_ID,
+        connection_id=None,
         endpoint=None,
         request_type="shared",
         model_params=json.dumps(dict()),
@@ -90,6 +109,26 @@ def test_ai_generate_with_model_param(scalar_types_df: dataframe.DataFrame, snap
 
 
 def test_ai_generate_bool(scalar_types_df: dataframe.DataFrame, snapshot):
+    col_name = "string_col"
+
+    op = ops.AIGenerateBool(
+        prompt_context=(None, " is the same as ", None),
+        connection_id=None,
+        endpoint="gemini-2.5-flash",
+        request_type="shared",
+        model_params=None,
+    )
+
+    sql = utils._apply_ops_to_sql(
+        scalar_types_df, [op.as_expr(col_name, col_name)], ["result"]
+    )
+
+    snapshot.assert_match(sql, "out.sql")
+
+
+def test_ai_generate_bool_with_connection_id(
+    scalar_types_df: dataframe.DataFrame, snapshot
+):
     col_name = "string_col"
 
     op = ops.AIGenerateBool(
@@ -119,7 +158,7 @@ def test_ai_generate_bool_with_model_param(
 
     op = ops.AIGenerateBool(
         prompt_context=(None, " is the same as ", None),
-        connection_id=CONNECTION_ID,
+        connection_id=None,
         endpoint=None,
         request_type="shared",
         model_params=json.dumps(dict()),
@@ -133,6 +172,27 @@ def test_ai_generate_bool_with_model_param(
 
 
 def test_ai_generate_int(scalar_types_df: dataframe.DataFrame, snapshot):
+    col_name = "string_col"
+
+    op = ops.AIGenerateInt(
+        # The prompt does not make semantic sense but we only care about syntax correctness.
+        prompt_context=(None, " is the same as ", None),
+        connection_id=None,
+        endpoint="gemini-2.5-flash",
+        request_type="shared",
+        model_params=None,
+    )
+
+    sql = utils._apply_ops_to_sql(
+        scalar_types_df, [op.as_expr(col_name, col_name)], ["result"]
+    )
+
+    snapshot.assert_match(sql, "out.sql")
+
+
+def test_ai_generate_int_with_connection_id(
+    scalar_types_df: dataframe.DataFrame, snapshot
+):
     col_name = "string_col"
 
     op = ops.AIGenerateInt(
@@ -164,7 +224,7 @@ def test_ai_generate_int_with_model_param(
     op = ops.AIGenerateInt(
         # The prompt does not make semantic sense but we only care about syntax correctness.
         prompt_context=(None, " is the same as ", None),
-        connection_id=CONNECTION_ID,
+        connection_id=None,
         endpoint=None,
         request_type="shared",
         model_params=json.dumps(dict()),
@@ -178,6 +238,27 @@ def test_ai_generate_int_with_model_param(
 
 
 def test_ai_generate_double(scalar_types_df: dataframe.DataFrame, snapshot):
+    col_name = "string_col"
+
+    op = ops.AIGenerateDouble(
+        # The prompt does not make semantic sense but we only care about syntax correctness.
+        prompt_context=(None, " is the same as ", None),
+        connection_id=None,
+        endpoint="gemini-2.5-flash",
+        request_type="shared",
+        model_params=None,
+    )
+
+    sql = utils._apply_ops_to_sql(
+        scalar_types_df, [op.as_expr(col_name, col_name)], ["result"]
+    )
+
+    snapshot.assert_match(sql, "out.sql")
+
+
+def test_ai_generate_double_with_connection_id(
+    scalar_types_df: dataframe.DataFrame, snapshot
+):
     col_name = "string_col"
 
     op = ops.AIGenerateDouble(
@@ -209,7 +290,7 @@ def test_ai_generate_double_with_model_param(
     op = ops.AIGenerateDouble(
         # The prompt does not make semantic sense but we only care about syntax correctness.
         prompt_context=(None, " is the same as ", None),
-        connection_id=CONNECTION_ID,
+        connection_id=None,
         endpoint=None,
         request_type="shared",
         model_params=json.dumps(dict()),

@@ -88,7 +88,7 @@ def generate(
             or pandas Series.
         connection_id (str, optional):
             Specifies the connection to use to communicate with the model. For example, `myproject.us.myconnection`.
-            If not provided, the connection from the current session will be used.
+            If not provided, the query uses your end-user credential.
         endpoint (str, optional):
             Specifies the Vertex AI endpoint to use for the model. For example `"gemini-2.5-flash"`. You can specify any
             generally available or preview Gemini model. If you specify the model name, BigQuery ML automatically identifies and
@@ -131,7 +131,7 @@ def generate(
 
     operator = ai_ops.AIGenerate(
         prompt_context=tuple(prompt_context),
-        connection_id=_resolve_connection_id(series_list[0], connection_id),
+        connection_id=connection_id,
         endpoint=endpoint,
         request_type=request_type,
         model_params=json.dumps(model_params) if model_params else None,
@@ -186,7 +186,7 @@ def generate_bool(
             or pandas Series.
         connection_id (str, optional):
             Specifies the connection to use to communicate with the model. For example, `myproject.us.myconnection`.
-            If not provided, the connection from the current session will be used.
+            If not provided, the query uses your end-user credential.
         endpoint (str, optional):
             Specifies the Vertex AI endpoint to use for the model. For example `"gemini-2.5-flash"`. You can specify any
             generally available or preview Gemini model. If you specify the model name, BigQuery ML automatically identifies and
@@ -216,7 +216,7 @@ def generate_bool(
 
     operator = ai_ops.AIGenerateBool(
         prompt_context=tuple(prompt_context),
-        connection_id=_resolve_connection_id(series_list[0], connection_id),
+        connection_id=connection_id,
         endpoint=endpoint,
         request_type=request_type,
         model_params=json.dumps(model_params) if model_params else None,
@@ -267,7 +267,7 @@ def generate_int(
             or pandas Series.
         connection_id (str, optional):
             Specifies the connection to use to communicate with the model. For example, `myproject.us.myconnection`.
-            If not provided, the connection from the current session will be used.
+            If not provided, the query uses your end-user credential.
         endpoint (str, optional):
             Specifies the Vertex AI endpoint to use for the model. For example `"gemini-2.5-flash"`. You can specify any
             generally available or preview Gemini model. If you specify the model name, BigQuery ML automatically identifies and
@@ -297,7 +297,7 @@ def generate_int(
 
     operator = ai_ops.AIGenerateInt(
         prompt_context=tuple(prompt_context),
-        connection_id=_resolve_connection_id(series_list[0], connection_id),
+        connection_id=connection_id,
         endpoint=endpoint,
         request_type=request_type,
         model_params=json.dumps(model_params) if model_params else None,
@@ -348,7 +348,7 @@ def generate_double(
             or pandas Series.
         connection_id (str, optional):
             Specifies the connection to use to communicate with the model. For example, `myproject.us.myconnection`.
-            If not provided, the connection from the current session will be used.
+            If not provided, the query uses your end-user credential.
         endpoint (str, optional):
             Specifies the Vertex AI endpoint to use for the model. For example `"gemini-2.5-flash"`. You can specify any
             generally available or preview Gemini model. If you specify the model name, BigQuery ML automatically identifies and
@@ -378,7 +378,7 @@ def generate_double(
 
     operator = ai_ops.AIGenerateDouble(
         prompt_context=tuple(prompt_context),
-        connection_id=_resolve_connection_id(series_list[0], connection_id),
+        connection_id=connection_id,
         endpoint=endpoint,
         request_type=request_type,
         model_params=json.dumps(model_params) if model_params else None,

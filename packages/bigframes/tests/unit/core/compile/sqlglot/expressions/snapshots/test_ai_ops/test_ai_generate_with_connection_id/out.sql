@@ -5,10 +5,11 @@ WITH `bfcte_0` AS (
 ), `bfcte_1` AS (
   SELECT
     *,
-    AI.GENERATE_INT(
+    AI.GENERATE(
       prompt => (`string_col`, ' is the same as ', `string_col`),
-      request_type => 'SHARED',
-      model_params => JSON '{}'
+      connection_id => 'bigframes-dev.us.bigframes-default-connection',
+      endpoint => 'gemini-2.5-flash',
+      request_type => 'SHARED'
     ) AS `bfcol_1`
   FROM `bfcte_0`
 )

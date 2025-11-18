@@ -21,7 +21,7 @@ class AIGenerate(Value):
     """Generate content based on the prompt"""
 
     prompt: Value
-    connection_id: Value[dt.String]
+    connection_id: Optional[Value[dt.String]]
     endpoint: Optional[Value[dt.String]]
     request_type: Value[dt.String]
     model_params: Optional[Value[dt.String]]
@@ -52,7 +52,7 @@ class AIGenerateBool(Value):
     """Generate Bool based on the prompt"""
 
     prompt: Value
-    connection_id: Value[dt.String]
+    connection_id: Optional[Value[dt.String]]
     endpoint: Optional[Value[dt.String]]
     request_type: Value[dt.String]
     model_params: Optional[Value[dt.String]]
@@ -71,7 +71,7 @@ class AIGenerateInt(Value):
     """Generate integers based on the prompt"""
 
     prompt: Value
-    connection_id: Value[dt.String]
+    connection_id: Optional[Value[dt.String]]
     endpoint: Optional[Value[dt.String]]
     request_type: Value[dt.String]
     model_params: Optional[Value[dt.String]]
@@ -90,7 +90,7 @@ class AIGenerateDouble(Value):
     """Generate doubles based on the prompt"""
 
     prompt: Value
-    connection_id: Value[dt.String]
+    connection_id: Optional[Value[dt.String]]
     endpoint: Optional[Value[dt.String]]
     request_type: Value[dt.String]
     model_params: Optional[Value[dt.String]]

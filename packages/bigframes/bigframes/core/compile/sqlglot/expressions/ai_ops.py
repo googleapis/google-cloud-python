@@ -104,10 +104,13 @@ def _construct_named_args(op: ops.NaryOp) -> list[sge.Kwarg]:
 
     op_args = asdict(op)
 
-    connection_id = op_args["connection_id"]
-    args.append(
-        sge.Kwarg(this="connection_id", expression=sge.Literal.string(connection_id))
-    )
+    connection_id = op_args.get("connection_id", None)
+    if connection_id is not None:
+        args.append(
+            sge.Kwarg(
+                this="connection_id", expression=sge.Literal.string(connection_id)
+            )
+        )
 
     endpoit = op_args.get("endpoint", None)
     if endpoit is not None:

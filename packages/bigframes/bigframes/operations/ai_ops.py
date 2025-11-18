@@ -29,7 +29,7 @@ class AIGenerate(base_ops.NaryOp):
     name: ClassVar[str] = "ai_generate"
 
     prompt_context: Tuple[str | None, ...]
-    connection_id: str
+    connection_id: str | None
     endpoint: str | None
     request_type: Literal["dedicated", "shared", "unspecified"]
     model_params: str | None
@@ -57,7 +57,7 @@ class AIGenerateBool(base_ops.NaryOp):
     name: ClassVar[str] = "ai_generate_bool"
 
     prompt_context: Tuple[str | None, ...]
-    connection_id: str
+    connection_id: str | None
     endpoint: str | None
     request_type: Literal["dedicated", "shared", "unspecified"]
     model_params: str | None
@@ -79,7 +79,7 @@ class AIGenerateInt(base_ops.NaryOp):
     name: ClassVar[str] = "ai_generate_int"
 
     prompt_context: Tuple[str | None, ...]
-    connection_id: str
+    connection_id: str | None
     endpoint: str | None
     request_type: Literal["dedicated", "shared", "unspecified"]
     model_params: str | None
@@ -101,7 +101,7 @@ class AIGenerateDouble(base_ops.NaryOp):
     name: ClassVar[str] = "ai_generate_double"
 
     prompt_context: Tuple[str | None, ...]
-    connection_id: str
+    connection_id: str | None
     endpoint: str | None
     request_type: Literal["dedicated", "shared", "unspecified"]
     model_params: str | None
