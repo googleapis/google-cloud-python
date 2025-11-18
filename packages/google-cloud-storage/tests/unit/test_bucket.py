@@ -2350,7 +2350,7 @@ class Test_Bucket(unittest.TestCase):
             timeout=30,
             retry=None,
             _target_object=new_blob,
-        )        
+        )
 
     def test_move_blob_w_user_project(self):
         source_name = "source"

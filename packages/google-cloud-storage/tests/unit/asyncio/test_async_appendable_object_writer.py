@@ -112,12 +112,61 @@ async def test_state_lookup(mock_write_object_stream, mock_client):
 
 
 @pytest.mark.asyncio
+@mock.patch(
+    "google.cloud.storage._experimental.asyncio.async_appendable_object_writer._AsyncWriteObjectStream"
+)
+async def test_open_appendable_object_writer(mock_write_object_stream, mock_client):
+    """Test the open method."""
+    # Arrange
+    writer = AsyncAppendableObjectWriter(mock_client, BUCKET, OBJECT)
+    mock_stream = mock_write_object_stream.return_value
+    mock_stream.open = mock.AsyncMock()
+    mock_stream.send = mock.AsyncMock()
+    mock_stream.recv = mock.AsyncMock()
+
+    mock_state_response = mock.MagicMock()
+    mock_state_response.persisted_size = 1024
+    mock_stream.recv.return_value = mock_state_response
+
+    mock_stream.generation_number = GENERATION
+    mock_stream.write_handle = WRITE_HANDLE
+
+    # Act
+    await writer.open()
+
+    # Assert
+    mock_stream.open.assert_awaited_once()
+    assert writer._is_stream_open
+    assert writer.generation == GENERATION
+    assert writer.write_handle == WRITE_HANDLE
+
+    expected_request = _storage_v2.BidiWriteObjectRequest(state_lookup=True)
+    mock_stream.send.assert_awaited_once_with(expected_request)
+    mock_stream.recv.assert_awaited_once()
+    assert writer.persisted_size == 1024
+
+
+@pytest.mark.asyncio
+@mock.patch(
+    "google.cloud.storage._experimental.asyncio.async_appendable_object_writer._AsyncWriteObjectStream"
+)
+async def test_open_when_already_open_raises_error(
+    mock_write_object_stream, mock_client
+):
+    """Test that opening an already open writer raises a ValueError."""
+    # Arrange
+    writer = AsyncAppendableObjectWriter(mock_client, BUCKET, OBJECT)
+    writer._is_stream_open = True  # Manually set to open
+
+    # Act & Assert
+    with pytest.raises(ValueError, match="Underlying bidi-gRPC stream is already open"):
+        await writer.open()
+
+
+@pytest.mark.asyncio
 async def test_unimplemented_methods_raise_error(mock_client):
     """Test that all currently unimplemented methods raise NotImplementedError."""
     writer = AsyncAppendableObjectWriter(mock_client, BUCKET, OBJECT)
-
-    with pytest.raises(NotImplementedError):
-        await writer.open()
 
     with pytest.raises(NotImplementedError):
         await writer.append(b"data")
