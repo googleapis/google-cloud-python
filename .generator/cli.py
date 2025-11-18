@@ -25,6 +25,7 @@ import sys
 import tempfile
 import yaml
 from datetime import date, datetime
+from functools import lru_cache
 from pathlib import Path
 from typing import Dict, List
 import build.util
@@ -54,8 +55,7 @@ LIBRARIAN_DIR = "librarian"
 OUTPUT_DIR = "output"
 REPO_DIR = "repo"
 SOURCE_DIR = "source"
-
-_REPO_URL = "https://github.com/googleapis/google-cloud-python"
+_GITHUB_BASE = "https://github.com"
 
 
 def _read_text_file(path: str) -> str:
@@ -495,6 +495,48 @@ def _create_repo_metadata_from_service_config(
     }
 
 
+def _get_repo_metadata_file_path(base: str, library_id: str, is_mono_repo: bool):
+    """Constructs the full path to the .repo-metadata.json file.
+
+    Args:
+        base (str): The base directory where the library is located.
+        library_id (str): The ID of the library.
+        is_mono_repo (bool): True if the current repository is a mono-repo.
+
+    Returns:
+        str: The absolute path to the .repo-metadata.json file.
+    """
+    path_to_library = f"packages/{library_id}" if is_mono_repo else "."
+    return f"{base}/{path_to_library}/.repo-metadata.json"
+
+
+@lru_cache(maxsize=None)
+def _get_repo_name_from_repo_metadata(base: str, library_id: str, is_mono_repo: bool):
+    """Retrieves the repository name from the .repo-metadata.json file.
+
+    This function is cached to avoid redundant file I/O.
+
+    Args:
+        base (str): The base directory where the library is located.
+        library_id (str): The ID of the library.
+        is_mono_repo (bool): True if the current repository is a mono-repo.
+
+    Returns:
+        str: The name of the repository (e.g., 'googleapis/google-cloud-python').
+
+    Raises:
+        ValueError: If the '.repo-metadata.json' file is missing the 'repo' field.
+    """
+    if is_mono_repo:
+        return "googleapis/google-cloud-python"
+    file_path = _get_repo_metadata_file_path(base, library_id, is_mono_repo)
+    repo_metadata = _read_json_file(file_path)
+    repo_name = repo_metadata.get("repo")
+    if not repo_name:
+        raise ValueError("`.repo-metadata.json` file is missing required 'repo' field.")
+    return repo_name
+
+
 def _generate_repo_metadata_file(
     output: str, library_id: str, source: str, apis: List[Dict], is_mono_repo: bool
 ):
@@ -508,7 +550,9 @@ def _generate_repo_metadata_file(
         is_mono_repo(bool): True if the current repository is a mono-repo.
     """
     path_to_library = f"packages/{library_id}" if is_mono_repo else "."
-    output_repo_metadata = f"{output}/{path_to_library}/.repo-metadata.json"
+    output_repo_metadata = _get_repo_metadata_file_path(
+        output, library_id, is_mono_repo
+    )
 
     # TODO(https://github.com/googleapis/librarian/issues/2334)): If `.repo-metadata.json`
     # already exists in the `output` dir, then this means that it has been successfully copied
@@ -1043,7 +1087,11 @@ def _verify_library_namespace(library_id: str, repo: str, is_mono_repo: bool):
         # Exclude proto paths which are not intended to be used for code generation.
         # Generally any protos under the `samples` or `tests` directories or in a
         # directory called `proto` are not used for code generation.
-        if proto_path.startswith("tests") or proto_path.startswith("samples") or proto_path.endswith("proto"):
+        if (
+            proto_path.startswith("tests")
+            or proto_path.startswith("samples")
+            or proto_path.endswith("proto")
+        ):
             continue
         relevant_dirs.add(proto_file.parent)
 
@@ -1306,7 +1354,7 @@ def _get_previous_version(library_id: str, librarian: str) -> str:
 
 
 def _create_main_version_header(
-    version: str, previous_version: str, library_id: str
+    version: str, previous_version: str, library_id: str, repo_name: str
 ) -> str:
     """This function creates a header to be used in a changelog. The header has the following format:
     `## [{version}](https://github.com/googleapis/google-cloud-python/compare/{library_id}-v{previous_version}...{library_id}-v{version}) (YYYY-MM-DD)`
@@ -1316,6 +1364,7 @@ def _create_main_version_header(
         previous_version(str): The previous version of the library.
         library_id(str): The id of the library where the changelog should
             be updated.
+        repo_name(str): The name of the repository (e.g., 'googleapis/google-cloud-python').
 
     Returns:
         A header to be used in the changelog.
@@ -1323,7 +1372,7 @@ def _create_main_version_header(
     current_date = datetime.now().strftime("%Y-%m-%d")
     # Return the main version header
     return (
-        f"## [{version}]({_REPO_URL}/compare/{library_id}-v{previous_version}"
+        f"## [{version}]({_GITHUB_BASE}/{repo_name}/compare/{library_id}-v{previous_version}"
         f"...{library_id}-v{version}) ({current_date})"
     )
 
@@ -1334,6 +1383,7 @@ def _process_changelog(
     version: str,
     previous_version: str,
     library_id: str,
+    repo_name: str,
 ):
     """This function searches the given content for the anchor pattern
     `[1]: https://pypi.org/project/{library_id}/#history`
@@ -1353,6 +1403,7 @@ def _process_changelog(
         previous_version(str): The previous version of the library.
         library_id(str): The id of the library where the changelog should
             be updated.
+        repo_name(str): The name of the repository (e.g., 'googleapis/google-cloud-python').
 
     Raises: ValueError if the anchor pattern string could not be found in the given content
 
@@ -1361,7 +1412,10 @@ def _process_changelog(
     entry_parts = []
     entry_parts.append(
         _create_main_version_header(
-            version=version, previous_version=previous_version, library_id=library_id
+            version=version,
+            previous_version=previous_version,
+            library_id=library_id,
+            repo_name=repo_name,
         )
     )
 
@@ -1383,7 +1437,7 @@ def _process_changelog(
         if adjusted_change_type in change_type_map:
             entry_parts.append(f"\n\n### {change_type_map[adjusted_change_type]}\n")
             for change in library_changes:
-                commit_link = f"([{change[commit_hash_key]}]({_REPO_URL}/commit/{change[commit_hash_key]}))"
+                commit_link = f"([{change[commit_hash_key]}]({_GITHUB_BASE}/{repo_name}/commit/{change[commit_hash_key]}))"
                 entry_parts.append(f"* {change[subject_key]} {commit_link}")
 
     new_entry_text = "\n".join(entry_parts)
@@ -1433,12 +1487,14 @@ def _update_changelog_for_library(
 
     changelog_src = f"{repo}/{relative_path}"
     changelog_dest = f"{output}/{relative_path}"
+    repo_name = _get_repo_name_from_repo_metadata(repo, library_id, is_mono_repo)
     updated_content = _process_changelog(
         _read_text_file(changelog_src),
         library_changes,
         version,
         previous_version,
         library_id,
+        repo_name,
     )
     _write_text_file(changelog_dest, updated_content)
 
