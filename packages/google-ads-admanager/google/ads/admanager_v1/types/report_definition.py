@@ -2712,7 +2712,7 @@ class ReportDefinition(proto.Message):
 
                 Data format: ``MONEY``
             LINE_ITEM_OPTIMIZABLE (90):
-                Whether a Line item is eligible for opitimization.
+                Whether a Line item is eligible for optimization.
 
                 Corresponds to "Line item is optimizable" in the Ad Manager
                 UI.
@@ -6845,7 +6845,7 @@ class ReportDefinition(proto.Message):
                 that resulted in users clicking on an ad. The clickthrough
                 rate (CTR) is updated nightly. Ad Exchange Matched Request
                 CTR is calculated as: (Ad Exchange clicks / Ad Exchange
-                Macthed Ad Requests).
+                Matched Ad Requests).
 
                 Corresponds to "Ad Exchange matched request CTR" in the Ad
                 Manager UI.
