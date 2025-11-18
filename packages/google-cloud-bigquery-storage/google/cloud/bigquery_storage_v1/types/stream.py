@@ -413,8 +413,8 @@ class WriteStream(proto.Message):
         write_mode (google.cloud.bigquery_storage_v1.types.WriteStream.WriteMode):
             Immutable. Mode of the stream.
         location (str):
-            Immutable. The geographic location where the
-            stream's dataset resides. See
+            Output only. The geographic location where
+            the stream's dataset resides. See
             https://cloud.google.com/bigquery/docs/locations
             for supported locations.
     """

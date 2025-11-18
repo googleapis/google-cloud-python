@@ -78,6 +78,9 @@ class ArrowSerializationOptions(proto.Message):
         buffer_compression (google.cloud.bigquery_storage_v1.types.ArrowSerializationOptions.CompressionCodec):
             The compression codec to use for Arrow
             buffers in serialized record batches.
+        picos_timestamp_precision (google.cloud.bigquery_storage_v1.types.ArrowSerializationOptions.PicosTimestampPrecision):
+            Optional. Set timestamp precision option. If
+            not set, the default precision is microseconds.
     """
 
     class CompressionCodec(proto.Enum):
@@ -96,10 +99,44 @@ class ArrowSerializationOptions(proto.Message):
         LZ4_FRAME = 1
         ZSTD = 2
 
+    class PicosTimestampPrecision(proto.Enum):
+        r"""The precision of the timestamp value in the Avro message. This
+        precision will **only** be applied to the column(s) with the
+        ``TIMESTAMP_PICOS`` type.
+
+        Values:
+            PICOS_TIMESTAMP_PRECISION_UNSPECIFIED (0):
+                Unspecified timestamp precision. The default
+                precision is microseconds.
+            TIMESTAMP_PRECISION_MICROS (1):
+                Timestamp values returned by Read API will be
+                truncated to microsecond level precision. The
+                value will be encoded as Arrow TIMESTAMP type in
+                a 64 bit integer.
+            TIMESTAMP_PRECISION_NANOS (2):
+                Timestamp values returned by Read API will be
+                truncated to nanosecond level precision. The
+                value will be encoded as Arrow TIMESTAMP type in
+                a 64 bit integer.
+            TIMESTAMP_PRECISION_PICOS (3):
+                Read API will return full precision
+                picosecond value. The value will be encoded as a
+                string which conforms to ISO 8601 format.
+        """
+        PICOS_TIMESTAMP_PRECISION_UNSPECIFIED = 0
+        TIMESTAMP_PRECISION_MICROS = 1
+        TIMESTAMP_PRECISION_NANOS = 2
+        TIMESTAMP_PRECISION_PICOS = 3
+
     buffer_compression: CompressionCodec = proto.Field(
         proto.ENUM,
         number=2,
         enum=CompressionCodec,
+    )
+    picos_timestamp_precision: PicosTimestampPrecision = proto.Field(
+        proto.ENUM,
+        number=3,
+        enum=PicosTimestampPrecision,
     )
 
 
