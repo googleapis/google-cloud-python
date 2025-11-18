@@ -21,8 +21,10 @@ MANYLINUX_DIR=$(echo $(cd $(dirname ${0}); pwd))
 SCRIPTS_DIR=$(dirname ${MANYLINUX_DIR})
 REPO_ROOT=$(dirname ${SCRIPTS_DIR})
 
+sudo apt-get install -y software-properties-common
+sudo add-apt-repository -y ppa:deadsnakes/ppa
 sudo apt-get update
-sudo apt-get install -y python3.9
+sudo apt-get install -y python3.12
 
 cd $REPO_ROOT
 # Add directory as safe to avoid "detected dubious ownership" fatal issue1
@@ -30,14 +32,7 @@ git config --global --add safe.directory $REPO_ROOT
 git config --global --add safe.directory $REPO_ROOT/google_crc32c
 git submodule update --init --recursive
 
-docker pull quay.io/pypa/manylinux2010_x86_64
-docker run \
-    --rm \
-    --interactive \
-    --volume ${REPO_ROOT}:/var/code/python-crc32c/ \
-    --env BUILD_PYTHON=${BUILD_PYTHON} \
-    quay.io/pypa/manylinux2010_x86_64 \
-    /var/code/python-crc32c/scripts/manylinux/build_on_centos.sh
+
 
 docker pull quay.io/pypa/manylinux2014_x86_64
 docker run \

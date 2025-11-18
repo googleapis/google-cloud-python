@@ -26,4 +26,3 @@ cd github/python-crc32c
 
 # Before running nox and such, build the extension.
 ./scripts/osx/build.sh
-./scripts/osx/check.sh

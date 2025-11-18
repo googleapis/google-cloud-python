@@ -59,7 +59,7 @@ FOR %%P IN (3.9, 3.10, 3.11, 3.12, 3.13.1) DO (
 
     echo "Running cmake with Generator:  %CMAKE_GENERATOR%, Platform: x64, Install Prefix: %CRC32C_INSTALL_PREFIX%"
 
-    py -!python_version_trimmed!-64 -m cmake -G %CMAKE_GENERATOR% -A x64 -DCRC32C_BUILD_BENCHMARKS=no -DCRC32C_BUILD_TESTS=no -DBUILD_SHARED_LIBS=yes -DCMAKE_WINDOWS_EXPORT_ALL_SYMBOLS=yes -DCRC32C_USE_GLOG=0 -DCMAKE_INSTALL_PREFIX:PATH=%CRC32C_INSTALL_PREFIX% ..
+    py -!python_version_trimmed!-64 -m cmake -G "Visual Studio 17 2022" -A x64 -DCMAKE_POLICY_VERSION_MINIMUM=3.12 -DCRC32C_BUILD_BENCHMARKS=no -DCRC32C_BUILD_TESTS=no -DBUILD_SHARED_LIBS=yes -DCMAKE_WINDOWS_EXPORT_ALL_SYMBOLS=yes -DCRC32C_USE_GLOG=0 -DCMAKE_INSTALL_PREFIX:PATH=C:\tmpfs\src\github\python-crc32c\build\RelWithDebInfo ..
 
     py -!python_version_trimmed!-64 -m cmake --build . --config "%CONFIGURATION%" --target install
 
@@ -79,6 +79,5 @@ FOR %%P IN (3.9, 3.10, 3.11, 3.12, 3.13.1) DO (
     echo "Built wheel, now running tests."
     call %~dp0/test.bat !python_version_trimmed! || goto :error
 
-    echo "Finished with Python version %%P, now uninstalling"
-    choco uninstall python -y
+    echo "Finished with Python version %P"
 )

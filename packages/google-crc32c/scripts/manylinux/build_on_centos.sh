@@ -18,6 +18,9 @@ MAIN_PYTHON_BIN="/opt/python/cp39-cp39/bin/"
 echo "BUILD_PYTHON: ${BUILD_PYTHON}"
 REPO_ROOT=/var/code/python-crc32c/
 
+# Install `openssl-devel` so that `cmake` can be built.
+yum install -y openssl-devel
+
 # Upgrade `pip` before using it.
 ${MAIN_PYTHON_BIN}/python -m pip install --upgrade pip
 # Install `cmake` (i.e. non-Python build dependency).
@@ -31,11 +34,12 @@ cd ${REPO_ROOT}/google_crc32c/
 rm -rf build
 mkdir build
 cd build/
-${MAIN_PYTHON_BIN}/cmake \
+cmake \
     -DCMAKE_BUILD_TYPE=Release \
     -DCRC32C_BUILD_TESTS=no \
     -DCRC32C_BUILD_BENCHMARKS=no \
     -DBUILD_SHARED_LIBS=yes \
+    -DCMAKE_POLICY_VERSION_MINIMUM=3.12 \
     ..
 make all install
 
@@ -56,7 +60,7 @@ if [[ -z ${BUILD_PYTHON} ]]; then
         elif [[ "${PYTHON_BIN}" == *"312"* ]]; then
             PYTHON_VERSIONS="${PYTHON_VERSIONS} ${PYTHON_BIN}"
             continue
-        elif [[ "${PYTHON_BIN}" == *"313"* ]]; then
+        elif [[ "${PYTHON_BIN}" == *"313"* && "${PYTHON_BIN}" != *"313t"* ]]; then
             PYTHON_VERSIONS="${PYTHON_VERSIONS} ${PYTHON_BIN}"
             continue
         else
@@ -84,7 +88,27 @@ done
 
 # Bundle external shared libraries into the wheels
 for whl in dist_wheels/google_crc32c*.whl; do
-    ${MAIN_PYTHON_BIN}/auditwheel repair "${whl}" --wheel-dir wheels/
+    "${MAIN_PYTHON_BIN}/auditwheel" repair "${whl}" --wheel-dir wheels/
+done
+
+# Install and test wheels
+for PYTHON_BIN in ${PYTHON_VERSIONS}; do
+    # Identify the short python version e.g. "39", "310"
+                    # Get the ABI tag from the Python binary's path, e.g., "cp310-cp310"
+                    ABI_TAG=$(basename $(dirname ${PYTHON_BIN}))
+                    ARCH=$(uname -m)
+                    # Create a virtual environment to install and test the wheel
+                    ${PYTHON_BIN}/python -m venv /tmp/venv
+                    
+                    # Find the correct wheel file using the precise ABI tag and architecture.
+                    WHEEL_FILE=$(ls ${REPO_ROOT}/wheels/google_crc32c-*-${ABI_TAG}-*manylinux*${ARCH}*.whl)    # Install the wheel
+    /tmp/venv/bin/pip install "${WHEEL_FILE}"
+
+    # Verify that the module is installed and peek at contents.
+    /tmp/venv/bin/python ${REPO_ROOT}/scripts/check_crc32c_extension.py
+    
+    # Clean up the virtual environment
+    rm -rf /tmp/venv
 done
 
 # Clean up.

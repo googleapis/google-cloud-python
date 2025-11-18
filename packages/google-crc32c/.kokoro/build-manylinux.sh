@@ -27,4 +27,3 @@ cd github/python-crc32c
 
 # Before running nox and such, build the extension.
 ./scripts/manylinux/build.sh
-./scripts/manylinux/check.sh
