@@ -12,7 +12,6 @@ libraries:
       - packages/google-ads-admanager/CHANGELOG.md
       - docs/CHANGELOG.md
       - samples/README.txt
-      - scripts/client-post-processing
       - samples/snippets/README.rst
       - tests/system
     remove_regex:
@@ -30,7 +29,6 @@ libraries:
       - packages/google-ads-datamanager/CHANGELOG.md
       - docs/CHANGELOG.md
       - samples/README.txt
-      - scripts/client-post-processing
       - samples/snippets/README.rst
       - tests/system
     remove_regex:
@@ -48,7 +46,6 @@ libraries:
       - packages/google-ads-marketingplatform-admin/CHANGELOG.md
       - docs/CHANGELOG.md
       - samples/README.txt
-      - scripts/client-post-processing
       - samples/snippets/README.rst
       - tests/system
     remove_regex:
@@ -74,7 +71,6 @@ libraries:
       - packages/google-ai-generativelanguage/CHANGELOG.md
       - docs/CHANGELOG.md
       - samples/README.txt
-      - scripts/client-post-processing
       - samples/snippets/README.rst
       - tests/system
     remove_regex:
@@ -94,7 +90,6 @@ libraries:
       - packages/google-analytics-admin/CHANGELOG.md
       - docs/CHANGELOG.md
       - samples/README.txt
-      - scripts/client-post-processing
       - samples/snippets/README.rst
       - tests/system
     remove_regex:
@@ -114,7 +109,6 @@ libraries:
       - packages/google-analytics-data/CHANGELOG.md
       - docs/CHANGELOG.md
       - samples/README.txt
-      - scripts/client-post-processing
       - samples/snippets/README.rst
       - tests/system
     remove_regex:
@@ -132,7 +126,6 @@ libraries:
       - packages/google-apps-card/CHANGELOG.md
       - docs/CHANGELOG.md
       - samples/README.txt
-      - scripts/client-post-processing
       - samples/snippets/README.rst
       - tests/system
       - tests/unit/gapic/card_v1/test_card.py
@@ -151,7 +144,6 @@ libraries:
       - packages/google-apps-chat/CHANGELOG.md
       - docs/CHANGELOG.md
       - samples/README.txt
-      - scripts/client-post-processing
       - samples/snippets/README.rst
       - tests/system
     remove_regex:
@@ -171,7 +163,6 @@ libraries:
       - packages/google-apps-events-subscriptions/CHANGELOG.md
       - docs/CHANGELOG.md
       - samples/README.txt
-      - scripts/client-post-processing
       - samples/snippets/README.rst
       - tests/system
     remove_regex:
@@ -191,7 +182,6 @@ libraries:
       - packages/google-apps-meet/CHANGELOG.md
       - docs/CHANGELOG.md
       - samples/README.txt
-      - scripts/client-post-processing
       - samples/snippets/README.rst
       - tests/system
     remove_regex:
@@ -221,7 +211,6 @@ libraries:
       - packages/google-apps-script-type/CHANGELOG.md
       - docs/CHANGELOG.md
       - samples/README.txt
-      - scripts/client-post-processing
       - samples/snippets/README.rst
       - tests/system
       - tests/unit/gapic/calendar/test_calendar.py
@@ -246,7 +235,6 @@ libraries:
       - packages/google-area120-tables/CHANGELOG.md
       - docs/CHANGELOG.md
       - samples/README.txt
-      - scripts/client-post-processing
       - samples/snippets/README.rst
       - tests/system
     remove_regex:
@@ -264,7 +252,6 @@ libraries:
       - packages/google-cloud-access-approval/CHANGELOG.md
       - docs/CHANGELOG.md
       - samples/README.txt
-      - scripts/client-post-processing
       - samples/snippets/README.rst
       - tests/system
     remove_regex:
@@ -299,7 +286,6 @@ libraries:
       - packages/google-cloud-advisorynotifications/CHANGELOG.md
       - docs/CHANGELOG.md
       - samples/README.txt
-      - scripts/client-post-processing
       - samples/snippets/README.rst
       - tests/system
     remove_regex:
@@ -321,7 +307,6 @@ libraries:
       - packages/google-cloud-alloydb/CHANGELOG.md
       - docs/CHANGELOG.md
       - samples/README.txt
-      - scripts/client-post-processing
       - samples/snippets/README.rst
       - tests/system
     remove_regex:
@@ -343,7 +328,6 @@ libraries:
       - packages/google-cloud-alloydb-connectors/CHANGELOG.md
       - docs/CHANGELOG.md
       - samples/README.txt
-      - scripts/client-post-processing
       - samples/snippets/README.rst
       - tests/system
       - tests/unit/gapic/connectors_v1/test_connectors.py
@@ -362,7 +346,6 @@ libraries:
       - packages/google-cloud-api-gateway/CHANGELOG.md
       - docs/CHANGELOG.md
       - samples/README.txt
-      - scripts/client-post-processing
       - samples/snippets/README.rst
       - tests/system
     remove_regex:
@@ -380,7 +363,6 @@ libraries:
       - packages/google-cloud-api-keys/CHANGELOG.md
       - docs/CHANGELOG.md
       - samples/README.txt
-      - scripts/client-post-processing
       - samples/snippets/README.rst
       - tests/system
     remove_regex:
@@ -398,7 +380,6 @@ libraries:
       - packages/google-cloud-apigee-connect/CHANGELOG.md
       - docs/CHANGELOG.md
       - samples/README.txt
-      - scripts/client-post-processing
       - samples/snippets/README.rst
       - tests/system
     remove_regex:
@@ -416,7 +397,6 @@ libraries:
       - packages/google-cloud-apigee-registry/CHANGELOG.md
       - docs/CHANGELOG.md
       - samples/README.txt
-      - scripts/client-post-processing
       - samples/snippets/README.rst
       - tests/system
     remove_regex:
@@ -434,7 +414,6 @@ libraries:
       - packages/google-cloud-apihub/CHANGELOG.md
       - docs/CHANGELOG.md
       - samples/README.txt
-      - scripts/client-post-processing
       - samples/snippets/README.rst
       - tests/system
     remove_regex:
@@ -452,7 +431,6 @@ libraries:
       - packages/google-cloud-appengine-admin/CHANGELOG.md
       - docs/CHANGELOG.md
       - samples/README.txt
-      - scripts/client-post-processing
       - samples/snippets/README.rst
       - tests/system
     remove_regex:
@@ -470,7 +448,6 @@ libraries:
       - packages/google-cloud-appengine-logging/CHANGELOG.md
       - docs/CHANGELOG.md
       - samples/README.txt
-      - scripts/client-post-processing
       - samples/snippets/README.rst
       - tests/system
       - tests/unit/gapic/appengine_logging_v1/test_appengine_logging_v1.py
@@ -489,7 +466,6 @@ libraries:
       - packages/google-cloud-apphub/CHANGELOG.md
       - docs/CHANGELOG.md
       - samples/README.txt
-      - scripts/client-post-processing
       - samples/snippets/README.rst
       - tests/system
     remove_regex:
@@ -509,7 +485,6 @@ libraries:
       - packages/google-cloud-artifact-registry/CHANGELOG.md
       - docs/CHANGELOG.md
       - samples/README.txt
-      - scripts/client-post-processing
       - samples/snippets/README.rst
       - tests/system
     remove_regex:
@@ -533,7 +508,6 @@ libraries:
       - packages/google-cloud-asset/CHANGELOG.md
       - docs/CHANGELOG.md
       - samples/README.txt
-      - scripts/client-post-processing
       - samples/snippets/README.rst
       - tests/system
     remove_regex:
@@ -553,7 +527,6 @@ libraries:
       - packages/google-cloud-assured-workloads/CHANGELOG.md
       - docs/CHANGELOG.md
       - samples/README.txt
-      - scripts/client-post-processing
       - samples/snippets/README.rst
       - tests/system
     remove_regex:
@@ -588,7 +561,6 @@ libraries:
       - packages/google-cloud-automl/CHANGELOG.md
       - docs/CHANGELOG.md
       - samples/README.txt
-      - scripts/client-post-processing
       - samples/snippets/README.rst
       - tests/system
       - docs/automl_v1beta1/tables.rst
@@ -611,7 +583,6 @@ libraries:
       - packages/google-cloud-backupdr/CHANGELOG.md
       - docs/CHANGELOG.md
       - samples/README.txt
-      - scripts/client-post-processing
       - samples/snippets/README.rst
       - tests/system
     remove_regex:
@@ -629,7 +600,6 @@ libraries:
       - packages/google-cloud-bare-metal-solution/CHANGELOG.md
       - docs/CHANGELOG.md
       - samples/README.txt
-      - scripts/client-post-processing
       - samples/snippets/README.rst
       - tests/system
     remove_regex:
@@ -649,7 +619,6 @@ libraries:
       - packages/google-cloud-batch/CHANGELOG.md
       - docs/CHANGELOG.md
       - samples/README.txt
-      - scripts/client-post-processing
       - samples/snippets/README.rst
       - tests/system
     remove_regex:
@@ -667,7 +636,6 @@ libraries:
       - packages/google-cloud-beyondcorp-appconnections/CHANGELOG.md
       - docs/CHANGELOG.md
       - samples/README.txt
-      - scripts/client-post-processing
       - samples/snippets/README.rst
       - tests/system
     remove_regex:
@@ -685,7 +653,6 @@ libraries:
       - packages/google-cloud-beyondcorp-appconnectors/CHANGELOG.md
       - docs/CHANGELOG.md
       - samples/README.txt
-      - scripts/client-post-processing
       - samples/snippets/README.rst
       - tests/system
     remove_regex:
@@ -703,7 +670,6 @@ libraries:
       - packages/google-cloud-beyondcorp-appgateways/CHANGELOG.md
       - docs/CHANGELOG.md
       - samples/README.txt
-      - scripts/client-post-processing
       - samples/snippets/README.rst
       - tests/system
     remove_regex:
@@ -721,7 +687,6 @@ libraries:
       - packages/google-cloud-beyondcorp-clientconnectorservices/CHANGELOG.md
       - docs/CHANGELOG.md
       - samples/README.txt
-      - scripts/client-post-processing
       - samples/snippets/README.rst
       - tests/system
     remove_regex:
@@ -739,7 +704,6 @@ libraries:
       - packages/google-cloud-beyondcorp-clientgateways/CHANGELOG.md
       - docs/CHANGELOG.md
       - samples/README.txt
-      - scripts/client-post-processing
       - samples/snippets/README.rst
       - tests/system
     remove_regex:
@@ -757,7 +721,6 @@ libraries:
       - packages/google-cloud-biglake/CHANGELOG.md
       - docs/CHANGELOG.md
       - samples/README.txt
-      - scripts/client-post-processing
       - samples/snippets/README.rst
       - tests/system
     remove_regex:
@@ -775,7 +738,6 @@ libraries:
       - packages/google-cloud-bigquery-analyticshub/CHANGELOG.md
       - docs/CHANGELOG.md
       - samples/README.txt
-      - scripts/client-post-processing
       - samples/snippets/README.rst
       - tests/system
     remove_regex:
@@ -795,7 +757,6 @@ libraries:
       - packages/google-cloud-bigquery-biglake/CHANGELOG.md
       - docs/CHANGELOG.md
       - samples/README.txt
-      - scripts/client-post-processing
       - samples/snippets/README.rst
       - tests/system
     remove_regex:
@@ -813,7 +774,6 @@ libraries:
       - packages/google-cloud-bigquery-connection/CHANGELOG.md
       - docs/CHANGELOG.md
       - samples/README.txt
-      - scripts/client-post-processing
       - samples/snippets/README.rst
       - tests/system
     remove_regex:
@@ -831,7 +791,6 @@ libraries:
       - packages/google-cloud-bigquery-data-exchange/CHANGELOG.md
       - docs/CHANGELOG.md
       - samples/README.txt
-      - scripts/client-post-processing
       - samples/snippets/README.rst
       - tests/system
     remove_regex:
@@ -855,7 +814,6 @@ libraries:
       - packages/google-cloud-bigquery-datapolicies/CHANGELOG.md
       - docs/CHANGELOG.md
       - samples/README.txt
-      - scripts/client-post-processing
       - samples/snippets/README.rst
       - tests/system
     remove_regex:
@@ -873,7 +831,6 @@ libraries:
       - packages/google-cloud-bigquery-datatransfer/CHANGELOG.md
       - docs/CHANGELOG.md
       - samples/README.txt
-      - scripts/client-post-processing
       - samples/snippets/README.rst
       - tests/system
     remove_regex:
@@ -891,7 +848,6 @@ libraries:
       - packages/google-cloud-bigquery-logging/CHANGELOG.md
       - docs/CHANGELOG.md
       - samples/README.txt
-      - scripts/client-post-processing
       - samples/snippets/README.rst
       - tests/system
       - tests/unit/gapic/bigquery_logging_v1/test_bigquery_logging_v1.py
@@ -912,7 +868,6 @@ libraries:
       - packages/google-cloud-bigquery-migration/CHANGELOG.md
       - docs/CHANGELOG.md
       - samples/README.txt
-      - scripts/client-post-processing
       - samples/snippets/README.rst
       - tests/system
     remove_regex:
@@ -930,7 +885,6 @@ libraries:
       - packages/google-cloud-bigquery-reservation/CHANGELOG.md
       - docs/CHANGELOG.md
       - samples/README.txt
-      - scripts/client-post-processing
       - samples/snippets/README.rst
       - tests/system
     remove_regex:
@@ -971,7 +925,6 @@ libraries:
       - samples/quickstart
       - samples/snippets
       - samples/to_dataframe
-      - scripts/client-post-processing
       - scripts/readme-gen
       - testing/.gitignore
       - tests/system
@@ -992,7 +945,6 @@ libraries:
       - packages/google-cloud-billing/CHANGELOG.md
       - docs/CHANGELOG.md
       - samples/README.txt
-      - scripts/client-post-processing
       - samples/snippets/README.rst
       - tests/system
     remove_regex:
@@ -1012,7 +964,6 @@ libraries:
       - packages/google-cloud-billing-budgets/CHANGELOG.md
       - docs/CHANGELOG.md
       - samples/README.txt
-      - scripts/client-post-processing
       - samples/snippets/README.rst
       - tests/system
     remove_regex:
@@ -1032,7 +983,6 @@ libraries:
       - packages/google-cloud-binary-authorization/CHANGELOG.md
       - docs/CHANGELOG.md
       - samples/README.txt
-      - scripts/client-post-processing
       - samples/snippets/README.rst
       - tests/system
     remove_regex:
@@ -1052,7 +1002,6 @@ libraries:
       - packages/google-cloud-build/CHANGELOG.md
       - docs/CHANGELOG.md
       - samples/README.txt
-      - scripts/client-post-processing
       - samples/snippets/README.rst
       - tests/system
     remove_regex:
@@ -1070,7 +1019,6 @@ libraries:
       - packages/google-cloud-capacityplanner/CHANGELOG.md
       - docs/CHANGELOG.md
       - samples/README.txt
-      - scripts/client-post-processing
       - samples/snippets/README.rst
       - tests/system
     remove_regex:
@@ -1088,7 +1036,6 @@ libraries:
       - packages/google-cloud-certificate-manager/CHANGELOG.md
       - docs/CHANGELOG.md
       - samples/README.txt
-      - scripts/client-post-processing
       - samples/snippets/README.rst
       - tests/system
     remove_regex:
@@ -1106,7 +1053,6 @@ libraries:
       - packages/google-cloud-channel/CHANGELOG.md
       - docs/CHANGELOG.md
       - samples/README.txt
-      - scripts/client-post-processing
       - samples/snippets/README.rst
       - tests/system
     remove_regex:
@@ -1124,7 +1070,6 @@ libraries:
       - packages/google-cloud-chronicle/CHANGELOG.md
       - docs/CHANGELOG.md
       - samples/README.txt
-      - scripts/client-post-processing
       - samples/snippets/README.rst
       - tests/system
     remove_regex:
@@ -1144,7 +1089,6 @@ libraries:
       - packages/google-cloud-cloudcontrolspartner/CHANGELOG.md
       - docs/CHANGELOG.md
       - samples/README.txt
-      - scripts/client-post-processing
       - samples/snippets/README.rst
       - tests/system
     remove_regex:
@@ -1162,7 +1106,6 @@ libraries:
       - packages/google-cloud-cloudsecuritycompliance/CHANGELOG.md
       - docs/CHANGELOG.md
       - samples/README.txt
-      - scripts/client-post-processing
       - samples/snippets/README.rst
       - tests/system
     remove_regex:
@@ -1182,7 +1125,6 @@ libraries:
       - packages/google-cloud-commerce-consumer-procurement/CHANGELOG.md
       - docs/CHANGELOG.md
       - samples/README.txt
-      - scripts/client-post-processing
       - samples/snippets/README.rst
       - tests/system
     remove_regex:
@@ -1200,7 +1142,6 @@ libraries:
       - packages/google-cloud-common/CHANGELOG.md
       - docs/CHANGELOG.md
       - samples/README.txt
-      - scripts/client-post-processing
       - samples/snippets/README.rst
       - tests/system
       - tests/unit/gapic/common/test_common.py
@@ -1219,7 +1160,6 @@ libraries:
       - packages/google-cloud-compute/CHANGELOG.md
       - docs/CHANGELOG.md
       - samples/README.txt
-      - scripts/client-post-processing
       - samples/snippets/README.rst
       - tests/system
     remove_regex:
@@ -1237,7 +1177,6 @@ libraries:
       - packages/google-cloud-compute-v1beta/CHANGELOG.md
       - docs/CHANGELOG.md
       - samples/README.txt
-      - scripts/client-post-processing
       - samples/snippets/README.rst
       - tests/system
     remove_regex:
@@ -1255,7 +1194,6 @@ libraries:
       - packages/google-cloud-confidentialcomputing/CHANGELOG.md
       - docs/CHANGELOG.md
       - samples/README.txt
-      - scripts/client-post-processing
       - samples/snippets/README.rst
       - tests/system
     remove_regex:
@@ -1273,7 +1211,6 @@ libraries:
       - packages/google-cloud-config/CHANGELOG.md
       - docs/CHANGELOG.md
       - samples/README.txt
-      - scripts/client-post-processing
       - samples/snippets/README.rst
       - tests/system
     remove_regex:
@@ -1295,7 +1232,6 @@ libraries:
       - packages/google-cloud-configdelivery/CHANGELOG.md
       - docs/CHANGELOG.md
       - samples/README.txt
-      - scripts/client-post-processing
       - samples/snippets/README.rst
       - tests/system
     remove_regex:
@@ -1313,7 +1249,6 @@ libraries:
       - packages/google-cloud-contact-center-insights/CHANGELOG.md
       - docs/CHANGELOG.md
       - samples/README.txt
-      - scripts/client-post-processing
       - samples/snippets/README.rst
       - tests/system
     remove_regex:
@@ -1333,7 +1268,6 @@ libraries:
       - packages/google-cloud-container/CHANGELOG.md
       - docs/CHANGELOG.md
       - samples/README.txt
-      - scripts/client-post-processing
       - samples/snippets/README.rst
       - tests/system
     remove_regex:
@@ -1351,7 +1285,6 @@ libraries:
       - packages/google-cloud-containeranalysis/CHANGELOG.md
       - docs/CHANGELOG.md
       - samples/README.txt
-      - scripts/client-post-processing
       - samples/snippets/README.rst
       - tests/system
       - tests/unit/test_get_grafeas_client.py
@@ -1370,7 +1303,6 @@ libraries:
       - packages/google-cloud-contentwarehouse/CHANGELOG.md
       - docs/CHANGELOG.md
       - samples/README.txt
-      - scripts/client-post-processing
       - samples/snippets/README.rst
       - tests/system
     remove_regex:
@@ -1388,7 +1320,6 @@ libraries:
       - packages/google-cloud-data-fusion/CHANGELOG.md
       - docs/CHANGELOG.md
       - samples/README.txt
-      - scripts/client-post-processing
       - samples/snippets/README.rst
       - tests/system
     remove_regex:
@@ -1406,7 +1337,6 @@ libraries:
       - packages/google-cloud-data-qna/CHANGELOG.md
       - docs/CHANGELOG.md
       - samples/README.txt
-      - scripts/client-post-processing
       - samples/snippets/README.rst
       - tests/system
     remove_regex:
@@ -1426,7 +1356,6 @@ libraries:
       - packages/google-cloud-datacatalog/CHANGELOG.md
       - docs/CHANGELOG.md
       - samples/README.txt
-      - scripts/client-post-processing
       - samples/snippets/README.rst
       - tests/system
     remove_regex:
@@ -1444,7 +1373,6 @@ libraries:
       - packages/google-cloud-datacatalog-lineage/CHANGELOG.md
       - docs/CHANGELOG.md
       - samples/README.txt
-      - scripts/client-post-processing
       - samples/snippets/README.rst
       - tests/system
     remove_regex:
@@ -1462,7 +1390,6 @@ libraries:
       - packages/google-cloud-dataflow-client/CHANGELOG.md
       - docs/CHANGELOG.md
       - samples/README.txt
-      - scripts/client-post-processing
       - samples/snippets/README.rst
       - tests/system
     remove_regex:
@@ -1482,7 +1409,6 @@ libraries:
       - packages/google-cloud-dataform/CHANGELOG.md
       - docs/CHANGELOG.md
       - samples/README.txt
-      - scripts/client-post-processing
       - samples/snippets/README.rst
       - tests/system
     remove_regex:
@@ -1500,7 +1426,6 @@ libraries:
       - packages/google-cloud-datalabeling/CHANGELOG.md
       - docs/CHANGELOG.md
       - samples/README.txt
-      - scripts/client-post-processing
       - samples/snippets/README.rst
       - tests/system
     remove_regex:
@@ -1518,7 +1443,6 @@ libraries:
       - packages/google-cloud-dataplex/CHANGELOG.md
       - docs/CHANGELOG.md
       - samples/README.txt
-      - scripts/client-post-processing
       - samples/snippets/README.rst
       - tests/system
     remove_regex:
@@ -1536,7 +1460,6 @@ libraries:
       - packages/google-cloud-dataproc/CHANGELOG.md
       - docs/CHANGELOG.md
       - samples/README.txt
-      - scripts/client-post-processing
       - samples/snippets/README.rst
       - tests/system
     remove_regex:
@@ -1558,7 +1481,6 @@ libraries:
       - packages/google-cloud-dataproc-metastore/CHANGELOG.md
       - docs/CHANGELOG.md
       - samples/README.txt
-      - scripts/client-post-processing
       - samples/snippets/README.rst
       - tests/system
     remove_regex:
@@ -1578,7 +1500,6 @@ libraries:
       - packages/google-cloud-datastream/CHANGELOG.md
       - docs/CHANGELOG.md
       - samples/README.txt
-      - scripts/client-post-processing
       - samples/snippets/README.rst
       - tests/system
     remove_regex:
@@ -1596,7 +1517,6 @@ libraries:
       - packages/google-cloud-deploy/CHANGELOG.md
       - docs/CHANGELOG.md
       - samples/README.txt
-      - scripts/client-post-processing
       - samples/snippets/README.rst
       - tests/system
     remove_regex:
@@ -1614,7 +1534,6 @@ libraries:
       - packages/google-cloud-developerconnect/CHANGELOG.md
       - docs/CHANGELOG.md
       - samples/README.txt
-      - scripts/client-post-processing
       - samples/snippets/README.rst
       - tests/system
     remove_regex:
@@ -1632,7 +1551,6 @@ libraries:
       - packages/google-cloud-devicestreaming/CHANGELOG.md
       - docs/CHANGELOG.md
       - samples/README.txt
-      - scripts/client-post-processing
       - samples/snippets/README.rst
       - tests/system
     remove_regex:
@@ -1652,7 +1570,6 @@ libraries:
       - packages/google-cloud-dialogflow/CHANGELOG.md
       - docs/CHANGELOG.md
       - samples/README.txt
-      - scripts/client-post-processing
       - samples/snippets/README.rst
       - tests/system
     remove_regex:
@@ -1672,7 +1589,6 @@ libraries:
       - packages/google-cloud-dialogflow-cx/CHANGELOG.md
       - docs/CHANGELOG.md
       - samples/README.txt
-      - scripts/client-post-processing
       - samples/snippets/README.rst
       - tests/system
     remove_regex:
@@ -1694,7 +1610,6 @@ libraries:
       - packages/google-cloud-discoveryengine/CHANGELOG.md
       - docs/CHANGELOG.md
       - samples/README.txt
-      - scripts/client-post-processing
       - samples/snippets/README.rst
       - tests/system
     remove_regex:
@@ -1712,7 +1627,6 @@ libraries:
       - packages/google-cloud-dlp/CHANGELOG.md
       - docs/CHANGELOG.md
       - samples/README.txt
-      - scripts/client-post-processing
       - samples/snippets/README.rst
       - tests/system
     remove_regex:
@@ -1730,7 +1644,6 @@ libraries:
       - packages/google-cloud-dms/CHANGELOG.md
       - docs/CHANGELOG.md
       - samples/README.txt
-      - scripts/client-post-processing
       - samples/snippets/README.rst
       - tests/system
     remove_regex:
@@ -1750,7 +1663,6 @@ libraries:
       - packages/google-cloud-documentai/CHANGELOG.md
       - docs/CHANGELOG.md
       - samples/README.txt
-      - scripts/client-post-processing
       - samples/snippets/README.rst
       - tests/system
     remove_regex:
@@ -1770,7 +1682,6 @@ libraries:
       - packages/google-cloud-domains/CHANGELOG.md
       - docs/CHANGELOG.md
       - samples/README.txt
-      - scripts/client-post-processing
       - samples/snippets/README.rst
       - tests/system
     remove_regex:
@@ -1788,7 +1699,6 @@ libraries:
       - packages/google-cloud-edgecontainer/CHANGELOG.md
       - docs/CHANGELOG.md
       - samples/README.txt
-      - scripts/client-post-processing
       - samples/snippets/README.rst
       - tests/system
     remove_regex:
@@ -1806,7 +1716,6 @@ libraries:
       - packages/google-cloud-edgenetwork/CHANGELOG.md
       - docs/CHANGELOG.md
       - samples/README.txt
-      - scripts/client-post-processing
       - samples/snippets/README.rst
       - tests/system
     remove_regex:
@@ -1824,7 +1733,6 @@ libraries:
       - packages/google-cloud-enterpriseknowledgegraph/CHANGELOG.md
       - docs/CHANGELOG.md
       - samples/README.txt
-      - scripts/client-post-processing
       - samples/snippets/README.rst
       - tests/system
     remove_regex:
@@ -1842,7 +1750,6 @@ libraries:
       - packages/google-cloud-essential-contacts/CHANGELOG.md
       - docs/CHANGELOG.md
       - samples/README.txt
-      - scripts/client-post-processing
       - samples/snippets/README.rst
       - tests/system
     remove_regex:
@@ -1860,7 +1767,6 @@ libraries:
       - packages/google-cloud-eventarc/CHANGELOG.md
       - docs/CHANGELOG.md
       - samples/README.txt
-      - scripts/client-post-processing
       - samples/snippets/README.rst
       - tests/system
     remove_regex:
@@ -1878,7 +1784,6 @@ libraries:
       - packages/google-cloud-eventarc-publishing/CHANGELOG.md
       - docs/CHANGELOG.md
       - samples/README.txt
-      - scripts/client-post-processing
       - samples/snippets/README.rst
       - tests/system
     remove_regex:
@@ -1896,7 +1801,6 @@ libraries:
       - packages/google-cloud-filestore/CHANGELOG.md
       - docs/CHANGELOG.md
       - samples/README.txt
-      - scripts/client-post-processing
       - samples/snippets/README.rst
       - tests/system
     remove_regex:
@@ -1914,7 +1818,6 @@ libraries:
       - packages/google-cloud-financialservices/CHANGELOG.md
       - docs/CHANGELOG.md
       - samples/README.txt
-      - scripts/client-post-processing
       - samples/snippets/README.rst
       - tests/system
     remove_regex:
@@ -1934,7 +1837,6 @@ libraries:
       - packages/google-cloud-functions/CHANGELOG.md
       - docs/CHANGELOG.md
       - samples/README.txt
-      - scripts/client-post-processing
       - samples/snippets/README.rst
       - tests/system
     remove_regex:
@@ -1952,7 +1854,6 @@ libraries:
       - packages/google-cloud-gdchardwaremanagement/CHANGELOG.md
       - docs/CHANGELOG.md
       - samples/README.txt
-      - scripts/client-post-processing
       - samples/snippets/README.rst
       - tests/system
     remove_regex:
@@ -1972,7 +1873,6 @@ libraries:
       - packages/google-cloud-geminidataanalytics/CHANGELOG.md
       - docs/CHANGELOG.md
       - samples/README.txt
-      - scripts/client-post-processing
       - samples/snippets/README.rst
       - tests/system
     remove_regex:
@@ -1990,7 +1890,6 @@ libraries:
       - packages/google-cloud-gke-backup/CHANGELOG.md
       - docs/CHANGELOG.md
       - samples/README.txt
-      - scripts/client-post-processing
       - samples/snippets/README.rst
       - tests/system
     remove_regex:
@@ -2010,7 +1909,6 @@ libraries:
       - packages/google-cloud-gke-connect-gateway/CHANGELOG.md
       - docs/CHANGELOG.md
       - samples/README.txt
-      - scripts/client-post-processing
       - samples/snippets/README.rst
       - tests/system
     remove_regex:
@@ -2030,7 +1928,6 @@ libraries:
       - packages/google-cloud-gke-hub/CHANGELOG.md
       - docs/CHANGELOG.md
       - samples/README.txt
-      - scripts/client-post-processing
       - samples/snippets/README.rst
       - tests/system
       - docs/gkehub_v1/configmanagement_v1
@@ -2052,7 +1949,6 @@ libraries:
       - packages/google-cloud-gke-multicloud/CHANGELOG.md
       - docs/CHANGELOG.md
       - samples/README.txt
-      - scripts/client-post-processing
       - samples/snippets/README.rst
       - tests/system
     remove_regex:
@@ -2070,7 +1966,6 @@ libraries:
       - packages/google-cloud-gkerecommender/CHANGELOG.md
       - docs/CHANGELOG.md
       - samples/README.txt
-      - scripts/client-post-processing
       - samples/snippets/README.rst
       - tests/system
     remove_regex:
@@ -2088,7 +1983,6 @@ libraries:
       - packages/google-cloud-gsuiteaddons/CHANGELOG.md
       - docs/CHANGELOG.md
       - samples/README.txt
-      - scripts/client-post-processing
       - samples/snippets/README.rst
       - tests/system
     remove_regex:
@@ -2106,7 +2000,6 @@ libraries:
       - packages/google-cloud-hypercomputecluster/CHANGELOG.md
       - docs/CHANGELOG.md
       - samples/README.txt
-      - scripts/client-post-processing
       - samples/snippets/README.rst
       - tests/system
     remove_regex:
@@ -2134,7 +2027,6 @@ libraries:
       - packages/google-cloud-iam/CHANGELOG.md
       - docs/CHANGELOG.md
       - samples/README.txt
-      - scripts/client-post-processing
       - samples/snippets/README.rst
       - tests/system
     remove_regex:
@@ -2152,7 +2044,6 @@ libraries:
       - packages/google-cloud-iam-logging/CHANGELOG.md
       - docs/CHANGELOG.md
       - samples/README.txt
-      - scripts/client-post-processing
       - samples/snippets/README.rst
       - tests/system
       - tests/unit/gapic/iam_logging_v1/test_iam_logging.py
@@ -2171,7 +2062,6 @@ libraries:
       - packages/google-cloud-iap/CHANGELOG.md
       - docs/CHANGELOG.md
       - samples/README.txt
-      - scripts/client-post-processing
       - samples/snippets/README.rst
       - tests/system
     remove_regex:
@@ -2189,7 +2079,6 @@ libraries:
       - packages/google-cloud-ids/CHANGELOG.md
       - docs/CHANGELOG.md
       - samples/README.txt
-      - scripts/client-post-processing
       - samples/snippets/README.rst
       - tests/system
     remove_regex:
@@ -2207,7 +2096,6 @@ libraries:
       - packages/google-cloud-kms/CHANGELOG.md
       - docs/CHANGELOG.md
       - samples/README.txt
-      - scripts/client-post-processing
       - samples/snippets/README.rst
       - tests/system
     remove_regex:
@@ -2225,7 +2113,6 @@ libraries:
       - packages/google-cloud-kms-inventory/CHANGELOG.md
       - docs/CHANGELOG.md
       - samples/README.txt
-      - scripts/client-post-processing
       - samples/snippets/README.rst
       - tests/system
     remove_regex:
@@ -2247,7 +2134,6 @@ libraries:
       - packages/google-cloud-language/CHANGELOG.md
       - docs/CHANGELOG.md
       - samples/README.txt
-      - scripts/client-post-processing
       - samples/snippets/README.rst
       - tests/system
     remove_regex:
@@ -2265,7 +2151,6 @@ libraries:
       - packages/google-cloud-licensemanager/CHANGELOG.md
       - docs/CHANGELOG.md
       - samples/README.txt
-      - scripts/client-post-processing
       - samples/snippets/README.rst
       - tests/system
     remove_regex:
@@ -2283,7 +2168,6 @@ libraries:
       - packages/google-cloud-life-sciences/CHANGELOG.md
       - docs/CHANGELOG.md
       - samples/README.txt
-      - scripts/client-post-processing
       - samples/snippets/README.rst
       - tests/system
     remove_regex:
@@ -2301,7 +2185,6 @@ libraries:
       - packages/google-cloud-locationfinder/CHANGELOG.md
       - docs/CHANGELOG.md
       - samples/README.txt
-      - scripts/client-post-processing
       - samples/snippets/README.rst
       - tests/system
     remove_regex:
@@ -2319,7 +2202,6 @@ libraries:
       - packages/google-cloud-lustre/CHANGELOG.md
       - docs/CHANGELOG.md
       - samples/README.txt
-      - scripts/client-post-processing
       - samples/snippets/README.rst
       - tests/system
     remove_regex:
@@ -2337,7 +2219,6 @@ libraries:
       - packages/google-cloud-maintenance-api/CHANGELOG.md
       - docs/CHANGELOG.md
       - samples/README.txt
-      - scripts/client-post-processing
       - samples/snippets/README.rst
       - tests/system
     remove_regex:
@@ -2355,7 +2236,6 @@ libraries:
       - packages/google-cloud-managed-identities/CHANGELOG.md
       - docs/CHANGELOG.md
       - samples/README.txt
-      - scripts/client-post-processing
       - samples/snippets/README.rst
       - tests/system
     remove_regex:
@@ -2373,7 +2253,6 @@ libraries:
       - packages/google-cloud-managedkafka/CHANGELOG.md
       - docs/CHANGELOG.md
       - samples/README.txt
-      - scripts/client-post-processing
       - samples/snippets/README.rst
       - tests/system
     remove_regex:
@@ -2391,7 +2270,6 @@ libraries:
       - packages/google-cloud-managedkafka-schemaregistry/CHANGELOG.md
       - docs/CHANGELOG.md
       - samples/README.txt
-      - scripts/client-post-processing
       - samples/snippets/README.rst
       - tests/system
     remove_regex:
@@ -2409,7 +2287,6 @@ libraries:
       - packages/google-cloud-media-translation/CHANGELOG.md
       - docs/CHANGELOG.md
       - samples/README.txt
-      - scripts/client-post-processing
       - samples/snippets/README.rst
       - tests/system
     remove_regex:
@@ -2429,7 +2306,6 @@ libraries:
       - packages/google-cloud-memcache/CHANGELOG.md
       - docs/CHANGELOG.md
       - samples/README.txt
-      - scripts/client-post-processing
       - samples/snippets/README.rst
       - tests/system
     remove_regex:
@@ -2449,7 +2325,6 @@ libraries:
       - packages/google-cloud-memorystore/CHANGELOG.md
       - docs/CHANGELOG.md
       - samples/README.txt
-      - scripts/client-post-processing
       - samples/snippets/README.rst
       - tests/system
     remove_regex:
@@ -2467,7 +2342,6 @@ libraries:
       - packages/google-cloud-migrationcenter/CHANGELOG.md
       - docs/CHANGELOG.md
       - samples/README.txt
-      - scripts/client-post-processing
       - samples/snippets/README.rst
       - tests/system
     remove_regex:
@@ -2487,7 +2361,6 @@ libraries:
       - packages/google-cloud-modelarmor/CHANGELOG.md
       - docs/CHANGELOG.md
       - samples/README.txt
-      - scripts/client-post-processing
       - samples/snippets/README.rst
       - tests/system
     remove_regex:
@@ -2508,7 +2381,6 @@ libraries:
       - packages/google-cloud-monitoring/google/cloud/monitoring_v3/_dataframe.py
       - packages/google-cloud-monitoring/google/cloud/monitoring_v3/query.py
       - samples/README.txt
-      - scripts/client-post-processing
       - samples/snippets/README.rst
       - tests/system
       - tests/unit/test__dataframe.py
@@ -2528,7 +2400,6 @@ libraries:
       - packages/google-cloud-monitoring-dashboards/CHANGELOG.md
       - docs/CHANGELOG.md
       - samples/README.txt
-      - scripts/client-post-processing
       - samples/snippets/README.rst
       - tests/system
       - packages/google-cloud-monitoring-dashboards/google/monitoring
@@ -2548,7 +2419,6 @@ libraries:
       - packages/google-cloud-monitoring-metrics-scopes/CHANGELOG.md
       - docs/CHANGELOG.md
       - samples/README.txt
-      - scripts/client-post-processing
       - samples/snippets/README.rst
       - tests/system
     remove_regex:
@@ -2566,7 +2436,6 @@ libraries:
       - packages/google-cloud-netapp/CHANGELOG.md
       - docs/CHANGELOG.md
       - samples/README.txt
-      - scripts/client-post-processing
       - samples/snippets/README.rst
       - tests/system
     remove_regex:
@@ -2586,7 +2455,6 @@ libraries:
       - packages/google-cloud-network-connectivity/CHANGELOG.md
       - docs/CHANGELOG.md
       - samples/README.txt
-      - scripts/client-post-processing
       - samples/snippets/README.rst
       - tests/system
     remove_regex:
@@ -2604,7 +2472,6 @@ libraries:
       - packages/google-cloud-network-management/CHANGELOG.md
       - docs/CHANGELOG.md
       - samples/README.txt
-      - scripts/client-post-processing
       - samples/snippets/README.rst
       - tests/system
     remove_regex:
@@ -2626,7 +2493,6 @@ libraries:
       - packages/google-cloud-network-security/CHANGELOG.md
       - docs/CHANGELOG.md
       - samples/README.txt
-      - scripts/client-post-processing
       - samples/snippets/README.rst
       - tests/system
     remove_regex:
@@ -2644,7 +2510,6 @@ libraries:
       - packages/google-cloud-network-services/CHANGELOG.md
       - docs/CHANGELOG.md
       - samples/README.txt
-      - scripts/client-post-processing
       - samples/snippets/README.rst
       - tests/system
     remove_regex:
@@ -2666,7 +2531,6 @@ libraries:
       - packages/google-cloud-notebooks/CHANGELOG.md
       - docs/CHANGELOG.md
       - samples/README.txt
-      - scripts/client-post-processing
       - samples/snippets/README.rst
       - tests/system
     remove_regex:
@@ -2684,7 +2548,6 @@ libraries:
       - packages/google-cloud-optimization/CHANGELOG.md
       - docs/CHANGELOG.md
       - samples/README.txt
-      - scripts/client-post-processing
       - samples/snippets/README.rst
       - tests/system
     remove_regex:
@@ -2702,7 +2565,6 @@ libraries:
       - packages/google-cloud-oracledatabase/CHANGELOG.md
       - docs/CHANGELOG.md
       - samples/README.txt
-      - scripts/client-post-processing
       - samples/snippets/README.rst
       - tests/system
     remove_regex:
@@ -2722,7 +2584,6 @@ libraries:
       - packages/google-cloud-orchestration-airflow/CHANGELOG.md
       - docs/CHANGELOG.md
       - samples/README.txt
-      - scripts/client-post-processing
       - samples/snippets/README.rst
       - tests/system
     remove_regex:
@@ -2744,7 +2605,6 @@ libraries:
       - google/cloud/orgpolicy/v1/__init__.py
       - docs/CHANGELOG.md
       - samples/README.txt
-      - scripts/client-post-processing
       - samples/snippets/README.rst
       - tests/system
       - tests/unit/test_packaging.py
@@ -2765,7 +2625,6 @@ libraries:
       - packages/google-cloud-os-config/CHANGELOG.md
       - docs/CHANGELOG.md
       - samples/README.txt
-      - scripts/client-post-processing
       - samples/snippets/README.rst
       - tests/system
     remove_regex:
@@ -2783,7 +2642,6 @@ libraries:
       - packages/google-cloud-os-login/CHANGELOG.md
       - docs/CHANGELOG.md
       - samples/README.txt
-      - scripts/client-post-processing
       - samples/snippets/README.rst
       - tests/system
       - google/cloud/oslogin_v1/common
@@ -2805,7 +2663,6 @@ libraries:
       - packages/google-cloud-parallelstore/CHANGELOG.md
       - docs/CHANGELOG.md
       - samples/README.txt
-      - scripts/client-post-processing
       - samples/snippets/README.rst
       - tests/system
     remove_regex:
@@ -2823,7 +2680,6 @@ libraries:
       - packages/google-cloud-parametermanager/CHANGELOG.md
       - docs/CHANGELOG.md
       - samples/README.txt
-      - scripts/client-post-processing
       - samples/snippets/README.rst
       - tests/system
     remove_regex:
@@ -2841,7 +2697,6 @@ libraries:
       - packages/google-cloud-phishing-protection/CHANGELOG.md
       - docs/CHANGELOG.md
       - samples/README.txt
-      - scripts/client-post-processing
       - samples/snippets/README.rst
       - tests/system
     remove_regex:
@@ -2859,7 +2714,6 @@ libraries:
       - packages/google-cloud-policy-troubleshooter/CHANGELOG.md
       - docs/CHANGELOG.md
       - samples/README.txt
-      - scripts/client-post-processing
       - samples/snippets/README.rst
       - tests/system
     remove_regex:
@@ -2877,7 +2731,6 @@ libraries:
       - packages/google-cloud-policysimulator/CHANGELOG.md
       - docs/CHANGELOG.md
       - samples/README.txt
-      - scripts/client-post-processing
       - samples/snippets/README.rst
       - tests/system
     remove_regex:
@@ -2895,7 +2748,6 @@ libraries:
       - packages/google-cloud-policytroubleshooter-iam/CHANGELOG.md
       - docs/CHANGELOG.md
       - samples/README.txt
-      - scripts/client-post-processing
       - samples/snippets/README.rst
       - tests/system
     remove_regex:
@@ -2915,7 +2767,6 @@ libraries:
       - packages/google-cloud-private-ca/CHANGELOG.md
       - docs/CHANGELOG.md
       - samples/README.txt
-      - scripts/client-post-processing
       - samples/snippets/README.rst
       - tests/system
     remove_regex:
@@ -2933,7 +2784,6 @@ libraries:
       - packages/google-cloud-private-catalog/CHANGELOG.md
       - docs/CHANGELOG.md
       - samples/README.txt
-      - scripts/client-post-processing
       - samples/snippets/README.rst
       - tests/system
     remove_regex:
@@ -2951,7 +2801,6 @@ libraries:
       - packages/google-cloud-privilegedaccessmanager/CHANGELOG.md
       - docs/CHANGELOG.md
       - samples/README.txt
-      - scripts/client-post-processing
       - samples/snippets/README.rst
       - tests/system
     remove_regex:
@@ -2971,7 +2820,6 @@ libraries:
       - packages/google-cloud-quotas/CHANGELOG.md
       - docs/CHANGELOG.md
       - samples/README.txt
-      - scripts/client-post-processing
       - samples/snippets/README.rst
       - tests/system
     remove_regex:
@@ -2989,7 +2837,6 @@ libraries:
       - packages/google-cloud-rapidmigrationassessment/CHANGELOG.md
       - docs/CHANGELOG.md
       - samples/README.txt
-      - scripts/client-post-processing
       - samples/snippets/README.rst
       - tests/system
     remove_regex:
@@ -3007,7 +2854,6 @@ libraries:
       - packages/google-cloud-recaptcha-enterprise/CHANGELOG.md
       - docs/CHANGELOG.md
       - samples/README.txt
-      - scripts/client-post-processing
       - samples/snippets/README.rst
       - tests/system
     remove_regex:
@@ -3025,7 +2871,6 @@ libraries:
       - packages/google-cloud-recommendations-ai/CHANGELOG.md
       - docs/CHANGELOG.md
       - samples/README.txt
-      - scripts/client-post-processing
       - samples/snippets/README.rst
       - tests/system
     remove_regex:
@@ -3045,7 +2890,6 @@ libraries:
       - packages/google-cloud-recommender/CHANGELOG.md
       - docs/CHANGELOG.md
       - samples/README.txt
-      - scripts/client-post-processing
       - samples/snippets/README.rst
       - tests/system
     remove_regex:
@@ -3065,7 +2909,6 @@ libraries:
       - packages/google-cloud-redis/CHANGELOG.md
       - docs/CHANGELOG.md
       - samples/README.txt
-      - scripts/client-post-processing
       - samples/snippets/README.rst
       - tests/system
     remove_regex:
@@ -3085,7 +2928,6 @@ libraries:
       - packages/google-cloud-redis-cluster/CHANGELOG.md
       - docs/CHANGELOG.md
       - samples/README.txt
-      - scripts/client-post-processing
       - samples/snippets/README.rst
       - tests/system
     remove_regex:
@@ -3103,7 +2945,6 @@ libraries:
       - packages/google-cloud-resource-manager/CHANGELOG.md
       - docs/CHANGELOG.md
       - samples/README.txt
-      - scripts/client-post-processing
       - samples/snippets/README.rst
       - tests/system
     remove_regex:
@@ -3125,7 +2966,6 @@ libraries:
       - packages/google-cloud-retail/CHANGELOG.md
       - docs/CHANGELOG.md
       - samples/README.txt
-      - scripts/client-post-processing
       - samples/snippets/README.rst
       - tests/system
     remove_regex:
@@ -3143,7 +2983,6 @@ libraries:
       - packages/google-cloud-run/CHANGELOG.md
       - docs/CHANGELOG.md
       - samples/README.txt
-      - scripts/client-post-processing
       - samples/snippets/README.rst
       - tests/system
     remove_regex:
@@ -3161,7 +3000,6 @@ libraries:
       - packages/google-cloud-saasplatform-saasservicemgmt/CHANGELOG.md
       - docs/CHANGELOG.md
       - samples/README.txt
-      - scripts/client-post-processing
       - samples/snippets/README.rst
       - tests/system
     remove_regex:
@@ -3181,7 +3019,6 @@ libraries:
       - packages/google-cloud-scheduler/CHANGELOG.md
       - docs/CHANGELOG.md
       - samples/README.txt
-      - scripts/client-post-processing
       - samples/snippets/README.rst
       - tests/system
     remove_regex:
@@ -3203,7 +3040,6 @@ libraries:
       - packages/google-cloud-secret-manager/CHANGELOG.md
       - docs/CHANGELOG.md
       - samples/README.txt
-      - scripts/client-post-processing
       - samples/snippets/README.rst
       - tests/system
     remove_regex:
@@ -3221,7 +3057,6 @@ libraries:
       - packages/google-cloud-securesourcemanager/CHANGELOG.md
       - docs/CHANGELOG.md
       - samples/README.txt
-      - scripts/client-post-processing
       - samples/snippets/README.rst
       - tests/system
     remove_regex:
@@ -3241,7 +3076,6 @@ libraries:
       - packages/google-cloud-security-publicca/CHANGELOG.md
       - docs/CHANGELOG.md
       - samples/README.txt
-      - scripts/client-post-processing
       - samples/snippets/README.rst
       - tests/system
     remove_regex:
@@ -3265,7 +3099,6 @@ libraries:
       - packages/google-cloud-securitycenter/CHANGELOG.md
       - docs/CHANGELOG.md
       - samples/README.txt
-      - scripts/client-post-processing
       - samples/snippets/README.rst
       - tests/system
     remove_regex:
@@ -3283,7 +3116,6 @@ libraries:
       - packages/google-cloud-securitycentermanagement/CHANGELOG.md
       - docs/CHANGELOG.md
       - samples/README.txt
-      - scripts/client-post-processing
       - samples/snippets/README.rst
       - tests/system
     remove_regex:
@@ -3303,7 +3135,6 @@ libraries:
       - packages/google-cloud-service-control/CHANGELOG.md
       - docs/CHANGELOG.md
       - samples/README.txt
-      - scripts/client-post-processing
       - samples/snippets/README.rst
       - tests/system
     remove_regex:
@@ -3323,7 +3154,6 @@ libraries:
       - packages/google-cloud-service-directory/CHANGELOG.md
       - docs/CHANGELOG.md
       - samples/README.txt
-      - scripts/client-post-processing
       - samples/snippets/README.rst
       - tests/system
     remove_regex:
@@ -3341,7 +3171,6 @@ libraries:
       - packages/google-cloud-service-management/CHANGELOG.md
       - docs/CHANGELOG.md
       - samples/README.txt
-      - scripts/client-post-processing
       - samples/snippets/README.rst
       - tests/system
     remove_regex:
@@ -3359,7 +3188,6 @@ libraries:
       - packages/google-cloud-service-usage/CHANGELOG.md
       - docs/CHANGELOG.md
       - samples/README.txt
-      - scripts/client-post-processing
       - samples/snippets/README.rst
       - tests/system
     remove_regex:
@@ -3377,7 +3205,6 @@ libraries:
       - packages/google-cloud-servicehealth/CHANGELOG.md
       - docs/CHANGELOG.md
       - samples/README.txt
-      - scripts/client-post-processing
       - samples/snippets/README.rst
       - tests/system
     remove_regex:
@@ -3395,7 +3222,6 @@ libraries:
       - packages/google-cloud-shell/CHANGELOG.md
       - docs/CHANGELOG.md
       - samples/README.txt
-      - scripts/client-post-processing
       - samples/snippets/README.rst
       - tests/system
     remove_regex:
@@ -3413,7 +3239,6 @@ libraries:
       - packages/google-cloud-source-context/CHANGELOG.md
       - docs/CHANGELOG.md
       - samples/README.txt
-      - scripts/client-post-processing
       - samples/snippets/README.rst
       - tests/system
       - tests/unit/gapic/source_context_v1/test_source_context_v1.py
@@ -3437,7 +3262,6 @@ libraries:
       - docs/CHANGELOG.md
       - google/cloud/speech_v1/helpers.py
       - samples/README.txt
-      - scripts/client-post-processing
       - samples/snippets/README.rst
       - tests/system
       - tests/unit/test_helpers.py
@@ -3456,7 +3280,6 @@ libraries:
       - packages/google-cloud-storage-control/CHANGELOG.md
       - docs/CHANGELOG.md
       - samples/README.txt
-      - scripts/client-post-processing
       - samples/snippets/README.rst
       - tests/system
     remove_regex:
@@ -3474,7 +3297,6 @@ libraries:
       - packages/google-cloud-storage-transfer/CHANGELOG.md
       - docs/CHANGELOG.md
       - samples/README.txt
-      - scripts/client-post-processing
       - samples/snippets/README.rst
       - tests/system
     remove_regex:
@@ -3492,7 +3314,6 @@ libraries:
       - packages/google-cloud-storagebatchoperations/CHANGELOG.md
       - docs/CHANGELOG.md
       - samples/README.txt
-      - scripts/client-post-processing
       - samples/snippets/README.rst
       - tests/system
     remove_regex:
@@ -3510,7 +3331,6 @@ libraries:
       - packages/google-cloud-storageinsights/CHANGELOG.md
       - docs/CHANGELOG.md
       - samples/README.txt
-      - scripts/client-post-processing
       - samples/snippets/README.rst
       - tests/system
     remove_regex:
@@ -3530,7 +3350,6 @@ libraries:
       - packages/google-cloud-support/CHANGELOG.md
       - docs/CHANGELOG.md
       - samples/README.txt
-      - scripts/client-post-processing
       - samples/snippets/README.rst
       - tests/system
     remove_regex:
@@ -3550,7 +3369,6 @@ libraries:
       - packages/google-cloud-talent/CHANGELOG.md
       - docs/CHANGELOG.md
       - samples/README.txt
-      - scripts/client-post-processing
       - samples/snippets/README.rst
       - tests/system
     remove_regex:
@@ -3572,7 +3390,6 @@ libraries:
       - packages/google-cloud-tasks/CHANGELOG.md
       - docs/CHANGELOG.md
       - samples/README.txt
-      - scripts/client-post-processing
       - samples/snippets/README.rst
       - snippets/README.md
       - tests/system
@@ -3593,7 +3410,6 @@ libraries:
       - packages/google-cloud-telcoautomation/CHANGELOG.md
       - docs/CHANGELOG.md
       - samples/README.txt
-      - scripts/client-post-processing
       - samples/snippets/README.rst
       - snippets/README.md
       - tests/system
@@ -3614,7 +3430,6 @@ libraries:
       - packages/google-cloud-texttospeech/CHANGELOG.md
       - docs/CHANGELOG.md
       - samples/README.txt
-      - scripts/client-post-processing
       - samples/snippets/README.rst
       - tests/system
     remove_regex:
@@ -3636,7 +3451,6 @@ libraries:
       - packages/google-cloud-tpu/CHANGELOG.md
       - docs/CHANGELOG.md
       - samples/README.txt
-      - scripts/client-post-processing
       - samples/snippets/README.rst
       - tests/system
     remove_regex:
@@ -3656,7 +3470,6 @@ libraries:
       - packages/google-cloud-trace/CHANGELOG.md
       - docs/CHANGELOG.md
       - samples/README.txt
-      - scripts/client-post-processing
       - samples/snippets/README.rst
       - tests/system
     remove_regex:
@@ -3679,7 +3492,6 @@ libraries:
       - docs/v2.rst
       - google/cloud/translate_v2
       - samples/README.txt
-      - scripts/client-post-processing
       - samples/snippets/README.rst
       - tests/system
       - tests/unit/v2
@@ -3698,7 +3510,6 @@ libraries:
       - packages/google-cloud-vectorsearch/CHANGELOG.md
       - docs/CHANGELOG.md
       - samples/README.txt
-      - scripts/client-post-processing
       - samples/snippets/README.rst
       - tests/system
     remove_regex:
@@ -3716,7 +3527,6 @@ libraries:
       - packages/google-cloud-video-live-stream/CHANGELOG.md
       - docs/CHANGELOG.md
       - samples/README.txt
-      - scripts/client-post-processing
       - samples/snippets/README.rst
       - tests/system
     remove_regex:
@@ -3734,7 +3544,6 @@ libraries:
       - packages/google-cloud-video-stitcher/CHANGELOG.md
       - docs/CHANGELOG.md
       - samples/README.txt
-      - scripts/client-post-processing
       - samples/snippets/README.rst
       - tests/system
     remove_regex:
@@ -3752,7 +3561,6 @@ libraries:
       - packages/google-cloud-video-transcoder/CHANGELOG.md
       - docs/CHANGELOG.md
       - samples/README.txt
-      - scripts/client-post-processing
       - samples/snippets/README.rst
       - tests/system
     remove_regex:
@@ -3778,7 +3586,6 @@ libraries:
       - packages/google-cloud-videointelligence/CHANGELOG.md
       - docs/CHANGELOG.md
       - samples/README.txt
-      - scripts/client-post-processing
       - samples/snippets/README.rst
       - tests/system
     remove_regex:
@@ -3805,7 +3612,6 @@ libraries:
       - docs/CHANGELOG.md
       - google/cloud/vision_helpers
       - samples/README.txt
-      - scripts/client-post-processing
       - samples/snippets/README.rst
       - tests/system
       - tests/unit/test_decorators.py
@@ -3827,7 +3633,6 @@ libraries:
       - packages/google-cloud-visionai/CHANGELOG.md
       - docs/CHANGELOG.md
       - samples/README.txt
-      - scripts/client-post-processing
       - samples/snippets/README.rst
       - tests/system
     remove_regex:
@@ -3845,7 +3650,6 @@ libraries:
       - packages/google-cloud-vm-migration/CHANGELOG.md
       - docs/CHANGELOG.md
       - samples/README.txt
-      - scripts/client-post-processing
       - samples/snippets/README.rst
       - tests/system
     remove_regex:
@@ -3863,7 +3667,6 @@ libraries:
       - packages/google-cloud-vmwareengine/CHANGELOG.md
       - docs/CHANGELOG.md
       - samples/README.txt
-      - scripts/client-post-processing
       - samples/snippets/README.rst
       - tests/system
     remove_regex:
@@ -3881,7 +3684,6 @@ libraries:
       - packages/google-cloud-vpc-access/CHANGELOG.md
       - docs/CHANGELOG.md
       - samples/README.txt
-      - scripts/client-post-processing
       - samples/snippets/README.rst
       - tests/system
     remove_regex:
@@ -3901,7 +3703,6 @@ libraries:
       - packages/google-cloud-webrisk/CHANGELOG.md
       - docs/CHANGELOG.md
       - samples/README.txt
-      - scripts/client-post-processing
       - samples/snippets/README.rst
       - tests/system
     remove_regex:
@@ -3923,7 +3724,6 @@ libraries:
       - packages/google-cloud-websecurityscanner/CHANGELOG.md
       - docs/CHANGELOG.md
       - samples/README.txt
-      - scripts/client-post-processing
       - samples/snippets/README.rst
       - tests/system
     remove_regex:
@@ -3947,7 +3747,6 @@ libraries:
       - packages/google-cloud-workflows/CHANGELOG.md
       - docs/CHANGELOG.md
       - samples/README.txt
-      - scripts/client-post-processing
       - samples/snippets/README.rst
       - tests/system
     remove_regex:
@@ -3967,7 +3766,6 @@ libraries:
       - packages/google-cloud-workstations/CHANGELOG.md
       - docs/CHANGELOG.md
       - samples/README.txt
-      - scripts/client-post-processing
       - samples/snippets/README.rst
       - tests/system
     remove_regex:
@@ -3985,7 +3783,6 @@ libraries:
       - packages/google-geo-type/CHANGELOG.md
       - docs/CHANGELOG.md
       - samples/README.txt
-      - scripts/client-post-processing
       - samples/snippets/README.rst
       - tests/system
       - tests/unit/gapic/type/test_type.py
@@ -4004,7 +3801,6 @@ libraries:
       - packages/google-maps-addressvalidation/CHANGELOG.md
       - docs/CHANGELOG.md
       - samples/README.txt
-      - scripts/client-post-processing
       - samples/snippets/README.rst
       - tests/system
     remove_regex:
@@ -4022,7 +3818,6 @@ libraries:
       - packages/google-maps-areainsights/CHANGELOG.md
       - docs/CHANGELOG.md
       - samples/README.txt
-      - scripts/client-post-processing
       - samples/snippets/README.rst
       - tests/system
     remove_regex:
@@ -4040,7 +3835,6 @@ libraries:
       - packages/google-maps-fleetengine/CHANGELOG.md
       - docs/CHANGELOG.md
       - samples/README.txt
-      - scripts/client-post-processing
       - samples/snippets/README.rst
       - tests/system
     remove_regex:
@@ -4058,7 +3852,6 @@ libraries:
       - packages/google-maps-fleetengine-delivery/CHANGELOG.md
       - docs/CHANGELOG.md
       - samples/README.txt
-      - scripts/client-post-processing
       - samples/snippets/README.rst
       - tests/system
     remove_regex:
@@ -4076,7 +3869,6 @@ libraries:
       - packages/google-maps-mapsplatformdatasets/CHANGELOG.md
       - docs/CHANGELOG.md
       - samples/README.txt
-      - scripts/client-post-processing
       - samples/snippets/README.rst
       - tests/system
     remove_regex:
@@ -4094,7 +3886,6 @@ libraries:
       - packages/google-maps-places/CHANGELOG.md
       - docs/CHANGELOG.md
       - samples/README.txt
-      - scripts/client-post-processing
       - samples/snippets/README.rst
       - tests/system
     remove_regex:
@@ -4113,7 +3904,6 @@ libraries:
       - docs/CHANGELOG.md
       - samples/README.txt
       - samples/README.rst
-      - scripts/client-post-processing
       - samples/snippets/README.rst
       - tests/system
     remove_regex:
@@ -4131,7 +3921,6 @@ libraries:
       - packages/google-maps-routing/CHANGELOG.md
       - docs/CHANGELOG.md
       - samples/README.txt
-      - scripts/client-post-processing
       - samples/snippets/README.rst
       - tests/system
     remove_regex:
@@ -4149,7 +3938,6 @@ libraries:
       - packages/google-maps-solar/CHANGELOG.md
       - docs/CHANGELOG.md
       - samples/README.txt
-      - scripts/client-post-processing
       - samples/snippets/README.rst
       - tests/system
     remove_regex:
@@ -4167,7 +3955,6 @@ libraries:
       - packages/google-shopping-css/CHANGELOG.md
       - docs/CHANGELOG.md
       - samples/README.txt
-      - scripts/client-post-processing
       - samples/snippets/README.rst
       - tests/system
     remove_regex:
@@ -4187,7 +3974,6 @@ libraries:
       - packages/google-shopping-merchant-accounts/CHANGELOG.md
       - docs/CHANGELOG.md
       - samples/README.txt
-      - scripts/client-post-processing
       - samples/snippets/README.rst
       - tests/system
     remove_regex:
@@ -4207,7 +3993,6 @@ libraries:
       - packages/google-shopping-merchant-conversions/CHANGELOG.md
       - docs/CHANGELOG.md
       - samples/README.txt
-      - scripts/client-post-processing
       - samples/snippets/README.rst
       - tests/system
     remove_regex:
@@ -4227,7 +4012,6 @@ libraries:
       - packages/google-shopping-merchant-datasources/CHANGELOG.md
       - docs/CHANGELOG.md
       - samples/README.txt
-      - scripts/client-post-processing
       - samples/snippets/README.rst
       - tests/system
     remove_regex:
@@ -4247,7 +4031,6 @@ libraries:
       - packages/google-shopping-merchant-inventories/CHANGELOG.md
       - docs/CHANGELOG.md
       - samples/README.txt
-      - scripts/client-post-processing
       - samples/snippets/README.rst
       - tests/system
     remove_regex:
@@ -4267,7 +4050,6 @@ libraries:
       - packages/google-shopping-merchant-issueresolution/CHANGELOG.md
       - docs/CHANGELOG.md
       - samples/README.txt
-      - scripts/client-post-processing
       - samples/snippets/README.rst
       - tests/system
     remove_regex:
@@ -4287,7 +4069,6 @@ libraries:
       - packages/google-shopping-merchant-lfp/CHANGELOG.md
       - docs/CHANGELOG.md
       - samples/README.txt
-      - scripts/client-post-processing
       - samples/snippets/README.rst
       - tests/system
     remove_regex:
@@ -4307,7 +4088,6 @@ libraries:
       - packages/google-shopping-merchant-notifications/CHANGELOG.md
       - docs/CHANGELOG.md
       - samples/README.txt
-      - scripts/client-post-processing
       - samples/snippets/README.rst
       - tests/system
     remove_regex:
@@ -4327,7 +4107,6 @@ libraries:
       - packages/google-shopping-merchant-ordertracking/CHANGELOG.md
       - docs/CHANGELOG.md
       - samples/README.txt
-      - scripts/client-post-processing
       - samples/snippets/README.rst
       - tests/system
     remove_regex:
@@ -4347,7 +4126,6 @@ libraries:
       - packages/google-shopping-merchant-products/CHANGELOG.md
       - docs/CHANGELOG.md
       - samples/README.txt
-      - scripts/client-post-processing
       - samples/snippets/README.rst
       - tests/system
     remove_regex:
@@ -4365,7 +4143,6 @@ libraries:
       - packages/google-shopping-merchant-productstudio/CHANGELOG.md
       - docs/CHANGELOG.md
       - samples/README.txt
-      - scripts/client-post-processing
       - samples/snippets/README.rst
       - tests/system
     remove_regex:
@@ -4385,7 +4162,6 @@ libraries:
       - packages/google-shopping-merchant-promotions/CHANGELOG.md
       - docs/CHANGELOG.md
       - samples/README.txt
-      - scripts/client-post-processing
       - samples/snippets/README.rst
       - tests/system
     remove_regex:
@@ -4405,7 +4181,6 @@ libraries:
       - packages/google-shopping-merchant-quota/CHANGELOG.md
       - docs/CHANGELOG.md
       - samples/README.txt
-      - scripts/client-post-processing
       - samples/snippets/README.rst
       - tests/system
     remove_regex:
@@ -4427,7 +4202,6 @@ libraries:
       - packages/google-shopping-merchant-reports/CHANGELOG.md
       - docs/CHANGELOG.md
       - samples/README.txt
-      - scripts/client-post-processing
       - samples/snippets/README.rst
       - tests/system
     remove_regex:
@@ -4445,7 +4219,6 @@ libraries:
       - packages/google-shopping-merchant-reviews/CHANGELOG.md
       - docs/CHANGELOG.md
       - samples/README.txt
-      - scripts/client-post-processing
       - samples/snippets/README.rst
       - tests/system
     remove_regex:
@@ -4463,7 +4236,6 @@ libraries:
       - packages/google-shopping-type/CHANGELOG.md
       - docs/CHANGELOG.md
       - samples/README.txt
-      - scripts/client-post-processing
       - samples/snippets/README.rst
       - tests/system
       - tests/unit/gapic/type/test_type.py
@@ -4509,7 +4281,6 @@ libraries:
       - packages/grafeas/CHANGELOG.md
       - docs/CHANGELOG.md
       - samples/README.txt
-      - scripts/client-post-processing
       - samples/snippets/README.rst
       - tests/system
       - grafeas/grafeas\.py
