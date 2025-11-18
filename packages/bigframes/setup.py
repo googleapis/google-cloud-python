@@ -55,7 +55,7 @@ dependencies = [
     "requests >=2.27.1",
     "shapely >=1.8.5",
     # 25.20.0 introduces this fix https://github.com/TobikoData/sqlmesh/issues/3095 for rtrim/ltrim.
-    "sqlglot >=25.20.0",
+    "sqlglot >=25.20.0, <28.0.0",
     "tabulate >=0.9",
     "ipywidgets >=7.7.1",
     "humanize >=4.6.0",
