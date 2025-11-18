@@ -942,8 +942,18 @@ def _run_nox_sessions(library_id: str, repo: str, is_mono_repo: bool):
             the config.yaml.
         is_mono_repo(bool): True if the current repository is a mono-repo.
     """
+    path_to_library = f"{repo}/packages/{library_id}" if is_mono_repo else repo
+    _python_314_supported = Path(
+        f"{path_to_library}/testing/constraints-3.14.txt"
+    ).exists()
+
+    if _python_314_supported:
+        session_runtime = "3.14"
+    else:
+        session_runtime = "3.13"
+
     sessions = [
-        "unit-3.14(protobuf_implementation='upb')",
+        f"unit-{session_runtime}(protobuf_implementation='upb')",
     ]
     current_session = None
     try:
