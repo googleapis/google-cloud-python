@@ -1339,6 +1339,7 @@ def test_bucket_ip_filter_patch(storage_client, buckets_to_delete):
     assert len(reloaded_filter.vpc_network_sources) == 1
 
 
+@pytest.mark.skip(reason="[https://github.com/googleapis/python-storage/issues/1611]")
 def test_list_buckets_with_ip_filter(storage_client, buckets_to_delete):
     """Test that listing buckets returns a summarized IP filter."""
     bucket_name = _helpers.unique_name("ip-filter-list")
