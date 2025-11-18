@@ -763,17 +763,30 @@ def test_run_individual_session_failure(mocker):
         _run_individual_session("lint", "another-library", "repo", True)
 
 
-@pytest.mark.parametrize("is_mono_repo", [False, True])
+@pytest.mark.parametrize(
+    "is_mono_repo,py314_constraints_file_exists, nox_session_python_runtime",
+    [
+        (False, True, "3.14"),
+        (True, True, "3.14"),
+        (True, False, "3.13"),
+        (False, False, "3.13"),
+    ],
+)
 def test_run_nox_sessions_success(
-    mocker, mock_generate_request_data_for_nox, is_mono_repo
+    mocker,
+    mock_generate_request_data_for_nox,
+    is_mono_repo,
+    py314_constraints_file_exists,
+    nox_session_python_runtime,
 ):
     """Tests that _run_nox_sessions successfully runs all specified sessions."""
     mocker.patch("cli._read_json_file", return_value=mock_generate_request_data_for_nox)
     mocker.patch("cli._get_library_id", return_value="mock-library")
     mock_run_individual_session = mocker.patch("cli._run_individual_session")
+    mocker.patch("pathlib.Path.exists", return_value=py314_constraints_file_exists)
 
     sessions_to_run = [
-        "unit-3.14(protobuf_implementation='upb')",
+        f"unit-{nox_session_python_runtime}(protobuf_implementation='upb')",
     ]
     _run_nox_sessions("mock-library", "repo", is_mono_repo)
 
@@ -781,7 +794,7 @@ def test_run_nox_sessions_success(
     mock_run_individual_session.assert_has_calls(
         [
             mocker.call(
-                "unit-3.14(protobuf_implementation='upb')",
+                f"unit-{nox_session_python_runtime}(protobuf_implementation='upb')",
                 "mock-library",
                 "repo",
                 is_mono_repo,
