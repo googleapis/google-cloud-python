@@ -23,6 +23,7 @@ from google.cloud.vmmigration_v1.services.vm_migration.async_client import (
 )
 from google.cloud.vmmigration_v1.services.vm_migration.client import VmMigrationClient
 from google.cloud.vmmigration_v1.types.vmmigration import (
+    AdaptationModifier,
     AdaptingOSStep,
     AddGroupMigrationRequest,
     AddGroupMigrationResponse,
@@ -210,6 +211,7 @@ from google.cloud.vmmigration_v1.types.vmmigration import (
 __all__ = (
     "VmMigrationClient",
     "VmMigrationAsyncClient",
+    "AdaptationModifier",
     "AdaptingOSStep",
     "AddGroupMigrationRequest",
     "AddGroupMigrationResponse",

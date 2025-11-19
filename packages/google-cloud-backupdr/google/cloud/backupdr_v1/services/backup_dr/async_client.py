@@ -111,6 +111,12 @@ class BackupDRAsyncClient:
     )
     backup_vault_path = staticmethod(BackupDRClient.backup_vault_path)
     parse_backup_vault_path = staticmethod(BackupDRClient.parse_backup_vault_path)
+    crypto_key_path = staticmethod(BackupDRClient.crypto_key_path)
+    parse_crypto_key_path = staticmethod(BackupDRClient.parse_crypto_key_path)
+    crypto_key_version_path = staticmethod(BackupDRClient.crypto_key_version_path)
+    parse_crypto_key_version_path = staticmethod(
+        BackupDRClient.parse_crypto_key_version_path
+    )
     data_source_path = staticmethod(BackupDRClient.data_source_path)
     parse_data_source_path = staticmethod(BackupDRClient.parse_data_source_path)
     data_source_reference_path = staticmethod(BackupDRClient.data_source_reference_path)

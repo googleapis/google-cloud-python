@@ -257,6 +257,7 @@ from .types.user import (
     UpdateUserRequest,
     User,
 )
+from .types.verificationmailsettings import VerificationMailSettings
 
 __all__ = (
     "AccountIssueServiceAsyncClient",
@@ -430,6 +431,7 @@ __all__ = (
     "User",
     "UserServiceClient",
     "Value",
+    "VerificationMailSettings",
     "Warehouse",
     "WarehouseBasedDeliveryTime",
     "WarehouseCutoffTime",

@@ -28,7 +28,8 @@ __protobuf__ = proto.module(
 
 
 class AccessRight(proto.Enum):
-    r"""The access right.
+    r"""The access right defines the level of permission a
+    user has within a Merchant Center account.
 
     Values:
         ACCESS_RIGHT_UNSPECIFIED (0):
@@ -46,7 +47,7 @@ class AccessRight(proto.Enum):
         API_DEVELOPER (5):
             Users with this right have access to Merchant
             API and its notifications. This role is only
-            accessible to accounts that has a developer
+            accessible to accounts that have a developer
             registration.
     """
     ACCESS_RIGHT_UNSPECIFIED = 0

@@ -1839,7 +1839,8 @@ class VmMigrationGrpcTransport(VmMigrationTransport):
     ) -> Callable[[vmmigration.CancelImageImportJobRequest], operations_pb2.Operation]:
         r"""Return a callable for the cancel image import job method over gRPC.
 
-        Initiates the cancellation of a running clone job.
+        Initiates the cancellation of a running
+        ImageImportJob.
 
         Returns:
             Callable[[~.CancelImageImportJobRequest],

@@ -20,6 +20,7 @@ __version__ = package_version.__version__
 
 from .services.vm_migration import VmMigrationAsyncClient, VmMigrationClient
 from .types.vmmigration import (
+    AdaptationModifier,
     AdaptingOSStep,
     AddGroupMigrationRequest,
     AddGroupMigrationResponse,
@@ -206,6 +207,7 @@ from .types.vmmigration import (
 
 __all__ = (
     "VmMigrationAsyncClient",
+    "AdaptationModifier",
     "AdaptingOSStep",
     "AddGroupMigrationRequest",
     "AddGroupMigrationResponse",

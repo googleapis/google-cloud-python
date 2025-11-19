@@ -14,6 +14,7 @@
 # limitations under the License.
 #
 from .vmmigration import (
+    AdaptationModifier,
     AdaptingOSStep,
     AddGroupMigrationRequest,
     AddGroupMigrationResponse,
@@ -199,6 +200,7 @@ from .vmmigration import (
 )
 
 __all__ = (
+    "AdaptationModifier",
     "AdaptingOSStep",
     "AddGroupMigrationRequest",
     "AddGroupMigrationResponse",

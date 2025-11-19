@@ -4229,6 +4229,7 @@ def test_get_backup_vault(request_type, transport: str = "grpc"):
         call.return_value = backupvault.BackupVault(
             name="name_value",
             description="description_value",
+            backup_retention_inheritance=backupvault.BackupVault.BackupRetentionInheritance.INHERIT_VAULT_RETENTION,
             deletable=True,
             etag="etag_value",
             state=backupvault.BackupVault.State.CREATING,
@@ -4250,6 +4251,10 @@ def test_get_backup_vault(request_type, transport: str = "grpc"):
     assert isinstance(response, backupvault.BackupVault)
     assert response.name == "name_value"
     assert response.description == "description_value"
+    assert (
+        response.backup_retention_inheritance
+        == backupvault.BackupVault.BackupRetentionInheritance.INHERIT_VAULT_RETENTION
+    )
     assert response.deletable is True
     assert response.etag == "etag_value"
     assert response.state == backupvault.BackupVault.State.CREATING
@@ -4390,6 +4395,7 @@ async def test_get_backup_vault_async(
             backupvault.BackupVault(
                 name="name_value",
                 description="description_value",
+                backup_retention_inheritance=backupvault.BackupVault.BackupRetentionInheritance.INHERIT_VAULT_RETENTION,
                 deletable=True,
                 etag="etag_value",
                 state=backupvault.BackupVault.State.CREATING,
@@ -4412,6 +4418,10 @@ async def test_get_backup_vault_async(
     assert isinstance(response, backupvault.BackupVault)
     assert response.name == "name_value"
     assert response.description == "description_value"
+    assert (
+        response.backup_retention_inheritance
+        == backupvault.BackupVault.BackupRetentionInheritance.INHERIT_VAULT_RETENTION
+    )
     assert response.deletable is True
     assert response.etag == "etag_value"
     assert response.state == backupvault.BackupVault.State.CREATING
@@ -7635,12 +7645,14 @@ def test_get_backup(request_type, transport: str = "grpc"):
         call.return_value = backupvault.Backup(
             name="name_value",
             description="description_value",
+            backup_retention_inheritance=backupvault.BackupVault.BackupRetentionInheritance.INHERIT_VAULT_RETENTION,
             etag="etag_value",
             state=backupvault.Backup.State.CREATING,
             backup_type=backupvault.Backup.BackupType.SCHEDULED,
             resource_size_bytes=2056,
             satisfies_pzs=True,
             satisfies_pzi=True,
+            kms_key_versions=["kms_key_versions_value"],
         )
         response = client.get_backup(request)
 
@@ -7654,12 +7666,17 @@ def test_get_backup(request_type, transport: str = "grpc"):
     assert isinstance(response, backupvault.Backup)
     assert response.name == "name_value"
     assert response.description == "description_value"
+    assert (
+        response.backup_retention_inheritance
+        == backupvault.BackupVault.BackupRetentionInheritance.INHERIT_VAULT_RETENTION
+    )
     assert response.etag == "etag_value"
     assert response.state == backupvault.Backup.State.CREATING
     assert response.backup_type == backupvault.Backup.BackupType.SCHEDULED
     assert response.resource_size_bytes == 2056
     assert response.satisfies_pzs is True
     assert response.satisfies_pzi is True
+    assert response.kms_key_versions == ["kms_key_versions_value"]
 
 
 def test_get_backup_non_empty_request_with_auto_populated_field():
@@ -7785,12 +7802,14 @@ async def test_get_backup_async(
             backupvault.Backup(
                 name="name_value",
                 description="description_value",
+                backup_retention_inheritance=backupvault.BackupVault.BackupRetentionInheritance.INHERIT_VAULT_RETENTION,
                 etag="etag_value",
                 state=backupvault.Backup.State.CREATING,
                 backup_type=backupvault.Backup.BackupType.SCHEDULED,
                 resource_size_bytes=2056,
                 satisfies_pzs=True,
                 satisfies_pzi=True,
+                kms_key_versions=["kms_key_versions_value"],
             )
         )
         response = await client.get_backup(request)
@@ -7805,12 +7824,17 @@ async def test_get_backup_async(
     assert isinstance(response, backupvault.Backup)
     assert response.name == "name_value"
     assert response.description == "description_value"
+    assert (
+        response.backup_retention_inheritance
+        == backupvault.BackupVault.BackupRetentionInheritance.INHERIT_VAULT_RETENTION
+    )
     assert response.etag == "etag_value"
     assert response.state == backupvault.Backup.State.CREATING
     assert response.backup_type == backupvault.Backup.BackupType.SCHEDULED
     assert response.resource_size_bytes == 2056
     assert response.satisfies_pzs is True
     assert response.satisfies_pzi is True
+    assert response.kms_key_versions == ["kms_key_versions_value"]
 
 
 @pytest.mark.asyncio
@@ -25933,6 +25957,7 @@ async def test_get_backup_vault_empty_call_grpc_asyncio():
             backupvault.BackupVault(
                 name="name_value",
                 description="description_value",
+                backup_retention_inheritance=backupvault.BackupVault.BackupRetentionInheritance.INHERIT_VAULT_RETENTION,
                 deletable=True,
                 etag="etag_value",
                 state=backupvault.BackupVault.State.CREATING,
@@ -26170,12 +26195,14 @@ async def test_get_backup_empty_call_grpc_asyncio():
             backupvault.Backup(
                 name="name_value",
                 description="description_value",
+                backup_retention_inheritance=backupvault.BackupVault.BackupRetentionInheritance.INHERIT_VAULT_RETENTION,
                 etag="etag_value",
                 state=backupvault.Backup.State.CREATING,
                 backup_type=backupvault.Backup.BackupType.SCHEDULED,
                 resource_size_bytes=2056,
                 satisfies_pzs=True,
                 satisfies_pzi=True,
+                kms_key_versions=["kms_key_versions_value"],
             )
         )
         await client.get_backup(request=None)
@@ -27465,6 +27492,7 @@ def test_create_backup_vault_rest_call_success(request_type):
         "create_time": {"seconds": 751, "nanos": 543},
         "update_time": {},
         "backup_minimum_enforced_retention_duration": {"seconds": 751, "nanos": 543},
+        "backup_retention_inheritance": 1,
         "deletable": True,
         "etag": "etag_value",
         "state": 1,
@@ -27475,6 +27503,7 @@ def test_create_backup_vault_rest_call_success(request_type):
         "uid": "uid_value",
         "annotations": {},
         "access_restriction": 1,
+        "encryption_config": {"kms_key_name": "kms_key_name_value"},
     }
     # The version of a generated dependency at test runtime may differ from the version used during generation.
     # Delete any fields which are not present in the current runtime dependency
@@ -27937,6 +27966,7 @@ def test_get_backup_vault_rest_call_success(request_type):
         return_value = backupvault.BackupVault(
             name="name_value",
             description="description_value",
+            backup_retention_inheritance=backupvault.BackupVault.BackupRetentionInheritance.INHERIT_VAULT_RETENTION,
             deletable=True,
             etag="etag_value",
             state=backupvault.BackupVault.State.CREATING,
@@ -27963,6 +27993,10 @@ def test_get_backup_vault_rest_call_success(request_type):
     assert isinstance(response, backupvault.BackupVault)
     assert response.name == "name_value"
     assert response.description == "description_value"
+    assert (
+        response.backup_retention_inheritance
+        == backupvault.BackupVault.BackupRetentionInheritance.INHERIT_VAULT_RETENTION
+    )
     assert response.deletable is True
     assert response.etag == "etag_value"
     assert response.state == backupvault.BackupVault.State.CREATING
@@ -28090,6 +28124,7 @@ def test_update_backup_vault_rest_call_success(request_type):
         "create_time": {"seconds": 751, "nanos": 543},
         "update_time": {},
         "backup_minimum_enforced_retention_duration": {"seconds": 751, "nanos": 543},
+        "backup_retention_inheritance": 1,
         "deletable": True,
         "etag": "etag_value",
         "state": 1,
@@ -28100,6 +28135,7 @@ def test_update_backup_vault_rest_call_success(request_type):
         "uid": "uid_value",
         "annotations": {},
         "access_restriction": 1,
+        "encryption_config": {"kms_key_name": "kms_key_name_value"},
     }
     # The version of a generated dependency at test runtime may differ from the version used during generation.
     # Delete any fields which are not present in the current runtime dependency
@@ -29232,12 +29268,14 @@ def test_get_backup_rest_call_success(request_type):
         return_value = backupvault.Backup(
             name="name_value",
             description="description_value",
+            backup_retention_inheritance=backupvault.BackupVault.BackupRetentionInheritance.INHERIT_VAULT_RETENTION,
             etag="etag_value",
             state=backupvault.Backup.State.CREATING,
             backup_type=backupvault.Backup.BackupType.SCHEDULED,
             resource_size_bytes=2056,
             satisfies_pzs=True,
             satisfies_pzi=True,
+            kms_key_versions=["kms_key_versions_value"],
         )
 
         # Wrap the value into a proper Response obj
@@ -29256,12 +29294,17 @@ def test_get_backup_rest_call_success(request_type):
     assert isinstance(response, backupvault.Backup)
     assert response.name == "name_value"
     assert response.description == "description_value"
+    assert (
+        response.backup_retention_inheritance
+        == backupvault.BackupVault.BackupRetentionInheritance.INHERIT_VAULT_RETENTION
+    )
     assert response.etag == "etag_value"
     assert response.state == backupvault.Backup.State.CREATING
     assert response.backup_type == backupvault.Backup.BackupType.SCHEDULED
     assert response.resource_size_bytes == 2056
     assert response.satisfies_pzs is True
     assert response.satisfies_pzi is True
+    assert response.kms_key_versions == ["kms_key_versions_value"]
 
 
 @pytest.mark.parametrize("null_interceptor", [True, False])
@@ -29374,6 +29417,7 @@ def test_update_backup_rest_call_success(request_type):
         "update_time": {},
         "labels": {},
         "enforced_retention_end_time": {},
+        "backup_retention_inheritance": 1,
         "expire_time": {},
         "consistency_time": {},
         "etag": "etag_value",
@@ -29536,6 +29580,7 @@ def test_update_backup_rest_call_success(request_type):
             "location": "location_value",
             "type_": "type__value",
         },
+        "kms_key_versions": ["kms_key_versions_value1", "kms_key_versions_value2"],
     }
     # The version of a generated dependency at test runtime may differ from the version used during generation.
     # Delete any fields which are not present in the current runtime dependency
@@ -34886,11 +34931,74 @@ def test_parse_backup_vault_path():
     assert expected == actual
 
 
-def test_data_source_path():
+def test_crypto_key_path():
     project = "squid"
     location = "clam"
-    backupvault = "whelk"
-    datasource = "octopus"
+    ring = "whelk"
+    key = "octopus"
+    expected = "projects/{project}/locations/{location}/keyRings/{ring}/cryptoKeys/{key}".format(
+        project=project,
+        location=location,
+        ring=ring,
+        key=key,
+    )
+    actual = BackupDRClient.crypto_key_path(project, location, ring, key)
+    assert expected == actual
+
+
+def test_parse_crypto_key_path():
+    expected = {
+        "project": "oyster",
+        "location": "nudibranch",
+        "ring": "cuttlefish",
+        "key": "mussel",
+    }
+    path = BackupDRClient.crypto_key_path(**expected)
+
+    # Check that the path construction is reversible.
+    actual = BackupDRClient.parse_crypto_key_path(path)
+    assert expected == actual
+
+
+def test_crypto_key_version_path():
+    project = "winkle"
+    location = "nautilus"
+    key_ring = "scallop"
+    crypto_key = "abalone"
+    crypto_key_version = "squid"
+    expected = "projects/{project}/locations/{location}/keyRings/{key_ring}/cryptoKeys/{crypto_key}/cryptoKeyVersions/{crypto_key_version}".format(
+        project=project,
+        location=location,
+        key_ring=key_ring,
+        crypto_key=crypto_key,
+        crypto_key_version=crypto_key_version,
+    )
+    actual = BackupDRClient.crypto_key_version_path(
+        project, location, key_ring, crypto_key, crypto_key_version
+    )
+    assert expected == actual
+
+
+def test_parse_crypto_key_version_path():
+    expected = {
+        "project": "clam",
+        "location": "whelk",
+        "key_ring": "octopus",
+        "crypto_key": "oyster",
+        "crypto_key_version": "nudibranch",
+    }
+    path = BackupDRClient.crypto_key_version_path(**expected)
+
+    # Check that the path construction is reversible.
+    actual = BackupDRClient.parse_crypto_key_version_path(path)
+    assert expected == actual
+
+
+def test_data_source_path():
+    project = "cuttlefish"
+    location = "mussel"
+    backupvault = "winkle"
+    datasource = "nautilus"
     expected = "projects/{project}/locations/{location}/backupVaults/{backupvault}/dataSources/{datasource}".format(
         project=project,
         location=location,
@@ -34903,10 +35011,10 @@ def test_data_source_path():
 
 def test_parse_data_source_path():
     expected = {
-        "project": "oyster",
-        "location": "nudibranch",
-        "backupvault": "cuttlefish",
-        "datasource": "mussel",
+        "project": "scallop",
+        "location": "abalone",
+        "backupvault": "squid",
+        "datasource": "clam",
     }
     path = BackupDRClient.data_source_path(**expected)
 
@@ -34916,9 +35024,9 @@ def test_parse_data_source_path():
 
 
 def test_data_source_reference_path():
-    project = "winkle"
-    location = "nautilus"
-    data_source_reference = "scallop"
+    project = "whelk"
+    location = "octopus"
+    data_source_reference = "oyster"
     expected = "projects/{project}/locations/{location}/dataSourceReferences/{data_source_reference}".format(
         project=project,
         location=location,
@@ -34932,9 +35040,9 @@ def test_data_source_reference_path():
 
 def test_parse_data_source_reference_path():
     expected = {
-        "project": "abalone",
-        "location": "squid",
-        "data_source_reference": "clam",
+        "project": "nudibranch",
+        "location": "cuttlefish",
+        "data_source_reference": "mussel",
     }
     path = BackupDRClient.data_source_reference_path(**expected)
 
@@ -34944,8 +35052,8 @@ def test_parse_data_source_reference_path():
 
 
 def test_instance_path():
-    project = "whelk"
-    instance = "octopus"
+    project = "winkle"
+    instance = "nautilus"
     expected = "projects/{project}/instances/{instance}".format(
         project=project,
         instance=instance,
@@ -34956,8 +35064,8 @@ def test_instance_path():
 
 def test_parse_instance_path():
     expected = {
-        "project": "oyster",
-        "instance": "nudibranch",
+        "project": "scallop",
+        "instance": "abalone",
     }
     path = BackupDRClient.instance_path(**expected)
 
@@ -34967,9 +35075,9 @@ def test_parse_instance_path():
 
 
 def test_management_server_path():
-    project = "cuttlefish"
-    location = "mussel"
-    managementserver = "winkle"
+    project = "squid"
+    location = "clam"
+    managementserver = "whelk"
     expected = "projects/{project}/locations/{location}/managementServers/{managementserver}".format(
         project=project,
         location=location,
@@ -34981,9 +35089,9 @@ def test_management_server_path():
 
 def test_parse_management_server_path():
     expected = {
-        "project": "nautilus",
-        "location": "scallop",
-        "managementserver": "abalone",
+        "project": "octopus",
+        "location": "oyster",
+        "managementserver": "nudibranch",
     }
     path = BackupDRClient.management_server_path(**expected)
 
@@ -34993,9 +35101,9 @@ def test_parse_management_server_path():
 
 
 def test_storage_pool_path():
-    project = "squid"
-    zone = "clam"
-    storage_pool = "whelk"
+    project = "cuttlefish"
+    zone = "mussel"
+    storage_pool = "winkle"
     expected = "projects/{project}/zones/{zone}/storagePools/{storage_pool}".format(
         project=project,
         zone=zone,
@@ -35007,9 +35115,9 @@ def test_storage_pool_path():
 
 def test_parse_storage_pool_path():
     expected = {
-        "project": "octopus",
-        "zone": "oyster",
-        "storage_pool": "nudibranch",
+        "project": "nautilus",
+        "zone": "scallop",
+        "storage_pool": "abalone",
     }
     path = BackupDRClient.storage_pool_path(**expected)
 
@@ -35019,7 +35127,7 @@ def test_parse_storage_pool_path():
 
 
 def test_common_billing_account_path():
-    billing_account = "cuttlefish"
+    billing_account = "squid"
     expected = "billingAccounts/{billing_account}".format(
         billing_account=billing_account,
     )
@@ -35029,7 +35137,7 @@ def test_common_billing_account_path():
 
 def test_parse_common_billing_account_path():
     expected = {
-        "billing_account": "mussel",
+        "billing_account": "clam",
     }
     path = BackupDRClient.common_billing_account_path(**expected)
 
@@ -35039,7 +35147,7 @@ def test_parse_common_billing_account_path():
 
 
 def test_common_folder_path():
-    folder = "winkle"
+    folder = "whelk"
     expected = "folders/{folder}".format(
         folder=folder,
     )
@@ -35049,7 +35157,7 @@ def test_common_folder_path():
 
 def test_parse_common_folder_path():
     expected = {
-        "folder": "nautilus",
+        "folder": "octopus",
     }
     path = BackupDRClient.common_folder_path(**expected)
 
@@ -35059,7 +35167,7 @@ def test_parse_common_folder_path():
 
 
 def test_common_organization_path():
-    organization = "scallop"
+    organization = "oyster"
     expected = "organizations/{organization}".format(
         organization=organization,
     )
@@ -35069,7 +35177,7 @@ def test_common_organization_path():
 
 def test_parse_common_organization_path():
     expected = {
-        "organization": "abalone",
+        "organization": "nudibranch",
     }
     path = BackupDRClient.common_organization_path(**expected)
 
@@ -35079,7 +35187,7 @@ def test_parse_common_organization_path():
 
 
 def test_common_project_path():
-    project = "squid"
+    project = "cuttlefish"
     expected = "projects/{project}".format(
         project=project,
     )
@@ -35089,7 +35197,7 @@ def test_common_project_path():
 
 def test_parse_common_project_path():
     expected = {
-        "project": "clam",
+        "project": "mussel",
     }
     path = BackupDRClient.common_project_path(**expected)
 
@@ -35099,8 +35207,8 @@ def test_parse_common_project_path():
 
 
 def test_common_location_path():
-    project = "whelk"
-    location = "octopus"
+    project = "winkle"
+    location = "nautilus"
     expected = "projects/{project}/locations/{location}".format(
         project=project,
         location=location,
@@ -35111,8 +35219,8 @@ def test_common_location_path():
 
 def test_parse_common_location_path():
     expected = {
-        "project": "oyster",
-        "location": "nudibranch",
+        "project": "scallop",
+        "location": "abalone",
     }
     path = BackupDRClient.common_location_path(**expected)
 

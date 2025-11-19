@@ -586,6 +586,11 @@
         "grpc": {
           "libraryClient": "DeveloperRegistrationServiceClient",
           "rpcs": {
+            "GetAccountForGcpRegistration": {
+              "methods": [
+                "get_account_for_gcp_registration"
+              ]
+            },
             "GetDeveloperRegistration": {
               "methods": [
                 "get_developer_registration"
@@ -606,6 +611,11 @@
         "grpc-async": {
           "libraryClient": "DeveloperRegistrationServiceAsyncClient",
           "rpcs": {
+            "GetAccountForGcpRegistration": {
+              "methods": [
+                "get_account_for_gcp_registration"
+              ]
+            },
             "GetDeveloperRegistration": {
               "methods": [
                 "get_developer_registration"
@@ -626,6 +636,11 @@
         "rest": {
           "libraryClient": "DeveloperRegistrationServiceClient",
           "rpcs": {
+            "GetAccountForGcpRegistration": {
+              "methods": [
+                "get_account_for_gcp_registration"
+              ]
+            },
             "GetDeveloperRegistration": {
               "methods": [
                 "get_developer_registration"
@@ -1453,6 +1468,11 @@
               "methods": [
                 "update_user"
               ]
+            },
+            "VerifySelf": {
+              "methods": [
+                "verify_self"
+              ]
             }
           }
         },
@@ -1483,6 +1503,11 @@
               "methods": [
                 "update_user"
               ]
+            },
+            "VerifySelf": {
+              "methods": [
+                "verify_self"
+              ]
             }
           }
         },
@@ -1512,6 +1537,11 @@
             "UpdateUser": {
               "methods": [
                 "update_user"
+              ]
+            },
+            "VerifySelf": {
+              "methods": [
+                "verify_self"
               ]
             }
           }

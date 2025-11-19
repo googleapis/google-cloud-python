@@ -32,12 +32,13 @@ __protobuf__ = proto.module(
         "UpdateUserRequest",
         "ListUsersRequest",
         "ListUsersResponse",
+        "VerifySelfRequest",
     },
 )
 
 
 class User(proto.Message):
-    r"""The ``User`` message represents a user associated with a Merchant
+    r"""The ``User`` resource represents a user associated with a Merchant
     Center account. It is used to manage user permissions and access
     rights within the account. For more information, see `Frequently
     asked questions about people and access
@@ -59,7 +60,10 @@ class User(proto.Message):
     """
 
     class State(proto.Enum):
-        r"""The possible states of a user.
+        r"""The state represents the possible statuses of a user. It is an
+        output-only field that is set to ``PENDING`` when a user is invited
+        to an account and changes to ``VERIFIED`` once the user accepts the
+        invitation.
 
         Values:
             STATE_UNSPECIFIED (0):
@@ -249,6 +253,21 @@ class ListUsersResponse(proto.Message):
     next_page_token: str = proto.Field(
         proto.STRING,
         number=2,
+    )
+
+
+class VerifySelfRequest(proto.Message):
+    r"""Request message for the ``VerifySelf`` method.
+
+    Attributes:
+        account (str):
+            Required. The name of the account under which the caller is
+            a user. Format: ``accounts/{account}``
+    """
+
+    account: str = proto.Field(
+        proto.STRING,
+        number=1,
     )
 
 

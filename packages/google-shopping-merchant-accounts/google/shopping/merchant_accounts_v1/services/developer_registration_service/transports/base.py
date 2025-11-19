@@ -149,6 +149,11 @@ class DeveloperRegistrationServiceTransport(abc.ABC):
                 default_timeout=None,
                 client_info=client_info,
             ),
+            self.get_account_for_gcp_registration: gapic_v1.method.wrap_method(
+                self.get_account_for_gcp_registration,
+                default_timeout=None,
+                client_info=client_info,
+            ),
         }
 
     def close(self):
@@ -190,6 +195,18 @@ class DeveloperRegistrationServiceTransport(abc.ABC):
     ) -> Callable[
         [developerregistration.UnregisterGcpRequest],
         Union[empty_pb2.Empty, Awaitable[empty_pb2.Empty]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def get_account_for_gcp_registration(
+        self,
+    ) -> Callable[
+        [empty_pb2.Empty],
+        Union[
+            developerregistration.GetAccountForGcpRegistrationResponse,
+            Awaitable[developerregistration.GetAccountForGcpRegistrationResponse],
+        ],
     ]:
         raise NotImplementedError()
 

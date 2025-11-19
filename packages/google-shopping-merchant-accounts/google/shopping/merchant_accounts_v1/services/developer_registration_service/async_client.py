@@ -44,6 +44,8 @@ try:
 except AttributeError:  # pragma: NO COVER
     OptionalRetry = Union[retries.AsyncRetry, object, None]  # type: ignore
 
+from google.protobuf import empty_pb2  # type: ignore
+
 from google.shopping.merchant_accounts_v1.types import developerregistration
 
 from .client import DeveloperRegistrationServiceClient
@@ -584,6 +586,97 @@ class DeveloperRegistrationServiceAsyncClient:
             timeout=timeout,
             metadata=metadata,
         )
+
+    async def get_account_for_gcp_registration(
+        self,
+        request: Optional[Union[empty_pb2.Empty, dict]] = None,
+        *,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+    ) -> developerregistration.GetAccountForGcpRegistrationResponse:
+        r"""Retrieves the merchant account that the calling GCP
+        is registered with.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.protobuf import empty_pb2  # type: ignore
+            from google.shopping import merchant_accounts_v1
+
+            async def sample_get_account_for_gcp_registration():
+                # Create a client
+                client = merchant_accounts_v1.DeveloperRegistrationServiceAsyncClient()
+
+                # Initialize request argument(s)
+                request = empty_pb2.Empty(
+                )
+
+                # Make the request
+                response = await client.get_account_for_gcp_registration(request=request)
+
+                # Handle the response
+                print(response)
+
+        Args:
+            request (Optional[Union[google.protobuf.empty_pb2.Empty, dict]]):
+                The request object. A generic empty message that you can
+                re-use to avoid defining duplicated
+                empty messages in your APIs. A typical
+                example is to use it as the request or
+                the response type of an API method. For
+                instance:
+
+                    service Foo {
+                      rpc Bar(google.protobuf.Empty)
+                returns (google.protobuf.Empty);     }
+            retry (google.api_core.retry_async.AsyncRetry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                sent along with the request as metadata. Normally, each value must be of type `str`,
+                but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                be of type `bytes`.
+
+        Returns:
+            google.shopping.merchant_accounts_v1.types.GetAccountForGcpRegistrationResponse:
+                Response message for the
+                GetAccountForGcpRegistration method.
+
+        """
+        # Create or coerce a protobuf request object.
+        # - The request isn't a proto-plus wrapped type,
+        #   so it must be constructed via keyword expansion.
+        if isinstance(request, dict):
+            request = empty_pb2.Empty(**request)
+        elif not request:
+            request = empty_pb2.Empty()
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.get_account_for_gcp_registration
+        ]
+
+        # Validate the universe domain.
+        self._client._validate_universe_domain()
+
+        # Send the request.
+        response = await rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # Done; return the response.
+        return response
 
     async def __aenter__(self) -> "DeveloperRegistrationServiceAsyncClient":
         return self

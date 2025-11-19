@@ -449,6 +449,31 @@ class UserServiceGrpcTransport(UserServiceTransport):
             )
         return self._stubs["list_users"]
 
+    @property
+    def verify_self(self) -> Callable[[user.VerifySelfRequest], user.User]:
+        r"""Return a callable for the verify self method over gRPC.
+
+        Updates the user that is represented by the caller
+        from pending to verified.
+
+        Returns:
+            Callable[[~.VerifySelfRequest],
+                    ~.User]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "verify_self" not in self._stubs:
+            self._stubs["verify_self"] = self._logged_channel.unary_unary(
+                "/google.shopping.merchant.accounts.v1.UserService/VerifySelf",
+                request_serializer=user.VerifySelfRequest.serialize,
+                response_deserializer=user.User.deserialize,
+            )
+        return self._stubs["verify_self"]
+
     def close(self):
         self._logged_channel.close()
 

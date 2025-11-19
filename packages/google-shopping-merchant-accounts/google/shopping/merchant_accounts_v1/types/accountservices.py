@@ -34,6 +34,7 @@ __protobuf__ = proto.module(
         "AccountManagement",
         "AccountAggregation",
         "LocalListingManagement",
+        "ComparisonShopping",
         "Handshake",
     },
 )
@@ -117,6 +118,13 @@ class AccountService(proto.Message):
             inventory to this Merchant Center account.
 
             This field is a member of `oneof`_ ``service_type``.
+        comparison_shopping (google.shopping.merchant_accounts_v1.types.ComparisonShopping):
+            Service type for comparison shopping. The
+            provider is a CSS (Comparison Shopping Service)
+            managing the account. See
+            https://support.google.com/merchants/answer/12653197
+
+            This field is a member of `oneof`_ ``service_type``.
         name (str):
             Identifier. The resource name of the account service.
             Format: ``accounts/{account}/services/{service}``
@@ -198,6 +206,12 @@ class AccountService(proto.Message):
         number=104,
         oneof="service_type",
         message="LocalListingManagement",
+    )
+    comparison_shopping: "ComparisonShopping" = proto.Field(
+        proto.MESSAGE,
+        number=105,
+        oneof="service_type",
+        message="ComparisonShopping",
     )
     name: str = proto.Field(
         proto.STRING,
@@ -380,6 +394,10 @@ class AccountAggregation(proto.Message):
 
 class LocalListingManagement(proto.Message):
     r"""``LocalListingManagement`` payload."""
+
+
+class ComparisonShopping(proto.Message):
+    r"""``ComparisonShopping`` payload."""
 
 
 class Handshake(proto.Message):

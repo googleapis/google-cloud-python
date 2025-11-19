@@ -187,6 +187,7 @@ from .user import (
     UpdateUserRequest,
     User,
 )
+from .verificationmailsettings import VerificationMailSettings
 
 __all__ = (
     "AccessRight",
@@ -323,4 +324,5 @@ __all__ = (
     "ListUsersResponse",
     "UpdateUserRequest",
     "User",
+    "VerificationMailSettings",
 )

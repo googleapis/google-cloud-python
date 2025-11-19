@@ -73,6 +73,14 @@ class DeveloperRegistrationServiceRestInterceptor:
 
     .. code-block:: python
         class MyCustomDeveloperRegistrationServiceInterceptor(DeveloperRegistrationServiceRestInterceptor):
+            def pre_get_account_for_gcp_registration(self, request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_get_account_for_gcp_registration(self, response):
+                logging.log(f"Received response: {response}")
+                return response
+
             def pre_get_developer_registration(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
@@ -98,6 +106,55 @@ class DeveloperRegistrationServiceRestInterceptor:
 
 
     """
+
+    def pre_get_account_for_gcp_registration(
+        self,
+        request: empty_pb2.Empty,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[empty_pb2.Empty, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Pre-rpc interceptor for get_account_for_gcp_registration
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the DeveloperRegistrationService server.
+        """
+        return request, metadata
+
+    def post_get_account_for_gcp_registration(
+        self, response: developerregistration.GetAccountForGcpRegistrationResponse
+    ) -> developerregistration.GetAccountForGcpRegistrationResponse:
+        """Post-rpc interceptor for get_account_for_gcp_registration
+
+        DEPRECATED. Please use the `post_get_account_for_gcp_registration_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
+        after it is returned by the DeveloperRegistrationService server but before
+        it is returned to user code. This `post_get_account_for_gcp_registration` interceptor runs
+        before the `post_get_account_for_gcp_registration_with_metadata` interceptor.
+        """
+        return response
+
+    def post_get_account_for_gcp_registration_with_metadata(
+        self,
+        response: developerregistration.GetAccountForGcpRegistrationResponse,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        developerregistration.GetAccountForGcpRegistrationResponse,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
+        """Post-rpc interceptor for get_account_for_gcp_registration
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the DeveloperRegistrationService server but before it is returned to user code.
+
+        We recommend only using this `post_get_account_for_gcp_registration_with_metadata`
+        interceptor in new development instead of the `post_get_account_for_gcp_registration` interceptor.
+        When both interceptors are used, this `post_get_account_for_gcp_registration_with_metadata` interceptor runs after the
+        `post_get_account_for_gcp_registration` interceptor. The (possibly modified) response returned by
+        `post_get_account_for_gcp_registration` will be passed to
+        `post_get_account_for_gcp_registration_with_metadata`.
+        """
+        return response, metadata
 
     def pre_get_developer_registration(
         self,
@@ -307,6 +364,174 @@ class DeveloperRegistrationServiceRestTransport(
             self._session.configure_mtls_channel(client_cert_source_for_mtls)
         self._interceptor = interceptor or DeveloperRegistrationServiceRestInterceptor()
         self._prep_wrapped_messages(client_info)
+
+    class _GetAccountForGcpRegistration(
+        _BaseDeveloperRegistrationServiceRestTransport._BaseGetAccountForGcpRegistration,
+        DeveloperRegistrationServiceRestStub,
+    ):
+        def __hash__(self):
+            return hash(
+                "DeveloperRegistrationServiceRestTransport.GetAccountForGcpRegistration"
+            )
+
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
+
+        def __call__(
+            self,
+            request: empty_pb2.Empty,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+        ) -> developerregistration.GetAccountForGcpRegistrationResponse:
+            r"""Call the get account for gcp
+            registration method over HTTP.
+
+                Args:
+                    request (~.empty_pb2.Empty):
+                        The request object. A generic empty message that you can
+                    re-use to avoid defining duplicated
+                    empty messages in your APIs. A typical
+                    example is to use it as the request or
+                    the response type of an API method. For
+                    instance:
+
+                        service Foo {
+                          rpc Bar(google.protobuf.Empty)
+                    returns (google.protobuf.Empty);     }
+                    retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                        should be retried.
+                    timeout (float): The timeout for this request.
+                    metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                        sent along with the request as metadata. Normally, each value must be of type `str`,
+                        but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                        be of type `bytes`.
+
+                Returns:
+                    ~.developerregistration.GetAccountForGcpRegistrationResponse:
+                        Response message for the
+                    GetAccountForGcpRegistration method.
+
+            """
+
+            http_options = (
+                _BaseDeveloperRegistrationServiceRestTransport._BaseGetAccountForGcpRegistration._get_http_options()
+            )
+
+            request, metadata = self._interceptor.pre_get_account_for_gcp_registration(
+                request, metadata
+            )
+            transcoded_request = _BaseDeveloperRegistrationServiceRestTransport._BaseGetAccountForGcpRegistration._get_transcoded_request(
+                http_options, request
+            )
+
+            # Jsonify the query params
+            query_params = _BaseDeveloperRegistrationServiceRestTransport._BaseGetAccountForGcpRegistration._get_query_params_json(
+                transcoded_request
+            )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.shopping.merchant.accounts_v1.DeveloperRegistrationServiceClient.GetAccountForGcpRegistration",
+                    extra={
+                        "serviceName": "google.shopping.merchant.accounts.v1.DeveloperRegistrationService",
+                        "rpcName": "GetAccountForGcpRegistration",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
+
+            # Send the request
+            response = DeveloperRegistrationServiceRestTransport._GetAccountForGcpRegistration._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+
+            # Return the response
+            resp = developerregistration.GetAccountForGcpRegistrationResponse()
+            pb_resp = developerregistration.GetAccountForGcpRegistrationResponse.pb(
+                resp
+            )
+
+            json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
+            resp = self._interceptor.post_get_account_for_gcp_registration(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            (
+                resp,
+                _,
+            ) = self._interceptor.post_get_account_for_gcp_registration_with_metadata(
+                resp, response_metadata
+            )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = developerregistration.GetAccountForGcpRegistrationResponse.to_json(
+                        response
+                    )
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.shopping.merchant.accounts_v1.DeveloperRegistrationServiceClient.get_account_for_gcp_registration",
+                    extra={
+                        "serviceName": "google.shopping.merchant.accounts.v1.DeveloperRegistrationService",
+                        "rpcName": "GetAccountForGcpRegistration",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
+            return resp
 
     class _GetDeveloperRegistration(
         _BaseDeveloperRegistrationServiceRestTransport._BaseGetDeveloperRegistration,
@@ -736,6 +961,16 @@ class DeveloperRegistrationServiceRestTransport(
             # subclass.
             if response.status_code >= 400:
                 raise core_exceptions.from_http_response(response)
+
+    @property
+    def get_account_for_gcp_registration(
+        self,
+    ) -> Callable[
+        [empty_pb2.Empty], developerregistration.GetAccountForGcpRegistrationResponse
+    ]:
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return self._GetAccountForGcpRegistration(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
     def get_developer_registration(

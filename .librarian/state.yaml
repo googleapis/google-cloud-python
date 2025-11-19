@@ -573,7 +573,7 @@ libraries:
     tag_format: '{id}-v{version}'
   - id: google-cloud-backupdr
     version: 0.4.0
-    last_generated_commit: c2db528a3e4d12b95666c719ee0db30a3d4c78ad
+    last_generated_commit: a17b84add8318f780fcc8a027815d5fee644b9f7
     apis:
       - path: google/cloud/backupdr/v1
         service_config: backupdr_v1.yaml
@@ -607,7 +607,7 @@ libraries:
     tag_format: '{id}-v{version}'
   - id: google-cloud-batch
     version: 0.18.0
-    last_generated_commit: 3322511885371d2b2253f209ccc3aa60d4100cfd
+    last_generated_commit: a17b84add8318f780fcc8a027815d5fee644b9f7
     apis:
       - path: google/cloud/batch/v1alpha
         service_config: batch_v1alpha.yaml
@@ -3640,7 +3640,7 @@ libraries:
     tag_format: '{id}-v{version}'
   - id: google-cloud-vm-migration
     version: 1.13.0
-    last_generated_commit: 3322511885371d2b2253f209ccc3aa60d4100cfd
+    last_generated_commit: a17b84add8318f780fcc8a027815d5fee644b9f7
     apis:
       - path: google/cloud/vmmigration/v1
         service_config: vmmigration_v1.yaml
@@ -3962,7 +3962,7 @@ libraries:
     tag_format: '{id}-v{version}'
   - id: google-shopping-merchant-accounts
     version: 1.1.0
-    last_generated_commit: 3322511885371d2b2253f209ccc3aa60d4100cfd
+    last_generated_commit: a17b84add8318f780fcc8a027815d5fee644b9f7
     apis:
       - path: google/shopping/merchant/accounts/v1
         service_config: merchantapi_v1.yaml
@@ -4226,7 +4226,7 @@ libraries:
     tag_format: '{id}-v{version}'
   - id: google-shopping-type
     version: 1.1.0
-    last_generated_commit: 3322511885371d2b2253f209ccc3aa60d4100cfd
+    last_generated_commit: a17b84add8318f780fcc8a027815d5fee644b9f7
     apis:
       - path: google/shopping/type
         service_config: ""
@@ -4244,7 +4244,7 @@ libraries:
     tag_format: '{id}-v{version}'
   - id: googleapis-common-protos
     version: 1.72.0
-    last_generated_commit: c2db528a3e4d12b95666c719ee0db30a3d4c78ad
+    last_generated_commit: a17b84add8318f780fcc8a027815d5fee644b9f7
     apis:
       - path: google/api
         service_config: serviceconfig.yaml

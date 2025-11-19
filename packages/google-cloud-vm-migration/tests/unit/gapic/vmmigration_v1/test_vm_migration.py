@@ -43618,10 +43618,14 @@ def test_create_migrating_vm_rest_call_success(request_type):
             "hostname": "hostname_value",
             "encryption": {"kms_key": "kms_key_value"},
             "boot_conversion": 1,
+            "adaptation_modifiers": [
+                {"modifier": "modifier_value", "value": "value_value"}
+            ],
             "disk_replica_zones": [
                 "disk_replica_zones_value1",
                 "disk_replica_zones_value2",
             ],
+            "storage_pool": "storage_pool_value",
         },
         "compute_engine_disks_target_defaults": {
             "zone": "zone_value",
@@ -43784,10 +43788,12 @@ def test_create_migrating_vm_rest_call_success(request_type):
                     "hostname": "hostname_value",
                     "encryption": {},
                     "boot_conversion": 1,
+                    "adaptation_modifiers": {},
                     "disk_replica_zones": [
                         "disk_replica_zones_value1",
                         "disk_replica_zones_value2",
                     ],
+                    "storage_pool": "storage_pool_value",
                 },
                 "compute_engine_disks_target_details": {
                     "disks_target_details": {},
@@ -44361,10 +44367,14 @@ def test_update_migrating_vm_rest_call_success(request_type):
             "hostname": "hostname_value",
             "encryption": {"kms_key": "kms_key_value"},
             "boot_conversion": 1,
+            "adaptation_modifiers": [
+                {"modifier": "modifier_value", "value": "value_value"}
+            ],
             "disk_replica_zones": [
                 "disk_replica_zones_value1",
                 "disk_replica_zones_value2",
             ],
+            "storage_pool": "storage_pool_value",
         },
         "compute_engine_disks_target_defaults": {
             "zone": "zone_value",
@@ -44527,10 +44537,12 @@ def test_update_migrating_vm_rest_call_success(request_type):
                     "hostname": "hostname_value",
                     "encryption": {},
                     "boot_conversion": 1,
+                    "adaptation_modifiers": {},
                     "disk_replica_zones": [
                         "disk_replica_zones_value1",
                         "disk_replica_zones_value2",
                     ],
+                    "storage_pool": "storage_pool_value",
                 },
                 "compute_engine_disks_target_details": {
                     "disks_target_details": {},
@@ -45587,10 +45599,14 @@ def test_create_clone_job_rest_call_success(request_type):
             "hostname": "hostname_value",
             "encryption": {"kms_key": "kms_key_value"},
             "boot_conversion": 1,
+            "adaptation_modifiers": [
+                {"modifier": "modifier_value", "value": "value_value"}
+            ],
             "disk_replica_zones": [
                 "disk_replica_zones_value1",
                 "disk_replica_zones_value2",
             ],
+            "storage_pool": "storage_pool_value",
         },
         "compute_engine_disks_target_details": {
             "disks_target_details": {},
@@ -46253,10 +46269,14 @@ def test_create_cutover_job_rest_call_success(request_type):
             "hostname": "hostname_value",
             "encryption": {"kms_key": "kms_key_value"},
             "boot_conversion": 1,
+            "adaptation_modifiers": [
+                {"modifier": "modifier_value", "value": "value_value"}
+            ],
             "disk_replica_zones": [
                 "disk_replica_zones_value1",
                 "disk_replica_zones_value2",
             ],
+            "storage_pool": "storage_pool_value",
         },
         "compute_engine_disks_target_details": {
             "disks_target_details": {},
@@ -49279,8 +49299,16 @@ def test_create_image_import_rest_call_success(request_type):
                 "generalize": True,
                 "license_type": 1,
                 "boot_conversion": 1,
+                "adaptation_modifiers": [
+                    {"modifier": "modifier_value", "value": "value_value"}
+                ],
             },
-            "data_disk_image_import": {},
+            "data_disk_image_import": {
+                "guest_os_features": [
+                    "guest_os_features_value1",
+                    "guest_os_features_value2",
+                ]
+            },
             "image_name": "image_name_value",
             "target_project": "target_project_value",
             "description": "description_value",

@@ -110,6 +110,14 @@ class UserServiceRestInterceptor:
                 logging.log(f"Received response: {response}")
                 return response
 
+            def pre_verify_self(self, request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_verify_self(self, response):
+                logging.log(f"Received response: {response}")
+                return response
+
         transport = UserServiceRestTransport(interceptor=MyCustomUserServiceInterceptor())
         client = UserServiceClient(transport=transport)
 
@@ -304,6 +312,48 @@ class UserServiceRestInterceptor:
         """
         return response, metadata
 
+    def pre_verify_self(
+        self,
+        request: user.VerifySelfRequest,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[user.VerifySelfRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Pre-rpc interceptor for verify_self
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the UserService server.
+        """
+        return request, metadata
+
+    def post_verify_self(self, response: user.User) -> user.User:
+        """Post-rpc interceptor for verify_self
+
+        DEPRECATED. Please use the `post_verify_self_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
+        after it is returned by the UserService server but before
+        it is returned to user code. This `post_verify_self` interceptor runs
+        before the `post_verify_self_with_metadata` interceptor.
+        """
+        return response
+
+    def post_verify_self_with_metadata(
+        self, response: user.User, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[user.User, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for verify_self
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the UserService server but before it is returned to user code.
+
+        We recommend only using this `post_verify_self_with_metadata`
+        interceptor in new development instead of the `post_verify_self` interceptor.
+        When both interceptors are used, this `post_verify_self_with_metadata` interceptor runs after the
+        `post_verify_self` interceptor. The (possibly modified) response returned by
+        `post_verify_self` will be passed to
+        `post_verify_self_with_metadata`.
+        """
+        return response, metadata
+
 
 @dataclasses.dataclass
 class UserServiceRestStub:
@@ -444,8 +494,8 @@ class UserServiceRestTransport(_BaseUserServiceRestTransport):
 
             Returns:
                 ~.gsma_user.User:
-                    The ``User`` message represents a user associated with a
-                Merchant Center account. It is used to manage user
+                    The ``User`` resource represents a user associated with
+                a Merchant Center account. It is used to manage user
                 permissions and access rights within the account. For
                 more information, see `Frequently asked questions about
                 people and access
@@ -711,8 +761,8 @@ class UserServiceRestTransport(_BaseUserServiceRestTransport):
 
             Returns:
                 ~.user.User:
-                    The ``User`` message represents a user associated with a
-                Merchant Center account. It is used to manage user
+                    The ``User`` resource represents a user associated with
+                a Merchant Center account. It is used to manage user
                 permissions and access rights within the account. For
                 more information, see `Frequently asked questions about
                 people and access
@@ -1012,8 +1062,8 @@ class UserServiceRestTransport(_BaseUserServiceRestTransport):
 
             Returns:
                 ~.gsma_user.User:
-                    The ``User`` message represents a user associated with a
-                Merchant Center account. It is used to manage user
+                    The ``User`` resource represents a user associated with
+                a Merchant Center account. It is used to manage user
                 permissions and access rights within the account. For
                 more information, see `Frequently asked questions about
                 people and access
@@ -1120,6 +1170,166 @@ class UserServiceRestTransport(_BaseUserServiceRestTransport):
                 )
             return resp
 
+    class _VerifySelf(
+        _BaseUserServiceRestTransport._BaseVerifySelf, UserServiceRestStub
+    ):
+        def __hash__(self):
+            return hash("UserServiceRestTransport.VerifySelf")
+
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+            return response
+
+        def __call__(
+            self,
+            request: user.VerifySelfRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+        ) -> user.User:
+            r"""Call the verify self method over HTTP.
+
+            Args:
+                request (~.user.VerifySelfRequest):
+                    The request object. Request message for the ``VerifySelf`` method.
+                retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                    should be retried.
+                timeout (float): The timeout for this request.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
+
+            Returns:
+                ~.user.User:
+                    The ``User`` resource represents a user associated with
+                a Merchant Center account. It is used to manage user
+                permissions and access rights within the account. For
+                more information, see `Frequently asked questions about
+                people and access
+                levels <//support.google.com/merchants/answer/12160472>`__.
+
+            """
+
+            http_options = (
+                _BaseUserServiceRestTransport._BaseVerifySelf._get_http_options()
+            )
+
+            request, metadata = self._interceptor.pre_verify_self(request, metadata)
+            transcoded_request = (
+                _BaseUserServiceRestTransport._BaseVerifySelf._get_transcoded_request(
+                    http_options, request
+                )
+            )
+
+            body = _BaseUserServiceRestTransport._BaseVerifySelf._get_request_body_json(
+                transcoded_request
+            )
+
+            # Jsonify the query params
+            query_params = (
+                _BaseUserServiceRestTransport._BaseVerifySelf._get_query_params_json(
+                    transcoded_request
+                )
+            )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.shopping.merchant.accounts_v1.UserServiceClient.VerifySelf",
+                    extra={
+                        "serviceName": "google.shopping.merchant.accounts.v1.UserService",
+                        "rpcName": "VerifySelf",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
+
+            # Send the request
+            response = UserServiceRestTransport._VerifySelf._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+                body,
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+
+            # Return the response
+            resp = user.User()
+            pb_resp = user.User.pb(resp)
+
+            json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
+            resp = self._interceptor.post_verify_self(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_verify_self_with_metadata(
+                resp, response_metadata
+            )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = user.User.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.shopping.merchant.accounts_v1.UserServiceClient.verify_self",
+                    extra={
+                        "serviceName": "google.shopping.merchant.accounts.v1.UserService",
+                        "rpcName": "VerifySelf",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
+            return resp
+
     @property
     def create_user(self) -> Callable[[gsma_user.CreateUserRequest], gsma_user.User]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
@@ -1149,6 +1359,12 @@ class UserServiceRestTransport(_BaseUserServiceRestTransport):
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._UpdateUser(self._session, self._host, self._interceptor)  # type: ignore
+
+    @property
+    def verify_self(self) -> Callable[[user.VerifySelfRequest], user.User]:
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return self._VerifySelf(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
     def kind(self) -> str:

@@ -65,6 +65,7 @@ from google.shopping.merchant_accounts_v1.types import (
     accounts,
     accountservices,
     user,
+    verificationmailsettings,
 )
 
 CRED_INFO_JSON = {
