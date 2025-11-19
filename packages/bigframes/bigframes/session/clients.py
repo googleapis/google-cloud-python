@@ -191,10 +191,11 @@ class ClientsProvider:
             client_options=bq_options,
             project=self._project,
             location=self._location,
-            # Instead of credentials, use _http so that users can override
+            # Use _http so that users can override
             # requests options with transport adapters. See internal issue
             # b/419106112.
             _http=requests_session,
+            credentials=self._credentials,
         )
 
         # If a new enough client library is available, we opt-in to the faster
