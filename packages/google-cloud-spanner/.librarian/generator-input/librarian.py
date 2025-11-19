@@ -25,58 +25,9 @@ from synthtool.languages import python
 
 common = gcp.CommonTemplates()
 
-
-def get_staging_dirs(
-    # This is a customized version of the s.get_staging_dirs() function
-    # from synthtool to # cater for copying 3 different folders from
-    # googleapis-gen:
-    # spanner, spanner/admin/instance and spanner/admin/database.
-    # Source:
-    # https://github.com/googleapis/synthtool/blob/master/synthtool/transforms.py#L280
-    default_version: Optional[str] = None,
-    sub_directory: Optional[str] = None,
-) -> List[Path]:
-    """Returns the list of directories, one per version, copied from
-    https://github.com/googleapis/googleapis-gen. Will return in lexical sorting
-    order with the exception of the default_version which will be last (if specified).
-
-    Args:
-      default_version (str): the default version of the API. The directory for this version
-        will be the last item in the returned list if specified.
-      sub_directory (str): if a `sub_directory` is provided, only the directories within the
-        specified `sub_directory` will be returned.
-
-    Returns: the empty list if no file were copied.
-    """
-
-    staging = Path("owl-bot-staging")
-
-    if sub_directory:
-        staging /= sub_directory
-
-    if staging.is_dir():
-        # Collect the subdirectories of the staging directory.
-        versions = [v.name for v in staging.iterdir() if v.is_dir()]
-        # Reorder the versions so the default version always comes last.
-        versions = [v for v in versions if v != default_version]
-        versions.sort()
-        if default_version is not None:
-            versions += [default_version]
-        dirs = [staging / v for v in versions]
-        for dir in dirs:
-            s._tracked_paths.add(dir)
-        return dirs
-    else:
-        return []
-
-
-spanner_default_version = "v1"
-spanner_admin_instance_default_version = "v1"
-spanner_admin_database_default_version = "v1"
-
 clean_up_generated_samples = True
 
-for library in get_staging_dirs(spanner_default_version, "spanner"):
+for library in s.get_staging_dirs("v1"):
     if clean_up_generated_samples:
         shutil.rmtree("samples/generated_samples", ignore_errors=True)
         clean_up_generated_samples = False
@@ -202,22 +153,6 @@ from google.cloud.spanner_v1.metrics.metrics_interceptor import MetricsIntercept
     if count < 1:
         raise Exception("Expected replacements for gRPC channel options not made.")
 
-    s.move(
-        library,
-        excludes=[
-            "google/cloud/spanner/**",
-            "*.*",
-            "noxfile.py",
-            "docs/index.rst",
-            "google/cloud/spanner_v1/__init__.py",
-            "**/gapic_version.py",
-            "testing/constraints-3.7.txt",
-        ],
-    )
-
-for library in get_staging_dirs(
-    spanner_admin_instance_default_version, "spanner_admin_instance"
-):
     count = s.replace(
         [
             library / "google/cloud/spanner_admin_instance_v1/services/*/transports/grpc*",
@@ -233,14 +168,7 @@ for library in get_staging_dirs(
     )
     if count < 1:
         raise Exception("Expected replacements for gRPC channel options not made.")
-    s.move(
-        library,
-        excludes=["google/cloud/spanner_admin_instance/**", "*.*", "docs/index.rst", "noxfile.py", "**/gapic_version.py", "testing/constraints-3.7.txt",],
-    )
 
-for library in get_staging_dirs(
-    spanner_admin_database_default_version, "spanner_admin_database"
-):
     count = s.replace(
         [
             library / "google/cloud/spanner_admin_database_v1/services/*/transports/grpc*",
@@ -258,7 +186,16 @@ for library in get_staging_dirs(
         raise Exception("Expected replacements for gRPC channel options not made.")
     s.move(
         library,
-        excludes=["google/cloud/spanner_admin_database/**", "*.*", "docs/index.rst", "noxfile.py", "**/gapic_version.py", "testing/constraints-3.7.txt",],
+        excludes=[
+            "google/cloud/spanner/**",
+            "*.*",
+            "noxfile.py",
+            "docs/index.rst",
+            "google/cloud/spanner_v1/__init__.py",
+            "testing/constraints-3.7.txt",
+            "google/cloud/spanner_admin_instance/**",
+            "google/cloud/spanner_admin_database/**"
+        ],
     )
 
 s.remove_staging_dirs()
@@ -278,25 +215,10 @@ s.move(
     templated_files,
     excludes=[
         ".coveragerc",
-        ".github/workflows",  # exclude gh actions as credentials are needed for tests
+        ".github/**",
+        ".kokoro/**",
         "README.rst",
-        ".github/release-please.yml",
-        ".kokoro/test-samples-impl.sh",
-        ".kokoro/presubmit/presubmit.cfg",
-        ".kokoro/samples/python3.7/**",
-        ".kokoro/samples/python3.8/**",
     ],
-)
-
-# Ensure CI runs on a new instance each time
-s.replace(
-    ".kokoro/build.sh",
-    "# Setup project id.",
-    """\
-# Set up creating a new instance for each system test run
-export GOOGLE_CLOUD_TESTS_CREATE_SPANNER_INSTANCE=true
-
-# Setup project id.""",
 )
 
 # Update samples folder in CONTRIBUTING.rst
@@ -321,4 +243,4 @@ s.replace(
 
 # Use a python runtime which is available in the owlbot post processor here
 # https://github.com/googleapis/synthtool/blob/master/docker/owlbot/python/Dockerfile
-s.shell.run(["nox", "-s", "blacken-3.10"], hide_output=False)
+s.shell.run(["nox", "-s", "blacken-3.14"], hide_output=False)

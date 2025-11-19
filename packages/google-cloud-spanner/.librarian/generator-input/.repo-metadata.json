@@ -1,0 +1,18 @@
+{
+    "name": "spanner",
+    "name_pretty": "Cloud Spanner",
+    "product_documentation": "https://cloud.google.com/spanner/docs/",
+    "client_documentation": "https://cloud.google.com/python/docs/reference/spanner/latest",
+    "issue_tracker": "https://issuetracker.google.com/issues?q=componentid:190851%2B%20status:open",
+    "release_level": "stable",
+    "language": "python",
+    "library_type": "GAPIC_COMBO",
+    "repo": "googleapis/python-spanner",
+    "distribution_name": "google-cloud-spanner",
+    "api_id": "spanner.googleapis.com",
+    "requires_billing": true,
+    "default_version": "v1",
+    "codeowner_team": "@googleapis/spanner-client-libraries-python",
+    "api_shortname": "spanner",
+    "api_description": "is a fully managed, mission-critical, \nrelational database service that offers transactional consistency at global scale, \nschemas, SQL (ANSI 2011 with extensions), and automatic, synchronous replication \nfor high availability.\n\nBe sure to activate the Cloud Spanner API on the Developer's Console to\nuse Cloud Spanner from your project."
+}

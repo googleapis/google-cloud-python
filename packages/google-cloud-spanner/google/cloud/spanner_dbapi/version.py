@@ -13,8 +13,8 @@
 # limitations under the License.
 
 import platform
-from google.cloud.spanner_v1 import gapic_version as package_version
 
 PY_VERSION = platform.python_version()
-VERSION = package_version.__version__
+__version__ = "3.59.0"
+VERSION = __version__
 DEFAULT_USER_AGENT = "gl-dbapi/" + VERSION

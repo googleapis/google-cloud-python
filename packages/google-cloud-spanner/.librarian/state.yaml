@@ -1,0 +1,54 @@
+image: us-central1-docker.pkg.dev/cloud-sdk-librarian-prod/images-prod/python-librarian-generator@sha256:8e2c32496077054105bd06c54a59d6a6694287bc053588e24debe6da6920ad91
+libraries:
+  - id: google-cloud-spanner
+    version: 3.59.0
+    last_generated_commit: a17b84add8318f780fcc8a027815d5fee644b9f7
+    apis:
+      - path: google/spanner/admin/instance/v1
+        service_config: spanner.yaml
+      - path: google/spanner/admin/database/v1
+        service_config: spanner.yaml
+      - path: google/spanner/v1
+        service_config: spanner.yaml
+    source_roots:
+      - .
+    preserve_regex: []
+    remove_regex:
+      - ^google/cloud/spanner_v1/gapic_metadata.json
+      - ^google/cloud/spanner_v1/gapic_version.py
+      - ^google/cloud/spanner_v1/py.typed
+      - ^google/cloud/spanner_v1/services
+      - ^google/cloud/spanner_v1/types
+      - ^google/cloud/spanner_admin_database_v1
+      - ^google/cloud/spanner_admin_instance_v1
+      - ^tests/unit/gapic
+      - ^tests/__init__.py
+      - ^tests/unit/__init__.py
+      - ^.pre-commit-config.yaml
+      - ^.repo-metadata.json
+      - ^.trampolinerc
+      - ^LICENSE
+      - ^SECURITY.md
+      - ^mypy.ini
+      - ^noxfile.py
+      - ^renovate.json
+      - ^samples/AUTHORING_GUIDE.md
+      - ^samples/CONTRIBUTING.md
+      - ^samples/generated_samples
+      - ^scripts/fixup_
+      - ^setup.py
+      - ^testing/constraints-3.8
+      - ^testing/constraints-3.9
+      - ^testing/constraints-3.1
+      - ^docs/conf.py
+      - ^docs/_static
+      - ^docs/spanner_v1/types_.rst
+      - ^docs/_templates
+      - ^docs/spanner_v1/services_.rst
+      - ^docs/spanner_v1/spanner.rst
+      - ^docs/spanner_v1/types.rst
+      - ^docs/spanner_admin_database_v1
+      - ^docs/spanner_admin_instance_v1
+      - ^docs/multiprocessing.rst
+      - ^docs/summary_overview.md
+    tag_format: v{version}
