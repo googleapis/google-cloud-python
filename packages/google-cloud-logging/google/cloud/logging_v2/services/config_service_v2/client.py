@@ -32,6 +32,7 @@ from typing import (
     Union,
     cast,
 )
+import uuid
 import warnings
 
 from google.cloud.logging_v2 import gapic_version as package_version
@@ -3431,7 +3432,7 @@ class ConfigServiceV2Client(metaclass=ConfigServiceV2ClientMeta):
                    chargeable logs. Note that exclusions on
                    organization-level and folder-level sinks don't apply
                    to child resources. Note also that you cannot modify
-                   the \_Required sink or exclude logs from it.
+                   the Required sink or exclude logs from it.
 
         """
         # Create or coerce a protobuf request object.
@@ -3571,7 +3572,7 @@ class ConfigServiceV2Client(metaclass=ConfigServiceV2ClientMeta):
                    chargeable logs. Note that exclusions on
                    organization-level and folder-level sinks don't apply
                    to child resources. Note also that you cannot modify
-                   the \_Required sink or exclude logs from it.
+                   the Required sink or exclude logs from it.
 
         """
         # Create or coerce a protobuf request object.
@@ -3725,7 +3726,7 @@ class ConfigServiceV2Client(metaclass=ConfigServiceV2ClientMeta):
                    chargeable logs. Note that exclusions on
                    organization-level and folder-level sinks don't apply
                    to child resources. Note also that you cannot modify
-                   the \_Required sink or exclude logs from it.
+                   the Required sink or exclude logs from it.
 
         """
         # Create or coerce a protobuf request object.
@@ -3957,7 +3958,7 @@ class ConfigServiceV2Client(metaclass=ConfigServiceV2ClientMeta):
                    the Google Cloud organization.
 
                    See [Enabling CMEK for Log
-                   Router](\ https://cloud.google.com/logging/docs/routing/managed-encryption)
+                   Router](https://cloud.google.com/logging/docs/routing/managed-encryption)
                    for more information.
 
         """
@@ -4069,7 +4070,7 @@ class ConfigServiceV2Client(metaclass=ConfigServiceV2ClientMeta):
                    the Google Cloud organization.
 
                    See [Enabling CMEK for Log
-                   Router](\ https://cloud.google.com/logging/docs/routing/managed-encryption)
+                   Router](https://cloud.google.com/logging/docs/routing/managed-encryption)
                    for more information.
 
         """

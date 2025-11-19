@@ -75,6 +75,7 @@ for library in s.get_staging_dirs(default_version):
             "docs/logging_v2",  # Don't include gapic library docs. Users should use the hand-written layer instead
             "docs/multiprocessing.rst",
             "scripts/fixup_logging_v2_keywords.py",  # don't include script since it only works for generated layer
+            "noxfile.py",
         ],
     )
 
@@ -109,16 +110,9 @@ s.move(templated_files,
         ".github/workflows", # exclude gh actions as credentials are needed for tests
         ".github/auto-label.yaml",
         "README.rst", # This repo has a customized README
+        "noxfile.py",
     ],
 )
-s.replace("noxfile.py",
-"""prerel_deps = \[
-        "protobuf",""",
-"""prerel_deps = [
-        "google-cloud-audit-log",
-        "protobuf",""",
-)
-
 # adjust .trampolinerc for environment tests
 s.replace(".trampolinerc", "required_envvars[^\)]*\)", "required_envvars+=()")
 s.replace(

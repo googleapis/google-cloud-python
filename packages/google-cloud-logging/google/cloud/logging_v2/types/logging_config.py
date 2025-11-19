@@ -350,9 +350,9 @@ class LogView(proto.Message):
             Filters are restricted to be a logical AND of ==/!= of any
             of the following:
 
-            -  originating project/folder/organization/billing account.
-            -  resource type
-            -  log id
+            - originating project/folder/organization/billing account.
+            - resource type
+            - log id
 
             For example:
 
@@ -1300,14 +1300,14 @@ class UpdateSinkRequest(proto.Message):
             the updated sink depends on both the old and new values of
             this field:
 
-            -  If the old and new values of this field are both false or
-               both true, then there is no change to the sink's
-               ``writer_identity``.
-            -  If the old value is false and the new value is true, then
-               ``writer_identity`` is changed to a unique service
-               account.
-            -  It is an error if the old value is true and the new value
-               is set to false or defaulted to false.
+            - If the old and new values of this field are both false or
+              both true, then there is no change to the sink's
+              ``writer_identity``.
+            - If the old value is false and the new value is true, then
+              ``writer_identity`` is changed to a unique service
+              account.
+            - It is an error if the old value is true and the new value
+              is set to false or defaulted to false.
         update_mask (google.protobuf.field_mask_pb2.FieldMask):
             Optional. Field mask that specifies the fields in ``sink``
             that need an update. A sink field will be overwritten if,

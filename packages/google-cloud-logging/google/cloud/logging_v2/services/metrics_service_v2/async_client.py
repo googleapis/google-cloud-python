@@ -28,6 +28,7 @@ from typing import (
     Type,
     Union,
 )
+import uuid
 
 from google.cloud.logging_v2 import gapic_version as package_version
 
