@@ -1780,7 +1780,11 @@ class Series(vendored_pandas_series.Series):
         block, result_id = block.apply_window_op(
             self._value_column, op, window_spec=window_spec, result_label=self.name
         )
-        return Series(block.select_column(result_id))
+        result = Series(block.select_column(result_id))
+        if op.skips_nulls:
+            return result.where(self.notna(), None)
+        else:
+            return result
 
     def value_counts(
         self,

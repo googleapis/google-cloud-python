@@ -38,6 +38,7 @@ import bigframes.core.window as windows
 import bigframes.core.window_spec as window_specs
 import bigframes.dataframe as df
 import bigframes.dtypes as dtypes
+import bigframes.operations
 import bigframes.operations.aggregations as agg_ops
 import bigframes.series as series
 
@@ -747,14 +748,26 @@ class DataFrameGroupBy(vendored_pandas_groupby.DataFrameGroupBy):
         window_spec = window or window_specs.cumulative_rows(
             grouping_keys=tuple(self._by_col_ids)
         )
-        columns, _ = self._aggregated_columns(numeric_only=numeric_only)
+        columns, labels = self._aggregated_columns(numeric_only=numeric_only)
         block, result_ids = self._block.multi_apply_window_op(
             columns,
             op,
             window_spec=window_spec,
         )
-        result = df.DataFrame(block.select_columns(result_ids))
-        return result
+        block = block.project_exprs(
+            tuple(
+                bigframes.operations.where_op.as_expr(
+                    r_col,
+                    bigframes.operations.notnull_op.as_expr(og_col),
+                    ex.const(None),
+                )
+                for og_col, r_col in zip(columns, result_ids)
+            ),
+            labels=labels,
+            drop=True,
+        )
+
+        return df.DataFrame(block)
 
     def _resolve_label(self, label: blocks.Label) -> str:
         """Resolve label to column id."""

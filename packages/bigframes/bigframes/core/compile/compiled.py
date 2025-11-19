@@ -394,8 +394,6 @@ class UnorderedIR:
         expression: ex_types.Aggregation,
         window_spec: WindowSpec,
         output_name: str,
-        *,
-        never_skip_nulls=False,
     ) -> UnorderedIR:
         """
         Creates a new expression based on this expression with unary operation applied to one column.
@@ -403,7 +401,6 @@ class UnorderedIR:
         op: the windowable operator to apply to the input column
         window_spec: a specification of the window over which to apply the operator
         output_name: the id to assign to the output of the operator
-        never_skip_nulls: will disable null skipping for operators that would otherwise do so
         """
         # Cannot nest analytic expressions, so reproject to cte first if needed.
         # Also ibis cannot window literals, so need to reproject those (even though this is legal in googlesql)
@@ -425,7 +422,6 @@ class UnorderedIR:
                 expression,
                 window_spec,
                 output_name,
-                never_skip_nulls=never_skip_nulls,
             )
 
         if expression.op.order_independent and window_spec.is_unbounded:
@@ -437,9 +433,6 @@ class UnorderedIR:
             expression, window_spec
         )
         clauses: list[tuple[ex.Expression, ex.Expression]] = []
-        if expression.op.skips_nulls and not never_skip_nulls:
-            for input in expression.inputs:
-                clauses.append((ops.isnull_op.as_expr(input), ex.const(None)))
         if window_spec.min_periods and len(expression.inputs) > 0:
             if not expression.op.nulls_count_for_min_values:
                 is_observation = ops.notnull_op.as_expr()

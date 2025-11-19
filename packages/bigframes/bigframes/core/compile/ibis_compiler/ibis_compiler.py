@@ -269,7 +269,6 @@ def compile_window(node: nodes.WindowOpNode, child: compiled.UnorderedIR):
         node.expression,
         node.window_spec,
         node.output_name.sql,
-        never_skip_nulls=node.never_skip_nulls,
     )
     return result
 

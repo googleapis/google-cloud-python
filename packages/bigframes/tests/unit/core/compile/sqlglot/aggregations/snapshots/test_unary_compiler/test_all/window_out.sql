@@ -5,11 +5,7 @@ WITH `bfcte_0` AS (
 ), `bfcte_1` AS (
   SELECT
     *,
-    CASE
-      WHEN `bool_col` IS NULL
-      THEN NULL
-      ELSE COALESCE(LOGICAL_AND(`bool_col`) OVER (), TRUE)
-    END AS `bfcol_1`
+    COALESCE(LOGICAL_AND(`bool_col`) OVER (), TRUE) AS `bfcol_1`
   FROM `bfcte_0`
 )
 SELECT

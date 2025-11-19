@@ -36,9 +36,9 @@ def test_read_gbq_query_w_allow_large_results(session: bigframes.Session):
         allow_large_results=False,
     )
     assert df_false.shape == (1, 1)
-    roots_false = df_false._get_block().expr.node.roots
-    assert any(isinstance(node, nodes.ReadLocalNode) for node in roots_false)
-    assert not any(isinstance(node, nodes.ReadTableNode) for node in roots_false)
+    nodes_false = df_false._get_block().expr.node.unique_nodes()
+    assert any(isinstance(node, nodes.ReadLocalNode) for node in nodes_false)
+    assert not any(isinstance(node, nodes.ReadTableNode) for node in nodes_false)
 
     # Large results allowed should wrap a table.
     df_true = session.read_gbq(
@@ -47,8 +47,8 @@ def test_read_gbq_query_w_allow_large_results(session: bigframes.Session):
         allow_large_results=True,
     )
     assert df_true.shape == (1, 1)
-    roots_true = df_true._get_block().expr.node.roots
-    assert any(isinstance(node, nodes.ReadTableNode) for node in roots_true)
+    nodes_true = df_true._get_block().expr.node.unique_nodes()
+    assert any(isinstance(node, nodes.ReadTableNode) for node in nodes_true)
 
 
 def test_read_gbq_query_w_columns(session: bigframes.Session):

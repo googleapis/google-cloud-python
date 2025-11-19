@@ -37,6 +37,7 @@ import bigframes.core.window as windows
 import bigframes.core.window_spec as window_specs
 import bigframes.dataframe as df
 import bigframes.dtypes
+import bigframes.operations
 import bigframes.operations.aggregations as agg_ops
 import bigframes.series as series
 
@@ -339,7 +340,6 @@ class SeriesGroupBy(vendored_pandas_groupby.SeriesGroupBy):
             self._apply_window_op(
                 agg_ops.SizeUnaryOp(),
                 discard_name=True,
-                never_skip_nulls=True,
             )
             - 1
         )
@@ -426,7 +426,6 @@ class SeriesGroupBy(vendored_pandas_groupby.SeriesGroupBy):
         op: agg_ops.UnaryWindowOp,
         discard_name=False,
         window: typing.Optional[window_specs.WindowSpec] = None,
-        never_skip_nulls: bool = False,
     ) -> series.Series:
         """Apply window op to groupby. Defaults to grouped cumulative window."""
         window_spec = window or window_specs.cumulative_rows(
@@ -439,6 +438,15 @@ class SeriesGroupBy(vendored_pandas_groupby.SeriesGroupBy):
             op,
             result_label=label,
             window_spec=window_spec,
-            never_skip_nulls=never_skip_nulls,
         )
+        if op.skips_nulls:
+            block, result_id = block.project_expr(
+                bigframes.operations.where_op.as_expr(
+                    result_id,
+                    bigframes.operations.notnull_op.as_expr(self._value_column),
+                    ex.const(None),
+                ),
+                label,
+            )
+
         return series.Series(block.select_column(result_id))

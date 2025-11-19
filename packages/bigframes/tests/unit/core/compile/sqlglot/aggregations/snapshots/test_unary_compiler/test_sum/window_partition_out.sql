@@ -6,11 +6,7 @@ WITH `bfcte_0` AS (
 ), `bfcte_1` AS (
   SELECT
     *,
-    CASE
-      WHEN `int64_col` IS NULL
-      THEN NULL
-      ELSE COALESCE(SUM(`int64_col`) OVER (PARTITION BY `string_col`), 0)
-    END AS `bfcol_2`
+    COALESCE(SUM(`int64_col`) OVER (PARTITION BY `string_col`), 0) AS `bfcol_2`
   FROM `bfcte_0`
 )
 SELECT

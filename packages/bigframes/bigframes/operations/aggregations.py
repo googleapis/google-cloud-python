@@ -183,6 +183,10 @@ class SizeOp(NullaryAggregateOp):
 class SizeUnaryOp(UnaryAggregateOp):
     name: ClassVar[str] = "size"
 
+    @property
+    def skips_nulls(self):
+        return False
+
     def output_type(self, *input_types: dtypes.ExpressionType):
         return dtypes.INT_DTYPE
 

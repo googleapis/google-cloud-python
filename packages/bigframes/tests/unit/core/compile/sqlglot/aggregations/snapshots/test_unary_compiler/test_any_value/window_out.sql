@@ -5,7 +5,7 @@ WITH `bfcte_0` AS (
 ), `bfcte_1` AS (
   SELECT
     *,
-    CASE WHEN `int64_col` IS NULL THEN NULL ELSE ANY_VALUE(`int64_col`) OVER () END AS `bfcol_1`
+    ANY_VALUE(`int64_col`) OVER () AS `bfcol_1`
   FROM `bfcte_0`
 )
 SELECT

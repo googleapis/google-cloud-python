@@ -1036,7 +1036,8 @@ def test_series_int_int_operators_scalar(
     bf_result = maybe_reversed_op(scalars_df["int64_col"], other_scalar).to_pandas()
     pd_result = maybe_reversed_op(scalars_pandas_df["int64_col"], other_scalar)
 
-    assert_series_equal(pd_result, bf_result)
+    # don't check dtype, as pandas is a bit unstable here across versions, esp floordiv
+    assert_series_equal(pd_result, bf_result, check_dtype=False)
 
 
 def test_series_pow_scalar(scalars_dfs):

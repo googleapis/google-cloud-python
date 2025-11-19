@@ -102,7 +102,6 @@ class Window(vendored_pandas_rolling.Window):
             op,
             self._window_spec,
             skip_null_groups=self._drop_null_groups,
-            never_skip_nulls=True,
         )
 
         if self._window_spec.grouping_keys:

@@ -1394,7 +1394,6 @@ class WindowOpNode(UnaryNode, AdditiveNode):
     expression: agg_expressions.Aggregation
     window_spec: window.WindowSpec
     output_name: identifiers.ColumnId
-    never_skip_nulls: bool = False
     skip_reproject_unsafe: bool = False
 
     def _validate(self):

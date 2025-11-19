@@ -324,12 +324,8 @@ def compile_window(node: nodes.WindowOpNode, child: ir.SQLGlotIR) -> ir.SQLGlotI
     )
 
     clauses: list[tuple[sge.Expression, sge.Expression]] = []
-    if node.expression.op.skips_nulls and not node.never_skip_nulls:
-        for column in inputs:
-            clauses.append((sge.Is(this=column, expression=sge.Null()), sge.Null()))
-
     if window_spec.min_periods and len(inputs) > 0:
-        if node.expression.op.skips_nulls:
+        if not node.expression.op.nulls_count_for_min_values:
             # Most operations do not count NULL values towards min_periods
             not_null_columns = [
                 sge.Not(this=sge.Is(this=column, expression=sge.Null()))

@@ -401,37 +401,10 @@ class ArrayValue:
             )
         )
 
-    def project_window_op(
-        self,
-        column_name: str,
-        op: agg_ops.UnaryWindowOp,
-        window_spec: WindowSpec,
-        *,
-        never_skip_nulls=False,
-        skip_reproject_unsafe: bool = False,
-    ) -> Tuple[ArrayValue, str]:
-        """
-        Creates a new expression based on this expression with unary operation applied to one column.
-        column_name: the id of the input column present in the expression
-        op: the windowable operator to apply to the input column
-        window_spec: a specification of the window over which to apply the operator
-        output_name: the id to assign to the output of the operator, by default will replace input col if distinct output id not provided
-        never_skip_nulls: will disable null skipping for operators that would otherwise do so
-        skip_reproject_unsafe: skips the reprojection step, can be used when performing many non-dependent window operations, user responsible for not nesting window expressions, or using outputs as join, filter or aggregation keys before a reprojection
-        """
-
-        return self.project_window_expr(
-            agg_expressions.UnaryAggregation(op, ex.deref(column_name)),
-            window_spec,
-            never_skip_nulls,
-            skip_reproject_unsafe,
-        )
-
     def project_window_expr(
         self,
         expression: agg_expressions.Aggregation,
         window: WindowSpec,
-        never_skip_nulls=False,
         skip_reproject_unsafe: bool = False,
     ):
         output_name = self._gen_namespaced_uid()
@@ -442,7 +415,6 @@ class ArrayValue:
                     expression=expression,
                     window_spec=window,
                     output_name=ids.ColumnId(output_name),
-                    never_skip_nulls=never_skip_nulls,
                     skip_reproject_unsafe=skip_reproject_unsafe,
                 )
             ),
