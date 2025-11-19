@@ -26,6 +26,7 @@ __protobuf__ = proto.module(
     package="google.spanner.v1",
     manifest={
         "PlanNode",
+        "QueryAdvisorResult",
         "QueryPlan",
     },
 )
@@ -198,6 +199,49 @@ class PlanNode(proto.Message):
     )
 
 
+class QueryAdvisorResult(proto.Message):
+    r"""Output of query advisor analysis.
+
+    Attributes:
+        index_advice (MutableSequence[google.cloud.spanner_v1.types.QueryAdvisorResult.IndexAdvice]):
+            Optional. Index Recommendation for a query.
+            This is an optional field and the recommendation
+            will only be available when the recommendation
+            guarantees significant improvement in query
+            performance.
+    """
+
+    class IndexAdvice(proto.Message):
+        r"""Recommendation to add new indexes to run queries more
+        efficiently.
+
+        Attributes:
+            ddl (MutableSequence[str]):
+                Optional. DDL statements to add new indexes
+                that will improve the query.
+            improvement_factor (float):
+                Optional. Estimated latency improvement
+                factor. For example if the query currently takes
+                500 ms to run and the estimated latency with new
+                indexes is 100 ms this field will be 5.
+        """
+
+        ddl: MutableSequence[str] = proto.RepeatedField(
+            proto.STRING,
+            number=1,
+        )
+        improvement_factor: float = proto.Field(
+            proto.DOUBLE,
+            number=2,
+        )
+
+    index_advice: MutableSequence[IndexAdvice] = proto.RepeatedField(
+        proto.MESSAGE,
+        number=1,
+        message=IndexAdvice,
+    )
+
+
 class QueryPlan(proto.Message):
     r"""Contains an ordered list of nodes appearing in the query
     plan.
@@ -208,12 +252,21 @@ class QueryPlan(proto.Message):
             pre-order starting with the plan root. Each
             [PlanNode][google.spanner.v1.PlanNode]'s ``id`` corresponds
             to its index in ``plan_nodes``.
+        query_advice (google.cloud.spanner_v1.types.QueryAdvisorResult):
+            Optional. The advise/recommendations for a
+            query. Currently this field will be serving
+            index recommendations for a query.
     """
 
     plan_nodes: MutableSequence["PlanNode"] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
         message="PlanNode",
+    )
+    query_advice: "QueryAdvisorResult" = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        message="QueryAdvisorResult",
     )
 
 

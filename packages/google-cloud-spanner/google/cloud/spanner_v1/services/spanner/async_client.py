@@ -49,6 +49,7 @@ except AttributeError:  # pragma: NO COVER
 
 from google.cloud.spanner_v1.services.spanner import pagers
 from google.cloud.spanner_v1.types import commit_response
+from google.cloud.spanner_v1.types import location
 from google.cloud.spanner_v1.types import mutation
 from google.cloud.spanner_v1.types import result_set
 from google.cloud.spanner_v1.types import spanner
@@ -477,10 +478,11 @@ class SpannerAsyncClient:
                 should not be set.
             session_count (:class:`int`):
                 Required. The number of sessions to be created in this
-                batch call. The API can return fewer than the requested
-                number of sessions. If a specific number of sessions are
-                desired, the client can make additional calls to
-                ``BatchCreateSessions`` (adjusting
+                batch call. At least one session is created. The API can
+                return fewer than the requested number of sessions. If a
+                specific number of sessions are desired, the client can
+                make additional calls to ``BatchCreateSessions``
+                (adjusting
                 [session_count][google.spanner.v1.BatchCreateSessionsRequest.session_count]
                 as necessary).
 

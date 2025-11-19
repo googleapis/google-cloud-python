@@ -96,8 +96,9 @@ class TransactionOptions(proto.Message):
     """
 
     class IsolationLevel(proto.Enum):
-        r"""``IsolationLevel`` is used when setting ``isolation_level`` for a
-        transaction.
+        r"""``IsolationLevel`` is used when setting the `isolation
+        level <https://cloud.google.com/spanner/docs/isolation-levels>`__
+        for a transaction.
 
         Values:
             ISOLATION_LEVEL_UNSPECIFIED (0):
@@ -124,8 +125,8 @@ class TransactionOptions(proto.Message):
                 ``SERIALIZABLE`` transactions, only write-write conflicts
                 are detected in snapshot transactions.
 
-                This isolation level does not support Read-only and
-                Partitioned DML transactions.
+                This isolation level does not support read-only and
+                partitioned DML transactions.
 
                 When ``REPEATABLE_READ`` is specified on a read-write
                 transaction, the locking semantics default to

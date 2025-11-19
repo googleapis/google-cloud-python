@@ -19,6 +19,7 @@ from typing import MutableMapping, MutableSequence
 
 import proto  # type: ignore
 
+from google.cloud.spanner_v1.types import location
 from google.cloud.spanner_v1.types import query_plan as gs_query_plan
 from google.cloud.spanner_v1.types import transaction as gs_transaction
 from google.cloud.spanner_v1.types import type as gs_type
@@ -223,6 +224,14 @@ class PartialResultSet(proto.Message):
             ``PartialResultSet`` in the stream. The server might
             optionally set this field. Clients shouldn't rely on this
             field being set in all cases.
+        cache_update (google.cloud.spanner_v1.types.CacheUpdate):
+            Optional. A cache update expresses a set of changes the
+            client should incorporate into its location cache. The
+            client should discard the changes if they are older than the
+            data it already has. This data can be obtained in response
+            to requests that included a ``RoutingHint`` field, but may
+            also be obtained by explicit location-fetching RPCs which
+            may be added in the future.
     """
 
     metadata: "ResultSetMetadata" = proto.Field(
@@ -256,6 +265,11 @@ class PartialResultSet(proto.Message):
     last: bool = proto.Field(
         proto.BOOL,
         number=9,
+    )
+    cache_update: location.CacheUpdate = proto.Field(
+        proto.MESSAGE,
+        number=10,
+        message=location.CacheUpdate,
     )
 
 

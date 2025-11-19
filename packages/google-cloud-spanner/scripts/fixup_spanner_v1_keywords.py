@@ -46,15 +46,15 @@ class spannerCallTransformer(cst.CSTTransformer):
         'create_session': ('database', 'session', ),
         'delete_session': ('name', ),
         'execute_batch_dml': ('session', 'transaction', 'statements', 'seqno', 'request_options', 'last_statements', ),
-        'execute_sql': ('session', 'sql', 'transaction', 'params', 'param_types', 'resume_token', 'query_mode', 'partition_token', 'seqno', 'query_options', 'request_options', 'directed_read_options', 'data_boost_enabled', 'last_statement', ),
-        'execute_streaming_sql': ('session', 'sql', 'transaction', 'params', 'param_types', 'resume_token', 'query_mode', 'partition_token', 'seqno', 'query_options', 'request_options', 'directed_read_options', 'data_boost_enabled', 'last_statement', ),
+        'execute_sql': ('session', 'sql', 'transaction', 'params', 'param_types', 'resume_token', 'query_mode', 'partition_token', 'seqno', 'query_options', 'request_options', 'directed_read_options', 'data_boost_enabled', 'last_statement', 'routing_hint', ),
+        'execute_streaming_sql': ('session', 'sql', 'transaction', 'params', 'param_types', 'resume_token', 'query_mode', 'partition_token', 'seqno', 'query_options', 'request_options', 'directed_read_options', 'data_boost_enabled', 'last_statement', 'routing_hint', ),
         'get_session': ('name', ),
         'list_sessions': ('database', 'page_size', 'page_token', 'filter', ),
         'partition_query': ('session', 'sql', 'transaction', 'params', 'param_types', 'partition_options', ),
         'partition_read': ('session', 'table', 'key_set', 'transaction', 'index', 'columns', 'partition_options', ),
-        'read': ('session', 'table', 'columns', 'key_set', 'transaction', 'index', 'limit', 'resume_token', 'partition_token', 'request_options', 'directed_read_options', 'data_boost_enabled', 'order_by', 'lock_hint', ),
+        'read': ('session', 'table', 'columns', 'key_set', 'transaction', 'index', 'limit', 'resume_token', 'partition_token', 'request_options', 'directed_read_options', 'data_boost_enabled', 'order_by', 'lock_hint', 'routing_hint', ),
         'rollback': ('session', 'transaction_id', ),
-        'streaming_read': ('session', 'table', 'columns', 'key_set', 'transaction', 'index', 'limit', 'resume_token', 'partition_token', 'request_options', 'directed_read_options', 'data_boost_enabled', 'order_by', 'lock_hint', ),
+        'streaming_read': ('session', 'table', 'columns', 'key_set', 'transaction', 'index', 'limit', 'resume_token', 'partition_token', 'request_options', 'directed_read_options', 'data_boost_enabled', 'order_by', 'lock_hint', 'routing_hint', ),
     }
 
     def leave_Call(self, original: cst.Call, updated: cst.Call) -> cst.CSTNode:

@@ -21,6 +21,7 @@ import proto  # type: ignore
 
 from google.cloud.spanner_v1.types import keys
 from google.protobuf import struct_pb2  # type: ignore
+from google.protobuf import timestamp_pb2  # type: ignore
 
 
 __protobuf__ = proto.module(
@@ -88,6 +89,14 @@ class Mutation(proto.Message):
         delete (google.cloud.spanner_v1.types.Mutation.Delete):
             Delete rows from a table. Succeeds whether or
             not the named rows were present.
+
+            This field is a member of `oneof`_ ``operation``.
+        send (google.cloud.spanner_v1.types.Mutation.Send):
+            Send a message to a queue.
+
+            This field is a member of `oneof`_ ``operation``.
+        ack (google.cloud.spanner_v1.types.Mutation.Ack):
+            Ack a message from a queue.
 
             This field is a member of `oneof`_ ``operation``.
     """
@@ -166,6 +175,79 @@ class Mutation(proto.Message):
             message=keys.KeySet,
         )
 
+    class Send(proto.Message):
+        r"""Arguments to [send][google.spanner.v1.Mutation.send] operations.
+
+        Attributes:
+            queue (str):
+                Required. The queue to which the message will
+                be sent.
+            key (google.protobuf.struct_pb2.ListValue):
+                Required. The primary key of the message to
+                be sent.
+            deliver_time (google.protobuf.timestamp_pb2.Timestamp):
+                The time at which Spanner will begin attempting to deliver
+                the message. If ``deliver_time`` is not set, Spanner will
+                deliver the message immediately. If ``deliver_time`` is in
+                the past, Spanner will replace it with a value closer to the
+                current time.
+            payload (google.protobuf.struct_pb2.Value):
+                The payload of the message.
+        """
+
+        queue: str = proto.Field(
+            proto.STRING,
+            number=1,
+        )
+        key: struct_pb2.ListValue = proto.Field(
+            proto.MESSAGE,
+            number=2,
+            message=struct_pb2.ListValue,
+        )
+        deliver_time: timestamp_pb2.Timestamp = proto.Field(
+            proto.MESSAGE,
+            number=3,
+            message=timestamp_pb2.Timestamp,
+        )
+        payload: struct_pb2.Value = proto.Field(
+            proto.MESSAGE,
+            number=4,
+            message=struct_pb2.Value,
+        )
+
+    class Ack(proto.Message):
+        r"""Arguments to [ack][google.spanner.v1.Mutation.ack] operations.
+
+        Attributes:
+            queue (str):
+                Required. The queue where the message to be
+                acked is stored.
+            key (google.protobuf.struct_pb2.ListValue):
+                Required. The primary key of the message to
+                be acked.
+            ignore_not_found (bool):
+                By default, an attempt to ack a message that does not exist
+                will fail with a ``NOT_FOUND`` error. With
+                ``ignore_not_found`` set to true, the ack will succeed even
+                if the message does not exist. This is useful for
+                unconditionally acking a message, even if it is missing or
+                has already been acked.
+        """
+
+        queue: str = proto.Field(
+            proto.STRING,
+            number=1,
+        )
+        key: struct_pb2.ListValue = proto.Field(
+            proto.MESSAGE,
+            number=2,
+            message=struct_pb2.ListValue,
+        )
+        ignore_not_found: bool = proto.Field(
+            proto.BOOL,
+            number=3,
+        )
+
     insert: Write = proto.Field(
         proto.MESSAGE,
         number=1,
@@ -195,6 +277,18 @@ class Mutation(proto.Message):
         number=5,
         oneof="operation",
         message=Delete,
+    )
+    send: Send = proto.Field(
+        proto.MESSAGE,
+        number=6,
+        oneof="operation",
+        message=Send,
+    )
+    ack: Ack = proto.Field(
+        proto.MESSAGE,
+        number=7,
+        oneof="operation",
+        message=Ack,
     )
 
 
