@@ -54,6 +54,10 @@ _GEMINI_2_FLASH_EXP_ENDPOINT = "gemini-2.0-flash-exp"
 _GEMINI_2_FLASH_001_ENDPOINT = "gemini-2.0-flash-001"
 _GEMINI_2_FLASH_LITE_001_ENDPOINT = "gemini-2.0-flash-lite-001"
 _GEMINI_2P5_PRO_PREVIEW_ENDPOINT = "gemini-2.5-pro-preview-05-06"
+_GEMINI_2P5_PRO_ENDPOINT = "gemini-2.5-pro"
+_GEMINI_2P5_FLASH_ENDPOINT = "gemini-2.5-flash"
+_GEMINI_2P5_FLASH_LITE_ENDPOINT = "gemini-2.5-flash-lite"
+
 _GEMINI_ENDPOINTS = (
     _GEMINI_1P5_PRO_PREVIEW_ENDPOINT,
     _GEMINI_1P5_PRO_FLASH_PREVIEW_ENDPOINT,
@@ -64,6 +68,9 @@ _GEMINI_ENDPOINTS = (
     _GEMINI_2_FLASH_EXP_ENDPOINT,
     _GEMINI_2_FLASH_001_ENDPOINT,
     _GEMINI_2_FLASH_LITE_001_ENDPOINT,
+    _GEMINI_2P5_PRO_ENDPOINT,
+    _GEMINI_2P5_FLASH_ENDPOINT,
+    _GEMINI_2P5_FLASH_LITE_ENDPOINT,
 )
 _GEMINI_PREVIEW_ENDPOINTS = (
     _GEMINI_1P5_PRO_PREVIEW_ENDPOINT,
@@ -84,6 +91,9 @@ _GEMINI_MULTIMODAL_ENDPOINTS = (
     _GEMINI_2_FLASH_EXP_ENDPOINT,
     _GEMINI_2_FLASH_001_ENDPOINT,
     _GEMINI_2_FLASH_LITE_001_ENDPOINT,
+    _GEMINI_2P5_PRO_ENDPOINT,
+    _GEMINI_2P5_FLASH_ENDPOINT,
+    _GEMINI_2P5_FLASH_LITE_ENDPOINT,
 )
 
 _CLAUDE_3_SONNET_ENDPOINT = "claude-3-sonnet"
@@ -419,7 +429,7 @@ class GeminiTextGenerator(base.RetriableRemotePredictor):
     """Gemini text generator LLM model.
 
     .. note::
-        gemini-1.5-X are going to be deprecated. Use gemini-2.0-X (https://cloud.google.com/python/docs/reference/bigframes/latest/bigframes.ml.llm.GeminiTextGenerator) instead.
+        gemini-1.5-X are going to be deprecated. Use gemini-2.5-X (https://cloud.google.com/python/docs/reference/bigframes/latest/bigframes.ml.llm.GeminiTextGenerator) instead.
 
     Args:
         model_name (str, Default to "gemini-2.0-flash-001"):
@@ -427,12 +437,13 @@ class GeminiTextGenerator(base.RetriableRemotePredictor):
             "gemini-1.5-pro-preview-0514", "gemini-1.5-flash-preview-0514",
             "gemini-1.5-pro-001", "gemini-1.5-pro-002", "gemini-1.5-flash-001",
             "gemini-1.5-flash-002", "gemini-2.0-flash-exp",
-            "gemini-2.0-flash-lite-001", and "gemini-2.0-flash-001".
+            "gemini-2.0-flash-lite-001", "gemini-2.0-flash-001",
+            "gemini-2.5-pro", "gemini-2.5-flash" and "gemini-2.5-flash-lite".
             If no setting is provided, "gemini-2.0-flash-001" will be used by
             default and a warning will be issued.
 
         .. note::
-            "gemini-1.5-X" is going to be deprecated. Please use gemini-2.0-X instead. For example, "gemini-2.0-flash-001".
+            "gemini-1.5-X" is going to be deprecated. Please use gemini-2.5-X instead. For example, "gemini-2.5-flash".
             "gemini-2.0-flash-exp", "gemini-1.5-pro-preview-0514" and "gemini-1.5-flash-preview-0514" is subject to the "Pre-GA Offerings Terms" in the General Service Terms section of the
             Service Specific Terms(https://cloud.google.com/terms/service-terms#1). Pre-GA products and features are available "as is"
             and might have limited support. For more information, see the launch stage descriptions
@@ -462,6 +473,9 @@ class GeminiTextGenerator(base.RetriableRemotePredictor):
                 "gemini-2.0-flash-exp",
                 "gemini-2.0-flash-001",
                 "gemini-2.0-flash-lite-001",
+                "gemini-2.5-pro",
+                "gemini-2.5-flash",
+                "gemini-2.5-flash-lite",
             ]
         ] = None,
         session: Optional[bigframes.Session] = None,
@@ -510,7 +524,7 @@ class GeminiTextGenerator(base.RetriableRemotePredictor):
             msg = exceptions.format_message(
                 _MODEL_DEPRECATE_WARNING.format(
                     model_name=self.model_name,
-                    new_model_name="gemini-2.0-X",
+                    new_model_name="gemini-2.5-X",
                     link="https://cloud.google.com/python/docs/reference/bigframes/latest/bigframes.ml.llm.GeminiTextGenerator",
                 )
             )
