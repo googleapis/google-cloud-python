@@ -98,41 +98,11 @@ s.move(
         "noxfile.py",
         "CONTRIBUTING.rst",
         "README.rst",
-        ".kokoro/continuous/continuous.cfg",
-        ".kokoro/presubmit/system-3.8.cfg",
-        ".kokoro/presubmit/prerelease-deps.cfg",
-        ".kokoro/continuous/prerelease-deps.cfg",
-        ".github/blunderbuss.yml", # blunderbuss assignment to python squad
-        ".github/workflows", # exclude gh actions as credentials are needed for tests
-        ".github/release-please.yml", # special support for a python2 branch in this repo
+        ".kokoro/**",
+        ".github/**",
     ],
 )
 
-s.replace(
-    ".kokoro/build.sh",
-    "export PYTHONUNBUFFERED=1",
-    """export PYTHONUNBUFFERED=1
-
-# Export variable to override api endpoint
-export API_ENDPOINT_OVERRIDE
-
-# Export variable to override api endpoint version
-export API_VERSION_OVERRIDE
-
-# Export dual region locations
-export DUAL_REGION_LOC_1
-export DUAL_REGION_LOC_2
-
-# Setup universe domain testing needed environment variables.
-export TEST_UNIVERSE_DOMAIN_CREDENTIAL=$(realpath ${KOKORO_GFILE_DIR}/secret_manager/client-library-test-universe-domain-credential)
-export TEST_UNIVERSE_DOMAIN=$(gcloud secrets versions access latest --project cloud-devrel-kokoro-resources --secret=client-library-test-universe-domain)
-export TEST_UNIVERSE_PROJECT_ID=$(gcloud secrets versions access latest --project cloud-devrel-kokoro-resources --secret=client-library-test-universe-project-id)
-export TEST_UNIVERSE_LOCATION=$(gcloud secrets versions access latest --project cloud-devrel-kokoro-resources --secret=client-library-test-universe-storage-location)
-
-""")
-
 python.py_samples(skip_readmes=True)
 
-# Use a python runtime which is available in the owlbot post processor here
-# https://github.com/googleapis/synthtool/blob/master/docker/owlbot/python/Dockerfile
-s.shell.run(["nox", "-s", "blacken-3.10"], hide_output=False)
+s.shell.run(["nox", "-s", "blacken"], hide_output=False)

@@ -1,0 +1,31 @@
+image: us-central1-docker.pkg.dev/cloud-sdk-librarian-prod/images-prod/python-librarian-generator@sha256:8e2c32496077054105bd06c54a59d6a6694287bc053588e24debe6da6920ad91
+libraries:
+  - id: google-cloud-storage
+    version: 3.6.0
+    last_generated_commit: 5400ccce473c439885bd6bf2924fd242271bfcab
+    apis:
+      - path: google/storage/v2
+        service_config: storage_v2.yaml
+    source_roots:
+      - .
+    preserve_regex: []
+    remove_regex:
+      - ^.flake8
+      - ^.pre-commit-config.yaml
+      - ^.trampolinerc
+      - ^.repo-metadata.json
+      - ^LICENSE
+      - ^MANIFEST.in
+      - ^SECURITY.md
+      - ^mypy.ini
+      - ^noxfile.py
+      - ^renovate.json
+      - ^setup.py
+      - ^docs/summary_overview.md
+      - ^google/cloud/_storage_v2
+      - ^samples/generated_samples
+      - ^testing/constraints-3.8.txt
+      - ^testing/constraints-3.1.*
+      - ^tests/__init__.py
+      - ^tests/unit/gapic
+    tag_format: v{version}
