@@ -60,6 +60,12 @@ GCE_METADATA_IP = "GCE_METADATA_IP"
 """Environment variable providing an alternate ip:port to be used for ip-only
 GCE metadata requests."""
 
+GCE_METADATA_MTLS_MODE = "GCE_METADATA_MTLS_MODE"
+"""Environment variable controlling the mTLS behavior for GCE metadata requests.
+
+Can be one of "strict", "none", or "default".
+"""
+
 GOOGLE_API_USE_CLIENT_CERTIFICATE = "GOOGLE_API_USE_CLIENT_CERTIFICATE"
 """Environment variable controlling whether to use client certificate or not.
 
