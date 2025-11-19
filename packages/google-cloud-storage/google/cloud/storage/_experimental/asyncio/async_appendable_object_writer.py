@@ -114,7 +114,11 @@ class AsyncAppendableObjectWriter:
         self.persisted_size: Optional[int] = None
 
     async def state_lookup(self) -> int:
-        """Returns the persisted_size."""
+        """Returns the persisted_size
+
+        :rtype: int
+        :returns: persisted size.
+        """
         await self.write_obj_stream.send(
             _storage_v2.BidiWriteObjectRequest(
                 state_lookup=True,
@@ -142,18 +146,44 @@ class AsyncAppendableObjectWriter:
         raise NotImplementedError("append is not implemented yet.")
 
     async def flush(self) -> int:
-        """Returns persisted_size"""
-        raise NotImplementedError("flush is not implemented yet.")
+        """Flushes the data to the server.
+
+        :rtype: int
+        :returns: The persisted size after flush.
+        """
+        await self.write_obj_stream.send(
+            _storage_v2.BidiWriteObjectRequest(
+                flush=True,
+                state_lookup=True,
+            )
+        )
+        response = await self.write_obj_stream.recv()
+        self.persisted_size = response.persisted_size
+        self.offset = self.persisted_size
+        return self.persisted_size
 
     async def close(self, finalize_on_close=False) -> int:
         """Returns persisted_size"""
-        raise NotImplementedError("close is not implemented yet.")
+        if finalize_on_close:
+            await self.finalize()
 
-    async def finalize(self) -> int:
-        """Returns persisted_size
+        await self.write_obj_stream.close()
+        self._is_stream_open = False
+        self.offset = None
+
+    async def finalize(self) -> _storage_v2.Object:
+        """Finalizes the Appendable Object.
+
         Note: Once finalized no more data can be appended.
+
+        rtype: google.cloud.storage_v2.types.Object
+        returns: The finalized object resource.
         """
-        raise NotImplementedError("finalize is not implemented yet.")
+        await self.write_obj_stream.send(
+            _storage_v2.BidiWriteObjectRequest(finish_write=True)
+        )
+        response = await self.write_obj_stream.recv()
+        self.object_resource = response.resource
 
     # helper methods.
     async def append_from_string(self, data: str):
