@@ -1,0 +1,11 @@
+image: us-central1-docker.pkg.dev/cloud-sdk-librarian-prod/images-prod/python-librarian-generator@sha256:e601da6e29c993e14c52867f2c088dfb841beae618d2a4f1e0f7970a888ab020
+libraries:
+  - id: google-crc32c
+    version: 1.7.1
+    last_generated_commit: ""
+    apis: []
+    source_roots:
+      - .
+    preserve_regex: []
+    remove_regex: []
+    tag_format: v{version}
