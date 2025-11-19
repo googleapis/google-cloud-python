@@ -465,6 +465,31 @@ class UserServiceGrpcAsyncIOTransport(UserServiceTransport):
             )
         return self._stubs["list_users"]
 
+    @property
+    def verify_self(self) -> Callable[[user.VerifySelfRequest], Awaitable[user.User]]:
+        r"""Return a callable for the verify self method over gRPC.
+
+        Updates the user that is represented by the caller
+        from pending to verified.
+
+        Returns:
+            Callable[[~.VerifySelfRequest],
+                    Awaitable[~.User]]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "verify_self" not in self._stubs:
+            self._stubs["verify_self"] = self._logged_channel.unary_unary(
+                "/google.shopping.merchant.accounts.v1.UserService/VerifySelf",
+                request_serializer=user.VerifySelfRequest.serialize,
+                response_deserializer=user.User.deserialize,
+            )
+        return self._stubs["verify_self"]
+
     def _prep_wrapped_messages(self, client_info):
         """Precompute the wrapped methods, overriding the base class method to use async wrappers."""
         self._wrapped_methods = {
@@ -490,6 +515,11 @@ class UserServiceGrpcAsyncIOTransport(UserServiceTransport):
             ),
             self.list_users: self._wrap_method(
                 self.list_users,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.verify_self: self._wrap_method(
+                self.verify_self,
                 default_timeout=None,
                 client_info=client_info,
             ),

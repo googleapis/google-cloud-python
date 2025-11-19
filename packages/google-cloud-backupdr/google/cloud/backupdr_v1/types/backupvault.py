@@ -175,6 +175,11 @@ class BackupVault(proto.Message):
             can be extended.
 
             This field is a member of `oneof`_ ``_backup_minimum_enforced_retention_duration``.
+        backup_retention_inheritance (google.cloud.backupdr_v1.types.BackupVault.BackupRetentionInheritance):
+            Optional. Setting for how a backup's enforced
+            retention end time is inherited.
+
+            This field is a member of `oneof`_ ``_backup_retention_inheritance``.
         deletable (bool):
             Output only. Set to true when there are no
             backups nested under this resource.
@@ -219,7 +224,40 @@ class BackupVault(proto.Message):
 
             Access restriction for the backup vault. Default value is
             WITHIN_ORGANIZATION if not provided during creation.
+        encryption_config (google.cloud.backupdr_v1.types.BackupVault.EncryptionConfig):
+            Optional. The encryption config of the backup
+            vault.
+
+            This field is a member of `oneof`_ ``_encryption_config``.
     """
+
+    class BackupRetentionInheritance(proto.Enum):
+        r"""How a backup's enforced retention end time is inherited.
+
+        Values:
+            BACKUP_RETENTION_INHERITANCE_UNSPECIFIED (0):
+                Inheritance behavior not set. This will default to
+                ``INHERIT_VAULT_RETENTION``.
+            INHERIT_VAULT_RETENTION (1):
+                The enforced retention end time of a backup will be
+                inherited from the backup vault's
+                ``backup_minimum_enforced_retention_duration`` field.
+
+                This is the default behavior.
+            MATCH_BACKUP_EXPIRE_TIME (2):
+                The enforced retention end time of a backup
+                will always match the expire time of the backup.
+
+                If this is set, the backup's enforced retention
+                end time will be set to match the expire time
+                during creation of the backup. When updating,
+                the ERET and expire time must be updated
+                together and have the same value. Invalid update
+                requests will be rejected by the server.
+        """
+        BACKUP_RETENTION_INHERITANCE_UNSPECIFIED = 0
+        INHERIT_VAULT_RETENTION = 1
+        MATCH_BACKUP_EXPIRE_TIME = 2
 
     class State(proto.Enum):
         r"""Holds the state of the backup vault resource.
@@ -274,6 +312,32 @@ class BackupVault(proto.Message):
         UNRESTRICTED = 3
         WITHIN_ORG_BUT_UNRESTRICTED_FOR_BA = 4
 
+    class EncryptionConfig(proto.Message):
+        r"""Message describing the EncryptionConfig of backup vault.
+        This determines how data within the vault is encrypted at rest.
+
+
+        .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
+        Attributes:
+            kms_key_name (str):
+                Optional. The Cloud KMS key name to encrypt
+                backups in this backup vault. Must be in the
+                same region as the vault. Some workload backups
+                like compute disk backups may use their
+                inherited source key instead. Format:
+
+                projects/{project}/locations/{location}/keyRings/{ring}/cryptoKeys/{key}
+
+                This field is a member of `oneof`_ ``_kms_key_name``.
+        """
+
+        kms_key_name: str = proto.Field(
+            proto.STRING,
+            number=1,
+            optional=True,
+        )
+
     name: str = proto.Field(
         proto.STRING,
         number=1,
@@ -305,6 +369,12 @@ class BackupVault(proto.Message):
         number=20,
         optional=True,
         message=duration_pb2.Duration,
+    )
+    backup_retention_inheritance: BackupRetentionInheritance = proto.Field(
+        proto.ENUM,
+        number=27,
+        optional=True,
+        enum=BackupRetentionInheritance,
     )
     deletable: bool = proto.Field(
         proto.BOOL,
@@ -352,6 +422,12 @@ class BackupVault(proto.Message):
         proto.ENUM,
         number=24,
         enum=AccessRestriction,
+    )
+    encryption_config: EncryptionConfig = proto.Field(
+        proto.MESSAGE,
+        number=29,
+        optional=True,
+        message=EncryptionConfig,
     )
 
 
@@ -1016,6 +1092,12 @@ class Backup(proto.Message):
             before this time.
 
             This field is a member of `oneof`_ ``_enforced_retention_end_time``.
+        backup_retention_inheritance (google.cloud.backupdr_v1.types.BackupVault.BackupRetentionInheritance):
+            Output only. Setting for how the enforced
+            retention end time is inherited. This value is
+            copied from this backup's BackupVault.
+
+            This field is a member of `oneof`_ ``_backup_retention_inheritance``.
         expire_time (google.protobuf.timestamp_pb2.Timestamp):
             Optional. When this backup is automatically
             expired.
@@ -1086,6 +1168,9 @@ class Backup(proto.Message):
             resource that is being backed up.
 
             This field is a member of `oneof`_ ``source_resource``.
+        kms_key_versions (MutableSequence[str]):
+            Optional. Output only. The list of KMS key
+            versions used to encrypt the backup.
     """
 
     class State(proto.Enum):
@@ -1208,6 +1293,14 @@ class Backup(proto.Message):
         optional=True,
         message=timestamp_pb2.Timestamp,
     )
+    backup_retention_inheritance: "BackupVault.BackupRetentionInheritance" = (
+        proto.Field(
+            proto.ENUM,
+            number=30,
+            optional=True,
+            enum="BackupVault.BackupRetentionInheritance",
+        )
+    )
     expire_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=7,
@@ -1294,6 +1387,10 @@ class Backup(proto.Message):
         number=31,
         oneof="source_resource",
         message="BackupGcpResource",
+    )
+    kms_key_versions: MutableSequence[str] = proto.RepeatedField(
+        proto.STRING,
+        number=33,
     )
 
 
@@ -2248,6 +2345,25 @@ class RestoreBackupRequest(proto.Message):
             restore.
 
             This field is a member of `oneof`_ ``instance_properties``.
+        clear_overrides_field_mask (google.protobuf.field_mask_pb2.FieldMask):
+            Optional. A field mask used to clear server-side default
+            values for fields within the ``instance_properties`` oneof.
+
+            When a field in this mask is cleared, the server will not
+            apply its default logic (like inheriting a value from the
+            source) for that field.
+
+            The most common current use case is clearing default
+            encryption keys.
+
+            Examples of field mask paths:
+
+            - Compute Instance Disks:
+              ``compute_instance_restore_properties.disks.*.disk_encryption_key``
+            - Single Disk:
+              ``disk_restore_properties.disk_encryption_key``
+
+            This field is a member of `oneof`_ ``_clear_overrides_field_mask``.
     """
 
     name: str = proto.Field(
@@ -2289,6 +2405,12 @@ class RestoreBackupRequest(proto.Message):
         number=7,
         oneof="instance_properties",
         message=backupvault_disk.DiskRestoreProperties,
+    )
+    clear_overrides_field_mask: field_mask_pb2.FieldMask = proto.Field(
+        proto.MESSAGE,
+        number=8,
+        optional=True,
+        message=field_mask_pb2.FieldMask,
     )
 
 

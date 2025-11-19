@@ -414,6 +414,38 @@ class DeveloperRegistrationServiceGrpcTransport(DeveloperRegistrationServiceTran
             )
         return self._stubs["unregister_gcp"]
 
+    @property
+    def get_account_for_gcp_registration(
+        self,
+    ) -> Callable[
+        [empty_pb2.Empty], developerregistration.GetAccountForGcpRegistrationResponse
+    ]:
+        r"""Return a callable for the get account for gcp
+        registration method over gRPC.
+
+        Retrieves the merchant account that the calling GCP
+        is registered with.
+
+        Returns:
+            Callable[[~.Empty],
+                    ~.GetAccountForGcpRegistrationResponse]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "get_account_for_gcp_registration" not in self._stubs:
+            self._stubs[
+                "get_account_for_gcp_registration"
+            ] = self._logged_channel.unary_unary(
+                "/google.shopping.merchant.accounts.v1.DeveloperRegistrationService/GetAccountForGcpRegistration",
+                request_serializer=empty_pb2.Empty.SerializeToString,
+                response_deserializer=developerregistration.GetAccountForGcpRegistrationResponse.deserialize,
+            )
+        return self._stubs["get_account_for_gcp_registration"]
+
     def close(self):
         self._logged_channel.close()
 

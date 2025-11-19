@@ -7232,7 +7232,8 @@ class VmMigrationAsyncClient:
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> operation_async.AsyncOperation:
-        r"""Initiates the cancellation of a running clone job.
+        r"""Initiates the cancellation of a running
+        ImageImportJob.
 
         .. code-block:: python
 

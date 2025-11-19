@@ -45,7 +45,7 @@ class merchant_accountsCallTransformer(cst.CSTTransformer):
         'batch_delete_regions': ('parent', 'requests', ),
         'batch_update_regions': ('parent', 'requests', ),
         'claim_homepage': ('name', 'overwrite', ),
-        'create_and_configure_account': ('account', 'service', 'user', ),
+        'create_and_configure_account': ('account', 'service', 'user', 'set_alias', ),
         'create_checkout_settings': ('parent', 'checkout_settings', ),
         'create_omnichannel_setting': ('parent', 'omnichannel_setting', ),
         'create_online_return_policy': ('parent', 'online_return_policy', ),
@@ -60,6 +60,7 @@ class merchant_accountsCallTransformer(cst.CSTTransformer):
         'enable_program': ('name', ),
         'find_lfp_providers': ('parent', 'page_size', 'page_token', ),
         'get_account': ('name', ),
+        'get_account_for_gcp_registration': (),
         'get_account_relationship': ('name', ),
         'get_account_service': ('name', ),
         'get_autofeed_settings': ('name', ),
@@ -112,6 +113,7 @@ class merchant_accountsCallTransformer(cst.CSTTransformer):
         'update_omnichannel_setting': ('omnichannel_setting', 'update_mask', ),
         'update_region': ('region', 'update_mask', ),
         'update_user': ('user', 'update_mask', ),
+        'verify_self': ('account', ),
     }
 
     def leave_Call(self, original: cst.Call, updated: cst.Call) -> cst.CSTNode:

@@ -101,6 +101,7 @@ __protobuf__ = proto.module(
         "UpgradeApplianceResponse",
         "ListDatacenterConnectorsRequest",
         "ComputeEngineTargetDefaults",
+        "AdaptationModifier",
         "ComputeEngineTargetDetails",
         "NetworkInterface",
         "AppliedLicense",
@@ -4089,6 +4090,9 @@ class ComputeEngineTargetDefaults(proto.Message):
             property will trigger an internal process which
             will convert the virtual machine from using the
             existing boot option to another.
+        adaptation_modifiers (MutableSequence[google.cloud.vmmigration_v1.types.AdaptationModifier]):
+            Optional. AdaptationModifiers are the set of
+            modifiers used during OS adaptation.
         disk_replica_zones (MutableSequence[str]):
             Optional. Additional replica zones of the target regional
             disks. If this list is not empty a regional disk will be
@@ -4101,6 +4105,16 @@ class ComputeEngineTargetDefaults(proto.Message):
             for further details about regional vs zonal disks. If not
             specified, a zonal disk will be created in the same zone the
             VM is created.
+        storage_pool (str):
+            Optional. If specified this will be the
+            storage pool in which the disk is created. This
+            is the full path of the storage pool resource,
+            for example:
+
+            "projects/my-project/zones/us-central1-a/storagePools/my-storage-pool".
+            The storage pool must be in the same project and
+            zone as the target disks. The storage pool's
+            type must match the disk type.
     """
 
     vm_name: str = proto.Field(
@@ -4201,9 +4215,41 @@ class ComputeEngineTargetDefaults(proto.Message):
         number=20,
         enum="BootConversion",
     )
+    adaptation_modifiers: MutableSequence["AdaptationModifier"] = proto.RepeatedField(
+        proto.MESSAGE,
+        number=23,
+        message="AdaptationModifier",
+    )
     disk_replica_zones: MutableSequence[str] = proto.RepeatedField(
         proto.STRING,
         number=24,
+    )
+    storage_pool: str = proto.Field(
+        proto.STRING,
+        number=25,
+    )
+
+
+class AdaptationModifier(proto.Message):
+    r"""AdaptationModifier a modifier to be used for configuration of
+    the OS adaptation process.
+
+    Attributes:
+        modifier (str):
+            Optional. The modifier name.
+        value (str):
+            Optional. The value of the modifier.
+            The actual value depends on the modifier and can
+            also be empty.
+    """
+
+    modifier: str = proto.Field(
+        proto.STRING,
+        number=3,
+    )
+    value: str = proto.Field(
+        proto.STRING,
+        number=2,
     )
 
 
@@ -4271,6 +4317,9 @@ class ComputeEngineTargetDetails(proto.Message):
             property will trigger an internal process which
             will convert the virtual machine from using the
             existing boot option to another.
+        adaptation_modifiers (MutableSequence[google.cloud.vmmigration_v1.types.AdaptationModifier]):
+            Optional. Modifiers to be used as
+            configuration of the OS adaptation process.
         disk_replica_zones (MutableSequence[str]):
             Optional. Additional replica zones of the target regional
             disks. If this list is not empty a regional disk will be
@@ -4283,6 +4332,17 @@ class ComputeEngineTargetDetails(proto.Message):
             for further details about regional vs zonal disks. If not
             specified, a zonal disk will be created in the same zone the
             VM is created.
+        storage_pool (str):
+            Optional. The storage pool used for the VM
+            disks. If specified this will be the storage
+            pool in which the disk is created. This is the
+            full path of the storage pool resource, for
+            example:
+
+            "projects/my-project/zones/us-central1-a/storagePools/my-storage-pool".
+            The storage pool must be in the same project and
+            zone as the target disks. The storage pool's
+            type must match the disk type.
     """
 
     vm_name: str = proto.Field(
@@ -4383,9 +4443,18 @@ class ComputeEngineTargetDetails(proto.Message):
         number=20,
         enum="BootConversion",
     )
+    adaptation_modifiers: MutableSequence["AdaptationModifier"] = proto.RepeatedField(
+        proto.MESSAGE,
+        number=23,
+        message="AdaptationModifier",
+    )
     disk_replica_zones: MutableSequence[str] = proto.RepeatedField(
         proto.STRING,
         number=24,
+    )
+    storage_pool: str = proto.Field(
+        proto.STRING,
+        number=25,
     )
 
 
@@ -7456,6 +7525,9 @@ class ImageImportOsAdaptationParameters(proto.Message):
             the image from using the existing boot option to
             another. The size of the boot disk might be
             increased to allow the conversion
+        adaptation_modifiers (MutableSequence[google.cloud.vmmigration_v1.types.AdaptationModifier]):
+            Optional. Modifiers to be used as
+            configuration of the OS adaptation process.
     """
 
     generalize: bool = proto.Field(
@@ -7472,13 +7544,38 @@ class ImageImportOsAdaptationParameters(proto.Message):
         number=3,
         enum="BootConversion",
     )
+    adaptation_modifiers: MutableSequence["AdaptationModifier"] = proto.RepeatedField(
+        proto.MESSAGE,
+        number=4,
+        message="AdaptationModifier",
+    )
 
 
 class DataDiskImageImport(proto.Message):
-    r"""Mentions that the image import is not using OS adaptation
+    r"""Used when the image import is not using OS adaptation
     process.
 
+    Attributes:
+        guest_os_features (MutableSequence[str]):
+            Optional. A list of guest OS features to
+            apply to the imported image. These features are
+            flags that are used by Compute Engine to enable
+            certain capabilities for virtual machine
+            instances that are created from the image.
+
+            This field does not change the OS of the image;
+            it only marks the image with the specified
+            features. The user must ensure that the OS is
+            compatible with the features.
+
+            For a list of available features, see
+            https://cloud.google.com/compute/docs/images/create-custom#guest-os-features.
     """
+
+    guest_os_features: MutableSequence[str] = proto.RepeatedField(
+        proto.STRING,
+        number=1,
+    )
 
 
 class SkipOsAdaptation(proto.Message):

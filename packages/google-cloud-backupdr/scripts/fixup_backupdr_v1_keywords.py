@@ -69,7 +69,7 @@ class backupdrCallTransformer(cst.CSTTransformer):
         'list_data_source_references': ('parent', 'page_size', 'page_token', 'filter', 'order_by', ),
         'list_data_sources': ('parent', 'page_size', 'page_token', 'filter', 'order_by', ),
         'list_management_servers': ('parent', 'page_size', 'page_token', 'filter', 'order_by', ),
-        'restore_backup': ('name', 'request_id', 'compute_instance_target_environment', 'disk_target_environment', 'region_disk_target_environment', 'compute_instance_restore_properties', 'disk_restore_properties', ),
+        'restore_backup': ('name', 'request_id', 'compute_instance_target_environment', 'disk_target_environment', 'region_disk_target_environment', 'compute_instance_restore_properties', 'disk_restore_properties', 'clear_overrides_field_mask', ),
         'trigger_backup': ('name', 'rule_id', 'request_id', ),
         'update_backup': ('update_mask', 'backup', 'request_id', ),
         'update_backup_plan': ('backup_plan', 'update_mask', 'request_id', ),

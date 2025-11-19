@@ -121,6 +121,7 @@ from .types.accountservices import (
     AccountService,
     ApproveAccountServiceRequest,
     CampaignsManagement,
+    ComparisonShopping,
     GetAccountServiceRequest,
     Handshake,
     ListAccountServicesRequest,
@@ -164,6 +165,7 @@ from .types.checkoutsettings import (
 from .types.customerservice import CustomerService
 from .types.developerregistration import (
     DeveloperRegistration,
+    GetAccountForGcpRegistrationResponse,
     GetDeveloperRegistrationRequest,
     RegisterGcpRequest,
     UnregisterGcpRequest,
@@ -288,7 +290,9 @@ from .types.user import (
     ListUsersResponse,
     UpdateUserRequest,
     User,
+    VerifySelfRequest,
 )
+from .types.verificationmailsettings import VerificationMailSettings
 
 __all__ = (
     "AccountIssueServiceAsyncClient",
@@ -352,6 +356,7 @@ __all__ = (
     "CheckoutSettings",
     "CheckoutSettingsServiceClient",
     "ClaimHomepageRequest",
+    "ComparisonShopping",
     "CreateAndConfigureAccountRequest",
     "CreateCheckoutSettingsRequest",
     "CreateOmnichannelSettingRequest",
@@ -377,6 +382,7 @@ __all__ = (
     "FindLfpProvidersResponse",
     "GbpAccount",
     "GbpAccountsServiceClient",
+    "GetAccountForGcpRegistrationResponse",
     "GetAccountRelationshipRequest",
     "GetAccountRequest",
     "GetAccountServiceRequest",
@@ -486,6 +492,8 @@ __all__ = (
     "User",
     "UserServiceClient",
     "Value",
+    "VerificationMailSettings",
+    "VerifySelfRequest",
     "Warehouse",
     "WarehouseBasedDeliveryTime",
     "WarehouseCutoffTime",

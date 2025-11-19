@@ -180,6 +180,7 @@ from google.shopping.merchant_accounts_v1.types.accountservices import (
     AccountService,
     ApproveAccountServiceRequest,
     CampaignsManagement,
+    ComparisonShopping,
     GetAccountServiceRequest,
     Handshake,
     ListAccountServicesRequest,
@@ -223,6 +224,7 @@ from google.shopping.merchant_accounts_v1.types.checkoutsettings import (
 from google.shopping.merchant_accounts_v1.types.customerservice import CustomerService
 from google.shopping.merchant_accounts_v1.types.developerregistration import (
     DeveloperRegistration,
+    GetAccountForGcpRegistrationResponse,
     GetDeveloperRegistrationRequest,
     RegisterGcpRequest,
     UnregisterGcpRequest,
@@ -351,6 +353,10 @@ from google.shopping.merchant_accounts_v1.types.user import (
     ListUsersResponse,
     UpdateUserRequest,
     User,
+    VerifySelfRequest,
+)
+from google.shopping.merchant_accounts_v1.types.verificationmailsettings import (
+    VerificationMailSettings,
 )
 
 __all__ = (
@@ -421,6 +427,7 @@ __all__ = (
     "AccountService",
     "ApproveAccountServiceRequest",
     "CampaignsManagement",
+    "ComparisonShopping",
     "GetAccountServiceRequest",
     "Handshake",
     "ListAccountServicesRequest",
@@ -452,6 +459,7 @@ __all__ = (
     "UriSettings",
     "CustomerService",
     "DeveloperRegistration",
+    "GetAccountForGcpRegistrationResponse",
     "GetDeveloperRegistrationRequest",
     "RegisterGcpRequest",
     "UnregisterGcpRequest",
@@ -552,4 +560,6 @@ __all__ = (
     "ListUsersResponse",
     "UpdateUserRequest",
     "User",
+    "VerifySelfRequest",
+    "VerificationMailSettings",
 )

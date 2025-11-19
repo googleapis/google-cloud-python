@@ -23,6 +23,7 @@ import proto  # type: ignore
 
 from google.shopping.merchant_accounts_v1.types import accountservices
 from google.shopping.merchant_accounts_v1.types import user as gsma_user
+from google.shopping.merchant_accounts_v1.types import verificationmailsettings
 
 __protobuf__ = proto.module(
     package="google.shopping.merchant.accounts.v1",
@@ -163,6 +164,11 @@ class CreateAndConfigureAccountRequest(proto.Message):
             advanced account through this method. Additional
             ``account_management`` or ``product_management`` services
             may be provided.
+        set_alias (MutableSequence[google.shopping.merchant_accounts_v1.types.CreateAndConfigureAccountRequest.SetAliasForRelationship]):
+            Optional. If a relationship is created with a
+            provider, you can set an alias for it with this
+            field. The calling user must be an admin on the
+            provider to be able to set an alias.
     """
 
     class AddUser(proto.Message):
@@ -176,6 +182,10 @@ class CreateAndConfigureAccountRequest(proto.Message):
                 Optional. Details about the user to be added.
                 At the moment, only access rights may be
                 specified.
+            verification_mail_settings (google.shopping.merchant_accounts_v1.types.VerificationMailSettings):
+                Optional. Settings related to configuring the
+                verification email that is sent after adding a
+                user.
         """
 
         user_id: str = proto.Field(
@@ -187,11 +197,20 @@ class CreateAndConfigureAccountRequest(proto.Message):
             number=2,
             message=gsma_user.User,
         )
+        verification_mail_settings: verificationmailsettings.VerificationMailSettings = proto.Field(
+            proto.MESSAGE,
+            number=3,
+            message=verificationmailsettings.VerificationMailSettings,
+        )
 
     class AddAccountService(proto.Message):
         r"""Additional instructions to add account services during
         creation of the account.
 
+        This message has `oneof`_ fields (mutually exclusive fields).
+        For each oneof, at most one member field can be set at the same time.
+        Setting any member of the oneof automatically clears all other
+        members.
 
         .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
 
@@ -203,6 +222,29 @@ class CreateAndConfigureAccountRequest(proto.Message):
                 Aggregation.
 
                 This field is a member of `oneof`_ ``service_type``.
+            account_management (google.shopping.merchant_accounts_v1.types.AccountManagement):
+                The provider manages this account. Payload
+                for service type Account Management.
+
+                This field is a member of `oneof`_ ``service_type``.
+            comparison_shopping (google.shopping.merchant_accounts_v1.types.ComparisonShopping):
+                The provider is a CSS (Comparison Shopping
+                Service) of this account. Payload for service
+                type Comparison Shopping.
+
+                This field is a member of `oneof`_ ``service_type``.
+            products_management (google.shopping.merchant_accounts_v1.types.ProductsManagement):
+                The provider manages products for this
+                account. Payload for service type products
+                management.
+
+                This field is a member of `oneof`_ ``service_type``.
+            campaigns_management (google.shopping.merchant_accounts_v1.types.CampaignsManagement):
+                The provider manages campaigns for this
+                account. Payload for service type campaigns
+                management.
+
+                This field is a member of `oneof`_ ``service_type``.
             provider (str):
                 Required. The provider of the service. Either the reference
                 to an account such as ``providers/123`` or a well-known
@@ -210,6 +252,26 @@ class CreateAndConfigureAccountRequest(proto.Message):
                 ``providers/GOOGLE_BUSINESS_PROFILE``).
 
                 This field is a member of `oneof`_ ``_provider``.
+            external_account_id (str):
+                Immutable. An optional, immutable identifier that Google
+                uses to refer to this account when communicating with the
+                provider. This should be the unique account ID within the
+                provider's system (for example, your shop ID in Shopify).
+
+                If you have multiple accounts with the same provider - for
+                instance, different accounts for various regions — the
+                ``external_account_id`` differentiates between them,
+                ensuring accurate linking and integration between Google and
+                the provider.
+
+                The external account ID must be specified for the campaigns
+                management service type.
+
+                The external account ID must not be specified for the
+                account aggregation service type.
+
+                The external account ID is optional / may be specified for
+                all other service types.
         """
 
         account_aggregation: accountservices.AccountAggregation = proto.Field(
@@ -218,10 +280,64 @@ class CreateAndConfigureAccountRequest(proto.Message):
             oneof="service_type",
             message=accountservices.AccountAggregation,
         )
+        account_management: accountservices.AccountManagement = proto.Field(
+            proto.MESSAGE,
+            number=104,
+            oneof="service_type",
+            message=accountservices.AccountManagement,
+        )
+        comparison_shopping: accountservices.ComparisonShopping = proto.Field(
+            proto.MESSAGE,
+            number=105,
+            oneof="service_type",
+            message=accountservices.ComparisonShopping,
+        )
+        products_management: accountservices.ProductsManagement = proto.Field(
+            proto.MESSAGE,
+            number=106,
+            oneof="service_type",
+            message=accountservices.ProductsManagement,
+        )
+        campaigns_management: accountservices.CampaignsManagement = proto.Field(
+            proto.MESSAGE,
+            number=107,
+            oneof="service_type",
+            message=accountservices.CampaignsManagement,
+        )
         provider: str = proto.Field(
             proto.STRING,
             number=1,
             optional=True,
+        )
+        external_account_id: str = proto.Field(
+            proto.STRING,
+            number=3,
+        )
+
+    class SetAliasForRelationship(proto.Message):
+        r"""Set an alias for a relationship between a provider and the
+        account to be created.
+
+        Attributes:
+            provider (str):
+                Required. The provider of the service. This is a reference
+                to an account such as ``providers/123`` or ``accounts/123``.
+                The same provider must be specified in at least one of the
+                ``service`` fields.
+            account_id_alias (str):
+                Required. The unique ID of this account in
+                the provider's system. The value must be unique
+                across all accounts on the platform for this
+                provider.
+        """
+
+        provider: str = proto.Field(
+            proto.STRING,
+            number=1,
+        )
+        account_id_alias: str = proto.Field(
+            proto.STRING,
+            number=2,
         )
 
     account: "Account" = proto.Field(
@@ -238,6 +354,11 @@ class CreateAndConfigureAccountRequest(proto.Message):
         proto.MESSAGE,
         number=4,
         message=AddAccountService,
+    )
+    set_alias: MutableSequence[SetAliasForRelationship] = proto.RepeatedField(
+        proto.MESSAGE,
+        number=5,
+        message=SetAliasForRelationship,
     )
 
 

@@ -160,6 +160,11 @@ class UserServiceTransport(abc.ABC):
                 default_timeout=None,
                 client_info=client_info,
             ),
+            self.verify_self: gapic_v1.method.wrap_method(
+                self.verify_self,
+                default_timeout=None,
+                client_info=client_info,
+            ),
         }
 
     def close(self):
@@ -208,6 +213,12 @@ class UserServiceTransport(abc.ABC):
         [user.ListUsersRequest],
         Union[user.ListUsersResponse, Awaitable[user.ListUsersResponse]],
     ]:
+        raise NotImplementedError()
+
+    @property
+    def verify_self(
+        self,
+    ) -> Callable[[user.VerifySelfRequest], Union[user.User, Awaitable[user.User]]]:
         raise NotImplementedError()
 
     @property

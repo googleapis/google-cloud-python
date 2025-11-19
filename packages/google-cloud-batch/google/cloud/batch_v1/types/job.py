@@ -519,11 +519,19 @@ class AllocationPolicy(proto.Message):
                 model, and has been migrated to use the SPOT
                 model as the underlying technology. This old
                 model will still be supported.
+            RESERVATION_BOUND (4):
+                Bound to the lifecycle of the reservation in
+                which it is provisioned.
+            FLEX_START (5):
+                Instance is provisioned with DWS Flex Start
+                and has limited max run duration.
         """
         PROVISIONING_MODEL_UNSPECIFIED = 0
         STANDARD = 1
         SPOT = 2
         PREEMPTIBLE = 3
+        RESERVATION_BOUND = 4
+        FLEX_START = 5
 
     class LocationPolicy(proto.Message):
         r"""

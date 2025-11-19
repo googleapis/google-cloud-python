@@ -26,6 +26,7 @@ __protobuf__ = proto.module(
         "RegisterGcpRequest",
         "UnregisterGcpRequest",
         "GetDeveloperRegistrationRequest",
+        "GetAccountForGcpRegistrationResponse",
     },
 )
 
@@ -75,7 +76,11 @@ class RegisterGcpRequest(proto.Message):
             with any user we will just add it as a contact.
             The email preference corresponding to that
             contact will have the new "API notifications"
-            preference
+            preference. Make sure the email used is
+            associated with a Google Account (Google
+            Workspace account or Gmail account) and is not a
+            service account as service accounts can't
+            receive emails.
     """
 
     name: str = proto.Field(
@@ -111,6 +116,21 @@ class GetDeveloperRegistrationRequest(proto.Message):
     Attributes:
         name (str):
             Required. The ``name`` (ID) of the developer registration.
+    """
+
+    name: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+
+
+class GetAccountForGcpRegistrationResponse(proto.Message):
+    r"""Response message for the GetAccountForGcpRegistration method.
+
+    Attributes:
+        name (str):
+            The name of the merchant account id that the
+            GCP is registered with.
     """
 
     name: str = proto.Field(
