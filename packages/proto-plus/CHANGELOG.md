@@ -1,5 +1,9 @@
 # Changelog
 
+[PyPI History][1]
+
+[1]: https://pypi.org/project/proto-plus/#history
+
 ## [1.26.1](https://github.com/googleapis/proto-plus-python/compare/v1.26.0...v1.26.1) (2025-03-05)
 
 
