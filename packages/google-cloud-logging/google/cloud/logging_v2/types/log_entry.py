@@ -214,10 +214,10 @@ class LogEntry(proto.Message):
 
             Example values:
 
-            -  ``000000000000004a``
-            -  ``7a2190356c3fc94b``
-            -  ``0000f00300090021``
-            -  ``d39223e101960076``
+            - ``000000000000004a``
+            - ``7a2190356c3fc94b``
+            - ``0000f00300090021``
+            - ``d39223e101960076``
         trace_sampled (bool):
             Optional. The sampling decision of the trace associated with
             the log entry.
