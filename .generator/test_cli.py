@@ -142,6 +142,16 @@ py_proto_library(
 )"""
 
 
+@pytest.fixture
+def setup_dirs(tmp_path):
+    """Creates input and output directories."""
+    input_dir = tmp_path / "input"
+    output_dir = tmp_path / "output"
+    input_dir.mkdir()
+    output_dir.mkdir()
+    return input_dir, output_dir
+
+
 @pytest.fixture(autouse=True)
 def _clear_lru_cache():
     """Automatically clears the cache of all LRU-cached functions after each test."""
@@ -904,6 +914,51 @@ def test_copy_files_needed_for_post_processing_copies_files_from_generator_input
 
     mock_shutil_copytree.assert_called()
     mock_makedirs.assert_called()
+
+
+def test_copy_files_needed_for_post_processing_copies_files_from_generator_input_skips_json_files(
+    setup_dirs,
+):
+    """Test that .json files are copied but NOT modified."""
+    input_dir, output_dir = setup_dirs
+
+    json_content = '{"key": "value"}'
+    (input_dir / ".repo-metadata.json").write_text(json_content)
+
+    _copy_files_needed_for_post_processing(
+        output=str(output_dir),
+        input=str(input_dir),
+        library_id="google-cloud-foo",
+        is_mono_repo=False,
+    )
+
+    dest_file = output_dir / ".repo-metadata.json"
+    assert dest_file.exists()
+    # Content should be exactly the same, no # comments added
+    assert dest_file.read_text() == json_content
+
+
+def test_file_with_shebang_and_license(setup_dirs):
+    """Test insertion handles License correctly."""
+    input_dir, output_dir = setup_dirs
+
+    # Setup source
+    (input_dir / "run.sh").write_text("# Some Copyright" "# text" "code")
+
+    _copy_files_needed_for_post_processing(
+        output=str(output_dir),
+        input=str(input_dir),
+        library_id="google-cloud-foo",
+        is_mono_repo=False,
+    )
+
+    content = (output_dir / "run.sh").read_text()
+    lines = content.splitlines()
+
+    # Ensure header comes *after* copyright
+    copyright_index = next(i for i, line in enumerate(lines) if "Copyright" in line)
+    header_index = next(i for i, line in enumerate(lines) if "source of truth" in line)
+    assert header_index > copyright_index
 
 
 @pytest.mark.parametrize("is_mono_repo", [False, True])
