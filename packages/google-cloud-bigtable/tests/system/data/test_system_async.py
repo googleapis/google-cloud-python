@@ -285,23 +285,28 @@ class TestSystemAsync:
             async with client.get_table(instance_id, table_id) as table:
                 rows = await table.read_rows({})
                 channel_wrapper = client.transport.grpc_channel
-                first_channel = client.transport.grpc_channel._channel
+                first_channel = channel_wrapper._channel
                 assert len(rows) == 2
                 await CrossSync.sleep(2)
                 rows_after_refresh = await table.read_rows({})
                 assert len(rows_after_refresh) == 2
                 assert client.transport.grpc_channel is channel_wrapper
-                assert client.transport.grpc_channel._channel is not first_channel
-                # ensure gapic's logging interceptor is still active
+                updated_channel = channel_wrapper._channel
+                assert updated_channel is not first_channel
+                # ensure interceptors are kept (gapic's logging interceptor, and metric interceptor)
                 if CrossSync.is_async:
-                    interceptors = (
-                        client.transport.grpc_channel._channel._unary_unary_interceptors
-                    )
-                    assert GapicInterceptor in [type(i) for i in interceptors]
+                    unary_interceptors = updated_channel._unary_unary_interceptors
+                    assert len(unary_interceptors) == 2
+                    assert GapicInterceptor in [type(i) for i in unary_interceptors]
+                    assert client._metrics_interceptor in unary_interceptors
+                    stream_interceptors = updated_channel._unary_stream_interceptors
+                    assert len(stream_interceptors) == 1
+                    assert client._metrics_interceptor in stream_interceptors
                 else:
                     assert isinstance(
                         client.transport._logged_channel._interceptor, GapicInterceptor
                     )
+                    assert updated_channel._interceptor == client._metrics_interceptor
         finally:
             await client.close()
 
