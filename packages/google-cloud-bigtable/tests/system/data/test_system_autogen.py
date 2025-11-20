@@ -237,16 +237,18 @@ class TestSystem:
             with client.get_table(instance_id, table_id) as table:
                 rows = table.read_rows({})
                 channel_wrapper = client.transport.grpc_channel
-                first_channel = client.transport.grpc_channel._channel
+                first_channel = channel_wrapper._channel
                 assert len(rows) == 2
                 CrossSync._Sync_Impl.sleep(2)
                 rows_after_refresh = table.read_rows({})
                 assert len(rows_after_refresh) == 2
                 assert client.transport.grpc_channel is channel_wrapper
-                assert client.transport.grpc_channel._channel is not first_channel
+                updated_channel = channel_wrapper._channel
+                assert updated_channel is not first_channel
                 assert isinstance(
                     client.transport._logged_channel._interceptor, GapicInterceptor
                 )
+                assert updated_channel._interceptor == client._metrics_interceptor
         finally:
             client.close()
 
