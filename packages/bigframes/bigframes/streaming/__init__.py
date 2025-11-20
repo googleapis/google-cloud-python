@@ -12,8 +12,12 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-import inspect
+from __future__ import annotations
 
+import inspect
+import sys
+
+from bigframes.core import log_adapter
 import bigframes.core.global_session as global_session
 from bigframes.pandas.io.api import _set_default_session_location_if_possible
 import bigframes.session
@@ -32,3 +36,12 @@ read_gbq_table.__doc__ = inspect.getdoc(
 )
 
 StreamingDataFrame = streaming_dataframe.StreamingDataFrame
+
+_module = sys.modules[__name__]
+_functions = [read_gbq_table]
+
+for _function in _functions:
+    _decorated_object = log_adapter.method_logger(_function, custom_base_name="pandas")
+    setattr(_module, _function.__name__, _decorated_object)
+
+__all__ = ["read_gbq_table", "StreamingDataFrame"]

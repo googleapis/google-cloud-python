@@ -15,38 +15,15 @@
 """Options for displaying objects."""
 
 import contextlib
-import dataclasses
-from typing import Literal, Optional
 
 import bigframes_vendored.pandas.core.config_init as vendored_pandas_config
 import pandas as pd
 
-
-@dataclasses.dataclass
-class DisplayOptions:
-    __doc__ = vendored_pandas_config.display_options_doc
-
-    # Options borrowed from pandas.
-    max_columns: int = 20
-    max_rows: int = 10
-    precision: int = 6
-
-    # Options unique to BigQuery DataFrames.
-    progress_bar: Optional[str] = "auto"
-    repr_mode: Literal["head", "deferred", "anywidget"] = "head"
-
-    max_colwidth: Optional[int] = 50
-    max_info_columns: int = 100
-    max_info_rows: Optional[int] = 200000
-    memory_usage: bool = True
-
-    blob_display: bool = True
-    blob_display_width: Optional[int] = None
-    blob_display_height: Optional[int] = None
+DisplayOptions = vendored_pandas_config.DisplayOptions
 
 
 @contextlib.contextmanager
-def pandas_repr(display_options: DisplayOptions):
+def pandas_repr(display_options: vendored_pandas_config.DisplayOptions):
     """Use this when visualizing with pandas.
 
     This context manager makes sure we reset the pandas options when we're done

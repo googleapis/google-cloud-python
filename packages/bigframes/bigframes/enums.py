@@ -21,7 +21,7 @@ import enum
 
 
 class OrderingMode(enum.Enum):
-    """[Preview] Values used to determine the ordering mode.
+    """Values used to determine the ordering mode.
 
     Default is 'strict'.
     """
@@ -37,5 +37,6 @@ class DefaultIndexKind(enum.Enum):
     #: ``n - 3``, ``n - 2``, ``n - 1``, where ``n`` is the number of items in
     #: the index.
     SEQUENTIAL_INT64 = enum.auto()
+
     # A completely null index incapable of indexing or alignment.
     NULL = enum.auto()

@@ -65,7 +65,8 @@ extensions = [
 autoclass_content = "both"
 autodoc_default_options = {"members": True}
 autosummary_generate = True
-
+autosummary_imported_members = True
+autosummary_ignore_module_all = True
 
 # Add any paths that contain templates here, relative to this directory.
 templates_path = ["_templates"]
@@ -369,7 +370,7 @@ texinfo_documents = [
 
 # Example configuration for intersphinx: refer to the Python standard library.
 intersphinx_mapping = {
-    "python": ("https://python.readthedocs.org/en/latest/", None),
+    "python": ("https://docs.python.org/3/", None),
     "google-auth": ("https://googleapis.dev/python/google-auth/latest/", None),
     "google.api_core": (
         "https://googleapis.dev/python/google-api-core/latest/",

@@ -306,11 +306,22 @@ def clean_up_by_session_id(
 
 # pandas dtype attributes
 NA = pandas.NA
+"""Alias for :class:`pandas.NA`."""
+
 BooleanDtype = pandas.BooleanDtype
+"""Alias for :class:`pandas.BooleanDtype`."""
+
 Float64Dtype = pandas.Float64Dtype
+"""Alias for :class:`pandas.Float64Dtype`."""
+
 Int64Dtype = pandas.Int64Dtype
+"""Alias for :class:`pandas.Int64Dtype`."""
+
 StringDtype = pandas.StringDtype
+"""Alias for :class:`pandas.StringDtype`."""
+
 ArrowDtype = pandas.ArrowDtype
+"""Alias for :class:`pandas.ArrowDtype`."""
 
 # Class aliases
 # TODO(swast): Make these real classes so we can refer to these in type

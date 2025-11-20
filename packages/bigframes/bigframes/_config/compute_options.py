@@ -29,7 +29,7 @@ class ComputeOptions:
         >>> df = bpd.read_gbq("bigquery-public-data.ml_datasets.penguins")
 
         >>> bpd.options.compute.maximum_bytes_billed = 500
-        >>> # df.to_pandas() # this should fail
+        >>> df.to_pandas() # this should fail  # doctest: +SKIP
         google.api_core.exceptions.InternalServerError: 500 Query exceeded limit for bytes billed: 500. 10485760 or higher required.
 
         >>> bpd.options.compute.maximum_bytes_billed = None  # reset option
@@ -53,68 +53,112 @@ class ComputeOptions:
         >>> del bpd.options.compute.extra_query_labels["test1"]
         >>> bpd.options.compute.extra_query_labels
         {'test2': 'abc', 'test3': False}
-
-    Attributes:
-        ai_ops_confirmation_threshold (int | None):
-            Guards against unexpected processing of large amount of rows by semantic operators.
-            If the number of rows exceeds the threshold, the user will be asked to confirm
-            their operations to resume. The default value is 0. Set the value to None
-            to turn off the guard.
-
-        ai_ops_threshold_autofail (bool):
-            Guards against unexpected processing of large amount of rows by semantic operators.
-            When set to True, the operation automatically fails without asking for user inputs.
-
-        allow_large_results (bool | None):
-            Specifies whether query results can exceed 10 GB. Defaults to False. Setting this
-            to False (the default) restricts results to 10 GB for potentially faster execution;
-            BigQuery will raise an error if this limit is exceeded. Setting to True removes
-            this result size limit.
-
-        enable_multi_query_execution (bool | None):
-            If enabled, large queries may be factored into multiple smaller queries
-            in order to avoid generating queries that are too complex for the query
-            engine to handle. However this comes at the cost of increase cost and latency.
-
-        extra_query_labels (Dict[str, Any] | None):
-            Stores additional custom labels for query configuration.
-
-        maximum_bytes_billed (int | None):
-            Limits the bytes billed for query jobs. Queries that will have
-            bytes billed beyond this limit will fail (without incurring a
-            charge). If unspecified, this will be set to your project default.
-            See `maximum_bytes_billed`: https://cloud.google.com/python/docs/reference/bigquery/latest/google.cloud.bigquery.job.QueryJobConfig#google_cloud_bigquery_job_QueryJobConfig_maximum_bytes_billed.
-
-        maximum_result_rows (int | None):
-            Limits the number of rows in an execution result. When converting
-            a BigQuery DataFrames object to a pandas DataFrame or Series (e.g.,
-            using ``.to_pandas()``, ``.peek()``, ``.__repr__()``, direct
-            iteration), the data is downloaded from BigQuery to the client
-            machine. This option restricts the number of rows that can be
-            downloaded.  If the number of rows to be downloaded exceeds this
-            limit, a ``bigframes.exceptions.MaximumResultRowsExceeded``
-            exception is raised.
-
-        semantic_ops_confirmation_threshold (int | None):
-            .. deprecated:: 1.42.0
-                Semantic operators are deprecated. Please use AI operators instead
-
-        semantic_ops_threshold_autofail (bool):
-            .. deprecated:: 1.42.0
-                Semantic operators are deprecated. Please use AI operators instead
     """
 
     ai_ops_confirmation_threshold: Optional[int] = 0
+    """
+    Guards against unexpected processing of large amount of rows by semantic operators.
+
+    If the number of rows exceeds the threshold, the user will be asked to confirm
+    their operations to resume. The default value is 0. Set the value to None
+    to turn off the guard.
+
+    Returns:
+        Optional[int]: Number of rows.
+    """
+
     ai_ops_threshold_autofail: bool = False
+    """
+    Guards against unexpected processing of large amount of rows by semantic operators.
+
+    When set to True, the operation automatically fails without asking for user inputs.
+
+    Returns:
+        bool: True if the guard is enabled.
+    """
+
     allow_large_results: Optional[bool] = None
+    """
+    Specifies whether query results can exceed 10 GB.
+
+    Defaults to False. Setting this to False (the default) restricts results to
+    10 GB for potentially faster execution; BigQuery will raise an error if this
+    limit is exceeded. Setting to True removes this result size limit.
+
+
+    Returns:
+        bool | None: True if results > 10 GB are enabled.
+    """
     enable_multi_query_execution: bool = False
+    """
+    If enabled, large queries may be factored into multiple smaller queries.
+
+    This is in order to avoid generating queries that are too complex for the
+    query engine to handle. However this comes at the cost of increase cost and
+    latency.
+
+
+    Returns:
+        bool | None: True if enabled.
+    """
+
     extra_query_labels: Dict[str, Any] = dataclasses.field(
         default_factory=dict, init=False
     )
+    """
+    Stores additional custom labels for query configuration.
+
+    Returns:
+        Dict[str, Any] | None: Additional labels.
+    """
+
     maximum_bytes_billed: Optional[int] = None
+    """
+    Limits the bytes billed for query jobs.
+
+    Queries that will have bytes billed beyond this limit will fail (without
+    incurring a charge). If unspecified, this will be set to your project
+    default.  See `maximum_bytes_billed`:
+    https://cloud.google.com/python/docs/reference/bigquery/latest/google.cloud.bigquery.job.QueryJobConfig#google_cloud_bigquery_job_QueryJobConfig_maximum_bytes_billed.
+
+    Returns:
+        int | None: Number of bytes, if set.
+    """
+
     maximum_result_rows: Optional[int] = None
+    """
+    Limits the number of rows in an execution result.
+
+    When converting a BigQuery DataFrames object to a pandas DataFrame or Series
+    (e.g., using ``.to_pandas()``, ``.peek()``, ``.__repr__()``, direct
+    iteration), the data is downloaded from BigQuery to the client machine. This
+    option restricts the number of rows that can be downloaded.  If the number
+    of rows to be downloaded exceeds this limit, a
+    ``bigframes.exceptions.MaximumResultRowsExceeded`` exception is raised.
+
+    Returns:
+        int | None: Number of rows, if set.
+    """
+
     semantic_ops_confirmation_threshold: Optional[int] = 0
+    """
+    Deprecated.
+
+    .. deprecated:: 1.42.0
+        Semantic operators are deprecated. Please use the functions in
+        :mod:`bigframes.bigquery.ai` instead.
+
+    """
+
     semantic_ops_threshold_autofail = False
+    """
+    Deprecated.
+
+    .. deprecated:: 1.42.0
+        Semantic operators are deprecated. Please use the functions in
+        :mod:`bigframes.bigquery.ai` instead.
+
+    """
 
     def assign_extra_query_labels(self, **kwargs: Any) -> None:
         """

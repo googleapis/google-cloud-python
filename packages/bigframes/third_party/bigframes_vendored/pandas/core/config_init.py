@@ -10,109 +10,147 @@ If you need to make sure options are available even before a certain
 module is imported, register them here rather than in the module.
 
 """
+
 from __future__ import annotations
 
-display_options_doc = """
-Encapsulates the configuration for displaying objects.
-
-**Examples:**
-
-Define Repr mode to "deferred" will prevent job execution in repr.
-
-    >>> import bigframes.pandas as bpd
-    >>> df = bpd.read_gbq("bigquery-public-data.ml_datasets.penguins")
-
-    >>> bpd.options.display.repr_mode = "deferred"
-    >>> df.head(20) # will no longer run the job
-    Computation deferred. Computation will process 28.9 kB
-
-Users can also get a dry run of the job by accessing the query_job property before they've run the job. This will return a dry run instance of the job they can inspect.
-
-    >>> df.query_job.total_bytes_processed
-    28947
-
-User can execute the job by calling .to_pandas()
-
-    >>> # df.to_pandas()
-
-Reset repr_mode option
-
-    >>> bpd.options.display.repr_mode = "head"
-
-Can also set the progress_bar option to see the progress bar in terminal,
-
-    >>> bpd.options.display.progress_bar = "terminal"
-
-notebook,
-
-    >>> bpd.options.display.progress_bar = "notebook"
-
-or just remove it.
+import dataclasses
+from typing import Literal, Optional
 
 
-Setting to default value "auto" will detect and show progress bar automatically.
+@dataclasses.dataclass
+class DisplayOptions:
+    """
+    Encapsulates the configuration for displaying objects.
 
-    >>> bpd.options.display.progress_bar = "auto"
+    **Examples:**
 
-Attributes:
-    max_columns (int, default 20):
-        If `max_columns` is exceeded, switch to truncate view.
-    max_rows (int, default 25):
-        If `max_rows` is exceeded, switch to truncate view.
-    progress_bar (Optional(str), default "auto"):
-        Determines if progress bars are shown during job runs.
-        Valid values are `auto`, `notebook`, and `terminal`. Set
-        to `None` to remove progress bars.
-    repr_mode (Literal[`head`, `deferred`]):
-        `head`:
-            Execute, download, and display results (limited to head) from
-            Dataframe and Series objects during repr.
-        `deferred`:
-            Prevent executions from repr statements in DataFrame and Series objects.
-            Instead, estimated bytes processed will be shown. DataFrame and Series
-            objects can still be computed with methods that explicitly execute and
-            download results.
-    max_info_columns (int):
-        max_info_columns is used in DataFrame.info method to decide if
-        information in each column will be printed.
-    max_info_rows (int or None):
-        df.info() will usually show null-counts for each column.
-        For large frames, this can be quite slow. max_info_rows and max_info_cols
-        limit this null check only to frames with smaller dimensions than
-        specified.
-    memory_usage (bool):
-        This specifies if the memory usage of a DataFrame should be displayed when
-        df.info() is called. Valid values True,False,
-    precision (int):
-        Controls the floating point output precision, similar to
-        `pandas.options.display.precision`.
-    blob_display (bool):
-        Whether to display the blob content in notebook DataFrame preview. Default True.
-    blob_display_width (int or None):
-        Width in pixels that the blob constrained to.
-    blob_display_height (int or None):
-        Height in pixels that the blob constrained to.
-"""
+    Define Repr mode to "deferred" will prevent job execution in repr.
 
-sampling_options_doc = """
-Encapsulates the configuration for data sampling.
+        >>> import bigframes.pandas as bpd
+        >>> df = bpd.read_gbq("bigquery-public-data.ml_datasets.penguins")
 
-Attributes:
-    max_download_size (int, default 500):
-        Download size threshold in MB. If value set to None, the download size
-        won't be checked.
-    enable_downsampling (bool, default False):
-        Whether to enable downsampling, If max_download_size is exceeded when
-        downloading data (e.g., to_pandas()), the data will be downsampled
-        if enable_downsampling is True, otherwise, an error will be raised.
-    sampling_method (str, default "uniform"):
-        Downsampling algorithms to be chosen from, the choices are:
-        "head": This algorithm returns a portion of the data from
-        the beginning. It is fast and requires minimal computations
-        to perform the downsampling.; "uniform": This algorithm returns
-        uniform random samples of the data.
-    random_state (int, default None):
-        The seed for the uniform downsampling algorithm. If provided,
-        the uniform method may take longer to execute and require more
-        computation.
-"""
+        >>> bpd.options.display.repr_mode = "deferred"
+        >>> df.head(20) # will no longer run the job
+        Computation deferred. Computation will process 28.9 kB
+
+    Users can also get a dry run of the job by accessing the query_job property before they've run the job. This will return a dry run instance of the job they can inspect.
+
+        >>> df.query_job.total_bytes_processed
+        28947
+
+    User can execute the job by calling .to_pandas()
+
+        >>> # df.to_pandas()
+
+    Reset repr_mode option
+
+        >>> bpd.options.display.repr_mode = "head"
+
+    Can also set the progress_bar option to see the progress bar in terminal,
+
+        >>> bpd.options.display.progress_bar = "terminal"
+
+    notebook,
+
+        >>> bpd.options.display.progress_bar = "notebook"
+
+    or just remove it.
+
+    Setting to default value "auto" will detect and show progress bar automatically.
+
+        >>> bpd.options.display.progress_bar = "auto"
+    """
+
+    # Options borrowed from pandas.
+    max_columns: int = 20
+    """
+    Maximum number of columns to display. Default 20.
+
+    If `max_columns` is exceeded, switch to truncate view.
+    """
+
+    max_rows: int = 10
+    """
+    Maximum number of rows to display. Default 10.
+
+    If `max_rows` is exceeded, switch to truncate view.
+    """
+
+    precision: int = 6
+    """
+    Controls the floating point output precision. Defaults to 6.
+
+    See :attr:`pandas.options.display.precision`.
+    """
+
+    # Options unique to BigQuery DataFrames.
+    progress_bar: Optional[str] = "auto"
+    """
+    Determines if progress bars are shown during job runs. Default "auto".
+
+    Valid values are `auto`, `notebook`, and `terminal`. Set
+    to `None` to remove progress bars.
+    """
+
+    repr_mode: Literal["head", "deferred", "anywidget"] = "head"
+    """
+    Determines how to display a DataFrame or Series. Default "head".
+
+    `head`
+        Execute, download, and display results (limited to head) from
+        Dataframe and Series objects during repr.
+
+    `deferred`
+        Prevent executions from repr statements in DataFrame and Series objects.
+        Instead, estimated bytes processed will be shown. DataFrame and Series
+        objects can still be computed with methods that explicitly execute and
+        download results.
+    """
+
+    max_colwidth: Optional[int] = 50
+    """
+    The maximum width in characters of a column in the repr. Default 50.
+
+    When the column overflows, a "..." placeholder is embedded in the output. A
+    'None' value means unlimited.
+    """
+
+    max_info_columns: int = 100
+    """
+    Used in DataFrame.info method to decide if information in each column will
+    be printed. Default 100.
+    """
+
+    max_info_rows: Optional[int] = 200_000
+    """
+    Limit null check in ``df.info()`` only to frames with smaller dimensions than
+    max_info_rows. Default 200,000.
+
+    df.info() will usually show null-counts for each column.
+    For large frames, this can be quite slow. max_info_rows and max_info_cols
+    limit this null check only to frames with smaller dimensions than
+    specified.
+    """
+
+    memory_usage: bool = True
+    """
+    If True, memory usage of a DataFrame should be displayed when
+    df.info() is called. Default True.
+
+    Valid values True, False.
+    """
+
+    blob_display: bool = True
+    """
+    If True, display the blob content in notebook DataFrame preview. Default
+    True.
+    """
+
+    blob_display_width: Optional[int] = None
+    """
+    Width in pixels that the blob constrained to. Default None..
+    """
+    blob_display_height: Optional[int] = None
+    """
+    Height in pixels that the blob constrained to. Default None..
+    """

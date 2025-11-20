@@ -15,10 +15,12 @@
 """
 Wraps primitives for machine learning with BQML
 
-This library is an evolving attempt to
-- implement BigQuery DataFrames API for BQML
-- follow as close as possible the API design of SKLearn
+This library is an evolving attempt to:
+
+* implement BigQuery DataFrames API for BQML
+* follow as close as possible the API design of SKLearn
     https://arxiv.org/pdf/1309.0238.pdf
+
 """
 
 import abc
@@ -46,12 +48,16 @@ class BaseEstimator(bigframes_vendored.sklearn.base.BaseEstimator, abc.ABC):
     assumed to be the list of hyperparameters.
 
     All descendents of this class should implement:
+
+    .. code-block:: python
+
         def __init__(self, hyperparameter_1=default_1, hyperparameter_2=default_2, hyperparameter3, ...):
             '''Set hyperparameters'''
             self.hyperparameter_1 = hyperparameter_1
             self.hyperparameter_2 = hyperparameter_2
             self.hyperparameter3 = hyperparameter3
             ...
+
     Note: the object variable names must be exactly the same with parameter names. In order to utilize __repr__.
 
     fit(X, y) method is optional.

@@ -127,7 +127,9 @@ class FunctionPackageVersionWarning(PreviewWarning):
 
 
 def format_message(message: str, fill: bool = True):
-    """Formats a warning message with ANSI color codes for the warning color.
+    """[Private] Formats a warning message.
+
+    :meta private:
 
     Args:
         message: The warning message string.

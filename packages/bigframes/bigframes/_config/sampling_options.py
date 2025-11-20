@@ -19,18 +19,46 @@ from __future__ import annotations
 import dataclasses
 from typing import Literal, Optional
 
-import bigframes_vendored.pandas.core.config_init as vendored_pandas_config
-
 
 @dataclasses.dataclass
 class SamplingOptions:
-    __doc__ = vendored_pandas_config.sampling_options_doc
+    """
+    Encapsulates the configuration for data sampling.
+    """
 
     max_download_size: Optional[int] = 500
-    # Enable downsampling
+    """
+    Download size threshold in MB. Default 500.
+
+    If value set to None, the download size won't be checked.
+    """
+
     enable_downsampling: bool = False
+    """
+    Whether to enable downsampling. Default False.
+
+    If max_download_size is exceeded when downloading data (e.g., to_pandas()),
+    the data will be downsampled if enable_downsampling is True, otherwise, an
+    error will be raised.
+    """
+
     sampling_method: Literal["head", "uniform"] = "uniform"
+    """
+    Downsampling algorithms to be chosen from. Default "uniform".
+
+    The choices are: "head": This algorithm returns a portion of the data from
+    the beginning. It is fast and requires minimal computations to perform the
+    downsampling.; "uniform": This algorithm returns uniform random samples of
+    the data.
+    """
+
     random_state: Optional[int] = None
+    """
+    The seed for the uniform downsampling algorithm. Default None.
+
+    If provided, the uniform method may take longer to execute and require more
+    computation.
+    """
 
     def with_max_download_size(self, max_rows: Optional[int]) -> SamplingOptions:
         """Configures the maximum download size for data sampling in MB
