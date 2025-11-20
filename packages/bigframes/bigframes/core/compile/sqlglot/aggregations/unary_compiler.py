@@ -111,6 +111,140 @@ def _(
     return apply_window_if_present(sge.func("COUNT", column.expr), window)
 
 
+@UNARY_OP_REGISTRATION.register(agg_ops.CutOp)
+def _(
+    op: agg_ops.CutOp,
+    column: typed_expr.TypedExpr,
+    window: typing.Optional[window_spec.WindowSpec] = None,
+) -> sge.Expression:
+    if isinstance(op.bins, int):
+        case_expr = _cut_ops_w_int_bins(op, column, op.bins, window)
+    else:  # Interpret as intervals
+        case_expr = _cut_ops_w_intervals(op, column, op.bins, window)
+    return case_expr
+
+
+def _cut_ops_w_int_bins(
+    op: agg_ops.CutOp,
+    column: typed_expr.TypedExpr,
+    bins: int,
+    window: typing.Optional[window_spec.WindowSpec] = None,
+) -> sge.Case:
+    case_expr = sge.Case()
+    col_min = apply_window_if_present(
+        sge.func("MIN", column.expr), window or window_spec.WindowSpec()
+    )
+    col_max = apply_window_if_present(
+        sge.func("MAX", column.expr), window or window_spec.WindowSpec()
+    )
+    adj: sge.Expression = sge.Sub(this=col_max, expression=col_min) * sge.convert(0.001)
+    bin_width: sge.Expression = sge.func(
+        "IEEE_DIVIDE",
+        sge.Sub(this=col_max, expression=col_min),
+        sge.convert(bins),
+    )
+
+    for this_bin in range(bins):
+        value: sge.Expression
+        if op.labels is False:
+            value = ir._literal(this_bin, dtypes.INT_DTYPE)
+        elif isinstance(op.labels, typing.Iterable):
+            value = ir._literal(list(op.labels)[this_bin], dtypes.STRING_DTYPE)
+        else:
+            left_adj: sge.Expression = (
+                adj if this_bin == 0 and op.right else sge.convert(0)
+            )
+            right_adj: sge.Expression = (
+                adj if this_bin == bins - 1 and not op.right else sge.convert(0)
+            )
+
+            left: sge.Expression = (
+                col_min + sge.convert(this_bin) * bin_width - left_adj
+            )
+            right: sge.Expression = (
+                col_min + sge.convert(this_bin + 1) * bin_width + right_adj
+            )
+            if op.right:
+                left_identifier = sge.Identifier(this="left_exclusive", quoted=True)
+                right_identifier = sge.Identifier(this="right_inclusive", quoted=True)
+            else:
+                left_identifier = sge.Identifier(this="left_inclusive", quoted=True)
+                right_identifier = sge.Identifier(this="right_exclusive", quoted=True)
+
+            value = sge.Struct(
+                expressions=[
+                    sge.PropertyEQ(this=left_identifier, expression=left),
+                    sge.PropertyEQ(this=right_identifier, expression=right),
+                ]
+            )
+
+        condition: sge.Expression
+        if this_bin == bins - 1:
+            condition = sge.Is(this=column.expr, expression=sge.Not(this=sge.Null()))
+        else:
+            if op.right:
+                condition = sge.LTE(
+                    this=column.expr,
+                    expression=(col_min + sge.convert(this_bin + 1) * bin_width),
+                )
+            else:
+                condition = sge.LT(
+                    this=column.expr,
+                    expression=(col_min + sge.convert(this_bin + 1) * bin_width),
+                )
+        case_expr = case_expr.when(condition, value)
+    return case_expr
+
+
+def _cut_ops_w_intervals(
+    op: agg_ops.CutOp,
+    column: typed_expr.TypedExpr,
+    bins: typing.Iterable[typing.Tuple[typing.Any, typing.Any]],
+    window: typing.Optional[window_spec.WindowSpec] = None,
+) -> sge.Case:
+    case_expr = sge.Case()
+    for this_bin, interval in enumerate(bins):
+        left: sge.Expression = ir._literal(
+            interval[0], dtypes.infer_literal_type(interval[0])
+        )
+        right: sge.Expression = ir._literal(
+            interval[1], dtypes.infer_literal_type(interval[1])
+        )
+        condition: sge.Expression
+        if op.right:
+            condition = sge.And(
+                this=sge.GT(this=column.expr, expression=left),
+                expression=sge.LTE(this=column.expr, expression=right),
+            )
+        else:
+            condition = sge.And(
+                this=sge.GTE(this=column.expr, expression=left),
+                expression=sge.LT(this=column.expr, expression=right),
+            )
+
+        value: sge.Expression
+        if op.labels is False:
+            value = ir._literal(this_bin, dtypes.INT_DTYPE)
+        elif isinstance(op.labels, typing.Iterable):
+            value = ir._literal(list(op.labels)[this_bin], dtypes.STRING_DTYPE)
+        else:
+            if op.right:
+                left_identifier = sge.Identifier(this="left_exclusive", quoted=True)
+                right_identifier = sge.Identifier(this="right_inclusive", quoted=True)
+            else:
+                left_identifier = sge.Identifier(this="left_inclusive", quoted=True)
+                right_identifier = sge.Identifier(this="right_exclusive", quoted=True)
+
+            value = sge.Struct(
+                expressions=[
+                    sge.PropertyEQ(this=left_identifier, expression=left),
+                    sge.PropertyEQ(this=right_identifier, expression=right),
+                ]
+            )
+        case_expr = case_expr.when(condition, value)
+    return case_expr
+
+
 @UNARY_OP_REGISTRATION.register(agg_ops.DateSeriesDiffOp)
 def _(
     op: agg_ops.DateSeriesDiffOp,
