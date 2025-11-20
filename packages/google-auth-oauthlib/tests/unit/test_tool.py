@@ -16,10 +16,10 @@ import io
 import json
 import os.path
 import tempfile
+from unittest import mock
 
 import click.testing
 import google.oauth2.credentials
-import mock
 import pytest
 
 import google_auth_oauthlib.flow

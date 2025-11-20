@@ -19,8 +19,8 @@ import json
 import os
 import re
 import socket
+from unittest import mock
 
-import mock
 import pytest
 import requests
 import urllib
