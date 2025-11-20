@@ -81,6 +81,21 @@ def test_geo_st_convexhull(scalar_types_df: bpd.DataFrame, snapshot):
     snapshot.assert_match(sql, "out.sql")
 
 
+def test_geo_st_distance(scalar_types_df: bpd.DataFrame, snapshot):
+    col_name = "geography_col"
+    bf_df = scalar_types_df[[col_name]]
+
+    sql = utils._apply_ops_to_sql(
+        bf_df,
+        [
+            ops.GeoStDistanceOp(use_spheroid=True).as_expr(col_name, col_name),
+            ops.GeoStDistanceOp(use_spheroid=False).as_expr(col_name, col_name),
+        ],
+        ["spheroid", "no_spheroid"],
+    )
+    snapshot.assert_match(sql, "out.sql")
+
+
 def test_geo_st_difference(scalar_types_df: bpd.DataFrame, snapshot):
     col_name = "geography_col"
     bf_df = scalar_types_df[[col_name]]

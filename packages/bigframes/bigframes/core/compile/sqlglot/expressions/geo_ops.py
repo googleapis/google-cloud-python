@@ -116,6 +116,11 @@ def _(expr: TypedExpr) -> sge.Expression:
     return sge.func("SAFE.ST_Y", expr.expr)
 
 
+@register_binary_op(ops.GeoStDistanceOp, pass_op=True)
+def _(left: TypedExpr, right: TypedExpr, op: ops.GeoStDistanceOp) -> sge.Expression:
+    return sge.func("ST_DISTANCE", left.expr, right.expr, sge.convert(op.use_spheroid))
+
+
 @register_binary_op(ops.geo_st_difference_op)
 def _(left: TypedExpr, right: TypedExpr) -> sge.Expression:
     return sge.func("ST_DIFFERENCE", left.expr, right.expr)
