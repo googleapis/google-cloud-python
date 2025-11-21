@@ -1091,20 +1091,14 @@ class Block:
         *,
         skip_null_groups: bool = False,
     ) -> typing.Tuple[Block, typing.Sequence[str]]:
-        block = self
-        result_ids = []
-        for i, col_id in enumerate(columns):
-            label = self.col_id_to_label[col_id]
-            block, result_id = block.apply_window_op(
-                col_id,
-                op,
-                window_spec=window_spec,
-                skip_reproject_unsafe=(i + 1) < len(columns),
-                result_label=label,
-                skip_null_groups=skip_null_groups,
-            )
-            result_ids.append(result_id)
-        return block, result_ids
+        return self.apply_analytic(
+            agg_exprs=(
+                agg_expressions.UnaryAggregation(op, ex.deref(col)) for col in columns
+            ),
+            window=window_spec,
+            result_labels=self._get_labels_for_columns(columns),
+            skip_null_groups=skip_null_groups,
+        )
 
     def multi_apply_unary_op(
         self,
@@ -1181,44 +1175,39 @@ class Block:
         *,
         result_label: Label = None,
         skip_null_groups: bool = False,
-        skip_reproject_unsafe: bool = False,
     ) -> typing.Tuple[Block, str]:
         agg_expr = agg_expressions.UnaryAggregation(op, ex.deref(column))
-        return self.apply_analytic(
-            agg_expr,
+        block, ids = self.apply_analytic(
+            [agg_expr],
             window_spec,
-            result_label,
-            skip_reproject_unsafe=skip_reproject_unsafe,
+            [result_label],
             skip_null_groups=skip_null_groups,
         )
+        return block, ids[0]
 
     def apply_analytic(
         self,
-        agg_expr: agg_expressions.Aggregation,
+        agg_exprs: Iterable[agg_expressions.Aggregation],
         window: windows.WindowSpec,
-        result_label: Label,
+        result_labels: Iterable[Label],
         *,
-        skip_reproject_unsafe: bool = False,
         skip_null_groups: bool = False,
-    ) -> typing.Tuple[Block, str]:
+    ) -> typing.Tuple[Block, Sequence[str]]:
         block = self
         if skip_null_groups:
             for key in window.grouping_keys:
                 block = block.filter(ops.notnull_op.as_expr(key))
-        expr, result_id = block._expr.project_window_expr(
-            agg_expr,
+        expr, result_ids = block._expr.project_window_expr(
+            tuple(agg_exprs),
             window,
-            skip_reproject_unsafe=skip_reproject_unsafe,
         )
         block = Block(
             expr,
             index_columns=self.index_columns,
-            column_labels=self.column_labels.insert(
-                len(self.column_labels), result_label
-            ),
+            column_labels=self.column_labels.append(pd.Index(result_labels)),
             index_labels=self._index_labels,
         )
-        return (block, result_id)
+        return (block, result_ids)
 
     def copy_values(self, source_column_id: str, destination_column_id: str) -> Block:
         expr = self.expr.assign(source_column_id, destination_column_id)

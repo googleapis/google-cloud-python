@@ -268,8 +268,7 @@ class ArrayValue:
 
     def compute_general_expression(self, assignments: Sequence[ex.Expression]):
         named_exprs = [
-            expression_factoring.NamedExpression(expr, ids.ColumnId.unique())
-            for expr in assignments
+            nodes.ColumnDef(expr, ids.ColumnId.unique()) for expr in assignments
         ]
         # TODO: Push this to rewrite later to go from block expression to planning form
         # TODO: Jointly fragmentize expressions to more efficiently reuse common sub-expressions
@@ -279,7 +278,7 @@ class ArrayValue:
                 for expr in named_exprs
             )
         )
-        target_ids = tuple(named_expr.name for named_expr in named_exprs)
+        target_ids = tuple(named_expr.id for named_expr in named_exprs)
         new_root = expression_factoring.push_into_tree(self.node, fragments, target_ids)
         return (ArrayValue(new_root), target_ids)
 
@@ -403,22 +402,24 @@ class ArrayValue:
 
     def project_window_expr(
         self,
-        expression: agg_expressions.Aggregation,
+        expressions: Sequence[agg_expressions.Aggregation],
         window: WindowSpec,
-        skip_reproject_unsafe: bool = False,
     ):
-        output_name = self._gen_namespaced_uid()
+        id_strings = [self._gen_namespaced_uid() for _ in expressions]
+        agg_exprs = tuple(
+            nodes.ColumnDef(expression, ids.ColumnId(id_str))
+            for expression, id_str in zip(expressions, id_strings)
+        )
+
         return (
             ArrayValue(
                 nodes.WindowOpNode(
                     child=self.node,
-                    expression=expression,
+                    agg_exprs=agg_exprs,
                     window_spec=window,
-                    output_name=ids.ColumnId(output_name),
-                    skip_reproject_unsafe=skip_reproject_unsafe,
                 )
             ),
-            output_name,
+            id_strings,
         )
 
     def isin(

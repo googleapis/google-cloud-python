@@ -107,7 +107,13 @@ def bind_schema_to_node(
         )
         return dataclasses.replace(
             node,
-            expression=_bind_schema_to_aggregation_expr(node.expression, node.child),
+            agg_exprs=tuple(
+                nodes.ColumnDef(
+                    _bind_schema_to_aggregation_expr(cdef.expression, node.child),  # type: ignore
+                    cdef.id,
+                )
+                for cdef in node.agg_exprs
+            ),
             window_spec=window_spec,
         )
 

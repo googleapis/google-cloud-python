@@ -1,33 +1,26 @@
 import collections
 import dataclasses
 import functools
-import itertools
-from typing import Generic, Hashable, Iterable, Optional, Sequence, Tuple, TypeVar
+from typing import cast, Generic, Hashable, Iterable, Optional, Sequence, Tuple, TypeVar
 
-from bigframes.core import agg_expressions, expression, identifiers, nodes
+from bigframes.core import agg_expressions, expression, identifiers, nodes, window_spec
 
 _MAX_INLINE_COMPLEXITY = 10
 
 
 @dataclasses.dataclass(frozen=True, eq=False)
-class NamedExpression:
-    expr: expression.Expression
-    name: identifiers.ColumnId
-
-
-@dataclasses.dataclass(frozen=True, eq=False)
 class FactoredExpression:
     root_expr: expression.Expression
-    sub_exprs: Tuple[NamedExpression, ...]
+    sub_exprs: Tuple[nodes.ColumnDef, ...]
 
 
-def fragmentize_expression(root: NamedExpression) -> Sequence[NamedExpression]:
+def fragmentize_expression(root: nodes.ColumnDef) -> Sequence[nodes.ColumnDef]:
     """
     The goal of this functions is to factor out an expression into multiple sub-expressions.
     """
 
-    factored_expr = root.expr.reduce_up(gather_fragments)
-    root_expr = NamedExpression(factored_expr.root_expr, root.name)
+    factored_expr = root.expression.reduce_up(gather_fragments)
+    root_expr = nodes.ColumnDef(factored_expr.root_expr, root.id)
     return (root_expr, *factored_expr.sub_exprs)
 
 
@@ -48,7 +41,7 @@ def gather_fragments(
         if not do_inline:
             id = identifiers.ColumnId.unique()
             replacements.append(expression.DerefOp(id))
-            named_exprs.append(NamedExpression(child_result.root_expr, id))
+            named_exprs.append(nodes.ColumnDef(child_result.root_expr, id))
             named_exprs.extend(child_result.sub_exprs)
         else:
             replacements.append(child_result.root_expr)
@@ -116,24 +109,34 @@ class DiGraph(Generic[T]):
 
 def push_into_tree(
     root: nodes.BigFrameNode,
-    exprs: Sequence[NamedExpression],
+    exprs: Sequence[nodes.ColumnDef],
     target_ids: Sequence[identifiers.ColumnId],
 ) -> nodes.BigFrameNode:
     curr_root = root
-    by_id = {expr.name: expr for expr in exprs}
+    by_id = {expr.id: expr for expr in exprs}
     # id -> id
     graph = DiGraph(
-        (expr.name, child_id)
+        (expr.id, child_id)
         for expr in exprs
-        for child_id in expr.expr.column_references
+        for child_id in expr.expression.column_references
         if child_id in by_id.keys()
     )
     # TODO: Also prevent inlining expensive or non-deterministic
     # We avoid inlining multi-parent ids, as they would be inlined multiple places, potentially increasing work and/or compiled text size
     multi_parent_ids = set(id for id in graph.nodes if len(graph.parents(id)) > 2)
-    scalar_ids = set(expr.name for expr in exprs if expr.expr.is_scalar_expr)
+    scalar_ids = set(expr.id for expr in exprs if expr.expression.is_scalar_expr)
 
-    def graph_extract_scalar_exprs() -> Sequence[NamedExpression]:
+    analytic_defs = filter(
+        lambda x: isinstance(x.expression, agg_expressions.WindowExpression), exprs
+    )
+    analytic_by_window = grouped(
+        map(
+            lambda x: (cast(agg_expressions.WindowExpression, x.expression).window, x),
+            analytic_defs,
+        )
+    )
+
+    def graph_extract_scalar_exprs() -> Sequence[nodes.ColumnDef]:
         results: dict[identifiers.ColumnId, expression.Expression] = dict()
         while (
             True
@@ -156,38 +159,55 @@ def push_into_tree(
             for id in candidate_ids:
                 graph.remove_node(id)
                 new_exprs = {
-                    id: by_id[id].expr.bind_refs(results, allow_partial_bindings=True)
+                    id: by_id[id].expression.bind_refs(
+                        results, allow_partial_bindings=True
+                    )
                 }
                 results.update(new_exprs)
         # TODO: We can prune expressions that won't be reused here,
-        return tuple(NamedExpression(expr, id) for id, expr in results.items())
+        return tuple(nodes.ColumnDef(expr, id) for id, expr in results.items())
 
     def graph_extract_window_expr() -> Optional[
-        Tuple[identifiers.ColumnId, agg_expressions.WindowExpression]
+        Tuple[Sequence[nodes.ColumnDef], window_spec.WindowSpec]
     ]:
-        candidate = list(
-            itertools.islice((id for id in graph.sinks if id not in scalar_ids), 1)
-        )
-        if not candidate:
-            return None
-        else:
-            id = next(iter(candidate))
-            graph.remove_node(id)
-            result_expr = by_id[id].expr
-            assert isinstance(result_expr, agg_expressions.WindowExpression)
-            return (id, result_expr)
+        for id in graph.sinks:
+            next_def = by_id[id]
+            if isinstance(next_def.expression, agg_expressions.WindowExpression):
+                window = next_def.expression.window
+                window_exprs = [
+                    cdef
+                    for cdef in analytic_by_window[window]
+                    if cdef.id in graph.sinks
+                ]
+                agg_exprs = tuple(
+                    nodes.ColumnDef(
+                        cast(
+                            agg_expressions.WindowExpression, cdef.expression
+                        ).analytic_expr,
+                        cdef.id,
+                    )
+                    for cdef in window_exprs
+                )
+                for cdef in window_exprs:
+                    graph.remove_node(cdef.id)
+                return (agg_exprs, window)
+
+        return None
 
     while not graph.empty:
         pre_size = len(graph.nodes)
         scalar_exprs = graph_extract_scalar_exprs()
         if scalar_exprs:
             curr_root = nodes.ProjectionNode(
-                curr_root, tuple((x.expr, x.name) for x in scalar_exprs)
+                curr_root, tuple((x.expression, x.id) for x in scalar_exprs)
             )
         while result := graph_extract_window_expr():
-            id, window_expr = result
+            defs, window = result
+            assert len(defs) > 0
             curr_root = nodes.WindowOpNode(
-                curr_root, window_expr.analytic_expr, window_expr.window, output_name=id
+                curr_root,
+                tuple(defs),
+                window,
             )
         if len(graph.nodes) >= pre_size:
             raise ValueError("graph didn't shrink")
@@ -208,3 +228,14 @@ def is_simple(expr: expression.Expression) -> bool:
         if count > _MAX_INLINE_COMPLEXITY:
             return False
     return True
+
+
+K = TypeVar("K", bound=Hashable)
+V = TypeVar("V")
+
+
+def grouped(values: Iterable[tuple[K, V]]) -> dict[K, list[V]]:
+    result = collections.defaultdict(list)
+    for k, v in values:
+        result[k].append(v)
+    return result

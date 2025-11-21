@@ -168,11 +168,12 @@ def _pull_up_order(
             else:
                 # Otherwise we need to generate offsets
                 agg = agg_expressions.NullaryAggregation(agg_ops.RowNumberOp())
+                col_def = bigframes.core.nodes.ColumnDef(agg, node.col_id)
                 window_spec = bigframes.core.window_spec.unbound(
                     ordering=tuple(child_order.all_ordering_columns)
                 )
                 new_offsets_node = bigframes.core.nodes.WindowOpNode(
-                    child_result, agg, window_spec, node.col_id
+                    child_result, (col_def,), window_spec
                 )
                 return (
                     new_offsets_node,
@@ -289,8 +290,9 @@ def _pull_up_order(
                 window_spec = bigframes.core.window_spec.unbound(
                     ordering=tuple(order.all_ordering_columns)
                 )
+                col_def = bigframes.core.nodes.ColumnDef(agg, offsets_id)
                 new_source = bigframes.core.nodes.WindowOpNode(
-                    new_source, agg, window_spec, offsets_id
+                    new_source, (col_def,), window_spec
                 )
             new_source = bigframes.core.nodes.ProjectionNode(
                 new_source, ((bigframes.core.expression.const(i), table_id),)
@@ -421,7 +423,9 @@ def rewrite_promote_offsets(
 ) -> bigframes.core.nodes.WindowOpNode:
     agg = agg_expressions.NullaryAggregation(agg_ops.RowNumberOp())
     window_spec = bigframes.core.window_spec.unbound()
-    return bigframes.core.nodes.WindowOpNode(node.child, agg, window_spec, node.col_id)
+    return bigframes.core.nodes.WindowOpNode(
+        node.child, (bigframes.core.nodes.ColumnDef(agg, node.col_id),), window_spec
+    )
 
 
 def rename_cols(

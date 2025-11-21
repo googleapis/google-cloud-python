@@ -265,11 +265,13 @@ def compile_aggregate(node: nodes.AggregateNode, child: compiled.UnorderedIR):
 
 @_compile_node.register
 def compile_window(node: nodes.WindowOpNode, child: compiled.UnorderedIR):
-    result = child.project_window_op(
-        node.expression,
-        node.window_spec,
-        node.output_name.sql,
-    )
+    result = child
+    for cdef in node.agg_exprs:
+        result = result.project_window_op(
+            cdef.expression,  # type: ignore
+            node.window_spec,
+            cdef.id.sql,
+        )
     return result
 
 

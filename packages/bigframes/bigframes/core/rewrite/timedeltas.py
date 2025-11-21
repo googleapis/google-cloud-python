@@ -64,10 +64,13 @@ def rewrite_timedelta_expressions(root: nodes.BigFrameNode) -> nodes.BigFrameNod
     if isinstance(root, nodes.WindowOpNode):
         return nodes.WindowOpNode(
             root.child,
-            _rewrite_aggregation(root.expression, root.schema),
+            tuple(
+                nodes.ColumnDef(
+                    _rewrite_aggregation(cdef.expression, root.schema), cdef.id
+                )
+                for cdef in root.agg_exprs
+            ),
             root.window_spec,
-            root.output_name,
-            root.skip_reproject_unsafe,
         )
 
     if isinstance(root, nodes.AggregateNode):

@@ -434,12 +434,12 @@ class DataFrameGroupBy(vendored_pandas_groupby.DataFrameGroupBy):
                 grouping_keys=tuple(self._by_col_ids)
             )
         )
-        block, result_id = self._block.apply_analytic(
-            agg_expressions.NullaryAggregation(agg_ops.size_op),
+        block, result_ids = self._block.apply_analytic(
+            [agg_expressions.NullaryAggregation(agg_ops.size_op)],
             window=window_spec,
-            result_label=None,
+            result_labels=[None],
         )
-        result = series.Series(block.select_column(result_id)) - 1
+        result = series.Series(block.select_columns(result_ids)) - 1
         if self._dropna and (len(self._by_col_ids) == 1):
             result = result.mask(
                 series.Series(block.select_column(self._by_col_ids[0])).isna()

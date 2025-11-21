@@ -232,13 +232,11 @@ def _interpolate_column(
         masked_offsets,
         agg_ops.LastNonNullOp(),
         backwards_window,
-        skip_reproject_unsafe=True,
     )
     block, next_value_offset = block.apply_window_op(
         masked_offsets,
         agg_ops.FirstNonNullOp(),
         forwards_window,
-        skip_reproject_unsafe=True,
     )
 
     if interpolate_method == "linear":

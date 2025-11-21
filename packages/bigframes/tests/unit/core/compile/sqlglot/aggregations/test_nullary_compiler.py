@@ -46,9 +46,8 @@ def _apply_nullary_window_op(
 ) -> str:
     win_node = nodes.WindowOpNode(
         obj._block.expr.node,
-        expression=op,
+        agg_exprs=(nodes.ColumnDef(op, identifiers.ColumnId(new_name)),),
         window_spec=window_spec,
-        output_name=identifiers.ColumnId(new_name),
     )
     result = array_value.ArrayValue(win_node).select_columns([new_name])
 

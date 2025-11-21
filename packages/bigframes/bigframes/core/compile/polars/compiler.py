@@ -853,20 +853,23 @@ if polars_installed:
                     "min_period not yet supported for polars engine"
                 )
 
-            if (window.bounds is None) or (window.is_unbounded):
-                # polars will automatically broadcast the aggregate to the matching input rows
-                agg_pl = self.agg_compiler.compile_agg_expr(node.expression)
-                if window.grouping_keys:
-                    agg_pl = agg_pl.over(
-                        self.expr_compiler.compile_expression(key)
-                        for key in window.grouping_keys
+            result = df
+            for cdef in node.agg_exprs:
+                assert isinstance(cdef.expression, agg_expressions.Aggregation)
+                if (window.bounds is None) or (window.is_unbounded):
+                    # polars will automatically broadcast the aggregate to the matching input rows
+                    agg_pl = self.agg_compiler.compile_agg_expr(cdef.expression)
+                    if window.grouping_keys:
+                        agg_pl = agg_pl.over(
+                            self.expr_compiler.compile_expression(key)
+                            for key in window.grouping_keys
+                        )
+                    result = result.with_columns(agg_pl.alias(cdef.id.sql))
+                else:  # row-bounded window
+                    window_result = self._calc_row_analytic_func(
+                        result, cdef.expression, node.window_spec, cdef.id.sql
                     )
-                result = df.with_columns(agg_pl.alias(node.output_name.sql))
-            else:  # row-bounded window
-                window_result = self._calc_row_analytic_func(
-                    df, node.expression, node.window_spec, node.output_name.sql
-                )
-                result = pl.concat([df, window_result], how="horizontal")
+                    result = pl.concat([result, window_result], how="horizontal")
             return result
 
         def _calc_row_analytic_func(

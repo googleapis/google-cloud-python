@@ -48,6 +48,12 @@ if typing.TYPE_CHECKING:
 OVERHEAD_VARIABLES = 5
 
 
+@dataclasses.dataclass(frozen=True, eq=True)
+class ColumnDef:
+    expression: ex.Expression
+    id: identifiers.ColumnId
+
+
 class AdditiveNode:
     """Definition of additive - if you drop added_fields, you end up with the descendent.
 
@@ -1391,21 +1397,23 @@ class AggregateNode(UnaryNode):
 
 @dataclasses.dataclass(frozen=True, eq=False)
 class WindowOpNode(UnaryNode, AdditiveNode):
-    expression: agg_expressions.Aggregation
+    agg_exprs: tuple[ColumnDef, ...]  # must be analytic/aggregation op
     window_spec: window.WindowSpec
-    output_name: identifiers.ColumnId
-    skip_reproject_unsafe: bool = False
 
     def _validate(self):
         """Validate the local data in the node."""
         # Since inner order and row bounds are coupled, rank ops can't be row bounded
-        assert (
-            not self.window_spec.is_row_bounded
-        ) or self.expression.op.implicitly_inherits_order
-        assert all(ref in self.child.ids for ref in self.expression.column_references)
-        assert self.added_field.dtype is not None
-        for agg_child in self.expression.children:
-            assert agg_child.is_scalar_expr
+        for cdef in self.agg_exprs:
+            assert isinstance(cdef.expression, agg_expressions.Aggregation)
+            if self.window_spec.is_row_bounded:
+                assert cdef.expression.op.implicitly_inherits_order
+            for agg_child in cdef.expression.children:
+                assert agg_child.is_scalar_expr
+            for ref in cdef.expression.column_references:
+                assert ref in self.child.ids
+
+        assert not any(field.dtype is None for field in self.added_fields)
+
         for window_expr in self.window_spec.expressions:
             assert window_expr.is_scalar_expr
 
@@ -1415,7 +1423,7 @@ class WindowOpNode(UnaryNode, AdditiveNode):
 
     @property
     def fields(self) -> Sequence[Field]:
-        return sequences.ChainedSequence(self.child.fields, (self.added_field,))
+        return sequences.ChainedSequence(self.child.fields, self.added_fields)
 
     @property
     def variables_introduced(self) -> int:
@@ -1423,49 +1431,54 @@ class WindowOpNode(UnaryNode, AdditiveNode):
 
     @property
     def added_fields(self) -> Tuple[Field, ...]:
-        return (self.added_field,)
+        return tuple(
+            Field(
+                cdef.id,
+                ex.bind_schema_fields(
+                    cdef.expression, self.child.field_by_id
+                ).output_type,
+            )
+            for cdef in self.agg_exprs
+        )
 
     @property
     def relation_ops_created(self) -> int:
-        # Assume that if not reprojecting, that there is a sequence of window operations sharing the same window
-        return 0 if self.skip_reproject_unsafe else 4
+        return 2
 
     @property
     def row_count(self) -> Optional[int]:
         return self.child.row_count
 
-    @functools.cached_property
-    def added_field(self) -> Field:
-        # TODO: Determine if output could be non-null
-        return Field(
-            self.output_name,
-            ex.bind_schema_fields(self.expression, self.child.field_by_id).output_type,
-        )
-
     @property
     def node_defined_ids(self) -> Tuple[identifiers.ColumnId, ...]:
-        return (self.output_name,)
+        return tuple(field.id for field in self.added_fields)
 
     @property
     def consumed_ids(self) -> COLUMN_SET:
-        return frozenset(
-            set(self.ids).difference([self.output_name]).union(self.referenced_ids)
-        )
+        return frozenset(self.ids)
 
     @property
     def referenced_ids(self) -> COLUMN_SET:
+        ids_for_aggs = itertools.chain.from_iterable(
+            cdef.expression.column_references for cdef in self.agg_exprs
+        )
         return (
             frozenset()
-            .union(self.expression.column_references)
+            .union(ids_for_aggs)
             .union(self.window_spec.all_referenced_columns)
         )
 
     @property
     def inherits_order(self) -> bool:
         # does the op both use ordering at all? and if so, can it inherit order?
-        op_inherits_order = (
-            not self.expression.op.order_independent
-        ) and self.expression.op.implicitly_inherits_order
+        aggs = (
+            typing.cast(agg_expressions.Aggregation, cdef.expression)
+            for cdef in self.agg_exprs
+        )
+        op_inherits_order = any(
+            not agg.op.order_independent and agg.op.implicitly_inherits_order
+            for agg in aggs
+        )
         # range-bounded windows do not inherit orders because their ordering are
         # already defined before rewrite time.
         return op_inherits_order or self.window_spec.is_row_bounded
@@ -1476,7 +1489,10 @@ class WindowOpNode(UnaryNode, AdditiveNode):
 
     @property
     def _node_expressions(self):
-        return (self.expression, *self.window_spec.expressions)
+        return (
+            *(cdef.expression for cdef in self.agg_exprs),
+            *self.window_spec.expressions,
+        )
 
     def replace_additive_base(self, node: BigFrameNode) -> WindowOpNode:
         return dataclasses.replace(self, child=node)
@@ -1485,7 +1501,11 @@ class WindowOpNode(UnaryNode, AdditiveNode):
         self, mappings: Mapping[identifiers.ColumnId, identifiers.ColumnId]
     ) -> WindowOpNode:
         return dataclasses.replace(
-            self, output_name=mappings.get(self.output_name, self.output_name)
+            self,
+            agg_exprs=tuple(
+                ColumnDef(cdef.expression, mappings.get(cdef.id, cdef.id))
+                for cdef in self.agg_exprs
+            ),
         )
 
     def remap_refs(
@@ -1493,8 +1513,14 @@ class WindowOpNode(UnaryNode, AdditiveNode):
     ) -> WindowOpNode:
         return dataclasses.replace(
             self,
-            expression=self.expression.remap_column_refs(
-                mappings, allow_partial_bindings=True
+            agg_exprs=tuple(
+                ColumnDef(
+                    cdef.expression.remap_column_refs(
+                        mappings, allow_partial_bindings=True
+                    ),
+                    cdef.id,
+                )
+                for cdef in self.agg_exprs
             ),
             window_spec=self.window_spec.remap_column_refs(
                 mappings, allow_partial_bindings=True

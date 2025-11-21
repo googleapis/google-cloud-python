@@ -54,12 +54,13 @@ def test_engines_with_rows_window(
     )
     window_node = nodes.WindowOpNode(
         child=scalars_array_value.node,
-        expression=agg_expressions.UnaryAggregation(
-            agg_op, expression.deref("int64_too")
+        agg_exprs=(
+            nodes.ColumnDef(
+                agg_expressions.UnaryAggregation(agg_op, expression.deref("int64_too")),
+                identifiers.ColumnId("agg_int64"),
+            ),
         ),
         window_spec=window,
-        output_name=identifiers.ColumnId("agg_int64"),
-        skip_reproject_unsafe=False,
     )
 
     publisher = events.Publisher()
