@@ -21,7 +21,7 @@ GA(Generally Available) yet, please contact your TAM (Technical Account Manager)
 if you want to use these Rapid Storage APIs.
 
 """
-from typing import Optional
+from typing import Optional, Union
 from google.cloud import _storage_v2
 from google.cloud.storage._experimental.asyncio.async_grpc_client import (
     AsyncGrpcClient,
@@ -29,6 +29,10 @@ from google.cloud.storage._experimental.asyncio.async_grpc_client import (
 from google.cloud.storage._experimental.asyncio.async_write_object_stream import (
     _AsyncWriteObjectStream,
 )
+
+
+_MAX_CHUNK_SIZE_BYTES = 2 * 1024 * 1024  # 2 MiB
+_MAX_BUFFER_SIZE_BYTES = 16 * 1024 * 1024  # 16 MiB
 
 
 class AsyncAppendableObjectWriter:
@@ -118,7 +122,13 @@ class AsyncAppendableObjectWriter:
 
         :rtype: int
         :returns: persisted size.
+
+        :raises ValueError: If the stream is not open (i.e., `open()` has not
+            been called).
         """
+        if not self._is_stream_open:
+            raise ValueError("Stream is not open. Call open() before state_lookup().")
+
         await self.write_obj_stream.send(
             _storage_v2.BidiWriteObjectRequest(
                 state_lookup=True,
@@ -129,7 +139,11 @@ class AsyncAppendableObjectWriter:
         return self.persisted_size
 
     async def open(self) -> None:
-        """Opens the underlying bidi-gRPC stream."""
+        """Opens the underlying bidi-gRPC stream.
+
+        :raises ValueError: If the stream is already open.
+
+        """
         if self._is_stream_open:
             raise ValueError("Underlying bidi-gRPC stream is already open")
 
@@ -142,15 +156,65 @@ class AsyncAppendableObjectWriter:
         # Update self.persisted_size
         _ = await self.state_lookup()
 
-    async def append(self, data: bytes):
-        raise NotImplementedError("append is not implemented yet.")
+    async def append(self, data: bytes) -> None:
+        """Appends data to the Appendable object.
+
+        This method sends the provided data to the GCS server in chunks. It
+        maintains an internal threshold `_MAX_BUFFER_SIZE_BYTES` and will
+        automatically flush the data to make it visible to readers when that
+        threshold has reached.
+
+        :type data: bytes
+        :param data: The bytes to append to the object.
+
+        :rtype: None
+
+        :raises ValueError: If the stream is not open (i.e., `open()` has not
+            been called).
+        """
+
+        if not self._is_stream_open:
+            raise ValueError("Stream is not open. Call open() before append().")
+        total_bytes = len(data)
+        if total_bytes == 0:
+            # TODO: add warning.
+            return
+        if self.offset is None:
+            assert self.persisted_size is not None
+            self.offset = self.persisted_size
+
+        start_idx = 0
+        bytes_to_flush = 0
+        while start_idx < total_bytes:
+            end_idx = min(start_idx + _MAX_CHUNK_SIZE_BYTES, total_bytes)
+            await self.write_obj_stream.send(
+                _storage_v2.BidiWriteObjectRequest(
+                    write_offset=self.offset,
+                    checksummed_data=_storage_v2.ChecksummedData(
+                        content=data[start_idx:end_idx]
+                    ),
+                )
+            )
+            chunk_size = end_idx - start_idx
+            self.offset += chunk_size
+            bytes_to_flush += chunk_size
+            if bytes_to_flush >= _MAX_BUFFER_SIZE_BYTES:
+                await self.flush()
+                bytes_to_flush = 0
+            start_idx = end_idx
 
     async def flush(self) -> int:
         """Flushes the data to the server.
 
         :rtype: int
         :returns: The persisted size after flush.
+
+        :raises ValueError: If the stream is not open (i.e., `open()` has not
+            been called).
         """
+        if not self._is_stream_open:
+            raise ValueError("Stream is not open. Call open() before flush().")
+
         await self.write_obj_stream.send(
             _storage_v2.BidiWriteObjectRequest(
                 flush=True,
@@ -162,14 +226,34 @@ class AsyncAppendableObjectWriter:
         self.offset = self.persisted_size
         return self.persisted_size
 
-    async def close(self, finalize_on_close=False) -> int:
-        """Returns persisted_size"""
+    async def close(self, finalize_on_close=False) -> Union[int, _storage_v2.Object]:
+        """Closes the underlying bidi-gRPC stream.
+
+        :type finalize_on_close: bool
+        :param finalize_on_close: Finalizes the Appendable Object. No more data
+          can be appended.
+
+        rtype: Union[int, _storage_v2.Object]
+        returns: Updated `self.persisted_size` by default after closing the
+            bidi-gRPC stream. However, if `finalize_on_close=True` is passed,
+            returns the finalized object resource.
+
+        :raises ValueError: If the stream is not open (i.e., `open()` has not
+            been called).
+
+        """
+        if not self._is_stream_open:
+            raise ValueError("Stream is not open. Call open() before close().")
+
         if finalize_on_close:
             await self.finalize()
+        else:
+            await self.flush()
+            await self.write_obj_stream.close()
 
-        await self.write_obj_stream.close()
         self._is_stream_open = False
         self.offset = None
+        return self.object_resource if finalize_on_close else self.persisted_size
 
     async def finalize(self) -> _storage_v2.Object:
         """Finalizes the Appendable Object.
@@ -178,12 +262,20 @@ class AsyncAppendableObjectWriter:
 
         rtype: google.cloud.storage_v2.types.Object
         returns: The finalized object resource.
+
+        :raises ValueError: If the stream is not open (i.e., `open()` has not
+            been called).
         """
+        if not self._is_stream_open:
+            raise ValueError("Stream is not open. Call open() before finalize().")
+
         await self.write_obj_stream.send(
             _storage_v2.BidiWriteObjectRequest(finish_write=True)
         )
         response = await self.write_obj_stream.recv()
         self.object_resource = response.resource
+        self.persisted_size = self.object_resource.size
+        return self.object_resource
 
     # helper methods.
     async def append_from_string(self, data: str):
