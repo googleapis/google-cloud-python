@@ -12,6 +12,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+"""Interactive, paginated table widget for BigFrames DataFrames."""
+
 from __future__ import annotations
 
 from importlib import resources

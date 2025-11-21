@@ -96,7 +96,7 @@ function render({ model, el }) {
 			// Known total rows
 			const totalPages = Math.ceil(rowCount / pageSize);
 			rowCountLabel.textContent = `${rowCount.toLocaleString()} total rows`;
-			paginationLabel.textContent = `Page ${(currentPage + 1).toLocaleString()} of ${rowCount.toLocaleString()}`;
+			paginationLabel.textContent = `Page ${(currentPage + 1).toLocaleString()} of ${totalPages.toLocaleString()}`;
 			prevPage.disabled = currentPage === 0;
 			nextPage.disabled = currentPage >= totalPages - 1;
 		}
