@@ -383,9 +383,7 @@ def _add_header_to_files(directory: str) -> None:
                 line_index += 1
 
             header_prefix = "\n" if line_index > 0 else ""
-            lines.insert(
-                line_index, header_prefix + _GENERATOR_INPUT_HEADER_TEXT + "\n"
-            )
+            lines.insert(line_index, f"{header_prefix}{_GENERATOR_INPUT_HEADER_TEXT}\n")
 
             with open(file_path, "w", encoding="utf-8") as f:
                 f.writelines(lines)
