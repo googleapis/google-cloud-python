@@ -76,8 +76,12 @@ class Collection(proto.Message):
         vector_schema (MutableMapping[str, google.cloud.vectorsearch_v1beta.types.VectorField]):
             Optional. Schema for vector fields. Only
             vector fields in this schema will be searchable.
+            Field names must contain only alphanumeric
+            characters, underscores, and hyphens.
         data_schema (google.protobuf.struct_pb2.Struct):
             Optional. JSON Schema for data.
+            Field names must contain only alphanumeric
+            characters, underscores, and hyphens.
     """
 
     name: str = proto.Field(
@@ -285,9 +289,10 @@ class CreateCollectionRequest(proto.Message):
         parent (str):
             Required. Value for parent.
         collection_id (str):
-            Required. Id of the requesting object If auto-generating Id
-            server-side, remove this field and collection_id from the
-            method_signature of Create RPC
+            Required. ID of the Collection to create. The id must be
+            1-63 characters long, and comply with RFC1035. Specifically,
+            it must be 1-63 characters long and match the regular
+            expression ``[a-z](?:[-a-z0-9]{0,61}[a-z0-9])?``.
         collection (google.cloud.vectorsearch_v1beta.types.Collection):
             Required. The resource being created
         request_id (str):
@@ -520,9 +525,10 @@ class CreateIndexRequest(proto.Message):
             create the Index. Format:
             ``projects/{project}/locations/{location}/collections/{collection}``
         index_id (str):
-            Required. Id of the requesting object If auto-generating Id
-            server-side, remove this field and index_id from the
-            method_signature of Create RPC
+            Required. ID of the Index to create. The id must be 1-63
+            characters long, and comply with RFC1035. Specifically, it
+            must be 1-63 characters long and match the regular
+            expression ``[a-z](?:[-a-z0-9]{0,61}[a-z0-9])?``.
         index (google.cloud.vectorsearch_v1beta.types.Index):
             Required. The resource being created
         request_id (str):

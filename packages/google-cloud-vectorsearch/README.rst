@@ -22,9 +22,9 @@ items at scale.
    :target: https://pypi.org/project/google-cloud-vectorsearch/
 .. |versions| image:: https://img.shields.io/pypi/pyversions/google-cloud-vectorsearch.svg
    :target: https://pypi.org/project/google-cloud-vectorsearch/
-.. _Vector Search API: https://docs.cloud.google.com/vertex-ai/docs/vector-search/overview
+.. _Vector Search API: https://docs.cloud.google.com/vertex-ai/docs/vector-search-2/overview
 .. _Client Library Documentation: https://cloud.google.com/python/docs/reference/google-cloud-vectorsearch/latest/summary_overview
-.. _Product Documentation:  https://docs.cloud.google.com/vertex-ai/docs/vector-search/overview
+.. _Product Documentation:  https://docs.cloud.google.com/vertex-ai/docs/vector-search-2/overview
 
 Quick Start
 -----------
@@ -38,7 +38,7 @@ In order to use this library, you first need to go through the following steps:
 
 .. _Select or create a Cloud Platform project.: https://console.cloud.google.com/project
 .. _Enable billing for your project.: https://cloud.google.com/billing/docs/how-to/modify-project#enable_billing_for_a_project
-.. _Enable the Vector Search API.:  https://docs.cloud.google.com/vertex-ai/docs/vector-search/overview
+.. _Enable the Vector Search API.:  https://docs.cloud.google.com/vertex-ai/docs/vector-search-2/overview
 .. _Set up Authentication.: https://googleapis.dev/python/google-api-core/latest/auth.html
 
 Installation
@@ -112,7 +112,7 @@ Next Steps
 -  View this `README`_ to see the full list of Cloud
    APIs that we cover.
 
-.. _Vector Search API Product documentation:  https://docs.cloud.google.com/vertex-ai/docs/vector-search/overview
+.. _Vector Search API Product documentation:  https://docs.cloud.google.com/vertex-ai/docs/vector-search-2/overview
 .. _README: https://github.com/googleapis/google-cloud-python/blob/main/README.rst
 
 Logging
