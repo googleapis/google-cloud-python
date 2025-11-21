@@ -95,7 +95,8 @@ def default(session, install_extras=True):
 
     # Install all test dependencies, then install local packages in-place.
     session.install(
-        "pytest",
+        # TODO(https://github.com/pytest-dev/pytest-xdist/issues/1273): Remove once this bug is fixed
+        "pytest<9",
         "google-cloud-testutils",
         "pytest-cov",
         "pytest-xdist",
