@@ -4,6 +4,18 @@
 
 [1]: https://pypi.org/project/google-cloud-vectorsearch/#history
 
+## [0.2.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-vectorsearch-v0.1.0...google-cloud-vectorsearch-v0.2.0) (2025-11-21)
+
+
+### Documentation
+
+* Added clarification of expected format of collection and index fields ([15a15e94ad08f9b177f91f2443c8487d9a880173](https://github.com/googleapis/google-cloud-python/commit/15a15e94ad08f9b177f91f2443c8487d9a880173))
+
+
+### Features
+
+* Added TextSearch support to the batch search API ([15a15e94ad08f9b177f91f2443c8487d9a880173](https://github.com/googleapis/google-cloud-python/commit/15a15e94ad08f9b177f91f2443c8487d9a880173))
+
 ## [0.1.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-vectorsearch-v0.0.0...google-cloud-vectorsearch-v0.1.0) (2025-11-07)
 
 
