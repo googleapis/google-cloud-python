@@ -26,6 +26,7 @@ from unittest.mock import MagicMock, mock_open
 
 import pytest
 from cli import (
+    _GENERATOR_INPUT_HEADER_TEXT,
     GENERATE_REQUEST_FILE,
     BUILD_REQUEST_FILE,
     CONFIGURE_REQUEST_FILE,
@@ -34,6 +35,7 @@ from cli import (
     STATE_YAML_FILE,
     LIBRARIAN_DIR,
     REPO_DIR,
+    _add_header_to_files,
     _clean_up_files_after_post_processing,
     _copy_files_needed_for_post_processing,
     _create_main_version_header,
@@ -140,6 +142,16 @@ _MOCK_BAZEL_CONTENT_PY_PROTO = """load(
 py_proto_library(
     name = "language_py_proto",
 )"""
+
+
+@pytest.fixture
+def setup_dirs(tmp_path):
+    """Creates input and output directories."""
+    input_dir = tmp_path / "input"
+    output_dir = tmp_path / "output"
+    input_dir.mkdir()
+    output_dir.mkdir()
+    return input_dir, output_dir
 
 
 @pytest.fixture(autouse=True)
@@ -904,6 +916,93 @@ def test_copy_files_needed_for_post_processing_copies_files_from_generator_input
 
     mock_shutil_copytree.assert_called()
     mock_makedirs.assert_called()
+
+
+def test_copy_files_needed_for_post_processing_copies_files_from_generator_input_skips_json_files(
+    setup_dirs,
+):
+    """Test that .json files are copied but NOT modified."""
+    input_dir, output_dir = setup_dirs
+
+    json_content = '{"key": "value"}'
+    (input_dir / ".repo-metadata.json").write_text(json_content)
+
+    _copy_files_needed_for_post_processing(
+        output=str(output_dir),
+        input=str(input_dir),
+        library_id="google-cloud-foo",
+        is_mono_repo=False,
+    )
+
+    dest_file = output_dir / ".repo-metadata.json"
+    assert dest_file.exists()
+    # Content should be exactly the same, no # comments added
+    assert dest_file.read_text() == json_content
+
+
+def test_add_header_with_existing_license(tmp_path):
+    """
+    Test that the header is inserted AFTER the existing license block.
+    """
+    # Setup: Create a file with a license header
+    file_path = tmp_path / "example.py"
+    original_content = (
+        "# Copyright 2025 Google LLC\n" "# Licensed under Apache 2.0\n" "\n" "import os"
+    )
+    file_path.write_text(original_content, encoding="utf-8")
+
+    # Execute
+    _add_header_to_files(str(tmp_path))
+
+    # Verify
+    new_content = file_path.read_text(encoding="utf-8")
+    expected_content = (
+        "# Copyright 2025 Google LLC\n"
+        "# Licensed under Apache 2.0\n"
+        "\n"
+        f"{_GENERATOR_INPUT_HEADER_TEXT}\n"
+        "\n"
+        "import os"
+    )
+    assert new_content == expected_content
+
+
+def test_add_header_to_files_add_header_no_license(tmp_path):
+    """
+    Test that the header is inserted at the top if no license block exists.
+    """
+    # Setup: Create a file starting directly with code
+    file_path = tmp_path / "script.sh"
+    original_content = "echo 'Hello World'"
+    file_path.write_text(original_content, encoding="utf-8")
+
+    # Execute
+    _add_header_to_files(str(tmp_path))
+
+    # Verify
+    new_content = file_path.read_text(encoding="utf-8")
+    expected_content = f"{_GENERATOR_INPUT_HEADER_TEXT}\n" "echo 'Hello World'"
+    assert new_content == expected_content
+
+
+def test_add_header_to_files_skips_excluded_extensions(tmp_path):
+    """
+    Test that .json and .yaml files are ignored.
+    """
+    # Setup: Create files that should be ignored
+    json_file = tmp_path / "data.json"
+    yaml_file = tmp_path / "config.yaml"
+
+    content = "key: value"
+    json_file.write_text('{"key": "value"}', encoding="utf-8")
+    yaml_file.write_text(content, encoding="utf-8")
+
+    # Execute
+    _add_header_to_files(str(tmp_path))
+
+    # Verify contents remain exactly the same
+    assert json_file.read_text(encoding="utf-8") == '{"key": "value"}'
+    assert yaml_file.read_text(encoding="utf-8") == content
 
 
 @pytest.mark.parametrize("is_mono_repo", [False, True])
