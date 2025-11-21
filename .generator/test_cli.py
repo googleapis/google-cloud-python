@@ -27,6 +27,7 @@ from unittest.mock import MagicMock, mock_open
 import pytest
 from cli import (
     GENERATE_REQUEST_FILE,
+    GENERATOR_INPUT_HEADER_TEXT,
     BUILD_REQUEST_FILE,
     CONFIGURE_REQUEST_FILE,
     RELEASE_STAGE_REQUEST_FILE,
@@ -34,6 +35,7 @@ from cli import (
     STATE_YAML_FILE,
     LIBRARIAN_DIR,
     REPO_DIR,
+    _add_header_to_files,
     _clean_up_files_after_post_processing,
     _copy_files_needed_for_post_processing,
     _create_main_version_header,
@@ -938,27 +940,69 @@ def test_copy_files_needed_for_post_processing_copies_files_from_generator_input
     assert dest_file.read_text() == json_content
 
 
-def test_file_with_shebang_and_license(setup_dirs):
-    """Test insertion handles License correctly."""
-    input_dir, output_dir = setup_dirs
-
-    # Setup source
-    (input_dir / "run.sh").write_text("# Some Copyright" "# text" "code")
-
-    _copy_files_needed_for_post_processing(
-        output=str(output_dir),
-        input=str(input_dir),
-        library_id="google-cloud-foo",
-        is_mono_repo=False,
+def test_add_header_with_existing_license(tmp_path):
+    """
+    Test that the header is inserted AFTER the existing license block.
+    """
+    # Setup: Create a file with a license header
+    file_path = tmp_path / "example.py"
+    original_content = (
+        "# Copyright 2025 Google LLC\n" "# Licensed under Apache 2.0\n" "\n" "import os"
     )
+    file_path.write_text(original_content, encoding="utf-8")
 
-    content = (output_dir / "run.sh").read_text()
-    lines = content.splitlines()
+    # Execute
+    _add_header_to_files(str(tmp_path))
 
-    # Ensure header comes *after* copyright
-    copyright_index = next(i for i, line in enumerate(lines) if "Copyright" in line)
-    header_index = next(i for i, line in enumerate(lines) if "source of truth" in line)
-    assert header_index > copyright_index
+    # Verify
+    new_content = file_path.read_text(encoding="utf-8")
+    expected_content = (
+        "# Copyright 2025 Google LLC\n"
+        "# Licensed under Apache 2.0\n"
+        "\n"
+        f"{GENERATOR_INPUT_HEADER_TEXT}\n"
+        "\n"
+        "import os"
+    )
+    assert new_content == expected_content
+
+
+def test_add_header_to_files_add_header_no_license(tmp_path):
+    """
+    Test that the header is inserted at the top if no license block exists.
+    """
+    # Setup: Create a file starting directly with code
+    file_path = tmp_path / "script.sh"
+    original_content = "echo 'Hello World'"
+    file_path.write_text(original_content, encoding="utf-8")
+
+    # Execute
+    _add_header_to_files(str(tmp_path))
+
+    # Verify
+    new_content = file_path.read_text(encoding="utf-8")
+    expected_content = "\n" f"{GENERATOR_INPUT_HEADER_TEXT}\n" "echo 'Hello World'"
+    assert new_content == expected_content
+
+
+def test_add_header_to_files_skips_excluded_extensions(tmp_path):
+    """
+    Test that .json and .yaml files are ignored.
+    """
+    # Setup: Create files that should be ignored
+    json_file = tmp_path / "data.json"
+    yaml_file = tmp_path / "config.yaml"
+
+    content = "key: value"
+    json_file.write_text('{"key": "value"}', encoding="utf-8")
+    yaml_file.write_text(content, encoding="utf-8")
+
+    # Execute
+    _add_header_to_files(str(tmp_path))
+
+    # Verify contents remain exactly the same
+    assert json_file.read_text(encoding="utf-8") == '{"key": "value"}'
+    assert yaml_file.read_text(encoding="utf-8") == content
 
 
 @pytest.mark.parametrize("is_mono_repo", [False, True])
