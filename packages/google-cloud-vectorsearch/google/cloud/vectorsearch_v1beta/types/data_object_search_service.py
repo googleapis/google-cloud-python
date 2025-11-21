@@ -166,6 +166,10 @@ class Search(proto.Message):
             A semantic search.
 
             This field is a member of `oneof`_ ``search_type``.
+        text_search (google.cloud.vectorsearch_v1beta.types.TextSearch):
+            A text search operation.
+
+            This field is a member of `oneof`_ ``search_type``.
     """
 
     vector_search: "VectorSearch" = proto.Field(
@@ -179,6 +183,12 @@ class Search(proto.Message):
         number=2,
         oneof="search_type",
         message="SemanticSearch",
+    )
+    text_search: "TextSearch" = proto.Field(
+        proto.MESSAGE,
+        number=3,
+        oneof="search_type",
+        message="TextSearch",
     )
 
 
@@ -286,6 +296,10 @@ class SemanticSearch(proto.Message):
         output_fields (google.cloud.vectorsearch_v1beta.types.OutputFields):
             Optional. The fields to return in the search
             results.
+        filter (google.protobuf.struct_pb2.Struct):
+            Optional. A JSON filter expression, e.g.
+            {"genre": {"$eq": "sci-fi"}}, represented as a
+            google.protobuf.Struct.
         top_k (int):
             Optional. The number of data objects to
             return.
@@ -310,6 +324,11 @@ class SemanticSearch(proto.Message):
         proto.MESSAGE,
         number=3,
         message="OutputFields",
+    )
+    filter: struct_pb2.Struct = proto.Field(
+        proto.MESSAGE,
+        number=6,
+        message=struct_pb2.Struct,
     )
     top_k: int = proto.Field(
         proto.INT32,

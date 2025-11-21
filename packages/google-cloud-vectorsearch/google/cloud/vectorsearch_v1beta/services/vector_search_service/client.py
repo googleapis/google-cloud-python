@@ -1047,9 +1047,11 @@ class VectorSearchServiceClient(metaclass=VectorSearchServiceClientMeta):
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
             collection_id (str):
-                Required. Id of the requesting object If auto-generating
-                Id server-side, remove this field and collection_id from
-                the method_signature of Create RPC
+                Required. ID of the Collection to create. The id must be
+                1-63 characters long, and comply with RFC1035.
+                Specifically, it must be 1-63 characters long and match
+                the regular expression
+                ``[a-z](?:[-a-z0-9]{0,61}[a-z0-9])?``.
 
                 This corresponds to the ``collection_id`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -1700,9 +1702,10 @@ class VectorSearchServiceClient(metaclass=VectorSearchServiceClientMeta):
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
             index_id (str):
-                Required. Id of the requesting object If auto-generating
-                Id server-side, remove this field and index_id from the
-                method_signature of Create RPC
+                Required. ID of the Index to create. The id must be 1-63
+                characters long, and comply with RFC1035. Specifically,
+                it must be 1-63 characters long and match the regular
+                expression ``[a-z](?:[-a-z0-9]{0,61}[a-z0-9])?``.
 
                 This corresponds to the ``index_id`` field
                 on the ``request`` instance; if ``request`` is provided, this
