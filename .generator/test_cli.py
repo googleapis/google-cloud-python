@@ -26,8 +26,8 @@ from unittest.mock import MagicMock, mock_open
 
 import pytest
 from cli import (
+    _GENERATOR_INPUT_HEADER_TEXT,
     GENERATE_REQUEST_FILE,
-    GENERATOR_INPUT_HEADER_TEXT,
     BUILD_REQUEST_FILE,
     CONFIGURE_REQUEST_FILE,
     RELEASE_STAGE_REQUEST_FILE,
@@ -960,7 +960,7 @@ def test_add_header_with_existing_license(tmp_path):
         "# Copyright 2025 Google LLC\n"
         "# Licensed under Apache 2.0\n"
         "\n"
-        f"{GENERATOR_INPUT_HEADER_TEXT}\n"
+        f"{_GENERATOR_INPUT_HEADER_TEXT}\n"
         "\n"
         "import os"
     )
@@ -981,7 +981,7 @@ def test_add_header_to_files_add_header_no_license(tmp_path):
 
     # Verify
     new_content = file_path.read_text(encoding="utf-8")
-    expected_content = "\n" f"{GENERATOR_INPUT_HEADER_TEXT}\n" "echo 'Hello World'"
+    expected_content = "\n" f"{_GENERATOR_INPUT_HEADER_TEXT}\n" "echo 'Hello World'"
     assert new_content == expected_content
 
 
