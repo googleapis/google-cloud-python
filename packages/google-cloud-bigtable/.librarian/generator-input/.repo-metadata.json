@@ -1,0 +1,80 @@
+{
+    "name": "bigtable",
+    "name_pretty": "Cloud Bigtable",
+    "product_documentation": "https://cloud.google.com/bigtable",
+    "client_documentation": "https://cloud.google.com/python/docs/reference/bigtable/latest",
+    "issue_tracker": "https://issuetracker.google.com/savedsearches/559777",
+    "release_level": "stable",
+    "language": "python",
+    "library_type": "GAPIC_COMBO",
+    "repo": "googleapis/python-bigtable",
+    "distribution_name": "google-cloud-bigtable",
+    "api_id": "bigtable.googleapis.com",
+    "requires_billing": true,
+    "samples": [
+        {
+            "name": "Hello World in Cloud Bigtable",
+            "description": "Demonstrates how to connect to Cloud Bigtable and run some basic operations. More information available at: https://cloud.google.com/bigtable/docs/samples-python-hello",
+            "file": "main.py",
+            "runnable": true,
+            "custom_content": "<pre>usage: main.py [-h] [--table TABLE] project_id instance_id<br>Demonstrates how to connect to Cloud Bigtable and run some basic operations.<br>Prerequisites: - Create a Cloud Bigtable cluster.<br>https://cloud.google.com/bigtable/docs/creating-cluster - Set your Google<br>Application Default Credentials.<br>https://developers.google.com/identity/protocols/application-default-<br>credentials<br><br><br>positional arguments:<br>&nbsp; project_id &nbsp; &nbsp; Your Cloud Platform project ID.<br>&nbsp; instance_id &nbsp; &nbsp;ID of the Cloud Bigtable instance to connect to.<br><br><br>optional arguments:<br>&nbsp; -h, --help &nbsp; &nbsp; show this help message and exit<br>&nbsp; --table TABLE &nbsp;Table to create and destroy. (default: Hello-Bigtable)</pre>",
+            "override_path": "hello"
+        },
+        {
+            "name": "Hello World using HappyBase",
+            "description": "This sample demonstrates using the Google Cloud Client Library HappyBase package, an implementation of the HappyBase API to connect to and interact with Cloud Bigtable. More information available at: https://cloud.google.com/bigtable/docs/samples-python-hello-happybase",
+            "file": "main.py",
+            "runnable": true,
+            "custom_content": "<pre>usage: main.py [-h] [--table TABLE] project_id instance_id<br>Demonstrates how to connect to Cloud Bigtable and run some basic operations.<br>Prerequisites: - Create a Cloud Bigtable cluster.<br>https://cloud.google.com/bigtable/docs/creating-cluster - Set your Google<br>Application Default Credentials.<br>https://developers.google.com/identity/protocols/application-default-<br>credentials<br><br><br>positional arguments:<br>&nbsp; project_id &nbsp; &nbsp; Your Cloud Platform project ID.<br>&nbsp; instance_id &nbsp; &nbsp;ID of the Cloud Bigtable instance to connect to.<br><br><br>optional arguments:<br>&nbsp; -h, --help &nbsp; &nbsp; show this help message and exit<br>&nbsp; --table TABLE &nbsp;Table to create and destroy. (default: Hello-Bigtable)</pre>",
+            "override_path": "hello_happybase"
+        },
+        {
+            "name": "cbt Command Demonstration",
+            "description": "This page explains how to use the cbt command to connect to a Cloud Bigtable instance, perform basic administrative tasks, and read and write data in a table. More information about this quickstart is available at https://cloud.google.com/bigtable/docs/quickstart-cbt",
+            "file": "instanceadmin.py",
+            "runnable": true,
+            "custom_content": "<pre>usage: instanceadmin.py [-h] [run] [dev-instance] [del-instance] [add-cluster] [del-cluster] project_id instance_id cluster_id<br>Demonstrates how to connect to Cloud Bigtable and run some basic operations.<br>Prerequisites: - Create a Cloud Bigtable cluster.<br>https://cloud.google.com/bigtable/docs/creating-cluster - Set your Google<br>Application Default Credentials.<br>https://developers.google.com/identity/protocols/application-default-<br>credentials<br><br><br>positional arguments:<br>&nbsp; project_id &nbsp; &nbsp; Your Cloud Platform project ID.<br>&nbsp; instance_id &nbsp; &nbsp;ID of the Cloud Bigtable instance to connect to.<br><br><br>optional arguments:<br>&nbsp; -h, --help &nbsp; &nbsp; show this help message and exit<br>&nbsp; --table TABLE &nbsp;Table to create and destroy. (default: Hello-Bigtable)</pre>",
+            "override_path": "instanceadmin"
+        },
+        {
+            "name": "Metric Scaler",
+            "description": "This sample demonstrates how to use Stackdriver Monitoring to scale Cloud Bigtable based on CPU usage.",
+            "file": "metricscaler.py",
+            "runnable": true,
+            "custom_content": "<pre>usage: metricscaler.py [-h] [--high_cpu_threshold HIGH_CPU_THRESHOLD] [--low_cpu_threshold LOW_CPU_THRESHOLD] [--short_sleep SHORT_SLEEP] [--long_sleep LONG_SLEEP] bigtable_instance bigtable_cluster<br>usage: metricscaler.py [-h] [--high_cpu_threshold HIGH_CPU_THRESHOLD] <br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;[--low_cpu_threshold LOW_CPU_THRESHOLD] <br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;[--short_sleep SHORT_SLEEP] [--long_sleep LONG_SLEEP] <br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;bigtable_instance bigtable_cluster <br><br> <br>Scales Cloud Bigtable clusters based on CPU usage. <br><br> <br>positional arguments: <br>&nbsp; bigtable_instance &nbsp; &nbsp; ID of the Cloud Bigtable instance to connect to. <br>&nbsp; bigtable_cluster &nbsp; &nbsp; &nbsp;ID of the Cloud Bigtable cluster to connect to. <br><br> <br>optional arguments: <br>&nbsp; -h, --help &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;show this help message and exit <br>&nbsp; --high_cpu_threshold HIGH_CPU_THRESHOLD <br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; If Cloud Bigtable CPU usage is above this threshold, <br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; scale up <br>&nbsp; --low_cpu_threshold LOW_CPU_THRESHOLD <br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; If Cloud Bigtable CPU usage is below this threshold, <br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; scale down <br>&nbsp; --short_sleep SHORT_SLEEP <br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; How long to sleep in seconds between checking metrics <br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; after no scale operation <br>&nbsp; --long_sleep LONG_SLEEP <br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; How long to sleep in seconds between checking metrics <br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; after a scaling operation</pre>",
+            "override_path": "metricscaler"
+        },
+        {
+            "name": "Quickstart",
+            "description": "Demonstrates of Cloud Bigtable. This sample creates a Bigtable client, connects to an instance and then to a table, then closes the connection.",
+            "file": "main.py",
+            "runnable": true,
+            "custom_content": "<pre>usage: main.py [-h] [--table TABLE] project_id instance_id <br><br> <br>positional arguments: <br>&nbsp; project_id &nbsp; &nbsp; Your Cloud Platform project ID. <br>&nbsp; instance_id &nbsp; &nbsp;ID of the Cloud Bigtable instance to connect to. <br><br> <br>optional arguments: <br>&nbsp; -h, --help &nbsp; &nbsp; show this help message and exit <br>&nbsp; --table TABLE &nbsp;Existing table used in the quickstart. (default: my-table)</pre>",
+            "override_path": "quickstart"
+        },
+        {
+            "name": "Quickstart using HappyBase",
+            "description": "Demonstrates of Cloud Bigtable using HappyBase. This sample creates a Bigtable client, connects to an instance and then to a table, then closes the connection.",
+            "file": "main.py",
+            "runnable": true,
+            "custom_content": "<pre>usage: main.py [-h] [--table TABLE] project_id instance_id<br>usage: main.py [-h] [--table TABLE] project_id instance_id <br><br> <br>positional arguments: <br>&nbsp; project_id &nbsp; &nbsp; Your Cloud Platform project ID. <br>&nbsp; instance_id &nbsp; &nbsp;ID of the Cloud Bigtable instance to connect to. <br><br> <br>optional arguments: <br>&nbsp; -h, --help &nbsp; &nbsp; show this help message and exit <br>&nbsp; --table TABLE &nbsp;Existing table used in the quickstart. (default: my-table)</code",
+            "override_path": "quickstart_happybase"
+        },
+        {
+            "name": "Snippets",
+            "description": "This folder contains snippets for Python Cloud Bigtable.",
+            "override_path": "snippets"
+        },
+        {
+            "name": "Table Admin",
+            "description": "Demonstrates how to connect to Cloud Bigtable and run some basic operations.",
+            "file": "tableadmin.py",
+            "runnable": true,
+            "custom_content": "<pre>usage: tableadmin.py [-h] [run] [delete] [--table TABLE] project_id instance_id <br><br> <br>Demonstrates how to connect to Cloud Bigtable and run some basic operations. <br>Prerequisites: - Create a Cloud Bigtable cluster. <br>https://cloud.google.com/bigtable/docs/creating-cluster - Set your Google <br>Application Default Credentials. <br>https://developers.google.com/identity/protocols/application-default- <br>credentials <br><br> <br>positional arguments: <br>&nbsp; project_id &nbsp; &nbsp; Your Cloud Platform project ID. <br>&nbsp; instance_id &nbsp; &nbsp;ID of the Cloud Bigtable instance to connect to. <br><br> <br>optional arguments: <br>&nbsp; -h, --help &nbsp; &nbsp; show this help message and exit <br>&nbsp; --table TABLE &nbsp;Table to create and destroy. (default: Hello-Bigtable)</pre>",
+            "override_path": "tableadmin"
+        }
+    ],
+    "default_version": "v2",
+    "codeowner_team": "@googleapis/api-bigtable @googleapis/api-bigtable-partners",
+    "api_shortname": "bigtable"
+}

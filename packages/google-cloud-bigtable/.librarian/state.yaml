@@ -1,0 +1,40 @@
+image: us-central1-docker.pkg.dev/cloud-sdk-librarian-prod/images-prod/python-librarian-generator@sha256:8e2c32496077054105bd06c54a59d6a6694287bc053588e24debe6da6920ad91
+libraries:
+  - id: google-cloud-bigtable
+    version: 2.34.0
+    last_generated_commit: a17b84add8318f780fcc8a027815d5fee644b9f7
+    apis:
+      - path: google/bigtable/v2
+        service_config: bigtable_v2.yaml
+      - path: google/bigtable/admin/v2
+        service_config: bigtableadmin_v2.yaml
+    source_roots:
+      - .
+    preserve_regex: []
+    remove_regex:
+      - ^.pre-commit-config.yaml
+      - ^.repo-metadata.json
+      - ^.trampolinerc
+      - ^docs/admin_client/bigtable
+      - ^docs/admin_client/services_.rst
+      - ^docs/admin_client/types_.rst
+      - ^docs/summary_overview.md
+      - ^google/cloud/bigtable_v2
+      - ^google/cloud/bigtable_admin/
+      - ^google/cloud/bigtable_admin_v2/services
+      - ^google/cloud/bigtable_admin_v2/types
+      - ^google/cloud/bigtable_admin_v2/__init__.py
+      - ^google/cloud/bigtable_admin_v2/gapic
+      - ^google/cloud/bigtable_admin_v2/py.typed
+      - ^samples/AUTHORING_GUIDE.md
+      - ^samples/CONTRIBUTING.md
+      - ^samples/generated_samples
+      - ^tests/unit/gapic
+      - ^noxfile.py
+      - ^scripts/fixup_bigtable
+      - ^setup.py
+      - ^SECURITY.md
+      - ^tests/__init__.py
+      - ^tests/unit/__init__.py
+      - ^tests/unit/gapic
+    tag_format: v{version}
