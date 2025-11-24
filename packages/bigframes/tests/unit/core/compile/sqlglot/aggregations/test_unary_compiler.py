@@ -434,6 +434,27 @@ def test_pop_var(scalar_types_df: bpd.DataFrame, snapshot):
     snapshot.assert_match(sql_window, "window_out.sql")
 
 
+def test_qcut(scalar_types_df: bpd.DataFrame, snapshot):
+    if sys.version_info < (3, 12):
+        pytest.skip(
+            "Skipping test due to inconsistent SQL formatting on Python < 3.12.",
+        )
+
+    col_name = "int64_col"
+    bf = scalar_types_df[[col_name]]
+    bf["qcut_w_int"] = bpd.qcut(bf[col_name], q=4, labels=False, duplicates="drop")
+
+    q_list = tuple([0, 0.25, 0.5, 0.75, 1])
+    bf["qcut_w_list"] = bpd.qcut(
+        scalar_types_df[col_name],
+        q=q_list,
+        labels=False,
+        duplicates="drop",
+    )
+
+    snapshot.assert_match(bf.sql, "out.sql")
+
+
 def test_quantile(scalar_types_df: bpd.DataFrame, snapshot):
     col_name = "int64_col"
     bf_df = scalar_types_df[[col_name]]

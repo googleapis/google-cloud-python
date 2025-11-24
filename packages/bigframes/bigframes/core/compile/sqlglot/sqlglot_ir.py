@@ -637,7 +637,12 @@ def _select_to_cte(expr: sge.Select, cte_name: sge.Identifier) -> sge.Select:
 
 
 def _literal(value: typing.Any, dtype: dtypes.Dtype) -> sge.Expression:
-    sqlglot_type = sgt.from_bigframes_dtype(dtype)
+    sqlglot_type = sgt.from_bigframes_dtype(dtype) if dtype else None
+    if sqlglot_type is None:
+        if value is not None:
+            raise ValueError("Cannot infer SQLGlot type from None dtype.")
+        return sge.Null()
+
     if value is None:
         return _cast(sge.Null(), sqlglot_type)
     elif dtype == dtypes.BYTES_DTYPE:

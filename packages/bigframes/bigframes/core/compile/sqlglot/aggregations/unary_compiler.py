@@ -400,6 +400,43 @@ def _(
     return apply_window_if_present(expr, window)
 
 
+@UNARY_OP_REGISTRATION.register(agg_ops.QcutOp)
+def _(
+    op: agg_ops.QcutOp,
+    column: typed_expr.TypedExpr,
+    window: typing.Optional[window_spec.WindowSpec] = None,
+) -> sge.Expression:
+    percent_ranks_order_by = sge.Ordered(this=column.expr, desc=False)
+    percent_ranks = apply_window_if_present(
+        sge.func("PERCENT_RANK"),
+        window,
+        include_framing_clauses=False,
+        order_by_override=[percent_ranks_order_by],
+    )
+    if isinstance(op.quantiles, int):
+        scaled_rank = percent_ranks * sge.convert(op.quantiles)
+        # Calculate the 0-based bucket index.
+        bucket_index = sge.func("CEIL", scaled_rank) - sge.convert(1)
+        safe_bucket_index = sge.func("GREATEST", bucket_index, 0)
+
+        return sge.If(
+            this=sge.Is(this=column.expr, expression=sge.Null()),
+            true=sge.Null(),
+            false=sge.Cast(this=safe_bucket_index, to="INT64"),
+        )
+    else:
+        case = sge.Case()
+        first_quantile = sge.convert(op.quantiles[0])
+        case = case.when(
+            sge.LT(this=percent_ranks, expression=first_quantile), sge.Null()
+        )
+        for bucket_n in range(len(op.quantiles) - 1):
+            quantile = sge.convert(op.quantiles[bucket_n + 1])
+            bucket = sge.convert(bucket_n)
+            case = case.when(sge.LTE(this=percent_ranks, expression=quantile), bucket)
+        return case.else_(sge.Null())
+
+
 @UNARY_OP_REGISTRATION.register(agg_ops.QuantileOp)
 def _(
     op: agg_ops.QuantileOp,
