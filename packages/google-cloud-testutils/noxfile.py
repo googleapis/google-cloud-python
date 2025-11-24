@@ -1,0 +1,148 @@
+# -*- coding: utf-8 -*-
+#
+# Copyright 2020 Google LLC
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     https://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+
+from __future__ import absolute_import
+import os
+import pathlib
+import shutil
+
+import nox
+
+# 'update_lower_bounds' is excluded
+nox.options.sessions = [
+    "lint",
+    "blacken",
+    "lint_setup_py",
+    "mypy",
+    "unit",
+    "check_lower_bounds",
+]
+
+
+# Error if a python version is missing
+nox.options.error_on_missing_interpreters = True
+
+DEFAULT_PYTHON_VERSION = "3.10"
+BLACK_VERSION = "black==23.7.0"
+BLACK_PATHS = ["test_utils", "setup.py"]
+CURRENT_DIRECTORY = pathlib.Path(__file__).parent.absolute()
+
+
+@nox.session(python=DEFAULT_PYTHON_VERSION)
+def lint(session):
+    """Run linters.
+
+    Returns a failure if the linters find linting errors or sufficiently
+    serious code quality issues.
+    """
+    session.install("flake8", BLACK_VERSION)
+    session.run(
+        "black",
+        "--check",
+        *BLACK_PATHS,
+    )
+    session.run("flake8", *BLACK_PATHS)
+
+
+@nox.session(python=DEFAULT_PYTHON_VERSION)
+def blacken(session):
+    """Run black.
+
+    Format code to uniform standard.
+    """
+    session.install(BLACK_VERSION)
+    session.run(
+        "black",
+        *BLACK_PATHS,
+    )
+
+
+@nox.session(python=DEFAULT_PYTHON_VERSION)
+def lint_setup_py(session):
+    """Verify that setup.py is valid (including RST check)."""
+    session.install("docutils", "pygments")
+    session.run("python", "setup.py", "check", "--restructuredtext", "--strict")
+
+
+@nox.session(python=DEFAULT_PYTHON_VERSION)
+def mypy(session):
+    """Verify type hints are mypy compatible."""
+    session.install("-e", ".")
+    session.install(
+        "mypy",
+        "types-mock",
+        "types-setuptools",
+    )
+    session.run("mypy", "test_utils/", "tests/")
+
+
+@nox.session(python=["3.7", "3.8", "3.9", "3.10", "3.11", "3.12", "3.13", "3.14"])
+def unit(session):
+    constraints_path = str(
+        CURRENT_DIRECTORY / "testing" / f"constraints-{session.python}.txt"
+    )
+
+    # Install two fake packages for the lower-bound-checker tests
+    session.install(
+        "-e", "tests/unit/resources/good_package", "tests/unit/resources/bad_package"
+    )
+
+    session.install("pytest", "pytest-cov")
+    session.install("-e", ".", "-c", constraints_path)
+
+    # Run py.test against the unit tests.
+    session.run(
+        "py.test",
+        "--quiet",
+        f"--junitxml=unit_{session.python}_sponge_log.xml",
+        "--cov=test_utils",
+        "--cov=tests/unit",
+        "--cov-append",
+        "--cov-config=.coveragerc",
+        "--cov-report=",
+        "--cov-fail-under=0",
+        os.path.join("tests", "unit"),
+        *session.posargs,
+    )
+
+
+@nox.session(python=DEFAULT_PYTHON_VERSION)
+def check_lower_bounds(session):
+    """Check lower bounds in setup.py are reflected in constraints file"""
+    session.install(".")
+    session.run(
+        "lower-bound-checker",
+        "check",
+        "--package-name",
+        "google-cloud-testutils",
+        "--constraints-file",
+        "testing/constraints-3.7.txt",
+    )
+
+
+@nox.session(python=DEFAULT_PYTHON_VERSION)
+def update_lower_bounds(session):
+    """Update lower bounds in constraints.txt to match setup.py"""
+    session.install(".")
+    session.run(
+        "lower-bound-checker",
+        "update",
+        "--package-name",
+        "google-cloud-testutils",
+        "--constraints-file",
+        "testing/constraints-3.7.txt",
+    )
