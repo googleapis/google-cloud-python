@@ -166,12 +166,12 @@ git push -u origin "${BRANCH}" --force
 # create pull request
 if which gh > /dev/null
 then
-  while ! gh pr create --title "chore(migration): Migrate code from ${SOURCE_REPO} into ${TARGET_PATH}" --body "$(echo -e "See #${ISSUE_NUMBER}. \n\nThis PR should be merged with a merge-commit, not a squash-commit, in order to preserve the git history.")" ; do
+  while ! gh pr create --draft --title "chore(migration): Migrate code from ${SOURCE_REPO} into ${TARGET_PATH}" --body "$(echo -e "See #${ISSUE_NUMBER}. \n\nThis PR should be merged with a merge-commit, not a squash-commit, in order to preserve the git history.")" ; do
     echo "** PR creation command FAILED (${SOURCE_REPO} --> ${TARGET_PATH}) : sleeping & retrying"
     sleep 30s
   done
 else
-  hub pull-request -m "migrate code from ${SOURCE_REPO}"
+  hub pull-request --draft -m "migrate code from ${SOURCE_REPO}"
 fi
 
 popd >& /dev/null
