@@ -421,6 +421,35 @@ def json_value_array(
     return input._apply_unary_op(ops.JSONValueArray(json_path=json_path))
 
 
+def json_keys(
+    input: series.Series,
+    max_depth: Optional[int] = None,
+) -> series.Series:
+    """Returns all keys in the root of a JSON object as an ARRAY of STRINGs.
+
+    **Examples:**
+
+        >>> import bigframes.pandas as bpd
+        >>> import bigframes.bigquery as bbq
+
+        >>> s = bpd.Series(['{"b": {"c": 2}, "a": 1}'], dtype="json")
+        >>> bbq.json_keys(s)
+        0    ['a' 'b' 'b.c']
+        dtype: list<item: string>[pyarrow]
+
+    Args:
+        input (bigframes.series.Series):
+            The Series containing JSON data.
+        max_depth (int, optional):
+            Specifies the maximum depth of nested fields to search for keys. If not
+            provided, searched keys at all levels.
+
+    Returns:
+        bigframes.series.Series: A new Series containing arrays of keys from the input JSON.
+    """
+    return input._apply_unary_op(ops.JSONKeys(max_depth=max_depth))
+
+
 def to_json(
     input: series.Series,
 ) -> series.Series:

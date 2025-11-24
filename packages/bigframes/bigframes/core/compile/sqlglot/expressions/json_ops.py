@@ -39,6 +39,11 @@ def _(expr: TypedExpr, op: ops.JSONExtractStringArray) -> sge.Expression:
     return sge.func("JSON_EXTRACT_STRING_ARRAY", expr.expr, sge.convert(op.json_path))
 
 
+@register_unary_op(ops.JSONKeys, pass_op=True)
+def _(expr: TypedExpr, op: ops.JSONKeys) -> sge.Expression:
+    return sge.func("JSON_KEYS", expr.expr, sge.convert(op.max_depth))
+
+
 @register_unary_op(ops.JSONQuery, pass_op=True)
 def _(expr: TypedExpr, op: ops.JSONQuery) -> sge.Expression:
     return sge.func("JSON_QUERY", expr.expr, sge.convert(op.json_path))

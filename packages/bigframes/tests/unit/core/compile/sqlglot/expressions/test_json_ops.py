@@ -52,6 +52,19 @@ def test_json_extract_string_array(json_types_df: bpd.DataFrame, snapshot):
     snapshot.assert_match(sql, "out.sql")
 
 
+def test_json_keys(json_types_df: bpd.DataFrame, snapshot):
+    col_name = "json_col"
+    bf_df = json_types_df[[col_name]]
+
+    ops_map = {
+        "json_keys": ops.JSONKeys().as_expr(col_name),
+        "json_keys_w_max_depth": ops.JSONKeys(max_depth=2).as_expr(col_name),
+    }
+
+    sql = utils._apply_ops_to_sql(bf_df, list(ops_map.values()), list(ops_map.keys()))
+    snapshot.assert_match(sql, "out.sql")
+
+
 def test_json_query(json_types_df: bpd.DataFrame, snapshot):
     col_name = "json_col"
     bf_df = json_types_df[[col_name]]

@@ -1234,6 +1234,11 @@ def json_value_array_op_impl(x: ibis_types.Value, op: ops.JSONValueArray):
     return json_value_array(json_obj=x, json_path=op.json_path)
 
 
+@scalar_op_compiler.register_unary_op(ops.JSONKeys, pass_op=True)
+def json_keys_op_impl(x: ibis_types.Value, op: ops.JSONKeys):
+    return json_keys(x, op.max_depth)
+
+
 # Blob Ops
 @scalar_op_compiler.register_unary_op(ops.obj_fetch_metadata_op)
 def obj_fetch_metadata_op_impl(obj_ref: ibis_types.Value):
@@ -2057,6 +2062,14 @@ def to_json(json_obj) -> ibis_dtypes.JSON:  # type: ignore[empty-body]
 @ibis_udf.scalar.builtin(name="to_json_string")
 def to_json_string(value) -> ibis_dtypes.String:  # type: ignore[empty-body]
     """Convert value to JSON-formatted string."""
+
+
+@ibis_udf.scalar.builtin(name="json_keys")
+def json_keys(  # type: ignore[empty-body]
+    json_obj: ibis_dtypes.JSON,
+    max_depth: ibis_dtypes.Int64,
+) -> ibis_dtypes.Array[ibis_dtypes.String]:
+    """Extracts unique JSON keys from a JSON expression."""
 
 
 @ibis_udf.scalar.builtin(name="json_value")

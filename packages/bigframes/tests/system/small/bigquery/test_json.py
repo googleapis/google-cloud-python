@@ -434,3 +434,53 @@ def test_to_json_string_from_struct():
     )
 
     pd.testing.assert_series_equal(actual.to_pandas(), expected.to_pandas())
+
+
+def test_json_keys():
+    json_data = [
+        '{"name": "Alice", "age": 30}',
+        '{"city": "New York", "country": "USA", "active": true}',
+        "{}",
+        '{"items": [1, 2, 3]}',
+    ]
+    s = bpd.Series(json_data, dtype=dtypes.JSON_DTYPE)
+    actual = bbq.json_keys(s)
+
+    expected_data_pandas = [
+        ["age", "name"],
+        [
+            "active",
+            "city",
+            "country",
+        ],
+        [],
+        ["items"],
+    ]
+    expected = bpd.Series(
+        expected_data_pandas, dtype=pd.ArrowDtype(pa.list_(pa.string()))
+    )
+    pd.testing.assert_series_equal(actual.to_pandas(), expected.to_pandas())
+
+
+def test_json_keys_with_max_depth():
+    json_data = [
+        '{"user": {"name": "Bob", "details": {"id": 123, "status": "approved"}}}',
+        '{"user": {"name": "Charlie"}}',
+    ]
+    s = bpd.Series(json_data, dtype=dtypes.JSON_DTYPE)
+    actual = bbq.json_keys(s, max_depth=2)
+
+    expected_data_pandas = [
+        ["user", "user.details", "user.name"],
+        ["user", "user.name"],
+    ]
+    expected = bpd.Series(
+        expected_data_pandas, dtype=pd.ArrowDtype(pa.list_(pa.string()))
+    )
+    pd.testing.assert_series_equal(actual.to_pandas(), expected.to_pandas())
+
+
+def test_json_keys_from_string_error():
+    s = bpd.Series(['{"a": 1, "b": 2}', '{"c": 3}'])
+    with pytest.raises(TypeError):
+        bbq.json_keys(s)

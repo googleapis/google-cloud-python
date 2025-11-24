@@ -200,6 +200,23 @@ class JSONQuery(base_ops.UnaryOp):
 
 
 @dataclasses.dataclass(frozen=True)
+class JSONKeys(base_ops.UnaryOp):
+    name: typing.ClassVar[str] = "json_keys"
+    max_depth: typing.Optional[int] = None
+
+    def output_type(self, *input_types):
+        input_type = input_types[0]
+        if input_type != dtypes.JSON_DTYPE:
+            raise TypeError(
+                "Input type must be a valid JSON object or JSON-formatted string type."
+                + f" Received type: {input_type}"
+            )
+        return pd.ArrowDtype(
+            pa.list_(dtypes.bigframes_dtype_to_arrow_dtype(dtypes.STRING_DTYPE))
+        )
+
+
+@dataclasses.dataclass(frozen=True)
 class JSONDecode(base_ops.UnaryOp):
     name: typing.ClassVar[str] = "json_decode"
     to_type: dtypes.Dtype
