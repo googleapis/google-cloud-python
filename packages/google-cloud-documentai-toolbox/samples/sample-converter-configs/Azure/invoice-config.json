@@ -1,0 +1,18 @@
+{
+    "entity_object":"analyzeResult.documentResults.0.fields",
+    "page": {
+        "height":"analyzeResult.readResults.0.height",
+        "width":"analyzeResult.readResults.0.width"
+    },
+    "entity": {
+        "type_":"analyzeResult.documentResults.0.fields:self",
+        "mention_text":"text",
+        "normalized_vertices":{
+            "type":"3",
+            "unit":"pxl",
+            "base":"boundingBox",
+            "x":"x",
+            "y":"y"
+        }
+    }
+}
