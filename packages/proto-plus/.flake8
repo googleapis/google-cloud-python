@@ -1,0 +1,8 @@
+[flake8]
+ignore =
+  # Closing bracket mismatches opening bracket's line.
+  # This works poorly with type annotations in method declarations.
+  E123, E124
+  # Line over-indented for visual indent.
+  # This works poorly with type annotations in method declarations.
+  E128, E131
