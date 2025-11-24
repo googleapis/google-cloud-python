@@ -1,0 +1,472 @@
+name: Tests
+
+# Controls when the action will run.
+on:
+  pull_request:
+  push:
+    branches: [ $default-branch ]
+
+  # Allows you to run this workflow manually from the Actions tab
+  workflow_dispatch:
+
+concurrency:
+  group: tests-${{ github.head_ref }}
+  cancel-in-progress: true
+
+env:
+  SHOWCASE_VERSION: 0.35.0
+  PROTOC_VERSION: 3.20.2
+  OLDEST_PYTHON: 3.7
+  LATEST_STABLE_PYTHON: 3.14
+  # TODO(https://github.com/googleapis/gapic-generator-python/issues/2450):
+  # Switch this to Python 3.15 alpha1 pre-release
+  # https://peps.python.org/pep-0790/
+  PREVIEW_PYTHON_VERSION: 3.14
+  # TODO(https://github.com/googleapis/gapic-generator-python/issues/2450):
+  # Add Python 3.15 alpha1 pre-release
+  # https://peps.python.org/pep-0790/
+  ALL_PYTHON: "['3.7', '3.8', '3.9', '3.10', '3.11', '3.12', '3.13', '3.14']"
+
+permissions:
+  contents: read
+
+jobs:
+  # `all_python_setup` amd `python_config` are a workaround for a known issue where it's not possible to use environment variables outside of `steps`.
+  # Some jobs set up a text matrix which is outside of `steps` and environment variables can't be used directly. 
+  # This requires a workaround based on the discussion in:
+  # https://github.com/actions/runner/issues/2372
+  # The limitation is captured here where certain job configurations don't have access to `env`
+  # https://docs.github.com/en/enterprise-cloud@latest/actions/writing-workflows/choosing-what-your-workflow-does/accessing-contextual-information-about-workflow-runs#context-availability 
+  all_python_setup:
+    runs-on: ubuntu-latest
+    outputs:
+      all_python: ${{ env.ALL_PYTHON }}
+    steps:
+    - name: Set up all python
+      id: all_python
+      run: |
+        echo 'all_python={{ "${{ env.ALL_PYTHON }}" }}'
+  python_config:
+    runs-on: ubuntu-latest
+    outputs:
+      oldest_python: ${{ env.OLDEST_PYTHON }}
+      latest_stable_python: ${{ env.LATEST_STABLE_PYTHON }}
+    steps:
+    - name: Print env variables for `python_config`
+      run: |
+        echo 'oldest_python={{ "${{ env.OLDEST_PYTHON }}" }}'
+        echo 'latest_stable_python={{ "${{ env.LATEST_STABLE_PYTHON }}" }}'
+  docs:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+      - name: Set up Python
+        uses: actions/setup-python@v6
+        # Use python 3.10 for docs to match the version for the sphinx plugin
+        # https://github.com/googleapis/synthtool/pull/1891
+        with:
+          python-version: "3.10"
+          cache: 'pip'
+      - name: Install nox.
+        run: python -m pip install nox
+      - name: Build the documentation.
+        run: nox -s docs
+  docfx:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+      - name: Set up Python
+        uses: actions/setup-python@v6
+        # Use python 3.10 for docs to match the version for the sphinx plugin
+        # https://github.com/googleapis/synthtool/pull/1891
+        with:
+          python-version: "3.10"
+          cache: 'pip'
+      - name: Install nox.
+        run: python -m pip install nox
+      - name: Build the documentation.
+        run: nox -s docfx
+  mypy:
+    needs: all_python_setup
+    strategy:
+      matrix:
+        # Run mypy on all of the supported python versions listed in setup.py
+        # https://github.com/python/mypy/blob/master/setup.py
+        python: ${{ fromJSON(needs.all_python_setup.outputs.all_python) }}
+        exclude:
+          # Remove once https://github.com/googleapis/gapic-generator-python/issues/2303 is fixed
+          - python: '3.7'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+      - name: Set up Python "${{ matrix.python }}"
+        uses: actions/setup-python@v6
+        with:
+          python-version: "${{ matrix.python }}"
+          cache: 'pip'
+          allow-prereleases: true
+      - name: Install nox.
+        run: python -m pip install nox
+      - name: Check type annotations.
+        run: nox -s mypy-${{ matrix.python }}
+  showcase:
+    needs: python_config
+    strategy:
+      # Run showcase tests on the lowest and highest supported runtimes
+      matrix:
+        # TODO(https://github.com/googleapis/gapic-generator-python/issues/2121) Remove `showcase_w_rest_async` target when async rest is GA.
+        python: ["${{ needs.python_config.outputs.oldest_python }}", "${{ needs.python_config.outputs.latest_stable_python }}"]
+        target: [showcase, showcase_w_rest_async]
+        logging_scope: ["", "google"]
+
+    # TODO(https://github.com/googleapis/gapic-generator-python/issues/2303): use `ubuntu-latest` once this bug is fixed.
+    # Use ubuntu-22.04 until Python 3.7 is removed from the test matrix
+    runs-on: ubuntu-22.04
+    steps:
+      - uses: actions/checkout@v5
+      - name: Set up Python "${{ matrix.python }}"
+        uses: actions/setup-python@v6
+        with:
+          python-version: "${{ matrix.python }}"
+          cache: 'pip'
+      - name: Install system dependencies.
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y curl pandoc unzip
+      - name: Install showcase
+        run: |
+          sudo mkdir -p /usr/src/showcase
+          sudo chown -R ${USER} /usr/src/
+          curl --location https://github.com/googleapis/gapic-showcase/releases/download/v${SHOWCASE_VERSION}/gapic-showcase-${SHOWCASE_VERSION}-linux-amd64.tar.gz --output /usr/src/showcase/showcase-${SHOWCASE_VERSION}-linux-amd64.tar.gz
+          cd /usr/src/showcase/
+          tar -xf showcase-*
+          ./gapic-showcase run &
+          cd -
+      - name: Install nox.
+        run: python -m pip install nox
+      - name: Install protoc 
+        run: |
+            sudo mkdir -p /usr/src/protoc/
+            sudo chown -R ${USER} /usr/src/
+            curl --location https://github.com/google/protobuf/releases/download/v${PROTOC_VERSION}/protoc-${PROTOC_VERSION}-linux-x86_64.zip --output /usr/src/protoc/protoc-${PROTOC_VERSION}.zip
+            cd /usr/src/protoc/
+            unzip protoc-${PROTOC_VERSION}.zip
+            sudo ln -s /usr/src/protoc/bin/protoc /usr/local/bin/protoc
+      - name: Run showcase tests.
+        env:
+          # TODO(https://github.com/googleapis/gapic-generator-python/issues/2286): Construct nox sessions with logging enabled.
+          GOOGLE_SDK_PYTHON_LOGGING_SCOPE: ${{ matrix.logging_scope }}
+        run: nox -s ${{ matrix.target }}-${{ matrix.python }}
+  showcase-mtls:
+    if: ${{ false }}            # TODO(dovs): reenable when #1218 is fixed
+    strategy:
+      matrix:
+        target: [showcase_mtls]
+      max-parallel: 1
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+      - name: Setup temp directory
+        run: |
+          sudo mkdir -p /tmp/workspace/tests/cert/
+          sudo chown -R ${USER} /tmp/workspace/
+      - name: Set up Python ${{ env.LATEST_STABLE_PYTHON }}
+        uses: actions/setup-python@v6
+        with:
+          python-version: "${{ env.LATEST_STABLE_PYTHON }}"
+          cache: 'pip'
+      - name: Copy mtls files
+        run: cp tests/cert/mtls.* /tmp/workspace/tests/cert/
+      - name: Install system dependencies.
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y curl pandoc unzip
+      - name: Install nox.
+        run: python -m pip install nox
+      - name: Install protoc.
+        run: |
+          sudo mkdir -p /usr/src/protoc/
+          sudo chown -R ${USER} /usr/src
+          curl --location https://github.com/google/protobuf/releases/download/v${PROTOC_VERSION}/protoc-${PROTOC_VERSION}-linux-x86_64.zip --output /usr/src/protoc/protoc-${PROTOC_VERSION}.zip
+          cd /usr/src/protoc/
+          unzip protoc-${PROTOC_VERSION}.zip
+          sudo ln -s /usr/src/protoc/bin/protoc /usr/local/bin/protoc
+          cd -
+      - name: Run showcase tests.
+        run:  |
+            sudo mkdir gapic_showcase
+            sudo chown ${USER} gapic_showcase
+            cd gapic_showcase
+            curl -sSL https://github.com/googleapis/gapic-showcase/releases/download/v${SHOWCASE_VERSION}/gapic-showcase-${SHOWCASE_VERSION}-linux-amd64.tar.gz | tar xz
+            ./gapic-showcase run --mtls-ca-cert=/tmp/workspace/tests/cert/mtls.crt --mtls-cert=/tmp/workspace/tests/cert/mtls.crt --mtls-key=/tmp/workspace/tests/cert/mtls.key &
+
+            cd ..
+            nox -s ${{ matrix.target }}
+  # TODO(yon-mg): add compute unit tests
+  showcase-unit:
+    needs: all_python_setup
+    strategy:
+      matrix:
+        python: ${{ fromJSON(needs.all_python_setup.outputs.all_python) }}
+        # TODO(https://github.com/googleapis/gapic-generator-python/issues/2121) Remove `_w_rest_async` variant when async rest is GA.
+        variant: ['', _alternative_templates, _mixins, _alternative_templates_mixins, _w_rest_async]
+        logging_scope: ["", "google"]
+    
+    # TODO(https://github.com/googleapis/gapic-generator-python/issues/2303): use `ubuntu-latest` once this bug is fixed.
+    # Use ubuntu-22.04 until Python 3.7 is removed from the test matrix
+    runs-on: ubuntu-22.04
+    steps:
+      - uses: actions/checkout@v5
+      - name: Set up Python "${{ matrix.python }}"
+        uses: actions/setup-python@v6
+        with:
+          python-version: "${{ matrix.python }}"
+          cache: 'pip'
+          allow-prereleases: true
+      - name: Install system dependencies.
+        run: |
+            sudo apt-get update
+            sudo apt-get install -y curl pandoc unzip
+      - name: Install protoc.
+        run: |
+            sudo mkdir -p /usr/src/protoc/
+            sudo chown -R ${USER} /usr/src/
+            curl --location https://github.com/google/protobuf/releases/download/v${PROTOC_VERSION}/protoc-${PROTOC_VERSION}-linux-x86_64.zip --output /usr/src/protoc/protoc-${PROTOC_VERSION}.zip
+            cd /usr/src/protoc/
+            unzip protoc-${PROTOC_VERSION}.zip
+            sudo ln -s /usr/src/protoc/bin/protoc /usr/local/bin/protoc
+      - name: Install nox.
+        run: python -m pip install nox
+      - name: Run unit tests.
+        env:
+          # TODO(https://github.com/googleapis/gapic-generator-python/issues/2286): Construct nox sessions with logging enabled.
+          GOOGLE_SDK_PYTHON_LOGGING_SCOPE: ${{ matrix.logging_scope }}
+        run: nox -s showcase_unit${{ matrix.variant }}-${{ matrix.python }}
+  showcase-unit-add-iam-methods:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+      - name: Set up Python ${{ env.LATEST_STABLE_PYTHON }}
+        uses: actions/setup-python@v6
+        with:
+          python-version: "${{ env.LATEST_STABLE_PYTHON }}"
+          cache: 'pip'
+      - name: Install system dependencies.
+        run: |
+            sudo apt-get update
+            sudo apt-get install -y curl pandoc unzip
+      - name: Install protoc.
+        run: |
+            sudo mkdir -p /usr/src/protoc/
+            sudo chown -R ${USER} /usr/src/
+            curl --location https://github.com/google/protobuf/releases/download/v${PROTOC_VERSION}/protoc-${PROTOC_VERSION}-linux-x86_64.zip --output /usr/src/protoc/protoc-${PROTOC_VERSION}.zip
+            cd /usr/src/protoc/
+            unzip protoc-${PROTOC_VERSION}.zip
+            sudo ln -s /usr/src/protoc/bin/protoc /usr/local/bin/protoc
+      - name: Install nox.
+        run: python -m pip install nox
+      - name: Run unit tests.
+        run: nox -s showcase_unit_add_iam_methods
+  showcase-mypy:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        variant: ['', _alternative_templates]
+    steps:
+      - uses: actions/checkout@v5
+      - name: Set up Python ${{ env.LATEST_STABLE_PYTHON }}
+        uses: actions/setup-python@v6
+        with:
+          python-version: "${{ env.LATEST_STABLE_PYTHON }}"
+          cache: 'pip'
+      - name: Install system dependencies.
+        run: |
+            sudo apt-get update
+            sudo apt-get install -y curl pandoc unzip
+      - name: Install protoc.
+        run: |
+            sudo mkdir -p /usr/src/protoc/
+            sudo chown -R ${USER} /usr/src/
+            curl --location https://github.com/google/protobuf/releases/download/v${PROTOC_VERSION}/protoc-${PROTOC_VERSION}-linux-x86_64.zip --output /usr/src/protoc/protoc-${PROTOC_VERSION}.zip
+            cd /usr/src/protoc/
+            unzip protoc-${PROTOC_VERSION}.zip
+            sudo ln -s /usr/src/protoc/bin/protoc /usr/local/bin/protoc
+      - name: Install nox.
+        run: python -m pip install nox
+      - name: Typecheck the generated output.
+        run: nox -s showcase_mypy${{ matrix.variant }}
+  snippetgen:
+    needs: all_python_setup
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+      - name: Set up Python ${{ env.LATEST_STABLE_PYTHON }}
+        uses: actions/setup-python@v6
+        with:
+          python-version: "${{ env.LATEST_STABLE_PYTHON }}"
+          cache: 'pip'
+      - name: Install system dependencies.
+        run: |
+            sudo apt-get update
+            sudo apt-get install -y curl pandoc unzip
+      - name: Install nox.
+        run: python -m pip install nox
+      - name: Check autogenerated snippets.
+        run: nox -s snippetgen
+  unit:
+    needs: all_python_setup
+    strategy:
+      matrix:
+        python: ${{ fromJSON(needs.all_python_setup.outputs.all_python) }}
+    # TODO(https://github.com/googleapis/gapic-generator-python/issues/2303): use `ubuntu-latest` once this bug is fixed.
+    # Use ubuntu-22.04 until Python 3.7 is removed from the test matrix
+    runs-on: ubuntu-22.04
+    steps:
+      - uses: actions/checkout@v5
+      - name: Set up Python ${{ matrix.python }}
+        uses: actions/setup-python@v6
+        with:
+          python-version: "${{ matrix.python }}"
+          cache: 'pip'
+          allow-prereleases: true
+      - name: Install pandoc
+        run: |
+            sudo apt-get update
+            sudo apt-get install -y pandoc gcc git
+      - name: Install nox.
+        run: |
+            python -m pip install nox
+      - name: Run unit tests.
+        run: nox -s unit-${{ matrix.python }}
+  fragment:
+    needs: all_python_setup
+    strategy:
+      matrix:
+        python: ${{ fromJSON(needs.all_python_setup.outputs.all_python) }}
+        variant: ['', _alternative_templates]
+    # TODO(https://github.com/googleapis/gapic-generator-python/issues/2303): use `ubuntu-latest` once this bug is fixed.
+    # Use ubuntu-22.04 until Python 3.7 is removed from the test matrix
+    runs-on: ubuntu-22.04
+    steps:
+      - uses: actions/checkout@v5
+      - name: Set up Python ${{ matrix.python }}
+        uses: actions/setup-python@v6
+        with:
+          python-version: "${{ matrix.python }}"
+          cache: 'pip'
+          allow-prereleases: true
+      - name: Install pandoc
+        run: |
+            sudo apt-get update
+            sudo apt-get install -y pandoc gcc git
+      - name: Install nox.
+        run: |
+            python -m pip install nox
+      - name: Run fragment tests.
+        run: nox -s fragment${{ matrix.variant }}-${{ matrix.python }}
+  integration:
+    runs-on: ubuntu-latest
+    container: gcr.io/gapic-images/googleapis
+    steps:
+      - uses: actions/checkout@v5
+      - name: Cache Bazel files
+        id: cache-bazel
+        uses: actions/cache@v4
+        with:
+          path: ~/.cache/bazel
+          # Note: if the container is updated, the key needs to be updated as well.
+          key: ${{ runner.os }}-bazel-20210105-${{ secrets.CACHE_VERSION }}
+      - name: Cache not found
+        if: steps.cache-bazel.outputs.cache-hit != 'true'
+        run: |
+          echo "No cache found."
+      - name: Cache found
+        if: steps.cache-bazel.outputs.cache-hit == 'true'
+        run: |
+          echo -n "Cache found. Cache size: "
+          du -sh ~/.cache/bazel
+          echo "If the cache seems broken, update the CACHE_VERSION secret in"
+          echo "https://github.com/googleapis/gapic-generator-python/settings/secrets/actions"
+          echo "(use any random string, any GUID will work)"
+          echo "and it will start over with a clean cache."
+          echo "The old one will disappear after 7 days."
+      - name: Integration Tests
+        run: bazelisk test //tests/integration/... --test_output=errors
+
+  goldens-lint:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+      - name: Set up Python ${{ env.LATEST_STABLE_PYTHON }}
+        uses: actions/setup-python@v6
+        with:
+          python-version: ${{ env.LATEST_STABLE_PYTHON }}
+          cache: 'pip'
+      - name: Install nox.
+        run: |
+            python -m pip install nox
+      - name: Run blacken and lint on the generated output.
+        run: |
+          nox -f tests/integration/goldens/asset/noxfile.py -s mypy-${{ env.LATEST_STABLE_PYTHON }} blacken lint
+          nox -f tests/integration/goldens/credentials/noxfile.py -s mypy-${{ env.LATEST_STABLE_PYTHON }} blacken lint
+          nox -f tests/integration/goldens/eventarc/noxfile.py -s mypy-${{ env.LATEST_STABLE_PYTHON }} blacken lint
+          nox -f tests/integration/goldens/logging/noxfile.py -s mypy-${{ env.LATEST_STABLE_PYTHON }} blacken lint
+          nox -f tests/integration/goldens/redis/noxfile.py -s mypy-${{ env.LATEST_STABLE_PYTHON }} blacken lint
+  goldens-unit:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+      - name: Set up Python ${{ env.LATEST_STABLE_PYTHON }}
+        uses: actions/setup-python@v6
+        with:
+          python-version: "${{ env.LATEST_STABLE_PYTHON }}"
+          cache: 'pip'
+      - name: Install nox.
+        run: |
+            python -m pip install nox
+      - name: Run the `unit` nox session
+        # Exclude testing for asset which requires dependency google-cloud-org-policy
+        # in order to run unit tests
+        # See https://github.com/googleapis/gapic-generator-python/issues/1806
+        run: |
+          nox -f tests/integration/goldens/credentials/noxfile.py -s unit-${{ env.LATEST_STABLE_PYTHON }}
+          nox -f tests/integration/goldens/eventarc/noxfile.py -s unit-${{ env.LATEST_STABLE_PYTHON }}
+          nox -f tests/integration/goldens/logging/noxfile.py -s unit-${{ env.LATEST_STABLE_PYTHON }}
+          nox -f tests/integration/goldens/redis/noxfile.py -s unit-${{ env.LATEST_STABLE_PYTHON }}
+  goldens-prerelease:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+      - name: Set up Python ${{ env.PREVIEW_PYTHON_VERSION }}
+        uses: actions/setup-python@v6
+        with:
+          python-version: "${{ env.PREVIEW_PYTHON_VERSION }}"
+          cache: 'pip'
+          allow-prereleases: true
+      - name: Install nox.
+        run: |
+            python -m pip install nox
+      - name: Run the prerelease_deps nox session
+        # Exclude testing for asset which requires dependency google-cloud-org-policy
+        # in order to run unit tests
+        # See https://github.com/googleapis/gapic-generator-python/issues/1806
+        run: |
+          nox -f tests/integration/goldens/credentials/noxfile.py -s prerelease_deps
+          nox -f tests/integration/goldens/eventarc/noxfile.py -s prerelease_deps
+          nox -f tests/integration/goldens/logging/noxfile.py -s prerelease_deps
+          nox -f tests/integration/goldens/redis/noxfile.py -s prerelease_deps
+  lint:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+      - name: Set up Python ${{ env.LATEST_STABLE_PYTHON }}
+        uses: actions/setup-python@v6
+        with:
+          python-version: "${{ env.LATEST_STABLE_PYTHON }}"
+          cache: 'pip'
+      - name: Install nox.
+        run: |
+            python -m pip install nox
+      - name: Run lint
+        run: |
+            nox -s lint
