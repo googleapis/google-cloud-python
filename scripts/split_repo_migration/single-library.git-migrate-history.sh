@@ -83,8 +83,8 @@ git remote remove origin
 if [[ ! -z "${SOURCE_PATH}" ]]
 then
   echo "Pruning commits only including path: ${SOURCE_PATH}"
-  git filter-branch \  # rewrites history... unsafe
-    --prune-empty \
+  git filter-repo \  # rewrites history... unsafe
+     \
     --subdirectory-filter "${SOURCE_PATH}"
 fi
 
@@ -112,17 +112,17 @@ then
     # restore files to keep, silence errors if the file doesn't exist
     FILTER="${FILTER}; ${KEEP_FILE_COMMANDS}"
   fi
-  git filter-branch \
+  git filter-repo \
     --force \
-    --prune-empty \
+     \
     --tree-filter "${FILTER}"
 fi
 
 # reorganize the filtered code into the desired target locations
 echo "Moving files to destination path: ${TARGET_PATH}"
-git filter-branch \
+git filter-repo \
   --force \
-  --prune-empty \
+   \
   --tree-filter \
     "shopt -s dotglob; mkdir -p ${WORKDIR}/migrated-source; mv * ${WORKDIR}/migrated-source; mkdir -p ${TARGET_PATH}; { mv ${WORKDIR}/migrated-source/* ${TARGET_PATH} || echo 'No files to move' ; }"
 
