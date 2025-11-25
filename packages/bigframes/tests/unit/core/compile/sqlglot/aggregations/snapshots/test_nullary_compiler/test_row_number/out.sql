@@ -19,7 +19,7 @@ WITH `bfcte_0` AS (
 ), `bfcte_1` AS (
   SELECT
     *,
-    ROW_NUMBER() OVER () AS `bfcol_32`
+    ROW_NUMBER() OVER () - 1 AS `bfcol_32`
   FROM `bfcte_0`
 )
 SELECT

@@ -7,7 +7,7 @@ WITH `bfcte_1` AS (
 ), `bfcte_3` AS (
   SELECT
     *,
-    ROW_NUMBER() OVER () AS `bfcol_7`
+    ROW_NUMBER() OVER () - 1 AS `bfcol_7`
   FROM `bfcte_1`
 ), `bfcte_5` AS (
   SELECT
@@ -32,7 +32,7 @@ WITH `bfcte_1` AS (
 ), `bfcte_2` AS (
   SELECT
     *,
-    ROW_NUMBER() OVER () AS `bfcol_22`
+    ROW_NUMBER() OVER () - 1 AS `bfcol_22`
   FROM `bfcte_0`
 ), `bfcte_4` AS (
   SELECT

@@ -5,7 +5,7 @@ WITH `bfcte_0` AS (
 ), `bfcte_1` AS (
   SELECT
     *,
-    ROW_NUMBER() OVER (ORDER BY `int64_col` ASC NULLS LAST) AS `bfcol_1`
+    ROW_NUMBER() OVER (ORDER BY `int64_col` ASC NULLS LAST) - 1 AS `bfcol_1`
   FROM `bfcte_0`
 )
 SELECT

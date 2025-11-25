@@ -49,5 +49,5 @@ def _(
     result: sge.Expression = sge.func("ROW_NUMBER")
     if window is None:
         # ROW_NUMBER always needs an OVER clause.
-        return sge.Window(this=result)
-    return apply_window_if_present(result, window, include_framing_clauses=False)
+        return sge.Window(this=result) - 1
+    return apply_window_if_present(result, window, include_framing_clauses=False) - 1
