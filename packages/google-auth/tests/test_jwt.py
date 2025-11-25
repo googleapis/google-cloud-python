@@ -43,6 +43,12 @@ with open(os.path.join(DATA_DIR, "es256_privatekey.pem"), "rb") as fh:
 with open(os.path.join(DATA_DIR, "es256_public_cert.pem"), "rb") as fh:
     EC_PUBLIC_CERT_BYTES = fh.read()
 
+with open(os.path.join(DATA_DIR, "es384_privatekey.pem"), "rb") as fh:
+    EC384_PRIVATE_KEY_BYTES = fh.read()
+
+with open(os.path.join(DATA_DIR, "es384_public_cert.pem"), "rb") as fh:
+    EC384_PUBLIC_CERT_BYTES = fh.read()
+
 SERVICE_ACCOUNT_JSON_FILE = os.path.join(DATA_DIR, "service_account.json")
 
 with open(SERVICE_ACCOUNT_JSON_FILE, "rb") as fh:
@@ -84,6 +90,11 @@ def es256_signer():
     return crypt.ES256Signer.from_string(EC_PRIVATE_KEY_BYTES, "1")
 
 
+@pytest.fixture
+def es384_signer():
+    return crypt.EsSigner.from_string(EC384_PRIVATE_KEY_BYTES, "1")
+
+
 def test_encode_basic_es256(es256_signer):
     test_payload = {"test": "value"}
     encoded = jwt.encode(es256_signer, test_payload)
@@ -92,9 +103,19 @@ def test_encode_basic_es256(es256_signer):
     assert header == {"typ": "JWT", "alg": "ES256", "kid": es256_signer.key_id}
 
 
+def test_encode_basic_es384(es384_signer):
+    test_payload = {"test": "value"}
+    encoded = jwt.encode(es384_signer, test_payload)
+    header, payload, _, _ = jwt._unverified_decode(encoded)
+    assert payload == test_payload
+    assert header == {"typ": "JWT", "alg": "ES384", "kid": es384_signer.key_id}
+
+
 @pytest.fixture
-def token_factory(signer, es256_signer):
-    def factory(claims=None, key_id=None, use_es256_signer=False):
+def token_factory(signer, es256_signer, es384_signer):
+    def factory(
+        claims=None, key_id=None, use_es256_signer=False, use_es384_signer=False
+    ):
         now = _helpers.datetime_to_secs(_helpers.utcnow())
         payload = {
             "aud": "audience@example.com",
@@ -113,6 +134,8 @@ def token_factory(signer, es256_signer):
 
         if use_es256_signer:
             return jwt.encode(es256_signer, payload, key_id=key_id)
+        elif use_es384_signer:
+            return jwt.encode(es384_signer, payload, key_id=key_id)
         else:
             return jwt.encode(signer, payload, key_id=key_id)
 
@@ -152,6 +175,15 @@ def test_decode_payload_object(signer):
 def test_decode_valid_es256(token_factory):
     payload = jwt.decode(
         token_factory(use_es256_signer=True), certs=EC_PUBLIC_CERT_BYTES
+    )
+    assert payload["aud"] == "audience@example.com"
+    assert payload["user"] == "billy bob"
+    assert payload["metadata"]["meta"] == "data"
+
+
+def test_decode_valid_es384(token_factory):
+    payload = jwt.decode(
+        token_factory(use_es384_signer=True), certs=EC384_PUBLIC_CERT_BYTES
     )
     assert payload["aud"] == "audience@example.com"
     assert payload["user"] == "billy bob"

@@ -59,17 +59,18 @@ from google.auth import exceptions
 import google.auth.credentials
 
 try:
-    from google.auth.crypt import es256
+    from google.auth.crypt import es
 except ImportError:  # pragma: NO COVER
-    es256 = None  # type: ignore
+    es = None  # type: ignore
 
 _DEFAULT_TOKEN_LIFETIME_SECS = 3600  # 1 hour in seconds
 _DEFAULT_MAX_CACHE_SIZE = 10
 _ALGORITHM_TO_VERIFIER_CLASS = {"RS256": crypt.RSAVerifier}
-_CRYPTOGRAPHY_BASED_ALGORITHMS = frozenset(["ES256"])
+_CRYPTOGRAPHY_BASED_ALGORITHMS = frozenset(["ES256", "ES384"])
 
-if es256 is not None:  # pragma: NO COVER
-    _ALGORITHM_TO_VERIFIER_CLASS["ES256"] = es256.ES256Verifier  # type: ignore
+if es is not None:  # pragma: NO COVER
+    _ALGORITHM_TO_VERIFIER_CLASS["ES256"] = es.EsVerifier  # type: ignore
+    _ALGORITHM_TO_VERIFIER_CLASS["ES384"] = es.EsVerifier  # type: ignore
 
 
 def encode(signer, payload, header=None, key_id=None):
@@ -95,8 +96,8 @@ def encode(signer, payload, header=None, key_id=None):
     header.update({"typ": "JWT"})
 
     if "alg" not in header:
-        if es256 is not None and isinstance(signer, es256.ES256Signer):
-            header.update({"alg": "ES256"})
+        if es is not None and isinstance(signer, es.EsSigner):
+            header.update({"alg": signer.algorithm})
         else:
             header.update({"alg": "RS256"})
 

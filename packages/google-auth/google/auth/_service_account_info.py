@@ -56,7 +56,7 @@ def from_dict(data, require=None, use_rsa_signer=True):
     if use_rsa_signer:
         signer = crypt.RSASigner.from_service_account_info(data)
     else:
-        signer = crypt.ES256Signer.from_service_account_info(data)
+        signer = crypt.EsSigner.from_service_account_info(data)
 
     return signer
 
