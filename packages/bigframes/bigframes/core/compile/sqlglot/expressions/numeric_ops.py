@@ -443,6 +443,14 @@ def _(left: TypedExpr, right: TypedExpr) -> sge.Expression:
     )
 
 
+@register_binary_op(ops.unsafe_pow_op)
+def _(left: TypedExpr, right: TypedExpr) -> sge.Expression:
+    """For internal use only - where domain and overflow checks are not needed."""
+    left_expr = _coerce_bool_to_int(left)
+    right_expr = _coerce_bool_to_int(right)
+    return sge.Pow(this=left_expr, expression=right_expr)
+
+
 @register_unary_op(numeric_ops.isnan_op)
 def isnan(arg: TypedExpr) -> sge.Expression:
     return sge.IsNan(this=arg.expr)
