@@ -23,35 +23,37 @@ from bigframes import constants
 class LogisticRegression(LinearClassifierMixin, BaseEstimator):
     """Logistic Regression (aka logit, MaxEnt) classifier.
 
-    >>> from bigframes.ml.linear_model import LogisticRegression
-    >>> import bigframes.pandas as bpd
-    >>> X = bpd.DataFrame({ \
-            "feature0": [20, 21, 19, 18], \
-            "feature1": [0, 1, 1, 0], \
-            "feature2": [0.2, 0.3, 0.4, 0.5]})
-    >>> y = bpd.DataFrame({"outcome": [0, 0, 1, 1]})
-    >>> # Create the LogisticRegression
-    >>> model = LogisticRegression()
-    >>> model.fit(X, y)
-    LogisticRegression()
-    >>> model.predict(X) # doctest:+SKIP
-        predicted_outcome	predicted_outcome_probs	feature0	feature1	feature2
-    0	0	[{'label': 1, 'prob': 3.1895929877221615e-07} ...	20	0	0.2
-    1	0	[{'label': 1, 'prob': 5.662891265051953e-06} ...	21	1	0.3
-    2	1	[{'label': 1, 'prob': 0.9999917826885262} {'l...	19	1	0.4
-    3	1	[{'label': 1, 'prob': 0.9999999993659574} {'l...	18	0	0.5
-    4 rows × 5 columns
+    **Examples:**
 
-    [4 rows x 5 columns in total]
+        >>> from bigframes.ml.linear_model import LogisticRegression
+        >>> import bigframes.pandas as bpd
+        >>> X = bpd.DataFrame({ \
+                "feature0": [20, 21, 19, 18], \
+                "feature1": [0, 1, 1, 0], \
+                "feature2": [0.2, 0.3, 0.4, 0.5]})
+        >>> y = bpd.DataFrame({"outcome": [0, 0, 1, 1]})
+        >>> # Create the LogisticRegression
+        >>> model = LogisticRegression()
+        >>> model.fit(X, y)
+        LogisticRegression()
+        >>> model.predict(X) # doctest:+SKIP
+            predicted_outcome	predicted_outcome_probs	feature0	feature1	feature2
+        0	0	[{'label': 1, 'prob': 3.1895929877221615e-07} ...	20	0	0.2
+        1	0	[{'label': 1, 'prob': 5.662891265051953e-06} ...	21	1	0.3
+        2	1	[{'label': 1, 'prob': 0.9999917826885262} {'l...	19	1	0.4
+        3	1	[{'label': 1, 'prob': 0.9999999993659574} {'l...	18	0	0.5
+        4 rows × 5 columns
 
-    >>> # Score the model
-    >>> score = model.score(X, y)
-    >>> score  # doctest:+SKIP
-        precision	recall	accuracy	f1_score	log_loss	roc_auc
-    0	1.0	1.0	1.0	1.0	0.000004	1.0
-    1 rows × 6 columns
+        [4 rows x 5 columns in total]
 
-    [1 rows x 6 columns in total]
+        >>> # Score the model
+        >>> score = model.score(X, y)
+        >>> score  # doctest:+SKIP
+            precision	recall	accuracy	f1_score	log_loss	roc_auc
+        0	1.0	1.0	1.0	1.0	0.000004	1.0
+        1 rows × 6 columns
+
+        [1 rows x 6 columns in total]
 
     Args:
         optimize_strategy (str, default "auto_strategy"):
