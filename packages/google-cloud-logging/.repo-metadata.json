@@ -1,0 +1,17 @@
+{
+    "name": "logging",
+    "name_pretty": "Cloud Logging",
+    "product_documentation": "https://cloud.google.com/logging/docs",
+    "client_documentation": "https://cloud.google.com/python/docs/reference/logging/latest",
+    "issue_tracker": "https://issuetracker.google.com/savedsearches/559764",
+    "release_level": "stable",
+    "language": "python",
+    "library_type": "GAPIC_COMBO",
+    "repo": "googleapis/python-logging",
+    "distribution_name": "google-cloud-logging",
+    "api_id": "logging.googleapis.com",
+    "codeowner_team": "@googleapis/api-logging @googleapis/api-logging-partners",
+    "default_version": "v2",
+    "api_shortname": "logging",
+    "api_description": "allows you to store, search, analyze, monitor, and alert on log data and events from Google Cloud and Amazon Web Services. Using the BindPlane service, you can also collect this data from over 150 common application components, on-premises systems, and hybrid cloud systems. BindPlane is included with your Google Cloud project at no additional cost."
+}
