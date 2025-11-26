@@ -385,6 +385,7 @@ def docfx(session):
         os.path.join("docs", "_build", "html", ""),
     )
 
+
 @nox.session(python=DEFAULT_PYTHON_VERSION)
 @nox.parametrize(
     "protobuf_implementation",
@@ -406,9 +407,7 @@ def core_deps_from_source(session, protobuf_implementation):
     # version, the first version we test with in the unit tests sessions has a
     # constraints file containing all dependencies and extras.
     with open(
-        CURRENT_DIRECTORY
-        / "testing"
-        / f"constraints-{PYTHON_VERSIONS[0]}.txt",
+        CURRENT_DIRECTORY / "testing" / f"constraints-{PYTHON_VERSIONS[0]}.txt",
         encoding="utf-8",
     ) as constraints_file:
         constraints_text = constraints_file.read()
