@@ -23,14 +23,14 @@ import unittest
 import nox  # pytype: disable=import-error
 
 
-BLACK_VERSION = "black==22.3.0"
+BLACK_VERSION = "black==23.7.0"
 BLACK_PATHS = ["docs", "google", "tests", "noxfile.py", "setup.py"]
 # Black and flake8 clash on the syntax for ignoring flake8's F401 in this file.
 BLACK_EXCLUDES = ["--exclude", "^/google/api_core/operations_v1/__init__.py"]
 
 PYTHON_VERSIONS = ["3.7", "3.8", "3.9", "3.10", "3.11", "3.12", "3.13", "3.14"]
 
-DEFAULT_PYTHON_VERSION = "3.10"
+DEFAULT_PYTHON_VERSION = "3.14"
 CURRENT_DIRECTORY = pathlib.Path(__file__).parent.absolute()
 
 # 'docfx' is excluded since it only needs to run in 'docs-presubmit'
@@ -261,7 +261,7 @@ def unit_w_async_rest_extra(session):
 def lint_setup_py(session):
     """Verify that setup.py is valid (including RST check)."""
 
-    session.install("docutils", "Pygments")
+    session.install("docutils", "Pygments", "setuptools")
     session.run("python", "setup.py", "check", "--restructuredtext", "--strict")
 
 
