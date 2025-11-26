@@ -16,7 +16,9 @@ from __future__ import annotations
 
 import sqlglot.expressions as sge
 
+from bigframes import dtypes
 from bigframes import operations as ops
+from bigframes.core.compile.constants import UNIT_TO_US_CONVERSION_FACTORS
 from bigframes.core.compile.sqlglot.expressions.typed_expr import TypedExpr
 import bigframes.core.compile.sqlglot.scalar_compiler as scalar_compiler
 
@@ -81,7 +83,17 @@ def _(expr: TypedExpr) -> sge.Expression:
 
 @register_unary_op(ops.StrftimeOp, pass_op=True)
 def _(expr: TypedExpr, op: ops.StrftimeOp) -> sge.Expression:
-    return sge.func("FORMAT_TIMESTAMP", sge.convert(op.date_format), expr.expr)
+    func_name = ""
+    if expr.dtype == dtypes.DATE_DTYPE:
+        func_name = "FORMAT_DATE"
+    elif expr.dtype == dtypes.DATETIME_DTYPE:
+        func_name = "FORMAT_DATETIME"
+    elif expr.dtype == dtypes.TIME_DTYPE:
+        func_name = "FORMAT_TIME"
+    elif expr.dtype == dtypes.TIMESTAMP_DTYPE:
+        func_name = "FORMAT_TIMESTAMP"
+
+    return sge.func(func_name, sge.convert(op.date_format), expr.expr)
 
 
 @register_unary_op(ops.time_op)
@@ -89,14 +101,55 @@ def _(expr: TypedExpr) -> sge.Expression:
     return sge.func("TIME", expr.expr)
 
 
-@register_unary_op(ops.ToDatetimeOp)
-def _(expr: TypedExpr) -> sge.Expression:
-    return sge.Cast(this=sge.func("TIMESTAMP_SECONDS", expr.expr), to="DATETIME")
+@register_unary_op(ops.ToDatetimeOp, pass_op=True)
+def _(expr: TypedExpr, op: ops.ToDatetimeOp) -> sge.Expression:
+    if op.format:
+        result = expr.expr
+        if expr.dtype != dtypes.STRING_DTYPE:
+            result = sge.Cast(this=result, to="STRING")
+        result = sge.func(
+            "PARSE_TIMESTAMP", sge.convert(op.format), result, sge.convert("UTC")
+        )
+        return sge.Cast(this=result, to="DATETIME")
+
+    if expr.dtype == dtypes.STRING_DTYPE:
+        return sge.TryCast(this=expr.expr, to="DATETIME")
+
+    value = expr.expr
+    unit = op.unit or "ns"
+    factor = UNIT_TO_US_CONVERSION_FACTORS[unit]
+    if factor != 1:
+        value = sge.Mul(this=value, expression=sge.convert(factor))
+    value = sge.func("TRUNC", value)
+    return sge.Cast(
+        this=sge.func("TIMESTAMP_MICROS", sge.Cast(this=value, to="INT64")),
+        to="DATETIME",
+    )
 
 
-@register_unary_op(ops.ToTimestampOp)
-def _(expr: TypedExpr) -> sge.Expression:
-    return sge.func("TIMESTAMP_SECONDS", expr.expr)
+@register_unary_op(ops.ToTimestampOp, pass_op=True)
+def _(expr: TypedExpr, op: ops.ToTimestampOp) -> sge.Expression:
+    if op.format:
+        result = expr.expr
+        if expr.dtype != dtypes.STRING_DTYPE:
+            result = sge.Cast(this=result, to="STRING")
+        return sge.func(
+            "PARSE_TIMESTAMP", sge.convert(op.format), expr.expr, sge.convert("UTC")
+        )
+
+    if expr.dtype == dtypes.STRING_DTYPE:
+        return sge.func("TIMESTAMP", expr.expr)
+
+    value = expr.expr
+    unit = op.unit or "ns"
+    factor = UNIT_TO_US_CONVERSION_FACTORS[unit]
+    if factor != 1:
+        value = sge.Mul(this=value, expression=sge.convert(factor))
+    value = sge.func("TRUNC", value)
+    return sge.Cast(
+        this=sge.func("TIMESTAMP_MICROS", sge.Cast(this=value, to="INT64")),
+        to="TIMESTAMP",
+    )
 
 
 @register_unary_op(ops.UnixMicros)

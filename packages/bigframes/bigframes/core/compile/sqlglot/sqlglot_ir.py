@@ -648,6 +648,8 @@ def _literal(value: typing.Any, dtype: dtypes.Dtype) -> sge.Expression:
     elif dtype == dtypes.BYTES_DTYPE:
         return _cast(str(value), sqlglot_type)
     elif dtypes.is_time_like(dtype):
+        if isinstance(value, str):
+            return _cast(sge.convert(value), sqlglot_type)
         if isinstance(value, np.generic):
             value = value.item()
         return _cast(sge.convert(value.isoformat()), sqlglot_type)

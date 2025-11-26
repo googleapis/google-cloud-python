@@ -22,10 +22,11 @@ pytest.importorskip("pytest_snapshot")
 
 
 def test_to_timedelta(scalar_types_df: bpd.DataFrame, snapshot):
-    bf_df = scalar_types_df[["int64_col"]]
+    bf_df = scalar_types_df[["int64_col", "float64_col"]]
     bf_df["duration_us"] = bpd.to_timedelta(bf_df["int64_col"], "us")
-    bf_df["duration_s"] = bpd.to_timedelta(bf_df["int64_col"], "s")
-    bf_df["duration_w"] = bpd.to_timedelta(bf_df["int64_col"], "W")
+    bf_df["duration_s"] = bpd.to_timedelta(bf_df["float64_col"], "s")
+    bf_df["duration_w"] = bpd.to_timedelta(bf_df["int64_col"], "h")
+    bf_df["duration_on_duration"] = bpd.to_timedelta(bf_df["duration_us"], "ms")
 
     snapshot.assert_match(bf_df.sql, "out.sql")
 

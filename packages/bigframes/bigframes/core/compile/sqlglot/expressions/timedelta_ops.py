@@ -16,6 +16,7 @@ from __future__ import annotations
 
 import sqlglot.expressions as sge
 
+from bigframes import dtypes
 from bigframes import operations as ops
 from bigframes.core.compile.constants import UNIT_TO_US_CONVERSION_FACTORS
 from bigframes.core.compile.sqlglot.expressions.typed_expr import TypedExpr
@@ -32,7 +33,12 @@ def _(expr: TypedExpr) -> sge.Expression:
 @register_unary_op(ops.ToTimedeltaOp, pass_op=True)
 def _(expr: TypedExpr, op: ops.ToTimedeltaOp) -> sge.Expression:
     value = expr.expr
+    if expr.dtype == dtypes.TIMEDELTA_DTYPE:
+        return value
+
     factor = UNIT_TO_US_CONVERSION_FACTORS[op.unit]
     if factor != 1:
         value = sge.Mul(this=value, expression=sge.convert(factor))
+    if expr.dtype == dtypes.FLOAT_DTYPE:
+        value = sge.Cast(this=sge.Floor(this=value), to=sge.DataType(this="INT64"))
     return value
