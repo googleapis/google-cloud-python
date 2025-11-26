@@ -88,6 +88,7 @@ def lint(session):
     )
     session.run("mypy", "google", "tests")
 
+
 @nox.session(python=DEFAULT_PYTHON_VERSION)
 def blacken(session):
     """Run black.
