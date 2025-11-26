@@ -1757,7 +1757,7 @@ libraries:
     tag_format: '{id}-v{version}'
   - id: google-cloud-eventarc
     version: 1.17.0
-    last_generated_commit: 3322511885371d2b2253f209ccc3aa60d4100cfd
+    last_generated_commit: c9ff4f1cd26f1fe63e6d1c11a198366b70ebdb84
     apis:
       - path: google/cloud/eventarc/v1
         service_config: eventarc_v1.yaml
@@ -2426,7 +2426,7 @@ libraries:
     tag_format: '{id}-v{version}'
   - id: google-cloud-netapp
     version: 0.4.0
-    last_generated_commit: 3322511885371d2b2253f209ccc3aa60d4100cfd
+    last_generated_commit: c9ff4f1cd26f1fe63e6d1c11a198366b70ebdb84
     apis:
       - path: google/cloud/netapp/v1
         service_config: netapp_v1.yaml
@@ -2479,7 +2479,7 @@ libraries:
     tag_format: '{id}-v{version}'
   - id: google-cloud-network-security
     version: 0.9.21
-    last_generated_commit: 3322511885371d2b2253f209ccc3aa60d4100cfd
+    last_generated_commit: c9ff4f1cd26f1fe63e6d1c11a198366b70ebdb84
     apis:
       - path: google/cloud/networksecurity/v1alpha1
         service_config: networksecurity_v1alpha1.yaml
@@ -4244,7 +4244,7 @@ libraries:
     tag_format: '{id}-v{version}'
   - id: googleapis-common-protos
     version: 1.72.0
-    last_generated_commit: a17b84add8318f780fcc8a027815d5fee644b9f7
+    last_generated_commit: c9ff4f1cd26f1fe63e6d1c11a198366b70ebdb84
     apis:
       - path: google/api
         service_config: serviceconfig.yaml

@@ -39488,6 +39488,8 @@ def test_create_volume_rest_call_success(request_type):
                     "kerberos_5i_read_write": True,
                     "kerberos_5p_read_only": True,
                     "kerberos_5p_read_write": True,
+                    "squash_mode": 1,
+                    "anon_uid": 845,
                 }
             ]
         },
@@ -39792,6 +39794,8 @@ def test_update_volume_rest_call_success(request_type):
                     "kerberos_5i_read_write": True,
                     "kerberos_5p_read_only": True,
                     "kerberos_5p_read_write": True,
+                    "squash_mode": 1,
+                    "anon_uid": 845,
                 }
             ]
         },

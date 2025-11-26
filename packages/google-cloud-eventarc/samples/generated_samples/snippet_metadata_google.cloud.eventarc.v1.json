@@ -599,12 +599,12 @@
       "regionTag": "eventarc_v1_generated_Eventarc_CreateGoogleApiSource_async",
       "segments": [
         {
-          "end": 60,
+          "end": 61,
           "start": 27,
           "type": "FULL"
         },
         {
-          "end": 60,
+          "end": 61,
           "start": 27,
           "type": "SHORT"
         },
@@ -614,18 +614,18 @@
           "type": "CLIENT_INITIALIZATION"
         },
         {
-          "end": 50,
+          "end": 51,
           "start": 41,
           "type": "REQUEST_INITIALIZATION"
         },
         {
-          "end": 57,
-          "start": 51,
+          "end": 58,
+          "start": 52,
           "type": "REQUEST_EXECUTION"
         },
         {
-          "end": 61,
-          "start": 58,
+          "end": 62,
+          "start": 59,
           "type": "RESPONSE_HANDLING"
         }
       ],
@@ -687,12 +687,12 @@
       "regionTag": "eventarc_v1_generated_Eventarc_CreateGoogleApiSource_sync",
       "segments": [
         {
-          "end": 60,
+          "end": 61,
           "start": 27,
           "type": "FULL"
         },
         {
-          "end": 60,
+          "end": 61,
           "start": 27,
           "type": "SHORT"
         },
@@ -702,18 +702,18 @@
           "type": "CLIENT_INITIALIZATION"
         },
         {
-          "end": 50,
+          "end": 51,
           "start": 41,
           "type": "REQUEST_INITIALIZATION"
         },
         {
-          "end": 57,
-          "start": 51,
+          "end": 58,
+          "start": 52,
           "type": "REQUEST_EXECUTION"
         },
         {
-          "end": 61,
-          "start": 58,
+          "end": 62,
+          "start": 59,
           "type": "RESPONSE_HANDLING"
         }
       ],
@@ -5706,12 +5706,12 @@
       "regionTag": "eventarc_v1_generated_Eventarc_UpdateGoogleApiSource_async",
       "segments": [
         {
-          "end": 58,
+          "end": 59,
           "start": 27,
           "type": "FULL"
         },
         {
-          "end": 58,
+          "end": 59,
           "start": 27,
           "type": "SHORT"
         },
@@ -5721,18 +5721,18 @@
           "type": "CLIENT_INITIALIZATION"
         },
         {
-          "end": 48,
+          "end": 49,
           "start": 41,
           "type": "REQUEST_INITIALIZATION"
         },
         {
-          "end": 55,
-          "start": 49,
+          "end": 56,
+          "start": 50,
           "type": "REQUEST_EXECUTION"
         },
         {
-          "end": 59,
-          "start": 56,
+          "end": 60,
+          "start": 57,
           "type": "RESPONSE_HANDLING"
         }
       ],
@@ -5790,12 +5790,12 @@
       "regionTag": "eventarc_v1_generated_Eventarc_UpdateGoogleApiSource_sync",
       "segments": [
         {
-          "end": 58,
+          "end": 59,
           "start": 27,
           "type": "FULL"
         },
         {
-          "end": 58,
+          "end": 59,
           "start": 27,
           "type": "SHORT"
         },
@@ -5805,18 +5805,18 @@
           "type": "CLIENT_INITIALIZATION"
         },
         {
-          "end": 48,
+          "end": 49,
           "start": 41,
           "type": "REQUEST_INITIALIZATION"
         },
         {
-          "end": 55,
-          "start": 49,
+          "end": 56,
+          "start": 50,
           "type": "REQUEST_EXECUTION"
         },
         {
-          "end": 59,
-          "start": 56,
+          "end": 60,
+          "start": 57,
           "type": "RESPONSE_HANDLING"
         }
       ],
