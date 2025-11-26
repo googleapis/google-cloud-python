@@ -17,6 +17,7 @@
 from __future__ import annotations
 
 import html
+from typing import Any
 
 import pandas as pd
 import pandas.api.types
@@ -24,7 +25,7 @@ import pandas.api.types
 from bigframes._config import options
 
 
-def _is_dtype_numeric(dtype) -> bool:
+def _is_dtype_numeric(dtype: Any) -> bool:
     """Check if a dtype is numeric for alignment purposes."""
     return pandas.api.types.is_numeric_dtype(dtype)
 
@@ -33,18 +34,31 @@ def render_html(
     *,
     dataframe: pd.DataFrame,
     table_id: str,
+    orderable_columns: list[str] | None = None,
 ) -> str:
     """Render a pandas DataFrame to HTML with specific styling."""
     classes = "dataframe table table-striped table-hover"
     table_html = [f'<table border="1" class="{classes}" id="{table_id}">']
     precision = options.display.precision
+    orderable_columns = orderable_columns or []
 
     # Render table head
     table_html.append("  <thead>")
     table_html.append('    <tr style="text-align: left;">')
     for col in dataframe.columns:
+        th_classes = []
+        if col in orderable_columns:
+            th_classes.append("sortable")
+        class_str = f'class="{" ".join(th_classes)}"' if th_classes else ""
+        header_div = (
+            '<div style="resize: horizontal; overflow: auto; '
+            "box-sizing: border-box; width: 100%; height: 100%; "
+            'padding: 0.5em;">'
+            f"{html.escape(str(col))}"
+            "</div>"
+        )
         table_html.append(
-            f'      <th style="text-align: left;"><div style="resize: horizontal; overflow: auto; box-sizing: border-box; width: 100%; height: 100%; padding: 0.5em;">{html.escape(str(col))}</div></th>'
+            f'      <th style="text-align: left;" {class_str}>{header_div}</th>'
         )
     table_html.append("    </tr>")
     table_html.append("  </thead>")

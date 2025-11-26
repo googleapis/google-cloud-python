@@ -16,6 +16,7 @@
 
 from __future__ import annotations
 
+import dataclasses
 from importlib import resources
 import functools
 import math
@@ -28,6 +29,7 @@ import bigframes
 from bigframes.core import blocks
 import bigframes.dataframe
 import bigframes.display.html
+import bigframes.dtypes as dtypes
 
 # anywidget and traitlets are optional dependencies. We don't want the import of
 # this module to fail if they aren't installed, though. Instead, we try to
@@ -48,6 +50,12 @@ else:
     WIDGET_BASE = object
 
 
+@dataclasses.dataclass(frozen=True)
+class _SortState:
+    column: str
+    ascending: bool
+
+
 class TableWidget(WIDGET_BASE):
     """An interactive, paginated table widget for BigFrames DataFrames.
 
@@ -63,6 +71,9 @@ class TableWidget(WIDGET_BASE):
         allow_none=True,
     ).tag(sync=True)
     table_html = traitlets.Unicode().tag(sync=True)
+    sort_column = traitlets.Unicode("").tag(sync=True)
+    sort_ascending = traitlets.Bool(True).tag(sync=True)
+    orderable_columns = traitlets.List(traitlets.Unicode(), []).tag(sync=True)
     _initial_load_complete = traitlets.Bool(False).tag(sync=True)
     _batches: Optional[blocks.PandasBatches] = None
     _error_message = traitlets.Unicode(allow_none=True, default_value=None).tag(
@@ -89,15 +100,25 @@ class TableWidget(WIDGET_BASE):
         self._all_data_loaded = False
         self._batch_iter: Optional[Iterator[pd.DataFrame]] = None
         self._cached_batches: List[pd.DataFrame] = []
+        self._last_sort_state: Optional[_SortState] = None
 
         # respect display options for initial page size
         initial_page_size = bigframes.options.display.max_rows
 
         # set traitlets properties that trigger observers
+        # TODO(b/462525985): Investigate and improve TableWidget UX for DataFrames with a large number of columns.
         self.page_size = initial_page_size
+        # TODO(b/463754889): Support non-string column labels for sorting.
+        if all(isinstance(col, str) for col in dataframe.columns):
+            self.orderable_columns = [
+                str(col_name)
+                for col_name, dtype in dataframe.dtypes.items()
+                if dtypes.is_orderable(dtype)
+            ]
+        else:
+            self.orderable_columns = []
 
-        # len(dataframe) is expensive, since it will trigger a
-        # SELECT COUNT(*) query. It is a must have however.
+        # obtain the row counts
         # TODO(b/428238610): Start iterating over the result of `to_pandas_batches()`
         # before we get here so that the count might already be cached.
         self._reset_batches_for_new_page_size()
@@ -120,6 +141,11 @@ class TableWidget(WIDGET_BASE):
         # Signals to the frontend that the initial data load is complete.
         # Also used as a guard to prevent observers from firing during initialization.
         self._initial_load_complete = True
+
+    @traitlets.observe("_initial_load_complete")
+    def _on_initial_load_complete(self, change: Dict[str, Any]):
+        if change["new"]:
+            self._set_table_html()
 
     @functools.cached_property
     def _esm(self):
@@ -221,13 +247,17 @@ class TableWidget(WIDGET_BASE):
             return pd.DataFrame(columns=self._dataframe.columns)
         return pd.concat(self._cached_batches, ignore_index=True)
 
+    def _reset_batch_cache(self) -> None:
+        """Resets batch caching attributes."""
+        self._cached_batches = []
+        self._batch_iter = None
+        self._all_data_loaded = False
+
     def _reset_batches_for_new_page_size(self) -> None:
         """Reset the batch iterator when page size changes."""
         self._batches = self._dataframe._to_pandas_batches(page_size=self.page_size)
 
-        self._cached_batches = []
-        self._batch_iter = None
-        self._all_data_loaded = False
+        self._reset_batch_cache()
 
     def _set_table_html(self) -> None:
         """Sets the current html data based on the current page and page size."""
@@ -236,6 +266,21 @@ class TableWidget(WIDGET_BASE):
                 f"<div class='bigframes-error-message'>{self._error_message}</div>"
             )
             return
+
+        # Apply sorting if a column is selected
+        df_to_display = self._dataframe
+        if self.sort_column:
+            # TODO(b/463715504): Support sorting by index columns.
+            df_to_display = df_to_display.sort_values(
+                by=self.sort_column, ascending=self.sort_ascending
+            )
+
+        # Reset batches when sorting changes
+        if self._last_sort_state != _SortState(self.sort_column, self.sort_ascending):
+            self._batches = df_to_display._to_pandas_batches(page_size=self.page_size)
+            self._reset_batch_cache()
+            self._last_sort_state = _SortState(self.sort_column, self.sort_ascending)
+            self.page = 0  # Reset to first page
 
         start = self.page * self.page_size
         end = start + self.page_size
@@ -272,7 +317,13 @@ class TableWidget(WIDGET_BASE):
         self.table_html = bigframes.display.html.render_html(
             dataframe=page_data,
             table_id=f"table-{self._table_id}",
+            orderable_columns=self.orderable_columns,
         )
+
+    @traitlets.observe("sort_column", "sort_ascending")
+    def _sort_changed(self, _change: Dict[str, Any]):
+        """Handler for when sorting parameters change from the frontend."""
+        self._set_table_html()
 
     @traitlets.observe("page")
     def _page_changed(self, _change: Dict[str, Any]) -> None:
@@ -288,6 +339,9 @@ class TableWidget(WIDGET_BASE):
             return
         # Reset the page to 0 when page size changes to avoid invalid page states
         self.page = 0
+        # Reset the sort state to default (no sort)
+        self.sort_column = ""
+        self.sort_ascending = True
 
         # Reset batches to use new page size for future data fetching
         self._reset_batches_for_new_page_size()
