@@ -21,12 +21,6 @@ jobs:
         python -m pip install --upgrade setuptools pip wheel
         python -m pip install nox
     - name: Run unit tests
-
-      # TODO (https://b.corp.google.com/issues/450370502) 3.14 is not yet supported by pyarrow. See
-      # https://github.com/googleapis/google-cloud-python/issues/14686
-      # https://github.com/apache/arrow/issues/47438
-      # Reinstate running tests with 3.14 once this bug is fixed
-      if: matrix.python != '3.14'
       env:
         COVERAGE_FILE: .coverage-${{ matrix.python }}
       run: |
