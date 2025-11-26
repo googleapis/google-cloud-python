@@ -15,6 +15,7 @@
 from __future__ import absolute_import
 import os
 import pathlib
+import pytest
 import re
 import shutil
 import unittest
@@ -44,10 +45,7 @@ UNIT_TEST_STANDARD_DEPENDENCIES = [
 # 'docfx' is excluded since it only needs to run in 'docs-presubmit'
 nox.options.sessions = [
     "unit",
-    "unit_grpc_gcp",
-    "unit_wo_grpc",
     "prerelease_deps",
-    "unit_w_async_rest_extra",
     "cover",
     "pytype",
     "mypy",
@@ -222,47 +220,42 @@ def default(session, install_grpc=True, prerelease=False, install_async_rest=Fal
     session.run(*pytest_args)
 
 
+@pytest.mark.parametrize(
+    "install_grpc_gcp,install_grpc,install_async_rest",
+    [
+        (False, True, False),  # Run unit tests with grpcio installed
+        (True, True, False),  # Run unit tests with grpcio/grpcio-gcp installed
+        (False, False, False),  # Run unit tests without grpcio installed
+        (False, True, True),  # Run unit tests with grpcio and async rest installed
+    ],
+)
 @nox.session(python=PYTHON_VERSIONS)
-def unit(session):
+def unit(session, install_grpc_gcp, install_grpc, install_async_rest):
     """Run the unit test suite."""
-    default(session)
+
+    # `grpcio-gcp` doesn't support protobuf 4+.
+    # Remove extra `grpcgcp` when protobuf 3.x is dropped.
+    # https://github.com/googleapis/python-api-core/issues/594
+    if install_grpc_gcp:
+        constraints_path = str(
+            CURRENT_DIRECTORY / "testing" / f"constraints-{session.python}.txt"
+        )
+        # Install grpcio-gcp
+        session.install("-e", ".[grpcgcp]", "-c", constraints_path)
+        # Install protobuf < 4.0.0
+        session.install("protobuf<4.0.0")
+
+    default(
+        session=session,
+        install_grpc=install_grpc,
+        install_async_rest=install_async_rest,
+    )
 
 
 @nox.session(python=PYTHON_VERSIONS)
 def prerelease_deps(session):
     """Run the unit test suite."""
     default(session, prerelease=True)
-
-
-@nox.session(python=PYTHON_VERSIONS)
-def unit_grpc_gcp(session):
-    """
-    Run the unit test suite with grpcio-gcp installed.
-    `grpcio-gcp` doesn't support protobuf 4+.
-    Remove extra `grpcgcp` when protobuf 3.x is dropped.
-    https://github.com/googleapis/python-api-core/issues/594
-    """
-    constraints_path = str(
-        CURRENT_DIRECTORY / "testing" / f"constraints-{session.python}.txt"
-    )
-    # Install grpcio-gcp
-    session.install("-e", ".[grpcgcp]", "-c", constraints_path)
-    # Install protobuf < 4.0.0
-    session.install("protobuf<4.0.0")
-
-    default(session)
-
-
-@nox.session(python=PYTHON_VERSIONS)
-def unit_wo_grpc(session):
-    """Run the unit test suite w/o grpcio installed"""
-    default(session, install_grpc=False)
-
-
-@nox.session(python=PYTHON_VERSIONS)
-def unit_w_async_rest_extra(session):
-    """Run the unit test suite with the `async_rest` extra"""
-    default(session, install_async_rest=True)
 
 
 @nox.session(python=DEFAULT_PYTHON_VERSION)
