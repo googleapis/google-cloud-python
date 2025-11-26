@@ -228,6 +228,75 @@ def test_dataframe_window_agg_ops(scalars_dfs, windowing, agg_op):
     pd.testing.assert_frame_equal(pd_result, bf_result, check_dtype=False)
 
 
+@pytest.mark.parametrize(
+    ("windowing"),
+    [
+        pytest.param(lambda x: x.expanding(), id="expanding"),
+        pytest.param(lambda x: x.rolling(3, min_periods=3), id="rolling"),
+        pytest.param(
+            lambda x: x.groupby(level=0).rolling(3, min_periods=3), id="rollinggroupby"
+        ),
+        pytest.param(
+            lambda x: x.groupby("int64_too").expanding(min_periods=2),
+            id="expandinggroupby",
+        ),
+    ],
+)
+@pytest.mark.parametrize(
+    ("func"),
+    [
+        pytest.param("sum", id="sum_by_name"),
+        pytest.param(np.sum, id="sum_by_by_np"),
+        pytest.param([np.sum, np.mean], id="list_of_funcs"),
+        pytest.param(
+            {"int64_col": np.sum, "float64_col": "mean"}, id="dict_of_single_funcs"
+        ),
+        pytest.param(
+            {"int64_col": np.sum, "float64_col": ["mean", np.max]},
+            id="dict_of_lists_and_single_funcs",
+        ),
+    ],
+)
+def test_dataframe_window_agg_func(scalars_dfs, windowing, func):
+    bf_df, pd_df = scalars_dfs
+    target_columns = ["int64_too", "float64_col", "bool_col", "int64_col"]
+    index_column = "bool_col"
+    bf_df = bf_df[target_columns].set_index(index_column)
+    pd_df = pd_df[target_columns].set_index(index_column)
+
+    bf_result = windowing(bf_df).agg(func).to_pandas()
+
+    pd_result = windowing(pd_df).agg(func)
+
+    pd.testing.assert_frame_equal(pd_result, bf_result, check_dtype=False)
+
+
+def test_series_window_agg_single_func(scalars_dfs):
+    bf_df, pd_df = scalars_dfs
+    index_column = "bool_col"
+    bf_series = bf_df.set_index(index_column).int64_too
+    pd_series = pd_df.set_index(index_column).int64_too
+
+    bf_result = bf_series.expanding().agg("sum").to_pandas()
+
+    pd_result = pd_series.expanding().agg("sum")
+
+    pd.testing.assert_series_equal(pd_result, bf_result, check_dtype=False)
+
+
+def test_series_window_agg_multi_func(scalars_dfs):
+    bf_df, pd_df = scalars_dfs
+    index_column = "bool_col"
+    bf_series = bf_df.set_index(index_column).int64_too
+    pd_series = pd_df.set_index(index_column).int64_too
+
+    bf_result = bf_series.expanding().agg(["sum", np.mean]).to_pandas()
+
+    pd_result = pd_series.expanding().agg(["sum", np.mean])
+
+    pd.testing.assert_frame_equal(pd_result, bf_result, check_dtype=False)
+
+
 @pytest.mark.parametrize("closed", ["left", "right", "both", "neither"])
 @pytest.mark.parametrize(
     "window",  # skipped numpy timedelta because Pandas does not support it.

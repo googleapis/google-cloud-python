@@ -15,18 +15,23 @@
 from __future__ import annotations
 
 import datetime
-import typing
+from typing import Literal, Mapping, Sequence, TYPE_CHECKING, Union
 
 import bigframes_vendored.pandas.core.window.rolling as vendored_pandas_rolling
 import numpy
 import pandas
 
 from bigframes import dtypes
+from bigframes.core import agg_expressions
 from bigframes.core import expression as ex
-from bigframes.core import log_adapter, ordering, window_spec
+from bigframes.core import log_adapter, ordering, utils, window_spec
 import bigframes.core.blocks as blocks
 from bigframes.core.window import ordering as window_ordering
 import bigframes.operations.aggregations as agg_ops
+
+if TYPE_CHECKING:
+    import bigframes.dataframe as df
+    import bigframes.series as series
 
 
 @log_adapter.class_logger
@@ -37,7 +42,7 @@ class Window(vendored_pandas_rolling.Window):
         self,
         block: blocks.Block,
         window_spec: window_spec.WindowSpec,
-        value_column_ids: typing.Sequence[str],
+        value_column_ids: Sequence[str],
         drop_null_groups: bool = True,
         is_series: bool = False,
         skip_agg_column_id: str | None = None,
@@ -52,55 +57,106 @@ class Window(vendored_pandas_rolling.Window):
         self._skip_agg_column_id = skip_agg_column_id
 
     def count(self):
-        return self._apply_aggregate(agg_ops.count_op)
+        return self._apply_aggregate_op(agg_ops.count_op)
 
     def sum(self):
-        return self._apply_aggregate(agg_ops.sum_op)
+        return self._apply_aggregate_op(agg_ops.sum_op)
 
     def mean(self):
-        return self._apply_aggregate(agg_ops.mean_op)
+        return self._apply_aggregate_op(agg_ops.mean_op)
 
     def var(self):
-        return self._apply_aggregate(agg_ops.var_op)
+        return self._apply_aggregate_op(agg_ops.var_op)
 
     def std(self):
-        return self._apply_aggregate(agg_ops.std_op)
+        return self._apply_aggregate_op(agg_ops.std_op)
 
     def max(self):
-        return self._apply_aggregate(agg_ops.max_op)
+        return self._apply_aggregate_op(agg_ops.max_op)
 
     def min(self):
-        return self._apply_aggregate(agg_ops.min_op)
+        return self._apply_aggregate_op(agg_ops.min_op)
 
-    def _apply_aggregate(
-        self,
-        op: agg_ops.UnaryAggregateOp,
-    ):
-        agg_block = self._aggregate_block(op)
+    def agg(self, func) -> Union[df.DataFrame, series.Series]:
+        if utils.is_dict_like(func):
+            return self._agg_dict(func)
+        elif utils.is_list_like(func):
+            return self._agg_list(func)
+        else:
+            return self._agg_func(func)
+
+    aggregate = agg
+
+    def _agg_func(self, func) -> df.DataFrame:
+        ids, labels = self._aggregated_columns()
+        aggregations = [agg(col_id, agg_ops.lookup_agg_func(func)[0]) for col_id in ids]
+        return self._apply_aggs(aggregations, labels)
+
+    def _agg_dict(self, func: Mapping) -> df.DataFrame:
+        aggregations: list[agg_expressions.Aggregation] = []
+        column_labels = []
+        function_labels = []
+
+        want_aggfunc_level = any(utils.is_list_like(aggs) for aggs in func.values())
+
+        for label, funcs_for_id in func.items():
+            col_id = self._block.label_to_col_id[label][-1]  # get last matching column
+            func_list = (
+                funcs_for_id if utils.is_list_like(funcs_for_id) else [funcs_for_id]
+            )
+            for f in func_list:
+                f_op, f_label = agg_ops.lookup_agg_func(f)
+                aggregations.append(agg(col_id, f_op))
+                column_labels.append(label)
+                function_labels.append(f_label)
+        if want_aggfunc_level:
+            result_labels: pandas.Index = utils.combine_indices(
+                pandas.Index(column_labels),
+                pandas.Index(function_labels),
+            )
+        else:
+            result_labels = pandas.Index(column_labels)
+
+        return self._apply_aggs(aggregations, result_labels)
+
+    def _agg_list(self, func: Sequence) -> df.DataFrame:
+        ids, labels = self._aggregated_columns()
+        aggregations = [
+            agg(col_id, agg_ops.lookup_agg_func(f)[0]) for col_id in ids for f in func
+        ]
 
         if self._is_series:
-            from bigframes.series import Series
-
-            return Series(agg_block)
+            # if series, no need to rebuild
+            result_cols_idx = pandas.Index(
+                [agg_ops.lookup_agg_func(f)[1] for f in func]
+            )
         else:
-            from bigframes.dataframe import DataFrame
+            if self._block.column_labels.nlevels > 1:
+                # Restructure MultiIndex for proper format: (idx1, idx2, func)
+                # rather than ((idx1, idx2), func).
+                column_labels = [
+                    tuple(label) + (agg_ops.lookup_agg_func(f)[1],)
+                    for label in labels.to_frame(index=False).to_numpy()
+                    for f in func
+                ]
+            else:  # Single-level index
+                column_labels = [
+                    (label, agg_ops.lookup_agg_func(f)[1])
+                    for label in labels
+                    for f in func
+                ]
+            result_cols_idx = pandas.MultiIndex.from_tuples(
+                column_labels, names=[*self._block.column_labels.names, None]
+            )
+        return self._apply_aggs(aggregations, result_cols_idx)
 
-            # Preserve column order.
-            column_labels = [
-                self._block.col_id_to_label[col_id] for col_id in self._value_column_ids
-            ]
-            return DataFrame(agg_block)._reindex_columns(column_labels)
-
-    def _aggregate_block(self, op: agg_ops.UnaryAggregateOp) -> blocks.Block:
-        agg_col_ids = [
-            col_id
-            for col_id in self._value_column_ids
-            if col_id != self._skip_agg_column_id
-        ]
-        block, result_ids = self._block.multi_apply_window_op(
-            agg_col_ids,
-            op,
-            self._window_spec,
+    def _apply_aggs(
+        self, exprs: Sequence[agg_expressions.Aggregation], labels: pandas.Index
+    ):
+        block, ids = self._block.apply_analytic(
+            agg_exprs=exprs,
+            window=self._window_spec,
+            result_labels=labels,
             skip_null_groups=self._drop_null_groups,
         )
 
@@ -115,24 +171,50 @@ class Window(vendored_pandas_rolling.Window):
             )
             block = block.set_index(col_ids=index_ids)
 
-        labels = [self._block.col_id_to_label[col] for col in agg_col_ids]
         if self._skip_agg_column_id is not None:
-            result_ids = [self._skip_agg_column_id, *result_ids]
-            labels.insert(0, self._block.col_id_to_label[self._skip_agg_column_id])
+            block = block.select_columns([self._skip_agg_column_id, *ids])
+        else:
+            block = block.select_columns(ids).with_column_labels(labels)
 
-        return block.select_columns(result_ids).with_column_labels(labels)
+        if self._is_series and (len(block.value_columns) == 1):
+            import bigframes.series as series
+
+            return series.Series(block)
+        else:
+            import bigframes.dataframe as df
+
+            return df.DataFrame(block)
+
+    def _apply_aggregate_op(
+        self,
+        op: agg_ops.UnaryAggregateOp,
+    ):
+        ids, labels = self._aggregated_columns()
+        aggregations = [agg(col_id, op) for col_id in ids]
+        return self._apply_aggs(aggregations, labels)
+
+    def _aggregated_columns(self) -> tuple[Sequence[str], pandas.Index]:
+        agg_col_ids = [
+            col_id
+            for col_id in self._value_column_ids
+            if col_id != self._skip_agg_column_id
+        ]
+        labels: pandas.Index = pandas.Index(
+            [self._block.col_id_to_label[col] for col in agg_col_ids]
+        )
+        return agg_col_ids, labels
 
 
 def create_range_window(
     block: blocks.Block,
     window: pandas.Timedelta | numpy.timedelta64 | datetime.timedelta | str,
     *,
-    value_column_ids: typing.Sequence[str] = tuple(),
+    value_column_ids: Sequence[str] = tuple(),
     min_periods: int | None,
     on: str | None = None,
-    closed: typing.Literal["right", "left", "both", "neither"],
+    closed: Literal["right", "left", "both", "neither"],
     is_series: bool,
-    grouping_keys: typing.Sequence[str] = tuple(),
+    grouping_keys: Sequence[str] = tuple(),
     drop_null_groups: bool = True,
 ) -> Window:
 
@@ -184,3 +266,11 @@ def create_range_window(
         skip_agg_column_id=None if on is None else rolling_key_col_id,
         drop_null_groups=drop_null_groups,
     )
+
+
+def agg(input: str, op: agg_ops.AggregateOp) -> agg_expressions.Aggregation:
+    if isinstance(op, agg_ops.UnaryAggregateOp):
+        return agg_expressions.UnaryAggregation(op, ex.deref(input))
+    else:
+        assert isinstance(op, agg_ops.NullaryAggregateOp)
+        return agg_expressions.NullaryAggregation(op)
