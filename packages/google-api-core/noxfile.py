@@ -47,8 +47,6 @@ nox.options.sessions = [
     "unit",
     "prerelease_deps",
     "cover",
-    "pytype",
-    "mypy",
     "lint",
     "lint_setup_py",
     "blacken",
@@ -76,6 +74,19 @@ def lint(session):
     )
     session.run("flake8", "google", "tests")
 
+    """Run type-checking."""
+    session.install(".[grpc]", "pytype")
+    session.run("pytype")
+
+    session.install(".[grpc,async_rest]", "mypy")
+    session.install(
+        "types-setuptools",
+        "types-requests",
+        "types-protobuf",
+        "types-dataclasses",
+        "types-mock; python_version=='3.7'",
+    )
+    session.run("mypy", "google", "tests")
 
 @nox.session(python=DEFAULT_PYTHON_VERSION)
 def blacken(session):
@@ -264,27 +275,6 @@ def lint_setup_py(session):
 
     session.install("docutils", "Pygments", "setuptools")
     session.run("python", "setup.py", "check", "--restructuredtext", "--strict")
-
-
-@nox.session(python=DEFAULT_PYTHON_VERSION)
-def pytype(session):
-    """Run type-checking."""
-    session.install(".[grpc]", "pytype")
-    session.run("pytype")
-
-
-@nox.session(python=DEFAULT_PYTHON_VERSION)
-def mypy(session):
-    """Run type-checking."""
-    session.install(".[grpc,async_rest]", "mypy")
-    session.install(
-        "types-setuptools",
-        "types-requests",
-        "types-protobuf",
-        "types-dataclasses",
-        "types-mock; python_version=='3.7'",
-    )
-    session.run("mypy", "google", "tests")
 
 
 @nox.session(python=DEFAULT_PYTHON_VERSION)
