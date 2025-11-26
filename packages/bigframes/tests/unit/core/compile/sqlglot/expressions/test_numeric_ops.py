@@ -196,6 +196,22 @@ def test_pos(scalar_types_df: bpd.DataFrame, snapshot):
     snapshot.assert_match(sql, "out.sql")
 
 
+def test_pow(scalar_types_df: bpd.DataFrame, snapshot):
+    bf_df = scalar_types_df[["int64_col", "float64_col"]]
+
+    bf_df["int_pow_int"] = bf_df["int64_col"] ** bf_df["int64_col"]
+    bf_df["int_pow_float"] = bf_df["int64_col"] ** bf_df["float64_col"]
+    bf_df["float_pow_int"] = bf_df["float64_col"] ** bf_df["int64_col"]
+    bf_df["float_pow_float"] = bf_df["float64_col"] ** bf_df["float64_col"]
+
+    bf_df["int_pow_0"] = bf_df["int64_col"] ** 0
+    bf_df["float_pow_0"] = bf_df["float64_col"] ** 0
+    bf_df["int_pow_1"] = bf_df["int64_col"] ** 1
+    bf_df["float_pow_1"] = bf_df["float64_col"] ** 1
+
+    snapshot.assert_match(bf_df.sql, "out.sql")
+
+
 def test_round(scalar_types_df: bpd.DataFrame, snapshot):
     bf_df = scalar_types_df[["int64_col", "float64_col"]]
 
