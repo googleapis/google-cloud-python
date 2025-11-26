@@ -26853,6 +26853,7 @@ def test_create_trigger_rest_call_success(request_type):
         "conditions": {},
         "event_data_content_type": "event_data_content_type_value",
         "satisfies_pzs": True,
+        "retry_policy": {"max_attempts": 1303},
         "etag": "etag_value",
     }
     # The version of a generated dependency at test runtime may differ from the version used during generation.
@@ -27082,6 +27083,7 @@ def test_update_trigger_rest_call_success(request_type):
         "conditions": {},
         "event_data_content_type": "event_data_content_type_value",
         "satisfies_pzs": True,
+        "retry_policy": {"max_attempts": 1303},
         "etag": "etag_value",
     }
     # The version of a generated dependency at test runtime may differ from the version used during generation.
@@ -32206,6 +32208,8 @@ def test_create_google_api_source_rest_call_success(request_type):
         "destination": "destination_value",
         "crypto_key_name": "crypto_key_name_value",
         "logging_config": {"log_severity": 1},
+        "organization_subscription": {"enabled": True},
+        "project_subscriptions": {"list_": ["list__value1", "list__value2"]},
     }
     # The version of a generated dependency at test runtime may differ from the version used during generation.
     # Delete any fields which are not present in the current runtime dependency
@@ -32416,6 +32420,8 @@ def test_update_google_api_source_rest_call_success(request_type):
         "destination": "destination_value",
         "crypto_key_name": "crypto_key_name_value",
         "logging_config": {"log_severity": 1},
+        "organization_subscription": {"enabled": True},
+        "project_subscriptions": {"list_": ["list__value1", "list__value2"]},
     }
     # The version of a generated dependency at test runtime may differ from the version used during generation.
     # Delete any fields which are not present in the current runtime dependency

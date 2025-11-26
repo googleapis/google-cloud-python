@@ -5726,6 +5726,7 @@ class EventarcClient(metaclass=EventarcClientMeta):
 
                 # Initialize request argument(s)
                 google_api_source = eventarc_v1.GoogleApiSource()
+                google_api_source.organization_subscription.enabled = True
                 google_api_source.destination = "destination_value"
 
                 request = eventarc_v1.CreateGoogleApiSourceRequest(
@@ -5875,6 +5876,7 @@ class EventarcClient(metaclass=EventarcClientMeta):
 
                 # Initialize request argument(s)
                 google_api_source = eventarc_v1.GoogleApiSource()
+                google_api_source.organization_subscription.enabled = True
                 google_api_source.destination = "destination_value"
 
                 request = eventarc_v1.UpdateGoogleApiSourceRequest(
