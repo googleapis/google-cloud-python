@@ -17,11 +17,48 @@ from unittest import mock
 
 import google.cloud.bigquery as bigquery
 import google.cloud.exceptions
+import numpy as np
+import pandas as pd
 import pytest
 
 import bigframes
 import bigframes.pandas as bpd
 import bigframes.session._io.bigquery
+
+
+@pytest.fixture
+def large_pd_df():
+    nrows = 1000000
+
+    np_int1 = np.random.randint(0, 1000, size=nrows, dtype=np.int32)
+    np_int2 = np.random.randint(10000, 20000, size=nrows, dtype=np.int64)
+    np_bool = np.random.choice([True, False], size=nrows)
+    np_float1 = np.random.rand(nrows).astype(np.float32)
+    np_float2 = np.random.normal(loc=50.0, scale=10.0, size=nrows).astype(np.float64)
+
+    return pd.DataFrame(
+        {
+            "int_col_1": np_int1,
+            "int_col_2": np_int2,
+            "bool_col": np_bool,
+            "float_col_1": np_float1,
+            "float_col_2": np_float2,
+        }
+    )
+
+
+@pytest.mark.parametrize(
+    ("write_engine"),
+    [
+        ("bigquery_load"),
+        ("bigquery_streaming"),
+        ("bigquery_write"),
+    ],
+)
+def test_read_pandas_large_df(session, large_pd_df, write_engine: str):
+    df = session.read_pandas(large_pd_df, write_engine=write_engine)
+    assert len(df.peek(5)) == 5
+    assert len(large_pd_df) == 1000000
 
 
 def test_close(session: bigframes.Session):

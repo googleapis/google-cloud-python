@@ -19,6 +19,7 @@ import dataclasses
 import datetime
 import io
 import itertools
+import math
 import os
 import typing
 from typing import (
@@ -397,6 +398,15 @@ class GbqDataLoader:
         offsets_col: str,
     ) -> bq_data.BigqueryDataSource:
         """Load managed data into bigquery"""
+        MAX_BYTES = 10000000  # streaming api has 10MB limit
+        SAFETY_MARGIN = (
+            40  # Perf seems bad for large chunks, so do 40x smaller than max
+        )
+        batch_count = math.ceil(
+            data.metadata.total_bytes / (MAX_BYTES // SAFETY_MARGIN)
+        )
+        rows_per_batch = math.ceil(data.metadata.row_count / batch_count)
+
         schema_w_offsets = data.schema.append(
             schemata.SchemaItem(offsets_col, bigframes.dtypes.INT_DTYPE)
         )
@@ -410,16 +420,24 @@ class GbqDataLoader:
         )
         rows_w_offsets = ((*row, offset) for offset, row in enumerate(rows))
 
-        for errors in self._bqclient.insert_rows(
-            load_table_destination,
-            rows_w_offsets,
-            selected_fields=bq_schema,
-            row_ids=map(str, itertools.count()),  # used to ensure only-once insertion
-        ):
-            if errors:
-                raise ValueError(
-                    f"Problem loading at least one row from DataFrame: {errors}. {constants.FEEDBACK_LINK}"
-                )
+        # TODO: don't use batched
+        batches = _batched(rows_w_offsets, rows_per_batch)
+        ids_iter = map(str, itertools.count())
+
+        for batch in batches:
+            batch_rows = list(batch)
+            row_ids = itertools.islice(ids_iter, len(batch_rows))
+
+            for errors in self._bqclient.insert_rows(
+                load_table_destination,
+                batch_rows,
+                selected_fields=bq_schema,
+                row_ids=row_ids,  # used to ensure only-once insertion
+            ):
+                if errors:
+                    raise ValueError(
+                        f"Problem loading at least one row from DataFrame: {errors}. {constants.FEEDBACK_LINK}"
+                    )
         destination_table = self._bqclient.get_table(load_table_destination)
         return bq_data.BigqueryDataSource(
             bq_data.GbqTable.from_table(destination_table),
@@ -434,6 +452,15 @@ class GbqDataLoader:
         offsets_col: str,
     ) -> bq_data.BigqueryDataSource:
         """Load managed data into bigquery"""
+        MAX_BYTES = 10000000  # streaming api has 10MB limit
+        SAFETY_MARGIN = (
+            4  # aim for 2.5mb to account for row variance, format differences, etc.
+        )
+        batch_count = math.ceil(
+            data.metadata.total_bytes / (MAX_BYTES // SAFETY_MARGIN)
+        )
+        rows_per_batch = math.ceil(data.metadata.row_count / batch_count)
+
         schema_w_offsets = data.schema.append(
             schemata.SchemaItem(offsets_col, bigframes.dtypes.INT_DTYPE)
         )
@@ -450,7 +477,9 @@ class GbqDataLoader:
 
         def request_gen() -> Generator[bq_storage_types.AppendRowsRequest, None, None]:
             schema, batches = data.to_arrow(
-                offsets_col=offsets_col, duration_type="int"
+                offsets_col=offsets_col,
+                duration_type="int",
+                max_chunksize=rows_per_batch,
             )
             offset = 0
             for batch in batches:
@@ -1332,3 +1361,10 @@ def _validate_dtype_can_load(name: str, column_type: bigframes.dtypes.Dtype):
             f"Nested JSON types, found in column `{name}`: `{column_type}`', "
             f"are currently unsupported for upload. {constants.FEEDBACK_LINK}"
         )
+
+
+# itertools.batched not available in python <3.12, so we use this instead
+def _batched(iterator: Iterable, n: int) -> Iterable:
+    assert n > 0
+    while batch := tuple(itertools.islice(iterator, n)):
+        yield batch

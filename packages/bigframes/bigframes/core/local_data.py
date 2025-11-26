@@ -124,12 +124,13 @@ class ManagedArrowTable:
         geo_format: Literal["wkb", "wkt"] = "wkt",
         duration_type: Literal["int", "duration"] = "duration",
         json_type: Literal["string"] = "string",
+        max_chunksize: Optional[int] = None,
     ) -> tuple[pa.Schema, Iterable[pa.RecordBatch]]:
         if geo_format != "wkt":
             raise NotImplementedError(f"geo format {geo_format} not yet implemented")
         assert json_type == "string"
 
-        batches = self.data.to_batches()
+        batches = self.data.to_batches(max_chunksize=max_chunksize)
         schema = self.data.schema
         if duration_type == "int":
             schema = _schema_durations_to_ints(schema)
