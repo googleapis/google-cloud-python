@@ -59,7 +59,7 @@ dynamic = ["version"]
 
 [project.urls]
 Documentation = "https://googleapis.dev/python/google-api-core/latest/"
-Repository = "https://github.com/googleapis/python-api-core"
+Repository = "https://github.com/googleapis/google-cloud-python/tree/main/packages/google-api-core"
 
 [project.optional-dependencies]
 async_rest = ["google-auth[aiohttp] >= 2.35.0, < 3.0.0"]
