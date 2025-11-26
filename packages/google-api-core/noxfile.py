@@ -38,6 +38,7 @@ UNIT_TEST_STANDARD_DEPENDENCIES = [
     "pytest",
     "pytest-cov",
     "pytest-asyncio",
+    "pytest-mock",
 ]
 
 # 'docfx' is excluded since it only needs to run in 'docs-presubmit'
