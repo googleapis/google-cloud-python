@@ -38,7 +38,7 @@ nox.options.sessions = [
     "unit",
     "unit_grpc_gcp",
     "unit_wo_grpc",
-    "unit_w_prerelease_deps",
+    "prerelease_deps",
     "unit_w_async_rest_extra",
     "cover",
     "pytype",
@@ -221,7 +221,7 @@ def unit(session):
 
 
 @nox.session(python=PYTHON_VERSIONS)
-def unit_w_prerelease_deps(session):
+def prerelease_deps(session):
     """Run the unit test suite."""
     default(session, prerelease=True)
 
