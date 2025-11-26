@@ -7,11 +7,11 @@ WITH `bfcte_0` AS (
     *,
     TIMESTAMP_DIFF(
       `timestamp_col`,
-      LAG(`timestamp_col`, 1) OVER (ORDER BY `timestamp_col` ASC NULLS LAST),
+      LAG(`timestamp_col`, 1) OVER (ORDER BY `timestamp_col` DESC),
       MICROSECOND
     ) AS `bfcol_1`
   FROM `bfcte_0`
 )
 SELECT
-  `bfcol_1` AS `diff_time`
+  `bfcol_1` AS `diff_timestamp`
 FROM `bfcte_1`
