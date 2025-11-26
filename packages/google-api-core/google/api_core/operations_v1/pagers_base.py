@@ -47,7 +47,7 @@ class ListOperationsPagerBase:
         request: operations_pb2.ListOperationsRequest,
         response: operations_pb2.ListOperationsResponse,
         *,
-        metadata: Sequence[Tuple[str, str]] = ()
+        metadata: Sequence[Tuple[str, str]] = (),
     ):
         """Instantiate the pager.
 

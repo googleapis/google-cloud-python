@@ -360,7 +360,6 @@ class TestHTTPIterator(object):
         assert iterator._has_next_page()
 
     def test__has_next_page_w_max_results_done(self):
-
         iterator = page_iterator.HTTPIterator(
             mock.sentinel.client,
             mock.sentinel.api_request,

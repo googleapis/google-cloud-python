@@ -88,7 +88,6 @@ def test_setup_logging_w_incorrect_scope():
 
 
 def test_initialize_logging():
-
     with mock.patch("os.getenv", return_value="foogle.bar"):
         with mock.patch("google.api_core.client_logging._BASE_LOGGER_NAME", "foogle"):
             initialize_logging()

@@ -78,7 +78,7 @@ class Operation(polling.PollingFuture):
         result_type,
         metadata_type=None,
         polling=polling.DEFAULT_POLLING,
-        **kwargs
+        **kwargs,
     ):
         super(Operation, self).__init__(polling=polling, **kwargs)
         self._operation = operation

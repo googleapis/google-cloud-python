@@ -292,7 +292,6 @@ async def test_next_escaped_characters_in_string(
 @pytest.mark.asyncio
 @pytest.mark.parametrize("response_type", [EchoResponse, httpbody_pb2.HttpBody])
 async def test_next_not_array(response_type):
-
     data = '{"hello": 0}'
     with mock.patch.object(
         ResponseMock, "content", return_value=mock_async_gen(data)
@@ -352,7 +351,6 @@ async def test_check_buffer(response_type, return_value):
 @pytest.mark.asyncio
 @pytest.mark.parametrize("response_type", [EchoResponse, httpbody_pb2.HttpBody])
 async def test_next_html(response_type):
-
     data = "<!DOCTYPE html><html></html>"
     with mock.patch.object(
         ResponseMock, "content", return_value=mock_async_gen(data)
