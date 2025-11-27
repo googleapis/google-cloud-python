@@ -386,6 +386,15 @@ class ThinkingConfig(proto.Message):
             should generate.
 
             This field is a member of `oneof`_ ``_thinking_budget``.
+                
+        thinking_level (str):
+            Optional. The thinking level to use valid
+            values are: 'low' or 'high'. If not specified, the
+            model will choose a default thinking level.
+
+            Replaces thinking_budget for Gemini 3 models.
+
+            This field is a member of `oneof`_ ``_thinking_level``.
     """
 
     include_thoughts: bool = proto.Field(
@@ -396,6 +405,11 @@ class ThinkingConfig(proto.Message):
     thinking_budget: int = proto.Field(
         proto.INT32,
         number=2,
+        optional=True,
+    )
+    thinking_level: str = proto.Field(
+        proto.STRING,
+        number=3,
         optional=True,
     )
 
