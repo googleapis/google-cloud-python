@@ -199,9 +199,27 @@ class AsyncAppendableObjectWriter:
             self.offset += chunk_size
             bytes_to_flush += chunk_size
             if bytes_to_flush >= _MAX_BUFFER_SIZE_BYTES:
-                await self.flush()
+                await self.simple_flush()
                 bytes_to_flush = 0
             start_idx = end_idx
+
+    async def simple_flush(self) -> None:
+        """Flushes the data to the server.
+        Please note: Unlike `flush` it does not do `state_lookup`
+
+        :rtype: None
+
+        :raises ValueError: If the stream is not open (i.e., `open()` has not
+            been called).
+        """
+        if not self._is_stream_open:
+            raise ValueError("Stream is not open. Call open() before simple_flush().")
+
+        await self.write_obj_stream.send(
+            _storage_v2.BidiWriteObjectRequest(
+                flush=True,
+            )
+        )
 
     async def flush(self) -> int:
         """Flushes the data to the server.
