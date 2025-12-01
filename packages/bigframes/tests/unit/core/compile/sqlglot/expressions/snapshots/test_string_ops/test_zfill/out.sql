@@ -6,9 +6,9 @@ WITH `bfcte_0` AS (
   SELECT
     *,
     CASE
-      WHEN SUBSTRING(`string_col`, 1, 1) = '-'
-      THEN CONCAT('-', LPAD(SUBSTRING(`string_col`, 1), 9, '0'))
-      ELSE LPAD(`string_col`, 10, '0')
+      WHEN STARTS_WITH(`string_col`, '-')
+      THEN CONCAT('-', LPAD(SUBSTRING(`string_col`, 2), GREATEST(LENGTH(`string_col`), 10) - 1, '0'))
+      ELSE LPAD(`string_col`, GREATEST(LENGTH(`string_col`), 10), '0')
     END AS `bfcol_1`
   FROM `bfcte_0`
 )
