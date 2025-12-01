@@ -1342,6 +1342,24 @@ libraries:
     remove_regex:
       - packages/google-cloud-data-qna/
     tag_format: '{id}-v{version}'
+  - id: google-cloud-databasecenter
+    version: 0.0.0
+    last_generated_commit: 9a665b700840373e253db5af289d7df2a4fb41b9
+    apis:
+      - path: google/cloud/databasecenter/v1beta
+        service_config: databasecenter_v1beta.yaml
+    source_roots:
+      - packages/google-cloud-databasecenter
+    preserve_regex:
+      - packages/google-cloud-databasecenter/CHANGELOG.md
+      - docs/CHANGELOG.md
+      - samples/README.txt
+      - scripts/client-post-processing
+      - samples/snippets/README.rst
+      - tests/system
+    remove_regex:
+      - packages/google-cloud-databasecenter
+    tag_format: '{id}-v{version}'
   - id: google-cloud-datacatalog
     version: 3.28.0
     last_generated_commit: 3322511885371d2b2253f209ccc3aa60d4100cfd
