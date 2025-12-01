@@ -279,7 +279,7 @@ def _run_cert_provider_command(command, expect_encrypted_key=False):
 def get_client_ssl_credentials(
     generate_encrypted_key=False,
     context_aware_metadata_path=CONTEXT_AWARE_METADATA_PATH,
-    certificate_config_path=CERTIFICATE_CONFIGURATION_DEFAULT_PATH,
+    certificate_config_path=None,
 ):
     """Returns the client side certificate, private key and passphrase.
 
@@ -306,13 +306,10 @@ def get_client_ssl_credentials(
             the cert, key and passphrase.
     """
 
-    # 1. Check for certificate config json.
-    cert_config_path = _check_config_path(certificate_config_path)
-    if cert_config_path:
-        # Attempt to retrieve X.509 Workload cert and key.
-        cert, key = _get_workload_cert_and_key(cert_config_path)
-        if cert and key:
-            return True, cert, key, None
+    # 1.  Attempt to retrieve X.509 Workload cert and key.
+    cert, key = _get_workload_cert_and_key(certificate_config_path)
+    if cert and key:
+        return True, cert, key, None
 
     # 2. Check for context aware metadata json
     metadata_path = _check_config_path(context_aware_metadata_path)
