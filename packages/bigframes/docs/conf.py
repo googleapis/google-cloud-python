@@ -172,6 +172,9 @@ html_theme_options = {
             "url": "https://docs.cloud.google.com/bigquery/docs/bigquery-dataframes-introduction",
         },
     ],
+    "analytics": {
+        "google_analytics_id": "G-XVSRMCJ37X",
+    },
 }
 
 # Add any paths that contain custom themes here, relative to this directory.
