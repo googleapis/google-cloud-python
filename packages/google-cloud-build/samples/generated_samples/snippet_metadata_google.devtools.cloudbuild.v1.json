@@ -211,6 +211,10 @@
             "type": "str"
           },
           {
+            "name": "name",
+            "type": "str"
+          },
+          {
             "name": "retry",
             "type": "google.api_core.retry.Retry"
           },
@@ -292,6 +296,10 @@
           },
           {
             "name": "id",
+            "type": "str"
+          },
+          {
+            "name": "name",
             "type": "str"
           },
           {
@@ -380,6 +388,10 @@
             "type": "google.cloud.devtools.cloudbuild_v1.types.BuildTrigger"
           },
           {
+            "name": "parent",
+            "type": "str"
+          },
+          {
             "name": "retry",
             "type": "google.api_core.retry.Retry"
           },
@@ -462,6 +474,10 @@
           {
             "name": "trigger",
             "type": "google.cloud.devtools.cloudbuild_v1.types.BuildTrigger"
+          },
+          {
+            "name": "parent",
+            "type": "str"
           },
           {
             "name": "retry",
@@ -549,6 +565,10 @@
             "type": "google.cloud.devtools.cloudbuild_v1.types.Build"
           },
           {
+            "name": "parent",
+            "type": "str"
+          },
+          {
             "name": "retry",
             "type": "google.api_core.retry.Retry"
           },
@@ -631,6 +651,10 @@
           {
             "name": "build",
             "type": "google.cloud.devtools.cloudbuild_v1.types.Build"
+          },
+          {
+            "name": "parent",
+            "type": "str"
           },
           {
             "name": "retry",
@@ -895,6 +919,10 @@
             "type": "str"
           },
           {
+            "name": "name",
+            "type": "str"
+          },
+          {
             "name": "retry",
             "type": "google.api_core.retry.Retry"
           },
@@ -973,6 +1001,10 @@
           },
           {
             "name": "trigger_id",
+            "type": "str"
+          },
+          {
+            "name": "name",
             "type": "str"
           },
           {
@@ -1219,6 +1251,10 @@
             "type": "str"
           },
           {
+            "name": "name",
+            "type": "str"
+          },
+          {
             "name": "retry",
             "type": "google.api_core.retry.Retry"
           },
@@ -1300,6 +1336,10 @@
           },
           {
             "name": "trigger_id",
+            "type": "str"
+          },
+          {
+            "name": "name",
             "type": "str"
           },
           {
@@ -1388,6 +1428,10 @@
             "type": "str"
           },
           {
+            "name": "name",
+            "type": "str"
+          },
+          {
             "name": "retry",
             "type": "google.api_core.retry.Retry"
           },
@@ -1472,6 +1516,10 @@
             "type": "str"
           },
           {
+            "name": "name",
+            "type": "str"
+          },
+          {
             "name": "retry",
             "type": "google.api_core.retry.Retry"
           },
@@ -1525,6 +1573,167 @@
         }
       ],
       "title": "cloudbuild_v1_generated_cloud_build_get_build_sync.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "async": true,
+        "client": {
+          "fullName": "google.cloud.devtools.cloudbuild_v1.CloudBuildAsyncClient",
+          "shortName": "CloudBuildAsyncClient"
+        },
+        "fullName": "google.cloud.devtools.cloudbuild_v1.CloudBuildAsyncClient.get_default_service_account",
+        "method": {
+          "fullName": "google.devtools.cloudbuild.v1.CloudBuild.GetDefaultServiceAccount",
+          "service": {
+            "fullName": "google.devtools.cloudbuild.v1.CloudBuild",
+            "shortName": "CloudBuild"
+          },
+          "shortName": "GetDefaultServiceAccount"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.devtools.cloudbuild_v1.types.GetDefaultServiceAccountRequest"
+          },
+          {
+            "name": "name",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, Union[str, bytes]]]"
+          }
+        ],
+        "resultType": "google.cloud.devtools.cloudbuild_v1.types.DefaultServiceAccount",
+        "shortName": "get_default_service_account"
+      },
+      "description": "Sample for GetDefaultServiceAccount",
+      "file": "cloudbuild_v1_generated_cloud_build_get_default_service_account_async.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "cloudbuild_v1_generated_CloudBuild_GetDefaultServiceAccount_async",
+      "segments": [
+        {
+          "end": 51,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 51,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 45,
+          "start": 41,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 48,
+          "start": 46,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 52,
+          "start": 49,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "cloudbuild_v1_generated_cloud_build_get_default_service_account_async.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.devtools.cloudbuild_v1.CloudBuildClient",
+          "shortName": "CloudBuildClient"
+        },
+        "fullName": "google.cloud.devtools.cloudbuild_v1.CloudBuildClient.get_default_service_account",
+        "method": {
+          "fullName": "google.devtools.cloudbuild.v1.CloudBuild.GetDefaultServiceAccount",
+          "service": {
+            "fullName": "google.devtools.cloudbuild.v1.CloudBuild",
+            "shortName": "CloudBuild"
+          },
+          "shortName": "GetDefaultServiceAccount"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.devtools.cloudbuild_v1.types.GetDefaultServiceAccountRequest"
+          },
+          {
+            "name": "name",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, Union[str, bytes]]]"
+          }
+        ],
+        "resultType": "google.cloud.devtools.cloudbuild_v1.types.DefaultServiceAccount",
+        "shortName": "get_default_service_account"
+      },
+      "description": "Sample for GetDefaultServiceAccount",
+      "file": "cloudbuild_v1_generated_cloud_build_get_default_service_account_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "cloudbuild_v1_generated_CloudBuild_GetDefaultServiceAccount_sync",
+      "segments": [
+        {
+          "end": 51,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 51,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 45,
+          "start": 41,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 48,
+          "start": 46,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 52,
+          "start": 49,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "cloudbuild_v1_generated_cloud_build_get_default_service_account_sync.py"
     },
     {
       "canonical": true,
@@ -2362,6 +2571,10 @@
             "type": "str"
           },
           {
+            "name": "name",
+            "type": "str"
+          },
+          {
             "name": "retry",
             "type": "google.api_core.retry.Retry"
           },
@@ -2443,6 +2656,10 @@
           },
           {
             "name": "id",
+            "type": "str"
+          },
+          {
+            "name": "name",
             "type": "str"
           },
           {

@@ -160,7 +160,8 @@ class CloudIdentityCustomerAccount(proto.Message):
         owned (bool):
             Returns true if the Cloud Identity account is
             associated with a customer of the Channel
-            Services partner.
+            Services partner (with active subscriptions or
+            purchase consents).
         customer_name (str):
             If owned = true, the name of the customer that owns the
             Cloud Identity account. Customer_name uses the format:
@@ -812,12 +813,22 @@ class TransferableOffer(proto.Message):
         offer (google.cloud.channel_v1.types.Offer):
             Offer with parameter constraints updated to
             allow the Transfer.
+        price_reference_id (str):
+            Optional. Price reference ID for the offer.
+            Only for offers that require additional price
+            information. Used to guarantee that the pricing
+            is consistent between quoting the offer and
+            placing the order.
     """
 
     offer: gcc_offers.Offer = proto.Field(
         proto.MESSAGE,
         number=1,
         message=gcc_offers.Offer,
+    )
+    price_reference_id: str = proto.Field(
+        proto.STRING,
+        number=2,
     )
 
 
@@ -1343,7 +1354,8 @@ class ListSkuGroupsRequest(proto.Message):
         page_token (str):
             Optional. A token identifying a page of results beyond the
             first page. Obtained through
-            [ListSkuGroups.next_page_token][] of the previous
+            [ListSkuGroupsResponse.next_page_token][google.cloud.channel.v1.ListSkuGroupsResponse.next_page_token]
+            of the previous
             [CloudChannelService.ListSkuGroups][google.cloud.channel.v1.CloudChannelService.ListSkuGroups]
             call.
     """
@@ -1378,7 +1390,8 @@ class ListSkuGroupBillableSkusRequest(proto.Message):
         page_token (str):
             Optional. A token identifying a page of results beyond the
             first page. Obtained through
-            [ListSkuGroupBillableSkus.next_page_token][] of the previous
+            [ListSkuGroupBillableSkusResponse.next_page_token][google.cloud.channel.v1.ListSkuGroupBillableSkusResponse.next_page_token]
+            of the previous
             [CloudChannelService.ListSkuGroupBillableSkus][google.cloud.channel.v1.CloudChannelService.ListSkuGroupBillableSkus]
             call.
     """
@@ -1405,7 +1418,8 @@ class ListSkuGroupsResponse(proto.Message):
             The list of SKU groups requested.
         next_page_token (str):
             A token to retrieve the next page of results. Pass to
-            [ListSkuGroups.page_token][] to obtain that page.
+            [ListSkuGroupsRequest.page_token][google.cloud.channel.v1.ListSkuGroupsRequest.page_token]
+            to obtain that page.
     """
 
     @property
@@ -1432,7 +1446,8 @@ class ListSkuGroupBillableSkusResponse(proto.Message):
             SKU group.
         next_page_token (str):
             A token to retrieve the next page of results. Pass to
-            [ListSkuGroupBillableSkus.page_token][] to obtain that page.
+            [ListSkuGroupBillableSkusRequest.page_token][google.cloud.channel.v1.ListSkuGroupBillableSkusRequest.page_token]
+            to obtain that page.
     """
 
     @property
@@ -1676,7 +1691,8 @@ class TransferEntitlementsToGoogleRequest(proto.Message):
 
 
 class ChangeParametersRequest(proto.Message):
-    r"""Request message for [CloudChannelService.ChangeParametersRequest][].
+    r"""Request message for
+    [CloudChannelService.ChangeParameters][google.cloud.channel.v1.CloudChannelService.ChangeParameters].
 
     Attributes:
         name (str):
@@ -1815,6 +1831,12 @@ class ChangeOfferRequest(proto.Message):
             This field is only relevant for multi-currency
             accounts. It should be left empty for single
             currency accounts.
+        price_reference_id (str):
+            Optional. Price reference ID for the offer.
+            Only for offers that require additional price
+            information. Used to guarantee that the pricing
+            is consistent between quoting the offer and
+            placing the order.
     """
 
     name: str = proto.Field(
@@ -1841,6 +1863,10 @@ class ChangeOfferRequest(proto.Message):
     billing_account: str = proto.Field(
         proto.STRING,
         number=7,
+    )
+    price_reference_id: str = proto.Field(
+        proto.STRING,
+        number=8,
     )
 
 
@@ -2212,6 +2238,10 @@ class ListOffersResponse(proto.Message):
     Attributes:
         offers (MutableSequence[google.cloud.channel_v1.types.Offer]):
             The list of Offers requested.
+
+            The pricing information for each Offer only
+            includes the base price. Effective prices and
+            discounts aren't populated.
         next_page_token (str):
             A token to retrieve the next page of results.
     """
@@ -2554,12 +2584,22 @@ class PurchasableOffer(proto.Message):
     Attributes:
         offer (google.cloud.channel_v1.types.Offer):
             Offer.
+        price_reference_id (str):
+            Optional. Price reference ID for the offer.
+            Only for offers that require additional price
+            information. Used to guarantee that the pricing
+            is consistent between quoting the offer and
+            placing the order.
     """
 
     offer: gcc_offers.Offer = proto.Field(
         proto.MESSAGE,
         number=1,
         message=gcc_offers.Offer,
+    )
+    price_reference_id: str = proto.Field(
+        proto.STRING,
+        number=2,
     )
 
 
@@ -2651,12 +2691,22 @@ class BillingAccountPurchaseInfo(proto.Message):
 class RegisterSubscriberRequest(proto.Message):
     r"""Request Message for RegisterSubscriber.
 
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         account (str):
-            Required. Resource name of the account.
+            Optional. Resource name of the account.
+            Required if integrator is not provided.
+            Otherwise, leave this field empty/unset.
         service_account (str):
             Required. Service account that provides
             subscriber access to the registered topic.
+        integrator (str):
+            Optional. Resource name of the integrator.
+            Required if account is not provided. Otherwise,
+            leave this field empty/unset.
+
+            This field is a member of `oneof`_ ``_integrator``.
     """
 
     account: str = proto.Field(
@@ -2666,6 +2716,11 @@ class RegisterSubscriberRequest(proto.Message):
     service_account: str = proto.Field(
         proto.STRING,
         number=2,
+    )
+    integrator: str = proto.Field(
+        proto.STRING,
+        number=3,
+        optional=True,
     )
 
 
@@ -2687,12 +2742,22 @@ class RegisterSubscriberResponse(proto.Message):
 class UnregisterSubscriberRequest(proto.Message):
     r"""Request Message for UnregisterSubscriber.
 
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         account (str):
-            Required. Resource name of the account.
+            Optional. Resource name of the account.
+            Required if integrator is not provided.
+            Otherwise, leave this field empty/unset.
         service_account (str):
             Required. Service account to unregister from
             subscriber access to the topic.
+        integrator (str):
+            Optional. Resource name of the integrator.
+            Required if account is not provided. Otherwise,
+            leave this field empty/unset.
+
+            This field is a member of `oneof`_ ``_integrator``.
     """
 
     account: str = proto.Field(
@@ -2702,6 +2767,11 @@ class UnregisterSubscriberRequest(proto.Message):
     service_account: str = proto.Field(
         proto.STRING,
         number=2,
+    )
+    integrator: str = proto.Field(
+        proto.STRING,
+        number=3,
+        optional=True,
     )
 
 
@@ -2723,9 +2793,13 @@ class UnregisterSubscriberResponse(proto.Message):
 class ListSubscribersRequest(proto.Message):
     r"""Request Message for ListSubscribers.
 
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         account (str):
-            Required. Resource name of the account.
+            Optional. Resource name of the account.
+            Required if integrator is not provided.
+            Otherwise, leave this field empty/unset.
         page_size (int):
             Optional. The maximum number of service
             accounts to return. The service may return fewer
@@ -2740,6 +2814,12 @@ class ListSubscribersRequest(proto.Message):
             When paginating, all other parameters provided to
             ``ListSubscribers`` must match the call that provided the
             page token.
+        integrator (str):
+            Optional. Resource name of the integrator.
+            Required if account is not provided. Otherwise,
+            leave this field empty/unset.
+
+            This field is a member of `oneof`_ ``_integrator``.
     """
 
     account: str = proto.Field(
@@ -2753,6 +2833,11 @@ class ListSubscribersRequest(proto.Message):
     page_token: str = proto.Field(
         proto.STRING,
         number=3,
+    )
+    integrator: str = proto.Field(
+        proto.STRING,
+        number=4,
+        optional=True,
     )
 
 

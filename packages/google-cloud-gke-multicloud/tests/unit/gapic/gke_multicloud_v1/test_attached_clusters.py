@@ -7066,6 +7066,17 @@ def test_create_attached_cluster_rest_call_success(request_type):
         "binary_authorization": {"evaluation_mode": 1},
         "security_posture_config": {"vulnerability_mode": 1},
         "tags": {},
+        "system_components_config": {
+            "tolerations": [
+                {
+                    "key": "key_value",
+                    "value": "value_value",
+                    "key_operator": 1,
+                    "effect": 1,
+                }
+            ],
+            "labels": [{"key": "key_value", "value": "value_value"}],
+        },
     }
     # The version of a generated dependency at test runtime may differ from the version used during generation.
     # Delete any fields which are not present in the current runtime dependency
@@ -7305,6 +7316,17 @@ def test_update_attached_cluster_rest_call_success(request_type):
         "binary_authorization": {"evaluation_mode": 1},
         "security_posture_config": {"vulnerability_mode": 1},
         "tags": {},
+        "system_components_config": {
+            "tolerations": [
+                {
+                    "key": "key_value",
+                    "value": "value_value",
+                    "key_operator": 1,
+                    "effect": 1,
+                }
+            ],
+            "labels": [{"key": "key_value", "value": "value_value"}],
+        },
     }
     # The version of a generated dependency at test runtime may differ from the version used during generation.
     # Delete any fields which are not present in the current runtime dependency

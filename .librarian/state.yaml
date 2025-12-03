@@ -473,7 +473,7 @@ libraries:
     tag_format: '{id}-v{version}'
   - id: google-cloud-artifact-registry
     version: 1.17.0
-    last_generated_commit: c2db528a3e4d12b95666c719ee0db30a3d4c78ad
+    last_generated_commit: 535d161c24965e9ed1a0b27032cc1c8b4beab818
     apis:
       - path: google/devtools/artifactregistry/v1
         service_config: artifactregistry_v1.yaml
@@ -990,7 +990,7 @@ libraries:
     tag_format: '{id}-v{version}'
   - id: google-cloud-build
     version: 3.33.0
-    last_generated_commit: 3322511885371d2b2253f209ccc3aa60d4100cfd
+    last_generated_commit: 535d161c24965e9ed1a0b27032cc1c8b4beab818
     apis:
       - path: google/devtools/cloudbuild/v1
         service_config: cloudbuild_v1.yaml
@@ -1043,7 +1043,7 @@ libraries:
     tag_format: '{id}-v{version}'
   - id: google-cloud-channel
     version: 1.24.0
-    last_generated_commit: 3322511885371d2b2253f209ccc3aa60d4100cfd
+    last_generated_commit: 535d161c24965e9ed1a0b27032cc1c8b4beab818
     apis:
       - path: google/cloud/channel/v1
         service_config: cloudchannel_v1.yaml
@@ -1957,7 +1957,7 @@ libraries:
     tag_format: '{id}-v{version}'
   - id: google-cloud-gke-multicloud
     version: 0.6.22
-    last_generated_commit: 3322511885371d2b2253f209ccc3aa60d4100cfd
+    last_generated_commit: 535d161c24965e9ed1a0b27032cc1c8b4beab818
     apis:
       - path: google/cloud/gkemulticloud/v1
         service_config: gkemulticloud_v1.yaml
@@ -2497,7 +2497,7 @@ libraries:
     tag_format: '{id}-v{version}'
   - id: google-cloud-network-security
     version: 0.9.21
-    last_generated_commit: c9ff4f1cd26f1fe63e6d1c11a198366b70ebdb84
+    last_generated_commit: 535d161c24965e9ed1a0b27032cc1c8b4beab818
     apis:
       - path: google/cloud/networksecurity/v1alpha1
         service_config: networksecurity_v1alpha1.yaml
@@ -2669,7 +2669,7 @@ libraries:
     tag_format: '{id}-v{version}'
   - id: google-cloud-parallelstore
     version: 0.3.0
-    last_generated_commit: 3322511885371d2b2253f209ccc3aa60d4100cfd
+    last_generated_commit: 535d161c24965e9ed1a0b27032cc1c8b4beab818
     apis:
       - path: google/cloud/parallelstore/v1
         service_config: parallelstore_v1.yaml
@@ -3980,7 +3980,7 @@ libraries:
     tag_format: '{id}-v{version}'
   - id: google-shopping-merchant-accounts
     version: 1.1.0
-    last_generated_commit: a17b84add8318f780fcc8a027815d5fee644b9f7
+    last_generated_commit: 535d161c24965e9ed1a0b27032cc1c8b4beab818
     apis:
       - path: google/shopping/merchant/accounts/v1
         service_config: merchantapi_v1.yaml
@@ -4262,7 +4262,7 @@ libraries:
     tag_format: '{id}-v{version}'
   - id: googleapis-common-protos
     version: 1.72.0
-    last_generated_commit: c9ff4f1cd26f1fe63e6d1c11a198366b70ebdb84
+    last_generated_commit: 535d161c24965e9ed1a0b27032cc1c8b4beab818
     apis:
       - path: google/api
         service_config: serviceconfig.yaml

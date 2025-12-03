@@ -295,6 +295,11 @@ class CloudBuildTransport(abc.ABC):
                 default_timeout=600.0,
                 client_info=client_info,
             ),
+            self.get_default_service_account: gapic_v1.method.wrap_method(
+                self.get_default_service_account,
+                default_timeout=None,
+                client_info=client_info,
+            ),
         }
 
     def close(self):
@@ -478,6 +483,18 @@ class CloudBuildTransport(abc.ABC):
         Union[
             cloudbuild.ListWorkerPoolsResponse,
             Awaitable[cloudbuild.ListWorkerPoolsResponse],
+        ],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def get_default_service_account(
+        self,
+    ) -> Callable[
+        [cloudbuild.GetDefaultServiceAccountRequest],
+        Union[
+            cloudbuild.DefaultServiceAccount,
+            Awaitable[cloudbuild.DefaultServiceAccount],
         ],
     ]:
         raise NotImplementedError()

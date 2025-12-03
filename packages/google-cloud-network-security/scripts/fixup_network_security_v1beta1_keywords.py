@@ -41,18 +41,23 @@ class network_securityCallTransformer(cst.CSTTransformer):
     METHOD_TO_PARAMS: Dict[str, Tuple[str]] = {
         'create_authorization_policy': ('parent', 'authorization_policy_id', 'authorization_policy', ),
         'create_client_tls_policy': ('parent', 'client_tls_policy_id', 'client_tls_policy', ),
+        'create_dns_threat_detector': ('parent', 'dns_threat_detector', 'dns_threat_detector_id', ),
         'create_server_tls_policy': ('parent', 'server_tls_policy_id', 'server_tls_policy', ),
         'delete_authorization_policy': ('name', ),
         'delete_client_tls_policy': ('name', ),
+        'delete_dns_threat_detector': ('name', ),
         'delete_server_tls_policy': ('name', ),
         'get_authorization_policy': ('name', ),
         'get_client_tls_policy': ('name', ),
+        'get_dns_threat_detector': ('name', ),
         'get_server_tls_policy': ('name', ),
         'list_authorization_policies': ('parent', 'page_size', 'page_token', ),
         'list_client_tls_policies': ('parent', 'page_size', 'page_token', ),
+        'list_dns_threat_detectors': ('parent', 'page_size', 'page_token', ),
         'list_server_tls_policies': ('parent', 'page_size', 'page_token', ),
         'update_authorization_policy': ('authorization_policy', 'update_mask', ),
         'update_client_tls_policy': ('client_tls_policy', 'update_mask', ),
+        'update_dns_threat_detector': ('dns_threat_detector', 'update_mask', ),
         'update_server_tls_policy': ('server_tls_policy', 'update_mask', ),
     }
 

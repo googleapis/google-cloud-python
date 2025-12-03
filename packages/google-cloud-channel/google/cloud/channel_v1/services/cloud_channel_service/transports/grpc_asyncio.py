@@ -2641,8 +2641,8 @@ class CloudChannelServiceGrpcAsyncIOTransport(CloudChannelServiceTransport):
         r"""Return a callable for the register subscriber method over gRPC.
 
         Registers a service account with subscriber privileges on the
-        Cloud Pub/Sub topic for this Channel Services account. After you
-        create a subscriber, you get the events through
+        Pub/Sub topic for this Channel Services account or integrator.
+        After you create a subscriber, you get the events through
         [SubscriberEvent][google.cloud.channel.v1.SubscriberEvent]
 
         Possible error codes:
@@ -2688,10 +2688,10 @@ class CloudChannelServiceGrpcAsyncIOTransport(CloudChannelServiceTransport):
         r"""Return a callable for the unregister subscriber method over gRPC.
 
         Unregisters a service account with subscriber privileges on the
-        Cloud Pub/Sub topic created for this Channel Services account.
-        If there are no service accounts left with subscriber
-        privileges, this deletes the topic. You can call ListSubscribers
-        to check for these accounts.
+        Pub/Sub topic created for this Channel Services account or
+        integrator. If there are no service accounts left with
+        subscriber privileges, this deletes the topic. You can call
+        ListSubscribers to check for these accounts.
 
         Possible error codes:
 
@@ -2736,8 +2736,8 @@ class CloudChannelServiceGrpcAsyncIOTransport(CloudChannelServiceTransport):
     ]:
         r"""Return a callable for the list subscribers method over gRPC.
 
-        Lists service accounts with subscriber privileges on the Cloud
-        Pub/Sub topic created for this Channel Services account.
+        Lists service accounts with subscriber privileges on the Pub/Sub
+        topic created for this Channel Services account or integrator.
 
         Possible error codes:
 

@@ -35,6 +35,7 @@ from google.cloud.artifactregistry_v1.types import vpcsc_config as gda_vpcsc_con
 from google.cloud.artifactregistry_v1.types import apt_artifact, artifact
 from google.cloud.artifactregistry_v1.types import attachment
 from google.cloud.artifactregistry_v1.types import attachment as gda_attachment
+from google.cloud.artifactregistry_v1.types import export
 from google.cloud.artifactregistry_v1.types import file
 from google.cloud.artifactregistry_v1.types import file as gda_file
 from google.cloud.artifactregistry_v1.types import package
@@ -401,6 +402,11 @@ class ArtifactRegistryTransport(abc.ABC):
             ),
             self.delete_attachment: gapic_v1.method.wrap_method(
                 self.delete_attachment,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.export_artifact: gapic_v1.method.wrap_method(
+                self.export_artifact,
                 default_timeout=None,
                 client_info=client_info,
             ),
@@ -875,6 +881,15 @@ class ArtifactRegistryTransport(abc.ABC):
         self,
     ) -> Callable[
         [attachment.DeleteAttachmentRequest],
+        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def export_artifact(
+        self,
+    ) -> Callable[
+        [export.ExportArtifactRequest],
         Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
     ]:
         raise NotImplementedError()

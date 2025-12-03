@@ -55,6 +55,11 @@
                 "get_build_trigger"
               ]
             },
+            "GetDefaultServiceAccount": {
+              "methods": [
+                "get_default_service_account"
+              ]
+            },
             "GetWorkerPool": {
               "methods": [
                 "get_worker_pool"
@@ -150,6 +155,11 @@
                 "get_build_trigger"
               ]
             },
+            "GetDefaultServiceAccount": {
+              "methods": [
+                "get_default_service_account"
+              ]
+            },
             "GetWorkerPool": {
               "methods": [
                 "get_worker_pool"
@@ -243,6 +253,11 @@
             "GetBuildTrigger": {
               "methods": [
                 "get_build_trigger"
+              ]
+            },
+            "GetDefaultServiceAccount": {
+              "methods": [
+                "get_default_service_account"
               ]
             },
             "GetWorkerPool": {

@@ -111,6 +111,12 @@ class Entitlement(proto.Message):
         billing_account (str):
             Optional. The billing account resource name
             that is used to pay for this entitlement.
+        price_reference_id (str):
+            Optional. Price reference ID for the offer.
+            Only for offers that require additional price
+            information. Used to guarantee that the pricing
+            is consistent between quoting the offer and
+            placing the order.
     """
 
     class ProvisioningState(proto.Enum):
@@ -217,6 +223,10 @@ class Entitlement(proto.Message):
     billing_account: str = proto.Field(
         proto.STRING,
         number=28,
+    )
+    price_reference_id: str = proto.Field(
+        proto.STRING,
+        number=29,
     )
 
 

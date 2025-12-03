@@ -5041,6 +5041,7 @@ def test_get_entitlement(request_type, transport: str = "grpc"):
             ],
             purchase_order_id="purchase_order_id_value",
             billing_account="billing_account_value",
+            price_reference_id="price_reference_id_value",
         )
         response = client.get_entitlement(request)
 
@@ -5062,6 +5063,7 @@ def test_get_entitlement(request_type, transport: str = "grpc"):
     ]
     assert response.purchase_order_id == "purchase_order_id_value"
     assert response.billing_account == "billing_account_value"
+    assert response.price_reference_id == "price_reference_id_value"
 
 
 def test_get_entitlement_non_empty_request_with_auto_populated_field():
@@ -5195,6 +5197,7 @@ async def test_get_entitlement_async(
                 ],
                 purchase_order_id="purchase_order_id_value",
                 billing_account="billing_account_value",
+                price_reference_id="price_reference_id_value",
             )
         )
         response = await client.get_entitlement(request)
@@ -5217,6 +5220,7 @@ async def test_get_entitlement_async(
     ]
     assert response.purchase_order_id == "purchase_order_id_value"
     assert response.billing_account == "billing_account_value"
+    assert response.price_reference_id == "price_reference_id_value"
 
 
 @pytest.mark.asyncio
@@ -6119,6 +6123,7 @@ def test_change_offer_non_empty_request_with_auto_populated_field():
         purchase_order_id="purchase_order_id_value",
         request_id="request_id_value",
         billing_account="billing_account_value",
+        price_reference_id="price_reference_id_value",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -6135,6 +6140,7 @@ def test_change_offer_non_empty_request_with_auto_populated_field():
             purchase_order_id="purchase_order_id_value",
             request_id="request_id_value",
             billing_account="billing_account_value",
+            price_reference_id="price_reference_id_value",
         )
 
 
@@ -16840,6 +16846,7 @@ def test_register_subscriber_non_empty_request_with_auto_populated_field():
     request = service.RegisterSubscriberRequest(
         account="account_value",
         service_account="service_account_value",
+        integrator="integrator_value",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -16855,6 +16862,7 @@ def test_register_subscriber_non_empty_request_with_auto_populated_field():
         assert args[0] == service.RegisterSubscriberRequest(
             account="account_value",
             service_account="service_account_value",
+            integrator="integrator_value",
         )
 
 
@@ -17097,6 +17105,7 @@ def test_unregister_subscriber_non_empty_request_with_auto_populated_field():
     request = service.UnregisterSubscriberRequest(
         account="account_value",
         service_account="service_account_value",
+        integrator="integrator_value",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -17112,6 +17121,7 @@ def test_unregister_subscriber_non_empty_request_with_auto_populated_field():
         assert args[0] == service.UnregisterSubscriberRequest(
             account="account_value",
             service_account="service_account_value",
+            integrator="integrator_value",
         )
 
 
@@ -17357,6 +17367,7 @@ def test_list_subscribers_non_empty_request_with_auto_populated_field():
     request = service.ListSubscribersRequest(
         account="account_value",
         page_token="page_token_value",
+        integrator="integrator_value",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -17370,6 +17381,7 @@ def test_list_subscribers_non_empty_request_with_auto_populated_field():
         assert args[0] == service.ListSubscribersRequest(
             account="account_value",
             page_token="page_token_value",
+            integrator="integrator_value",
         )
 
 
@@ -19875,6 +19887,7 @@ async def test_get_entitlement_empty_call_grpc_asyncio():
                 ],
                 purchase_order_id="purchase_order_id_value",
                 billing_account="billing_account_value",
+                price_reference_id="price_reference_id_value",
             )
         )
         await client.get_entitlement(request=None)
@@ -21403,9 +21416,29 @@ def test_cloud_channel_service_grpc_lro_async_client():
     assert transport.operations_client is transport.operations_client
 
 
-def test_billing_account_path():
+def test_account_path():
     account = "squid"
-    billing_account = "clam"
+    expected = "accounts/{account}".format(
+        account=account,
+    )
+    actual = CloudChannelServiceClient.account_path(account)
+    assert expected == actual
+
+
+def test_parse_account_path():
+    expected = {
+        "account": "clam",
+    }
+    path = CloudChannelServiceClient.account_path(**expected)
+
+    # Check that the path construction is reversible.
+    actual = CloudChannelServiceClient.parse_account_path(path)
+    assert expected == actual
+
+
+def test_billing_account_path():
+    account = "whelk"
+    billing_account = "octopus"
     expected = "accounts/{account}/billingAccounts/{billing_account}".format(
         account=account,
         billing_account=billing_account,
@@ -21416,8 +21449,8 @@ def test_billing_account_path():
 
 def test_parse_billing_account_path():
     expected = {
-        "account": "whelk",
-        "billing_account": "octopus",
+        "account": "oyster",
+        "billing_account": "nudibranch",
     }
     path = CloudChannelServiceClient.billing_account_path(**expected)
 
@@ -21427,8 +21460,8 @@ def test_parse_billing_account_path():
 
 
 def test_channel_partner_link_path():
-    account = "oyster"
-    channel_partner_link = "nudibranch"
+    account = "cuttlefish"
+    channel_partner_link = "mussel"
     expected = "accounts/{account}/channelPartnerLinks/{channel_partner_link}".format(
         account=account,
         channel_partner_link=channel_partner_link,
@@ -21441,8 +21474,8 @@ def test_channel_partner_link_path():
 
 def test_parse_channel_partner_link_path():
     expected = {
-        "account": "cuttlefish",
-        "channel_partner_link": "mussel",
+        "account": "winkle",
+        "channel_partner_link": "nautilus",
     }
     path = CloudChannelServiceClient.channel_partner_link_path(**expected)
 
@@ -21452,9 +21485,9 @@ def test_parse_channel_partner_link_path():
 
 
 def test_channel_partner_repricing_config_path():
-    account = "winkle"
-    channel_partner = "nautilus"
-    channel_partner_repricing_config = "scallop"
+    account = "scallop"
+    channel_partner = "abalone"
+    channel_partner_repricing_config = "squid"
     expected = "accounts/{account}/channelPartnerLinks/{channel_partner}/channelPartnerRepricingConfigs/{channel_partner_repricing_config}".format(
         account=account,
         channel_partner=channel_partner,
@@ -21468,9 +21501,9 @@ def test_channel_partner_repricing_config_path():
 
 def test_parse_channel_partner_repricing_config_path():
     expected = {
-        "account": "abalone",
-        "channel_partner": "squid",
-        "channel_partner_repricing_config": "clam",
+        "account": "clam",
+        "channel_partner": "whelk",
+        "channel_partner_repricing_config": "octopus",
     }
     path = CloudChannelServiceClient.channel_partner_repricing_config_path(**expected)
 
@@ -21480,8 +21513,8 @@ def test_parse_channel_partner_repricing_config_path():
 
 
 def test_customer_path():
-    account = "whelk"
-    customer = "octopus"
+    account = "oyster"
+    customer = "nudibranch"
     expected = "accounts/{account}/customers/{customer}".format(
         account=account,
         customer=customer,
@@ -21492,8 +21525,8 @@ def test_customer_path():
 
 def test_parse_customer_path():
     expected = {
-        "account": "oyster",
-        "customer": "nudibranch",
+        "account": "cuttlefish",
+        "customer": "mussel",
     }
     path = CloudChannelServiceClient.customer_path(**expected)
 
@@ -21503,9 +21536,9 @@ def test_parse_customer_path():
 
 
 def test_customer_repricing_config_path():
-    account = "cuttlefish"
-    customer = "mussel"
-    customer_repricing_config = "winkle"
+    account = "winkle"
+    customer = "nautilus"
+    customer_repricing_config = "scallop"
     expected = "accounts/{account}/customers/{customer}/customerRepricingConfigs/{customer_repricing_config}".format(
         account=account,
         customer=customer,
@@ -21519,9 +21552,9 @@ def test_customer_repricing_config_path():
 
 def test_parse_customer_repricing_config_path():
     expected = {
-        "account": "nautilus",
-        "customer": "scallop",
-        "customer_repricing_config": "abalone",
+        "account": "abalone",
+        "customer": "squid",
+        "customer_repricing_config": "clam",
     }
     path = CloudChannelServiceClient.customer_repricing_config_path(**expected)
 
@@ -21531,9 +21564,9 @@ def test_parse_customer_repricing_config_path():
 
 
 def test_entitlement_path():
-    account = "squid"
-    customer = "clam"
-    entitlement = "whelk"
+    account = "whelk"
+    customer = "octopus"
+    entitlement = "oyster"
     expected = (
         "accounts/{account}/customers/{customer}/entitlements/{entitlement}".format(
             account=account,
@@ -21547,9 +21580,9 @@ def test_entitlement_path():
 
 def test_parse_entitlement_path():
     expected = {
-        "account": "octopus",
-        "customer": "oyster",
-        "entitlement": "nudibranch",
+        "account": "nudibranch",
+        "customer": "cuttlefish",
+        "entitlement": "mussel",
     }
     path = CloudChannelServiceClient.entitlement_path(**expected)
 
@@ -21559,8 +21592,8 @@ def test_parse_entitlement_path():
 
 
 def test_offer_path():
-    account = "cuttlefish"
-    offer = "mussel"
+    account = "winkle"
+    offer = "nautilus"
     expected = "accounts/{account}/offers/{offer}".format(
         account=account,
         offer=offer,
@@ -21571,8 +21604,8 @@ def test_offer_path():
 
 def test_parse_offer_path():
     expected = {
-        "account": "winkle",
-        "offer": "nautilus",
+        "account": "scallop",
+        "offer": "abalone",
     }
     path = CloudChannelServiceClient.offer_path(**expected)
 
@@ -21582,7 +21615,7 @@ def test_parse_offer_path():
 
 
 def test_product_path():
-    product = "scallop"
+    product = "squid"
     expected = "products/{product}".format(
         product=product,
     )
@@ -21592,7 +21625,7 @@ def test_product_path():
 
 def test_parse_product_path():
     expected = {
-        "product": "abalone",
+        "product": "clam",
     }
     path = CloudChannelServiceClient.product_path(**expected)
 
@@ -21602,8 +21635,8 @@ def test_parse_product_path():
 
 
 def test_sku_path():
-    product = "squid"
-    sku = "clam"
+    product = "whelk"
+    sku = "octopus"
     expected = "products/{product}/skus/{sku}".format(
         product=product,
         sku=sku,
@@ -21614,8 +21647,8 @@ def test_sku_path():
 
 def test_parse_sku_path():
     expected = {
-        "product": "whelk",
-        "sku": "octopus",
+        "product": "oyster",
+        "sku": "nudibranch",
     }
     path = CloudChannelServiceClient.sku_path(**expected)
 
@@ -21625,8 +21658,8 @@ def test_parse_sku_path():
 
 
 def test_sku_group_path():
-    account = "oyster"
-    sku_group = "nudibranch"
+    account = "cuttlefish"
+    sku_group = "mussel"
     expected = "accounts/{account}/skuGroups/{sku_group}".format(
         account=account,
         sku_group=sku_group,
@@ -21637,8 +21670,8 @@ def test_sku_group_path():
 
 def test_parse_sku_group_path():
     expected = {
-        "account": "cuttlefish",
-        "sku_group": "mussel",
+        "account": "winkle",
+        "sku_group": "nautilus",
     }
     path = CloudChannelServiceClient.sku_group_path(**expected)
 
@@ -21648,7 +21681,7 @@ def test_parse_sku_group_path():
 
 
 def test_common_billing_account_path():
-    billing_account = "winkle"
+    billing_account = "scallop"
     expected = "billingAccounts/{billing_account}".format(
         billing_account=billing_account,
     )
@@ -21658,7 +21691,7 @@ def test_common_billing_account_path():
 
 def test_parse_common_billing_account_path():
     expected = {
-        "billing_account": "nautilus",
+        "billing_account": "abalone",
     }
     path = CloudChannelServiceClient.common_billing_account_path(**expected)
 
@@ -21668,7 +21701,7 @@ def test_parse_common_billing_account_path():
 
 
 def test_common_folder_path():
-    folder = "scallop"
+    folder = "squid"
     expected = "folders/{folder}".format(
         folder=folder,
     )
@@ -21678,7 +21711,7 @@ def test_common_folder_path():
 
 def test_parse_common_folder_path():
     expected = {
-        "folder": "abalone",
+        "folder": "clam",
     }
     path = CloudChannelServiceClient.common_folder_path(**expected)
 
@@ -21688,7 +21721,7 @@ def test_parse_common_folder_path():
 
 
 def test_common_organization_path():
-    organization = "squid"
+    organization = "whelk"
     expected = "organizations/{organization}".format(
         organization=organization,
     )
@@ -21698,7 +21731,7 @@ def test_common_organization_path():
 
 def test_parse_common_organization_path():
     expected = {
-        "organization": "clam",
+        "organization": "octopus",
     }
     path = CloudChannelServiceClient.common_organization_path(**expected)
 
@@ -21708,7 +21741,7 @@ def test_parse_common_organization_path():
 
 
 def test_common_project_path():
-    project = "whelk"
+    project = "oyster"
     expected = "projects/{project}".format(
         project=project,
     )
@@ -21718,7 +21751,7 @@ def test_common_project_path():
 
 def test_parse_common_project_path():
     expected = {
-        "project": "octopus",
+        "project": "nudibranch",
     }
     path = CloudChannelServiceClient.common_project_path(**expected)
 
@@ -21728,8 +21761,8 @@ def test_parse_common_project_path():
 
 
 def test_common_location_path():
-    project = "oyster"
-    location = "nudibranch"
+    project = "cuttlefish"
+    location = "mussel"
     expected = "projects/{project}/locations/{location}".format(
         project=project,
         location=location,
@@ -21740,8 +21773,8 @@ def test_common_location_path():
 
 def test_parse_common_location_path():
     expected = {
-        "project": "cuttlefish",
-        "location": "mussel",
+        "project": "winkle",
+        "location": "nautilus",
     }
     path = CloudChannelServiceClient.common_location_path(**expected)
 

@@ -57,6 +57,11 @@ from .types.attachment import (
     ListAttachmentsRequest,
     ListAttachmentsResponse,
 )
+from .types.export import (
+    ExportArtifactMetadata,
+    ExportArtifactRequest,
+    ExportArtifactResponse,
+)
 from .types.file import (
     DeleteFileRequest,
     File,
@@ -163,6 +168,9 @@ __all__ = (
     "DeleteTagRequest",
     "DeleteVersionRequest",
     "DockerImage",
+    "ExportArtifactMetadata",
+    "ExportArtifactRequest",
+    "ExportArtifactResponse",
     "File",
     "GenericArtifact",
     "GetAttachmentRequest",

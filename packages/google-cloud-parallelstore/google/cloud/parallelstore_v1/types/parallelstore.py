@@ -30,6 +30,7 @@ __protobuf__ = proto.module(
         "DirectoryStripeLevel",
         "DeploymentType",
         "Instance",
+        "TransferMetadataOptions",
         "ListInstancesRequest",
         "ListInstancesResponse",
         "GetInstanceRequest",
@@ -160,8 +161,8 @@ class Instance(proto.Message):
             between 12000 and 100000, in multiples of 4000;
             e.g., 12000, 16000, 20000, ...
         daos_version (str):
-            Output only. Deprecated 'daos_version' field. Output only.
-            The version of DAOS software running in the instance.
+            Output only. Deprecated: The version of DAOS
+            software running in the instance.
         access_points (MutableSequence[str]):
             Output only. A list of IPv4 addresses used
             for client side configuration.
@@ -306,6 +307,82 @@ class Instance(proto.Message):
     )
 
 
+class TransferMetadataOptions(proto.Message):
+    r"""Transfer metadata options for the instance.
+
+    Attributes:
+        uid (google.cloud.parallelstore_v1.types.TransferMetadataOptions.Uid):
+            Optional. The UID preservation behavior.
+        gid (google.cloud.parallelstore_v1.types.TransferMetadataOptions.Gid):
+            Optional. The GID preservation behavior.
+        mode (google.cloud.parallelstore_v1.types.TransferMetadataOptions.Mode):
+            Optional. The mode preservation behavior.
+    """
+
+    class Uid(proto.Enum):
+        r"""The UID preservation behavior.
+
+        Values:
+            UID_UNSPECIFIED (0):
+                default is UID_NUMBER_PRESERVE.
+            UID_SKIP (1):
+                Do not preserve UID during a transfer job.
+            UID_NUMBER_PRESERVE (2):
+                Preserve UID that is in number format during
+                a transfer job.
+        """
+        UID_UNSPECIFIED = 0
+        UID_SKIP = 1
+        UID_NUMBER_PRESERVE = 2
+
+    class Gid(proto.Enum):
+        r"""The GID preservation behavior.
+
+        Values:
+            GID_UNSPECIFIED (0):
+                default is GID_NUMBER_PRESERVE.
+            GID_SKIP (1):
+                Do not preserve GID during a transfer job.
+            GID_NUMBER_PRESERVE (2):
+                Preserve GID that is in number format during
+                a transfer job.
+        """
+        GID_UNSPECIFIED = 0
+        GID_SKIP = 1
+        GID_NUMBER_PRESERVE = 2
+
+    class Mode(proto.Enum):
+        r"""The mode preservation behavior.
+
+        Values:
+            MODE_UNSPECIFIED (0):
+                default is MODE_PRESERVE.
+            MODE_SKIP (1):
+                Do not preserve mode during a transfer job.
+            MODE_PRESERVE (2):
+                Preserve mode during a transfer job.
+        """
+        MODE_UNSPECIFIED = 0
+        MODE_SKIP = 1
+        MODE_PRESERVE = 2
+
+    uid: Uid = proto.Field(
+        proto.ENUM,
+        number=1,
+        enum=Uid,
+    )
+    gid: Gid = proto.Field(
+        proto.ENUM,
+        number=2,
+        enum=Gid,
+    )
+    mode: Mode = proto.Field(
+        proto.ENUM,
+        number=3,
+        enum=Mode,
+    )
+
+
 class ListInstancesRequest(proto.Message):
     r"""List instances request.
 
@@ -428,11 +505,11 @@ class CreateInstanceRequest(proto.Message):
             for at least 60 minutes since the first request.
 
             For example, consider a situation where you make
-            an initial request and t he request times out.
-            If you make the request again with the same
-            request ID, the server can check if original
-            operation with the same request ID was received,
-            and if so, will ignore the second request. This
+            an initial request and the request times out. If
+            you make the request again with the same request
+            ID, the server can check if original operation
+            with the same request ID was received, and if
+            so, will ignore the second request. This
             prevents clients from accidentally creating
             duplicate commitments.
 
@@ -481,11 +558,11 @@ class UpdateInstanceRequest(proto.Message):
             for at least 60 minutes since the first request.
 
             For example, consider a situation where you make
-            an initial request and t he request times out.
-            If you make the request again with the same
-            request ID, the server can check if original
-            operation with the same request ID was received,
-            and if so, will ignore the second request. This
+            an initial request and the request times out. If
+            you make the request again with the same request
+            ID, the server can check if original operation
+            with the same request ID was received, and if
+            so, will ignore the second request. This
             prevents clients from accidentally creating
             duplicate commitments.
 
@@ -525,11 +602,11 @@ class DeleteInstanceRequest(proto.Message):
             for at least 60 minutes after the first request.
 
             For example, consider a situation where you make
-            an initial request and t he request times out.
-            If you make the request again with the same
-            request ID, the server can check if original
-            operation with the same request ID was received,
-            and if so, will ignore the second request. This
+            an initial request and the request times out. If
+            you make the request again with the same request
+            ID, the server can check if original operation
+            with the same request ID was received, and if
+            so, will ignore the second request. This
             prevents clients from accidentally creating
             duplicate commitments.
 
@@ -699,11 +776,11 @@ class ImportDataRequest(proto.Message):
             for at least 60 minutes since the first request.
 
             For example, consider a situation where you make
-            an initial request and t he request times out.
-            If you make the request again with the same
-            request ID, the server can check if original
-            operation with the same request ID was received,
-            and if so, will ignore the second request. This
+            an initial request and the request times out. If
+            you make the request again with the same request
+            ID, the server can check if original operation
+            with the same request ID was received, and if
+            so, will ignore the second request. This
             prevents clients from accidentally creating
             duplicate commitments.
 
@@ -722,6 +799,9 @@ class ImportDataRequest(proto.Message):
 
             If unspecified, the Parallelstore service agent is used:
             ``service-<PROJECT_NUMBER>@gcp-sa-parallelstore.iam.gserviceaccount.com``
+        metadata_options (google.cloud.parallelstore_v1.types.TransferMetadataOptions):
+            Optional. The transfer metadata options for
+            the import data.
     """
 
     source_gcs_bucket: "SourceGcsBucket" = proto.Field(
@@ -747,6 +827,11 @@ class ImportDataRequest(proto.Message):
     service_account: str = proto.Field(
         proto.STRING,
         number=5,
+    )
+    metadata_options: "TransferMetadataOptions" = proto.Field(
+        proto.MESSAGE,
+        number=6,
+        message="TransferMetadataOptions",
     )
 
 
@@ -775,11 +860,11 @@ class ExportDataRequest(proto.Message):
             for at least 60 minutes since the first request.
 
             For example, consider a situation where you make
-            an initial request and t he request times out.
-            If you make the request again with the same
-            request ID, the server can check if original
-            operation with the same request ID was received,
-            and if so, will ignore the second request. This
+            an initial request and the request times out. If
+            you make the request again with the same request
+            ID, the server can check if original operation
+            with the same request ID was received, and if
+            so, will ignore the second request. This
             prevents clients from accidentally creating
             duplicate commitments.
 
@@ -797,6 +882,9 @@ class ExportDataRequest(proto.Message):
 
             If unspecified, the Parallelstore service agent is used:
             ``service-<PROJECT_NUMBER>@gcp-sa-parallelstore.iam.gserviceaccount.com``
+        metadata_options (google.cloud.parallelstore_v1.types.TransferMetadataOptions):
+            Optional. The metadata options for the export
+            data.
     """
 
     source_parallelstore: "SourceParallelstore" = proto.Field(
@@ -822,6 +910,11 @@ class ExportDataRequest(proto.Message):
     service_account: str = proto.Field(
         proto.STRING,
         number=5,
+    )
+    metadata_options: "TransferMetadataOptions" = proto.Field(
+        proto.MESSAGE,
+        number=6,
+        message="TransferMetadataOptions",
     )
 
 
@@ -1136,10 +1229,10 @@ class TransferCounters(proto.Message):
             Bytes that are copied to the data
             destination.
         objects_failed (int):
-            Objects that are failed to write to the data
+            Objects that failed to be written to the data
             destination.
         bytes_failed (int):
-            Bytes that are failed to write to the data
+            Bytes that failed to be written to the data
             destination.
     """
 

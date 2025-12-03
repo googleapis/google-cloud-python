@@ -171,8 +171,8 @@ class OperationMetadata(proto.Message):
             values are "create", "delete", "update" and
             "import".
         requested_cancellation (bool):
-            Output only. Identifies whether it has been requested
-            cancellation for the operation. Operations that have
+            Output only. Identifies whether cancellation has been
+            requested for the operation. Operations that have
             successfully been cancelled have
             [google.longrunning.Operation.error][google.longrunning.Operation.error]
             value with a

@@ -32,6 +32,15 @@ from .client_tls_policy import (
     UpdateClientTlsPolicyRequest,
 )
 from .common import OperationMetadata
+from .dns_threat_detector import (
+    CreateDnsThreatDetectorRequest,
+    DeleteDnsThreatDetectorRequest,
+    DnsThreatDetector,
+    GetDnsThreatDetectorRequest,
+    ListDnsThreatDetectorsRequest,
+    ListDnsThreatDetectorsResponse,
+    UpdateDnsThreatDetectorRequest,
+)
 from .server_tls_policy import (
     CreateServerTlsPolicyRequest,
     DeleteServerTlsPolicyRequest,
@@ -64,6 +73,13 @@ __all__ = (
     "ListClientTlsPoliciesResponse",
     "UpdateClientTlsPolicyRequest",
     "OperationMetadata",
+    "CreateDnsThreatDetectorRequest",
+    "DeleteDnsThreatDetectorRequest",
+    "DnsThreatDetector",
+    "GetDnsThreatDetectorRequest",
+    "ListDnsThreatDetectorsRequest",
+    "ListDnsThreatDetectorsResponse",
+    "UpdateDnsThreatDetectorRequest",
     "CreateServerTlsPolicyRequest",
     "DeleteServerTlsPolicyRequest",
     "GetServerTlsPolicyRequest",

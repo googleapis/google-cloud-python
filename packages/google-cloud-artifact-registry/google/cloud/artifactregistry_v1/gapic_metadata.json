@@ -70,6 +70,11 @@
                 "delete_version"
               ]
             },
+            "ExportArtifact": {
+              "methods": [
+                "export_artifact"
+              ]
+            },
             "GetAttachment": {
               "methods": [
                 "get_attachment"
@@ -320,6 +325,11 @@
                 "delete_version"
               ]
             },
+            "ExportArtifact": {
+              "methods": [
+                "export_artifact"
+              ]
+            },
             "GetAttachment": {
               "methods": [
                 "get_attachment"
@@ -568,6 +578,11 @@
             "DeleteVersion": {
               "methods": [
                 "delete_version"
+              ]
+            },
+            "ExportArtifact": {
+              "methods": [
+                "export_artifact"
               ]
             },
             "GetAttachment": {

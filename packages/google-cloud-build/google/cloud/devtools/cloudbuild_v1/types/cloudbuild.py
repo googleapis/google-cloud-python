@@ -26,12 +26,15 @@ import proto  # type: ignore
 __protobuf__ = proto.module(
     package="google.devtools.cloudbuild.v1",
     manifest={
+        "GetDefaultServiceAccountRequest",
+        "DefaultServiceAccount",
         "RetryBuildRequest",
         "RunBuildTriggerRequest",
         "StorageSource",
         "GitSource",
         "RepoSource",
         "StorageSourceManifest",
+        "ConnectedRepository",
         "Source",
         "BuiltImage",
         "UploadedPythonPackage",
@@ -97,6 +100,56 @@ __protobuf__ = proto.module(
         "DeleteWorkerPoolOperationMetadata",
     },
 )
+
+
+class GetDefaultServiceAccountRequest(proto.Message):
+    r"""Returns the default service account that will be used for
+    ``Builds``.
+
+    Attributes:
+        name (str):
+            Required. The name of the ``DefaultServiceAccount`` to
+            retrieve. Format:
+            ``projects/{project}/locations/{location}/defaultServiceAccount``
+    """
+
+    name: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+
+
+class DefaultServiceAccount(proto.Message):
+    r"""The default service account used for ``Builds``.
+
+    Attributes:
+        name (str):
+            Identifier. Format:
+            \`projects/{project}/locations/{location}/defaultServiceAccount
+        service_account_email (str):
+            Output only. The email address of the service account
+            identity that will be used for a build by default.
+
+            This is returned in the format
+            ``projects/{project}/serviceAccounts/{service_account}``
+            where ``{service_account}`` could be the legacy Cloud Build
+            SA, in the format
+            [PROJECT_NUMBER]@cloudbuild.gserviceaccount.com or the
+            Compute SA, in the format
+            [PROJECT_NUMBER]-compute@developer.gserviceaccount.com.
+
+            If no service account will be used by default, this will be
+            empty.
+    """
+
+    name: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    service_account_email: str = proto.Field(
+        proto.STRING,
+        number=2,
+    )
 
 
 class RetryBuildRequest(proto.Message):
@@ -170,17 +223,17 @@ class StorageSource(proto.Message):
             Cloud Storage bucket containing the source (see `Bucket Name
             Requirements <https://cloud.google.com/storage/docs/bucket-naming#requirements>`__).
         object_ (str):
-            Cloud Storage object containing the source.
+            Required. Cloud Storage object containing the source.
 
             This object must be a zipped (``.zip``) or gzipped archive
             file (``.tar.gz``) containing source to build.
         generation (int):
-            Cloud Storage generation for the object. If
-            the generation is omitted, the latest generation
-            will be used.
+            Optional. Cloud Storage generation for the
+            object. If the generation is omitted, the latest
+            generation will be used.
         source_fetcher (google.cloud.devtools.cloudbuild_v1.types.StorageSource.SourceFetcher):
-            Option to specify the tool to fetch the
-            source file for the build.
+            Optional. Option to specify the tool to fetch
+            the source file for the build.
     """
 
     class SourceFetcher(proto.Enum):
@@ -188,7 +241,7 @@ class StorageSource(proto.Message):
 
         Values:
             SOURCE_FETCHER_UNSPECIFIED (0):
-                Unspecified. Defaults to GSUTIL.
+                Unspecified defaults to GSUTIL.
             GSUTIL (1):
                 Use the "gsutil" tool to download the source
                 file.
@@ -224,20 +277,20 @@ class GitSource(proto.Message):
 
     Attributes:
         url (str):
-            Location of the Git repo to build.
+            Required. Location of the Git repo to build.
 
             This will be used as a ``git remote``, see
             https://git-scm.com/docs/git-remote.
         dir_ (str):
-            Directory, relative to the source root, in which to run the
-            build.
+            Optional. Directory, relative to the source root, in which
+            to run the build.
 
             This must be a relative path. If a step's ``dir`` is
             specified and is an absolute path, this value is ignored for
             that step's execution.
         revision (str):
-            The revision to fetch from the Git repository such as a
-            branch, a tag, a commit SHA, or any Git ref.
+            Optional. The revision to fetch from the Git repository such
+            as a branch, a tag, a commit SHA, or any Git ref.
 
             Cloud Build uses ``git fetch`` to fetch the revision from
             the Git repository; therefore make sure that the string you
@@ -274,11 +327,12 @@ class RepoSource(proto.Message):
 
     Attributes:
         project_id (str):
-            ID of the project that owns the Cloud Source
-            Repository. If omitted, the project ID
-            requesting the build is assumed.
+            Optional. ID of the project that owns the
+            Cloud Source Repository. If omitted, the project
+            ID requesting the build is assumed.
         repo_name (str):
-            Name of the Cloud Source Repository.
+            Required. Name of the Cloud Source
+            Repository.
         branch_name (str):
             Regex matching branches to build.
 
@@ -300,18 +354,19 @@ class RepoSource(proto.Message):
 
             This field is a member of `oneof`_ ``revision``.
         dir_ (str):
-            Directory, relative to the source root, in which to run the
-            build.
+            Optional. Directory, relative to the source root, in which
+            to run the build.
 
             This must be a relative path. If a step's ``dir`` is
             specified and is an absolute path, this value is ignored for
             that step's execution.
         invert_regex (bool):
-            Only trigger a build if the revision regex
-            does NOT match the revision regex.
+            Optional. Only trigger a build if the
+            revision regex does NOT match the revision
+            regex.
         substitutions (MutableMapping[str, str]):
-            Substitutions to use in a triggered build.
-            Should only be used with RunBuildTrigger
+            Optional. Substitutions to use in a triggered
+            build. Should only be used with RunBuildTrigger
     """
 
     project_id: str = proto.Field(
@@ -359,12 +414,12 @@ class StorageSourceManifest(proto.Message):
 
     Attributes:
         bucket (str):
-            Cloud Storage bucket containing the source manifest (see
-            `Bucket Name
+            Required. Cloud Storage bucket containing the source
+            manifest (see `Bucket Name
             Requirements <https://cloud.google.com/storage/docs/bucket-naming#requirements>`__).
         object_ (str):
-            Cloud Storage object containing the source
-            manifest.
+            Required. Cloud Storage object containing the
+            source manifest.
             This object must be a JSON file.
         generation (int):
             Cloud Storage generation for the object. If
@@ -382,6 +437,38 @@ class StorageSourceManifest(proto.Message):
     )
     generation: int = proto.Field(
         proto.INT64,
+        number=3,
+    )
+
+
+class ConnectedRepository(proto.Message):
+    r"""Location of the source in a 2nd-gen Google Cloud Build
+    repository resource.
+
+    Attributes:
+        repository (str):
+            Required. Name of the Google Cloud Build repository,
+            formatted as
+            ``projects/*/locations/*/connections/*/repositories/*``.
+        dir_ (str):
+            Optional. Directory, relative to the source
+            root, in which to run the build.
+        revision (str):
+            Required. The revision to fetch from the Git
+            repository such as a branch, a tag, a commit
+            SHA, or any Git ref.
+    """
+
+    repository: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    dir_: str = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+    revision: str = proto.Field(
+        proto.STRING,
         number=3,
     )
 
@@ -418,6 +505,12 @@ class Source(proto.Message):
             `here <https://github.com/GoogleCloudPlatform/cloud-builders/tree/master/gcs-fetcher>`__.
 
             This field is a member of `oneof`_ ``source``.
+        connected_repository (google.cloud.devtools.cloudbuild_v1.types.ConnectedRepository):
+            Optional. If provided, get the source from
+            this 2nd-gen Google Cloud Build repository
+            resource.
+
+            This field is a member of `oneof`_ ``source``.
     """
 
     storage_source: "StorageSource" = proto.Field(
@@ -444,6 +537,12 @@ class Source(proto.Message):
         oneof="source",
         message="StorageSourceManifest",
     )
+    connected_repository: "ConnectedRepository" = proto.Field(
+        proto.MESSAGE,
+        number=9,
+        oneof="source",
+        message="ConnectedRepository",
+    )
 
 
 class BuiltImage(proto.Message):
@@ -458,6 +557,9 @@ class BuiltImage(proto.Message):
         push_timing (google.cloud.devtools.cloudbuild_v1.types.TimeSpan):
             Output only. Stores timing information for
             pushing the specified image.
+        artifact_registry_package (str):
+            Output only. Path to the artifact in Artifact
+            Registry.
     """
 
     name: str = proto.Field(
@@ -473,6 +575,10 @@ class BuiltImage(proto.Message):
         number=4,
         message="TimeSpan",
     )
+    artifact_registry_package: str = proto.Field(
+        proto.STRING,
+        number=5,
+    )
 
 
 class UploadedPythonPackage(proto.Message):
@@ -486,6 +592,9 @@ class UploadedPythonPackage(proto.Message):
         push_timing (google.cloud.devtools.cloudbuild_v1.types.TimeSpan):
             Output only. Stores timing information for
             pushing the specified artifact.
+        artifact_registry_package (str):
+            Output only. Path to the artifact in Artifact
+            Registry.
     """
 
     uri: str = proto.Field(
@@ -501,6 +610,10 @@ class UploadedPythonPackage(proto.Message):
         proto.MESSAGE,
         number=3,
         message="TimeSpan",
+    )
+    artifact_registry_package: str = proto.Field(
+        proto.STRING,
+        number=4,
     )
 
 
@@ -515,6 +628,9 @@ class UploadedMavenArtifact(proto.Message):
         push_timing (google.cloud.devtools.cloudbuild_v1.types.TimeSpan):
             Output only. Stores timing information for
             pushing the specified artifact.
+        artifact_registry_package (str):
+            Output only. Path to the artifact in Artifact
+            Registry.
     """
 
     uri: str = proto.Field(
@@ -530,6 +646,10 @@ class UploadedMavenArtifact(proto.Message):
         proto.MESSAGE,
         number=3,
         message="TimeSpan",
+    )
+    artifact_registry_package: str = proto.Field(
+        proto.STRING,
+        number=4,
     )
 
 
@@ -546,6 +666,9 @@ class UploadedGoModule(proto.Message):
         push_timing (google.cloud.devtools.cloudbuild_v1.types.TimeSpan):
             Output only. Stores timing information for
             pushing the specified artifact.
+        artifact_registry_package (str):
+            Output only. Path to the artifact in Artifact
+            Registry.
     """
 
     uri: str = proto.Field(
@@ -561,6 +684,10 @@ class UploadedGoModule(proto.Message):
         proto.MESSAGE,
         number=3,
         message="TimeSpan",
+    )
+    artifact_registry_package: str = proto.Field(
+        proto.STRING,
+        number=4,
     )
 
 
@@ -576,6 +703,9 @@ class UploadedNpmPackage(proto.Message):
         push_timing (google.cloud.devtools.cloudbuild_v1.types.TimeSpan):
             Output only. Stores timing information for
             pushing the specified artifact.
+        artifact_registry_package (str):
+            Output only. Path to the artifact in Artifact
+            Registry.
     """
 
     uri: str = proto.Field(
@@ -591,6 +721,10 @@ class UploadedNpmPackage(proto.Message):
         proto.MESSAGE,
         number=3,
         message="TimeSpan",
+    )
+    artifact_registry_package: str = proto.Field(
+        proto.STRING,
+        number=7,
     )
 
 
@@ -987,7 +1121,8 @@ class Build(proto.Message):
             Output only. Customer-readable message about
             the current status.
         source (google.cloud.devtools.cloudbuild_v1.types.Source):
-            The location of the source files to build.
+            Optional. The location of the source files to
+            build.
         steps (MutableSequence[google.cloud.devtools.cloudbuild_v1.types.BuildStep]):
             Required. The operations to be performed on
             the workspace.
@@ -1464,9 +1599,7 @@ class Dependency(proto.Message):
 
                 This field is a member of `oneof`_ ``repotype``.
             developer_connect (str):
-                The Developer Connect Git repository link or the url that
-                matches a repository link in the current project, formatted
-                as
+                The Developer Connect Git repository link formatted as
                 ``projects/*/locations/*/connections/*/gitRepositoryLink/*``
 
                 This field is a member of `oneof`_ ``repotype``.
@@ -1654,8 +1787,8 @@ class Artifacts(proto.Message):
                 be uploaded to Artifact Registry with this
                 location as a prefix.
             path (str):
-                Path to an artifact in the build's workspace
-                to be uploaded to Artifact Registry.
+                Optional. Path to an artifact in the build's
+                workspace to be uploaded to Artifact Registry.
                 This can be either an absolute path,
                 e.g.
                 /workspace/my-app/target/my-app-1.0.SNAPSHOT.jar
@@ -1796,8 +1929,11 @@ class Artifacts(proto.Message):
                 will be zipped and uploaded to Artifact Registry
                 with this location as a prefix.
             package_path (str):
-                Path to the package.json.
-                e.g. workspace/path/to/package
+                Optional. Path to the package.json. e.g.
+                workspace/path/to/package
+
+                Only one of ``archive`` or ``package_path`` can be
+                specified.
         """
 
         repository: str = proto.Field(
@@ -1892,6 +2028,13 @@ class SourceProvenance(proto.Message):
             A copy of the build's ``source.storage_source_manifest``, if
             exists, with any revisions resolved. This feature is in
             Preview.
+        resolved_connected_repository (google.cloud.devtools.cloudbuild_v1.types.ConnectedRepository):
+            Output only. A copy of the build's
+            ``source.connected_repository``, if exists, with any
+            revisions resolved.
+        resolved_git_source (google.cloud.devtools.cloudbuild_v1.types.GitSource):
+            Output only. A copy of the build's ``source.git_source``, if
+            exists, with any revisions resolved.
         file_hashes (MutableMapping[str, google.cloud.devtools.cloudbuild_v1.types.FileHashes]):
             Output only. Hash(es) of the build source, which can be used
             to verify that the original source integrity was maintained
@@ -1921,6 +2064,16 @@ class SourceProvenance(proto.Message):
         proto.MESSAGE,
         number=9,
         message="StorageSourceManifest",
+    )
+    resolved_connected_repository: "ConnectedRepository" = proto.Field(
+        proto.MESSAGE,
+        number=10,
+        message="ConnectedRepository",
+    )
+    resolved_git_source: "GitSource" = proto.Field(
+        proto.MESSAGE,
+        number=11,
+        message="GitSource",
     )
     file_hashes: MutableMapping[str, "FileHashes"] = proto.MapField(
         proto.STRING,
@@ -2964,8 +3117,8 @@ class PubsubConfig(proto.Message):
             Output only. Name of the subscription. Format is
             ``projects/{project}/subscriptions/{subscription}``.
         topic (str):
-            The name of the topic from which this subscription is
-            receiving messages. Format is
+            Optional. The name of the topic from which this subscription
+            is receiving messages. Format is
             ``projects/{project}/topics/{topic}``.
         service_account_email (str):
             Service account that will make the push
@@ -3766,8 +3919,8 @@ class GitHubEnterpriseConfig(proto.Message):
 
     Attributes:
         name (str):
-            Optional. The full resource name for the
-            GitHubEnterpriseConfig For example:
+            The full resource name for the GitHubEnterpriseConfig For
+            example:
             "projects/{$project_id}/locations/{$location_id}/githubEnterpriseConfigs/{$config_id}".
         host_url (str):
             The URL of the github enterprise host the
@@ -3794,9 +3947,9 @@ class GitHubEnterpriseConfig(proto.Message):
             {project} is a project number or id and {network} is the
             name of a VPC network in the project.
         secrets (google.cloud.devtools.cloudbuild_v1.types.GitHubEnterpriseSecrets):
-            Names of secrets in Secret Manager.
+            Optional. Names of secrets in Secret Manager.
         display_name (str):
-            Name to display for this config.
+            Optional. Name to display for this config.
         ssl_ca (str):
             Optional. SSL certificate to use for requests
             to GitHub Enterprise.
@@ -3929,7 +4082,7 @@ class WorkerPool(proto.Message):
         state (google.cloud.devtools.cloudbuild_v1.types.WorkerPool.State):
             Output only. ``WorkerPool`` state.
         private_pool_v1_config (google.cloud.devtools.cloudbuild_v1.types.PrivatePoolV1Config):
-            Legacy Private Pool configuration.
+            Private Pool configuration.
 
             This field is a member of `oneof`_ ``config``.
         etag (str):
@@ -4299,7 +4452,8 @@ class UpdateWorkerPoolRequest(proto.Message):
             update. Format:
             ``projects/{project}/locations/{location}/workerPools/{workerPool}``.
         update_mask (google.protobuf.field_mask_pb2.FieldMask):
-            A mask specifying which fields in ``worker_pool`` to update.
+            Optional. A mask specifying which fields in ``worker_pool``
+            to update.
         validate_only (bool):
             If set, validate the request and preview the
             response, but do not actually post it.
