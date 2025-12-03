@@ -4,6 +4,41 @@
 
 [1]: https://pypi.org/project/bigframes/#history
 
+## [2.30.0](https://github.com/googleapis/google-cloud-python/compare/bigframes-v2.29.0...bigframes-v2.30.0) (2025-12-03)
+
+
+### Documentation
+
+* Add Google Analytics configuration to conf.py (#2301) ([0b266da10f4d3d0ef9b4dd71ddadebfc7d5064ca](https://github.com/googleapis/google-cloud-python/commit/0b266da10f4d3d0ef9b4dd71ddadebfc7d5064ca))
+* fix LogisticRegression docs rendering (#2295) ([32e531343c764156b45c6fb9de49793d26c19f02](https://github.com/googleapis/google-cloud-python/commit/32e531343c764156b45c6fb9de49793d26c19f02))
+* update API reference to new `dataframes.bigquery.dev` location (#2293) ([da064397acd2358c16fdd9659edf23afde5c882a](https://github.com/googleapis/google-cloud-python/commit/da064397acd2358c16fdd9659edf23afde5c882a))
+* use autosummary to split documentation pages (#2251) ([f7fd2d20896fe3e0e210c3833b6a4c3913270ebc](https://github.com/googleapis/google-cloud-python/commit/f7fd2d20896fe3e0e210c3833b6a4c3913270ebc))
+* update docs and tests for Gemini 2.5 models (#2279) ([08c0c0c8fe8f806f6224dc403a3f1d4db708573a](https://github.com/googleapis/google-cloud-python/commit/08c0c0c8fe8f806f6224dc403a3f1d4db708573a))
+
+
+### Features
+
+* Allow drop_duplicates over unordered dataframe (#2303) ([52665fa57ef13c58254bfc8736afcc521f7f0f11](https://github.com/googleapis/google-cloud-python/commit/52665fa57ef13c58254bfc8736afcc521f7f0f11))
+* Add agg/aggregate methods to windows (#2288) ([c4cb39dcbd388356f5f1c48ff28b19b79b996485](https://github.com/googleapis/google-cloud-python/commit/c4cb39dcbd388356f5f1c48ff28b19b79b996485))
+* Implement single-column sorting for interactive table widget (#2255) ([d1ecc61bf448651a0cca0fc760673da54f5c2183](https://github.com/googleapis/google-cloud-python/commit/d1ecc61bf448651a0cca0fc760673da54f5c2183))
+* add bigquery.json_keys (#2286) ([b487cf1f6ecacb1ee3b35ffdd934221516bbd558](https://github.com/googleapis/google-cloud-python/commit/b487cf1f6ecacb1ee3b35ffdd934221516bbd558))
+* use end user credentials for `bigframes.bigquery.ai` functions when `connection_id` is not present  (#2272) ([7c062a68c6a3c9737865985b4f1fd80117490c73](https://github.com/googleapis/google-cloud-python/commit/7c062a68c6a3c9737865985b4f1fd80117490c73))
+* pivot_table supports fill_value arg (#2257) ([8f490e68a9a2584236486060ad3b55923781d975](https://github.com/googleapis/google-cloud-python/commit/8f490e68a9a2584236486060ad3b55923781d975))
+* Support mixed scalar-analytic expressions (#2239) ([20ab469d29767a2f04fe02aa66797893ecd1c539](https://github.com/googleapis/google-cloud-python/commit/20ab469d29767a2f04fe02aa66797893ecd1c539))
+* Support builtins funcs for df.agg (#2256) ([956a5b00dff55b73e3cbebb4e6e81672680f1f63](https://github.com/googleapis/google-cloud-python/commit/956a5b00dff55b73e3cbebb4e6e81672680f1f63))
+* Preserve source names better for more readable sql (#2243) ([64995d659837a8576b2ee9335921904e577c7014](https://github.com/googleapis/google-cloud-python/commit/64995d659837a8576b2ee9335921904e577c7014))
+* Add bigframes.pandas.crosstab (#2231) ([c62e5535ed4c19b6d65f9a46cb1531e8099621b2](https://github.com/googleapis/google-cloud-python/commit/c62e5535ed4c19b6d65f9a46cb1531e8099621b2))
+
+
+### Bug Fixes
+
+* Update max_instances default to reflect actual value (#2302) ([4489687eafc9a1ea1b985600010296a4245cef94](https://github.com/googleapis/google-cloud-python/commit/4489687eafc9a1ea1b985600010296a4245cef94))
+* Fix issue with stream upload batch size upload limit (#2290) ([6cdf64b0674d0e673f86362032d549316850837b](https://github.com/googleapis/google-cloud-python/commit/6cdf64b0674d0e673f86362032d549316850837b))
+* Pass credentials properly for read api instantiation (#2280) ([3e3fe259567d249d91f90786a577b05577e2b9fd](https://github.com/googleapis/google-cloud-python/commit/3e3fe259567d249d91f90786a577b05577e2b9fd))
+* Improve Anywidget pagination and display for unknown row counts (#2258) ([508deae5869e06cdad7bb94537c9c58d8f083d86](https://github.com/googleapis/google-cloud-python/commit/508deae5869e06cdad7bb94537c9c58d8f083d86))
+* calling info() on empty dataframes no longer leads to errors (#2267) ([95a83f7774766cd19cb583dfaa3417882b5c9b1e](https://github.com/googleapis/google-cloud-python/commit/95a83f7774766cd19cb583dfaa3417882b5c9b1e))
+* do not warn with DefaultIndexWarning in partial ordering mode (#2230) ([cc2dbae684103a21fe8838468f7eb8267188780d](https://github.com/googleapis/google-cloud-python/commit/cc2dbae684103a21fe8838468f7eb8267188780d))
+
 ## [2.29.0](https://github.com/googleapis/python-bigquery-dataframes/compare/v2.28.0...v2.29.0) (2025-11-10)
 
 
