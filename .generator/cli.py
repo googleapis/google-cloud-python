@@ -23,6 +23,7 @@ import shutil
 import subprocess
 import sys
 import tempfile
+import time
 import yaml
 from datetime import date, datetime
 from functools import lru_cache
@@ -31,6 +32,40 @@ from typing import Dict, List
 import build.util
 import parse_googleapis_content
 
+logging.basicConfig(stream=sys.stdout, level=logging.INFO)
+
+import functools
+
+PERF_LOGGING_ENABLED = os.environ.get("ENABLE_PERF_LOGS") == "1"
+
+if PERF_LOGGING_ENABLED:
+    perf_logger = logging.getLogger("performance_metrics")
+    perf_logger.setLevel(logging.INFO)
+    perf_handler = logging.FileHandler("performance_metrics.log", mode='w')
+    perf_formatter = logging.Formatter('%(asctime)s | %(message)s', datefmt='%H:%M:%S')
+    perf_handler.setFormatter(perf_formatter)
+    perf_logger.addHandler(perf_handler)
+    perf_logger.propagate = False
+
+def track_time(func):
+    """
+    Decorator. Usage: @track_time
+    If logging is OFF, it returns the original function (Zero Overhead).
+    If logging is ON, it wraps the function to measure execution time.
+    """
+    if not PERF_LOGGING_ENABLED:
+        return func
+
+    @functools.wraps(func)
+    def wrapper(*args, **kwargs):
+        start_time = time.perf_counter()
+        try:
+            return func(*args, **kwargs)
+        finally:
+            duration = time.perf_counter() - start_time
+            perf_logger.info(f"{func.__name__:<30} | {duration:.4f} seconds")
+            
+    return wrapper
 
 try:
     import synthtool
@@ -320,6 +355,7 @@ def _get_library_id(request_data: Dict) -> str:
     return library_id
 
 
+@track_time
 def _run_post_processor(output: str, library_id: str, is_mono_repo: bool):
     """Runs the synthtool post-processor on the output directory.
 
@@ -389,6 +425,7 @@ def _add_header_to_files(directory: str) -> None:
                 f.writelines(lines)
 
 
+@track_time
 def _copy_files_needed_for_post_processing(
     output: str, input: str, library_id: str, is_mono_repo: bool
 ):
@@ -435,6 +472,7 @@ def _copy_files_needed_for_post_processing(
                 )
 
 
+@track_time
 def _clean_up_files_after_post_processing(
     output: str, library_id: str, is_mono_repo: bool
 ):
@@ -581,6 +619,7 @@ def _get_repo_name_from_repo_metadata(base: str, library_id: str, is_mono_repo: 
     return repo_name
 
 
+@track_time
 def _generate_repo_metadata_file(
     output: str, library_id: str, source: str, apis: List[Dict], is_mono_repo: bool
 ):
@@ -622,6 +661,7 @@ def _generate_repo_metadata_file(
     _write_json_file(output_repo_metadata, metadata_content)
 
 
+@track_time
 def _copy_readme_to_docs(output: str, library_id: str, is_mono_repo: bool):
     """Copies the README.rst file for a generated library to docs/README.rst.
 
@@ -663,6 +703,7 @@ def _copy_readme_to_docs(output: str, library_id: str, is_mono_repo: bool):
         f.write(content)
 
 
+@track_time
 def handle_generate(
     librarian: str = LIBRARIAN_DIR,
     source: str = SOURCE_DIR,
@@ -924,6 +965,7 @@ def _stage_gapic_library(tmp_dir: str, staging_dir: str) -> None:
     shutil.copytree(tmp_dir, staging_dir, dirs_exist_ok=True)
 
 
+@track_time
 def _generate_api(
     api_path: str,
     library_id: str,
