@@ -764,7 +764,6 @@ def notebook(session: nox.Session):
     )
 
     notebooks_list = list(pathlib.Path("notebooks/").glob("*/*.ipynb"))
-
     denylist = [
         # Regionalized testing is manually added later.
         "notebooks/location/regionalized.ipynb",
