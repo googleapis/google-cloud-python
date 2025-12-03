@@ -523,8 +523,9 @@ class CloudBuildGrpcTransport(CloudBuildTransport):
 
         Approves or rejects a pending build.
 
-        If approved, the returned LRO will be analogous to the
-        LRO returned from a CreateBuild call.
+        If approved, the returned long-running operation (LRO)
+        will be analogous to the LRO returned from a CreateBuild
+        call.
 
         If rejected, the returned LRO will be immediately done.
 
@@ -554,8 +555,6 @@ class CloudBuildGrpcTransport(CloudBuildTransport):
 
         Creates a new ``BuildTrigger``.
 
-        This API is experimental.
-
         Returns:
             Callable[[~.CreateBuildTriggerRequest],
                     ~.BuildTrigger]:
@@ -581,8 +580,6 @@ class CloudBuildGrpcTransport(CloudBuildTransport):
         r"""Return a callable for the get build trigger method over gRPC.
 
         Returns information about a ``BuildTrigger``.
-
-        This API is experimental.
 
         Returns:
             Callable[[~.GetBuildTriggerRequest],
@@ -612,8 +609,6 @@ class CloudBuildGrpcTransport(CloudBuildTransport):
 
         Lists existing ``BuildTrigger``\ s.
 
-        This API is experimental.
-
         Returns:
             Callable[[~.ListBuildTriggersRequest],
                     ~.ListBuildTriggersResponse]:
@@ -640,8 +635,6 @@ class CloudBuildGrpcTransport(CloudBuildTransport):
 
         Deletes a ``BuildTrigger`` by its project ID and trigger ID.
 
-        This API is experimental.
-
         Returns:
             Callable[[~.DeleteBuildTriggerRequest],
                     ~.Empty]:
@@ -667,8 +660,6 @@ class CloudBuildGrpcTransport(CloudBuildTransport):
         r"""Return a callable for the update build trigger method over gRPC.
 
         Updates a ``BuildTrigger`` by its project ID and trigger ID.
-
-        This API is experimental.
 
         Returns:
             Callable[[~.UpdateBuildTriggerRequest],
@@ -881,6 +872,36 @@ class CloudBuildGrpcTransport(CloudBuildTransport):
                 response_deserializer=cloudbuild.ListWorkerPoolsResponse.deserialize,
             )
         return self._stubs["list_worker_pools"]
+
+    @property
+    def get_default_service_account(
+        self,
+    ) -> Callable[
+        [cloudbuild.GetDefaultServiceAccountRequest], cloudbuild.DefaultServiceAccount
+    ]:
+        r"""Return a callable for the get default service account method over gRPC.
+
+        Returns the ``DefaultServiceAccount`` used by the project.
+
+        Returns:
+            Callable[[~.GetDefaultServiceAccountRequest],
+                    ~.DefaultServiceAccount]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "get_default_service_account" not in self._stubs:
+            self._stubs[
+                "get_default_service_account"
+            ] = self._logged_channel.unary_unary(
+                "/google.devtools.cloudbuild.v1.CloudBuild/GetDefaultServiceAccount",
+                request_serializer=cloudbuild.GetDefaultServiceAccountRequest.serialize,
+                response_deserializer=cloudbuild.DefaultServiceAccount.deserialize,
+            )
+        return self._stubs["get_default_service_account"]
 
     def close(self):
         self._logged_channel.close()

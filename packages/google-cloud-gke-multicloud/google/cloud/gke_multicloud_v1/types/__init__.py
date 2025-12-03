@@ -24,6 +24,9 @@ from .attached_resources import (
     AttachedProxyConfig,
     AttachedServerConfig,
     KubernetesSecret,
+    Label,
+    SystemComponentsConfig,
+    Toleration,
 )
 from .attached_service import (
     CreateAttachedClusterRequest,
@@ -171,6 +174,9 @@ __all__ = (
     "AttachedProxyConfig",
     "AttachedServerConfig",
     "KubernetesSecret",
+    "Label",
+    "SystemComponentsConfig",
+    "Toleration",
     "CreateAttachedClusterRequest",
     "DeleteAttachedClusterRequest",
     "GenerateAttachedClusterAgentTokenRequest",

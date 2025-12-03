@@ -48,6 +48,7 @@ class cloudbuildCallTransformer(cst.CSTTransformer):
         'delete_worker_pool': ('name', 'etag', 'allow_missing', 'validate_only', ),
         'get_build': ('project_id', 'id', 'name', ),
         'get_build_trigger': ('project_id', 'trigger_id', 'name', ),
+        'get_default_service_account': ('name', ),
         'get_worker_pool': ('name', ),
         'list_builds': ('project_id', 'parent', 'page_size', 'page_token', 'filter', ),
         'list_build_triggers': ('project_id', 'parent', 'page_size', 'page_token', ),

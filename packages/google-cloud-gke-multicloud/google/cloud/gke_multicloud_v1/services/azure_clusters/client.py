@@ -922,6 +922,10 @@ class AzureClustersClient(metaclass=AzureClustersClientMeta):
                    Active Directory Application and tenant.
 
         """
+        warnings.warn(
+            "AzureClustersClient.create_azure_client is deprecated", DeprecationWarning
+        )
+
         # Create or coerce a protobuf request object.
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
@@ -1067,6 +1071,10 @@ class AzureClustersClient(metaclass=AzureClustersClientMeta):
                    Active Directory Application and tenant.
 
         """
+        warnings.warn(
+            "AzureClustersClient.get_azure_client is deprecated", DeprecationWarning
+        )
+
         # Create or coerce a protobuf request object.
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
@@ -1191,6 +1199,10 @@ class AzureClustersClient(metaclass=AzureClustersClientMeta):
                 resolve additional pages automatically.
 
         """
+        warnings.warn(
+            "AzureClustersClient.list_azure_clients is deprecated", DeprecationWarning
+        )
+
         # Create or coerce a protobuf request object.
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
@@ -1342,6 +1354,10 @@ class AzureClustersClient(metaclass=AzureClustersClientMeta):
                       }
 
         """
+        warnings.warn(
+            "AzureClustersClient.delete_azure_client is deprecated", DeprecationWarning
+        )
+
         # Create or coerce a protobuf request object.
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
@@ -1516,6 +1532,10 @@ class AzureClustersClient(metaclass=AzureClustersClientMeta):
                 An Anthos cluster running on Azure.
 
         """
+        warnings.warn(
+            "AzureClustersClient.create_azure_cluster is deprecated", DeprecationWarning
+        )
+
         # Create or coerce a protobuf request object.
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
@@ -1683,6 +1703,10 @@ class AzureClustersClient(metaclass=AzureClustersClientMeta):
                 An Anthos cluster running on Azure.
 
         """
+        warnings.warn(
+            "AzureClustersClient.update_azure_cluster is deprecated", DeprecationWarning
+        )
+
         # Create or coerce a protobuf request object.
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
@@ -1812,6 +1836,10 @@ class AzureClustersClient(metaclass=AzureClustersClientMeta):
             google.cloud.gke_multicloud_v1.types.AzureCluster:
                 An Anthos cluster running on Azure.
         """
+        warnings.warn(
+            "AzureClustersClient.get_azure_cluster is deprecated", DeprecationWarning
+        )
+
         # Create or coerce a protobuf request object.
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
@@ -1936,6 +1964,10 @@ class AzureClustersClient(metaclass=AzureClustersClientMeta):
                 resolve additional pages automatically.
 
         """
+        warnings.warn(
+            "AzureClustersClient.list_azure_clusters is deprecated", DeprecationWarning
+        )
+
         # Create or coerce a protobuf request object.
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
@@ -2088,6 +2120,10 @@ class AzureClustersClient(metaclass=AzureClustersClientMeta):
                       }
 
         """
+        warnings.warn(
+            "AzureClustersClient.delete_azure_cluster is deprecated", DeprecationWarning
+        )
+
         # Create or coerce a protobuf request object.
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
@@ -2198,6 +2234,11 @@ class AzureClustersClient(metaclass=AzureClustersClientMeta):
             google.cloud.gke_multicloud_v1.types.GenerateAzureClusterAgentTokenResponse:
 
         """
+        warnings.warn(
+            "AzureClustersClient.generate_azure_cluster_agent_token is deprecated",
+            DeprecationWarning,
+        )
+
         # Create or coerce a protobuf request object.
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -2290,6 +2331,11 @@ class AzureClustersClient(metaclass=AzureClustersClientMeta):
                 AzureClusters.GenerateAzureAccessToken method.
 
         """
+        warnings.warn(
+            "AzureClustersClient.generate_azure_access_token is deprecated",
+            DeprecationWarning,
+        )
+
         # Create or coerce a protobuf request object.
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -2443,6 +2489,11 @@ class AzureClustersClient(metaclass=AzureClustersClientMeta):
                 An Anthos node pool running on Azure.
 
         """
+        warnings.warn(
+            "AzureClustersClient.create_azure_node_pool is deprecated",
+            DeprecationWarning,
+        )
+
         # Create or coerce a protobuf request object.
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
@@ -2599,6 +2650,11 @@ class AzureClustersClient(metaclass=AzureClustersClientMeta):
                 An Anthos node pool running on Azure.
 
         """
+        warnings.warn(
+            "AzureClustersClient.update_azure_node_pool is deprecated",
+            DeprecationWarning,
+        )
+
         # Create or coerce a protobuf request object.
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
@@ -2727,6 +2783,10 @@ class AzureClustersClient(metaclass=AzureClustersClientMeta):
             google.cloud.gke_multicloud_v1.types.AzureNodePool:
                 An Anthos node pool running on Azure.
         """
+        warnings.warn(
+            "AzureClustersClient.get_azure_node_pool is deprecated", DeprecationWarning
+        )
+
         # Create or coerce a protobuf request object.
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
@@ -2851,6 +2911,11 @@ class AzureClustersClient(metaclass=AzureClustersClientMeta):
                 resolve additional pages automatically.
 
         """
+        warnings.warn(
+            "AzureClustersClient.list_azure_node_pools is deprecated",
+            DeprecationWarning,
+        )
+
         # Create or coerce a protobuf request object.
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
@@ -2998,6 +3063,11 @@ class AzureClustersClient(metaclass=AzureClustersClientMeta):
                       }
 
         """
+        warnings.warn(
+            "AzureClustersClient.delete_azure_node_pool is deprecated",
+            DeprecationWarning,
+        )
+
         # Create or coerce a protobuf request object.
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
@@ -3126,6 +3196,11 @@ class AzureClustersClient(metaclass=AzureClustersClientMeta):
                 specification for details.
 
         """
+        warnings.warn(
+            "AzureClustersClient.get_azure_open_id_config is deprecated",
+            DeprecationWarning,
+        )
+
         # Create or coerce a protobuf request object.
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
@@ -3241,6 +3316,11 @@ class AzureClustersClient(metaclass=AzureClustersClientMeta):
                 Key Set as specififed in RFC 7517.
 
         """
+        warnings.warn(
+            "AzureClustersClient.get_azure_json_web_keys is deprecated",
+            DeprecationWarning,
+        )
+
         # Create or coerce a protobuf request object.
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
@@ -3365,6 +3445,11 @@ class AzureClustersClient(metaclass=AzureClustersClientMeta):
                 regions and Kubernetes versions.
 
         """
+        warnings.warn(
+            "AzureClustersClient.get_azure_server_config is deprecated",
+            DeprecationWarning,
+        )
+
         # Create or coerce a protobuf request object.
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.

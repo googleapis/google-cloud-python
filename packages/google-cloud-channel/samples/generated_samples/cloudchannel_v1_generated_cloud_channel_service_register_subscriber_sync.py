@@ -40,7 +40,6 @@ def sample_register_subscriber():
 
     # Initialize request argument(s)
     request = channel_v1.RegisterSubscriberRequest(
-        account="account_value",
         service_account="service_account_value",
     )
 

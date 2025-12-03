@@ -49,6 +49,8 @@ from .types.entitlements import (
 from .types.offers import (
     Constraints,
     CustomerConstraints,
+    DiscountComponent,
+    DiscountType,
     Offer,
     ParameterDefinition,
     PaymentPlan,
@@ -215,6 +217,8 @@ __all__ = (
     "DeleteChannelPartnerRepricingConfigRequest",
     "DeleteCustomerRepricingConfigRequest",
     "DeleteCustomerRequest",
+    "DiscountComponent",
+    "DiscountType",
     "EduData",
     "Entitlement",
     "EntitlementChange",

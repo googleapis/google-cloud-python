@@ -559,7 +559,7 @@ class AwsVolumeTemplate(proto.Message):
             Optional. The throughput that the volume supports, in MiB/s.
             Only valid if volume_type is GP3.
 
-            If the volume_type is GP3 and this is not speficied, it
+            If the volume_type is GP3 and this is not specified, it
             defaults to 125.
         kms_key_arn (str):
             Optional. The Amazon Resource Name (ARN) of

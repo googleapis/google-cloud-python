@@ -40,6 +40,7 @@ from google.cloud.artifactregistry_v1.types import vpcsc_config as gda_vpcsc_con
 from google.cloud.artifactregistry_v1.types import apt_artifact, artifact
 from google.cloud.artifactregistry_v1.types import attachment
 from google.cloud.artifactregistry_v1.types import attachment as gda_attachment
+from google.cloud.artifactregistry_v1.types import export
 from google.cloud.artifactregistry_v1.types import file
 from google.cloud.artifactregistry_v1.types import file as gda_file
 from google.cloud.artifactregistry_v1.types import package
@@ -1727,6 +1728,32 @@ class ArtifactRegistryGrpcAsyncIOTransport(ArtifactRegistryTransport):
             )
         return self._stubs["delete_attachment"]
 
+    @property
+    def export_artifact(
+        self,
+    ) -> Callable[[export.ExportArtifactRequest], Awaitable[operations_pb2.Operation]]:
+        r"""Return a callable for the export artifact method over gRPC.
+
+        Exports an artifact.
+
+        Returns:
+            Callable[[~.ExportArtifactRequest],
+                    Awaitable[~.Operation]]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "export_artifact" not in self._stubs:
+            self._stubs["export_artifact"] = self._logged_channel.unary_unary(
+                "/google.devtools.artifactregistry.v1.ArtifactRegistry/ExportArtifact",
+                request_serializer=export.ExportArtifactRequest.serialize,
+                response_deserializer=operations_pb2.Operation.FromString,
+            )
+        return self._stubs["export_artifact"]
+
     def _prep_wrapped_messages(self, client_info):
         """Precompute the wrapped methods, overriding the base class method to use async wrappers."""
         self._wrapped_methods = {
@@ -1972,6 +1999,11 @@ class ArtifactRegistryGrpcAsyncIOTransport(ArtifactRegistryTransport):
             ),
             self.delete_attachment: self._wrap_method(
                 self.delete_attachment,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.export_artifact: self._wrap_method(
+                self.export_artifact,
                 default_timeout=None,
                 client_info=client_info,
             ),

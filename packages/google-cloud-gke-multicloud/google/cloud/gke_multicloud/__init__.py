@@ -47,6 +47,9 @@ from google.cloud.gke_multicloud_v1.types.attached_resources import (
     AttachedProxyConfig,
     AttachedServerConfig,
     KubernetesSecret,
+    Label,
+    SystemComponentsConfig,
+    Toleration,
 )
 from google.cloud.gke_multicloud_v1.types.attached_service import (
     CreateAttachedClusterRequest,
@@ -200,6 +203,9 @@ __all__ = (
     "AttachedProxyConfig",
     "AttachedServerConfig",
     "KubernetesSecret",
+    "Label",
+    "SystemComponentsConfig",
+    "Toleration",
     "CreateAttachedClusterRequest",
     "DeleteAttachedClusterRequest",
     "GenerateAttachedClusterAgentTokenRequest",

@@ -537,8 +537,9 @@ class CloudBuildGrpcAsyncIOTransport(CloudBuildTransport):
 
         Approves or rejects a pending build.
 
-        If approved, the returned LRO will be analogous to the
-        LRO returned from a CreateBuild call.
+        If approved, the returned long-running operation (LRO)
+        will be analogous to the LRO returned from a CreateBuild
+        call.
 
         If rejected, the returned LRO will be immediately done.
 
@@ -570,8 +571,6 @@ class CloudBuildGrpcAsyncIOTransport(CloudBuildTransport):
 
         Creates a new ``BuildTrigger``.
 
-        This API is experimental.
-
         Returns:
             Callable[[~.CreateBuildTriggerRequest],
                     Awaitable[~.BuildTrigger]]:
@@ -599,8 +598,6 @@ class CloudBuildGrpcAsyncIOTransport(CloudBuildTransport):
         r"""Return a callable for the get build trigger method over gRPC.
 
         Returns information about a ``BuildTrigger``.
-
-        This API is experimental.
 
         Returns:
             Callable[[~.GetBuildTriggerRequest],
@@ -631,8 +628,6 @@ class CloudBuildGrpcAsyncIOTransport(CloudBuildTransport):
 
         Lists existing ``BuildTrigger``\ s.
 
-        This API is experimental.
-
         Returns:
             Callable[[~.ListBuildTriggersRequest],
                     Awaitable[~.ListBuildTriggersResponse]]:
@@ -658,8 +653,6 @@ class CloudBuildGrpcAsyncIOTransport(CloudBuildTransport):
         r"""Return a callable for the delete build trigger method over gRPC.
 
         Deletes a ``BuildTrigger`` by its project ID and trigger ID.
-
-        This API is experimental.
 
         Returns:
             Callable[[~.DeleteBuildTriggerRequest],
@@ -688,8 +681,6 @@ class CloudBuildGrpcAsyncIOTransport(CloudBuildTransport):
         r"""Return a callable for the update build trigger method over gRPC.
 
         Updates a ``BuildTrigger`` by its project ID and trigger ID.
-
-        This API is experimental.
 
         Returns:
             Callable[[~.UpdateBuildTriggerRequest],
@@ -912,6 +903,37 @@ class CloudBuildGrpcAsyncIOTransport(CloudBuildTransport):
             )
         return self._stubs["list_worker_pools"]
 
+    @property
+    def get_default_service_account(
+        self,
+    ) -> Callable[
+        [cloudbuild.GetDefaultServiceAccountRequest],
+        Awaitable[cloudbuild.DefaultServiceAccount],
+    ]:
+        r"""Return a callable for the get default service account method over gRPC.
+
+        Returns the ``DefaultServiceAccount`` used by the project.
+
+        Returns:
+            Callable[[~.GetDefaultServiceAccountRequest],
+                    Awaitable[~.DefaultServiceAccount]]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "get_default_service_account" not in self._stubs:
+            self._stubs[
+                "get_default_service_account"
+            ] = self._logged_channel.unary_unary(
+                "/google.devtools.cloudbuild.v1.CloudBuild/GetDefaultServiceAccount",
+                request_serializer=cloudbuild.GetDefaultServiceAccountRequest.serialize,
+                response_deserializer=cloudbuild.DefaultServiceAccount.deserialize,
+            )
+        return self._stubs["get_default_service_account"]
+
     def _prep_wrapped_messages(self, client_info):
         """Precompute the wrapped methods, overriding the base class method to use async wrappers."""
         self._wrapped_methods = {
@@ -1073,6 +1095,11 @@ class CloudBuildGrpcAsyncIOTransport(CloudBuildTransport):
                     deadline=600.0,
                 ),
                 default_timeout=600.0,
+                client_info=client_info,
+            ),
+            self.get_default_service_account: self._wrap_method(
+                self.get_default_service_account,
+                default_timeout=None,
                 client_info=client_info,
             ),
         }

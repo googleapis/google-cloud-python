@@ -39,9 +39,7 @@ async def sample_list_subscribers():
     client = channel_v1.CloudChannelServiceAsyncClient()
 
     # Initialize request argument(s)
-    request = channel_v1.ListSubscribersRequest(
-        account="account_value",
-    )
+    request = channel_v1.ListSubscribersRequest()
 
     # Make the request
     page_result = client.list_subscribers(request=request)

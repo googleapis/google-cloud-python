@@ -28,6 +28,7 @@ from typing import (
     Type,
     Union,
 )
+import warnings
 
 from google.api_core import exceptions as core_exceptions
 from google.api_core import gapic_v1
@@ -429,6 +430,11 @@ class AwsClustersAsyncClient:
                 An Anthos cluster running on AWS.
 
         """
+        warnings.warn(
+            "AwsClustersAsyncClient.create_aws_cluster is deprecated",
+            DeprecationWarning,
+        )
+
         # Create or coerce a protobuf request object.
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
@@ -612,6 +618,11 @@ class AwsClustersAsyncClient:
                 An Anthos cluster running on AWS.
 
         """
+        warnings.warn(
+            "AwsClustersAsyncClient.update_aws_cluster is deprecated",
+            DeprecationWarning,
+        )
+
         # Create or coerce a protobuf request object.
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
@@ -743,6 +754,10 @@ class AwsClustersAsyncClient:
             google.cloud.gke_multicloud_v1.types.AwsCluster:
                 An Anthos cluster running on AWS.
         """
+        warnings.warn(
+            "AwsClustersAsyncClient.get_aws_cluster is deprecated", DeprecationWarning
+        )
+
         # Create or coerce a protobuf request object.
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
@@ -868,6 +883,10 @@ class AwsClustersAsyncClient:
                 resolve additional pages automatically.
 
         """
+        warnings.warn(
+            "AwsClustersAsyncClient.list_aws_clusters is deprecated", DeprecationWarning
+        )
+
         # Create or coerce a protobuf request object.
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
@@ -1022,6 +1041,11 @@ class AwsClustersAsyncClient:
                       }
 
         """
+        warnings.warn(
+            "AwsClustersAsyncClient.delete_aws_cluster is deprecated",
+            DeprecationWarning,
+        )
+
         # Create or coerce a protobuf request object.
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
@@ -1135,6 +1159,11 @@ class AwsClustersAsyncClient:
             google.cloud.gke_multicloud_v1.types.GenerateAwsClusterAgentTokenResponse:
 
         """
+        warnings.warn(
+            "AwsClustersAsyncClient.generate_aws_cluster_agent_token is deprecated",
+            DeprecationWarning,
+        )
+
         # Create or coerce a protobuf request object.
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -1226,6 +1255,11 @@ class AwsClustersAsyncClient:
                 method.
 
         """
+        warnings.warn(
+            "AwsClustersAsyncClient.generate_aws_access_token is deprecated",
+            DeprecationWarning,
+        )
+
         # Create or coerce a protobuf request object.
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -1380,6 +1414,11 @@ class AwsClustersAsyncClient:
                 An Anthos node pool running on AWS.
 
         """
+        warnings.warn(
+            "AwsClustersAsyncClient.create_aws_node_pool is deprecated",
+            DeprecationWarning,
+        )
+
         # Create or coerce a protobuf request object.
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
@@ -1562,6 +1601,11 @@ class AwsClustersAsyncClient:
                 An Anthos node pool running on AWS.
 
         """
+        warnings.warn(
+            "AwsClustersAsyncClient.update_aws_node_pool is deprecated",
+            DeprecationWarning,
+        )
+
         # Create or coerce a protobuf request object.
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
@@ -1707,6 +1751,11 @@ class AwsClustersAsyncClient:
                 An Anthos node pool running on AWS.
 
         """
+        warnings.warn(
+            "AwsClustersAsyncClient.rollback_aws_node_pool_update is deprecated",
+            DeprecationWarning,
+        )
+
         # Create or coerce a protobuf request object.
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
@@ -1834,6 +1883,10 @@ class AwsClustersAsyncClient:
             google.cloud.gke_multicloud_v1.types.AwsNodePool:
                 An Anthos node pool running on AWS.
         """
+        warnings.warn(
+            "AwsClustersAsyncClient.get_aws_node_pool is deprecated", DeprecationWarning
+        )
+
         # Create or coerce a protobuf request object.
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
@@ -1961,6 +2014,11 @@ class AwsClustersAsyncClient:
                 resolve additional pages automatically.
 
         """
+        warnings.warn(
+            "AwsClustersAsyncClient.list_aws_node_pools is deprecated",
+            DeprecationWarning,
+        )
+
         # Create or coerce a protobuf request object.
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
@@ -2111,6 +2169,11 @@ class AwsClustersAsyncClient:
                       }
 
         """
+        warnings.warn(
+            "AwsClustersAsyncClient.delete_aws_node_pool is deprecated",
+            DeprecationWarning,
+        )
+
         # Create or coerce a protobuf request object.
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
@@ -2229,6 +2292,11 @@ class AwsClustersAsyncClient:
                 details.
 
         """
+        warnings.warn(
+            "AwsClustersAsyncClient.get_aws_open_id_config is deprecated",
+            DeprecationWarning,
+        )
+
         # Create or coerce a protobuf request object.
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -2321,6 +2389,11 @@ class AwsClustersAsyncClient:
                 Key Set as specififed in RFC 7517.
 
         """
+        warnings.warn(
+            "AwsClustersAsyncClient.get_aws_json_web_keys is deprecated",
+            DeprecationWarning,
+        )
+
         # Create or coerce a protobuf request object.
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -2427,6 +2500,11 @@ class AwsClustersAsyncClient:
                 of GKE cluster on AWS.
 
         """
+        warnings.warn(
+            "AwsClustersAsyncClient.get_aws_server_config is deprecated",
+            DeprecationWarning,
+        )
+
         # Create or coerce a protobuf request object.
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.

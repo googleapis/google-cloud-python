@@ -19,6 +19,7 @@ from typing import MutableMapping, MutableSequence
 
 from google.protobuf import field_mask_pb2  # type: ignore
 from google.protobuf import wrappers_pb2  # type: ignore
+from google.type import latlng_pb2  # type: ignore
 import proto  # type: ignore
 
 __protobuf__ = proto.module(
@@ -323,6 +324,9 @@ class Region(proto.Message):
             Output only. Indicates if the region is
             eligible for use in the Shipping Services
             configuration.
+        radius_area (google.shopping.merchant_accounts_v1.types.Region.RadiusArea):
+            Optional. A radius area that defines the
+            region area.
     """
 
     class PostalCodeArea(proto.Message):
@@ -396,6 +400,58 @@ class Region(proto.Message):
             number=1,
         )
 
+    class RadiusArea(proto.Message):
+        r"""A radius area that defines the region area.
+
+        Attributes:
+            region_code (str):
+                Required. `CLDR territory
+                code <http://www.unicode.org/repos/cldr/tags/latest/common/main/en.xml>`__
+                or the country the radius area applies to.
+            lat_lng (google.type.latlng_pb2.LatLng):
+                Required. The center of the radius area. It
+                represents a latitude/longitude pair in decimal
+                degrees format.
+            radius (float):
+                Required. The radius distance of the area.
+            radius_units (google.shopping.merchant_accounts_v1.types.Region.RadiusArea.RadiusUnits):
+                Optional. The unit of the radius.
+        """
+
+        class RadiusUnits(proto.Enum):
+            r"""The unit of measurement of the radius. Default is KILOMETERS.
+
+            Values:
+                RADIUS_UNITS_UNSPECIFIED (0):
+                    Unused default value
+                MILES (1):
+                    The distance is measured in miles.
+                KILOMETERS (2):
+                    The distance is measured in kilometers.
+            """
+            RADIUS_UNITS_UNSPECIFIED = 0
+            MILES = 1
+            KILOMETERS = 2
+
+        region_code: str = proto.Field(
+            proto.STRING,
+            number=1,
+        )
+        lat_lng: latlng_pb2.LatLng = proto.Field(
+            proto.MESSAGE,
+            number=2,
+            message=latlng_pb2.LatLng,
+        )
+        radius: float = proto.Field(
+            proto.DOUBLE,
+            number=3,
+        )
+        radius_units: "Region.RadiusArea.RadiusUnits" = proto.Field(
+            proto.ENUM,
+            number=4,
+            enum="Region.RadiusArea.RadiusUnits",
+        )
+
     name: str = proto.Field(
         proto.STRING,
         number=1,
@@ -424,6 +480,11 @@ class Region(proto.Message):
         proto.MESSAGE,
         number=6,
         message=wrappers_pb2.BoolValue,
+    )
+    radius_area: RadiusArea = proto.Field(
+        proto.MESSAGE,
+        number=7,
+        message=RadiusArea,
     )
 
 

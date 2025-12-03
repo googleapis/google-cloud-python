@@ -18,6 +18,7 @@ from __future__ import annotations
 from typing import MutableMapping, MutableSequence
 
 from google.protobuf import timestamp_pb2  # type: ignore
+from google.type import date_pb2  # type: ignore
 import proto  # type: ignore
 
 from google.cloud.gke_multicloud_v1.types import common_resources
@@ -35,6 +36,9 @@ __protobuf__ = proto.module(
         "AttachedClusterError",
         "AttachedProxyConfig",
         "KubernetesSecret",
+        "SystemComponentsConfig",
+        "Toleration",
+        "Label",
     },
 )
 
@@ -138,21 +142,25 @@ class AttachedCluster(proto.Message):
             Optional. Security Posture configuration for
             this cluster.
         tags (MutableMapping[str, str]):
-            Optional. Input only. Tag keys/values directly bound to this
-            resource.
+            Optional. Input only. Tag keys and values directly bound to
+            this resource.
 
-            Tag key must be specified in the format / where the tag
-            namespace is the ID of the organization or name of the
-            project that the tag key is defined in. The short name of a
-            tag key or value can have a maximum length of 256
-            characters. The permitted character set for the short name
-            includes UTF-8 encoded Unicode characters except single
-            quotes ('), double quotes ("), backslashes (), and forward
-            slashes (/).
+            The tag key must be specified in the format
+            ``<tag namespace>/<tag key name>,`` where the tag namespace
+            is the ID of the organization or name of the project that
+            the tag key is defined in. The short name of a tag key or
+            value can have a maximum length of 256 characters. The
+            permitted character set for the short name includes UTF-8
+            encoded Unicode characters except single quotation marks
+            (``'``), double quotation marks (``"``), backslashes
+            (``\``), and forward slashes (``/``).
 
             See
             `Tags <https://cloud.google.com/resource-manager/docs/tags/tags-overview>`__
             for more details on Google Cloud Platform tags.
+        system_components_config (google.cloud.gke_multicloud_v1.types.SystemComponentsConfig):
+            Optional. Kubernetes configurations for
+            auto-installed components on the cluster.
     """
 
     class State(proto.Enum):
@@ -301,6 +309,11 @@ class AttachedCluster(proto.Message):
         proto.STRING,
         number=27,
     )
+    system_components_config: "SystemComponentsConfig" = proto.Field(
+        proto.MESSAGE,
+        number=28,
+        message="SystemComponentsConfig",
+    )
 
 
 class AttachedClustersAuthorization(proto.Message):
@@ -438,11 +451,47 @@ class AttachedPlatformVersionInfo(proto.Message):
     Attributes:
         version (str):
             Platform version name.
+        enabled (bool):
+            Optional. True if the version is available
+            for attachedcluster creation. If a version is
+            enabled, it can be used to attach new clusters.
+        end_of_life (bool):
+            Optional. True if this cluster version
+            belongs to a minor version that has reached its
+            end of life and is no longer in scope to receive
+            security and bug fixes.
+        end_of_life_date (google.type.date_pb2.Date):
+            Optional. The estimated date (in Pacific Time) when this
+            cluster version will reach its end of life. Or if this
+            version is no longer supported (the ``end_of_life`` field is
+            true), this is the actual date (in Pacific time) when the
+            version reached its end of life.
+        release_date (google.type.date_pb2.Date):
+            Optional. The date (in Pacific Time) when the
+            cluster version was released.
     """
 
     version: str = proto.Field(
         proto.STRING,
         number=1,
+    )
+    enabled: bool = proto.Field(
+        proto.BOOL,
+        number=3,
+    )
+    end_of_life: bool = proto.Field(
+        proto.BOOL,
+        number=4,
+    )
+    end_of_life_date: date_pb2.Date = proto.Field(
+        proto.MESSAGE,
+        number=5,
+        message=date_pb2.Date,
+    )
+    release_date: date_pb2.Date = proto.Field(
+        proto.MESSAGE,
+        number=6,
+        message=date_pb2.Date,
     )
 
 
@@ -499,6 +548,125 @@ class KubernetesSecret(proto.Message):
         number=1,
     )
     namespace: str = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+
+
+class SystemComponentsConfig(proto.Message):
+    r"""SystemComponentsConfig defines the fields for customizing
+    configurations for auto-installed components.
+
+    Attributes:
+        tolerations (MutableSequence[google.cloud.gke_multicloud_v1.types.Toleration]):
+            Sets custom tolerations for pods created by
+            auto-installed components.
+        labels (MutableSequence[google.cloud.gke_multicloud_v1.types.Label]):
+            Sets custom labels for pods created by
+            auto-installed components.
+    """
+
+    tolerations: MutableSequence["Toleration"] = proto.RepeatedField(
+        proto.MESSAGE,
+        number=1,
+        message="Toleration",
+    )
+    labels: MutableSequence["Label"] = proto.RepeatedField(
+        proto.MESSAGE,
+        number=2,
+        message="Label",
+    )
+
+
+class Toleration(proto.Message):
+    r"""Toleration defines the fields for tolerations for pods
+    created by auto-installed components.
+
+    Attributes:
+        key (str):
+            Key is the taint key that the toleration
+            applies to.
+        value (str):
+            Value is the taint value that the toleration
+            applies to.
+        key_operator (google.cloud.gke_multicloud_v1.types.Toleration.KeyOperator):
+            KeyOperator represents a key's relationship
+            to the value e.g. 'Exist'.
+        effect (google.cloud.gke_multicloud_v1.types.Toleration.Effect):
+            Effect indicates the taint effect to match
+            e.g. 'NoSchedule'
+    """
+
+    class KeyOperator(proto.Enum):
+        r"""KeyOperator represents a key's relationship to the value e.g.
+        'Equal'.
+
+        Values:
+            KEY_OPERATOR_UNSPECIFIED (0):
+                Operator is not specified.
+            KEY_OPERATOR_EQUAL (1):
+                Operator maps to 'Equal'.
+            KEY_OPERATOR_EXISTS (2):
+                Operator maps to 'Exists'.
+        """
+        KEY_OPERATOR_UNSPECIFIED = 0
+        KEY_OPERATOR_EQUAL = 1
+        KEY_OPERATOR_EXISTS = 2
+
+    class Effect(proto.Enum):
+        r"""Effect indicates the taint effect to match e.g. 'NoSchedule'.
+
+        Values:
+            EFFECT_UNSPECIFIED (0):
+                Effect is not specified.
+            EFFECT_NO_SCHEDULE (1):
+                Effect maps to 'NoSchedule'.
+            EFFECT_PREFER_NO_SCHEDULE (2):
+                Effect maps to 'PreferNoSchedule'.
+            EFFECT_NO_EXECUTE (3):
+                Effect maps to 'NoExecute'.
+        """
+        EFFECT_UNSPECIFIED = 0
+        EFFECT_NO_SCHEDULE = 1
+        EFFECT_PREFER_NO_SCHEDULE = 2
+        EFFECT_NO_EXECUTE = 3
+
+    key: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    value: str = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+    key_operator: KeyOperator = proto.Field(
+        proto.ENUM,
+        number=3,
+        enum=KeyOperator,
+    )
+    effect: Effect = proto.Field(
+        proto.ENUM,
+        number=4,
+        enum=Effect,
+    )
+
+
+class Label(proto.Message):
+    r"""Label defines the additional fields for labels for pods
+    created by auto-installed components.
+
+    Attributes:
+        key (str):
+            This is the key of the label.
+        value (str):
+            This is the value of the label.
+    """
+
+    key: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    value: str = proto.Field(
         proto.STRING,
         number=2,
     )
