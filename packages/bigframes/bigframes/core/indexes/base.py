@@ -624,8 +624,6 @@ class Index(vendored_pandas_index.Index):
         return Index(result)
 
     def drop_duplicates(self, *, keep: __builtins__.str = "first") -> Index:
-        if keep is not False:
-            validations.enforce_ordered(self, "drop_duplicates")
         block = block_ops.drop_duplicates(self._block, self._block.index_columns, keep)
         return Index(block)
 

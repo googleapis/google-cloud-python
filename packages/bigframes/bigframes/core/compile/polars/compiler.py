@@ -547,6 +547,9 @@ if polars_installed:
                 return pl.col(*inputs).first()
             if isinstance(op, agg_ops.LastOp):
                 return pl.col(*inputs).last()
+            if isinstance(op, agg_ops.RowNumberOp):
+                # pl.row_index is not yet stable enough to use here, and only supports polars>=1.32
+                return pl.int_range(pl.len(), dtype=pl.Int64)
             if isinstance(op, agg_ops.ShiftOp):
                 return pl.col(*inputs).shift(op.periods)
             if isinstance(op, agg_ops.DiffOp):

@@ -67,40 +67,39 @@ def indicate_duplicates(
     if keep not in ["first", "last", False]:
         raise ValueError("keep must be one of 'first', 'last', or False'")
 
+    rownums = agg_expressions.WindowExpression(
+        agg_expressions.NullaryAggregation(
+            agg_ops.RowNumberOp(),
+        ),
+        window=windows.unbound(grouping_keys=tuple(columns)),
+    )
+    count = agg_expressions.WindowExpression(
+        agg_expressions.NullaryAggregation(
+            agg_ops.SizeOp(),
+        ),
+        window=windows.unbound(grouping_keys=tuple(columns)),
+    )
+
     if keep == "first":
         # Count how many copies occur up to current copy of value
         # Discard this value if there are copies BEFORE
-        window_spec = windows.cumulative_rows(
-            grouping_keys=tuple(columns),
-        )
+        predicate = ops.gt_op.as_expr(rownums, ex.const(0))
     elif keep == "last":
         # Count how many copies occur up to current copy of values
         # Discard this value if there are copies AFTER
-        window_spec = windows.inverse_cumulative_rows(
-            grouping_keys=tuple(columns),
-        )
+        predicate = ops.lt_op.as_expr(rownums, ops.sub_op.as_expr(count, ex.const(1)))
     else:  # keep == False
         # Count how many copies of the value occur in entire series.
         # Discard this value if there are copies ANYWHERE
-        window_spec = windows.unbound(grouping_keys=tuple(columns))
-    block, dummy = block.create_constant(1)
-    # use row number as will work even with partial ordering
-    block, val_count_col_id = block.apply_window_op(
-        dummy,
-        agg_ops.sum_op,
-        window_spec=window_spec,
-    )
-    block, duplicate_indicator = block.project_expr(
-        ops.gt_op.as_expr(val_count_col_id, ex.const(1))
+        predicate = ops.gt_op.as_expr(count, ex.const(1))
+
+    block = block.project_block_exprs(
+        [predicate],
+        labels=[None],
     )
     return (
-        block.drop_columns(
-            (
-                dummy,
-                val_count_col_id,
-            )
-        ),
-        duplicate_indicator,
+        block,
+        block.value_columns[-1],
     )
 
 

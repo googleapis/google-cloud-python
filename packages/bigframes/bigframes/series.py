@@ -2227,8 +2227,6 @@ class Series(vendored_pandas_series.Series):
         return self.reindex(other.index, validate=validate)
 
     def drop_duplicates(self, *, keep: str = "first") -> Series:
-        if keep is not False:
-            validations.enforce_ordered(self, "drop_duplicates(keep != False)")
         block = block_ops.drop_duplicates(self._block, (self._value_column,), keep)
         return Series(block)
 
@@ -2249,8 +2247,6 @@ class Series(vendored_pandas_series.Series):
         return Series(block.select_columns(result).reset_index())
 
     def duplicated(self, keep: str = "first") -> Series:
-        if keep is not False:
-            validations.enforce_ordered(self, "duplicated(keep != False)")
         block, indicator = block_ops.indicate_duplicates(
             self._block, (self._value_column,), keep
         )
