@@ -753,8 +753,6 @@ def handle_generate(
         _copy_readme_to_docs(output, library_id, is_mono_repo)
         _clean_up_files_after_post_processing(output, library_id, is_mono_repo)
 
-        with open("/tmp/performance_metrics.log", "r") as f:
-            print(f.read())
     except Exception as e:
         raise ValueError("Generation failed.") from e
     logger.info("'generate' command executed.")
@@ -1789,6 +1787,9 @@ if __name__ == "__main__":  # pragma: NO COVER
             output=args.output,
             input=args.input,
         )
+        with open("/tmp/performance_metrics.log", "r") as f:
+            print(f.read())
+
     elif args.command == "build":
         args.func(librarian=args.librarian, repo=args.repo)
     elif args.command == "release-stage":
