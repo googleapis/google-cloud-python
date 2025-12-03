@@ -1344,7 +1344,7 @@ libraries:
     tag_format: '{id}-v{version}'
   - id: google-cloud-databasecenter
     version: 0.0.0
-    last_generated_commit: 9a665b700840373e253db5af289d7df2a4fb41b9
+    last_generated_commit: 4667f02b64f2259ef21249b026ced7bb4351c632
     apis:
       - path: google/cloud/databasecenter/v1beta
         service_config: databasecenter_v1beta.yaml
