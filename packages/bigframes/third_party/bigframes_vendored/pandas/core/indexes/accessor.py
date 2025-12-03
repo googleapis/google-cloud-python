@@ -92,6 +92,37 @@ class DatetimeProperties:
         raise NotImplementedError(constants.ABSTRACT_METHOD_ERROR_MESSAGE)
 
     @property
+    def weekday(self):
+        """The day of the week with Monday=0, Sunday=6.
+
+        Return the day of the week. It is assumed the week starts on
+        Monday, which is denoted by 0 and ends on Sunday, which is denoted
+        by 6.
+
+        **Examples:**
+
+            >>> s = bpd.Series(
+            ...     pd.date_range('2016-12-31', '2017-01-08', freq='D').to_series()
+            ... )
+            >>> s.dt.weekday
+            2016-12-31 00:00:00    5
+            2017-01-01 00:00:00    6
+            2017-01-02 00:00:00    0
+            2017-01-03 00:00:00    1
+            2017-01-04 00:00:00    2
+            2017-01-05 00:00:00    3
+            2017-01-06 00:00:00    4
+            2017-01-07 00:00:00    5
+            2017-01-08 00:00:00    6
+            dtype: Int64
+
+        Returns:
+            Series: Containing integers indicating the day number.
+        """
+
+        raise NotImplementedError(constants.ABSTRACT_METHOD_ERROR_MESSAGE)
+
+    @property
     def day_name(self):
         """
         Return the day names in english.
