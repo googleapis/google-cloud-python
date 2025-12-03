@@ -2577,7 +2577,7 @@ class DataFrame(vendored_pandas_frame.DataFrame):
         names: Union[None, Hashable, Sequence[Hashable]] = None,
     ) -> Optional[DataFrame]:
         block = self._block
-        if names:
+        if names is not None:
             if isinstance(names, blocks.Label) and not isinstance(names, tuple):
                 names = [names]
             else:

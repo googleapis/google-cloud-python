@@ -110,6 +110,7 @@ def test_set_multi_index(scalars_df_index, scalars_pandas_df_index):
         ("bool_col", True),
         (["float64_col", "int64_too"], True),
         ([2, 0], False),
+        (0, True),
     ],
 )
 def test_df_reset_multi_index(scalars_df_index, scalars_pandas_df_index, level, drop):
@@ -124,7 +125,7 @@ def test_df_reset_multi_index(scalars_df_index, scalars_pandas_df_index, level, 
 
     # Pandas uses int64 instead of Int64 (nullable) dtype.
     if pd_result.index.dtype != bf_result.index.dtype:
-        pd_result.index = pd_result.index.astype(pandas.Int64Dtype())
+        pd_result.index = pd_result.index.astype(bf_result.index.dtype)
 
     pandas.testing.assert_frame_equal(bf_result, pd_result)
 

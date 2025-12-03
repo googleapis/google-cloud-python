@@ -426,7 +426,7 @@ class Block:
             A new Block because dropping index columns can break references
             from Index classes that point to this block.
         """
-        if level:
+        if level is not None:
             # preserve original order, not user provided order
             level_ids: Sequence[str] = [
                 id for id in self.index_columns if id in self.index.resolve_level(level)
