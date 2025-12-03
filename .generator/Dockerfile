@@ -139,4 +139,5 @@ RUN chmod a+rx ./cli.py
 COPY .generator/parse_googleapis_content.py .
 RUN chmod a+rx ./parse_googleapis_content.py
 
+ENV ENABLE_PERF_LOGS=1
 ENTRYPOINT ["python3.14", "./cli.py"]

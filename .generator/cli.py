@@ -752,6 +752,9 @@ def handle_generate(
         _run_post_processor(output, library_id, is_mono_repo)
         _copy_readme_to_docs(output, library_id, is_mono_repo)
         _clean_up_files_after_post_processing(output, library_id, is_mono_repo)
+
+        with open("/tmp/performance_metrics.log", "r") as f:
+            print(f.read())
     except Exception as e:
         raise ValueError("Generation failed.") from e
     logger.info("'generate' command executed.")
