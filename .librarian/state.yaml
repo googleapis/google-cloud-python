@@ -1,4 +1,4 @@
-image: us-central1-docker.pkg.dev/cloud-sdk-librarian-prod/images-prod/python-librarian-generator@sha256:72e9b62c0f8f3799651ee62d777a2905f5b72ff19ea46f2e7b7d682d7d1e9414
+image: us-central1-docker.pkg.dev/cloud-sdk-librarian-prod/images-prod/python-librarian-generator:latest
 libraries:
   - id: google-cloud-discoveryengine
     version: 0.15.0
