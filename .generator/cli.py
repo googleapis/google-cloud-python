@@ -1787,8 +1787,6 @@ if __name__ == "__main__":  # pragma: NO COVER
             output=args.output,
             input=args.input,
         )
-        with open("performance_metrics.log", "r") as f:
-            print(f.read())
 
     elif args.command == "build":
         args.func(librarian=args.librarian, repo=args.repo)
