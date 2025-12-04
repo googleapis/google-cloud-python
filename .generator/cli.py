@@ -41,7 +41,7 @@ PERF_LOGGING_ENABLED = os.environ.get("ENABLE_PERF_LOGS") == "1"
 if PERF_LOGGING_ENABLED:
     perf_logger = logging.getLogger("performance_metrics")
     perf_logger.setLevel(logging.INFO)
-    perf_handler = logging.FileHandler("/tmp/performance_metrics.log", mode='w')
+    perf_handler = logging.FileHandler("performance_metrics.log", mode='w')
     perf_formatter = logging.Formatter('%(asctime)s | %(message)s', datefmt='%H:%M:%S')
     perf_handler.setFormatter(perf_formatter)
     perf_logger.addHandler(perf_handler)
@@ -1787,7 +1787,7 @@ if __name__ == "__main__":  # pragma: NO COVER
             output=args.output,
             input=args.input,
         )
-        with open("/tmp/performance_metrics.log", "r") as f:
+        with open("performance_metrics.log", "r") as f:
             print(f.read())
 
     elif args.command == "build":
