@@ -19,12 +19,12 @@ from typing import Dict, Type
 from .base import SearchTuningServiceTransport
 from .grpc import SearchTuningServiceGrpcTransport
 from .grpc_asyncio import SearchTuningServiceGrpcAsyncIOTransport
-from .rest import SearchTuningServiceRestInterceptor, SearchTuningServiceRestTransport
+from .rest import SearchTuningServiceRestTransport
+from .rest import SearchTuningServiceRestInterceptor
+
 
 # Compile a registry of transports.
-_transport_registry = (
-    OrderedDict()
-)  # type: Dict[str, Type[SearchTuningServiceTransport]]
+_transport_registry = OrderedDict()  # type: Dict[str, Type[SearchTuningServiceTransport]]
 _transport_registry["grpc"] = SearchTuningServiceGrpcTransport
 _transport_registry["grpc_asyncio"] = SearchTuningServiceGrpcAsyncIOTransport
 _transport_registry["rest"] = SearchTuningServiceRestTransport

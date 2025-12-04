@@ -21,6 +21,7 @@ import proto  # type: ignore
 
 from google.cloud.discoveryengine_v1.types import cmek_config_service
 
+
 __protobuf__ = proto.module(
     package="google.cloud.discoveryengine.v1",
     manifest={

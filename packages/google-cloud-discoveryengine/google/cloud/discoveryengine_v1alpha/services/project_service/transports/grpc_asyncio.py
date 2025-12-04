@@ -15,29 +15,31 @@
 #
 import inspect
 import json
-import logging as std_logging
 import pickle
-from typing import Awaitable, Callable, Dict, Optional, Sequence, Tuple, Union
+import logging as std_logging
 import warnings
+from typing import Awaitable, Callable, Dict, Optional, Sequence, Tuple, Union
 
+from google.api_core import gapic_v1
+from google.api_core import grpc_helpers_async
 from google.api_core import exceptions as core_exceptions
-from google.api_core import gapic_v1, grpc_helpers_async, operations_v1
 from google.api_core import retry_async as retries
+from google.api_core import operations_v1
 from google.auth import credentials as ga_credentials  # type: ignore
 from google.auth.transport.grpc import SslCredentials  # type: ignore
-from google.cloud.location import locations_pb2  # type: ignore
-from google.longrunning import operations_pb2  # type: ignore
 from google.protobuf.json_format import MessageToJson
 import google.protobuf.message
+
 import grpc  # type: ignore
-from grpc.experimental import aio  # type: ignore
 import proto  # type: ignore
+from grpc.experimental import aio  # type: ignore
 
 from google.cloud.discoveryengine_v1alpha.types import project
 from google.cloud.discoveryengine_v1alpha.types import project as gcd_project
 from google.cloud.discoveryengine_v1alpha.types import project_service
-
-from .base import DEFAULT_CLIENT_INFO, ProjectServiceTransport
+from google.cloud.location import locations_pb2  # type: ignore
+from google.longrunning import operations_pb2  # type: ignore
+from .base import ProjectServiceTransport, DEFAULT_CLIENT_INFO
 from .grpc import ProjectServiceGrpcTransport
 
 try:
@@ -427,8 +429,8 @@ class ProjectServiceGrpcAsyncIOTransport(ProjectServiceTransport):
 
         Terms available for update:
 
-        - `Terms for data
-          use <https://cloud.google.com/retail/data-use-terms>`__
+        -  `Terms for data
+           use <https://cloud.google.com/retail/data-use-terms>`__
 
         Returns:
             Callable[[~.ReportConsentChangeRequest],

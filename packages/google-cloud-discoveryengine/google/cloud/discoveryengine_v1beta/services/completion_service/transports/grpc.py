@@ -16,27 +16,27 @@
 import json
 import logging as std_logging
 import pickle
-from typing import Callable, Dict, Optional, Sequence, Tuple, Union
 import warnings
+from typing import Callable, Dict, Optional, Sequence, Tuple, Union
 
-from google.api_core import gapic_v1, grpc_helpers, operations_v1
+from google.api_core import grpc_helpers
+from google.api_core import operations_v1
+from google.api_core import gapic_v1
 import google.auth  # type: ignore
 from google.auth import credentials as ga_credentials  # type: ignore
 from google.auth.transport.grpc import SslCredentials  # type: ignore
-from google.cloud.location import locations_pb2  # type: ignore
-from google.longrunning import operations_pb2  # type: ignore
 from google.protobuf.json_format import MessageToJson
 import google.protobuf.message
+
 import grpc  # type: ignore
 import proto  # type: ignore
 
-from google.cloud.discoveryengine_v1beta.types import (
-    completion_service,
-    import_config,
-    purge_config,
-)
-
-from .base import DEFAULT_CLIENT_INFO, CompletionServiceTransport
+from google.cloud.discoveryengine_v1beta.types import completion_service
+from google.cloud.discoveryengine_v1beta.types import import_config
+from google.cloud.discoveryengine_v1beta.types import purge_config
+from google.cloud.location import locations_pb2  # type: ignore
+from google.longrunning import operations_pb2  # type: ignore
+from .base import CompletionServiceTransport, DEFAULT_CLIENT_INFO
 
 try:
     from google.api_core import client_logging  # type: ignore
@@ -428,12 +428,12 @@ class CompletionServiceGrpcTransport(CompletionServiceTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "import_suggestion_deny_list_entries" not in self._stubs:
-            self._stubs[
-                "import_suggestion_deny_list_entries"
-            ] = self._logged_channel.unary_unary(
-                "/google.cloud.discoveryengine.v1beta.CompletionService/ImportSuggestionDenyListEntries",
-                request_serializer=import_config.ImportSuggestionDenyListEntriesRequest.serialize,
-                response_deserializer=operations_pb2.Operation.FromString,
+            self._stubs["import_suggestion_deny_list_entries"] = (
+                self._logged_channel.unary_unary(
+                    "/google.cloud.discoveryengine.v1beta.CompletionService/ImportSuggestionDenyListEntries",
+                    request_serializer=import_config.ImportSuggestionDenyListEntriesRequest.serialize,
+                    response_deserializer=operations_pb2.Operation.FromString,
+                )
             )
         return self._stubs["import_suggestion_deny_list_entries"]
 
@@ -461,12 +461,12 @@ class CompletionServiceGrpcTransport(CompletionServiceTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "purge_suggestion_deny_list_entries" not in self._stubs:
-            self._stubs[
-                "purge_suggestion_deny_list_entries"
-            ] = self._logged_channel.unary_unary(
-                "/google.cloud.discoveryengine.v1beta.CompletionService/PurgeSuggestionDenyListEntries",
-                request_serializer=purge_config.PurgeSuggestionDenyListEntriesRequest.serialize,
-                response_deserializer=operations_pb2.Operation.FromString,
+            self._stubs["purge_suggestion_deny_list_entries"] = (
+                self._logged_channel.unary_unary(
+                    "/google.cloud.discoveryengine.v1beta.CompletionService/PurgeSuggestionDenyListEntries",
+                    request_serializer=purge_config.PurgeSuggestionDenyListEntriesRequest.serialize,
+                    response_deserializer=operations_pb2.Operation.FromString,
+                )
             )
         return self._stubs["purge_suggestion_deny_list_entries"]
 
@@ -493,12 +493,12 @@ class CompletionServiceGrpcTransport(CompletionServiceTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "import_completion_suggestions" not in self._stubs:
-            self._stubs[
-                "import_completion_suggestions"
-            ] = self._logged_channel.unary_unary(
-                "/google.cloud.discoveryengine.v1beta.CompletionService/ImportCompletionSuggestions",
-                request_serializer=import_config.ImportCompletionSuggestionsRequest.serialize,
-                response_deserializer=operations_pb2.Operation.FromString,
+            self._stubs["import_completion_suggestions"] = (
+                self._logged_channel.unary_unary(
+                    "/google.cloud.discoveryengine.v1beta.CompletionService/ImportCompletionSuggestions",
+                    request_serializer=import_config.ImportCompletionSuggestionsRequest.serialize,
+                    response_deserializer=operations_pb2.Operation.FromString,
+                )
             )
         return self._stubs["import_completion_suggestions"]
 
@@ -525,12 +525,12 @@ class CompletionServiceGrpcTransport(CompletionServiceTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "purge_completion_suggestions" not in self._stubs:
-            self._stubs[
-                "purge_completion_suggestions"
-            ] = self._logged_channel.unary_unary(
-                "/google.cloud.discoveryengine.v1beta.CompletionService/PurgeCompletionSuggestions",
-                request_serializer=purge_config.PurgeCompletionSuggestionsRequest.serialize,
-                response_deserializer=operations_pb2.Operation.FromString,
+            self._stubs["purge_completion_suggestions"] = (
+                self._logged_channel.unary_unary(
+                    "/google.cloud.discoveryengine.v1beta.CompletionService/PurgeCompletionSuggestions",
+                    request_serializer=purge_config.PurgeCompletionSuggestionsRequest.serialize,
+                    response_deserializer=operations_pb2.Operation.FromString,
+                )
             )
         return self._stubs["purge_completion_suggestions"]
 

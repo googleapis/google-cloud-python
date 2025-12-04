@@ -17,12 +17,13 @@ from __future__ import annotations
 
 from typing import MutableMapping, MutableSequence
 
-from google.protobuf import field_mask_pb2  # type: ignore
-from google.protobuf import timestamp_pb2  # type: ignore
-from google.rpc import status_pb2  # type: ignore
 import proto  # type: ignore
 
 from google.cloud.discoveryengine_v1.types import user_license
+from google.protobuf import field_mask_pb2  # type: ignore
+from google.protobuf import timestamp_pb2  # type: ignore
+from google.rpc import status_pb2  # type: ignore
+
 
 __protobuf__ = proto.module(
     package="google.cloud.discoveryengine.v1",
@@ -64,19 +65,20 @@ class ListUserLicensesRequest(proto.Message):
 
             Supported fields:
 
-            - ``license_assignment_state``
+            -  ``license_assignment_state``
 
             Examples:
 
-            - ``license_assignment_state = ASSIGNED`` to list assigned
-              user licenses.
-            - ``license_assignment_state = NO_LICENSE`` to list not
-              licensed users.
-            - ``license_assignment_state = NO_LICENSE_ATTEMPTED_LOGIN``
-              to list users who attempted login but no license assigned.
-            - ``license_assignment_state != NO_LICENSE_ATTEMPTED_LOGIN``
-              to filter out users who attempted login but no license
-              assigned.
+            -  ``license_assignment_state = ASSIGNED`` to list assigned
+               user licenses.
+            -  ``license_assignment_state = NO_LICENSE`` to list not
+               licensed users.
+            -  ``license_assignment_state = NO_LICENSE_ATTEMPTED_LOGIN``
+               to list users who attempted login but no license
+               assigned.
+            -  ``license_assignment_state != NO_LICENSE_ATTEMPTED_LOGIN``
+               to filter out users who attempted login but no license
+               assigned.
     """
 
     parent: str = proto.Field(

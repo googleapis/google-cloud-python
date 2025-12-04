@@ -17,10 +17,11 @@ from __future__ import annotations
 
 from typing import MutableMapping, MutableSequence
 
-from google.protobuf import timestamp_pb2  # type: ignore
 import proto  # type: ignore
 
 from google.cloud.discoveryengine_v1alpha.types import search_service
+from google.protobuf import timestamp_pb2  # type: ignore
+
 
 __protobuf__ = proto.module(
     package="google.cloud.discoveryengine.v1alpha",
@@ -68,6 +69,7 @@ class Conversation(proto.Message):
             COMPLETED (2):
                 Conversation has been completed.
         """
+
         STATE_UNSPECIFIED = 0
         IN_PROGRESS = 1
         COMPLETED = 2

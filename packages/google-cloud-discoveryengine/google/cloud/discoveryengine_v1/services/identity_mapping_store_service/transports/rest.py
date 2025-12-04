@@ -13,31 +13,38 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-import dataclasses
-import json  # type: ignore
 import logging
+import json  # type: ignore
+
+from google.auth.transport.requests import AuthorizedSession  # type: ignore
+from google.auth import credentials as ga_credentials  # type: ignore
+from google.api_core import exceptions as core_exceptions
+from google.api_core import retry as retries
+from google.api_core import rest_helpers
+from google.api_core import rest_streaming
+from google.api_core import gapic_v1
+import google.protobuf
+
+from google.protobuf import json_format
+from google.api_core import operations_v1
+from google.cloud.location import locations_pb2  # type: ignore
+
+from requests import __version__ as requests_version
+import dataclasses
 from typing import Any, Callable, Dict, List, Optional, Sequence, Tuple, Union
 import warnings
 
-from google.api_core import gapic_v1, operations_v1, rest_helpers, rest_streaming
-from google.api_core import exceptions as core_exceptions
-from google.api_core import retry as retries
-from google.auth import credentials as ga_credentials  # type: ignore
-from google.auth.transport.requests import AuthorizedSession  # type: ignore
-from google.cloud.location import locations_pb2  # type: ignore
-from google.longrunning import operations_pb2  # type: ignore
-import google.protobuf
-from google.protobuf import json_format
-from requests import __version__ as requests_version
 
+from google.cloud.discoveryengine_v1.types import identity_mapping_store
 from google.cloud.discoveryengine_v1.types import (
     identity_mapping_store as gcd_identity_mapping_store,
 )
 from google.cloud.discoveryengine_v1.types import identity_mapping_store_service
-from google.cloud.discoveryengine_v1.types import identity_mapping_store
+from google.longrunning import operations_pb2  # type: ignore
 
-from .base import DEFAULT_CLIENT_INFO as BASE_DEFAULT_CLIENT_INFO
+
 from .rest_base import _BaseIdentityMappingStoreServiceRestTransport
+from .base import DEFAULT_CLIENT_INFO as BASE_DEFAULT_CLIENT_INFO
 
 try:
     OptionalRetry = Union[retries.Retry, gapic_v1.method._MethodDefault, None]
@@ -903,9 +910,7 @@ class IdentityMappingStoreServiceRestTransport(
 
             """
 
-            http_options = (
-                _BaseIdentityMappingStoreServiceRestTransport._BaseCreateIdentityMappingStore._get_http_options()
-            )
+            http_options = _BaseIdentityMappingStoreServiceRestTransport._BaseCreateIdentityMappingStore._get_http_options()
 
             request, metadata = self._interceptor.pre_create_identity_mapping_store(
                 request, metadata
@@ -974,11 +979,10 @@ class IdentityMappingStoreServiceRestTransport(
 
             resp = self._interceptor.post_create_identity_mapping_store(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            (
-                resp,
-                _,
-            ) = self._interceptor.post_create_identity_mapping_store_with_metadata(
-                resp, response_metadata
+            resp, _ = (
+                self._interceptor.post_create_identity_mapping_store_with_metadata(
+                    resp, response_metadata
+                )
             )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
@@ -1069,9 +1073,7 @@ class IdentityMappingStoreServiceRestTransport(
 
             """
 
-            http_options = (
-                _BaseIdentityMappingStoreServiceRestTransport._BaseDeleteIdentityMappingStore._get_http_options()
-            )
+            http_options = _BaseIdentityMappingStoreServiceRestTransport._BaseDeleteIdentityMappingStore._get_http_options()
 
             request, metadata = self._interceptor.pre_delete_identity_mapping_store(
                 request, metadata
@@ -1133,11 +1135,10 @@ class IdentityMappingStoreServiceRestTransport(
 
             resp = self._interceptor.post_delete_identity_mapping_store(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            (
-                resp,
-                _,
-            ) = self._interceptor.post_delete_identity_mapping_store_with_metadata(
-                resp, response_metadata
+            resp, _ = (
+                self._interceptor.post_delete_identity_mapping_store_with_metadata(
+                    resp, response_metadata
+                )
             )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
@@ -1223,9 +1224,7 @@ class IdentityMappingStoreServiceRestTransport(
 
             """
 
-            http_options = (
-                _BaseIdentityMappingStoreServiceRestTransport._BaseGetIdentityMappingStore._get_http_options()
-            )
+            http_options = _BaseIdentityMappingStoreServiceRestTransport._BaseGetIdentityMappingStore._get_http_options()
 
             request, metadata = self._interceptor.pre_get_identity_mapping_store(
                 request, metadata
@@ -1379,9 +1378,7 @@ class IdentityMappingStoreServiceRestTransport(
 
             """
 
-            http_options = (
-                _BaseIdentityMappingStoreServiceRestTransport._BaseImportIdentityMappings._get_http_options()
-            )
+            http_options = _BaseIdentityMappingStoreServiceRestTransport._BaseImportIdentityMappings._get_http_options()
 
             request, metadata = self._interceptor.pre_import_identity_mappings(
                 request, metadata
@@ -1532,9 +1529,7 @@ class IdentityMappingStoreServiceRestTransport(
 
             """
 
-            http_options = (
-                _BaseIdentityMappingStoreServiceRestTransport._BaseListIdentityMappings._get_http_options()
-            )
+            http_options = _BaseIdentityMappingStoreServiceRestTransport._BaseListIdentityMappings._get_http_options()
 
             request, metadata = self._interceptor.pre_list_identity_mappings(
                 request, metadata
@@ -1689,9 +1684,7 @@ class IdentityMappingStoreServiceRestTransport(
 
             """
 
-            http_options = (
-                _BaseIdentityMappingStoreServiceRestTransport._BaseListIdentityMappingStores._get_http_options()
-            )
+            http_options = _BaseIdentityMappingStoreServiceRestTransport._BaseListIdentityMappingStores._get_http_options()
 
             request, metadata = self._interceptor.pre_list_identity_mapping_stores(
                 request, metadata
@@ -1849,9 +1842,7 @@ class IdentityMappingStoreServiceRestTransport(
 
             """
 
-            http_options = (
-                _BaseIdentityMappingStoreServiceRestTransport._BasePurgeIdentityMappings._get_http_options()
-            )
+            http_options = _BaseIdentityMappingStoreServiceRestTransport._BasePurgeIdentityMappings._get_http_options()
 
             request, metadata = self._interceptor.pre_purge_identity_mappings(
                 request, metadata
@@ -1953,7 +1944,9 @@ class IdentityMappingStoreServiceRestTransport(
     ]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return self._CreateIdentityMappingStore(self._session, self._host, self._interceptor)  # type: ignore
+        return self._CreateIdentityMappingStore(
+            self._session, self._host, self._interceptor
+        )  # type: ignore
 
     @property
     def delete_identity_mapping_store(
@@ -1964,7 +1957,9 @@ class IdentityMappingStoreServiceRestTransport(
     ]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return self._DeleteIdentityMappingStore(self._session, self._host, self._interceptor)  # type: ignore
+        return self._DeleteIdentityMappingStore(
+            self._session, self._host, self._interceptor
+        )  # type: ignore
 
     @property
     def get_identity_mapping_store(
@@ -1975,7 +1970,9 @@ class IdentityMappingStoreServiceRestTransport(
     ]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return self._GetIdentityMappingStore(self._session, self._host, self._interceptor)  # type: ignore
+        return self._GetIdentityMappingStore(
+            self._session, self._host, self._interceptor
+        )  # type: ignore
 
     @property
     def import_identity_mappings(
@@ -1986,7 +1983,9 @@ class IdentityMappingStoreServiceRestTransport(
     ]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return self._ImportIdentityMappings(self._session, self._host, self._interceptor)  # type: ignore
+        return self._ImportIdentityMappings(
+            self._session, self._host, self._interceptor
+        )  # type: ignore
 
     @property
     def list_identity_mappings(
@@ -2008,7 +2007,9 @@ class IdentityMappingStoreServiceRestTransport(
     ]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return self._ListIdentityMappingStores(self._session, self._host, self._interceptor)  # type: ignore
+        return self._ListIdentityMappingStores(
+            self._session, self._host, self._interceptor
+        )  # type: ignore
 
     @property
     def purge_identity_mappings(
@@ -2077,9 +2078,7 @@ class IdentityMappingStoreServiceRestTransport(
                     be of type `bytes`.
             """
 
-            http_options = (
-                _BaseIdentityMappingStoreServiceRestTransport._BaseCancelOperation._get_http_options()
-            )
+            http_options = _BaseIdentityMappingStoreServiceRestTransport._BaseCancelOperation._get_http_options()
 
             request, metadata = self._interceptor.pre_cancel_operation(
                 request, metadata
@@ -2202,9 +2201,7 @@ class IdentityMappingStoreServiceRestTransport(
                 operations_pb2.Operation: Response from GetOperation method.
             """
 
-            http_options = (
-                _BaseIdentityMappingStoreServiceRestTransport._BaseGetOperation._get_http_options()
-            )
+            http_options = _BaseIdentityMappingStoreServiceRestTransport._BaseGetOperation._get_http_options()
 
             request, metadata = self._interceptor.pre_get_operation(request, metadata)
             transcoded_request = _BaseIdentityMappingStoreServiceRestTransport._BaseGetOperation._get_transcoded_request(
@@ -2345,9 +2342,7 @@ class IdentityMappingStoreServiceRestTransport(
                 operations_pb2.ListOperationsResponse: Response from ListOperations method.
             """
 
-            http_options = (
-                _BaseIdentityMappingStoreServiceRestTransport._BaseListOperations._get_http_options()
-            )
+            http_options = _BaseIdentityMappingStoreServiceRestTransport._BaseListOperations._get_http_options()
 
             request, metadata = self._interceptor.pre_list_operations(request, metadata)
             transcoded_request = _BaseIdentityMappingStoreServiceRestTransport._BaseListOperations._get_transcoded_request(

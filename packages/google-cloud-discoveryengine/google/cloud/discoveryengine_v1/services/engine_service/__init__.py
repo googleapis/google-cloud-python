@@ -13,8 +13,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-from .async_client import EngineServiceAsyncClient
 from .client import EngineServiceClient
+from .async_client import EngineServiceAsyncClient
 
 __all__ = (
     "EngineServiceClient",

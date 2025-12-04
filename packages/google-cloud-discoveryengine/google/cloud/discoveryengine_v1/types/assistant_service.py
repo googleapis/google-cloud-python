@@ -19,8 +19,10 @@ from typing import MutableMapping, MutableSequence
 
 import proto  # type: ignore
 
-from google.cloud.discoveryengine_v1.types import assist_answer, search_service
+from google.cloud.discoveryengine_v1.types import assist_answer
+from google.cloud.discoveryengine_v1.types import search_service
 from google.cloud.discoveryengine_v1.types import session as gcd_session
+
 
 __protobuf__ = proto.module(
     package="google.cloud.discoveryengine.v1",

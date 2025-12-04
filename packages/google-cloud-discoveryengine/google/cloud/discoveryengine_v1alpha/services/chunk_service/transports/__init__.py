@@ -19,7 +19,9 @@ from typing import Dict, Type
 from .base import ChunkServiceTransport
 from .grpc import ChunkServiceGrpcTransport
 from .grpc_asyncio import ChunkServiceGrpcAsyncIOTransport
-from .rest import ChunkServiceRestInterceptor, ChunkServiceRestTransport
+from .rest import ChunkServiceRestTransport
+from .rest import ChunkServiceRestInterceptor
+
 
 # Compile a registry of transports.
 _transport_registry = OrderedDict()  # type: Dict[str, Type[ChunkServiceTransport]]

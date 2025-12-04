@@ -13,8 +13,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-from .async_client import GroundedGenerationServiceAsyncClient
 from .client import GroundedGenerationServiceClient
+from .async_client import GroundedGenerationServiceAsyncClient
 
 __all__ = (
     "GroundedGenerationServiceClient",

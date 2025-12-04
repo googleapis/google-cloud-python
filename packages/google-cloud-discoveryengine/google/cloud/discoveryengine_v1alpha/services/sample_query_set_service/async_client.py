@@ -13,12 +13,12 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-from collections import OrderedDict
 import logging as std_logging
+from collections import OrderedDict
 import re
 from typing import (
-    Callable,
     Dict,
+    Callable,
     Mapping,
     MutableMapping,
     MutableSequence,
@@ -29,38 +29,37 @@ from typing import (
     Union,
 )
 
+from google.cloud.discoveryengine_v1alpha import gapic_version as package_version
+
+from google.api_core.client_options import ClientOptions
 from google.api_core import exceptions as core_exceptions
 from google.api_core import gapic_v1
 from google.api_core import retry_async as retries
-from google.api_core.client_options import ClientOptions
 from google.auth import credentials as ga_credentials  # type: ignore
 from google.oauth2 import service_account  # type: ignore
 import google.protobuf
 
-from google.cloud.discoveryengine_v1alpha import gapic_version as package_version
 
 try:
     OptionalRetry = Union[retries.AsyncRetry, gapic_v1.method._MethodDefault, None]
 except AttributeError:  # pragma: NO COVER
     OptionalRetry = Union[retries.AsyncRetry, object, None]  # type: ignore
 
+from google.cloud.discoveryengine_v1alpha.services.sample_query_set_service import (
+    pagers,
+)
+from google.cloud.discoveryengine_v1alpha.types import sample_query_set
+from google.cloud.discoveryengine_v1alpha.types import (
+    sample_query_set as gcd_sample_query_set,
+)
+from google.cloud.discoveryengine_v1alpha.types import sample_query_set_service
 from google.cloud.location import locations_pb2  # type: ignore
 from google.longrunning import operations_pb2  # type: ignore
 from google.protobuf import field_mask_pb2  # type: ignore
 from google.protobuf import timestamp_pb2  # type: ignore
-
-from google.cloud.discoveryengine_v1alpha.services.sample_query_set_service import (
-    pagers,
-)
-from google.cloud.discoveryengine_v1alpha.types import (
-    sample_query_set as gcd_sample_query_set,
-)
-from google.cloud.discoveryengine_v1alpha.types import sample_query_set
-from google.cloud.discoveryengine_v1alpha.types import sample_query_set_service
-
-from .client import SampleQuerySetServiceClient
-from .transports.base import DEFAULT_CLIENT_INFO, SampleQuerySetServiceTransport
+from .transports.base import SampleQuerySetServiceTransport, DEFAULT_CLIENT_INFO
 from .transports.grpc_asyncio import SampleQuerySetServiceGrpcAsyncIOTransport
+from .client import SampleQuerySetServiceClient
 
 try:
     from google.api_core import client_logging  # type: ignore
@@ -134,7 +133,9 @@ class SampleQuerySetServiceAsyncClient:
         Returns:
             SampleQuerySetServiceAsyncClient: The constructed client.
         """
-        return SampleQuerySetServiceClient.from_service_account_info.__func__(SampleQuerySetServiceAsyncClient, info, *args, **kwargs)  # type: ignore
+        return SampleQuerySetServiceClient.from_service_account_info.__func__(
+            SampleQuerySetServiceAsyncClient, info, *args, **kwargs
+        )  # type: ignore
 
     @classmethod
     def from_service_account_file(cls, filename: str, *args, **kwargs):
@@ -150,7 +151,9 @@ class SampleQuerySetServiceAsyncClient:
         Returns:
             SampleQuerySetServiceAsyncClient: The constructed client.
         """
-        return SampleQuerySetServiceClient.from_service_account_file.__func__(SampleQuerySetServiceAsyncClient, filename, *args, **kwargs)  # type: ignore
+        return SampleQuerySetServiceClient.from_service_account_file.__func__(
+            SampleQuerySetServiceAsyncClient, filename, *args, **kwargs
+        )  # type: ignore
 
     from_service_account_json = from_service_account_file
 
@@ -188,7 +191,9 @@ class SampleQuerySetServiceAsyncClient:
         Raises:
             google.auth.exceptions.MutualTLSChannelError: If any errors happen.
         """
-        return SampleQuerySetServiceClient.get_mtls_endpoint_and_cert_source(client_options)  # type: ignore
+        return SampleQuerySetServiceClient.get_mtls_endpoint_and_cert_source(
+            client_options
+        )  # type: ignore
 
     @property
     def transport(self) -> SampleQuerySetServiceTransport:

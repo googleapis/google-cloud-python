@@ -13,30 +13,35 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-import dataclasses
-import json  # type: ignore
 import logging
+import json  # type: ignore
+
+from google.auth.transport.requests import AuthorizedSession  # type: ignore
+from google.auth import credentials as ga_credentials  # type: ignore
+from google.api_core import exceptions as core_exceptions
+from google.api_core import retry as retries
+from google.api_core import rest_helpers
+from google.api_core import rest_streaming
+from google.api_core import gapic_v1
+import google.protobuf
+
+from google.protobuf import json_format
+from google.api_core import operations_v1
+from google.cloud.location import locations_pb2  # type: ignore
+
+from requests import __version__ as requests_version
+import dataclasses
 from typing import Any, Callable, Dict, List, Optional, Sequence, Tuple, Union
 import warnings
 
-from google.api_core import gapic_v1, operations_v1, rest_helpers, rest_streaming
-from google.api_core import exceptions as core_exceptions
-from google.api_core import retry as retries
-from google.auth import credentials as ga_credentials  # type: ignore
-from google.auth.transport.requests import AuthorizedSession  # type: ignore
-from google.cloud.location import locations_pb2  # type: ignore
+
+from google.cloud.discoveryengine_v1alpha.types import site_search_engine
+from google.cloud.discoveryengine_v1alpha.types import site_search_engine_service
 from google.longrunning import operations_pb2  # type: ignore
-import google.protobuf
-from google.protobuf import json_format
-from requests import __version__ as requests_version
 
-from google.cloud.discoveryengine_v1alpha.types import (
-    site_search_engine,
-    site_search_engine_service,
-)
 
-from .base import DEFAULT_CLIENT_INFO as BASE_DEFAULT_CLIENT_INFO
 from .rest_base import _BaseSiteSearchEngineServiceRestTransport
+from .base import DEFAULT_CLIENT_INFO as BASE_DEFAULT_CLIENT_INFO
 
 try:
     OptionalRetry = Union[retries.Retry, gapic_v1.method._MethodDefault, None]
@@ -1287,9 +1292,7 @@ class SiteSearchEngineServiceRestTransport(_BaseSiteSearchEngineServiceRestTrans
 
             """
 
-            http_options = (
-                _BaseSiteSearchEngineServiceRestTransport._BaseBatchCreateTargetSites._get_http_options()
-            )
+            http_options = _BaseSiteSearchEngineServiceRestTransport._BaseBatchCreateTargetSites._get_http_options()
 
             request, metadata = self._interceptor.pre_batch_create_target_sites(
                 request, metadata
@@ -1443,9 +1446,7 @@ class SiteSearchEngineServiceRestTransport(_BaseSiteSearchEngineServiceRestTrans
 
             """
 
-            http_options = (
-                _BaseSiteSearchEngineServiceRestTransport._BaseBatchVerifyTargetSites._get_http_options()
-            )
+            http_options = _BaseSiteSearchEngineServiceRestTransport._BaseBatchVerifyTargetSites._get_http_options()
 
             request, metadata = self._interceptor.pre_batch_verify_target_sites(
                 request, metadata
@@ -1599,9 +1600,7 @@ class SiteSearchEngineServiceRestTransport(_BaseSiteSearchEngineServiceRestTrans
 
             """
 
-            http_options = (
-                _BaseSiteSearchEngineServiceRestTransport._BaseCreateTargetSite._get_http_options()
-            )
+            http_options = _BaseSiteSearchEngineServiceRestTransport._BaseCreateTargetSite._get_http_options()
 
             request, metadata = self._interceptor.pre_create_target_site(
                 request, metadata
@@ -1756,9 +1755,7 @@ class SiteSearchEngineServiceRestTransport(_BaseSiteSearchEngineServiceRestTrans
 
             """
 
-            http_options = (
-                _BaseSiteSearchEngineServiceRestTransport._BaseDeleteTargetSite._get_http_options()
-            )
+            http_options = _BaseSiteSearchEngineServiceRestTransport._BaseDeleteTargetSite._get_http_options()
 
             request, metadata = self._interceptor.pre_delete_target_site(
                 request, metadata
@@ -1912,9 +1909,7 @@ class SiteSearchEngineServiceRestTransport(_BaseSiteSearchEngineServiceRestTrans
 
             """
 
-            http_options = (
-                _BaseSiteSearchEngineServiceRestTransport._BaseDisableAdvancedSiteSearch._get_http_options()
-            )
+            http_options = _BaseSiteSearchEngineServiceRestTransport._BaseDisableAdvancedSiteSearch._get_http_options()
 
             request, metadata = self._interceptor.pre_disable_advanced_site_search(
                 request, metadata
@@ -2069,9 +2064,7 @@ class SiteSearchEngineServiceRestTransport(_BaseSiteSearchEngineServiceRestTrans
 
             """
 
-            http_options = (
-                _BaseSiteSearchEngineServiceRestTransport._BaseEnableAdvancedSiteSearch._get_http_options()
-            )
+            http_options = _BaseSiteSearchEngineServiceRestTransport._BaseEnableAdvancedSiteSearch._get_http_options()
 
             request, metadata = self._interceptor.pre_enable_advanced_site_search(
                 request, metadata
@@ -2227,9 +2220,7 @@ class SiteSearchEngineServiceRestTransport(_BaseSiteSearchEngineServiceRestTrans
 
             """
 
-            http_options = (
-                _BaseSiteSearchEngineServiceRestTransport._BaseFetchDomainVerificationStatus._get_http_options()
-            )
+            http_options = _BaseSiteSearchEngineServiceRestTransport._BaseFetchDomainVerificationStatus._get_http_options()
 
             request, metadata = self._interceptor.pre_fetch_domain_verification_status(
                 request, metadata
@@ -2297,11 +2288,10 @@ class SiteSearchEngineServiceRestTransport(_BaseSiteSearchEngineServiceRestTrans
 
             resp = self._interceptor.post_fetch_domain_verification_status(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            (
-                resp,
-                _,
-            ) = self._interceptor.post_fetch_domain_verification_status_with_metadata(
-                resp, response_metadata
+            resp, _ = (
+                self._interceptor.post_fetch_domain_verification_status_with_metadata(
+                    resp, response_metadata
+                )
             )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
@@ -2389,9 +2379,7 @@ class SiteSearchEngineServiceRestTransport(_BaseSiteSearchEngineServiceRestTrans
 
             """
 
-            http_options = (
-                _BaseSiteSearchEngineServiceRestTransport._BaseGetSiteSearchEngine._get_http_options()
-            )
+            http_options = _BaseSiteSearchEngineServiceRestTransport._BaseGetSiteSearchEngine._get_http_options()
 
             request, metadata = self._interceptor.pre_get_site_search_engine(
                 request, metadata
@@ -2544,9 +2532,7 @@ class SiteSearchEngineServiceRestTransport(_BaseSiteSearchEngineServiceRestTrans
 
             """
 
-            http_options = (
-                _BaseSiteSearchEngineServiceRestTransport._BaseGetTargetSite._get_http_options()
-            )
+            http_options = _BaseSiteSearchEngineServiceRestTransport._BaseGetTargetSite._get_http_options()
 
             request, metadata = self._interceptor.pre_get_target_site(request, metadata)
             transcoded_request = _BaseSiteSearchEngineServiceRestTransport._BaseGetTargetSite._get_transcoded_request(
@@ -2699,9 +2685,7 @@ class SiteSearchEngineServiceRestTransport(_BaseSiteSearchEngineServiceRestTrans
 
             """
 
-            http_options = (
-                _BaseSiteSearchEngineServiceRestTransport._BaseGetUriPatternDocumentData._get_http_options()
-            )
+            http_options = _BaseSiteSearchEngineServiceRestTransport._BaseGetUriPatternDocumentData._get_http_options()
 
             request, metadata = self._interceptor.pre_get_uri_pattern_document_data(
                 request, metadata
@@ -2767,11 +2751,10 @@ class SiteSearchEngineServiceRestTransport(_BaseSiteSearchEngineServiceRestTrans
 
             resp = self._interceptor.post_get_uri_pattern_document_data(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            (
-                resp,
-                _,
-            ) = self._interceptor.post_get_uri_pattern_document_data_with_metadata(
-                resp, response_metadata
+            resp, _ = (
+                self._interceptor.post_get_uri_pattern_document_data_with_metadata(
+                    resp, response_metadata
+                )
             )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
@@ -2858,9 +2841,7 @@ class SiteSearchEngineServiceRestTransport(_BaseSiteSearchEngineServiceRestTrans
 
             """
 
-            http_options = (
-                _BaseSiteSearchEngineServiceRestTransport._BaseListTargetSites._get_http_options()
-            )
+            http_options = _BaseSiteSearchEngineServiceRestTransport._BaseListTargetSites._get_http_options()
 
             request, metadata = self._interceptor.pre_list_target_sites(
                 request, metadata
@@ -3017,9 +2998,7 @@ class SiteSearchEngineServiceRestTransport(_BaseSiteSearchEngineServiceRestTrans
 
             """
 
-            http_options = (
-                _BaseSiteSearchEngineServiceRestTransport._BaseRecrawlUris._get_http_options()
-            )
+            http_options = _BaseSiteSearchEngineServiceRestTransport._BaseRecrawlUris._get_http_options()
 
             request, metadata = self._interceptor.pre_recrawl_uris(request, metadata)
             transcoded_request = _BaseSiteSearchEngineServiceRestTransport._BaseRecrawlUris._get_transcoded_request(
@@ -3174,9 +3153,7 @@ class SiteSearchEngineServiceRestTransport(_BaseSiteSearchEngineServiceRestTrans
 
             """
 
-            http_options = (
-                _BaseSiteSearchEngineServiceRestTransport._BaseSetUriPatternDocumentData._get_http_options()
-            )
+            http_options = _BaseSiteSearchEngineServiceRestTransport._BaseSetUriPatternDocumentData._get_http_options()
 
             request, metadata = self._interceptor.pre_set_uri_pattern_document_data(
                 request, metadata
@@ -3243,11 +3220,10 @@ class SiteSearchEngineServiceRestTransport(_BaseSiteSearchEngineServiceRestTrans
 
             resp = self._interceptor.post_set_uri_pattern_document_data(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            (
-                resp,
-                _,
-            ) = self._interceptor.post_set_uri_pattern_document_data_with_metadata(
-                resp, response_metadata
+            resp, _ = (
+                self._interceptor.post_set_uri_pattern_document_data_with_metadata(
+                    resp, response_metadata
+                )
             )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
@@ -3333,9 +3309,7 @@ class SiteSearchEngineServiceRestTransport(_BaseSiteSearchEngineServiceRestTrans
 
             """
 
-            http_options = (
-                _BaseSiteSearchEngineServiceRestTransport._BaseUpdateTargetSite._get_http_options()
-            )
+            http_options = _BaseSiteSearchEngineServiceRestTransport._BaseUpdateTargetSite._get_http_options()
 
             request, metadata = self._interceptor.pre_update_target_site(
                 request, metadata
@@ -3439,7 +3413,9 @@ class SiteSearchEngineServiceRestTransport(_BaseSiteSearchEngineServiceRestTrans
     ]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return self._BatchCreateTargetSites(self._session, self._host, self._interceptor)  # type: ignore
+        return self._BatchCreateTargetSites(
+            self._session, self._host, self._interceptor
+        )  # type: ignore
 
     @property
     def batch_verify_target_sites(
@@ -3450,7 +3426,9 @@ class SiteSearchEngineServiceRestTransport(_BaseSiteSearchEngineServiceRestTrans
     ]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return self._BatchVerifyTargetSites(self._session, self._host, self._interceptor)  # type: ignore
+        return self._BatchVerifyTargetSites(
+            self._session, self._host, self._interceptor
+        )  # type: ignore
 
     @property
     def create_target_site(
@@ -3481,7 +3459,9 @@ class SiteSearchEngineServiceRestTransport(_BaseSiteSearchEngineServiceRestTrans
     ]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return self._DisableAdvancedSiteSearch(self._session, self._host, self._interceptor)  # type: ignore
+        return self._DisableAdvancedSiteSearch(
+            self._session, self._host, self._interceptor
+        )  # type: ignore
 
     @property
     def enable_advanced_site_search(
@@ -3492,7 +3472,9 @@ class SiteSearchEngineServiceRestTransport(_BaseSiteSearchEngineServiceRestTrans
     ]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return self._EnableAdvancedSiteSearch(self._session, self._host, self._interceptor)  # type: ignore
+        return self._EnableAdvancedSiteSearch(
+            self._session, self._host, self._interceptor
+        )  # type: ignore
 
     @property
     def fetch_domain_verification_status(
@@ -3503,7 +3485,9 @@ class SiteSearchEngineServiceRestTransport(_BaseSiteSearchEngineServiceRestTrans
     ]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return self._FetchDomainVerificationStatus(self._session, self._host, self._interceptor)  # type: ignore
+        return self._FetchDomainVerificationStatus(
+            self._session, self._host, self._interceptor
+        )  # type: ignore
 
     @property
     def get_site_search_engine(
@@ -3535,7 +3519,9 @@ class SiteSearchEngineServiceRestTransport(_BaseSiteSearchEngineServiceRestTrans
     ]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return self._GetUriPatternDocumentData(self._session, self._host, self._interceptor)  # type: ignore
+        return self._GetUriPatternDocumentData(
+            self._session, self._host, self._interceptor
+        )  # type: ignore
 
     @property
     def list_target_sites(
@@ -3567,7 +3553,9 @@ class SiteSearchEngineServiceRestTransport(_BaseSiteSearchEngineServiceRestTrans
     ]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return self._SetUriPatternDocumentData(self._session, self._host, self._interceptor)  # type: ignore
+        return self._SetUriPatternDocumentData(
+            self._session, self._host, self._interceptor
+        )  # type: ignore
 
     @property
     def update_target_site(
@@ -3635,9 +3623,7 @@ class SiteSearchEngineServiceRestTransport(_BaseSiteSearchEngineServiceRestTrans
                     be of type `bytes`.
             """
 
-            http_options = (
-                _BaseSiteSearchEngineServiceRestTransport._BaseCancelOperation._get_http_options()
-            )
+            http_options = _BaseSiteSearchEngineServiceRestTransport._BaseCancelOperation._get_http_options()
 
             request, metadata = self._interceptor.pre_cancel_operation(
                 request, metadata
@@ -3760,9 +3746,7 @@ class SiteSearchEngineServiceRestTransport(_BaseSiteSearchEngineServiceRestTrans
                 operations_pb2.Operation: Response from GetOperation method.
             """
 
-            http_options = (
-                _BaseSiteSearchEngineServiceRestTransport._BaseGetOperation._get_http_options()
-            )
+            http_options = _BaseSiteSearchEngineServiceRestTransport._BaseGetOperation._get_http_options()
 
             request, metadata = self._interceptor.pre_get_operation(request, metadata)
             transcoded_request = _BaseSiteSearchEngineServiceRestTransport._BaseGetOperation._get_transcoded_request(
@@ -3901,9 +3885,7 @@ class SiteSearchEngineServiceRestTransport(_BaseSiteSearchEngineServiceRestTrans
                 operations_pb2.ListOperationsResponse: Response from ListOperations method.
             """
 
-            http_options = (
-                _BaseSiteSearchEngineServiceRestTransport._BaseListOperations._get_http_options()
-            )
+            http_options = _BaseSiteSearchEngineServiceRestTransport._BaseListOperations._get_http_options()
 
             request, metadata = self._interceptor.pre_list_operations(request, metadata)
             transcoded_request = _BaseSiteSearchEngineServiceRestTransport._BaseListOperations._get_transcoded_request(

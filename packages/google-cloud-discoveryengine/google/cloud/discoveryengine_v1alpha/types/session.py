@@ -17,12 +17,13 @@ from __future__ import annotations
 
 from typing import MutableMapping, MutableSequence
 
-from google.protobuf import duration_pb2  # type: ignore
-from google.protobuf import timestamp_pb2  # type: ignore
 import proto  # type: ignore
 
 from google.cloud.discoveryengine_v1alpha.types import answer as gcd_answer
 from google.cloud.discoveryengine_v1alpha.types import common
+from google.protobuf import duration_pb2  # type: ignore
+from google.protobuf import timestamp_pb2  # type: ignore
+
 
 __protobuf__ = proto.module(
     package="google.cloud.discoveryengine.v1alpha",
@@ -58,6 +59,7 @@ class FileSource(proto.Enum):
             The file was retrieved from a URL (e.g.
             public web).
     """
+
     FILE_SOURCE_UNSPECIFIED = 0
     FILE_SOURCE_INLINE = 1
     FILE_SOURCE_LOCAL = 2
@@ -104,6 +106,7 @@ class Session(proto.Message):
             IN_PROGRESS (1):
                 The session is currently open.
         """
+
         STATE_UNSPECIFIED = 0
         IN_PROGRESS = 1
 
@@ -253,6 +256,7 @@ class ImageCharacteristics(proto.Message):
             OTHER_COLOR_SPACE (5):
                 Other colorspace.
         """
+
         COLOR_SPACE_UNSPECIFIED = 0
         RGB = 1
         CMYK = 2
@@ -497,11 +501,11 @@ class FileMetadata(proto.Message):
             Output only. Alternate views of this file object. Each file
             view is attached to a specific role. Possible example keys:
 
-            - "thumbnail"
-            - "mobile_thumbnail"
-            - "clip"
-            - "summary"
-            - "translation".
+            -  "thumbnail"
+            -  "mobile_thumbnail"
+            -  "clip"
+            -  "summary"
+            -  "translation".
     """
 
     file_id: str = proto.Field(

@@ -20,8 +20,8 @@ import logging as std_logging
 import os
 import re
 from typing import (
-    Callable,
     Dict,
+    Callable,
     Mapping,
     MutableMapping,
     MutableSequence,
@@ -34,18 +34,18 @@ from typing import (
 )
 import warnings
 
+from google.cloud.discoveryengine_v1beta import gapic_version as package_version
+
 from google.api_core import client_options as client_options_lib
 from google.api_core import exceptions as core_exceptions
 from google.api_core import gapic_v1
 from google.api_core import retry as retries
 from google.auth import credentials as ga_credentials  # type: ignore
-from google.auth.exceptions import MutualTLSChannelError  # type: ignore
 from google.auth.transport import mtls  # type: ignore
 from google.auth.transport.grpc import SslCredentials  # type: ignore
+from google.auth.exceptions import MutualTLSChannelError  # type: ignore
 from google.oauth2 import service_account  # type: ignore
 import google.protobuf
-
-from google.cloud.discoveryengine_v1beta import gapic_version as package_version
 
 try:
     OptionalRetry = Union[retries.Retry, gapic_v1.method._MethodDefault, None]
@@ -61,17 +61,15 @@ except ImportError:  # pragma: NO COVER
 
 _LOGGER = std_logging.getLogger(__name__)
 
-from google.cloud.location import locations_pb2  # type: ignore
-from google.longrunning import operations_pb2  # type: ignore
-from google.protobuf import field_mask_pb2  # type: ignore
-from google.protobuf import timestamp_pb2  # type: ignore
-
 from google.cloud.discoveryengine_v1beta.services.session_service import pagers
 from google.cloud.discoveryengine_v1beta.types import conversational_search_service
 from google.cloud.discoveryengine_v1beta.types import session
 from google.cloud.discoveryengine_v1beta.types import session as gcd_session
-
-from .transports.base import DEFAULT_CLIENT_INFO, SessionServiceTransport
+from google.cloud.location import locations_pb2  # type: ignore
+from google.longrunning import operations_pb2  # type: ignore
+from google.protobuf import field_mask_pb2  # type: ignore
+from google.protobuf import timestamp_pb2  # type: ignore
+from .transports.base import SessionServiceTransport, DEFAULT_CLIENT_INFO
 from .transports.grpc import SessionServiceGrpcTransport
 from .transports.grpc_asyncio import SessionServiceGrpcAsyncIOTransport
 from .transports.rest import SessionServiceRestTransport
@@ -85,9 +83,7 @@ class SessionServiceClientMeta(type):
     objects.
     """
 
-    _transport_registry = (
-        OrderedDict()
-    )  # type: Dict[str, Type[SessionServiceTransport]]
+    _transport_registry = OrderedDict()  # type: Dict[str, Type[SessionServiceTransport]]
     _transport_registry["grpc"] = SessionServiceGrpcTransport
     _transport_registry["grpc_asyncio"] = SessionServiceGrpcAsyncIOTransport
     _transport_registry["rest"] = SessionServiceRestTransport
@@ -713,11 +709,9 @@ class SessionServiceClient(metaclass=SessionServiceClientMeta):
 
         universe_domain_opt = getattr(self._client_options, "universe_domain", None)
 
-        (
-            self._use_client_cert,
-            self._use_mtls_endpoint,
-            self._universe_domain_env,
-        ) = SessionServiceClient._read_environment_variables()
+        self._use_client_cert, self._use_mtls_endpoint, self._universe_domain_env = (
+            SessionServiceClient._read_environment_variables()
+        )
         self._client_cert_source = SessionServiceClient._get_client_cert_source(
             self._client_options.client_cert_source, self._use_client_cert
         )
@@ -752,8 +746,7 @@ class SessionServiceClient(metaclass=SessionServiceClientMeta):
                 )
             if self._client_options.scopes:
                 raise ValueError(
-                    "When providing a transport instance, provide its scopes "
-                    "directly."
+                    "When providing a transport instance, provide its scopes directly."
                 )
             self._transport = cast(SessionServiceTransport, transport)
             self._api_endpoint = self._transport.host
@@ -1098,7 +1091,7 @@ class SessionServiceClient(metaclass=SessionServiceClientMeta):
                 [Session][google.cloud.discoveryengine.v1beta.Session]
                 to update. The following are NOT supported:
 
-                - [Session.name][google.cloud.discoveryengine.v1beta.Session.name]
+                -  [Session.name][google.cloud.discoveryengine.v1beta.Session.name]
 
                 If not set or empty, all supported fields are updated.
 

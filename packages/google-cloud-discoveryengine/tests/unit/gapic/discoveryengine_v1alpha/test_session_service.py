@@ -22,19 +22,20 @@ try:
 except ImportError:  # pragma: NO COVER
     import mock
 
-from collections.abc import AsyncIterable, Iterable
-import json
-import math
-
-from google.api_core import api_core_version
-from google.protobuf import json_format
 import grpc
 from grpc.experimental import aio
-from proto.marshal.rules import wrappers
-from proto.marshal.rules.dates import DurationRule, TimestampRule
+from collections.abc import Iterable, AsyncIterable
+from google.protobuf import json_format
+import json
+import math
 import pytest
-from requests import PreparedRequest, Request, Response
+from google.api_core import api_core_version
+from proto.marshal.rules.dates import DurationRule, TimestampRule
+from proto.marshal.rules import wrappers
+from requests import Response
+from requests import Request, PreparedRequest
 from requests.sessions import Session
+from google.protobuf import json_format
 
 try:
     from google.auth.aio import credentials as ga_credentials_async
@@ -43,33 +44,36 @@ try:
 except ImportError:  # pragma: NO COVER
     HAS_GOOGLE_AUTH_AIO = False
 
-from google.api_core import gapic_v1, grpc_helpers, grpc_helpers_async, path_template
 from google.api_core import client_options
 from google.api_core import exceptions as core_exceptions
+from google.api_core import gapic_v1
+from google.api_core import grpc_helpers
+from google.api_core import grpc_helpers_async
+from google.api_core import path_template
 from google.api_core import retry as retries
-import google.auth
 from google.auth import credentials as ga_credentials
 from google.auth.exceptions import MutualTLSChannelError
+from google.cloud.discoveryengine_v1alpha.services.session_service import (
+    SessionServiceAsyncClient,
+)
+from google.cloud.discoveryengine_v1alpha.services.session_service import (
+    SessionServiceClient,
+)
+from google.cloud.discoveryengine_v1alpha.services.session_service import pagers
+from google.cloud.discoveryengine_v1alpha.services.session_service import transports
+from google.cloud.discoveryengine_v1alpha.types import answer
+from google.cloud.discoveryengine_v1alpha.types import conversational_search_service
+from google.cloud.discoveryengine_v1alpha.types import session
+from google.cloud.discoveryengine_v1alpha.types import session as gcd_session
+from google.cloud.discoveryengine_v1alpha.types import session_service
 from google.cloud.location import locations_pb2
 from google.longrunning import operations_pb2  # type: ignore
 from google.oauth2 import service_account
 from google.protobuf import field_mask_pb2  # type: ignore
 from google.protobuf import struct_pb2  # type: ignore
 from google.protobuf import timestamp_pb2  # type: ignore
+import google.auth
 
-from google.cloud.discoveryengine_v1alpha.services.session_service import (
-    SessionServiceAsyncClient,
-    SessionServiceClient,
-    pagers,
-    transports,
-)
-from google.cloud.discoveryengine_v1alpha.types import (
-    answer,
-    conversational_search_service,
-)
-from google.cloud.discoveryengine_v1alpha.types import session
-from google.cloud.discoveryengine_v1alpha.types import session as gcd_session
-from google.cloud.discoveryengine_v1alpha.types import session_service
 
 CRED_INFO_JSON = {
     "credential_source": "/path/to/file",
@@ -835,10 +839,9 @@ def test_session_service_client_get_mtls_endpoint_and_cert_source(client_class):
                 "google.auth.transport.mtls.default_client_cert_source",
                 return_value=mock_client_cert_source,
             ):
-                (
-                    api_endpoint,
-                    cert_source,
-                ) = client_class.get_mtls_endpoint_and_cert_source()
+                api_endpoint, cert_source = (
+                    client_class.get_mtls_endpoint_and_cert_source()
+                )
                 assert api_endpoint == client_class.DEFAULT_MTLS_ENDPOINT
                 assert cert_source == mock_client_cert_source
 
@@ -1093,13 +1096,13 @@ def test_session_service_client_create_channel_credentials_file(
         )
 
     # test that the credentials from file are saved and used as the credentials.
-    with mock.patch.object(
-        google.auth, "load_credentials_from_file", autospec=True
-    ) as load_creds, mock.patch.object(
-        google.auth, "default", autospec=True
-    ) as adc, mock.patch.object(
-        grpc_helpers, "create_channel"
-    ) as create_channel:
+    with (
+        mock.patch.object(
+            google.auth, "load_credentials_from_file", autospec=True
+        ) as load_creds,
+        mock.patch.object(google.auth, "default", autospec=True) as adc,
+        mock.patch.object(grpc_helpers, "create_channel") as create_channel,
+    ):
         creds = ga_credentials.AnonymousCredentials()
         file_creds = ga_credentials.AnonymousCredentials()
         load_creds.return_value = (file_creds, None)
@@ -5191,8 +5194,9 @@ def test_create_session_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -5438,17 +5442,20 @@ def test_create_session_rest_interceptors(null_interceptor):
     )
     client = SessionServiceClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.SessionServiceRestInterceptor, "post_create_session"
-    ) as post, mock.patch.object(
-        transports.SessionServiceRestInterceptor, "post_create_session_with_metadata"
-    ) as post_with_metadata, mock.patch.object(
-        transports.SessionServiceRestInterceptor, "pre_create_session"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.SessionServiceRestInterceptor, "post_create_session"
+        ) as post,
+        mock.patch.object(
+            transports.SessionServiceRestInterceptor,
+            "post_create_session_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.SessionServiceRestInterceptor, "pre_create_session"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -5503,8 +5510,9 @@ def test_delete_session_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -5563,13 +5571,13 @@ def test_delete_session_rest_interceptors(null_interceptor):
     )
     client = SessionServiceClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.SessionServiceRestInterceptor, "pre_delete_session"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.SessionServiceRestInterceptor, "pre_delete_session"
+        ) as pre,
+    ):
         pre.assert_not_called()
         pb_message = conversational_search_service.DeleteSessionRequest.pb(
             conversational_search_service.DeleteSessionRequest()
@@ -5618,8 +5626,9 @@ def test_update_session_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -5869,17 +5878,20 @@ def test_update_session_rest_interceptors(null_interceptor):
     )
     client = SessionServiceClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.SessionServiceRestInterceptor, "post_update_session"
-    ) as post, mock.patch.object(
-        transports.SessionServiceRestInterceptor, "post_update_session_with_metadata"
-    ) as post_with_metadata, mock.patch.object(
-        transports.SessionServiceRestInterceptor, "pre_update_session"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.SessionServiceRestInterceptor, "post_update_session"
+        ) as post,
+        mock.patch.object(
+            transports.SessionServiceRestInterceptor,
+            "post_update_session_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.SessionServiceRestInterceptor, "pre_update_session"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -5934,8 +5946,9 @@ def test_get_session_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -6008,17 +6021,19 @@ def test_get_session_rest_interceptors(null_interceptor):
     )
     client = SessionServiceClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.SessionServiceRestInterceptor, "post_get_session"
-    ) as post, mock.patch.object(
-        transports.SessionServiceRestInterceptor, "post_get_session_with_metadata"
-    ) as post_with_metadata, mock.patch.object(
-        transports.SessionServiceRestInterceptor, "pre_get_session"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.SessionServiceRestInterceptor, "post_get_session"
+        ) as post,
+        mock.patch.object(
+            transports.SessionServiceRestInterceptor, "post_get_session_with_metadata"
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.SessionServiceRestInterceptor, "pre_get_session"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -6071,8 +6086,9 @@ def test_list_sessions_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -6137,17 +6153,19 @@ def test_list_sessions_rest_interceptors(null_interceptor):
     )
     client = SessionServiceClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.SessionServiceRestInterceptor, "post_list_sessions"
-    ) as post, mock.patch.object(
-        transports.SessionServiceRestInterceptor, "post_list_sessions_with_metadata"
-    ) as post_with_metadata, mock.patch.object(
-        transports.SessionServiceRestInterceptor, "pre_list_sessions"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.SessionServiceRestInterceptor, "post_list_sessions"
+        ) as post,
+        mock.patch.object(
+            transports.SessionServiceRestInterceptor, "post_list_sessions_with_metadata"
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.SessionServiceRestInterceptor, "pre_list_sessions"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -6205,8 +6223,9 @@ def test_list_files_rest_bad_request(request_type=session_service.ListFilesReque
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -6271,17 +6290,19 @@ def test_list_files_rest_interceptors(null_interceptor):
     )
     client = SessionServiceClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.SessionServiceRestInterceptor, "post_list_files"
-    ) as post, mock.patch.object(
-        transports.SessionServiceRestInterceptor, "post_list_files_with_metadata"
-    ) as post_with_metadata, mock.patch.object(
-        transports.SessionServiceRestInterceptor, "pre_list_files"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.SessionServiceRestInterceptor, "post_list_files"
+        ) as post,
+        mock.patch.object(
+            transports.SessionServiceRestInterceptor, "post_list_files_with_metadata"
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.SessionServiceRestInterceptor, "pre_list_files"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -6341,8 +6362,9 @@ def test_cancel_operation_rest_bad_request(
     )
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = Response()
@@ -6408,8 +6430,9 @@ def test_get_operation_rest_bad_request(
     )
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = Response()
@@ -6475,8 +6498,9 @@ def test_list_operations_rest_bad_request(
     )
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = Response()
@@ -6714,11 +6738,14 @@ def test_session_service_base_transport():
 
 def test_session_service_base_transport_with_credentials_file():
     # Instantiate the base transport with a credentials file
-    with mock.patch.object(
-        google.auth, "load_credentials_from_file", autospec=True
-    ) as load_creds, mock.patch(
-        "google.cloud.discoveryengine_v1alpha.services.session_service.transports.SessionServiceTransport._prep_wrapped_messages"
-    ) as Transport:
+    with (
+        mock.patch.object(
+            google.auth, "load_credentials_from_file", autospec=True
+        ) as load_creds,
+        mock.patch(
+            "google.cloud.discoveryengine_v1alpha.services.session_service.transports.SessionServiceTransport._prep_wrapped_messages"
+        ) as Transport,
+    ):
         Transport.return_value = None
         load_creds.return_value = (ga_credentials.AnonymousCredentials(), None)
         transport = transports.SessionServiceTransport(
@@ -6735,9 +6762,12 @@ def test_session_service_base_transport_with_credentials_file():
 
 def test_session_service_base_transport_with_adc():
     # Test the default credentials are used if credentials and credentials_file are None.
-    with mock.patch.object(google.auth, "default", autospec=True) as adc, mock.patch(
-        "google.cloud.discoveryengine_v1alpha.services.session_service.transports.SessionServiceTransport._prep_wrapped_messages"
-    ) as Transport:
+    with (
+        mock.patch.object(google.auth, "default", autospec=True) as adc,
+        mock.patch(
+            "google.cloud.discoveryengine_v1alpha.services.session_service.transports.SessionServiceTransport._prep_wrapped_messages"
+        ) as Transport,
+    ):
         Transport.return_value = None
         adc.return_value = (ga_credentials.AnonymousCredentials(), None)
         transport = transports.SessionServiceTransport()
@@ -6809,11 +6839,12 @@ def test_session_service_transport_auth_gdch_credentials(transport_class):
 def test_session_service_transport_create_channel(transport_class, grpc_helpers):
     # If credentials and host are not provided, the transport class should use
     # ADC credentials.
-    with mock.patch.object(
-        google.auth, "default", autospec=True
-    ) as adc, mock.patch.object(
-        grpc_helpers, "create_channel", autospec=True
-    ) as create_channel:
+    with (
+        mock.patch.object(google.auth, "default", autospec=True) as adc,
+        mock.patch.object(
+            grpc_helpers, "create_channel", autospec=True
+        ) as create_channel,
+    ):
         creds = ga_credentials.AnonymousCredentials()
         adc.return_value = (creds, None)
         transport_class(quota_project_id="octopus", scopes=["1", "2"])

@@ -15,31 +15,33 @@
 #
 import inspect
 import json
-import logging as std_logging
 import pickle
-from typing import Awaitable, Callable, Dict, Optional, Sequence, Tuple, Union
+import logging as std_logging
 import warnings
+from typing import Awaitable, Callable, Dict, Optional, Sequence, Tuple, Union
 
+from google.api_core import gapic_v1
+from google.api_core import grpc_helpers_async
 from google.api_core import exceptions as core_exceptions
-from google.api_core import gapic_v1, grpc_helpers_async, operations_v1
 from google.api_core import retry_async as retries
+from google.api_core import operations_v1
 from google.auth import credentials as ga_credentials  # type: ignore
 from google.auth.transport.grpc import SslCredentials  # type: ignore
-from google.cloud.location import locations_pb2  # type: ignore
-from google.longrunning import operations_pb2  # type: ignore
 from google.protobuf.json_format import MessageToJson
 import google.protobuf.message
-import grpc  # type: ignore
-from grpc.experimental import aio  # type: ignore
-import proto  # type: ignore
 
+import grpc  # type: ignore
+import proto  # type: ignore
+from grpc.experimental import aio  # type: ignore
+
+from google.cloud.discoveryengine_v1.types import identity_mapping_store
 from google.cloud.discoveryengine_v1.types import (
     identity_mapping_store as gcd_identity_mapping_store,
 )
 from google.cloud.discoveryengine_v1.types import identity_mapping_store_service
-from google.cloud.discoveryengine_v1.types import identity_mapping_store
-
-from .base import DEFAULT_CLIENT_INFO, IdentityMappingStoreServiceTransport
+from google.cloud.location import locations_pb2  # type: ignore
+from google.longrunning import operations_pb2  # type: ignore
+from .base import IdentityMappingStoreServiceTransport, DEFAULT_CLIENT_INFO
 from .grpc import IdentityMappingStoreServiceGrpcTransport
 
 try:
@@ -376,12 +378,12 @@ class IdentityMappingStoreServiceGrpcAsyncIOTransport(
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "create_identity_mapping_store" not in self._stubs:
-            self._stubs[
-                "create_identity_mapping_store"
-            ] = self._logged_channel.unary_unary(
-                "/google.cloud.discoveryengine.v1.IdentityMappingStoreService/CreateIdentityMappingStore",
-                request_serializer=identity_mapping_store_service.CreateIdentityMappingStoreRequest.serialize,
-                response_deserializer=gcd_identity_mapping_store.IdentityMappingStore.deserialize,
+            self._stubs["create_identity_mapping_store"] = (
+                self._logged_channel.unary_unary(
+                    "/google.cloud.discoveryengine.v1.IdentityMappingStoreService/CreateIdentityMappingStore",
+                    request_serializer=identity_mapping_store_service.CreateIdentityMappingStoreRequest.serialize,
+                    response_deserializer=gcd_identity_mapping_store.IdentityMappingStore.deserialize,
+                )
             )
         return self._stubs["create_identity_mapping_store"]
 
@@ -407,12 +409,12 @@ class IdentityMappingStoreServiceGrpcAsyncIOTransport(
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "get_identity_mapping_store" not in self._stubs:
-            self._stubs[
-                "get_identity_mapping_store"
-            ] = self._logged_channel.unary_unary(
-                "/google.cloud.discoveryengine.v1.IdentityMappingStoreService/GetIdentityMappingStore",
-                request_serializer=identity_mapping_store_service.GetIdentityMappingStoreRequest.serialize,
-                response_deserializer=identity_mapping_store.IdentityMappingStore.deserialize,
+            self._stubs["get_identity_mapping_store"] = (
+                self._logged_channel.unary_unary(
+                    "/google.cloud.discoveryengine.v1.IdentityMappingStoreService/GetIdentityMappingStore",
+                    request_serializer=identity_mapping_store_service.GetIdentityMappingStoreRequest.serialize,
+                    response_deserializer=identity_mapping_store.IdentityMappingStore.deserialize,
+                )
             )
         return self._stubs["get_identity_mapping_store"]
 
@@ -438,12 +440,12 @@ class IdentityMappingStoreServiceGrpcAsyncIOTransport(
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "delete_identity_mapping_store" not in self._stubs:
-            self._stubs[
-                "delete_identity_mapping_store"
-            ] = self._logged_channel.unary_unary(
-                "/google.cloud.discoveryengine.v1.IdentityMappingStoreService/DeleteIdentityMappingStore",
-                request_serializer=identity_mapping_store_service.DeleteIdentityMappingStoreRequest.serialize,
-                response_deserializer=operations_pb2.Operation.FromString,
+            self._stubs["delete_identity_mapping_store"] = (
+                self._logged_channel.unary_unary(
+                    "/google.cloud.discoveryengine.v1.IdentityMappingStoreService/DeleteIdentityMappingStore",
+                    request_serializer=identity_mapping_store_service.DeleteIdentityMappingStoreRequest.serialize,
+                    response_deserializer=operations_pb2.Operation.FromString,
+                )
             )
         return self._stubs["delete_identity_mapping_store"]
 
@@ -558,12 +560,12 @@ class IdentityMappingStoreServiceGrpcAsyncIOTransport(
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "list_identity_mapping_stores" not in self._stubs:
-            self._stubs[
-                "list_identity_mapping_stores"
-            ] = self._logged_channel.unary_unary(
-                "/google.cloud.discoveryengine.v1.IdentityMappingStoreService/ListIdentityMappingStores",
-                request_serializer=identity_mapping_store_service.ListIdentityMappingStoresRequest.serialize,
-                response_deserializer=identity_mapping_store_service.ListIdentityMappingStoresResponse.deserialize,
+            self._stubs["list_identity_mapping_stores"] = (
+                self._logged_channel.unary_unary(
+                    "/google.cloud.discoveryengine.v1.IdentityMappingStoreService/ListIdentityMappingStores",
+                    request_serializer=identity_mapping_store_service.ListIdentityMappingStoresRequest.serialize,
+                    response_deserializer=identity_mapping_store_service.ListIdentityMappingStoresResponse.deserialize,
+                )
             )
         return self._stubs["list_identity_mapping_stores"]
 

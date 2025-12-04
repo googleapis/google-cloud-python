@@ -13,8 +13,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-from .async_client import EvaluationServiceAsyncClient
 from .client import EvaluationServiceClient
+from .async_client import EvaluationServiceAsyncClient
 
 __all__ = (
     "EvaluationServiceClient",

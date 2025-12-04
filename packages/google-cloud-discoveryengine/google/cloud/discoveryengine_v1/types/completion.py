@@ -19,6 +19,7 @@ from typing import MutableMapping, MutableSequence
 
 import proto  # type: ignore
 
+
 __protobuf__ = proto.module(
     package="google.cloud.discoveryengine.v1",
     manifest={
@@ -54,6 +55,7 @@ class SuggestionDenyListEntry(proto.Message):
             CONTAINS (2):
                 If the suggestion contains the block_phrase, then block it.
         """
+
         MATCH_OPERATOR_UNSPECIFIED = 0
         EXACT_MATCH = 1
         CONTAINS = 2

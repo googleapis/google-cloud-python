@@ -20,8 +20,8 @@ import logging as std_logging
 import os
 import re
 from typing import (
-    Callable,
     Dict,
+    Callable,
     Mapping,
     MutableMapping,
     MutableSequence,
@@ -34,18 +34,18 @@ from typing import (
 )
 import warnings
 
+from google.cloud.discoveryengine_v1alpha import gapic_version as package_version
+
 from google.api_core import client_options as client_options_lib
 from google.api_core import exceptions as core_exceptions
 from google.api_core import gapic_v1
 from google.api_core import retry as retries
 from google.auth import credentials as ga_credentials  # type: ignore
-from google.auth.exceptions import MutualTLSChannelError  # type: ignore
 from google.auth.transport import mtls  # type: ignore
 from google.auth.transport.grpc import SslCredentials  # type: ignore
+from google.auth.exceptions import MutualTLSChannelError  # type: ignore
 from google.oauth2 import service_account  # type: ignore
 import google.protobuf
-
-from google.cloud.discoveryengine_v1alpha import gapic_version as package_version
 
 try:
     OptionalRetry = Union[retries.Retry, gapic_v1.method._MethodDefault, None]
@@ -61,16 +61,12 @@ except ImportError:  # pragma: NO COVER
 
 _LOGGER = std_logging.getLogger(__name__)
 
+from google.cloud.discoveryengine_v1alpha.types import acl_config
+from google.cloud.discoveryengine_v1alpha.types import acl_config_service
+from google.cloud.discoveryengine_v1alpha.types import common
 from google.cloud.location import locations_pb2  # type: ignore
 from google.longrunning import operations_pb2  # type: ignore
-
-from google.cloud.discoveryengine_v1alpha.types import (
-    acl_config,
-    acl_config_service,
-    common,
-)
-
-from .transports.base import DEFAULT_CLIENT_INFO, AclConfigServiceTransport
+from .transports.base import AclConfigServiceTransport, DEFAULT_CLIENT_INFO
 from .transports.grpc import AclConfigServiceGrpcTransport
 from .transports.grpc_asyncio import AclConfigServiceGrpcAsyncIOTransport
 from .transports.rest import AclConfigServiceRestTransport
@@ -84,9 +80,7 @@ class AclConfigServiceClientMeta(type):
     objects.
     """
 
-    _transport_registry = (
-        OrderedDict()
-    )  # type: Dict[str, Type[AclConfigServiceTransport]]
+    _transport_registry = OrderedDict()  # type: Dict[str, Type[AclConfigServiceTransport]]
     _transport_registry["grpc"] = AclConfigServiceGrpcTransport
     _transport_registry["grpc_asyncio"] = AclConfigServiceGrpcAsyncIOTransport
     _transport_registry["rest"] = AclConfigServiceRestTransport
@@ -607,11 +601,9 @@ class AclConfigServiceClient(metaclass=AclConfigServiceClientMeta):
 
         universe_domain_opt = getattr(self._client_options, "universe_domain", None)
 
-        (
-            self._use_client_cert,
-            self._use_mtls_endpoint,
-            self._universe_domain_env,
-        ) = AclConfigServiceClient._read_environment_variables()
+        self._use_client_cert, self._use_mtls_endpoint, self._universe_domain_env = (
+            AclConfigServiceClient._read_environment_variables()
+        )
         self._client_cert_source = AclConfigServiceClient._get_client_cert_source(
             self._client_options.client_cert_source, self._use_client_cert
         )
@@ -646,8 +638,7 @@ class AclConfigServiceClient(metaclass=AclConfigServiceClientMeta):
                 )
             if self._client_options.scopes:
                 raise ValueError(
-                    "When providing a transport instance, provide its scopes "
-                    "directly."
+                    "When providing a transport instance, provide its scopes directly."
                 )
             self._transport = cast(AclConfigServiceTransport, transport)
             self._api_endpoint = self._transport.host

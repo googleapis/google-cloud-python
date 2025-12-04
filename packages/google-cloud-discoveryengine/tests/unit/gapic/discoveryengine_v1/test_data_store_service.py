@@ -22,19 +22,20 @@ try:
 except ImportError:  # pragma: NO COVER
     import mock
 
-from collections.abc import AsyncIterable, Iterable
-import json
-import math
-
-from google.api_core import api_core_version
-from google.protobuf import json_format
 import grpc
 from grpc.experimental import aio
-from proto.marshal.rules import wrappers
-from proto.marshal.rules.dates import DurationRule, TimestampRule
+from collections.abc import Iterable, AsyncIterable
+from google.protobuf import json_format
+import json
+import math
 import pytest
-from requests import PreparedRequest, Request, Response
+from google.api_core import api_core_version
+from proto.marshal.rules.dates import DurationRule, TimestampRule
+from proto.marshal.rules import wrappers
+from requests import Response
+from requests import Request, PreparedRequest
 from requests.sessions import Session
+from google.protobuf import json_format
 
 try:
     from google.auth.aio import credentials as ga_credentials_async
@@ -43,22 +44,34 @@ try:
 except ImportError:  # pragma: NO COVER
     HAS_GOOGLE_AUTH_AIO = False
 
-from google.api_core import (
-    future,
-    gapic_v1,
-    grpc_helpers,
-    grpc_helpers_async,
-    operation,
-    operations_v1,
-    path_template,
-)
 from google.api_core import client_options
 from google.api_core import exceptions as core_exceptions
+from google.api_core import future
+from google.api_core import gapic_v1
+from google.api_core import grpc_helpers
+from google.api_core import grpc_helpers_async
+from google.api_core import operation
 from google.api_core import operation_async  # type: ignore
+from google.api_core import operations_v1
+from google.api_core import path_template
 from google.api_core import retry as retries
-import google.auth
 from google.auth import credentials as ga_credentials
 from google.auth.exceptions import MutualTLSChannelError
+from google.cloud.discoveryengine_v1.services.data_store_service import (
+    DataStoreServiceAsyncClient,
+)
+from google.cloud.discoveryengine_v1.services.data_store_service import (
+    DataStoreServiceClient,
+)
+from google.cloud.discoveryengine_v1.services.data_store_service import pagers
+from google.cloud.discoveryengine_v1.services.data_store_service import transports
+from google.cloud.discoveryengine_v1.types import cmek_config_service
+from google.cloud.discoveryengine_v1.types import common
+from google.cloud.discoveryengine_v1.types import data_store
+from google.cloud.discoveryengine_v1.types import data_store as gcd_data_store
+from google.cloud.discoveryengine_v1.types import data_store_service
+from google.cloud.discoveryengine_v1.types import document_processing_config
+from google.cloud.discoveryengine_v1.types import schema
 from google.cloud.location import locations_pb2
 from google.longrunning import operations_pb2  # type: ignore
 from google.oauth2 import service_account
@@ -66,21 +79,8 @@ from google.protobuf import empty_pb2  # type: ignore
 from google.protobuf import field_mask_pb2  # type: ignore
 from google.protobuf import struct_pb2  # type: ignore
 from google.protobuf import timestamp_pb2  # type: ignore
+import google.auth
 
-from google.cloud.discoveryengine_v1.services.data_store_service import (
-    DataStoreServiceAsyncClient,
-    DataStoreServiceClient,
-    pagers,
-    transports,
-)
-from google.cloud.discoveryengine_v1.types import (
-    data_store_service,
-    document_processing_config,
-    schema,
-)
-from google.cloud.discoveryengine_v1.types import cmek_config_service, common
-from google.cloud.discoveryengine_v1.types import data_store
-from google.cloud.discoveryengine_v1.types import data_store as gcd_data_store
 
 CRED_INFO_JSON = {
     "credential_source": "/path/to/file",
@@ -871,10 +871,9 @@ def test_data_store_service_client_get_mtls_endpoint_and_cert_source(client_clas
                 "google.auth.transport.mtls.default_client_cert_source",
                 return_value=mock_client_cert_source,
             ):
-                (
-                    api_endpoint,
-                    cert_source,
-                ) = client_class.get_mtls_endpoint_and_cert_source()
+                api_endpoint, cert_source = (
+                    client_class.get_mtls_endpoint_and_cert_source()
+                )
                 assert api_endpoint == client_class.DEFAULT_MTLS_ENDPOINT
                 assert cert_source == mock_client_cert_source
 
@@ -1134,13 +1133,13 @@ def test_data_store_service_client_create_channel_credentials_file(
         )
 
     # test that the credentials from file are saved and used as the credentials.
-    with mock.patch.object(
-        google.auth, "load_credentials_from_file", autospec=True
-    ) as load_creds, mock.patch.object(
-        google.auth, "default", autospec=True
-    ) as adc, mock.patch.object(
-        grpc_helpers, "create_channel"
-    ) as create_channel:
+    with (
+        mock.patch.object(
+            google.auth, "load_credentials_from_file", autospec=True
+        ) as load_creds,
+        mock.patch.object(google.auth, "default", autospec=True) as adc,
+        mock.patch.object(grpc_helpers, "create_channel") as create_channel,
+    ):
         creds = ga_credentials.AnonymousCredentials()
         file_creds = ga_credentials.AnonymousCredentials()
         load_creds.return_value = (file_creds, None)
@@ -1252,9 +1251,9 @@ def test_create_data_store_use_cached_wrapped_rpc():
         mock_rpc.return_value.name = (
             "foo"  # operation_request.operation in compute client(s) expect a string.
         )
-        client._transport._wrapped_methods[
-            client._transport.create_data_store
-        ] = mock_rpc
+        client._transport._wrapped_methods[client._transport.create_data_store] = (
+            mock_rpc
+        )
         request = {}
         client.create_data_store(request)
 
@@ -1974,9 +1973,9 @@ def test_list_data_stores_use_cached_wrapped_rpc():
         mock_rpc.return_value.name = (
             "foo"  # operation_request.operation in compute client(s) expect a string.
         )
-        client._transport._wrapped_methods[
-            client._transport.list_data_stores
-        ] = mock_rpc
+        client._transport._wrapped_methods[client._transport.list_data_stores] = (
+            mock_rpc
+        )
         request = {}
         client.list_data_stores(request)
 
@@ -2495,9 +2494,9 @@ def test_delete_data_store_use_cached_wrapped_rpc():
         mock_rpc.return_value.name = (
             "foo"  # operation_request.operation in compute client(s) expect a string.
         )
-        client._transport._wrapped_methods[
-            client._transport.delete_data_store
-        ] = mock_rpc
+        client._transport._wrapped_methods[client._transport.delete_data_store] = (
+            mock_rpc
+        )
         request = {}
         client.delete_data_store(request)
 
@@ -2854,9 +2853,9 @@ def test_update_data_store_use_cached_wrapped_rpc():
         mock_rpc.return_value.name = (
             "foo"  # operation_request.operation in compute client(s) expect a string.
         )
-        client._transport._wrapped_methods[
-            client._transport.update_data_store
-        ] = mock_rpc
+        client._transport._wrapped_methods[client._transport.update_data_store] = (
+            mock_rpc
+        )
         request = {}
         client.update_data_store(request)
 
@@ -3152,9 +3151,9 @@ def test_create_data_store_rest_use_cached_wrapped_rpc():
         mock_rpc.return_value.name = (
             "foo"  # operation_request.operation in compute client(s) expect a string.
         )
-        client._transport._wrapped_methods[
-            client._transport.create_data_store
-        ] = mock_rpc
+        client._transport._wrapped_methods[client._transport.create_data_store] = (
+            mock_rpc
+        )
 
         request = {}
         client.create_data_store(request)
@@ -3554,9 +3553,9 @@ def test_list_data_stores_rest_use_cached_wrapped_rpc():
         mock_rpc.return_value.name = (
             "foo"  # operation_request.operation in compute client(s) expect a string.
         )
-        client._transport._wrapped_methods[
-            client._transport.list_data_stores
-        ] = mock_rpc
+        client._transport._wrapped_methods[client._transport.list_data_stores] = (
+            mock_rpc
+        )
 
         request = {}
         client.list_data_stores(request)
@@ -3813,9 +3812,9 @@ def test_delete_data_store_rest_use_cached_wrapped_rpc():
         mock_rpc.return_value.name = (
             "foo"  # operation_request.operation in compute client(s) expect a string.
         )
-        client._transport._wrapped_methods[
-            client._transport.delete_data_store
-        ] = mock_rpc
+        client._transport._wrapped_methods[client._transport.delete_data_store] = (
+            mock_rpc
+        )
 
         request = {}
         client.delete_data_store(request)
@@ -3993,9 +3992,9 @@ def test_update_data_store_rest_use_cached_wrapped_rpc():
         mock_rpc.return_value.name = (
             "foo"  # operation_request.operation in compute client(s) expect a string.
         )
-        client._transport._wrapped_methods[
-            client._transport.update_data_store
-        ] = mock_rpc
+        client._transport._wrapped_methods[client._transport.update_data_store] = (
+            mock_rpc
+        )
 
         request = {}
         client.update_data_store(request)
@@ -4558,8 +4557,9 @@ def test_create_data_store_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -4772,20 +4772,21 @@ def test_create_data_store_rest_interceptors(null_interceptor):
     )
     client = DataStoreServiceClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        operation.Operation, "_set_result_from_operation"
-    ), mock.patch.object(
-        transports.DataStoreServiceRestInterceptor, "post_create_data_store"
-    ) as post, mock.patch.object(
-        transports.DataStoreServiceRestInterceptor,
-        "post_create_data_store_with_metadata",
-    ) as post_with_metadata, mock.patch.object(
-        transports.DataStoreServiceRestInterceptor, "pre_create_data_store"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(operation.Operation, "_set_result_from_operation"),
+        mock.patch.object(
+            transports.DataStoreServiceRestInterceptor, "post_create_data_store"
+        ) as post,
+        mock.patch.object(
+            transports.DataStoreServiceRestInterceptor,
+            "post_create_data_store_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.DataStoreServiceRestInterceptor, "pre_create_data_store"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -4838,8 +4839,9 @@ def test_get_data_store_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -4918,17 +4920,20 @@ def test_get_data_store_rest_interceptors(null_interceptor):
     )
     client = DataStoreServiceClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.DataStoreServiceRestInterceptor, "post_get_data_store"
-    ) as post, mock.patch.object(
-        transports.DataStoreServiceRestInterceptor, "post_get_data_store_with_metadata"
-    ) as post_with_metadata, mock.patch.object(
-        transports.DataStoreServiceRestInterceptor, "pre_get_data_store"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.DataStoreServiceRestInterceptor, "post_get_data_store"
+        ) as post,
+        mock.patch.object(
+            transports.DataStoreServiceRestInterceptor,
+            "post_get_data_store_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.DataStoreServiceRestInterceptor, "pre_get_data_store"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -4981,8 +4986,9 @@ def test_list_data_stores_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -5045,18 +5051,20 @@ def test_list_data_stores_rest_interceptors(null_interceptor):
     )
     client = DataStoreServiceClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.DataStoreServiceRestInterceptor, "post_list_data_stores"
-    ) as post, mock.patch.object(
-        transports.DataStoreServiceRestInterceptor,
-        "post_list_data_stores_with_metadata",
-    ) as post_with_metadata, mock.patch.object(
-        transports.DataStoreServiceRestInterceptor, "pre_list_data_stores"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.DataStoreServiceRestInterceptor, "post_list_data_stores"
+        ) as post,
+        mock.patch.object(
+            transports.DataStoreServiceRestInterceptor,
+            "post_list_data_stores_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.DataStoreServiceRestInterceptor, "pre_list_data_stores"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -5114,8 +5122,9 @@ def test_delete_data_store_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -5172,20 +5181,21 @@ def test_delete_data_store_rest_interceptors(null_interceptor):
     )
     client = DataStoreServiceClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        operation.Operation, "_set_result_from_operation"
-    ), mock.patch.object(
-        transports.DataStoreServiceRestInterceptor, "post_delete_data_store"
-    ) as post, mock.patch.object(
-        transports.DataStoreServiceRestInterceptor,
-        "post_delete_data_store_with_metadata",
-    ) as post_with_metadata, mock.patch.object(
-        transports.DataStoreServiceRestInterceptor, "pre_delete_data_store"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(operation.Operation, "_set_result_from_operation"),
+        mock.patch.object(
+            transports.DataStoreServiceRestInterceptor, "post_delete_data_store"
+        ) as post,
+        mock.patch.object(
+            transports.DataStoreServiceRestInterceptor,
+            "post_delete_data_store_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.DataStoreServiceRestInterceptor, "pre_delete_data_store"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -5240,8 +5250,9 @@ def test_update_data_store_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -5478,18 +5489,20 @@ def test_update_data_store_rest_interceptors(null_interceptor):
     )
     client = DataStoreServiceClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.DataStoreServiceRestInterceptor, "post_update_data_store"
-    ) as post, mock.patch.object(
-        transports.DataStoreServiceRestInterceptor,
-        "post_update_data_store_with_metadata",
-    ) as post_with_metadata, mock.patch.object(
-        transports.DataStoreServiceRestInterceptor, "pre_update_data_store"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.DataStoreServiceRestInterceptor, "post_update_data_store"
+        ) as post,
+        mock.patch.object(
+            transports.DataStoreServiceRestInterceptor,
+            "post_update_data_store_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.DataStoreServiceRestInterceptor, "pre_update_data_store"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -5544,8 +5557,9 @@ def test_cancel_operation_rest_bad_request(
     )
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = Response()
@@ -5606,8 +5620,9 @@ def test_get_operation_rest_bad_request(
     )
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = Response()
@@ -5666,8 +5681,9 @@ def test_list_operations_rest_bad_request(
     request = json_format.ParseDict({"name": "projects/sample1"}, request)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = Response()
@@ -5910,11 +5926,14 @@ def test_data_store_service_base_transport():
 
 def test_data_store_service_base_transport_with_credentials_file():
     # Instantiate the base transport with a credentials file
-    with mock.patch.object(
-        google.auth, "load_credentials_from_file", autospec=True
-    ) as load_creds, mock.patch(
-        "google.cloud.discoveryengine_v1.services.data_store_service.transports.DataStoreServiceTransport._prep_wrapped_messages"
-    ) as Transport:
+    with (
+        mock.patch.object(
+            google.auth, "load_credentials_from_file", autospec=True
+        ) as load_creds,
+        mock.patch(
+            "google.cloud.discoveryengine_v1.services.data_store_service.transports.DataStoreServiceTransport._prep_wrapped_messages"
+        ) as Transport,
+    ):
         Transport.return_value = None
         load_creds.return_value = (ga_credentials.AnonymousCredentials(), None)
         transport = transports.DataStoreServiceTransport(
@@ -5931,9 +5950,12 @@ def test_data_store_service_base_transport_with_credentials_file():
 
 def test_data_store_service_base_transport_with_adc():
     # Test the default credentials are used if credentials and credentials_file are None.
-    with mock.patch.object(google.auth, "default", autospec=True) as adc, mock.patch(
-        "google.cloud.discoveryengine_v1.services.data_store_service.transports.DataStoreServiceTransport._prep_wrapped_messages"
-    ) as Transport:
+    with (
+        mock.patch.object(google.auth, "default", autospec=True) as adc,
+        mock.patch(
+            "google.cloud.discoveryengine_v1.services.data_store_service.transports.DataStoreServiceTransport._prep_wrapped_messages"
+        ) as Transport,
+    ):
         Transport.return_value = None
         adc.return_value = (ga_credentials.AnonymousCredentials(), None)
         transport = transports.DataStoreServiceTransport()
@@ -6005,11 +6027,12 @@ def test_data_store_service_transport_auth_gdch_credentials(transport_class):
 def test_data_store_service_transport_create_channel(transport_class, grpc_helpers):
     # If credentials and host are not provided, the transport class should use
     # ADC credentials.
-    with mock.patch.object(
-        google.auth, "default", autospec=True
-    ) as adc, mock.patch.object(
-        grpc_helpers, "create_channel", autospec=True
-    ) as create_channel:
+    with (
+        mock.patch.object(google.auth, "default", autospec=True) as adc,
+        mock.patch.object(
+            grpc_helpers, "create_channel", autospec=True
+        ) as create_channel,
+    ):
         creds = ga_credentials.AnonymousCredentials()
         adc.return_value = (creds, None)
         transport_class(quota_project_id="octopus", scopes=["1", "2"])

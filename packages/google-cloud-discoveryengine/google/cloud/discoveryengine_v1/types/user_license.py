@@ -17,8 +17,10 @@ from __future__ import annotations
 
 from typing import MutableMapping, MutableSequence
 
-from google.protobuf import timestamp_pb2  # type: ignore
 import proto  # type: ignore
+
+from google.protobuf import timestamp_pb2  # type: ignore
+
 
 __protobuf__ = proto.module(
     package="google.cloud.discoveryengine.v1",
@@ -84,6 +86,7 @@ class UserLicense(proto.Message):
                 cannot get license assigned will be assigned NO_LICENSE
                 state(License could be unassigned by admin).
         """
+
         LICENSE_ASSIGNMENT_STATE_UNSPECIFIED = 0
         ASSIGNED = 1
         UNASSIGNED = 2

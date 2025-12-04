@@ -13,21 +13,20 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+from google.api_core import gapic_v1
+from google.api_core import retry as retries
+from google.api_core import retry_async as retries_async
 from typing import (
     Any,
     AsyncIterator,
     Awaitable,
     Callable,
-    Iterator,
-    Optional,
     Sequence,
     Tuple,
+    Optional,
+    Iterator,
     Union,
 )
-
-from google.api_core import gapic_v1
-from google.api_core import retry as retries
-from google.api_core import retry_async as retries_async
 
 try:
     OptionalRetry = Union[retries.Retry, gapic_v1.method._MethodDefault, None]
@@ -38,7 +37,8 @@ except AttributeError:  # pragma: NO COVER
     OptionalRetry = Union[retries.Retry, object, None]  # type: ignore
     OptionalAsyncRetry = Union[retries_async.AsyncRetry, object, None]  # type: ignore
 
-from google.cloud.discoveryengine_v1alpha.types import data_store, data_store_service
+from google.cloud.discoveryengine_v1alpha.types import data_store
+from google.cloud.discoveryengine_v1alpha.types import data_store_service
 
 
 class ListDataStoresPager:
@@ -67,7 +67,7 @@ class ListDataStoresPager:
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]] = ()
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ):
         """Instantiate the pager.
 
@@ -143,7 +143,7 @@ class ListDataStoresAsyncPager:
         *,
         retry: OptionalAsyncRetry = gapic_v1.method.DEFAULT,
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]] = ()
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ):
         """Instantiates the pager.
 

@@ -19,7 +19,9 @@ from typing import Dict, Type
 from .base import CompletionServiceTransport
 from .grpc import CompletionServiceGrpcTransport
 from .grpc_asyncio import CompletionServiceGrpcAsyncIOTransport
-from .rest import CompletionServiceRestInterceptor, CompletionServiceRestTransport
+from .rest import CompletionServiceRestTransport
+from .rest import CompletionServiceRestInterceptor
+
 
 # Compile a registry of transports.
 _transport_registry = OrderedDict()  # type: Dict[str, Type[CompletionServiceTransport]]

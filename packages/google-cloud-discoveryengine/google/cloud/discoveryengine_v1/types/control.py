@@ -17,10 +17,11 @@ from __future__ import annotations
 
 from typing import MutableMapping, MutableSequence
 
-from google.protobuf import timestamp_pb2  # type: ignore
 import proto  # type: ignore
 
 from google.cloud.discoveryengine_v1.types import common
+from google.protobuf import timestamp_pb2  # type: ignore
+
 
 __protobuf__ = proto.module(
     package="google.cloud.discoveryengine.v1",
@@ -282,6 +283,7 @@ class Control(proto.Message):
                         ``[nD][T[nH][nM][nS]]``. For example, ``5D``, ``3DT12H30M``,
                         ``T24H``.
                 """
+
                 ATTRIBUTE_TYPE_UNSPECIFIED = 0
                 NUMERICAL = 1
                 FRESHNESS = 2
@@ -298,6 +300,7 @@ class Control(proto.Message):
                         Piecewise linear interpolation will be
                         applied.
                 """
+
                 INTERPOLATION_TYPE_UNSPECIFIED = 0
                 LINEAR = 1
 

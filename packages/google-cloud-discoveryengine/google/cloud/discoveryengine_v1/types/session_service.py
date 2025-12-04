@@ -15,6 +15,7 @@
 #
 import proto  # type: ignore
 
+
 __protobuf__ = proto.module(
     package="google.cloud.discoveryengine.v1",
     manifest={},

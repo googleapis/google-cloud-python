@@ -19,6 +19,7 @@ from typing import MutableMapping, MutableSequence
 
 import proto  # type: ignore
 
+
 __protobuf__ = proto.module(
     package="google.cloud.discoveryengine.v1",
     manifest={
@@ -46,6 +47,7 @@ class HarmCategory(proto.Enum):
         HARM_CATEGORY_CIVIC_INTEGRITY (5):
             The harm category is civic integrity.
     """
+
     HARM_CATEGORY_UNSPECIFIED = 0
     HARM_CATEGORY_HATE_SPEECH = 1
     HARM_CATEGORY_DANGEROUS_CONTENT = 2
@@ -90,6 +92,7 @@ class SafetyRating(proto.Message):
             HIGH (4):
                 High level of harm.
         """
+
         HARM_PROBABILITY_UNSPECIFIED = 0
         NEGLIGIBLE = 1
         LOW = 2
@@ -111,6 +114,7 @@ class SafetyRating(proto.Message):
             HARM_SEVERITY_HIGH (4):
                 High level of harm severity.
         """
+
         HARM_SEVERITY_UNSPECIFIED = 0
         HARM_SEVERITY_NEGLIGIBLE = 1
         HARM_SEVERITY_LOW = 2

@@ -17,8 +17,10 @@ from __future__ import annotations
 
 from typing import MutableMapping, MutableSequence
 
-from google.protobuf import struct_pb2  # type: ignore
 import proto  # type: ignore
+
+from google.protobuf import struct_pb2  # type: ignore
+
 
 __protobuf__ = proto.module(
     package="google.cloud.discoveryengine.v1",
@@ -92,6 +94,7 @@ class Chunk(proto.Message):
             CHECKBOX_STRUCTURE (3):
                 Checkbox structure.
         """
+
         STRUCTURE_TYPE_UNSPECIFIED = 0
         SHAREHOLDER_STRUCTURE = 1
         SIGNATURE_STRUCTURE = 2

@@ -19,7 +19,9 @@ from typing import Dict, Type
 from .base import SearchServiceTransport
 from .grpc import SearchServiceGrpcTransport
 from .grpc_asyncio import SearchServiceGrpcAsyncIOTransport
-from .rest import SearchServiceRestInterceptor, SearchServiceRestTransport
+from .rest import SearchServiceRestTransport
+from .rest import SearchServiceRestInterceptor
+
 
 # Compile a registry of transports.
 _transport_registry = OrderedDict()  # type: Dict[str, Type[SearchServiceTransport]]

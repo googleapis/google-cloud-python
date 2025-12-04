@@ -17,13 +17,14 @@ from __future__ import annotations
 
 from typing import MutableMapping, MutableSequence
 
-from google.protobuf import timestamp_pb2  # type: ignore
-from google.rpc import status_pb2  # type: ignore
 import proto  # type: ignore
 
 from google.cloud.discoveryengine_v1.types import (
     identity_mapping_store as gcd_identity_mapping_store,
 )
+from google.protobuf import timestamp_pb2  # type: ignore
+from google.rpc import status_pb2  # type: ignore
+
 
 __protobuf__ = proto.module(
     package="google.cloud.discoveryengine.v1",
@@ -229,17 +230,17 @@ class PurgeIdentityMappingsRequest(proto.Message):
             Filter matching identity mappings to purge. The eligible
             field for filtering is:
 
-            - ``update_time``: in ISO 8601 "zulu" format.
-            - ``external_id``
+            -  ``update_time``: in ISO 8601 "zulu" format.
+            -  ``external_id``
 
             Examples:
 
-            - Deleting all identity mappings updated in a time range:
-              ``update_time > "2012-04-23T18:25:43.511Z" AND update_time < "2012-04-23T18:30:43.511Z"``
-            - Deleting all identity mappings for a given external_id:
-              ``external_id = "id1"``
-            - Deleting all identity mappings inside an identity mapping
-              store: ``*``
+            -  Deleting all identity mappings updated in a time range:
+               ``update_time > "2012-04-23T18:25:43.511Z" AND update_time < "2012-04-23T18:30:43.511Z"``
+            -  Deleting all identity mappings for a given external_id:
+               ``external_id = "id1"``
+            -  Deleting all identity mappings inside an identity mapping
+               store: ``*``
 
             The filtering fields are assumed to have an implicit AND.
             Should not be used with source. An error will be thrown, if

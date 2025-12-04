@@ -13,8 +13,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-from .async_client import AclConfigServiceAsyncClient
 from .client import AclConfigServiceClient
+from .async_client import AclConfigServiceAsyncClient
 
 __all__ = (
     "AclConfigServiceClient",

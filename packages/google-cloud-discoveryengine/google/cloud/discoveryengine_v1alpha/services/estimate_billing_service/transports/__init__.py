@@ -19,15 +19,12 @@ from typing import Dict, Type
 from .base import EstimateBillingServiceTransport
 from .grpc import EstimateBillingServiceGrpcTransport
 from .grpc_asyncio import EstimateBillingServiceGrpcAsyncIOTransport
-from .rest import (
-    EstimateBillingServiceRestInterceptor,
-    EstimateBillingServiceRestTransport,
-)
+from .rest import EstimateBillingServiceRestTransport
+from .rest import EstimateBillingServiceRestInterceptor
+
 
 # Compile a registry of transports.
-_transport_registry = (
-    OrderedDict()
-)  # type: Dict[str, Type[EstimateBillingServiceTransport]]
+_transport_registry = OrderedDict()  # type: Dict[str, Type[EstimateBillingServiceTransport]]
 _transport_registry["grpc"] = EstimateBillingServiceGrpcTransport
 _transport_registry["grpc_asyncio"] = EstimateBillingServiceGrpcAsyncIOTransport
 _transport_registry["rest"] = EstimateBillingServiceRestTransport

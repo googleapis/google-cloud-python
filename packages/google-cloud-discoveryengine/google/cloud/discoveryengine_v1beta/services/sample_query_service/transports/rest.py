@@ -13,31 +13,38 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-import dataclasses
-import json  # type: ignore
 import logging
+import json  # type: ignore
+
+from google.auth.transport.requests import AuthorizedSession  # type: ignore
+from google.auth import credentials as ga_credentials  # type: ignore
+from google.api_core import exceptions as core_exceptions
+from google.api_core import retry as retries
+from google.api_core import rest_helpers
+from google.api_core import rest_streaming
+from google.api_core import gapic_v1
+import google.protobuf
+
+from google.protobuf import json_format
+from google.api_core import operations_v1
+from google.cloud.location import locations_pb2  # type: ignore
+
+from requests import __version__ as requests_version
+import dataclasses
 from typing import Any, Callable, Dict, List, Optional, Sequence, Tuple, Union
 import warnings
 
-from google.api_core import gapic_v1, operations_v1, rest_helpers, rest_streaming
-from google.api_core import exceptions as core_exceptions
-from google.api_core import retry as retries
-from google.auth import credentials as ga_credentials  # type: ignore
-from google.auth.transport.requests import AuthorizedSession  # type: ignore
-from google.cloud.location import locations_pb2  # type: ignore
-from google.longrunning import operations_pb2  # type: ignore
-import google.protobuf
-from google.protobuf import empty_pb2  # type: ignore
-from google.protobuf import json_format
-from requests import __version__ as requests_version
 
-from google.cloud.discoveryengine_v1beta.types import sample_query as gcd_sample_query
 from google.cloud.discoveryengine_v1beta.types import import_config
 from google.cloud.discoveryengine_v1beta.types import sample_query
+from google.cloud.discoveryengine_v1beta.types import sample_query as gcd_sample_query
 from google.cloud.discoveryengine_v1beta.types import sample_query_service
+from google.protobuf import empty_pb2  # type: ignore
+from google.longrunning import operations_pb2  # type: ignore
 
-from .base import DEFAULT_CLIENT_INFO as BASE_DEFAULT_CLIENT_INFO
+
 from .rest_base import _BaseSampleQueryServiceRestTransport
+from .base import DEFAULT_CLIENT_INFO as BASE_DEFAULT_CLIENT_INFO
 
 try:
     OptionalRetry = Union[retries.Retry, gapic_v1.method._MethodDefault, None]
@@ -778,9 +785,7 @@ class SampleQueryServiceRestTransport(_BaseSampleQueryServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseSampleQueryServiceRestTransport._BaseCreateSampleQuery._get_http_options()
-            )
+            http_options = _BaseSampleQueryServiceRestTransport._BaseCreateSampleQuery._get_http_options()
 
             request, metadata = self._interceptor.pre_create_sample_query(
                 request, metadata
@@ -928,9 +933,7 @@ class SampleQueryServiceRestTransport(_BaseSampleQueryServiceRestTransport):
                     be of type `bytes`.
             """
 
-            http_options = (
-                _BaseSampleQueryServiceRestTransport._BaseDeleteSampleQuery._get_http_options()
-            )
+            http_options = _BaseSampleQueryServiceRestTransport._BaseDeleteSampleQuery._get_http_options()
 
             request, metadata = self._interceptor.pre_delete_sample_query(
                 request, metadata
@@ -1045,9 +1048,7 @@ class SampleQueryServiceRestTransport(_BaseSampleQueryServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseSampleQueryServiceRestTransport._BaseGetSampleQuery._get_http_options()
-            )
+            http_options = _BaseSampleQueryServiceRestTransport._BaseGetSampleQuery._get_http_options()
 
             request, metadata = self._interceptor.pre_get_sample_query(
                 request, metadata
@@ -1198,9 +1199,7 @@ class SampleQueryServiceRestTransport(_BaseSampleQueryServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseSampleQueryServiceRestTransport._BaseImportSampleQueries._get_http_options()
-            )
+            http_options = _BaseSampleQueryServiceRestTransport._BaseImportSampleQueries._get_http_options()
 
             request, metadata = self._interceptor.pre_import_sample_queries(
                 request, metadata
@@ -1355,9 +1354,7 @@ class SampleQueryServiceRestTransport(_BaseSampleQueryServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseSampleQueryServiceRestTransport._BaseListSampleQueries._get_http_options()
-            )
+            http_options = _BaseSampleQueryServiceRestTransport._BaseListSampleQueries._get_http_options()
 
             request, metadata = self._interceptor.pre_list_sample_queries(
                 request, metadata
@@ -1509,9 +1506,7 @@ class SampleQueryServiceRestTransport(_BaseSampleQueryServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseSampleQueryServiceRestTransport._BaseUpdateSampleQuery._get_http_options()
-            )
+            http_options = _BaseSampleQueryServiceRestTransport._BaseUpdateSampleQuery._get_http_options()
 
             request, metadata = self._interceptor.pre_update_sample_query(
                 request, metadata
@@ -1719,9 +1714,7 @@ class SampleQueryServiceRestTransport(_BaseSampleQueryServiceRestTransport):
                     be of type `bytes`.
             """
 
-            http_options = (
-                _BaseSampleQueryServiceRestTransport._BaseCancelOperation._get_http_options()
-            )
+            http_options = _BaseSampleQueryServiceRestTransport._BaseCancelOperation._get_http_options()
 
             request, metadata = self._interceptor.pre_cancel_operation(
                 request, metadata
@@ -1842,9 +1835,7 @@ class SampleQueryServiceRestTransport(_BaseSampleQueryServiceRestTransport):
                 operations_pb2.Operation: Response from GetOperation method.
             """
 
-            http_options = (
-                _BaseSampleQueryServiceRestTransport._BaseGetOperation._get_http_options()
-            )
+            http_options = _BaseSampleQueryServiceRestTransport._BaseGetOperation._get_http_options()
 
             request, metadata = self._interceptor.pre_get_operation(request, metadata)
             transcoded_request = _BaseSampleQueryServiceRestTransport._BaseGetOperation._get_transcoded_request(
@@ -1983,9 +1974,7 @@ class SampleQueryServiceRestTransport(_BaseSampleQueryServiceRestTransport):
                 operations_pb2.ListOperationsResponse: Response from ListOperations method.
             """
 
-            http_options = (
-                _BaseSampleQueryServiceRestTransport._BaseListOperations._get_http_options()
-            )
+            http_options = _BaseSampleQueryServiceRestTransport._BaseListOperations._get_http_options()
 
             request, metadata = self._interceptor.pre_list_operations(request, metadata)
             transcoded_request = _BaseSampleQueryServiceRestTransport._BaseListOperations._get_transcoded_request(

@@ -13,8 +13,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-from .async_client import DocumentServiceAsyncClient
 from .client import DocumentServiceClient
+from .async_client import DocumentServiceAsyncClient
 
 __all__ = (
     "DocumentServiceClient",

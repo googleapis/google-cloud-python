@@ -19,7 +19,9 @@ from typing import Dict, Type
 from .base import CmekConfigServiceTransport
 from .grpc import CmekConfigServiceGrpcTransport
 from .grpc_asyncio import CmekConfigServiceGrpcAsyncIOTransport
-from .rest import CmekConfigServiceRestInterceptor, CmekConfigServiceRestTransport
+from .rest import CmekConfigServiceRestTransport
+from .rest import CmekConfigServiceRestInterceptor
+
 
 # Compile a registry of transports.
 _transport_registry = OrderedDict()  # type: Dict[str, Type[CmekConfigServiceTransport]]

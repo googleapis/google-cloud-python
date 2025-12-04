@@ -19,12 +19,12 @@ from typing import Dict, Type
 from .base import SampleQueryServiceTransport
 from .grpc import SampleQueryServiceGrpcTransport
 from .grpc_asyncio import SampleQueryServiceGrpcAsyncIOTransport
-from .rest import SampleQueryServiceRestInterceptor, SampleQueryServiceRestTransport
+from .rest import SampleQueryServiceRestTransport
+from .rest import SampleQueryServiceRestInterceptor
+
 
 # Compile a registry of transports.
-_transport_registry = (
-    OrderedDict()
-)  # type: Dict[str, Type[SampleQueryServiceTransport]]
+_transport_registry = OrderedDict()  # type: Dict[str, Type[SampleQueryServiceTransport]]
 _transport_registry["grpc"] = SampleQueryServiceGrpcTransport
 _transport_registry["grpc_asyncio"] = SampleQueryServiceGrpcAsyncIOTransport
 _transport_registry["rest"] = SampleQueryServiceRestTransport

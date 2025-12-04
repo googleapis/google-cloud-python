@@ -13,8 +13,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-from .async_client import ChunkServiceAsyncClient
 from .client import ChunkServiceClient
+from .async_client import ChunkServiceAsyncClient
 
 __all__ = (
     "ChunkServiceClient",

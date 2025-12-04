@@ -19,7 +19,9 @@ from typing import Dict, Type
 from .base import UserEventServiceTransport
 from .grpc import UserEventServiceGrpcTransport
 from .grpc_asyncio import UserEventServiceGrpcAsyncIOTransport
-from .rest import UserEventServiceRestInterceptor, UserEventServiceRestTransport
+from .rest import UserEventServiceRestTransport
+from .rest import UserEventServiceRestInterceptor
+
 
 # Compile a registry of transports.
 _transport_registry = OrderedDict()  # type: Dict[str, Type[UserEventServiceTransport]]

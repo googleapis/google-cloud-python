@@ -15,33 +15,35 @@
 #
 import inspect
 import json
-import logging as std_logging
 import pickle
-from typing import Awaitable, Callable, Dict, Optional, Sequence, Tuple, Union
+import logging as std_logging
 import warnings
+from typing import Awaitable, Callable, Dict, Optional, Sequence, Tuple, Union
 
+from google.api_core import gapic_v1
+from google.api_core import grpc_helpers_async
 from google.api_core import exceptions as core_exceptions
-from google.api_core import gapic_v1, grpc_helpers_async, operations_v1
 from google.api_core import retry_async as retries
+from google.api_core import operations_v1
 from google.auth import credentials as ga_credentials  # type: ignore
 from google.auth.transport.grpc import SslCredentials  # type: ignore
-from google.cloud.location import locations_pb2  # type: ignore
-from google.longrunning import operations_pb2  # type: ignore
 from google.protobuf.json_format import MessageToJson
 import google.protobuf.message
-import grpc  # type: ignore
-from grpc.experimental import aio  # type: ignore
-import proto  # type: ignore
 
+import grpc  # type: ignore
+import proto  # type: ignore
+from grpc.experimental import aio  # type: ignore
+
+from google.cloud.discoveryengine_v1alpha.types import data_store
 from google.cloud.discoveryengine_v1alpha.types import data_store as gcd_data_store
+from google.cloud.discoveryengine_v1alpha.types import data_store_service
 from google.cloud.discoveryengine_v1alpha.types import document_processing_config
 from google.cloud.discoveryengine_v1alpha.types import (
     document_processing_config as gcd_document_processing_config,
 )
-from google.cloud.discoveryengine_v1alpha.types import data_store
-from google.cloud.discoveryengine_v1alpha.types import data_store_service
-
-from .base import DEFAULT_CLIENT_INFO, DataStoreServiceTransport
+from google.cloud.location import locations_pb2  # type: ignore
+from google.longrunning import operations_pb2  # type: ignore
+from .base import DataStoreServiceTransport, DEFAULT_CLIENT_INFO
 from .grpc import DataStoreServiceGrpcTransport
 
 try:
@@ -532,12 +534,12 @@ class DataStoreServiceGrpcAsyncIOTransport(DataStoreServiceTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "get_document_processing_config" not in self._stubs:
-            self._stubs[
-                "get_document_processing_config"
-            ] = self._logged_channel.unary_unary(
-                "/google.cloud.discoveryengine.v1alpha.DataStoreService/GetDocumentProcessingConfig",
-                request_serializer=data_store_service.GetDocumentProcessingConfigRequest.serialize,
-                response_deserializer=document_processing_config.DocumentProcessingConfig.deserialize,
+            self._stubs["get_document_processing_config"] = (
+                self._logged_channel.unary_unary(
+                    "/google.cloud.discoveryengine.v1alpha.DataStoreService/GetDocumentProcessingConfig",
+                    request_serializer=data_store_service.GetDocumentProcessingConfigRequest.serialize,
+                    response_deserializer=document_processing_config.DocumentProcessingConfig.deserialize,
+                )
             )
         return self._stubs["get_document_processing_config"]
 
@@ -572,12 +574,12 @@ class DataStoreServiceGrpcAsyncIOTransport(DataStoreServiceTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "update_document_processing_config" not in self._stubs:
-            self._stubs[
-                "update_document_processing_config"
-            ] = self._logged_channel.unary_unary(
-                "/google.cloud.discoveryengine.v1alpha.DataStoreService/UpdateDocumentProcessingConfig",
-                request_serializer=data_store_service.UpdateDocumentProcessingConfigRequest.serialize,
-                response_deserializer=gcd_document_processing_config.DocumentProcessingConfig.deserialize,
+            self._stubs["update_document_processing_config"] = (
+                self._logged_channel.unary_unary(
+                    "/google.cloud.discoveryengine.v1alpha.DataStoreService/UpdateDocumentProcessingConfig",
+                    request_serializer=data_store_service.UpdateDocumentProcessingConfigRequest.serialize,
+                    response_deserializer=gcd_document_processing_config.DocumentProcessingConfig.deserialize,
+                )
             )
         return self._stubs["update_document_processing_config"]
 

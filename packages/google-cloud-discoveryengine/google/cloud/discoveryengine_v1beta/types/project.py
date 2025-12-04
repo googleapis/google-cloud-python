@@ -17,8 +17,10 @@ from __future__ import annotations
 
 from typing import MutableMapping, MutableSequence
 
-from google.protobuf import timestamp_pb2  # type: ignore
 import proto  # type: ignore
+
+from google.protobuf import timestamp_pb2  # type: ignore
+
 
 __protobuf__ = proto.module(
     package="google.cloud.discoveryengine.v1beta",
@@ -60,11 +62,11 @@ class Project(proto.Message):
                 The unique identifier of this terms of service. Available
                 terms:
 
-                - ``GA_DATA_USE_TERMS``: `Terms for data
-                  use <https://cloud.google.com/retail/data-use-terms>`__.
-                  When using this as ``id``, the acceptable
-                  [version][google.cloud.discoveryengine.v1beta.Project.ServiceTerms.version]
-                  to provide is ``2022-11-23``.
+                -  ``GA_DATA_USE_TERMS``: `Terms for data
+                   use <https://cloud.google.com/retail/data-use-terms>`__.
+                   When using this as ``id``, the acceptable
+                   [version][google.cloud.discoveryengine.v1beta.Project.ServiceTerms.version]
+                   to provide is ``2022-11-23``.
             version (str):
                 The version string of the terms of service. For acceptable
                 values, see the comments for
@@ -98,6 +100,7 @@ class Project(proto.Message):
                     The project has declined or revoked the
                     agreement to terms of service.
             """
+
             STATE_UNSPECIFIED = 0
             TERMS_ACCEPTED = 1
             TERMS_PENDING = 2

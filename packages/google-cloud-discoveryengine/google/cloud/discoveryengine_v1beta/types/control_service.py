@@ -17,10 +17,11 @@ from __future__ import annotations
 
 from typing import MutableMapping, MutableSequence
 
-from google.protobuf import field_mask_pb2  # type: ignore
 import proto  # type: ignore
 
 from google.cloud.discoveryengine_v1beta.types import control as gcd_control
+from google.protobuf import field_mask_pb2  # type: ignore
+
 
 __protobuf__ = proto.module(
     package="google.cloud.discoveryengine.v1beta",
@@ -80,8 +81,8 @@ class UpdateControlRequest(proto.Message):
             [Control][google.cloud.discoveryengine.v1beta.Control] to
             update. The following are NOT supported:
 
-            - [Control.name][google.cloud.discoveryengine.v1beta.Control.name]
-            - [Control.solution_type][google.cloud.discoveryengine.v1beta.Control.solution_type]
+            -  [Control.name][google.cloud.discoveryengine.v1beta.Control.name]
+            -  [Control.solution_type][google.cloud.discoveryengine.v1beta.Control.solution_type]
 
             If not set or empty, all supported fields are updated.
     """
@@ -150,9 +151,9 @@ class ListControlsRequest(proto.Message):
             Optional. A filter to apply on the list results. Supported
             features:
 
-            - List all the products under the parent branch if
-              [filter][google.cloud.discoveryengine.v1beta.ListControlsRequest.filter]
-              is unset. Currently this field is unsupported.
+            -  List all the products under the parent branch if
+               [filter][google.cloud.discoveryengine.v1beta.ListControlsRequest.filter]
+               is unset. Currently this field is unsupported.
     """
 
     parent: str = proto.Field(

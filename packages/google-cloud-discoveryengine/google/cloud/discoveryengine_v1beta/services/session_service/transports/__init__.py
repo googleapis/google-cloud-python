@@ -19,7 +19,9 @@ from typing import Dict, Type
 from .base import SessionServiceTransport
 from .grpc import SessionServiceGrpcTransport
 from .grpc_asyncio import SessionServiceGrpcAsyncIOTransport
-from .rest import SessionServiceRestInterceptor, SessionServiceRestTransport
+from .rest import SessionServiceRestTransport
+from .rest import SessionServiceRestInterceptor
+
 
 # Compile a registry of transports.
 _transport_registry = OrderedDict()  # type: Dict[str, Type[SessionServiceTransport]]

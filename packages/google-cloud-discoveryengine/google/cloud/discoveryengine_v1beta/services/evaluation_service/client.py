@@ -20,8 +20,8 @@ import logging as std_logging
 import os
 import re
 from typing import (
-    Callable,
     Dict,
+    Callable,
     Mapping,
     MutableMapping,
     MutableSequence,
@@ -34,18 +34,18 @@ from typing import (
 )
 import warnings
 
+from google.cloud.discoveryengine_v1beta import gapic_version as package_version
+
 from google.api_core import client_options as client_options_lib
 from google.api_core import exceptions as core_exceptions
 from google.api_core import gapic_v1
 from google.api_core import retry as retries
 from google.auth import credentials as ga_credentials  # type: ignore
-from google.auth.exceptions import MutualTLSChannelError  # type: ignore
 from google.auth.transport import mtls  # type: ignore
 from google.auth.transport.grpc import SslCredentials  # type: ignore
+from google.auth.exceptions import MutualTLSChannelError  # type: ignore
 from google.oauth2 import service_account  # type: ignore
 import google.protobuf
-
-from google.cloud.discoveryengine_v1beta import gapic_version as package_version
 
 try:
     OptionalRetry = Union[retries.Retry, gapic_v1.method._MethodDefault, None]
@@ -63,17 +63,15 @@ _LOGGER = std_logging.getLogger(__name__)
 
 from google.api_core import operation  # type: ignore
 from google.api_core import operation_async  # type: ignore
+from google.cloud.discoveryengine_v1beta.services.evaluation_service import pagers
+from google.cloud.discoveryengine_v1beta.types import evaluation
+from google.cloud.discoveryengine_v1beta.types import evaluation as gcd_evaluation
+from google.cloud.discoveryengine_v1beta.types import evaluation_service
 from google.cloud.location import locations_pb2  # type: ignore
 from google.longrunning import operations_pb2  # type: ignore
 from google.protobuf import timestamp_pb2  # type: ignore
 from google.rpc import status_pb2  # type: ignore
-
-from google.cloud.discoveryengine_v1beta.services.evaluation_service import pagers
-from google.cloud.discoveryengine_v1beta.types import evaluation as gcd_evaluation
-from google.cloud.discoveryengine_v1beta.types import evaluation
-from google.cloud.discoveryengine_v1beta.types import evaluation_service
-
-from .transports.base import DEFAULT_CLIENT_INFO, EvaluationServiceTransport
+from .transports.base import EvaluationServiceTransport, DEFAULT_CLIENT_INFO
 from .transports.grpc import EvaluationServiceGrpcTransport
 from .transports.grpc_asyncio import EvaluationServiceGrpcAsyncIOTransport
 from .transports.rest import EvaluationServiceRestTransport
@@ -87,9 +85,7 @@ class EvaluationServiceClientMeta(type):
     objects.
     """
 
-    _transport_registry = (
-        OrderedDict()
-    )  # type: Dict[str, Type[EvaluationServiceTransport]]
+    _transport_registry = OrderedDict()  # type: Dict[str, Type[EvaluationServiceTransport]]
     _transport_registry["grpc"] = EvaluationServiceGrpcTransport
     _transport_registry["grpc_asyncio"] = EvaluationServiceGrpcAsyncIOTransport
     _transport_registry["rest"] = EvaluationServiceRestTransport
@@ -776,11 +772,9 @@ class EvaluationServiceClient(metaclass=EvaluationServiceClientMeta):
 
         universe_domain_opt = getattr(self._client_options, "universe_domain", None)
 
-        (
-            self._use_client_cert,
-            self._use_mtls_endpoint,
-            self._universe_domain_env,
-        ) = EvaluationServiceClient._read_environment_variables()
+        self._use_client_cert, self._use_mtls_endpoint, self._universe_domain_env = (
+            EvaluationServiceClient._read_environment_variables()
+        )
         self._client_cert_source = EvaluationServiceClient._get_client_cert_source(
             self._client_options.client_cert_source, self._use_client_cert
         )
@@ -815,8 +809,7 @@ class EvaluationServiceClient(metaclass=EvaluationServiceClientMeta):
                 )
             if self._client_options.scopes:
                 raise ValueError(
-                    "When providing a transport instance, provide its scopes "
-                    "directly."
+                    "When providing a transport instance, provide its scopes directly."
                 )
             self._transport = cast(EvaluationServiceTransport, transport)
             self._api_endpoint = self._transport.host

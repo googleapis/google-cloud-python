@@ -19,15 +19,12 @@ from typing import Dict, Type
 from .base import ConversationalSearchServiceTransport
 from .grpc import ConversationalSearchServiceGrpcTransport
 from .grpc_asyncio import ConversationalSearchServiceGrpcAsyncIOTransport
-from .rest import (
-    ConversationalSearchServiceRestInterceptor,
-    ConversationalSearchServiceRestTransport,
-)
+from .rest import ConversationalSearchServiceRestTransport
+from .rest import ConversationalSearchServiceRestInterceptor
+
 
 # Compile a registry of transports.
-_transport_registry = (
-    OrderedDict()
-)  # type: Dict[str, Type[ConversationalSearchServiceTransport]]
+_transport_registry = OrderedDict()  # type: Dict[str, Type[ConversationalSearchServiceTransport]]
 _transport_registry["grpc"] = ConversationalSearchServiceGrpcTransport
 _transport_registry["grpc_asyncio"] = ConversationalSearchServiceGrpcAsyncIOTransport
 _transport_registry["rest"] = ConversationalSearchServiceRestTransport

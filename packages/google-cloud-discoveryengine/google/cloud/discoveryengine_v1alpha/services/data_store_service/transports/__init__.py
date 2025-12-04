@@ -19,7 +19,9 @@ from typing import Dict, Type
 from .base import DataStoreServiceTransport
 from .grpc import DataStoreServiceGrpcTransport
 from .grpc_asyncio import DataStoreServiceGrpcAsyncIOTransport
-from .rest import DataStoreServiceRestInterceptor, DataStoreServiceRestTransport
+from .rest import DataStoreServiceRestTransport
+from .rest import DataStoreServiceRestInterceptor
+
 
 # Compile a registry of transports.
 _transport_registry = OrderedDict()  # type: Dict[str, Type[DataStoreServiceTransport]]

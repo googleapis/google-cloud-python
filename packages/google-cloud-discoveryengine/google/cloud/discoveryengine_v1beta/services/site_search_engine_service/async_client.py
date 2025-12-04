@@ -13,12 +13,12 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-from collections import OrderedDict
 import logging as std_logging
+from collections import OrderedDict
 import re
 from typing import (
-    Callable,
     Dict,
+    Callable,
     Mapping,
     MutableMapping,
     MutableSequence,
@@ -29,15 +29,16 @@ from typing import (
     Union,
 )
 
+from google.cloud.discoveryengine_v1beta import gapic_version as package_version
+
+from google.api_core.client_options import ClientOptions
 from google.api_core import exceptions as core_exceptions
 from google.api_core import gapic_v1
 from google.api_core import retry_async as retries
-from google.api_core.client_options import ClientOptions
 from google.auth import credentials as ga_credentials  # type: ignore
 from google.oauth2 import service_account  # type: ignore
 import google.protobuf
 
-from google.cloud.discoveryengine_v1beta import gapic_version as package_version
 
 try:
     OptionalRetry = Union[retries.AsyncRetry, gapic_v1.method._MethodDefault, None]
@@ -46,22 +47,18 @@ except AttributeError:  # pragma: NO COVER
 
 from google.api_core import operation  # type: ignore
 from google.api_core import operation_async  # type: ignore
+from google.cloud.discoveryengine_v1beta.services.site_search_engine_service import (
+    pagers,
+)
+from google.cloud.discoveryengine_v1beta.types import site_search_engine
+from google.cloud.discoveryengine_v1beta.types import site_search_engine_service
 from google.cloud.location import locations_pb2  # type: ignore
 from google.longrunning import operations_pb2  # type: ignore
 from google.protobuf import empty_pb2  # type: ignore
 from google.protobuf import timestamp_pb2  # type: ignore
-
-from google.cloud.discoveryengine_v1beta.services.site_search_engine_service import (
-    pagers,
-)
-from google.cloud.discoveryengine_v1beta.types import (
-    site_search_engine,
-    site_search_engine_service,
-)
-
-from .client import SiteSearchEngineServiceClient
-from .transports.base import DEFAULT_CLIENT_INFO, SiteSearchEngineServiceTransport
+from .transports.base import SiteSearchEngineServiceTransport, DEFAULT_CLIENT_INFO
 from .transports.grpc_asyncio import SiteSearchEngineServiceGrpcAsyncIOTransport
+from .client import SiteSearchEngineServiceClient
 
 try:
     from google.api_core import client_logging  # type: ignore
@@ -141,7 +138,9 @@ class SiteSearchEngineServiceAsyncClient:
         Returns:
             SiteSearchEngineServiceAsyncClient: The constructed client.
         """
-        return SiteSearchEngineServiceClient.from_service_account_info.__func__(SiteSearchEngineServiceAsyncClient, info, *args, **kwargs)  # type: ignore
+        return SiteSearchEngineServiceClient.from_service_account_info.__func__(
+            SiteSearchEngineServiceAsyncClient, info, *args, **kwargs
+        )  # type: ignore
 
     @classmethod
     def from_service_account_file(cls, filename: str, *args, **kwargs):
@@ -157,7 +156,9 @@ class SiteSearchEngineServiceAsyncClient:
         Returns:
             SiteSearchEngineServiceAsyncClient: The constructed client.
         """
-        return SiteSearchEngineServiceClient.from_service_account_file.__func__(SiteSearchEngineServiceAsyncClient, filename, *args, **kwargs)  # type: ignore
+        return SiteSearchEngineServiceClient.from_service_account_file.__func__(
+            SiteSearchEngineServiceAsyncClient, filename, *args, **kwargs
+        )  # type: ignore
 
     from_service_account_json = from_service_account_file
 
@@ -195,7 +196,9 @@ class SiteSearchEngineServiceAsyncClient:
         Raises:
             google.auth.exceptions.MutualTLSChannelError: If any errors happen.
         """
-        return SiteSearchEngineServiceClient.get_mtls_endpoint_and_cert_source(client_options)  # type: ignore
+        return SiteSearchEngineServiceClient.get_mtls_endpoint_and_cert_source(
+            client_options
+        )  # type: ignore
 
     @property
     def transport(self) -> SiteSearchEngineServiceTransport:

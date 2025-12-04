@@ -20,8 +20,8 @@ import logging as std_logging
 import os
 import re
 from typing import (
-    Callable,
     Dict,
+    Callable,
     Mapping,
     MutableMapping,
     MutableSequence,
@@ -34,18 +34,18 @@ from typing import (
 )
 import warnings
 
+from google.cloud.discoveryengine_v1beta import gapic_version as package_version
+
 from google.api_core import client_options as client_options_lib
 from google.api_core import exceptions as core_exceptions
 from google.api_core import gapic_v1
 from google.api_core import retry as retries
 from google.auth import credentials as ga_credentials  # type: ignore
-from google.auth.exceptions import MutualTLSChannelError  # type: ignore
 from google.auth.transport import mtls  # type: ignore
 from google.auth.transport.grpc import SslCredentials  # type: ignore
+from google.auth.exceptions import MutualTLSChannelError  # type: ignore
 from google.oauth2 import service_account  # type: ignore
 import google.protobuf
-
-from google.cloud.discoveryengine_v1beta import gapic_version as package_version
 
 try:
     OptionalRetry = Union[retries.Retry, gapic_v1.method._MethodDefault, None]
@@ -61,17 +61,15 @@ except ImportError:  # pragma: NO COVER
 
 _LOGGER = std_logging.getLogger(__name__)
 
-from google.cloud.location import locations_pb2  # type: ignore
-from google.longrunning import operations_pb2  # type: ignore
-from google.protobuf import field_mask_pb2  # type: ignore
-
 from google.cloud.discoveryengine_v1beta.services.control_service import pagers
 from google.cloud.discoveryengine_v1beta.types import common
 from google.cloud.discoveryengine_v1beta.types import control
 from google.cloud.discoveryengine_v1beta.types import control as gcd_control
 from google.cloud.discoveryengine_v1beta.types import control_service
-
-from .transports.base import DEFAULT_CLIENT_INFO, ControlServiceTransport
+from google.cloud.location import locations_pb2  # type: ignore
+from google.longrunning import operations_pb2  # type: ignore
+from google.protobuf import field_mask_pb2  # type: ignore
+from .transports.base import ControlServiceTransport, DEFAULT_CLIENT_INFO
 from .transports.grpc import ControlServiceGrpcTransport
 from .transports.grpc_asyncio import ControlServiceGrpcAsyncIOTransport
 from .transports.rest import ControlServiceRestTransport
@@ -85,9 +83,7 @@ class ControlServiceClientMeta(type):
     objects.
     """
 
-    _transport_registry = (
-        OrderedDict()
-    )  # type: Dict[str, Type[ControlServiceTransport]]
+    _transport_registry = OrderedDict()  # type: Dict[str, Type[ControlServiceTransport]]
     _transport_registry["grpc"] = ControlServiceGrpcTransport
     _transport_registry["grpc_asyncio"] = ControlServiceGrpcAsyncIOTransport
     _transport_registry["rest"] = ControlServiceRestTransport
@@ -637,11 +633,9 @@ class ControlServiceClient(metaclass=ControlServiceClientMeta):
 
         universe_domain_opt = getattr(self._client_options, "universe_domain", None)
 
-        (
-            self._use_client_cert,
-            self._use_mtls_endpoint,
-            self._universe_domain_env,
-        ) = ControlServiceClient._read_environment_variables()
+        self._use_client_cert, self._use_mtls_endpoint, self._universe_domain_env = (
+            ControlServiceClient._read_environment_variables()
+        )
         self._client_cert_source = ControlServiceClient._get_client_cert_source(
             self._client_options.client_cert_source, self._use_client_cert
         )
@@ -676,8 +670,7 @@ class ControlServiceClient(metaclass=ControlServiceClientMeta):
                 )
             if self._client_options.scopes:
                 raise ValueError(
-                    "When providing a transport instance, provide its scopes "
-                    "directly."
+                    "When providing a transport instance, provide its scopes directly."
                 )
             self._transport = cast(ControlServiceTransport, transport)
             self._api_endpoint = self._transport.host
@@ -1056,8 +1049,8 @@ class ControlServiceClient(metaclass=ControlServiceClientMeta):
                 [Control][google.cloud.discoveryengine.v1beta.Control]
                 to update. The following are NOT supported:
 
-                - [Control.name][google.cloud.discoveryengine.v1beta.Control.name]
-                - [Control.solution_type][google.cloud.discoveryengine.v1beta.Control.solution_type]
+                -  [Control.name][google.cloud.discoveryengine.v1beta.Control.name]
+                -  [Control.solution_type][google.cloud.discoveryengine.v1beta.Control.solution_type]
 
                 If not set or empty, all supported fields are updated.
 

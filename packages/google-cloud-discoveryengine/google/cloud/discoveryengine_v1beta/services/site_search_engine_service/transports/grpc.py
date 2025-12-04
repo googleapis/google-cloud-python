@@ -16,26 +16,26 @@
 import json
 import logging as std_logging
 import pickle
-from typing import Callable, Dict, Optional, Sequence, Tuple, Union
 import warnings
+from typing import Callable, Dict, Optional, Sequence, Tuple, Union
 
-from google.api_core import gapic_v1, grpc_helpers, operations_v1
+from google.api_core import grpc_helpers
+from google.api_core import operations_v1
+from google.api_core import gapic_v1
 import google.auth  # type: ignore
 from google.auth import credentials as ga_credentials  # type: ignore
 from google.auth.transport.grpc import SslCredentials  # type: ignore
-from google.cloud.location import locations_pb2  # type: ignore
-from google.longrunning import operations_pb2  # type: ignore
 from google.protobuf.json_format import MessageToJson
 import google.protobuf.message
+
 import grpc  # type: ignore
 import proto  # type: ignore
 
-from google.cloud.discoveryengine_v1beta.types import (
-    site_search_engine,
-    site_search_engine_service,
-)
-
-from .base import DEFAULT_CLIENT_INFO, SiteSearchEngineServiceTransport
+from google.cloud.discoveryengine_v1beta.types import site_search_engine
+from google.cloud.discoveryengine_v1beta.types import site_search_engine_service
+from google.cloud.location import locations_pb2  # type: ignore
+from google.longrunning import operations_pb2  # type: ignore
+from .base import SiteSearchEngineServiceTransport, DEFAULT_CLIENT_INFO
 
 try:
     from google.api_core import client_logging  # type: ignore
@@ -661,12 +661,12 @@ class SiteSearchEngineServiceGrpcTransport(SiteSearchEngineServiceTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "enable_advanced_site_search" not in self._stubs:
-            self._stubs[
-                "enable_advanced_site_search"
-            ] = self._logged_channel.unary_unary(
-                "/google.cloud.discoveryengine.v1beta.SiteSearchEngineService/EnableAdvancedSiteSearch",
-                request_serializer=site_search_engine_service.EnableAdvancedSiteSearchRequest.serialize,
-                response_deserializer=operations_pb2.Operation.FromString,
+            self._stubs["enable_advanced_site_search"] = (
+                self._logged_channel.unary_unary(
+                    "/google.cloud.discoveryengine.v1beta.SiteSearchEngineService/EnableAdvancedSiteSearch",
+                    request_serializer=site_search_engine_service.EnableAdvancedSiteSearchRequest.serialize,
+                    response_deserializer=operations_pb2.Operation.FromString,
+                )
             )
         return self._stubs["enable_advanced_site_search"]
 
@@ -693,12 +693,12 @@ class SiteSearchEngineServiceGrpcTransport(SiteSearchEngineServiceTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "disable_advanced_site_search" not in self._stubs:
-            self._stubs[
-                "disable_advanced_site_search"
-            ] = self._logged_channel.unary_unary(
-                "/google.cloud.discoveryengine.v1beta.SiteSearchEngineService/DisableAdvancedSiteSearch",
-                request_serializer=site_search_engine_service.DisableAdvancedSiteSearchRequest.serialize,
-                response_deserializer=operations_pb2.Operation.FromString,
+            self._stubs["disable_advanced_site_search"] = (
+                self._logged_channel.unary_unary(
+                    "/google.cloud.discoveryengine.v1beta.SiteSearchEngineService/DisableAdvancedSiteSearch",
+                    request_serializer=site_search_engine_service.DisableAdvancedSiteSearchRequest.serialize,
+                    response_deserializer=operations_pb2.Operation.FromString,
+                )
             )
         return self._stubs["disable_advanced_site_search"]
 
@@ -786,12 +786,12 @@ class SiteSearchEngineServiceGrpcTransport(SiteSearchEngineServiceTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "fetch_domain_verification_status" not in self._stubs:
-            self._stubs[
-                "fetch_domain_verification_status"
-            ] = self._logged_channel.unary_unary(
-                "/google.cloud.discoveryengine.v1beta.SiteSearchEngineService/FetchDomainVerificationStatus",
-                request_serializer=site_search_engine_service.FetchDomainVerificationStatusRequest.serialize,
-                response_deserializer=site_search_engine_service.FetchDomainVerificationStatusResponse.deserialize,
+            self._stubs["fetch_domain_verification_status"] = (
+                self._logged_channel.unary_unary(
+                    "/google.cloud.discoveryengine.v1beta.SiteSearchEngineService/FetchDomainVerificationStatus",
+                    request_serializer=site_search_engine_service.FetchDomainVerificationStatusRequest.serialize,
+                    response_deserializer=site_search_engine_service.FetchDomainVerificationStatusResponse.deserialize,
+                )
             )
         return self._stubs["fetch_domain_verification_status"]
 

@@ -13,12 +13,12 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-from collections import OrderedDict
 import logging as std_logging
+from collections import OrderedDict
 import re
 from typing import (
-    Callable,
     Dict,
+    Callable,
     Mapping,
     MutableMapping,
     MutableSequence,
@@ -29,15 +29,16 @@ from typing import (
     Union,
 )
 
+from google.cloud.discoveryengine_v1alpha import gapic_version as package_version
+
+from google.api_core.client_options import ClientOptions
 from google.api_core import exceptions as core_exceptions
 from google.api_core import gapic_v1
 from google.api_core import retry_async as retries
-from google.api_core.client_options import ClientOptions
 from google.auth import credentials as ga_credentials  # type: ignore
 from google.oauth2 import service_account  # type: ignore
 import google.protobuf
 
-from google.cloud.discoveryengine_v1alpha import gapic_version as package_version
 
 try:
     OptionalRetry = Union[retries.AsyncRetry, gapic_v1.method._MethodDefault, None]
@@ -46,14 +47,12 @@ except AttributeError:  # pragma: NO COVER
 
 from google.api_core import operation  # type: ignore
 from google.api_core import operation_async  # type: ignore
+from google.cloud.discoveryengine_v1alpha.types import estimate_billing_service
 from google.cloud.location import locations_pb2  # type: ignore
 from google.longrunning import operations_pb2  # type: ignore
-
-from google.cloud.discoveryengine_v1alpha.types import estimate_billing_service
-
-from .client import EstimateBillingServiceClient
-from .transports.base import DEFAULT_CLIENT_INFO, EstimateBillingServiceTransport
+from .transports.base import EstimateBillingServiceTransport, DEFAULT_CLIENT_INFO
 from .transports.grpc_asyncio import EstimateBillingServiceGrpcAsyncIOTransport
+from .client import EstimateBillingServiceClient
 
 try:
     from google.api_core import client_logging  # type: ignore
@@ -119,7 +118,9 @@ class EstimateBillingServiceAsyncClient:
         Returns:
             EstimateBillingServiceAsyncClient: The constructed client.
         """
-        return EstimateBillingServiceClient.from_service_account_info.__func__(EstimateBillingServiceAsyncClient, info, *args, **kwargs)  # type: ignore
+        return EstimateBillingServiceClient.from_service_account_info.__func__(
+            EstimateBillingServiceAsyncClient, info, *args, **kwargs
+        )  # type: ignore
 
     @classmethod
     def from_service_account_file(cls, filename: str, *args, **kwargs):
@@ -135,7 +136,9 @@ class EstimateBillingServiceAsyncClient:
         Returns:
             EstimateBillingServiceAsyncClient: The constructed client.
         """
-        return EstimateBillingServiceClient.from_service_account_file.__func__(EstimateBillingServiceAsyncClient, filename, *args, **kwargs)  # type: ignore
+        return EstimateBillingServiceClient.from_service_account_file.__func__(
+            EstimateBillingServiceAsyncClient, filename, *args, **kwargs
+        )  # type: ignore
 
     from_service_account_json = from_service_account_file
 
@@ -173,7 +176,9 @@ class EstimateBillingServiceAsyncClient:
         Raises:
             google.auth.exceptions.MutualTLSChannelError: If any errors happen.
         """
-        return EstimateBillingServiceClient.get_mtls_endpoint_and_cert_source(client_options)  # type: ignore
+        return EstimateBillingServiceClient.get_mtls_endpoint_and_cert_source(
+            client_options
+        )  # type: ignore
 
     @property
     def transport(self) -> EstimateBillingServiceTransport:

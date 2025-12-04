@@ -20,13 +20,13 @@ import logging as std_logging
 import os
 import re
 from typing import (
-    Callable,
     Dict,
-    Iterable,
+    Callable,
     Mapping,
     MutableMapping,
     MutableSequence,
     Optional,
+    Iterable,
     Sequence,
     Tuple,
     Type,
@@ -35,18 +35,18 @@ from typing import (
 )
 import warnings
 
+from google.cloud.discoveryengine_v1 import gapic_version as package_version
+
 from google.api_core import client_options as client_options_lib
 from google.api_core import exceptions as core_exceptions
 from google.api_core import gapic_v1
 from google.api_core import retry as retries
 from google.auth import credentials as ga_credentials  # type: ignore
-from google.auth.exceptions import MutualTLSChannelError  # type: ignore
 from google.auth.transport import mtls  # type: ignore
 from google.auth.transport.grpc import SslCredentials  # type: ignore
+from google.auth.exceptions import MutualTLSChannelError  # type: ignore
 from google.oauth2 import service_account  # type: ignore
 import google.protobuf
-
-from google.cloud.discoveryengine_v1 import gapic_version as package_version
 
 try:
     OptionalRetry = Union[retries.Retry, gapic_v1.method._MethodDefault, None]
@@ -62,26 +62,22 @@ except ImportError:  # pragma: NO COVER
 
 _LOGGER = std_logging.getLogger(__name__)
 
+from google.cloud.discoveryengine_v1.services.conversational_search_service import (
+    pagers,
+)
+from google.cloud.discoveryengine_v1.types import answer
+from google.cloud.discoveryengine_v1.types import conversation
+from google.cloud.discoveryengine_v1.types import conversation as gcd_conversation
+from google.cloud.discoveryengine_v1.types import conversational_search_service
+from google.cloud.discoveryengine_v1.types import safety
+from google.cloud.discoveryengine_v1.types import search_service
+from google.cloud.discoveryengine_v1.types import session
+from google.cloud.discoveryengine_v1.types import session as gcd_session
 from google.cloud.location import locations_pb2  # type: ignore
 from google.longrunning import operations_pb2  # type: ignore
 from google.protobuf import field_mask_pb2  # type: ignore
 from google.protobuf import timestamp_pb2  # type: ignore
-
-from google.cloud.discoveryengine_v1.services.conversational_search_service import (
-    pagers,
-)
-from google.cloud.discoveryengine_v1.types import (
-    conversational_search_service,
-    safety,
-    search_service,
-)
-from google.cloud.discoveryengine_v1.types import conversation as gcd_conversation
-from google.cloud.discoveryengine_v1.types import answer
-from google.cloud.discoveryengine_v1.types import conversation
-from google.cloud.discoveryengine_v1.types import session
-from google.cloud.discoveryengine_v1.types import session as gcd_session
-
-from .transports.base import DEFAULT_CLIENT_INFO, ConversationalSearchServiceTransport
+from .transports.base import ConversationalSearchServiceTransport, DEFAULT_CLIENT_INFO
 from .transports.grpc import ConversationalSearchServiceGrpcTransport
 from .transports.grpc_asyncio import ConversationalSearchServiceGrpcAsyncIOTransport
 from .transports.rest import ConversationalSearchServiceRestTransport
@@ -95,13 +91,11 @@ class ConversationalSearchServiceClientMeta(type):
     objects.
     """
 
-    _transport_registry = (
-        OrderedDict()
-    )  # type: Dict[str, Type[ConversationalSearchServiceTransport]]
+    _transport_registry = OrderedDict()  # type: Dict[str, Type[ConversationalSearchServiceTransport]]
     _transport_registry["grpc"] = ConversationalSearchServiceGrpcTransport
-    _transport_registry[
-        "grpc_asyncio"
-    ] = ConversationalSearchServiceGrpcAsyncIOTransport
+    _transport_registry["grpc_asyncio"] = (
+        ConversationalSearchServiceGrpcAsyncIOTransport
+    )
     _transport_registry["rest"] = ConversationalSearchServiceRestTransport
 
     def get_transport_class(
@@ -809,11 +803,9 @@ class ConversationalSearchServiceClient(
 
         universe_domain_opt = getattr(self._client_options, "universe_domain", None)
 
-        (
-            self._use_client_cert,
-            self._use_mtls_endpoint,
-            self._universe_domain_env,
-        ) = ConversationalSearchServiceClient._read_environment_variables()
+        self._use_client_cert, self._use_mtls_endpoint, self._universe_domain_env = (
+            ConversationalSearchServiceClient._read_environment_variables()
+        )
         self._client_cert_source = (
             ConversationalSearchServiceClient._get_client_cert_source(
                 self._client_options.client_cert_source, self._use_client_cert
@@ -850,8 +842,7 @@ class ConversationalSearchServiceClient(
                 )
             if self._client_options.scopes:
                 raise ValueError(
-                    "When providing a transport instance, provide its scopes "
-                    "directly."
+                    "When providing a transport instance, provide its scopes directly."
                 )
             self._transport = cast(ConversationalSearchServiceTransport, transport)
             self._api_endpoint = self._transport.host
@@ -1338,7 +1329,7 @@ class ConversationalSearchServiceClient(
                 [Conversation][google.cloud.discoveryengine.v1.Conversation]
                 to update. The following are NOT supported:
 
-                - [Conversation.name][google.cloud.discoveryengine.v1.Conversation.name]
+                -  [Conversation.name][google.cloud.discoveryengine.v1.Conversation.name]
 
                 If not set or empty, all supported fields are updated.
 
@@ -2230,7 +2221,7 @@ class ConversationalSearchServiceClient(
                 [Session][google.cloud.discoveryengine.v1.Session] to
                 update. The following are NOT supported:
 
-                - [Session.name][google.cloud.discoveryengine.v1.Session.name]
+                -  [Session.name][google.cloud.discoveryengine.v1.Session.name]
 
                 If not set or empty, all supported fields are updated.
 

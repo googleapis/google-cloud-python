@@ -16,25 +16,26 @@
 import abc
 from typing import Awaitable, Callable, Dict, Optional, Sequence, Union
 
+from google.cloud.discoveryengine_v1beta import gapic_version as package_version
+
+import google.auth  # type: ignore
 import google.api_core
 from google.api_core import exceptions as core_exceptions
 from google.api_core import gapic_v1
 from google.api_core import retry as retries
-import google.auth  # type: ignore
 from google.auth import credentials as ga_credentials  # type: ignore
-from google.cloud.location import locations_pb2  # type: ignore
-from google.longrunning import operations_pb2  # type: ignore
 from google.oauth2 import service_account  # type: ignore
 import google.protobuf
-from google.protobuf import empty_pb2  # type: ignore
 
-from google.cloud.discoveryengine_v1beta import gapic_version as package_version
-from google.cloud.discoveryengine_v1beta.types import conversation as gcd_conversation
-from google.cloud.discoveryengine_v1beta.types import conversational_search_service
 from google.cloud.discoveryengine_v1beta.types import answer
 from google.cloud.discoveryengine_v1beta.types import conversation
+from google.cloud.discoveryengine_v1beta.types import conversation as gcd_conversation
+from google.cloud.discoveryengine_v1beta.types import conversational_search_service
 from google.cloud.discoveryengine_v1beta.types import session
 from google.cloud.discoveryengine_v1beta.types import session as gcd_session
+from google.cloud.location import locations_pb2  # type: ignore
+from google.longrunning import operations_pb2  # type: ignore
+from google.protobuf import empty_pb2  # type: ignore
 
 DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
     gapic_version=package_version.__version__
@@ -385,7 +386,10 @@ class ConversationalSearchServiceTransport(abc.ABC):
     @property
     def cancel_operation(
         self,
-    ) -> Callable[[operations_pb2.CancelOperationRequest], None,]:
+    ) -> Callable[
+        [operations_pb2.CancelOperationRequest],
+        None,
+    ]:
         raise NotImplementedError()
 
     @property

@@ -14,23 +14,25 @@
 # limitations under the License.
 #
 import json  # type: ignore
+from google.api_core import path_template
+from google.api_core import gapic_v1
+
+from google.protobuf import json_format
+from google.cloud.location import locations_pb2  # type: ignore
+from .base import DataStoreServiceTransport, DEFAULT_CLIENT_INFO
+
 import re
 from typing import Any, Callable, Dict, List, Optional, Sequence, Tuple, Union
 
-from google.api_core import gapic_v1, path_template
-from google.cloud.location import locations_pb2  # type: ignore
-from google.longrunning import operations_pb2  # type: ignore
-from google.protobuf import json_format
 
+from google.cloud.discoveryengine_v1alpha.types import data_store
 from google.cloud.discoveryengine_v1alpha.types import data_store as gcd_data_store
+from google.cloud.discoveryengine_v1alpha.types import data_store_service
 from google.cloud.discoveryengine_v1alpha.types import document_processing_config
 from google.cloud.discoveryengine_v1alpha.types import (
     document_processing_config as gcd_document_processing_config,
 )
-from google.cloud.discoveryengine_v1alpha.types import data_store
-from google.cloud.discoveryengine_v1alpha.types import data_store_service
-
-from .base import DEFAULT_CLIENT_INFO, DataStoreServiceTransport
+from google.longrunning import operations_pb2  # type: ignore
 
 
 class _BaseDataStoreServiceRestTransport(DataStoreServiceTransport):

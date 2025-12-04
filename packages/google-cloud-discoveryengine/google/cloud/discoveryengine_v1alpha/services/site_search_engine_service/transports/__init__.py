@@ -19,15 +19,12 @@ from typing import Dict, Type
 from .base import SiteSearchEngineServiceTransport
 from .grpc import SiteSearchEngineServiceGrpcTransport
 from .grpc_asyncio import SiteSearchEngineServiceGrpcAsyncIOTransport
-from .rest import (
-    SiteSearchEngineServiceRestInterceptor,
-    SiteSearchEngineServiceRestTransport,
-)
+from .rest import SiteSearchEngineServiceRestTransport
+from .rest import SiteSearchEngineServiceRestInterceptor
+
 
 # Compile a registry of transports.
-_transport_registry = (
-    OrderedDict()
-)  # type: Dict[str, Type[SiteSearchEngineServiceTransport]]
+_transport_registry = OrderedDict()  # type: Dict[str, Type[SiteSearchEngineServiceTransport]]
 _transport_registry["grpc"] = SiteSearchEngineServiceGrpcTransport
 _transport_registry["grpc_asyncio"] = SiteSearchEngineServiceGrpcAsyncIOTransport
 _transport_registry["rest"] = SiteSearchEngineServiceRestTransport

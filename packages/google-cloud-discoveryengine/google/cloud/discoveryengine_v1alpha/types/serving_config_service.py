@@ -17,12 +17,13 @@ from __future__ import annotations
 
 from typing import MutableMapping, MutableSequence
 
-from google.protobuf import field_mask_pb2  # type: ignore
 import proto  # type: ignore
 
 from google.cloud.discoveryengine_v1alpha.types import (
     serving_config as gcd_serving_config,
 )
+from google.protobuf import field_mask_pb2  # type: ignore
+
 
 __protobuf__ = proto.module(
     package="google.cloud.discoveryengine.v1alpha",
@@ -46,7 +47,7 @@ class UpdateServingConfigRequest(proto.Message):
             [ServingConfig][google.cloud.discoveryengine.v1alpha.ServingConfig]
             to update. The following are NOT supported:
 
-            - [ServingConfig.name][google.cloud.discoveryengine.v1alpha.ServingConfig.name]
+            -  [ServingConfig.name][google.cloud.discoveryengine.v1alpha.ServingConfig.name]
 
             If not set, all supported fields are updated.
     """
@@ -126,12 +127,12 @@ class ListServingConfigsResponse(proto.Message):
     def raw_page(self):
         return self
 
-    serving_configs: MutableSequence[
-        gcd_serving_config.ServingConfig
-    ] = proto.RepeatedField(
-        proto.MESSAGE,
-        number=1,
-        message=gcd_serving_config.ServingConfig,
+    serving_configs: MutableSequence[gcd_serving_config.ServingConfig] = (
+        proto.RepeatedField(
+            proto.MESSAGE,
+            number=1,
+            message=gcd_serving_config.ServingConfig,
+        )
     )
     next_page_token: str = proto.Field(
         proto.STRING,

@@ -17,10 +17,11 @@ from __future__ import annotations
 
 from typing import MutableMapping, MutableSequence
 
-from google.protobuf import field_mask_pb2  # type: ignore
 import proto  # type: ignore
 
 from google.cloud.discoveryengine_v1.types import serving_config as gcd_serving_config
+from google.protobuf import field_mask_pb2  # type: ignore
+
 
 __protobuf__ = proto.module(
     package="google.cloud.discoveryengine.v1",
@@ -41,7 +42,7 @@ class UpdateServingConfigRequest(proto.Message):
             [ServingConfig][google.cloud.discoveryengine.v1.ServingConfig]
             to update. The following are NOT supported:
 
-            - [ServingConfig.name][google.cloud.discoveryengine.v1.ServingConfig.name]
+            -  [ServingConfig.name][google.cloud.discoveryengine.v1.ServingConfig.name]
 
             If not set, all supported fields are updated.
     """

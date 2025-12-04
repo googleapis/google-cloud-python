@@ -17,12 +17,13 @@ from __future__ import annotations
 
 from typing import MutableMapping, MutableSequence
 
-from google.protobuf import struct_pb2  # type: ignore
-from google.protobuf import timestamp_pb2  # type: ignore
-from google.rpc import status_pb2  # type: ignore
 import proto  # type: ignore
 
 from google.cloud.discoveryengine_v1alpha.types import common
+from google.protobuf import struct_pb2  # type: ignore
+from google.protobuf import timestamp_pb2  # type: ignore
+from google.rpc import status_pb2  # type: ignore
+
 
 __protobuf__ = proto.module(
     package="google.cloud.discoveryengine.v1alpha",
@@ -100,11 +101,11 @@ class Document(proto.Message):
         index_status (google.cloud.discoveryengine_v1alpha.types.Document.IndexStatus):
             Output only. The index status of the document.
 
-            - If document is indexed successfully, the index_time field
-              is populated.
-            - Otherwise, if document is not indexed due to errors, the
-              error_samples field is populated.
-            - Otherwise, index_status is unset.
+            -  If document is indexed successfully, the index_time field
+               is populated.
+            -  Otherwise, if document is not indexed due to errors, the
+               error_samples field is populated.
+            -  Otherwise, index_status is unset.
     """
 
     class Content(proto.Message):
@@ -140,14 +141,14 @@ class Document(proto.Message):
             mime_type (str):
                 The MIME type of the content. Supported types:
 
-                - ``application/pdf`` (PDF, only native PDFs are supported
-                  for now)
-                - ``text/html`` (HTML)
-                - ``application/vnd.openxmlformats-officedocument.wordprocessingml.document``
-                  (DOCX)
-                - ``application/vnd.openxmlformats-officedocument.presentationml.presentation``
-                  (PPTX)
-                - ``text/plain`` (TXT)
+                -  ``application/pdf`` (PDF, only native PDFs are supported
+                   for now)
+                -  ``text/html`` (HTML)
+                -  ``application/vnd.openxmlformats-officedocument.wordprocessingml.document``
+                   (DOCX)
+                -  ``application/vnd.openxmlformats-officedocument.presentationml.presentation``
+                   (PPTX)
+                -  ``text/plain`` (TXT)
 
                 See
                 https://www.iana.org/assignments/media-types/media-types.xhtml.
@@ -212,12 +213,12 @@ class Document(proto.Message):
                 number=2,
             )
 
-        readers: MutableSequence[
-            "Document.AclInfo.AccessRestriction"
-        ] = proto.RepeatedField(
-            proto.MESSAGE,
-            number=1,
-            message="Document.AclInfo.AccessRestriction",
+        readers: MutableSequence["Document.AclInfo.AccessRestriction"] = (
+            proto.RepeatedField(
+                proto.MESSAGE,
+                number=1,
+                message="Document.AclInfo.AccessRestriction",
+            )
         )
 
     class IndexStatus(proto.Message):

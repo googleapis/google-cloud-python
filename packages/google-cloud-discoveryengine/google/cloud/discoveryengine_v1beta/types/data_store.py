@@ -17,14 +17,15 @@ from __future__ import annotations
 
 from typing import MutableMapping, MutableSequence
 
-from google.protobuf import timestamp_pb2  # type: ignore
 import proto  # type: ignore
 
+from google.cloud.discoveryengine_v1beta.types import common
 from google.cloud.discoveryengine_v1beta.types import (
     document_processing_config as gcd_document_processing_config,
 )
-from google.cloud.discoveryengine_v1beta.types import common
 from google.cloud.discoveryengine_v1beta.types import schema
+from google.protobuf import timestamp_pb2  # type: ignore
+
 
 __protobuf__ = proto.module(
     package="google.cloud.discoveryengine.v1beta",
@@ -62,10 +63,11 @@ class DataStore(proto.Message):
             solutions for each
             [industry_vertical][google.cloud.discoveryengine.v1beta.DataStore.industry_vertical]:
 
-            - ``MEDIA``: ``SOLUTION_TYPE_RECOMMENDATION`` and
-              ``SOLUTION_TYPE_SEARCH``.
-            - ``SITE_SEARCH``: ``SOLUTION_TYPE_SEARCH`` is automatically
-              enrolled. Other solutions cannot be enrolled.
+            -  ``MEDIA``: ``SOLUTION_TYPE_RECOMMENDATION`` and
+               ``SOLUTION_TYPE_SEARCH``.
+            -  ``SITE_SEARCH``: ``SOLUTION_TYPE_SEARCH`` is
+               automatically enrolled. Other solutions cannot be
+               enrolled.
         default_schema_id (str):
             Output only. The id of the default
             [Schema][google.cloud.discoveryengine.v1beta.Schema]
@@ -138,6 +140,7 @@ class DataStore(proto.Message):
                 workspace data store are specified in the
                 [WorkspaceConfig][google.cloud.discoveryengine.v1beta.WorkspaceConfig].
         """
+
         CONTENT_CONFIG_UNSPECIFIED = 0
         NO_CONTENT = 1
         CONTENT_REQUIRED = 2
@@ -342,6 +345,7 @@ class NaturalLanguageQueryUnderstandingConfig(proto.Message):
                 Natural Language Query Understanding is
                 enabled.
         """
+
         MODE_UNSPECIFIED = 0
         DISABLED = 1
         ENABLED = 2
@@ -396,6 +400,7 @@ class WorkspaceConfig(proto.Message):
             GOOGLE_KEEP (7):
                 Workspace Data Store contains Keep data
         """
+
         TYPE_UNSPECIFIED = 0
         GOOGLE_DRIVE = 1
         GOOGLE_MAIL = 2

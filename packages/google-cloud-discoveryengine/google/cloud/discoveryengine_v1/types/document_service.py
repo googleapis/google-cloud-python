@@ -17,11 +17,12 @@ from __future__ import annotations
 
 from typing import MutableMapping, MutableSequence
 
-from google.protobuf import field_mask_pb2  # type: ignore
-from google.protobuf import timestamp_pb2  # type: ignore
 import proto  # type: ignore
 
 from google.cloud.discoveryengine_v1.types import document as gcd_document
+from google.protobuf import field_mask_pb2  # type: ignore
+from google.protobuf import timestamp_pb2  # type: ignore
+
 
 __protobuf__ = proto.module(
     package="google.cloud.discoveryengine.v1",
@@ -391,6 +392,7 @@ class BatchGetDocumentsMetadataResponse(proto.Message):
                 The [Document][google.cloud.discoveryengine.v1.Document] is
                 not indexed.
         """
+
         STATE_UNSPECIFIED = 0
         INDEXED = 1
         NOT_IN_TARGET_SITE = 2
@@ -416,10 +418,10 @@ class BatchGetDocumentsMetadataResponse(proto.Message):
 
                 Allowed values are:
 
-                - ``batch``: Data ingested via Batch API, e.g.,
-                  ImportDocuments.
-                - ``streaming`` Data ingested via Streaming API, e.g., FHIR
-                  streaming.
+                -  ``batch``: Data ingested via Batch API, e.g.,
+                   ImportDocuments.
+                -  ``streaming`` Data ingested via Streaming API, e.g., FHIR
+                   streaming.
         """
 
         class MatcherValue(proto.Message):

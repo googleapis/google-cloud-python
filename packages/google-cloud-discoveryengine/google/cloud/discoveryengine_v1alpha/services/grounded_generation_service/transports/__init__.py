@@ -19,15 +19,12 @@ from typing import Dict, Type
 from .base import GroundedGenerationServiceTransport
 from .grpc import GroundedGenerationServiceGrpcTransport
 from .grpc_asyncio import GroundedGenerationServiceGrpcAsyncIOTransport
-from .rest import (
-    GroundedGenerationServiceRestInterceptor,
-    GroundedGenerationServiceRestTransport,
-)
+from .rest import GroundedGenerationServiceRestTransport
+from .rest import GroundedGenerationServiceRestInterceptor
+
 
 # Compile a registry of transports.
-_transport_registry = (
-    OrderedDict()
-)  # type: Dict[str, Type[GroundedGenerationServiceTransport]]
+_transport_registry = OrderedDict()  # type: Dict[str, Type[GroundedGenerationServiceTransport]]
 _transport_registry["grpc"] = GroundedGenerationServiceGrpcTransport
 _transport_registry["grpc_asyncio"] = GroundedGenerationServiceGrpcAsyncIOTransport
 _transport_registry["rest"] = GroundedGenerationServiceRestTransport
