@@ -13,10 +13,10 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-from .async_client import RankServiceAsyncClient
 from .client import RankServiceClient
+from .async_client import RankServiceAsyncClient
 
 __all__ = (
-    "RankServiceClient",
-    "RankServiceAsyncClient",
+    'RankServiceClient',
+    'RankServiceAsyncClient',
 )

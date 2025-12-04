@@ -19,24 +19,25 @@ from typing import MutableMapping, MutableSequence
 
 import proto  # type: ignore
 
+
 __protobuf__ = proto.module(
-    package="google.cloud.discoveryengine.v1alpha",
+    package='google.cloud.discoveryengine.v1alpha',
     manifest={
-        "IndustryVertical",
-        "SolutionType",
-        "SearchUseCase",
-        "SearchTier",
-        "SearchAddOn",
-        "FileOriginType",
-        "Interval",
-        "CustomAttribute",
-        "UserInfo",
-        "EmbeddingConfig",
-        "DoubleList",
-        "GuidedSearchSpec",
-        "CustomFineTuningSpec",
-        "IdpConfig",
-        "Principal",
+        'IndustryVertical',
+        'SolutionType',
+        'SearchUseCase',
+        'SearchTier',
+        'SearchAddOn',
+        'FileOriginType',
+        'Interval',
+        'CustomAttribute',
+        'UserInfo',
+        'EmbeddingConfig',
+        'DoubleList',
+        'GuidedSearchSpec',
+        'CustomFineTuningSpec',
+        'IdpConfig',
+        'Principal',
     },
 )
 
@@ -193,22 +194,22 @@ class Interval(proto.Message):
     minimum: float = proto.Field(
         proto.DOUBLE,
         number=1,
-        oneof="min",
+        oneof='min',
     )
     exclusive_minimum: float = proto.Field(
         proto.DOUBLE,
         number=2,
-        oneof="min",
+        oneof='min',
     )
     maximum: float = proto.Field(
         proto.DOUBLE,
         number=3,
-        oneof="max",
+        oneof='max',
     )
     exclusive_maximum: float = proto.Field(
         proto.DOUBLE,
         number=4,
-        oneof="max",
+        oneof='max',
     )
 
 
@@ -379,7 +380,6 @@ class IdpConfig(proto.Message):
         external_idp_config (google.cloud.discoveryengine_v1alpha.types.IdpConfig.ExternalIdpConfig):
             External Identity provider config.
     """
-
     class IdpType(proto.Enum):
         r"""Identity Provider Type.
 
@@ -452,12 +452,12 @@ class Principal(proto.Message):
     user_id: str = proto.Field(
         proto.STRING,
         number=1,
-        oneof="principal",
+        oneof='principal',
     )
     group_id: str = proto.Field(
         proto.STRING,
         number=2,
-        oneof="principal",
+        oneof='principal',
     )
 
 

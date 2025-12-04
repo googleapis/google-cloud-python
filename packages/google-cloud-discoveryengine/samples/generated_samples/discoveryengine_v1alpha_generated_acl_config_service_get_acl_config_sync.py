@@ -49,5 +49,4 @@ def sample_get_acl_config():
     # Handle the response
     print(response)
 
-
 # [END discoveryengine_v1alpha_generated_AclConfigService_GetAclConfig_sync]

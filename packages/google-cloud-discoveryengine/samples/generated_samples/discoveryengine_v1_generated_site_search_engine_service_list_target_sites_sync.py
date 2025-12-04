@@ -50,5 +50,4 @@ def sample_list_target_sites():
     for response in page_result:
         print(response)
 
-
 # [END discoveryengine_v1_generated_SiteSearchEngineService_ListTargetSites_sync]

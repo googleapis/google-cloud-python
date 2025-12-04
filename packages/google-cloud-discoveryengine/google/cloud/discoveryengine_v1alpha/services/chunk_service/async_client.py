@@ -13,57 +13,44 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-from collections import OrderedDict
 import logging as std_logging
+from collections import OrderedDict
 import re
-from typing import (
-    Callable,
-    Dict,
-    Mapping,
-    MutableMapping,
-    MutableSequence,
-    Optional,
-    Sequence,
-    Tuple,
-    Type,
-    Union,
-)
+from typing import Dict, Callable, Mapping, MutableMapping, MutableSequence, Optional, Sequence, Tuple, Type, Union
 
+from google.cloud.discoveryengine_v1alpha import gapic_version as package_version
+
+from google.api_core.client_options import ClientOptions
 from google.api_core import exceptions as core_exceptions
 from google.api_core import gapic_v1
 from google.api_core import retry_async as retries
-from google.api_core.client_options import ClientOptions
-from google.auth import credentials as ga_credentials  # type: ignore
-from google.oauth2 import service_account  # type: ignore
+from google.auth import credentials as ga_credentials   # type: ignore
+from google.oauth2 import service_account              # type: ignore
 import google.protobuf
 
-from google.cloud.discoveryengine_v1alpha import gapic_version as package_version
 
 try:
     OptionalRetry = Union[retries.AsyncRetry, gapic_v1.method._MethodDefault, None]
 except AttributeError:  # pragma: NO COVER
     OptionalRetry = Union[retries.AsyncRetry, object, None]  # type: ignore
 
-from google.cloud.location import locations_pb2  # type: ignore
-from google.longrunning import operations_pb2  # type: ignore
-from google.protobuf import struct_pb2  # type: ignore
-
 from google.cloud.discoveryengine_v1alpha.services.chunk_service import pagers
-from google.cloud.discoveryengine_v1alpha.types import chunk, chunk_service
-
-from .client import ChunkServiceClient
-from .transports.base import DEFAULT_CLIENT_INFO, ChunkServiceTransport
+from google.cloud.discoveryengine_v1alpha.types import chunk
+from google.cloud.discoveryengine_v1alpha.types import chunk_service
+from google.cloud.location import locations_pb2 # type: ignore
+from google.longrunning import operations_pb2 # type: ignore
+from google.protobuf import struct_pb2  # type: ignore
+from .transports.base import ChunkServiceTransport, DEFAULT_CLIENT_INFO
 from .transports.grpc_asyncio import ChunkServiceGrpcAsyncIOTransport
+from .client import ChunkServiceClient
 
 try:
     from google.api_core import client_logging  # type: ignore
-
     CLIENT_LOGGING_SUPPORTED = True  # pragma: NO COVER
 except ImportError:  # pragma: NO COVER
     CLIENT_LOGGING_SUPPORTED = False
 
 _LOGGER = std_logging.getLogger(__name__)
-
 
 class ChunkServiceAsyncClient:
     """Service for displaying processed
@@ -84,26 +71,16 @@ class ChunkServiceAsyncClient:
     parse_chunk_path = staticmethod(ChunkServiceClient.parse_chunk_path)
     document_path = staticmethod(ChunkServiceClient.document_path)
     parse_document_path = staticmethod(ChunkServiceClient.parse_document_path)
-    common_billing_account_path = staticmethod(
-        ChunkServiceClient.common_billing_account_path
-    )
-    parse_common_billing_account_path = staticmethod(
-        ChunkServiceClient.parse_common_billing_account_path
-    )
+    common_billing_account_path = staticmethod(ChunkServiceClient.common_billing_account_path)
+    parse_common_billing_account_path = staticmethod(ChunkServiceClient.parse_common_billing_account_path)
     common_folder_path = staticmethod(ChunkServiceClient.common_folder_path)
     parse_common_folder_path = staticmethod(ChunkServiceClient.parse_common_folder_path)
     common_organization_path = staticmethod(ChunkServiceClient.common_organization_path)
-    parse_common_organization_path = staticmethod(
-        ChunkServiceClient.parse_common_organization_path
-    )
+    parse_common_organization_path = staticmethod(ChunkServiceClient.parse_common_organization_path)
     common_project_path = staticmethod(ChunkServiceClient.common_project_path)
-    parse_common_project_path = staticmethod(
-        ChunkServiceClient.parse_common_project_path
-    )
+    parse_common_project_path = staticmethod(ChunkServiceClient.parse_common_project_path)
     common_location_path = staticmethod(ChunkServiceClient.common_location_path)
-    parse_common_location_path = staticmethod(
-        ChunkServiceClient.parse_common_location_path
-    )
+    parse_common_location_path = staticmethod(ChunkServiceClient.parse_common_location_path)
 
     @classmethod
     def from_service_account_info(cls, info: dict, *args, **kwargs):
@@ -139,9 +116,7 @@ class ChunkServiceAsyncClient:
     from_service_account_json = from_service_account_file
 
     @classmethod
-    def get_mtls_endpoint_and_cert_source(
-        cls, client_options: Optional[ClientOptions] = None
-    ):
+    def get_mtls_endpoint_and_cert_source(cls, client_options: Optional[ClientOptions] = None):
         """Return the API endpoint and client cert source for mutual TLS.
 
         The client cert source is determined in the following order:
@@ -204,16 +179,12 @@ class ChunkServiceAsyncClient:
 
     get_transport_class = ChunkServiceClient.get_transport_class
 
-    def __init__(
-        self,
-        *,
-        credentials: Optional[ga_credentials.Credentials] = None,
-        transport: Optional[
-            Union[str, ChunkServiceTransport, Callable[..., ChunkServiceTransport]]
-        ] = "grpc_asyncio",
-        client_options: Optional[ClientOptions] = None,
-        client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
-    ) -> None:
+    def __init__(self, *,
+            credentials: Optional[ga_credentials.Credentials] = None,
+            transport: Optional[Union[str, ChunkServiceTransport, Callable[..., ChunkServiceTransport]]] = "grpc_asyncio",
+            client_options: Optional[ClientOptions] = None,
+            client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
+            ) -> None:
         """Instantiates the chunk service async client.
 
         Args:
@@ -268,39 +239,31 @@ class ChunkServiceAsyncClient:
             transport=transport,
             client_options=client_options,
             client_info=client_info,
+
         )
 
-        if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-            std_logging.DEBUG
-        ):  # pragma: NO COVER
+        if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(std_logging.DEBUG):  # pragma: NO COVER
             _LOGGER.debug(
                 "Created client `google.cloud.discoveryengine_v1alpha.ChunkServiceAsyncClient`.",
-                extra={
+                extra = {
                     "serviceName": "google.cloud.discoveryengine.v1alpha.ChunkService",
-                    "universeDomain": getattr(
-                        self._client._transport._credentials, "universe_domain", ""
-                    ),
+                    "universeDomain": getattr(self._client._transport._credentials, "universe_domain", ""),
                     "credentialsType": f"{type(self._client._transport._credentials).__module__}.{type(self._client._transport._credentials).__qualname__}",
-                    "credentialsInfo": getattr(
-                        self.transport._credentials, "get_cred_info", lambda: None
-                    )(),
-                }
-                if hasattr(self._client._transport, "_credentials")
-                else {
+                    "credentialsInfo": getattr(self.transport._credentials, "get_cred_info", lambda: None)(),
+                } if hasattr(self._client._transport, "_credentials") else {
                     "serviceName": "google.cloud.discoveryengine.v1alpha.ChunkService",
                     "credentialsType": None,
-                },
+                }
             )
 
-    async def get_chunk(
-        self,
-        request: Optional[Union[chunk_service.GetChunkRequest, dict]] = None,
-        *,
-        name: Optional[str] = None,
-        retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
-    ) -> chunk.Chunk:
+    async def get_chunk(self,
+            request: Optional[Union[chunk_service.GetChunkRequest, dict]] = None,
+            *,
+            name: Optional[str] = None,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+            ) -> chunk.Chunk:
         r"""Gets a
         [Document][google.cloud.discoveryengine.v1alpha.Document].
 
@@ -372,14 +335,10 @@ class ChunkServiceAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [name]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of "
+                             "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -393,14 +352,14 @@ class ChunkServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.get_chunk
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.get_chunk]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
         metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
+            gapic_v1.routing_header.to_grpc_metadata((
+                ("name", request.name),
+            )),
         )
 
         # Validate the universe domain.
@@ -417,15 +376,14 @@ class ChunkServiceAsyncClient:
         # Done; return the response.
         return response
 
-    async def list_chunks(
-        self,
-        request: Optional[Union[chunk_service.ListChunksRequest, dict]] = None,
-        *,
-        parent: Optional[str] = None,
-        retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
-    ) -> pagers.ListChunksAsyncPager:
+    async def list_chunks(self,
+            request: Optional[Union[chunk_service.ListChunksRequest, dict]] = None,
+            *,
+            parent: Optional[str] = None,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+            ) -> pagers.ListChunksAsyncPager:
         r"""Gets a list of
         [Chunk][google.cloud.discoveryengine.v1alpha.Chunk]s.
 
@@ -496,14 +454,10 @@ class ChunkServiceAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [parent]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of "
+                             "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -517,14 +471,14 @@ class ChunkServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.list_chunks
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.list_chunks]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
         metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
+            gapic_v1.routing_header.to_grpc_metadata((
+                ("parent", request.parent),
+            )),
         )
 
         # Validate the universe domain.
@@ -590,7 +544,8 @@ class ChunkServiceAsyncClient:
         # Certain fields should be provided within the metadata header;
         # add these here.
         metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
+            gapic_v1.routing_header.to_grpc_metadata(
+                (("name", request.name),)),
         )
 
         # Validate the universe domain.
@@ -598,11 +553,7 @@ class ChunkServiceAsyncClient:
 
         # Send the request.
         response = await rpc(
-            request,
-            retry=retry,
-            timeout=timeout,
-            metadata=metadata,
-        )
+            request, retry=retry, timeout=timeout, metadata=metadata,)
 
         # Done; return the response.
         return response
@@ -645,7 +596,8 @@ class ChunkServiceAsyncClient:
         # Certain fields should be provided within the metadata header;
         # add these here.
         metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
+            gapic_v1.routing_header.to_grpc_metadata(
+                (("name", request.name),)),
         )
 
         # Validate the universe domain.
@@ -653,11 +605,7 @@ class ChunkServiceAsyncClient:
 
         # Send the request.
         response = await rpc(
-            request,
-            retry=retry,
-            timeout=timeout,
-            metadata=metadata,
-        )
+            request, retry=retry, timeout=timeout, metadata=metadata,)
 
         # Done; return the response.
         return response
@@ -703,19 +651,15 @@ class ChunkServiceAsyncClient:
         # Certain fields should be provided within the metadata header;
         # add these here.
         metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
+            gapic_v1.routing_header.to_grpc_metadata(
+                (("name", request.name),)),
         )
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
 
         # Send the request.
-        await rpc(
-            request,
-            retry=retry,
-            timeout=timeout,
-            metadata=metadata,
-        )
+        await rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
 
     async def __aenter__(self) -> "ChunkServiceAsyncClient":
         return self
@@ -723,13 +667,12 @@ class ChunkServiceAsyncClient:
     async def __aexit__(self, exc_type, exc, tb):
         await self.transport.close()
 
+DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(gapic_version=package_version.__version__)
 
-DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
-    gapic_version=package_version.__version__
-)
-
-if hasattr(DEFAULT_CLIENT_INFO, "protobuf_runtime_version"):  # pragma: NO COVER
+if hasattr(DEFAULT_CLIENT_INFO, "protobuf_runtime_version"):   # pragma: NO COVER
     DEFAULT_CLIENT_INFO.protobuf_runtime_version = google.protobuf.__version__
 
 
-__all__ = ("ChunkServiceAsyncClient",)
+__all__ = (
+    "ChunkServiceAsyncClient",
+)

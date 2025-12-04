@@ -18,605 +18,563 @@ from google.cloud.discoveryengine_v1 import gapic_version as package_version
 __version__ = package_version.__version__
 
 
-from .services.assistant_service import (
-    AssistantServiceAsyncClient,
-    AssistantServiceClient,
-)
-from .services.cmek_config_service import (
-    CmekConfigServiceAsyncClient,
-    CmekConfigServiceClient,
-)
-from .services.completion_service import (
-    CompletionServiceAsyncClient,
-    CompletionServiceClient,
-)
-from .services.control_service import ControlServiceAsyncClient, ControlServiceClient
-from .services.conversational_search_service import (
-    ConversationalSearchServiceAsyncClient,
-    ConversationalSearchServiceClient,
-)
-from .services.data_store_service import (
-    DataStoreServiceAsyncClient,
-    DataStoreServiceClient,
-)
-from .services.document_service import DocumentServiceAsyncClient, DocumentServiceClient
-from .services.engine_service import EngineServiceAsyncClient, EngineServiceClient
-from .services.grounded_generation_service import (
-    GroundedGenerationServiceAsyncClient,
-    GroundedGenerationServiceClient,
-)
-from .services.identity_mapping_store_service import (
-    IdentityMappingStoreServiceAsyncClient,
-    IdentityMappingStoreServiceClient,
-)
-from .services.project_service import ProjectServiceAsyncClient, ProjectServiceClient
-from .services.rank_service import RankServiceAsyncClient, RankServiceClient
-from .services.recommendation_service import (
-    RecommendationServiceAsyncClient,
-    RecommendationServiceClient,
-)
-from .services.schema_service import SchemaServiceAsyncClient, SchemaServiceClient
-from .services.search_service import SearchServiceAsyncClient, SearchServiceClient
-from .services.search_tuning_service import (
-    SearchTuningServiceAsyncClient,
-    SearchTuningServiceClient,
-)
-from .services.serving_config_service import (
-    ServingConfigServiceAsyncClient,
-    ServingConfigServiceClient,
-)
-from .services.session_service import SessionServiceAsyncClient, SessionServiceClient
-from .services.site_search_engine_service import (
-    SiteSearchEngineServiceAsyncClient,
-    SiteSearchEngineServiceClient,
-)
-from .services.user_event_service import (
-    UserEventServiceAsyncClient,
-    UserEventServiceClient,
-)
-from .services.user_license_service import (
-    UserLicenseServiceAsyncClient,
-    UserLicenseServiceClient,
-)
+from .services.assistant_service import AssistantServiceClient
+from .services.assistant_service import AssistantServiceAsyncClient
+from .services.cmek_config_service import CmekConfigServiceClient
+from .services.cmek_config_service import CmekConfigServiceAsyncClient
+from .services.completion_service import CompletionServiceClient
+from .services.completion_service import CompletionServiceAsyncClient
+from .services.control_service import ControlServiceClient
+from .services.control_service import ControlServiceAsyncClient
+from .services.conversational_search_service import ConversationalSearchServiceClient
+from .services.conversational_search_service import ConversationalSearchServiceAsyncClient
+from .services.data_store_service import DataStoreServiceClient
+from .services.data_store_service import DataStoreServiceAsyncClient
+from .services.document_service import DocumentServiceClient
+from .services.document_service import DocumentServiceAsyncClient
+from .services.engine_service import EngineServiceClient
+from .services.engine_service import EngineServiceAsyncClient
+from .services.grounded_generation_service import GroundedGenerationServiceClient
+from .services.grounded_generation_service import GroundedGenerationServiceAsyncClient
+from .services.identity_mapping_store_service import IdentityMappingStoreServiceClient
+from .services.identity_mapping_store_service import IdentityMappingStoreServiceAsyncClient
+from .services.project_service import ProjectServiceClient
+from .services.project_service import ProjectServiceAsyncClient
+from .services.rank_service import RankServiceClient
+from .services.rank_service import RankServiceAsyncClient
+from .services.recommendation_service import RecommendationServiceClient
+from .services.recommendation_service import RecommendationServiceAsyncClient
+from .services.schema_service import SchemaServiceClient
+from .services.schema_service import SchemaServiceAsyncClient
+from .services.search_service import SearchServiceClient
+from .services.search_service import SearchServiceAsyncClient
+from .services.search_tuning_service import SearchTuningServiceClient
+from .services.search_tuning_service import SearchTuningServiceAsyncClient
+from .services.serving_config_service import ServingConfigServiceClient
+from .services.serving_config_service import ServingConfigServiceAsyncClient
+from .services.session_service import SessionServiceClient
+from .services.session_service import SessionServiceAsyncClient
+from .services.site_search_engine_service import SiteSearchEngineServiceClient
+from .services.site_search_engine_service import SiteSearchEngineServiceAsyncClient
+from .services.user_event_service import UserEventServiceClient
+from .services.user_event_service import UserEventServiceAsyncClient
+from .services.user_license_service import UserLicenseServiceClient
+from .services.user_license_service import UserLicenseServiceAsyncClient
+
 from .types.answer import Answer
-from .types.assist_answer import (
-    AssistAnswer,
-    AssistantContent,
-    AssistantGroundedContent,
-)
+from .types.assist_answer import AssistAnswer
+from .types.assist_answer import AssistantContent
+from .types.assist_answer import AssistantGroundedContent
 from .types.assistant import Assistant
-from .types.assistant_service import (
-    AssistUserMetadata,
-    StreamAssistRequest,
-    StreamAssistResponse,
-)
+from .types.assistant_service import AssistUserMetadata
+from .types.assistant_service import StreamAssistRequest
+from .types.assistant_service import StreamAssistResponse
 from .types.chunk import Chunk
-from .types.cmek_config_service import (
-    CmekConfig,
-    DeleteCmekConfigMetadata,
-    DeleteCmekConfigRequest,
-    GetCmekConfigRequest,
-    ListCmekConfigsRequest,
-    ListCmekConfigsResponse,
-    SingleRegionKey,
-    UpdateCmekConfigMetadata,
-    UpdateCmekConfigRequest,
-)
-from .types.common import (
-    CustomAttribute,
-    DoubleList,
-    HealthcareFhirConfig,
-    IndustryVertical,
-    Interval,
-    Principal,
-    SearchAddOn,
-    SearchLinkPromotion,
-    SearchTier,
-    SearchUseCase,
-    SolutionType,
-    UserInfo,
-)
-from .types.completion import CompletionSuggestion, SuggestionDenyListEntry
-from .types.completion_service import CompleteQueryRequest, CompleteQueryResponse
-from .types.control import Condition, Control
-from .types.control_service import (
-    CreateControlRequest,
-    DeleteControlRequest,
-    GetControlRequest,
-    ListControlsRequest,
-    ListControlsResponse,
-    UpdateControlRequest,
-)
-from .types.conversation import (
-    Conversation,
-    ConversationContext,
-    ConversationMessage,
-    Reply,
-    TextInput,
-)
-from .types.conversational_search_service import (
-    AnswerQueryRequest,
-    AnswerQueryResponse,
-    ConverseConversationRequest,
-    ConverseConversationResponse,
-    CreateConversationRequest,
-    CreateSessionRequest,
-    DeleteConversationRequest,
-    DeleteSessionRequest,
-    GetAnswerRequest,
-    GetConversationRequest,
-    GetSessionRequest,
-    ListConversationsRequest,
-    ListConversationsResponse,
-    ListSessionsRequest,
-    ListSessionsResponse,
-    UpdateConversationRequest,
-    UpdateSessionRequest,
-)
+from .types.cmek_config_service import CmekConfig
+from .types.cmek_config_service import DeleteCmekConfigMetadata
+from .types.cmek_config_service import DeleteCmekConfigRequest
+from .types.cmek_config_service import GetCmekConfigRequest
+from .types.cmek_config_service import ListCmekConfigsRequest
+from .types.cmek_config_service import ListCmekConfigsResponse
+from .types.cmek_config_service import SingleRegionKey
+from .types.cmek_config_service import UpdateCmekConfigMetadata
+from .types.cmek_config_service import UpdateCmekConfigRequest
+from .types.common import CustomAttribute
+from .types.common import DoubleList
+from .types.common import HealthcareFhirConfig
+from .types.common import Interval
+from .types.common import Principal
+from .types.common import SearchLinkPromotion
+from .types.common import UserInfo
+from .types.common import IndustryVertical
+from .types.common import SearchAddOn
+from .types.common import SearchTier
+from .types.common import SearchUseCase
+from .types.common import SolutionType
+from .types.completion import CompletionSuggestion
+from .types.completion import SuggestionDenyListEntry
+from .types.completion_service import CompleteQueryRequest
+from .types.completion_service import CompleteQueryResponse
+from .types.control import Condition
+from .types.control import Control
+from .types.control_service import CreateControlRequest
+from .types.control_service import DeleteControlRequest
+from .types.control_service import GetControlRequest
+from .types.control_service import ListControlsRequest
+from .types.control_service import ListControlsResponse
+from .types.control_service import UpdateControlRequest
+from .types.conversation import Conversation
+from .types.conversation import ConversationContext
+from .types.conversation import ConversationMessage
+from .types.conversation import Reply
+from .types.conversation import TextInput
+from .types.conversational_search_service import AnswerQueryRequest
+from .types.conversational_search_service import AnswerQueryResponse
+from .types.conversational_search_service import ConverseConversationRequest
+from .types.conversational_search_service import ConverseConversationResponse
+from .types.conversational_search_service import CreateConversationRequest
+from .types.conversational_search_service import CreateSessionRequest
+from .types.conversational_search_service import DeleteConversationRequest
+from .types.conversational_search_service import DeleteSessionRequest
+from .types.conversational_search_service import GetAnswerRequest
+from .types.conversational_search_service import GetConversationRequest
+from .types.conversational_search_service import GetSessionRequest
+from .types.conversational_search_service import ListConversationsRequest
+from .types.conversational_search_service import ListConversationsResponse
+from .types.conversational_search_service import ListSessionsRequest
+from .types.conversational_search_service import ListSessionsResponse
+from .types.conversational_search_service import UpdateConversationRequest
+from .types.conversational_search_service import UpdateSessionRequest
 from .types.custom_tuning_model import CustomTuningModel
-from .types.data_store import AdvancedSiteSearchConfig, DataStore, WorkspaceConfig
-from .types.data_store_service import (
-    CreateDataStoreMetadata,
-    CreateDataStoreRequest,
-    DeleteDataStoreMetadata,
-    DeleteDataStoreRequest,
-    GetDataStoreRequest,
-    ListDataStoresRequest,
-    ListDataStoresResponse,
-    UpdateDataStoreRequest,
-)
+from .types.data_store import AdvancedSiteSearchConfig
+from .types.data_store import DataStore
+from .types.data_store import WorkspaceConfig
+from .types.data_store_service import CreateDataStoreMetadata
+from .types.data_store_service import CreateDataStoreRequest
+from .types.data_store_service import DeleteDataStoreMetadata
+from .types.data_store_service import DeleteDataStoreRequest
+from .types.data_store_service import GetDataStoreRequest
+from .types.data_store_service import ListDataStoresRequest
+from .types.data_store_service import ListDataStoresResponse
+from .types.data_store_service import UpdateDataStoreRequest
 from .types.document import Document
 from .types.document_processing_config import DocumentProcessingConfig
-from .types.document_service import (
-    BatchGetDocumentsMetadataRequest,
-    BatchGetDocumentsMetadataResponse,
-    CreateDocumentRequest,
-    DeleteDocumentRequest,
-    GetDocumentRequest,
-    ListDocumentsRequest,
-    ListDocumentsResponse,
-    UpdateDocumentRequest,
-)
+from .types.document_service import BatchGetDocumentsMetadataRequest
+from .types.document_service import BatchGetDocumentsMetadataResponse
+from .types.document_service import CreateDocumentRequest
+from .types.document_service import DeleteDocumentRequest
+from .types.document_service import GetDocumentRequest
+from .types.document_service import ListDocumentsRequest
+from .types.document_service import ListDocumentsResponse
+from .types.document_service import UpdateDocumentRequest
 from .types.engine import Engine
-from .types.engine_service import (
-    CreateEngineMetadata,
-    CreateEngineRequest,
-    DeleteEngineMetadata,
-    DeleteEngineRequest,
-    GetEngineRequest,
-    ListEnginesRequest,
-    ListEnginesResponse,
-    UpdateEngineRequest,
-)
-from .types.grounded_generation_service import (
-    CheckGroundingRequest,
-    CheckGroundingResponse,
-    CheckGroundingSpec,
-    GenerateGroundedContentRequest,
-    GenerateGroundedContentResponse,
-    GroundedGenerationContent,
-)
-from .types.grounding import FactChunk, GroundingFact
-from .types.identity_mapping_store import IdentityMappingEntry, IdentityMappingStore
-from .types.identity_mapping_store_service import (
-    CreateIdentityMappingStoreRequest,
-    DeleteIdentityMappingStoreMetadata,
-    DeleteIdentityMappingStoreRequest,
-    GetIdentityMappingStoreRequest,
-    IdentityMappingEntryOperationMetadata,
-    ImportIdentityMappingsRequest,
-    ImportIdentityMappingsResponse,
-    ListIdentityMappingsRequest,
-    ListIdentityMappingsResponse,
-    ListIdentityMappingStoresRequest,
-    ListIdentityMappingStoresResponse,
-    PurgeIdentityMappingsRequest,
-)
-from .types.import_config import (
-    AlloyDbSource,
-    BigQuerySource,
-    BigtableOptions,
-    BigtableSource,
-    CloudSqlSource,
-    FhirStoreSource,
-    FirestoreSource,
-    GcsSource,
-    ImportCompletionSuggestionsMetadata,
-    ImportCompletionSuggestionsRequest,
-    ImportCompletionSuggestionsResponse,
-    ImportDocumentsMetadata,
-    ImportDocumentsRequest,
-    ImportDocumentsResponse,
-    ImportErrorConfig,
-    ImportSuggestionDenyListEntriesMetadata,
-    ImportSuggestionDenyListEntriesRequest,
-    ImportSuggestionDenyListEntriesResponse,
-    ImportUserEventsMetadata,
-    ImportUserEventsRequest,
-    ImportUserEventsResponse,
-    SpannerSource,
-)
+from .types.engine_service import CreateEngineMetadata
+from .types.engine_service import CreateEngineRequest
+from .types.engine_service import DeleteEngineMetadata
+from .types.engine_service import DeleteEngineRequest
+from .types.engine_service import GetEngineRequest
+from .types.engine_service import ListEnginesRequest
+from .types.engine_service import ListEnginesResponse
+from .types.engine_service import UpdateEngineRequest
+from .types.grounded_generation_service import CheckGroundingRequest
+from .types.grounded_generation_service import CheckGroundingResponse
+from .types.grounded_generation_service import CheckGroundingSpec
+from .types.grounded_generation_service import GenerateGroundedContentRequest
+from .types.grounded_generation_service import GenerateGroundedContentResponse
+from .types.grounded_generation_service import GroundedGenerationContent
+from .types.grounding import FactChunk
+from .types.grounding import GroundingFact
+from .types.identity_mapping_store import IdentityMappingEntry
+from .types.identity_mapping_store import IdentityMappingStore
+from .types.identity_mapping_store_service import CreateIdentityMappingStoreRequest
+from .types.identity_mapping_store_service import DeleteIdentityMappingStoreMetadata
+from .types.identity_mapping_store_service import DeleteIdentityMappingStoreRequest
+from .types.identity_mapping_store_service import GetIdentityMappingStoreRequest
+from .types.identity_mapping_store_service import IdentityMappingEntryOperationMetadata
+from .types.identity_mapping_store_service import ImportIdentityMappingsRequest
+from .types.identity_mapping_store_service import ImportIdentityMappingsResponse
+from .types.identity_mapping_store_service import ListIdentityMappingsRequest
+from .types.identity_mapping_store_service import ListIdentityMappingsResponse
+from .types.identity_mapping_store_service import ListIdentityMappingStoresRequest
+from .types.identity_mapping_store_service import ListIdentityMappingStoresResponse
+from .types.identity_mapping_store_service import PurgeIdentityMappingsRequest
+from .types.import_config import AlloyDbSource
+from .types.import_config import BigQuerySource
+from .types.import_config import BigtableOptions
+from .types.import_config import BigtableSource
+from .types.import_config import CloudSqlSource
+from .types.import_config import FhirStoreSource
+from .types.import_config import FirestoreSource
+from .types.import_config import GcsSource
+from .types.import_config import ImportCompletionSuggestionsMetadata
+from .types.import_config import ImportCompletionSuggestionsRequest
+from .types.import_config import ImportCompletionSuggestionsResponse
+from .types.import_config import ImportDocumentsMetadata
+from .types.import_config import ImportDocumentsRequest
+from .types.import_config import ImportDocumentsResponse
+from .types.import_config import ImportErrorConfig
+from .types.import_config import ImportSuggestionDenyListEntriesMetadata
+from .types.import_config import ImportSuggestionDenyListEntriesRequest
+from .types.import_config import ImportSuggestionDenyListEntriesResponse
+from .types.import_config import ImportUserEventsMetadata
+from .types.import_config import ImportUserEventsRequest
+from .types.import_config import ImportUserEventsResponse
+from .types.import_config import SpannerSource
 from .types.project import Project
-from .types.project_service import ProvisionProjectMetadata, ProvisionProjectRequest
-from .types.purge_config import (
-    PurgeCompletionSuggestionsMetadata,
-    PurgeCompletionSuggestionsRequest,
-    PurgeCompletionSuggestionsResponse,
-    PurgeDocumentsMetadata,
-    PurgeDocumentsRequest,
-    PurgeDocumentsResponse,
-    PurgeErrorConfig,
-    PurgeSuggestionDenyListEntriesMetadata,
-    PurgeSuggestionDenyListEntriesRequest,
-    PurgeSuggestionDenyListEntriesResponse,
-    PurgeUserEventsMetadata,
-    PurgeUserEventsRequest,
-    PurgeUserEventsResponse,
-)
-from .types.rank_service import RankingRecord, RankRequest, RankResponse
-from .types.recommendation_service import RecommendRequest, RecommendResponse
-from .types.safety import HarmCategory, SafetyRating
+from .types.project_service import ProvisionProjectMetadata
+from .types.project_service import ProvisionProjectRequest
+from .types.purge_config import PurgeCompletionSuggestionsMetadata
+from .types.purge_config import PurgeCompletionSuggestionsRequest
+from .types.purge_config import PurgeCompletionSuggestionsResponse
+from .types.purge_config import PurgeDocumentsMetadata
+from .types.purge_config import PurgeDocumentsRequest
+from .types.purge_config import PurgeDocumentsResponse
+from .types.purge_config import PurgeErrorConfig
+from .types.purge_config import PurgeSuggestionDenyListEntriesMetadata
+from .types.purge_config import PurgeSuggestionDenyListEntriesRequest
+from .types.purge_config import PurgeSuggestionDenyListEntriesResponse
+from .types.purge_config import PurgeUserEventsMetadata
+from .types.purge_config import PurgeUserEventsRequest
+from .types.purge_config import PurgeUserEventsResponse
+from .types.rank_service import RankingRecord
+from .types.rank_service import RankRequest
+from .types.rank_service import RankResponse
+from .types.recommendation_service import RecommendRequest
+from .types.recommendation_service import RecommendResponse
+from .types.safety import SafetyRating
+from .types.safety import HarmCategory
 from .types.schema import Schema
-from .types.schema_service import (
-    CreateSchemaMetadata,
-    CreateSchemaRequest,
-    DeleteSchemaMetadata,
-    DeleteSchemaRequest,
-    GetSchemaRequest,
-    ListSchemasRequest,
-    ListSchemasResponse,
-    UpdateSchemaMetadata,
-    UpdateSchemaRequest,
-)
-from .types.search_service import SearchRequest, SearchResponse
-from .types.search_tuning_service import (
-    ListCustomModelsRequest,
-    ListCustomModelsResponse,
-    TrainCustomModelMetadata,
-    TrainCustomModelRequest,
-    TrainCustomModelResponse,
-)
+from .types.schema_service import CreateSchemaMetadata
+from .types.schema_service import CreateSchemaRequest
+from .types.schema_service import DeleteSchemaMetadata
+from .types.schema_service import DeleteSchemaRequest
+from .types.schema_service import GetSchemaRequest
+from .types.schema_service import ListSchemasRequest
+from .types.schema_service import ListSchemasResponse
+from .types.schema_service import UpdateSchemaMetadata
+from .types.schema_service import UpdateSchemaRequest
+from .types.search_service import SearchRequest
+from .types.search_service import SearchResponse
+from .types.search_tuning_service import ListCustomModelsRequest
+from .types.search_tuning_service import ListCustomModelsResponse
+from .types.search_tuning_service import TrainCustomModelMetadata
+from .types.search_tuning_service import TrainCustomModelRequest
+from .types.search_tuning_service import TrainCustomModelResponse
 from .types.serving_config import ServingConfig
 from .types.serving_config_service import UpdateServingConfigRequest
-from .types.session import Query, Session
-from .types.site_search_engine import (
-    Sitemap,
-    SiteSearchEngine,
-    SiteVerificationInfo,
-    TargetSite,
-)
-from .types.site_search_engine_service import (
-    BatchCreateTargetSiteMetadata,
-    BatchCreateTargetSitesRequest,
-    BatchCreateTargetSitesResponse,
-    BatchVerifyTargetSitesMetadata,
-    BatchVerifyTargetSitesRequest,
-    BatchVerifyTargetSitesResponse,
-    CreateSitemapMetadata,
-    CreateSitemapRequest,
-    CreateTargetSiteMetadata,
-    CreateTargetSiteRequest,
-    DeleteSitemapMetadata,
-    DeleteSitemapRequest,
-    DeleteTargetSiteMetadata,
-    DeleteTargetSiteRequest,
-    DisableAdvancedSiteSearchMetadata,
-    DisableAdvancedSiteSearchRequest,
-    DisableAdvancedSiteSearchResponse,
-    EnableAdvancedSiteSearchMetadata,
-    EnableAdvancedSiteSearchRequest,
-    EnableAdvancedSiteSearchResponse,
-    FetchDomainVerificationStatusRequest,
-    FetchDomainVerificationStatusResponse,
-    FetchSitemapsRequest,
-    FetchSitemapsResponse,
-    GetSiteSearchEngineRequest,
-    GetTargetSiteRequest,
-    ListTargetSitesRequest,
-    ListTargetSitesResponse,
-    RecrawlUrisMetadata,
-    RecrawlUrisRequest,
-    RecrawlUrisResponse,
-    UpdateTargetSiteMetadata,
-    UpdateTargetSiteRequest,
-)
-from .types.user_event import (
-    CompletionInfo,
-    DocumentInfo,
-    MediaInfo,
-    PageInfo,
-    PanelInfo,
-    SearchInfo,
-    TransactionInfo,
-    UserEvent,
-)
-from .types.user_event_service import CollectUserEventRequest, WriteUserEventRequest
+from .types.session import Query
+from .types.session import Session
+from .types.site_search_engine import Sitemap
+from .types.site_search_engine import SiteSearchEngine
+from .types.site_search_engine import SiteVerificationInfo
+from .types.site_search_engine import TargetSite
+from .types.site_search_engine_service import BatchCreateTargetSiteMetadata
+from .types.site_search_engine_service import BatchCreateTargetSitesRequest
+from .types.site_search_engine_service import BatchCreateTargetSitesResponse
+from .types.site_search_engine_service import BatchVerifyTargetSitesMetadata
+from .types.site_search_engine_service import BatchVerifyTargetSitesRequest
+from .types.site_search_engine_service import BatchVerifyTargetSitesResponse
+from .types.site_search_engine_service import CreateSitemapMetadata
+from .types.site_search_engine_service import CreateSitemapRequest
+from .types.site_search_engine_service import CreateTargetSiteMetadata
+from .types.site_search_engine_service import CreateTargetSiteRequest
+from .types.site_search_engine_service import DeleteSitemapMetadata
+from .types.site_search_engine_service import DeleteSitemapRequest
+from .types.site_search_engine_service import DeleteTargetSiteMetadata
+from .types.site_search_engine_service import DeleteTargetSiteRequest
+from .types.site_search_engine_service import DisableAdvancedSiteSearchMetadata
+from .types.site_search_engine_service import DisableAdvancedSiteSearchRequest
+from .types.site_search_engine_service import DisableAdvancedSiteSearchResponse
+from .types.site_search_engine_service import EnableAdvancedSiteSearchMetadata
+from .types.site_search_engine_service import EnableAdvancedSiteSearchRequest
+from .types.site_search_engine_service import EnableAdvancedSiteSearchResponse
+from .types.site_search_engine_service import FetchDomainVerificationStatusRequest
+from .types.site_search_engine_service import FetchDomainVerificationStatusResponse
+from .types.site_search_engine_service import FetchSitemapsRequest
+from .types.site_search_engine_service import FetchSitemapsResponse
+from .types.site_search_engine_service import GetSiteSearchEngineRequest
+from .types.site_search_engine_service import GetTargetSiteRequest
+from .types.site_search_engine_service import ListTargetSitesRequest
+from .types.site_search_engine_service import ListTargetSitesResponse
+from .types.site_search_engine_service import RecrawlUrisMetadata
+from .types.site_search_engine_service import RecrawlUrisRequest
+from .types.site_search_engine_service import RecrawlUrisResponse
+from .types.site_search_engine_service import UpdateTargetSiteMetadata
+from .types.site_search_engine_service import UpdateTargetSiteRequest
+from .types.user_event import CompletionInfo
+from .types.user_event import DocumentInfo
+from .types.user_event import MediaInfo
+from .types.user_event import PageInfo
+from .types.user_event import PanelInfo
+from .types.user_event import SearchInfo
+from .types.user_event import TransactionInfo
+from .types.user_event import UserEvent
+from .types.user_event_service import CollectUserEventRequest
+from .types.user_event_service import WriteUserEventRequest
 from .types.user_license import UserLicense
-from .types.user_license_service import (
-    BatchUpdateUserLicensesMetadata,
-    BatchUpdateUserLicensesRequest,
-    BatchUpdateUserLicensesResponse,
-    ListUserLicensesRequest,
-    ListUserLicensesResponse,
-)
+from .types.user_license_service import BatchUpdateUserLicensesMetadata
+from .types.user_license_service import BatchUpdateUserLicensesRequest
+from .types.user_license_service import BatchUpdateUserLicensesResponse
+from .types.user_license_service import ListUserLicensesRequest
+from .types.user_license_service import ListUserLicensesResponse
 
 __all__ = (
-    "AssistantServiceAsyncClient",
-    "CmekConfigServiceAsyncClient",
-    "CompletionServiceAsyncClient",
-    "ControlServiceAsyncClient",
-    "ConversationalSearchServiceAsyncClient",
-    "DataStoreServiceAsyncClient",
-    "DocumentServiceAsyncClient",
-    "EngineServiceAsyncClient",
-    "GroundedGenerationServiceAsyncClient",
-    "IdentityMappingStoreServiceAsyncClient",
-    "ProjectServiceAsyncClient",
-    "RankServiceAsyncClient",
-    "RecommendationServiceAsyncClient",
-    "SchemaServiceAsyncClient",
-    "SearchServiceAsyncClient",
-    "SearchTuningServiceAsyncClient",
-    "ServingConfigServiceAsyncClient",
-    "SessionServiceAsyncClient",
-    "SiteSearchEngineServiceAsyncClient",
-    "UserEventServiceAsyncClient",
-    "UserLicenseServiceAsyncClient",
-    "AdvancedSiteSearchConfig",
-    "AlloyDbSource",
-    "Answer",
-    "AnswerQueryRequest",
-    "AnswerQueryResponse",
-    "AssistAnswer",
-    "AssistUserMetadata",
-    "Assistant",
-    "AssistantContent",
-    "AssistantGroundedContent",
-    "AssistantServiceClient",
-    "BatchCreateTargetSiteMetadata",
-    "BatchCreateTargetSitesRequest",
-    "BatchCreateTargetSitesResponse",
-    "BatchGetDocumentsMetadataRequest",
-    "BatchGetDocumentsMetadataResponse",
-    "BatchUpdateUserLicensesMetadata",
-    "BatchUpdateUserLicensesRequest",
-    "BatchUpdateUserLicensesResponse",
-    "BatchVerifyTargetSitesMetadata",
-    "BatchVerifyTargetSitesRequest",
-    "BatchVerifyTargetSitesResponse",
-    "BigQuerySource",
-    "BigtableOptions",
-    "BigtableSource",
-    "CheckGroundingRequest",
-    "CheckGroundingResponse",
-    "CheckGroundingSpec",
-    "Chunk",
-    "CloudSqlSource",
-    "CmekConfig",
-    "CmekConfigServiceClient",
-    "CollectUserEventRequest",
-    "CompleteQueryRequest",
-    "CompleteQueryResponse",
-    "CompletionInfo",
-    "CompletionServiceClient",
-    "CompletionSuggestion",
-    "Condition",
-    "Control",
-    "ControlServiceClient",
-    "Conversation",
-    "ConversationContext",
-    "ConversationMessage",
-    "ConversationalSearchServiceClient",
-    "ConverseConversationRequest",
-    "ConverseConversationResponse",
-    "CreateControlRequest",
-    "CreateConversationRequest",
-    "CreateDataStoreMetadata",
-    "CreateDataStoreRequest",
-    "CreateDocumentRequest",
-    "CreateEngineMetadata",
-    "CreateEngineRequest",
-    "CreateIdentityMappingStoreRequest",
-    "CreateSchemaMetadata",
-    "CreateSchemaRequest",
-    "CreateSessionRequest",
-    "CreateSitemapMetadata",
-    "CreateSitemapRequest",
-    "CreateTargetSiteMetadata",
-    "CreateTargetSiteRequest",
-    "CustomAttribute",
-    "CustomTuningModel",
-    "DataStore",
-    "DataStoreServiceClient",
-    "DeleteCmekConfigMetadata",
-    "DeleteCmekConfigRequest",
-    "DeleteControlRequest",
-    "DeleteConversationRequest",
-    "DeleteDataStoreMetadata",
-    "DeleteDataStoreRequest",
-    "DeleteDocumentRequest",
-    "DeleteEngineMetadata",
-    "DeleteEngineRequest",
-    "DeleteIdentityMappingStoreMetadata",
-    "DeleteIdentityMappingStoreRequest",
-    "DeleteSchemaMetadata",
-    "DeleteSchemaRequest",
-    "DeleteSessionRequest",
-    "DeleteSitemapMetadata",
-    "DeleteSitemapRequest",
-    "DeleteTargetSiteMetadata",
-    "DeleteTargetSiteRequest",
-    "DisableAdvancedSiteSearchMetadata",
-    "DisableAdvancedSiteSearchRequest",
-    "DisableAdvancedSiteSearchResponse",
-    "Document",
-    "DocumentInfo",
-    "DocumentProcessingConfig",
-    "DocumentServiceClient",
-    "DoubleList",
-    "EnableAdvancedSiteSearchMetadata",
-    "EnableAdvancedSiteSearchRequest",
-    "EnableAdvancedSiteSearchResponse",
-    "Engine",
-    "EngineServiceClient",
-    "FactChunk",
-    "FetchDomainVerificationStatusRequest",
-    "FetchDomainVerificationStatusResponse",
-    "FetchSitemapsRequest",
-    "FetchSitemapsResponse",
-    "FhirStoreSource",
-    "FirestoreSource",
-    "GcsSource",
-    "GenerateGroundedContentRequest",
-    "GenerateGroundedContentResponse",
-    "GetAnswerRequest",
-    "GetCmekConfigRequest",
-    "GetControlRequest",
-    "GetConversationRequest",
-    "GetDataStoreRequest",
-    "GetDocumentRequest",
-    "GetEngineRequest",
-    "GetIdentityMappingStoreRequest",
-    "GetSchemaRequest",
-    "GetSessionRequest",
-    "GetSiteSearchEngineRequest",
-    "GetTargetSiteRequest",
-    "GroundedGenerationContent",
-    "GroundedGenerationServiceClient",
-    "GroundingFact",
-    "HarmCategory",
-    "HealthcareFhirConfig",
-    "IdentityMappingEntry",
-    "IdentityMappingEntryOperationMetadata",
-    "IdentityMappingStore",
-    "IdentityMappingStoreServiceClient",
-    "ImportCompletionSuggestionsMetadata",
-    "ImportCompletionSuggestionsRequest",
-    "ImportCompletionSuggestionsResponse",
-    "ImportDocumentsMetadata",
-    "ImportDocumentsRequest",
-    "ImportDocumentsResponse",
-    "ImportErrorConfig",
-    "ImportIdentityMappingsRequest",
-    "ImportIdentityMappingsResponse",
-    "ImportSuggestionDenyListEntriesMetadata",
-    "ImportSuggestionDenyListEntriesRequest",
-    "ImportSuggestionDenyListEntriesResponse",
-    "ImportUserEventsMetadata",
-    "ImportUserEventsRequest",
-    "ImportUserEventsResponse",
-    "IndustryVertical",
-    "Interval",
-    "ListCmekConfigsRequest",
-    "ListCmekConfigsResponse",
-    "ListControlsRequest",
-    "ListControlsResponse",
-    "ListConversationsRequest",
-    "ListConversationsResponse",
-    "ListCustomModelsRequest",
-    "ListCustomModelsResponse",
-    "ListDataStoresRequest",
-    "ListDataStoresResponse",
-    "ListDocumentsRequest",
-    "ListDocumentsResponse",
-    "ListEnginesRequest",
-    "ListEnginesResponse",
-    "ListIdentityMappingStoresRequest",
-    "ListIdentityMappingStoresResponse",
-    "ListIdentityMappingsRequest",
-    "ListIdentityMappingsResponse",
-    "ListSchemasRequest",
-    "ListSchemasResponse",
-    "ListSessionsRequest",
-    "ListSessionsResponse",
-    "ListTargetSitesRequest",
-    "ListTargetSitesResponse",
-    "ListUserLicensesRequest",
-    "ListUserLicensesResponse",
-    "MediaInfo",
-    "PageInfo",
-    "PanelInfo",
-    "Principal",
-    "Project",
-    "ProjectServiceClient",
-    "ProvisionProjectMetadata",
-    "ProvisionProjectRequest",
-    "PurgeCompletionSuggestionsMetadata",
-    "PurgeCompletionSuggestionsRequest",
-    "PurgeCompletionSuggestionsResponse",
-    "PurgeDocumentsMetadata",
-    "PurgeDocumentsRequest",
-    "PurgeDocumentsResponse",
-    "PurgeErrorConfig",
-    "PurgeIdentityMappingsRequest",
-    "PurgeSuggestionDenyListEntriesMetadata",
-    "PurgeSuggestionDenyListEntriesRequest",
-    "PurgeSuggestionDenyListEntriesResponse",
-    "PurgeUserEventsMetadata",
-    "PurgeUserEventsRequest",
-    "PurgeUserEventsResponse",
-    "Query",
-    "RankRequest",
-    "RankResponse",
-    "RankServiceClient",
-    "RankingRecord",
-    "RecommendRequest",
-    "RecommendResponse",
-    "RecommendationServiceClient",
-    "RecrawlUrisMetadata",
-    "RecrawlUrisRequest",
-    "RecrawlUrisResponse",
-    "Reply",
-    "SafetyRating",
-    "Schema",
-    "SchemaServiceClient",
-    "SearchAddOn",
-    "SearchInfo",
-    "SearchLinkPromotion",
-    "SearchRequest",
-    "SearchResponse",
-    "SearchServiceClient",
-    "SearchTier",
-    "SearchTuningServiceClient",
-    "SearchUseCase",
-    "ServingConfig",
-    "ServingConfigServiceClient",
-    "Session",
-    "SessionServiceClient",
-    "SingleRegionKey",
-    "SiteSearchEngine",
-    "SiteSearchEngineServiceClient",
-    "SiteVerificationInfo",
-    "Sitemap",
-    "SolutionType",
-    "SpannerSource",
-    "StreamAssistRequest",
-    "StreamAssistResponse",
-    "SuggestionDenyListEntry",
-    "TargetSite",
-    "TextInput",
-    "TrainCustomModelMetadata",
-    "TrainCustomModelRequest",
-    "TrainCustomModelResponse",
-    "TransactionInfo",
-    "UpdateCmekConfigMetadata",
-    "UpdateCmekConfigRequest",
-    "UpdateControlRequest",
-    "UpdateConversationRequest",
-    "UpdateDataStoreRequest",
-    "UpdateDocumentRequest",
-    "UpdateEngineRequest",
-    "UpdateSchemaMetadata",
-    "UpdateSchemaRequest",
-    "UpdateServingConfigRequest",
-    "UpdateSessionRequest",
-    "UpdateTargetSiteMetadata",
-    "UpdateTargetSiteRequest",
-    "UserEvent",
-    "UserEventServiceClient",
-    "UserInfo",
-    "UserLicense",
-    "UserLicenseServiceClient",
-    "WorkspaceConfig",
-    "WriteUserEventRequest",
+    'AssistantServiceAsyncClient',
+    'CmekConfigServiceAsyncClient',
+    'CompletionServiceAsyncClient',
+    'ControlServiceAsyncClient',
+    'ConversationalSearchServiceAsyncClient',
+    'DataStoreServiceAsyncClient',
+    'DocumentServiceAsyncClient',
+    'EngineServiceAsyncClient',
+    'GroundedGenerationServiceAsyncClient',
+    'IdentityMappingStoreServiceAsyncClient',
+    'ProjectServiceAsyncClient',
+    'RankServiceAsyncClient',
+    'RecommendationServiceAsyncClient',
+    'SchemaServiceAsyncClient',
+    'SearchServiceAsyncClient',
+    'SearchTuningServiceAsyncClient',
+    'ServingConfigServiceAsyncClient',
+    'SessionServiceAsyncClient',
+    'SiteSearchEngineServiceAsyncClient',
+    'UserEventServiceAsyncClient',
+    'UserLicenseServiceAsyncClient',
+'AdvancedSiteSearchConfig',
+'AlloyDbSource',
+'Answer',
+'AnswerQueryRequest',
+'AnswerQueryResponse',
+'AssistAnswer',
+'AssistUserMetadata',
+'Assistant',
+'AssistantContent',
+'AssistantGroundedContent',
+'AssistantServiceClient',
+'BatchCreateTargetSiteMetadata',
+'BatchCreateTargetSitesRequest',
+'BatchCreateTargetSitesResponse',
+'BatchGetDocumentsMetadataRequest',
+'BatchGetDocumentsMetadataResponse',
+'BatchUpdateUserLicensesMetadata',
+'BatchUpdateUserLicensesRequest',
+'BatchUpdateUserLicensesResponse',
+'BatchVerifyTargetSitesMetadata',
+'BatchVerifyTargetSitesRequest',
+'BatchVerifyTargetSitesResponse',
+'BigQuerySource',
+'BigtableOptions',
+'BigtableSource',
+'CheckGroundingRequest',
+'CheckGroundingResponse',
+'CheckGroundingSpec',
+'Chunk',
+'CloudSqlSource',
+'CmekConfig',
+'CmekConfigServiceClient',
+'CollectUserEventRequest',
+'CompleteQueryRequest',
+'CompleteQueryResponse',
+'CompletionInfo',
+'CompletionServiceClient',
+'CompletionSuggestion',
+'Condition',
+'Control',
+'ControlServiceClient',
+'Conversation',
+'ConversationContext',
+'ConversationMessage',
+'ConversationalSearchServiceClient',
+'ConverseConversationRequest',
+'ConverseConversationResponse',
+'CreateControlRequest',
+'CreateConversationRequest',
+'CreateDataStoreMetadata',
+'CreateDataStoreRequest',
+'CreateDocumentRequest',
+'CreateEngineMetadata',
+'CreateEngineRequest',
+'CreateIdentityMappingStoreRequest',
+'CreateSchemaMetadata',
+'CreateSchemaRequest',
+'CreateSessionRequest',
+'CreateSitemapMetadata',
+'CreateSitemapRequest',
+'CreateTargetSiteMetadata',
+'CreateTargetSiteRequest',
+'CustomAttribute',
+'CustomTuningModel',
+'DataStore',
+'DataStoreServiceClient',
+'DeleteCmekConfigMetadata',
+'DeleteCmekConfigRequest',
+'DeleteControlRequest',
+'DeleteConversationRequest',
+'DeleteDataStoreMetadata',
+'DeleteDataStoreRequest',
+'DeleteDocumentRequest',
+'DeleteEngineMetadata',
+'DeleteEngineRequest',
+'DeleteIdentityMappingStoreMetadata',
+'DeleteIdentityMappingStoreRequest',
+'DeleteSchemaMetadata',
+'DeleteSchemaRequest',
+'DeleteSessionRequest',
+'DeleteSitemapMetadata',
+'DeleteSitemapRequest',
+'DeleteTargetSiteMetadata',
+'DeleteTargetSiteRequest',
+'DisableAdvancedSiteSearchMetadata',
+'DisableAdvancedSiteSearchRequest',
+'DisableAdvancedSiteSearchResponse',
+'Document',
+'DocumentInfo',
+'DocumentProcessingConfig',
+'DocumentServiceClient',
+'DoubleList',
+'EnableAdvancedSiteSearchMetadata',
+'EnableAdvancedSiteSearchRequest',
+'EnableAdvancedSiteSearchResponse',
+'Engine',
+'EngineServiceClient',
+'FactChunk',
+'FetchDomainVerificationStatusRequest',
+'FetchDomainVerificationStatusResponse',
+'FetchSitemapsRequest',
+'FetchSitemapsResponse',
+'FhirStoreSource',
+'FirestoreSource',
+'GcsSource',
+'GenerateGroundedContentRequest',
+'GenerateGroundedContentResponse',
+'GetAnswerRequest',
+'GetCmekConfigRequest',
+'GetControlRequest',
+'GetConversationRequest',
+'GetDataStoreRequest',
+'GetDocumentRequest',
+'GetEngineRequest',
+'GetIdentityMappingStoreRequest',
+'GetSchemaRequest',
+'GetSessionRequest',
+'GetSiteSearchEngineRequest',
+'GetTargetSiteRequest',
+'GroundedGenerationContent',
+'GroundedGenerationServiceClient',
+'GroundingFact',
+'HarmCategory',
+'HealthcareFhirConfig',
+'IdentityMappingEntry',
+'IdentityMappingEntryOperationMetadata',
+'IdentityMappingStore',
+'IdentityMappingStoreServiceClient',
+'ImportCompletionSuggestionsMetadata',
+'ImportCompletionSuggestionsRequest',
+'ImportCompletionSuggestionsResponse',
+'ImportDocumentsMetadata',
+'ImportDocumentsRequest',
+'ImportDocumentsResponse',
+'ImportErrorConfig',
+'ImportIdentityMappingsRequest',
+'ImportIdentityMappingsResponse',
+'ImportSuggestionDenyListEntriesMetadata',
+'ImportSuggestionDenyListEntriesRequest',
+'ImportSuggestionDenyListEntriesResponse',
+'ImportUserEventsMetadata',
+'ImportUserEventsRequest',
+'ImportUserEventsResponse',
+'IndustryVertical',
+'Interval',
+'ListCmekConfigsRequest',
+'ListCmekConfigsResponse',
+'ListControlsRequest',
+'ListControlsResponse',
+'ListConversationsRequest',
+'ListConversationsResponse',
+'ListCustomModelsRequest',
+'ListCustomModelsResponse',
+'ListDataStoresRequest',
+'ListDataStoresResponse',
+'ListDocumentsRequest',
+'ListDocumentsResponse',
+'ListEnginesRequest',
+'ListEnginesResponse',
+'ListIdentityMappingStoresRequest',
+'ListIdentityMappingStoresResponse',
+'ListIdentityMappingsRequest',
+'ListIdentityMappingsResponse',
+'ListSchemasRequest',
+'ListSchemasResponse',
+'ListSessionsRequest',
+'ListSessionsResponse',
+'ListTargetSitesRequest',
+'ListTargetSitesResponse',
+'ListUserLicensesRequest',
+'ListUserLicensesResponse',
+'MediaInfo',
+'PageInfo',
+'PanelInfo',
+'Principal',
+'Project',
+'ProjectServiceClient',
+'ProvisionProjectMetadata',
+'ProvisionProjectRequest',
+'PurgeCompletionSuggestionsMetadata',
+'PurgeCompletionSuggestionsRequest',
+'PurgeCompletionSuggestionsResponse',
+'PurgeDocumentsMetadata',
+'PurgeDocumentsRequest',
+'PurgeDocumentsResponse',
+'PurgeErrorConfig',
+'PurgeIdentityMappingsRequest',
+'PurgeSuggestionDenyListEntriesMetadata',
+'PurgeSuggestionDenyListEntriesRequest',
+'PurgeSuggestionDenyListEntriesResponse',
+'PurgeUserEventsMetadata',
+'PurgeUserEventsRequest',
+'PurgeUserEventsResponse',
+'Query',
+'RankRequest',
+'RankResponse',
+'RankServiceClient',
+'RankingRecord',
+'RecommendRequest',
+'RecommendResponse',
+'RecommendationServiceClient',
+'RecrawlUrisMetadata',
+'RecrawlUrisRequest',
+'RecrawlUrisResponse',
+'Reply',
+'SafetyRating',
+'Schema',
+'SchemaServiceClient',
+'SearchAddOn',
+'SearchInfo',
+'SearchLinkPromotion',
+'SearchRequest',
+'SearchResponse',
+'SearchServiceClient',
+'SearchTier',
+'SearchTuningServiceClient',
+'SearchUseCase',
+'ServingConfig',
+'ServingConfigServiceClient',
+'Session',
+'SessionServiceClient',
+'SingleRegionKey',
+'SiteSearchEngine',
+'SiteSearchEngineServiceClient',
+'SiteVerificationInfo',
+'Sitemap',
+'SolutionType',
+'SpannerSource',
+'StreamAssistRequest',
+'StreamAssistResponse',
+'SuggestionDenyListEntry',
+'TargetSite',
+'TextInput',
+'TrainCustomModelMetadata',
+'TrainCustomModelRequest',
+'TrainCustomModelResponse',
+'TransactionInfo',
+'UpdateCmekConfigMetadata',
+'UpdateCmekConfigRequest',
+'UpdateControlRequest',
+'UpdateConversationRequest',
+'UpdateDataStoreRequest',
+'UpdateDocumentRequest',
+'UpdateEngineRequest',
+'UpdateSchemaMetadata',
+'UpdateSchemaRequest',
+'UpdateServingConfigRequest',
+'UpdateSessionRequest',
+'UpdateTargetSiteMetadata',
+'UpdateTargetSiteRequest',
+'UserEvent',
+'UserEventServiceClient',
+'UserInfo',
+'UserLicense',
+'UserLicenseServiceClient',
+'WorkspaceConfig',
+'WriteUserEventRequest',
 )

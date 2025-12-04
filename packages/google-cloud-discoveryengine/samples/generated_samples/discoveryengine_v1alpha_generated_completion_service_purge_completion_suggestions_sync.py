@@ -53,5 +53,4 @@ def sample_purge_completion_suggestions():
     # Handle the response
     print(response)
 
-
 # [END discoveryengine_v1alpha_generated_CompletionService_PurgeCompletionSuggestions_sync]

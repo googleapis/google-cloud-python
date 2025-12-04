@@ -17,23 +17,24 @@ from __future__ import annotations
 
 from typing import MutableMapping, MutableSequence
 
-from google.protobuf import duration_pb2  # type: ignore
-from google.protobuf import timestamp_pb2  # type: ignore
 import proto  # type: ignore
 
 from google.cloud.discoveryengine_v1beta.types import common
+from google.protobuf import duration_pb2  # type: ignore
+from google.protobuf import timestamp_pb2  # type: ignore
+
 
 __protobuf__ = proto.module(
-    package="google.cloud.discoveryengine.v1beta",
+    package='google.cloud.discoveryengine.v1beta',
     manifest={
-        "UserEvent",
-        "PageInfo",
-        "SearchInfo",
-        "CompletionInfo",
-        "TransactionInfo",
-        "DocumentInfo",
-        "PanelInfo",
-        "MediaInfo",
+        'UserEvent',
+        'PageInfo',
+        'SearchInfo',
+        'CompletionInfo',
+        'TransactionInfo',
+        'DocumentInfo',
+        'PanelInfo',
+        'MediaInfo',
     },
 )
 
@@ -49,27 +50,27 @@ class UserEvent(proto.Message):
 
             Generic values:
 
-            - ``search``: Search for Documents.
-            - ``view-item``: Detailed page view of a Document.
-            - ``view-item-list``: View of a panel or ordered list of
-              Documents.
-            - ``view-home-page``: View of the home page.
-            - ``view-category-page``: View of a category page, e.g. Home
-              > Men > Jeans
-            - ``add-feedback``: Add a user feedback.
+            -  ``search``: Search for Documents.
+            -  ``view-item``: Detailed page view of a Document.
+            -  ``view-item-list``: View of a panel or ordered list of
+               Documents.
+            -  ``view-home-page``: View of the home page.
+            -  ``view-category-page``: View of a category page, e.g.
+               Home > Men > Jeans
+            -  ``add-feedback``: Add a user feedback.
 
             Retail-related values:
 
-            - ``add-to-cart``: Add an item(s) to cart, e.g. in Retail
-              online shopping
-            - ``purchase``: Purchase an item(s)
+            -  ``add-to-cart``: Add an item(s) to cart, e.g. in Retail
+               online shopping
+            -  ``purchase``: Purchase an item(s)
 
             Media-related values:
 
-            - ``media-play``: Start/resume watching a video, playing a
-              song, etc.
-            - ``media-complete``: Finished or stopped midway through a
-              video, song, etc.
+            -  ``media-play``: Start/resume watching a video, playing a
+               song, etc.
+            -  ``media-complete``: Finished or stopped midway through a
+               video, song, etc.
         user_pseudo_id (str):
             Required. A unique identifier for tracking visitors.
 
@@ -159,12 +160,12 @@ class UserEvent(proto.Message):
 
             The value must be one of:
 
-            - [RecommendResponse.attribution_token][google.cloud.discoveryengine.v1beta.RecommendResponse.attribution_token]
-              for events that are the result of
-              [RecommendationService.Recommend][google.cloud.discoveryengine.v1beta.RecommendationService.Recommend].
-            - [SearchResponse.attribution_token][google.cloud.discoveryengine.v1beta.SearchResponse.attribution_token]
-              for events that are the result of
-              [SearchService.Search][google.cloud.discoveryengine.v1beta.SearchService.Search].
+            -  [RecommendResponse.attribution_token][google.cloud.discoveryengine.v1beta.RecommendResponse.attribution_token]
+               for events that are the result of
+               [RecommendationService.Recommend][google.cloud.discoveryengine.v1beta.RecommendationService.Recommend].
+            -  [SearchResponse.attribution_token][google.cloud.discoveryengine.v1beta.SearchResponse.attribution_token]
+               for events that are the result of
+               [SearchService.Search][google.cloud.discoveryengine.v1beta.SearchService.Search].
 
             This token enables us to accurately attribute page view or
             conversion completion back to the event and the particular
@@ -204,11 +205,11 @@ class UserEvent(proto.Message):
 
             This field is optional except for the following event types:
 
-            - ``view-item``
-            - ``add-to-cart``
-            - ``purchase``
-            - ``media-play``
-            - ``media-complete``
+            -  ``view-item``
+            -  ``add-to-cart``
+            -  ``purchase``
+            -  ``media-play``
+            -  ``media-complete``
 
             In a ``search`` event, this field represents the documents
             returned to the end user on the current page (the end user
@@ -262,12 +263,12 @@ class UserEvent(proto.Message):
             This field needs to pass all below criteria, otherwise an
             ``INVALID_ARGUMENT`` error is returned:
 
-            - The key must be a UTF-8 encoded string with a length limit
-              of 5,000 characters.
-            - For text attributes, at most 400 values are allowed. Empty
-              values are not allowed. Each value must be a UTF-8 encoded
-              string with a length limit of 256 characters.
-            - For number attributes, at most 400 values are allowed.
+            -  The key must be a UTF-8 encoded string with a length
+               limit of 5,000 characters.
+            -  For text attributes, at most 400 values are allowed.
+               Empty values are not allowed. Each value must be a UTF-8
+               encoded string with a length limit of 256 characters.
+            -  For number attributes, at most 400 values are allowed.
 
             For product recommendations, an example of extra user
             information is ``traffic_channel``, which is how a user
@@ -315,10 +316,10 @@ class UserEvent(proto.Message):
         proto.STRING,
         number=6,
     )
-    page_info: "PageInfo" = proto.Field(
+    page_info: 'PageInfo' = proto.Field(
         proto.MESSAGE,
         number=7,
-        message="PageInfo",
+        message='PageInfo',
     )
     attribution_token: str = proto.Field(
         proto.STRING,
@@ -328,30 +329,30 @@ class UserEvent(proto.Message):
         proto.STRING,
         number=9,
     )
-    documents: MutableSequence["DocumentInfo"] = proto.RepeatedField(
+    documents: MutableSequence['DocumentInfo'] = proto.RepeatedField(
         proto.MESSAGE,
         number=10,
-        message="DocumentInfo",
+        message='DocumentInfo',
     )
-    panel: "PanelInfo" = proto.Field(
+    panel: 'PanelInfo' = proto.Field(
         proto.MESSAGE,
         number=11,
-        message="PanelInfo",
+        message='PanelInfo',
     )
-    search_info: "SearchInfo" = proto.Field(
+    search_info: 'SearchInfo' = proto.Field(
         proto.MESSAGE,
         number=12,
-        message="SearchInfo",
+        message='SearchInfo',
     )
-    completion_info: "CompletionInfo" = proto.Field(
+    completion_info: 'CompletionInfo' = proto.Field(
         proto.MESSAGE,
         number=13,
-        message="CompletionInfo",
+        message='CompletionInfo',
     )
-    transaction_info: "TransactionInfo" = proto.Field(
+    transaction_info: 'TransactionInfo' = proto.Field(
         proto.MESSAGE,
         number=14,
-        message="TransactionInfo",
+        message='TransactionInfo',
     )
     tag_ids: MutableSequence[str] = proto.RepeatedField(
         proto.STRING,
@@ -367,15 +368,15 @@ class UserEvent(proto.Message):
         number=17,
         message=common.CustomAttribute,
     )
-    media_info: "MediaInfo" = proto.Field(
+    media_info: 'MediaInfo' = proto.Field(
         proto.MESSAGE,
         number=18,
-        message="MediaInfo",
+        message='MediaInfo',
     )
-    panels: MutableSequence["PanelInfo"] = proto.RepeatedField(
+    panels: MutableSequence['PanelInfo'] = proto.RepeatedField(
         proto.MESSAGE,
         number=22,
-        message="PanelInfo",
+        message='PanelInfo',
     )
 
 
@@ -571,12 +572,12 @@ class TransactionInfo(proto.Message):
             manufacturing costs, shipping expenses not borne by the end
             user, or any other costs, such that:
 
-            - Profit =
-              [value][google.cloud.discoveryengine.v1beta.TransactionInfo.value]
-              -
-              [tax][google.cloud.discoveryengine.v1beta.TransactionInfo.tax]
-              -
-              [cost][google.cloud.discoveryengine.v1beta.TransactionInfo.cost]
+            -  Profit =
+               [value][google.cloud.discoveryengine.v1beta.TransactionInfo.value]
+               -
+               [tax][google.cloud.discoveryengine.v1beta.TransactionInfo.tax]
+               -
+               [cost][google.cloud.discoveryengine.v1beta.TransactionInfo.cost]
 
             This field is a member of `oneof`_ ``_cost``.
         discount_value (float):
@@ -598,12 +599,12 @@ class TransactionInfo(proto.Message):
             can be larger than
             [TransactionInfo.value][google.cloud.discoveryengine.v1beta.TransactionInfo.value]:
 
-            - Profit =
-              [value][google.cloud.discoveryengine.v1beta.TransactionInfo.value]
-              -
-              [tax][google.cloud.discoveryengine.v1beta.TransactionInfo.tax]
-              -
-              [cost][google.cloud.discoveryengine.v1beta.TransactionInfo.cost]
+            -  Profit =
+               [value][google.cloud.discoveryengine.v1beta.TransactionInfo.value]
+               -
+               [tax][google.cloud.discoveryengine.v1beta.TransactionInfo.tax]
+               -
+               [cost][google.cloud.discoveryengine.v1beta.TransactionInfo.cost]
 
             This field is a member of `oneof`_ ``_discount_value``.
     """
@@ -674,8 +675,8 @@ class DocumentInfo(proto.Message):
 
             Required for events of the following event types:
 
-            - ``add-to-cart``
-            - ``purchase``
+            -  ``add-to-cart``
+            -  ``purchase``
 
             This field is a member of `oneof`_ ``_quantity``.
         promotion_ids (MutableSequence[str]):
@@ -690,17 +691,17 @@ class DocumentInfo(proto.Message):
     id: str = proto.Field(
         proto.STRING,
         number=1,
-        oneof="document_descriptor",
+        oneof='document_descriptor',
     )
     name: str = proto.Field(
         proto.STRING,
         number=2,
-        oneof="document_descriptor",
+        oneof='document_descriptor',
     )
     uri: str = proto.Field(
         proto.STRING,
         number=6,
-        oneof="document_descriptor",
+        oneof='document_descriptor',
     )
     quantity: int = proto.Field(
         proto.INT32,
@@ -764,10 +765,10 @@ class PanelInfo(proto.Message):
         number=5,
         optional=True,
     )
-    documents: MutableSequence["DocumentInfo"] = proto.RepeatedField(
+    documents: MutableSequence['DocumentInfo'] = proto.RepeatedField(
         proto.MESSAGE,
         number=6,
-        message="DocumentInfo",
+        message='DocumentInfo',
     )
 
 

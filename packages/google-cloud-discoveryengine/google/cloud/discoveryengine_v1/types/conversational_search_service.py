@@ -17,34 +17,36 @@ from __future__ import annotations
 
 from typing import MutableMapping, MutableSequence
 
-from google.protobuf import field_mask_pb2  # type: ignore
 import proto  # type: ignore
 
-from google.cloud.discoveryengine_v1.types import conversation as gcd_conversation
 from google.cloud.discoveryengine_v1.types import answer as gcd_answer
-from google.cloud.discoveryengine_v1.types import safety, search_service
+from google.cloud.discoveryengine_v1.types import conversation as gcd_conversation
+from google.cloud.discoveryengine_v1.types import safety
+from google.cloud.discoveryengine_v1.types import search_service
 from google.cloud.discoveryengine_v1.types import session as gcd_session
+from google.protobuf import field_mask_pb2  # type: ignore
+
 
 __protobuf__ = proto.module(
-    package="google.cloud.discoveryengine.v1",
+    package='google.cloud.discoveryengine.v1',
     manifest={
-        "ConverseConversationRequest",
-        "ConverseConversationResponse",
-        "CreateConversationRequest",
-        "UpdateConversationRequest",
-        "DeleteConversationRequest",
-        "GetConversationRequest",
-        "ListConversationsRequest",
-        "ListConversationsResponse",
-        "AnswerQueryRequest",
-        "AnswerQueryResponse",
-        "GetAnswerRequest",
-        "CreateSessionRequest",
-        "UpdateSessionRequest",
-        "DeleteSessionRequest",
-        "GetSessionRequest",
-        "ListSessionsRequest",
-        "ListSessionsResponse",
+        'ConverseConversationRequest',
+        'ConverseConversationResponse',
+        'CreateConversationRequest',
+        'UpdateConversationRequest',
+        'DeleteConversationRequest',
+        'GetConversationRequest',
+        'ListConversationsRequest',
+        'ListConversationsResponse',
+        'AnswerQueryRequest',
+        'AnswerQueryResponse',
+        'GetAnswerRequest',
+        'CreateSessionRequest',
+        'UpdateSessionRequest',
+        'DeleteSessionRequest',
+        'GetSessionRequest',
+        'ListSessionsRequest',
+        'ListSessionsResponse',
     },
 )
 
@@ -80,20 +82,20 @@ class ConverseConversationRequest(proto.Message):
             The user labels applied to a resource must meet the
             following requirements:
 
-            - Each resource can have multiple labels, up to a maximum of
-              64.
-            - Each label must be a key-value pair.
-            - Keys have a minimum length of 1 character and a maximum
-              length of 63 characters and cannot be empty. Values can be
-              empty and have a maximum length of 63 characters.
-            - Keys and values can contain only lowercase letters,
-              numeric characters, underscores, and dashes. All
-              characters must use UTF-8 encoding, and international
-              characters are allowed.
-            - The key portion of a label must be unique. However, you
-              can use the same key with multiple resources.
-            - Keys must start with a lowercase letter or international
-              character.
+            -  Each resource can have multiple labels, up to a maximum
+               of 64.
+            -  Each label must be a key-value pair.
+            -  Keys have a minimum length of 1 character and a maximum
+               length of 63 characters and cannot be empty. Values can
+               be empty and have a maximum length of 63 characters.
+            -  Keys and values can contain only lowercase letters,
+               numeric characters, underscores, and dashes. All
+               characters must use UTF-8 encoding, and international
+               characters are allowed.
+            -  The key portion of a label must be unique. However, you
+               can use the same key with multiple resources.
+            -  Keys must start with a lowercase letter or international
+               character.
 
             See `Google Cloud
             Document <https://cloud.google.com/resource-manager/docs/creating-managing-labels#requirements>`__
@@ -155,12 +157,10 @@ class ConverseConversationRequest(proto.Message):
         proto.STRING,
         number=7,
     )
-    summary_spec: search_service.SearchRequest.ContentSearchSpec.SummarySpec = (
-        proto.Field(
-            proto.MESSAGE,
-            number=8,
-            message=search_service.SearchRequest.ContentSearchSpec.SummarySpec,
-        )
+    summary_spec: search_service.SearchRequest.ContentSearchSpec.SummarySpec = proto.Field(
+        proto.MESSAGE,
+        number=8,
+        message=search_service.SearchRequest.ContentSearchSpec.SummarySpec,
     )
     filter: str = proto.Field(
         proto.STRING,
@@ -197,9 +197,7 @@ class ConverseConversationResponse(proto.Message):
         number=2,
         message=gcd_conversation.Conversation,
     )
-    search_results: MutableSequence[
-        search_service.SearchResponse.SearchResult
-    ] = proto.RepeatedField(
+    search_results: MutableSequence[search_service.SearchResponse.SearchResult] = proto.RepeatedField(
         proto.MESSAGE,
         number=3,
         message=search_service.SearchResponse.SearchResult,
@@ -239,7 +237,7 @@ class UpdateConversationRequest(proto.Message):
             [Conversation][google.cloud.discoveryengine.v1.Conversation]
             to update. The following are NOT supported:
 
-            - [Conversation.name][google.cloud.discoveryengine.v1.Conversation.name]
+            -  [Conversation.name][google.cloud.discoveryengine.v1.Conversation.name]
 
             If not set or empty, all supported fields are updated.
     """
@@ -312,9 +310,9 @@ class ListConversationsRequest(proto.Message):
             ascending order. Use "desc" after a field name for
             descending. Supported fields:
 
-            - ``update_time``
-            - ``create_time``
-            - ``conversation_name``
+            -  ``update_time``
+            -  ``create_time``
+            -  ``conversation_name``
 
             Example: "update_time desc" "create_time".
     """
@@ -435,20 +433,20 @@ class AnswerQueryRequest(proto.Message):
             The user labels applied to a resource must meet the
             following requirements:
 
-            - Each resource can have multiple labels, up to a maximum of
-              64.
-            - Each label must be a key-value pair.
-            - Keys have a minimum length of 1 character and a maximum
-              length of 63 characters and cannot be empty. Values can be
-              empty and have a maximum length of 63 characters.
-            - Keys and values can contain only lowercase letters,
-              numeric characters, underscores, and dashes. All
-              characters must use UTF-8 encoding, and international
-              characters are allowed.
-            - The key portion of a label must be unique. However, you
-              can use the same key with multiple resources.
-            - Keys must start with a lowercase letter or international
-              character.
+            -  Each resource can have multiple labels, up to a maximum
+               of 64.
+            -  Each label must be a key-value pair.
+            -  Keys have a minimum length of 1 character and a maximum
+               length of 63 characters and cannot be empty. Values can
+               be empty and have a maximum length of 63 characters.
+            -  Keys and values can contain only lowercase letters,
+               numeric characters, underscores, and dashes. All
+               characters must use UTF-8 encoding, and international
+               characters are allowed.
+            -  The key portion of a label must be unique. However, you
+               can use the same key with multiple resources.
+            -  Keys must start with a lowercase letter or international
+               character.
 
             See `Google Cloud
             Document <https://cloud.google.com/resource-manager/docs/creating-managing-labels#requirements>`__
@@ -483,7 +481,6 @@ class AnswerQueryRequest(proto.Message):
                 threshold (google.cloud.discoveryengine_v1.types.AnswerQueryRequest.SafetySpec.SafetySetting.HarmBlockThreshold):
                     Required. The harm block threshold.
             """
-
             class HarmBlockThreshold(proto.Enum):
                 r"""Probability based thresholds levels for blocking.
 
@@ -514,22 +511,20 @@ class AnswerQueryRequest(proto.Message):
                 number=1,
                 enum=safety.HarmCategory,
             )
-            threshold: "AnswerQueryRequest.SafetySpec.SafetySetting.HarmBlockThreshold" = proto.Field(
+            threshold: 'AnswerQueryRequest.SafetySpec.SafetySetting.HarmBlockThreshold' = proto.Field(
                 proto.ENUM,
                 number=2,
-                enum="AnswerQueryRequest.SafetySpec.SafetySetting.HarmBlockThreshold",
+                enum='AnswerQueryRequest.SafetySpec.SafetySetting.HarmBlockThreshold',
             )
 
         enable: bool = proto.Field(
             proto.BOOL,
             number=1,
         )
-        safety_settings: MutableSequence[
-            "AnswerQueryRequest.SafetySpec.SafetySetting"
-        ] = proto.RepeatedField(
+        safety_settings: MutableSequence['AnswerQueryRequest.SafetySpec.SafetySetting'] = proto.RepeatedField(
             proto.MESSAGE,
             number=2,
-            message="AnswerQueryRequest.SafetySpec.SafetySetting",
+            message='AnswerQueryRequest.SafetySpec.SafetySetting',
         )
 
     class RelatedQuestionsSpec(proto.Message):
@@ -561,7 +556,6 @@ class AnswerQueryRequest(proto.Message):
                 filtering based on grounding score and at what
                 level.
         """
-
         class FilteringLevel(proto.Enum):
             r"""Level to filter based on answer grounding.
 
@@ -581,12 +575,10 @@ class AnswerQueryRequest(proto.Message):
             proto.BOOL,
             number=2,
         )
-        filtering_level: "AnswerQueryRequest.GroundingSpec.FilteringLevel" = (
-            proto.Field(
-                proto.ENUM,
-                number=3,
-                enum="AnswerQueryRequest.GroundingSpec.FilteringLevel",
-            )
+        filtering_level: 'AnswerQueryRequest.GroundingSpec.FilteringLevel' = proto.Field(
+            proto.ENUM,
+            number=3,
+            enum='AnswerQueryRequest.GroundingSpec.FilteringLevel',
         )
 
     class AnswerGenerationSpec(proto.Message):
@@ -681,15 +673,15 @@ class AnswerQueryRequest(proto.Message):
                 number=1,
             )
 
-        model_spec: "AnswerQueryRequest.AnswerGenerationSpec.ModelSpec" = proto.Field(
+        model_spec: 'AnswerQueryRequest.AnswerGenerationSpec.ModelSpec' = proto.Field(
             proto.MESSAGE,
             number=1,
-            message="AnswerQueryRequest.AnswerGenerationSpec.ModelSpec",
+            message='AnswerQueryRequest.AnswerGenerationSpec.ModelSpec',
         )
-        prompt_spec: "AnswerQueryRequest.AnswerGenerationSpec.PromptSpec" = proto.Field(
+        prompt_spec: 'AnswerQueryRequest.AnswerGenerationSpec.PromptSpec' = proto.Field(
             proto.MESSAGE,
             number=2,
-            message="AnswerQueryRequest.AnswerGenerationSpec.PromptSpec",
+            message='AnswerQueryRequest.AnswerGenerationSpec.PromptSpec',
         )
         include_citations: bool = proto.Field(
             proto.BOOL,
@@ -816,9 +808,7 @@ class AnswerQueryRequest(proto.Message):
                 number=5,
                 enum=search_service.SearchRequest.ContentSearchSpec.SearchResultMode,
             )
-            data_store_specs: MutableSequence[
-                search_service.SearchRequest.DataStoreSpec
-            ] = proto.RepeatedField(
+            data_store_specs: MutableSequence[search_service.SearchRequest.DataStoreSpec] = proto.RepeatedField(
                 proto.MESSAGE,
                 number=7,
                 message=search_service.SearchRequest.DataStoreSpec,
@@ -950,26 +940,20 @@ class AnswerQueryRequest(proto.Message):
                         proto.STRING,
                         number=3,
                     )
-                    document_contexts: MutableSequence[
-                        "AnswerQueryRequest.SearchSpec.SearchResultList.SearchResult.UnstructuredDocumentInfo.DocumentContext"
-                    ] = proto.RepeatedField(
+                    document_contexts: MutableSequence['AnswerQueryRequest.SearchSpec.SearchResultList.SearchResult.UnstructuredDocumentInfo.DocumentContext'] = proto.RepeatedField(
                         proto.MESSAGE,
                         number=4,
-                        message="AnswerQueryRequest.SearchSpec.SearchResultList.SearchResult.UnstructuredDocumentInfo.DocumentContext",
+                        message='AnswerQueryRequest.SearchSpec.SearchResultList.SearchResult.UnstructuredDocumentInfo.DocumentContext',
                     )
-                    extractive_segments: MutableSequence[
-                        "AnswerQueryRequest.SearchSpec.SearchResultList.SearchResult.UnstructuredDocumentInfo.ExtractiveSegment"
-                    ] = proto.RepeatedField(
+                    extractive_segments: MutableSequence['AnswerQueryRequest.SearchSpec.SearchResultList.SearchResult.UnstructuredDocumentInfo.ExtractiveSegment'] = proto.RepeatedField(
                         proto.MESSAGE,
                         number=5,
-                        message="AnswerQueryRequest.SearchSpec.SearchResultList.SearchResult.UnstructuredDocumentInfo.ExtractiveSegment",
+                        message='AnswerQueryRequest.SearchSpec.SearchResultList.SearchResult.UnstructuredDocumentInfo.ExtractiveSegment',
                     )
-                    extractive_answers: MutableSequence[
-                        "AnswerQueryRequest.SearchSpec.SearchResultList.SearchResult.UnstructuredDocumentInfo.ExtractiveAnswer"
-                    ] = proto.RepeatedField(
+                    extractive_answers: MutableSequence['AnswerQueryRequest.SearchSpec.SearchResultList.SearchResult.UnstructuredDocumentInfo.ExtractiveAnswer'] = proto.RepeatedField(
                         proto.MESSAGE,
                         number=6,
-                        message="AnswerQueryRequest.SearchSpec.SearchResultList.SearchResult.UnstructuredDocumentInfo.ExtractiveAnswer",
+                        message='AnswerQueryRequest.SearchSpec.SearchResultList.SearchResult.UnstructuredDocumentInfo.ExtractiveAnswer',
                     )
 
                 class ChunkInfo(proto.Message):
@@ -1013,46 +997,42 @@ class AnswerQueryRequest(proto.Message):
                         proto.STRING,
                         number=2,
                     )
-                    document_metadata: "AnswerQueryRequest.SearchSpec.SearchResultList.SearchResult.ChunkInfo.DocumentMetadata" = proto.Field(
+                    document_metadata: 'AnswerQueryRequest.SearchSpec.SearchResultList.SearchResult.ChunkInfo.DocumentMetadata' = proto.Field(
                         proto.MESSAGE,
                         number=4,
-                        message="AnswerQueryRequest.SearchSpec.SearchResultList.SearchResult.ChunkInfo.DocumentMetadata",
+                        message='AnswerQueryRequest.SearchSpec.SearchResultList.SearchResult.ChunkInfo.DocumentMetadata',
                     )
 
-                unstructured_document_info: "AnswerQueryRequest.SearchSpec.SearchResultList.SearchResult.UnstructuredDocumentInfo" = proto.Field(
+                unstructured_document_info: 'AnswerQueryRequest.SearchSpec.SearchResultList.SearchResult.UnstructuredDocumentInfo' = proto.Field(
                     proto.MESSAGE,
                     number=1,
-                    oneof="content",
-                    message="AnswerQueryRequest.SearchSpec.SearchResultList.SearchResult.UnstructuredDocumentInfo",
+                    oneof='content',
+                    message='AnswerQueryRequest.SearchSpec.SearchResultList.SearchResult.UnstructuredDocumentInfo',
                 )
-                chunk_info: "AnswerQueryRequest.SearchSpec.SearchResultList.SearchResult.ChunkInfo" = proto.Field(
+                chunk_info: 'AnswerQueryRequest.SearchSpec.SearchResultList.SearchResult.ChunkInfo' = proto.Field(
                     proto.MESSAGE,
                     number=2,
-                    oneof="content",
-                    message="AnswerQueryRequest.SearchSpec.SearchResultList.SearchResult.ChunkInfo",
+                    oneof='content',
+                    message='AnswerQueryRequest.SearchSpec.SearchResultList.SearchResult.ChunkInfo',
                 )
 
-            search_results: MutableSequence[
-                "AnswerQueryRequest.SearchSpec.SearchResultList.SearchResult"
-            ] = proto.RepeatedField(
+            search_results: MutableSequence['AnswerQueryRequest.SearchSpec.SearchResultList.SearchResult'] = proto.RepeatedField(
                 proto.MESSAGE,
                 number=1,
-                message="AnswerQueryRequest.SearchSpec.SearchResultList.SearchResult",
+                message='AnswerQueryRequest.SearchSpec.SearchResultList.SearchResult',
             )
 
-        search_params: "AnswerQueryRequest.SearchSpec.SearchParams" = proto.Field(
+        search_params: 'AnswerQueryRequest.SearchSpec.SearchParams' = proto.Field(
             proto.MESSAGE,
             number=1,
-            oneof="input",
-            message="AnswerQueryRequest.SearchSpec.SearchParams",
+            oneof='input',
+            message='AnswerQueryRequest.SearchSpec.SearchParams',
         )
-        search_result_list: "AnswerQueryRequest.SearchSpec.SearchResultList" = (
-            proto.Field(
-                proto.MESSAGE,
-                number=2,
-                oneof="input",
-                message="AnswerQueryRequest.SearchSpec.SearchResultList",
-            )
+        search_result_list: 'AnswerQueryRequest.SearchSpec.SearchResultList' = proto.Field(
+            proto.MESSAGE,
+            number=2,
+            oneof='input',
+            message='AnswerQueryRequest.SearchSpec.SearchResultList',
         )
 
     class QueryUnderstandingSpec(proto.Message):
@@ -1075,7 +1055,6 @@ class AnswerQueryRequest(proto.Message):
                 types (MutableSequence[google.cloud.discoveryengine_v1.types.AnswerQueryRequest.QueryUnderstandingSpec.QueryClassificationSpec.Type]):
                     Enabled query classification types.
             """
-
             class Type(proto.Enum):
                 r"""Query classification types.
 
@@ -1102,12 +1081,10 @@ class AnswerQueryRequest(proto.Message):
                 NON_ANSWER_SEEKING_QUERY_V2 = 4
                 USER_DEFINED_CLASSIFICATION_QUERY = 5
 
-            types: MutableSequence[
-                "AnswerQueryRequest.QueryUnderstandingSpec.QueryClassificationSpec.Type"
-            ] = proto.RepeatedField(
+            types: MutableSequence['AnswerQueryRequest.QueryUnderstandingSpec.QueryClassificationSpec.Type'] = proto.RepeatedField(
                 proto.ENUM,
                 number=1,
-                enum="AnswerQueryRequest.QueryUnderstandingSpec.QueryClassificationSpec.Type",
+                enum='AnswerQueryRequest.QueryUnderstandingSpec.QueryClassificationSpec.Type',
             )
 
         class QueryRephraserSpec(proto.Message):
@@ -1134,7 +1111,6 @@ class AnswerQueryRequest(proto.Message):
                         Optional. Enabled query rephraser model type.
                         If not set, it will use LARGE by default.
                 """
-
                 class ModelType(proto.Enum):
                     r"""Query rephraser types. Currently only supports single-hop
                     (max_rephrase_steps = 1) model selections. For multi-hop
@@ -1154,10 +1130,10 @@ class AnswerQueryRequest(proto.Message):
                     SMALL = 1
                     LARGE = 2
 
-                model_type: "AnswerQueryRequest.QueryUnderstandingSpec.QueryRephraserSpec.ModelSpec.ModelType" = proto.Field(
+                model_type: 'AnswerQueryRequest.QueryUnderstandingSpec.QueryRephraserSpec.ModelSpec.ModelType' = proto.Field(
                     proto.ENUM,
                     number=1,
-                    enum="AnswerQueryRequest.QueryUnderstandingSpec.QueryRephraserSpec.ModelSpec.ModelType",
+                    enum='AnswerQueryRequest.QueryUnderstandingSpec.QueryRephraserSpec.ModelSpec.ModelType',
                 )
 
             disable: bool = proto.Field(
@@ -1168,21 +1144,21 @@ class AnswerQueryRequest(proto.Message):
                 proto.INT32,
                 number=2,
             )
-            model_spec: "AnswerQueryRequest.QueryUnderstandingSpec.QueryRephraserSpec.ModelSpec" = proto.Field(
+            model_spec: 'AnswerQueryRequest.QueryUnderstandingSpec.QueryRephraserSpec.ModelSpec' = proto.Field(
                 proto.MESSAGE,
                 number=3,
-                message="AnswerQueryRequest.QueryUnderstandingSpec.QueryRephraserSpec.ModelSpec",
+                message='AnswerQueryRequest.QueryUnderstandingSpec.QueryRephraserSpec.ModelSpec',
             )
 
-        query_classification_spec: "AnswerQueryRequest.QueryUnderstandingSpec.QueryClassificationSpec" = proto.Field(
+        query_classification_spec: 'AnswerQueryRequest.QueryUnderstandingSpec.QueryClassificationSpec' = proto.Field(
             proto.MESSAGE,
             number=1,
-            message="AnswerQueryRequest.QueryUnderstandingSpec.QueryClassificationSpec",
+            message='AnswerQueryRequest.QueryUnderstandingSpec.QueryClassificationSpec',
         )
-        query_rephraser_spec: "AnswerQueryRequest.QueryUnderstandingSpec.QueryRephraserSpec" = proto.Field(
+        query_rephraser_spec: 'AnswerQueryRequest.QueryUnderstandingSpec.QueryRephraserSpec' = proto.Field(
             proto.MESSAGE,
             number=2,
-            message="AnswerQueryRequest.QueryUnderstandingSpec.QueryRephraserSpec",
+            message='AnswerQueryRequest.QueryUnderstandingSpec.QueryRephraserSpec',
         )
         disable_spell_correction: bool = proto.Field(
             proto.BOOL,
@@ -1239,27 +1215,23 @@ class AnswerQueryRequest(proto.Message):
                     proto.STRING,
                     number=1,
                 )
-                document_metadata: "AnswerQueryRequest.EndUserSpec.EndUserMetaData.ChunkInfo.DocumentMetadata" = proto.Field(
+                document_metadata: 'AnswerQueryRequest.EndUserSpec.EndUserMetaData.ChunkInfo.DocumentMetadata' = proto.Field(
                     proto.MESSAGE,
                     number=2,
-                    message="AnswerQueryRequest.EndUserSpec.EndUserMetaData.ChunkInfo.DocumentMetadata",
+                    message='AnswerQueryRequest.EndUserSpec.EndUserMetaData.ChunkInfo.DocumentMetadata',
                 )
 
-            chunk_info: "AnswerQueryRequest.EndUserSpec.EndUserMetaData.ChunkInfo" = (
-                proto.Field(
-                    proto.MESSAGE,
-                    number=1,
-                    oneof="content",
-                    message="AnswerQueryRequest.EndUserSpec.EndUserMetaData.ChunkInfo",
-                )
+            chunk_info: 'AnswerQueryRequest.EndUserSpec.EndUserMetaData.ChunkInfo' = proto.Field(
+                proto.MESSAGE,
+                number=1,
+                oneof='content',
+                message='AnswerQueryRequest.EndUserSpec.EndUserMetaData.ChunkInfo',
             )
 
-        end_user_metadata: MutableSequence[
-            "AnswerQueryRequest.EndUserSpec.EndUserMetaData"
-        ] = proto.RepeatedField(
+        end_user_metadata: MutableSequence['AnswerQueryRequest.EndUserSpec.EndUserMetaData'] = proto.RepeatedField(
             proto.MESSAGE,
             number=1,
-            message="AnswerQueryRequest.EndUserSpec.EndUserMetaData",
+            message='AnswerQueryRequest.EndUserSpec.EndUserMetaData',
         )
 
     serving_config: str = proto.Field(
@@ -1412,7 +1384,7 @@ class UpdateSessionRequest(proto.Message):
             [Session][google.cloud.discoveryengine.v1.Session] to
             update. The following are NOT supported:
 
-            - [Session.name][google.cloud.discoveryengine.v1.Session.name]
+            -  [Session.name][google.cloud.discoveryengine.v1.Session.name]
 
             If not set or empty, all supported fields are updated.
     """
@@ -1485,14 +1457,14 @@ class ListSessionsRequest(proto.Message):
             A comma-separated list of fields to filter by, in EBNF
             grammar. The supported fields are:
 
-            - ``user_pseudo_id``
-            - ``state``
-            - ``display_name``
-            - ``starred``
-            - ``is_pinned``
-            - ``labels``
-            - ``create_time``
-            - ``update_time``
+            -  ``user_pseudo_id``
+            -  ``state``
+            -  ``display_name``
+            -  ``starred``
+            -  ``is_pinned``
+            -  ``labels``
+            -  ``create_time``
+            -  ``update_time``
 
             Examples: "user_pseudo_id = some_id" "display_name =
             "some_name"" "starred = true" "is_pinned=true AND (NOT
@@ -1502,17 +1474,17 @@ class ListSessionsRequest(proto.Message):
             ascending order. Use "desc" after a field name for
             descending. Supported fields:
 
-            - ``update_time``
-            - ``create_time``
-            - ``session_name``
-            - ``is_pinned``
+            -  ``update_time``
+            -  ``create_time``
+            -  ``session_name``
+            -  ``is_pinned``
 
             Example:
 
-            - "update_time desc"
-            - "create_time"
-            - "is_pinned desc,update_time desc": list sessions by
-              is_pinned first, then by update_time.
+            -  "update_time desc"
+            -  "create_time"
+            -  "is_pinned desc,update_time desc": list sessions by
+               is_pinned first, then by update_time.
     """
 
     parent: str = proto.Field(

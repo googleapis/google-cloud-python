@@ -19,15 +19,17 @@ from typing import MutableMapping, MutableSequence
 
 import proto  # type: ignore
 
-from google.cloud.discoveryengine_v1.types import assist_answer, search_service
+from google.cloud.discoveryengine_v1.types import assist_answer
+from google.cloud.discoveryengine_v1.types import search_service
 from google.cloud.discoveryengine_v1.types import session as gcd_session
 
+
 __protobuf__ = proto.module(
-    package="google.cloud.discoveryengine.v1",
+    package='google.cloud.discoveryengine.v1',
     manifest={
-        "AssistUserMetadata",
-        "StreamAssistRequest",
-        "StreamAssistResponse",
+        'AssistUserMetadata',
+        'StreamAssistRequest',
+        'StreamAssistResponse',
     },
 )
 
@@ -149,9 +151,7 @@ class StreamAssistRequest(proto.Message):
                     `Filter <https://cloud.google.com/generative-ai-app-builder/docs/filter-search-metadata>`__
             """
 
-            data_store_specs: MutableSequence[
-                search_service.SearchRequest.DataStoreSpec
-            ] = proto.RepeatedField(
+            data_store_specs: MutableSequence[search_service.SearchRequest.DataStoreSpec] = proto.RepeatedField(
                 proto.MESSAGE,
                 number=2,
                 message=search_service.SearchRequest.DataStoreSpec,
@@ -162,41 +162,36 @@ class StreamAssistRequest(proto.Message):
             )
 
         class WebGroundingSpec(proto.Message):
-            r"""Specification of the web grounding tool."""
+            r"""Specification of the web grounding tool.
+            """
 
         class ImageGenerationSpec(proto.Message):
-            r"""Specification of the image generation tool."""
+            r"""Specification of the image generation tool.
+            """
 
         class VideoGenerationSpec(proto.Message):
-            r"""Specification of the video generation tool."""
+            r"""Specification of the video generation tool.
+            """
 
-        vertex_ai_search_spec: "StreamAssistRequest.ToolsSpec.VertexAiSearchSpec" = (
-            proto.Field(
-                proto.MESSAGE,
-                number=1,
-                message="StreamAssistRequest.ToolsSpec.VertexAiSearchSpec",
-            )
+        vertex_ai_search_spec: 'StreamAssistRequest.ToolsSpec.VertexAiSearchSpec' = proto.Field(
+            proto.MESSAGE,
+            number=1,
+            message='StreamAssistRequest.ToolsSpec.VertexAiSearchSpec',
         )
-        web_grounding_spec: "StreamAssistRequest.ToolsSpec.WebGroundingSpec" = (
-            proto.Field(
-                proto.MESSAGE,
-                number=2,
-                message="StreamAssistRequest.ToolsSpec.WebGroundingSpec",
-            )
+        web_grounding_spec: 'StreamAssistRequest.ToolsSpec.WebGroundingSpec' = proto.Field(
+            proto.MESSAGE,
+            number=2,
+            message='StreamAssistRequest.ToolsSpec.WebGroundingSpec',
         )
-        image_generation_spec: "StreamAssistRequest.ToolsSpec.ImageGenerationSpec" = (
-            proto.Field(
-                proto.MESSAGE,
-                number=3,
-                message="StreamAssistRequest.ToolsSpec.ImageGenerationSpec",
-            )
+        image_generation_spec: 'StreamAssistRequest.ToolsSpec.ImageGenerationSpec' = proto.Field(
+            proto.MESSAGE,
+            number=3,
+            message='StreamAssistRequest.ToolsSpec.ImageGenerationSpec',
         )
-        video_generation_spec: "StreamAssistRequest.ToolsSpec.VideoGenerationSpec" = (
-            proto.Field(
-                proto.MESSAGE,
-                number=4,
-                message="StreamAssistRequest.ToolsSpec.VideoGenerationSpec",
-            )
+        video_generation_spec: 'StreamAssistRequest.ToolsSpec.VideoGenerationSpec' = proto.Field(
+            proto.MESSAGE,
+            number=4,
+            message='StreamAssistRequest.ToolsSpec.VideoGenerationSpec',
         )
 
     class GenerationSpec(proto.Message):
@@ -228,10 +223,10 @@ class StreamAssistRequest(proto.Message):
         proto.STRING,
         number=3,
     )
-    user_metadata: "AssistUserMetadata" = proto.Field(
+    user_metadata: 'AssistUserMetadata' = proto.Field(
         proto.MESSAGE,
         number=6,
-        message="AssistUserMetadata",
+        message='AssistUserMetadata',
     )
     tools_spec: ToolsSpec = proto.Field(
         proto.MESSAGE,

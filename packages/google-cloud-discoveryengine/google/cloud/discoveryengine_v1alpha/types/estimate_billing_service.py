@@ -17,17 +17,18 @@ from __future__ import annotations
 
 from typing import MutableMapping, MutableSequence
 
-from google.protobuf import timestamp_pb2  # type: ignore
 import proto  # type: ignore
 
 from google.cloud.discoveryengine_v1alpha.types import import_config
+from google.protobuf import timestamp_pb2  # type: ignore
+
 
 __protobuf__ = proto.module(
-    package="google.cloud.discoveryengine.v1alpha",
+    package='google.cloud.discoveryengine.v1alpha',
     manifest={
-        "EstimateDataSizeRequest",
-        "EstimateDataSizeResponse",
-        "EstimateDataSizeMetadata",
+        'EstimateDataSizeRequest',
+        'EstimateDataSizeResponse',
+        'EstimateDataSizeMetadata',
     },
 )
 
@@ -98,12 +99,10 @@ class EstimateDataSizeRequest(proto.Message):
                 number=3,
             )
 
-        estimator_uri_patterns: MutableSequence[
-            "EstimateDataSizeRequest.WebsiteDataSource.EstimatorUriPattern"
-        ] = proto.RepeatedField(
+        estimator_uri_patterns: MutableSequence['EstimateDataSizeRequest.WebsiteDataSource.EstimatorUriPattern'] = proto.RepeatedField(
             proto.MESSAGE,
             number=1,
-            message="EstimateDataSizeRequest.WebsiteDataSource.EstimatorUriPattern",
+            message='EstimateDataSizeRequest.WebsiteDataSource.EstimatorUriPattern',
         )
 
     class FileDataSource(proto.Message):
@@ -131,26 +130,26 @@ class EstimateDataSizeRequest(proto.Message):
         gcs_source: import_config.GcsSource = proto.Field(
             proto.MESSAGE,
             number=1,
-            oneof="source",
+            oneof='source',
             message=import_config.GcsSource,
         )
         bigquery_source: import_config.BigQuerySource = proto.Field(
             proto.MESSAGE,
             number=2,
-            oneof="source",
+            oneof='source',
             message=import_config.BigQuerySource,
         )
 
     website_data_source: WebsiteDataSource = proto.Field(
         proto.MESSAGE,
         number=2,
-        oneof="data_source",
+        oneof='data_source',
         message=WebsiteDataSource,
     )
     file_data_source: FileDataSource = proto.Field(
         proto.MESSAGE,
         number=3,
-        oneof="data_source",
+        oneof='data_source',
         message=FileDataSource,
     )
     location: str = proto.Field(

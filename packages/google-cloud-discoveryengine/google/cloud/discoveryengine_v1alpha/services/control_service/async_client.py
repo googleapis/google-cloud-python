@@ -13,60 +13,46 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-from collections import OrderedDict
 import logging as std_logging
+from collections import OrderedDict
 import re
-from typing import (
-    Callable,
-    Dict,
-    Mapping,
-    MutableMapping,
-    MutableSequence,
-    Optional,
-    Sequence,
-    Tuple,
-    Type,
-    Union,
-)
+from typing import Dict, Callable, Mapping, MutableMapping, MutableSequence, Optional, Sequence, Tuple, Type, Union
 
+from google.cloud.discoveryengine_v1alpha import gapic_version as package_version
+
+from google.api_core.client_options import ClientOptions
 from google.api_core import exceptions as core_exceptions
 from google.api_core import gapic_v1
 from google.api_core import retry_async as retries
-from google.api_core.client_options import ClientOptions
-from google.auth import credentials as ga_credentials  # type: ignore
-from google.oauth2 import service_account  # type: ignore
+from google.auth import credentials as ga_credentials   # type: ignore
+from google.oauth2 import service_account              # type: ignore
 import google.protobuf
 
-from google.cloud.discoveryengine_v1alpha import gapic_version as package_version
 
 try:
     OptionalRetry = Union[retries.AsyncRetry, gapic_v1.method._MethodDefault, None]
 except AttributeError:  # pragma: NO COVER
     OptionalRetry = Union[retries.AsyncRetry, object, None]  # type: ignore
 
-from google.cloud.location import locations_pb2  # type: ignore
-from google.longrunning import operations_pb2  # type: ignore
-from google.protobuf import field_mask_pb2  # type: ignore
-
 from google.cloud.discoveryengine_v1alpha.services.control_service import pagers
 from google.cloud.discoveryengine_v1alpha.types import common
 from google.cloud.discoveryengine_v1alpha.types import control
 from google.cloud.discoveryengine_v1alpha.types import control as gcd_control
 from google.cloud.discoveryengine_v1alpha.types import control_service
-
-from .client import ControlServiceClient
-from .transports.base import DEFAULT_CLIENT_INFO, ControlServiceTransport
+from google.cloud.location import locations_pb2 # type: ignore
+from google.longrunning import operations_pb2 # type: ignore
+from google.protobuf import field_mask_pb2  # type: ignore
+from .transports.base import ControlServiceTransport, DEFAULT_CLIENT_INFO
 from .transports.grpc_asyncio import ControlServiceGrpcAsyncIOTransport
+from .client import ControlServiceClient
 
 try:
     from google.api_core import client_logging  # type: ignore
-
     CLIENT_LOGGING_SUPPORTED = True  # pragma: NO COVER
 except ImportError:  # pragma: NO COVER
     CLIENT_LOGGING_SUPPORTED = False
 
 _LOGGER = std_logging.getLogger(__name__)
-
 
 class ControlServiceAsyncClient:
     """Service for performing CRUD operations on Controls.
@@ -88,30 +74,16 @@ class ControlServiceAsyncClient:
     parse_control_path = staticmethod(ControlServiceClient.parse_control_path)
     data_store_path = staticmethod(ControlServiceClient.data_store_path)
     parse_data_store_path = staticmethod(ControlServiceClient.parse_data_store_path)
-    common_billing_account_path = staticmethod(
-        ControlServiceClient.common_billing_account_path
-    )
-    parse_common_billing_account_path = staticmethod(
-        ControlServiceClient.parse_common_billing_account_path
-    )
+    common_billing_account_path = staticmethod(ControlServiceClient.common_billing_account_path)
+    parse_common_billing_account_path = staticmethod(ControlServiceClient.parse_common_billing_account_path)
     common_folder_path = staticmethod(ControlServiceClient.common_folder_path)
-    parse_common_folder_path = staticmethod(
-        ControlServiceClient.parse_common_folder_path
-    )
-    common_organization_path = staticmethod(
-        ControlServiceClient.common_organization_path
-    )
-    parse_common_organization_path = staticmethod(
-        ControlServiceClient.parse_common_organization_path
-    )
+    parse_common_folder_path = staticmethod(ControlServiceClient.parse_common_folder_path)
+    common_organization_path = staticmethod(ControlServiceClient.common_organization_path)
+    parse_common_organization_path = staticmethod(ControlServiceClient.parse_common_organization_path)
     common_project_path = staticmethod(ControlServiceClient.common_project_path)
-    parse_common_project_path = staticmethod(
-        ControlServiceClient.parse_common_project_path
-    )
+    parse_common_project_path = staticmethod(ControlServiceClient.parse_common_project_path)
     common_location_path = staticmethod(ControlServiceClient.common_location_path)
-    parse_common_location_path = staticmethod(
-        ControlServiceClient.parse_common_location_path
-    )
+    parse_common_location_path = staticmethod(ControlServiceClient.parse_common_location_path)
 
     @classmethod
     def from_service_account_info(cls, info: dict, *args, **kwargs):
@@ -147,9 +119,7 @@ class ControlServiceAsyncClient:
     from_service_account_json = from_service_account_file
 
     @classmethod
-    def get_mtls_endpoint_and_cert_source(
-        cls, client_options: Optional[ClientOptions] = None
-    ):
+    def get_mtls_endpoint_and_cert_source(cls, client_options: Optional[ClientOptions] = None):
         """Return the API endpoint and client cert source for mutual TLS.
 
         The client cert source is determined in the following order:
@@ -212,16 +182,12 @@ class ControlServiceAsyncClient:
 
     get_transport_class = ControlServiceClient.get_transport_class
 
-    def __init__(
-        self,
-        *,
-        credentials: Optional[ga_credentials.Credentials] = None,
-        transport: Optional[
-            Union[str, ControlServiceTransport, Callable[..., ControlServiceTransport]]
-        ] = "grpc_asyncio",
-        client_options: Optional[ClientOptions] = None,
-        client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
-    ) -> None:
+    def __init__(self, *,
+            credentials: Optional[ga_credentials.Credentials] = None,
+            transport: Optional[Union[str, ControlServiceTransport, Callable[..., ControlServiceTransport]]] = "grpc_asyncio",
+            client_options: Optional[ClientOptions] = None,
+            client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
+            ) -> None:
         """Instantiates the control service async client.
 
         Args:
@@ -276,41 +242,33 @@ class ControlServiceAsyncClient:
             transport=transport,
             client_options=client_options,
             client_info=client_info,
+
         )
 
-        if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-            std_logging.DEBUG
-        ):  # pragma: NO COVER
+        if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(std_logging.DEBUG):  # pragma: NO COVER
             _LOGGER.debug(
                 "Created client `google.cloud.discoveryengine_v1alpha.ControlServiceAsyncClient`.",
-                extra={
+                extra = {
                     "serviceName": "google.cloud.discoveryengine.v1alpha.ControlService",
-                    "universeDomain": getattr(
-                        self._client._transport._credentials, "universe_domain", ""
-                    ),
+                    "universeDomain": getattr(self._client._transport._credentials, "universe_domain", ""),
                     "credentialsType": f"{type(self._client._transport._credentials).__module__}.{type(self._client._transport._credentials).__qualname__}",
-                    "credentialsInfo": getattr(
-                        self.transport._credentials, "get_cred_info", lambda: None
-                    )(),
-                }
-                if hasattr(self._client._transport, "_credentials")
-                else {
+                    "credentialsInfo": getattr(self.transport._credentials, "get_cred_info", lambda: None)(),
+                } if hasattr(self._client._transport, "_credentials") else {
                     "serviceName": "google.cloud.discoveryengine.v1alpha.ControlService",
                     "credentialsType": None,
-                },
+                }
             )
 
-    async def create_control(
-        self,
-        request: Optional[Union[control_service.CreateControlRequest, dict]] = None,
-        *,
-        parent: Optional[str] = None,
-        control: Optional[gcd_control.Control] = None,
-        control_id: Optional[str] = None,
-        retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
-    ) -> gcd_control.Control:
+    async def create_control(self,
+            request: Optional[Union[control_service.CreateControlRequest, dict]] = None,
+            *,
+            parent: Optional[str] = None,
+            control: Optional[gcd_control.Control] = None,
+            control_id: Optional[str] = None,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+            ) -> gcd_control.Control:
         r"""Creates a Control.
 
         By default 1000 controls are allowed for a data store. A request
@@ -403,14 +361,10 @@ class ControlServiceAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [parent, control, control_id]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of "
+                             "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -428,14 +382,14 @@ class ControlServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.create_control
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.create_control]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
         metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
+            gapic_v1.routing_header.to_grpc_metadata((
+                ("parent", request.parent),
+            )),
         )
 
         # Validate the universe domain.
@@ -452,15 +406,14 @@ class ControlServiceAsyncClient:
         # Done; return the response.
         return response
 
-    async def delete_control(
-        self,
-        request: Optional[Union[control_service.DeleteControlRequest, dict]] = None,
-        *,
-        name: Optional[str] = None,
-        retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
-    ) -> None:
+    async def delete_control(self,
+            request: Optional[Union[control_service.DeleteControlRequest, dict]] = None,
+            *,
+            name: Optional[str] = None,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+            ) -> None:
         r"""Deletes a Control.
 
         If the [Control][google.cloud.discoveryengine.v1alpha.Control]
@@ -512,14 +465,10 @@ class ControlServiceAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [name]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of "
+                             "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -533,14 +482,14 @@ class ControlServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.delete_control
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.delete_control]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
         metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
+            gapic_v1.routing_header.to_grpc_metadata((
+                ("name", request.name),
+            )),
         )
 
         # Validate the universe domain.
@@ -554,16 +503,15 @@ class ControlServiceAsyncClient:
             metadata=metadata,
         )
 
-    async def update_control(
-        self,
-        request: Optional[Union[control_service.UpdateControlRequest, dict]] = None,
-        *,
-        control: Optional[gcd_control.Control] = None,
-        update_mask: Optional[field_mask_pb2.FieldMask] = None,
-        retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
-    ) -> gcd_control.Control:
+    async def update_control(self,
+            request: Optional[Union[control_service.UpdateControlRequest, dict]] = None,
+            *,
+            control: Optional[gcd_control.Control] = None,
+            update_mask: Optional[field_mask_pb2.FieldMask] = None,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+            ) -> gcd_control.Control:
         r"""Updates a Control.
 
         [Control][google.cloud.discoveryengine.v1alpha.Control] action
@@ -617,8 +565,8 @@ class ControlServiceAsyncClient:
                 [Control][google.cloud.discoveryengine.v1alpha.Control]
                 to update. The following are NOT supported:
 
-                - [Control.name][google.cloud.discoveryengine.v1alpha.Control.name]
-                - [Control.solution_type][google.cloud.discoveryengine.v1alpha.Control.solution_type]
+                -  [Control.name][google.cloud.discoveryengine.v1alpha.Control.name]
+                -  [Control.solution_type][google.cloud.discoveryengine.v1alpha.Control.solution_type]
 
                 If not set or empty, all supported fields are updated.
 
@@ -646,14 +594,10 @@ class ControlServiceAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [control, update_mask]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of "
+                             "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -669,16 +613,14 @@ class ControlServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.update_control
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.update_control]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
         metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata(
-                (("control.name", request.control.name),)
-            ),
+            gapic_v1.routing_header.to_grpc_metadata((
+                ("control.name", request.control.name),
+            )),
         )
 
         # Validate the universe domain.
@@ -695,15 +637,14 @@ class ControlServiceAsyncClient:
         # Done; return the response.
         return response
 
-    async def get_control(
-        self,
-        request: Optional[Union[control_service.GetControlRequest, dict]] = None,
-        *,
-        name: Optional[str] = None,
-        retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
-    ) -> control.Control:
+    async def get_control(self,
+            request: Optional[Union[control_service.GetControlRequest, dict]] = None,
+            *,
+            name: Optional[str] = None,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+            ) -> control.Control:
         r"""Gets a Control.
 
         .. code-block:: python
@@ -764,14 +705,10 @@ class ControlServiceAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [name]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of "
+                             "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -785,14 +722,14 @@ class ControlServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.get_control
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.get_control]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
         metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
+            gapic_v1.routing_header.to_grpc_metadata((
+                ("name", request.name),
+            )),
         )
 
         # Validate the universe domain.
@@ -809,15 +746,14 @@ class ControlServiceAsyncClient:
         # Done; return the response.
         return response
 
-    async def list_controls(
-        self,
-        request: Optional[Union[control_service.ListControlsRequest, dict]] = None,
-        *,
-        parent: Optional[str] = None,
-        retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
-    ) -> pagers.ListControlsAsyncPager:
+    async def list_controls(self,
+            request: Optional[Union[control_service.ListControlsRequest, dict]] = None,
+            *,
+            parent: Optional[str] = None,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+            ) -> pagers.ListControlsAsyncPager:
         r"""Lists all Controls by their parent
         [DataStore][google.cloud.discoveryengine.v1alpha.DataStore].
 
@@ -881,14 +817,10 @@ class ControlServiceAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [parent]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of "
+                             "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -902,14 +834,14 @@ class ControlServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.list_controls
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.list_controls]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
         metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
+            gapic_v1.routing_header.to_grpc_metadata((
+                ("parent", request.parent),
+            )),
         )
 
         # Validate the universe domain.
@@ -975,7 +907,8 @@ class ControlServiceAsyncClient:
         # Certain fields should be provided within the metadata header;
         # add these here.
         metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
+            gapic_v1.routing_header.to_grpc_metadata(
+                (("name", request.name),)),
         )
 
         # Validate the universe domain.
@@ -983,11 +916,7 @@ class ControlServiceAsyncClient:
 
         # Send the request.
         response = await rpc(
-            request,
-            retry=retry,
-            timeout=timeout,
-            metadata=metadata,
-        )
+            request, retry=retry, timeout=timeout, metadata=metadata,)
 
         # Done; return the response.
         return response
@@ -1030,7 +959,8 @@ class ControlServiceAsyncClient:
         # Certain fields should be provided within the metadata header;
         # add these here.
         metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
+            gapic_v1.routing_header.to_grpc_metadata(
+                (("name", request.name),)),
         )
 
         # Validate the universe domain.
@@ -1038,11 +968,7 @@ class ControlServiceAsyncClient:
 
         # Send the request.
         response = await rpc(
-            request,
-            retry=retry,
-            timeout=timeout,
-            metadata=metadata,
-        )
+            request, retry=retry, timeout=timeout, metadata=metadata,)
 
         # Done; return the response.
         return response
@@ -1088,19 +1014,15 @@ class ControlServiceAsyncClient:
         # Certain fields should be provided within the metadata header;
         # add these here.
         metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
+            gapic_v1.routing_header.to_grpc_metadata(
+                (("name", request.name),)),
         )
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
 
         # Send the request.
-        await rpc(
-            request,
-            retry=retry,
-            timeout=timeout,
-            metadata=metadata,
-        )
+        await rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
 
     async def __aenter__(self) -> "ControlServiceAsyncClient":
         return self
@@ -1108,13 +1030,12 @@ class ControlServiceAsyncClient:
     async def __aexit__(self, exc_type, exc, tb):
         await self.transport.close()
 
+DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(gapic_version=package_version.__version__)
 
-DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
-    gapic_version=package_version.__version__
-)
-
-if hasattr(DEFAULT_CLIENT_INFO, "protobuf_runtime_version"):  # pragma: NO COVER
+if hasattr(DEFAULT_CLIENT_INFO, "protobuf_runtime_version"):   # pragma: NO COVER
     DEFAULT_CLIENT_INFO.protobuf_runtime_version = google.protobuf.__version__
 
 
-__all__ = ("ControlServiceAsyncClient",)
+__all__ = (
+    "ControlServiceAsyncClient",
+)

@@ -49,5 +49,4 @@ async def sample_get_cmek_config():
     # Handle the response
     print(response)
 
-
 # [END discoveryengine_v1_generated_CmekConfigService_GetCmekConfig_async]

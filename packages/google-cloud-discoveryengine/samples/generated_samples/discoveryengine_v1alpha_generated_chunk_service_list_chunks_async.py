@@ -50,5 +50,4 @@ async def sample_list_chunks():
     async for response in page_result:
         print(response)
 
-
 # [END discoveryengine_v1alpha_generated_ChunkService_ListChunks_async]

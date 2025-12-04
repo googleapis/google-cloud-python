@@ -17,24 +17,25 @@ from __future__ import annotations
 
 from typing import MutableMapping, MutableSequence
 
-from google.protobuf import duration_pb2  # type: ignore
-from google.protobuf import timestamp_pb2  # type: ignore
 import proto  # type: ignore
 
 from google.cloud.discoveryengine_v1alpha.types import answer as gcd_answer
 from google.cloud.discoveryengine_v1alpha.types import common
+from google.protobuf import duration_pb2  # type: ignore
+from google.protobuf import timestamp_pb2  # type: ignore
+
 
 __protobuf__ = proto.module(
-    package="google.cloud.discoveryengine.v1alpha",
+    package='google.cloud.discoveryengine.v1alpha',
     manifest={
-        "FileSource",
-        "Session",
-        "Query",
-        "ImageCharacteristics",
-        "VideoCharacteristics",
-        "FileCharacteristics",
-        "FileView",
-        "FileMetadata",
+        'FileSource',
+        'Session',
+        'Query',
+        'ImageCharacteristics',
+        'VideoCharacteristics',
+        'FileCharacteristics',
+        'FileView',
+        'FileMetadata',
     },
 )
 
@@ -94,7 +95,6 @@ class Session(proto.Message):
             pinned session will be displayed on the top of
             the session list.
     """
-
     class State(proto.Enum):
         r"""Enumeration of the state of the session.
 
@@ -136,10 +136,10 @@ class Session(proto.Message):
                 reserved for Google-developed functionality.
         """
 
-        query: "Query" = proto.Field(
+        query: 'Query' = proto.Field(
             proto.MESSAGE,
             number=1,
-            message="Query",
+            message='Query',
         )
         answer: str = proto.Field(
             proto.STRING,
@@ -211,7 +211,7 @@ class Query(proto.Message):
     text: str = proto.Field(
         proto.STRING,
         number=2,
-        oneof="content",
+        oneof='content',
     )
     query_id: str = proto.Field(
         proto.STRING,
@@ -234,7 +234,6 @@ class ImageCharacteristics(proto.Message):
             Output only. Bit depth of the image (e.g.,
             8-bit, 16-bit).
     """
-
     class ColorSpace(proto.Enum):
         r"""Possible color spaces of an image (e.g., "RGB", "CMYK",
         "Grayscale").
@@ -394,23 +393,23 @@ class FileView(proto.Message):
             Output only. The time the view was created.
     """
 
-    image_characteristics: "ImageCharacteristics" = proto.Field(
+    image_characteristics: 'ImageCharacteristics' = proto.Field(
         proto.MESSAGE,
         number=6,
-        oneof="characteristics",
-        message="ImageCharacteristics",
+        oneof='characteristics',
+        message='ImageCharacteristics',
     )
-    video_characteristics: "VideoCharacteristics" = proto.Field(
+    video_characteristics: 'VideoCharacteristics' = proto.Field(
         proto.MESSAGE,
         number=7,
-        oneof="characteristics",
-        message="VideoCharacteristics",
+        oneof='characteristics',
+        message='VideoCharacteristics',
     )
-    file_characteristics: "FileCharacteristics" = proto.Field(
+    file_characteristics: 'FileCharacteristics' = proto.Field(
         proto.MESSAGE,
         number=8,
-        oneof="characteristics",
-        message="FileCharacteristics",
+        oneof='characteristics',
+        message='FileCharacteristics',
     )
     view_id: str = proto.Field(
         proto.STRING,
@@ -497,11 +496,11 @@ class FileMetadata(proto.Message):
             Output only. Alternate views of this file object. Each file
             view is attached to a specific role. Possible example keys:
 
-            - "thumbnail"
-            - "mobile_thumbnail"
-            - "clip"
-            - "summary"
-            - "translation".
+            -  "thumbnail"
+            -  "mobile_thumbnail"
+            -  "clip"
+            -  "summary"
+            -  "translation".
     """
 
     file_id: str = proto.Field(
@@ -524,10 +523,10 @@ class FileMetadata(proto.Message):
         proto.STRING,
         number=9,
     )
-    original_source_type: "FileSource" = proto.Field(
+    original_source_type: 'FileSource' = proto.Field(
         proto.ENUM,
         number=10,
-        enum="FileSource",
+        enum='FileSource',
     )
     upload_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
@@ -553,11 +552,11 @@ class FileMetadata(proto.Message):
         number=21,
         enum=common.FileOriginType,
     )
-    views: MutableMapping[str, "FileView"] = proto.MapField(
+    views: MutableMapping[str, 'FileView'] = proto.MapField(
         proto.STRING,
         proto.MESSAGE,
         number=22,
-        message="FileView",
+        message='FileView',
     )
 
 

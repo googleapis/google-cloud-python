@@ -21,11 +21,12 @@ import proto  # type: ignore
 
 from google.cloud.discoveryengine_v1beta.types import user_event as gcd_user_event
 
+
 __protobuf__ = proto.module(
-    package="google.cloud.discoveryengine.v1beta",
+    package='google.cloud.discoveryengine.v1beta',
     manifest={
-        "WriteUserEventRequest",
-        "CollectUserEventRequest",
+        'WriteUserEventRequest',
+        'CollectUserEventRequest',
     },
 )
 

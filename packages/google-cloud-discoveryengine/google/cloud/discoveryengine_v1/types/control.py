@@ -17,16 +17,17 @@ from __future__ import annotations
 
 from typing import MutableMapping, MutableSequence
 
-from google.protobuf import timestamp_pb2  # type: ignore
 import proto  # type: ignore
 
 from google.cloud.discoveryengine_v1.types import common
+from google.protobuf import timestamp_pb2  # type: ignore
+
 
 __protobuf__ = proto.module(
-    package="google.cloud.discoveryengine.v1",
+    package='google.cloud.discoveryengine.v1',
     manifest={
-        "Condition",
-        "Control",
+        'Condition',
+        'Control',
     },
 )
 
@@ -259,7 +260,6 @@ class Control(proto.Message):
                     monotonic function (defined through the interpolation_type
                     above) passes through the control points listed here.
             """
-
             class AttributeType(proto.Enum):
                 r"""The attribute(or function) for which the custom ranking is to
                 be applied.
@@ -334,36 +334,32 @@ class Control(proto.Message):
                 proto.STRING,
                 number=1,
             )
-            attribute_type: "Control.BoostAction.InterpolationBoostSpec.AttributeType" = proto.Field(
+            attribute_type: 'Control.BoostAction.InterpolationBoostSpec.AttributeType' = proto.Field(
                 proto.ENUM,
                 number=2,
-                enum="Control.BoostAction.InterpolationBoostSpec.AttributeType",
+                enum='Control.BoostAction.InterpolationBoostSpec.AttributeType',
             )
-            interpolation_type: "Control.BoostAction.InterpolationBoostSpec.InterpolationType" = proto.Field(
+            interpolation_type: 'Control.BoostAction.InterpolationBoostSpec.InterpolationType' = proto.Field(
                 proto.ENUM,
                 number=3,
-                enum="Control.BoostAction.InterpolationBoostSpec.InterpolationType",
+                enum='Control.BoostAction.InterpolationBoostSpec.InterpolationType',
             )
-            control_points: MutableSequence[
-                "Control.BoostAction.InterpolationBoostSpec.ControlPoint"
-            ] = proto.RepeatedField(
+            control_points: MutableSequence['Control.BoostAction.InterpolationBoostSpec.ControlPoint'] = proto.RepeatedField(
                 proto.MESSAGE,
                 number=4,
-                message="Control.BoostAction.InterpolationBoostSpec.ControlPoint",
+                message='Control.BoostAction.InterpolationBoostSpec.ControlPoint',
             )
 
         fixed_boost: float = proto.Field(
             proto.FLOAT,
             number=4,
-            oneof="boost_spec",
+            oneof='boost_spec',
         )
-        interpolation_boost_spec: "Control.BoostAction.InterpolationBoostSpec" = (
-            proto.Field(
-                proto.MESSAGE,
-                number=5,
-                oneof="boost_spec",
-                message="Control.BoostAction.InterpolationBoostSpec",
-            )
+        interpolation_boost_spec: 'Control.BoostAction.InterpolationBoostSpec' = proto.Field(
+            proto.MESSAGE,
+            number=5,
+            oneof='boost_spec',
+            message='Control.BoostAction.InterpolationBoostSpec',
         )
         boost: float = proto.Field(
             proto.FLOAT,
@@ -471,31 +467,31 @@ class Control(proto.Message):
     boost_action: BoostAction = proto.Field(
         proto.MESSAGE,
         number=6,
-        oneof="action",
+        oneof='action',
         message=BoostAction,
     )
     filter_action: FilterAction = proto.Field(
         proto.MESSAGE,
         number=7,
-        oneof="action",
+        oneof='action',
         message=FilterAction,
     )
     redirect_action: RedirectAction = proto.Field(
         proto.MESSAGE,
         number=9,
-        oneof="action",
+        oneof='action',
         message=RedirectAction,
     )
     synonyms_action: SynonymsAction = proto.Field(
         proto.MESSAGE,
         number=10,
-        oneof="action",
+        oneof='action',
         message=SynonymsAction,
     )
     promote_action: PromoteAction = proto.Field(
         proto.MESSAGE,
         number=15,
-        oneof="action",
+        oneof='action',
         message=PromoteAction,
     )
     name: str = proto.Field(
@@ -520,10 +516,10 @@ class Control(proto.Message):
         number=8,
         enum=common.SearchUseCase,
     )
-    conditions: MutableSequence["Condition"] = proto.RepeatedField(
+    conditions: MutableSequence['Condition'] = proto.RepeatedField(
         proto.MESSAGE,
         number=5,
-        message="Condition",
+        message='Condition',
     )
 
 

@@ -15,35 +15,34 @@
 #
 import inspect
 import json
-import logging as std_logging
 import pickle
-from typing import Awaitable, Callable, Dict, Optional, Sequence, Tuple, Union
+import logging as std_logging
 import warnings
+from typing import Awaitable, Callable, Dict, Optional, Sequence, Tuple, Union
 
+from google.api_core import gapic_v1
+from google.api_core import grpc_helpers_async
 from google.api_core import exceptions as core_exceptions
-from google.api_core import gapic_v1, grpc_helpers_async, operations_v1
 from google.api_core import retry_async as retries
-from google.auth import credentials as ga_credentials  # type: ignore
+from google.api_core import operations_v1
+from google.auth import credentials as ga_credentials   # type: ignore
 from google.auth.transport.grpc import SslCredentials  # type: ignore
-from google.cloud.location import locations_pb2  # type: ignore
-from google.longrunning import operations_pb2  # type: ignore
 from google.protobuf.json_format import MessageToJson
 import google.protobuf.message
-import grpc  # type: ignore
+
+import grpc                        # type: ignore
+import proto                       # type: ignore
 from grpc.experimental import aio  # type: ignore
-import proto  # type: ignore
 
-from google.cloud.discoveryengine_v1beta.types import (
-    site_search_engine,
-    site_search_engine_service,
-)
-
-from .base import DEFAULT_CLIENT_INFO, SiteSearchEngineServiceTransport
+from google.cloud.discoveryengine_v1beta.types import site_search_engine
+from google.cloud.discoveryengine_v1beta.types import site_search_engine_service
+from google.cloud.location import locations_pb2 # type: ignore
+from google.longrunning import operations_pb2 # type: ignore
+from .base import SiteSearchEngineServiceTransport, DEFAULT_CLIENT_INFO
 from .grpc import SiteSearchEngineServiceGrpcTransport
 
 try:
     from google.api_core import client_logging  # type: ignore
-
     CLIENT_LOGGING_SUPPORTED = True  # pragma: NO COVER
 except ImportError:  # pragma: NO COVER
     CLIENT_LOGGING_SUPPORTED = False
@@ -51,13 +50,9 @@ except ImportError:  # pragma: NO COVER
 _LOGGER = std_logging.getLogger(__name__)
 
 
-class _LoggingClientAIOInterceptor(
-    grpc.aio.UnaryUnaryClientInterceptor
-):  # pragma: NO COVER
+class _LoggingClientAIOInterceptor(grpc.aio.UnaryUnaryClientInterceptor):  # pragma: NO COVER
     async def intercept_unary_unary(self, continuation, client_call_details, request):
-        logging_enabled = CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-            std_logging.DEBUG
-        )
+        logging_enabled = CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(std_logging.DEBUG)
         if logging_enabled:  # pragma: NO COVER
             request_metadata = client_call_details.metadata
             if isinstance(request, proto.Message):
@@ -78,7 +73,7 @@ class _LoggingClientAIOInterceptor(
             }
             _LOGGER.debug(
                 f"Sending request for {client_call_details.method}",
-                extra={
+                extra = {
                     "serviceName": "google.cloud.discoveryengine.v1beta.SiteSearchEngineService",
                     "rpcName": str(client_call_details.method),
                     "request": grpc_request,
@@ -89,11 +84,7 @@ class _LoggingClientAIOInterceptor(
         if logging_enabled:  # pragma: NO COVER
             response_metadata = await response.trailing_metadata()
             # Convert gRPC metadata `<class 'grpc.aio._metadata.Metadata'>` to list of tuples
-            metadata = (
-                dict([(k, str(v)) for k, v in response_metadata])
-                if response_metadata
-                else None
-            )
+            metadata = dict([(k, str(v)) for k, v in response_metadata]) if response_metadata else None
             result = await response
             if isinstance(result, proto.Message):
                 response_payload = type(result).to_json(result)
@@ -108,7 +99,7 @@ class _LoggingClientAIOInterceptor(
             }
             _LOGGER.debug(
                 f"Received response to rpc {client_call_details.method}.",
-                extra={
+                extra = {
                     "serviceName": "google.cloud.discoveryengine.v1beta.SiteSearchEngineService",
                     "rpcName": str(client_call_details.method),
                     "response": grpc_response,
@@ -135,15 +126,13 @@ class SiteSearchEngineServiceGrpcAsyncIOTransport(SiteSearchEngineServiceTranspo
     _stubs: Dict[str, Callable] = {}
 
     @classmethod
-    def create_channel(
-        cls,
-        host: str = "discoveryengine.googleapis.com",
-        credentials: Optional[ga_credentials.Credentials] = None,
-        credentials_file: Optional[str] = None,
-        scopes: Optional[Sequence[str]] = None,
-        quota_project_id: Optional[str] = None,
-        **kwargs,
-    ) -> aio.Channel:
+    def create_channel(cls,
+                       host: str = 'discoveryengine.googleapis.com',
+                       credentials: Optional[ga_credentials.Credentials] = None,
+                       credentials_file: Optional[str] = None,
+                       scopes: Optional[Sequence[str]] = None,
+                       quota_project_id: Optional[str] = None,
+                       **kwargs) -> aio.Channel:
         """Create and return a gRPC AsyncIO channel object.
         Args:
             host (Optional[str]): The host for the channel to use.
@@ -174,26 +163,24 @@ class SiteSearchEngineServiceGrpcAsyncIOTransport(SiteSearchEngineServiceTranspo
             default_scopes=cls.AUTH_SCOPES,
             scopes=scopes,
             default_host=cls.DEFAULT_HOST,
-            **kwargs,
+            **kwargs
         )
 
-    def __init__(
-        self,
-        *,
-        host: str = "discoveryengine.googleapis.com",
-        credentials: Optional[ga_credentials.Credentials] = None,
-        credentials_file: Optional[str] = None,
-        scopes: Optional[Sequence[str]] = None,
-        channel: Optional[Union[aio.Channel, Callable[..., aio.Channel]]] = None,
-        api_mtls_endpoint: Optional[str] = None,
-        client_cert_source: Optional[Callable[[], Tuple[bytes, bytes]]] = None,
-        ssl_channel_credentials: Optional[grpc.ChannelCredentials] = None,
-        client_cert_source_for_mtls: Optional[Callable[[], Tuple[bytes, bytes]]] = None,
-        quota_project_id: Optional[str] = None,
-        client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
-        always_use_jwt_access: Optional[bool] = False,
-        api_audience: Optional[str] = None,
-    ) -> None:
+    def __init__(self, *,
+            host: str = 'discoveryengine.googleapis.com',
+            credentials: Optional[ga_credentials.Credentials] = None,
+            credentials_file: Optional[str] = None,
+            scopes: Optional[Sequence[str]] = None,
+            channel: Optional[Union[aio.Channel, Callable[..., aio.Channel]]] = None,
+            api_mtls_endpoint: Optional[str] = None,
+            client_cert_source: Optional[Callable[[], Tuple[bytes, bytes]]] = None,
+            ssl_channel_credentials: Optional[grpc.ChannelCredentials] = None,
+            client_cert_source_for_mtls: Optional[Callable[[], Tuple[bytes, bytes]]] = None,
+            quota_project_id: Optional[str] = None,
+            client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
+            always_use_jwt_access: Optional[bool] = False,
+            api_audience: Optional[str] = None,
+            ) -> None:
         """Instantiate the transport.
 
         Args:
@@ -319,9 +306,7 @@ class SiteSearchEngineServiceGrpcAsyncIOTransport(SiteSearchEngineServiceTranspo
         self._interceptor = _LoggingClientAIOInterceptor()
         self._grpc_channel._unary_unary_interceptors.append(self._interceptor)
         self._logged_channel = self._grpc_channel
-        self._wrap_with_kind = (
-            "kind" in inspect.signature(gapic_v1.method_async.wrap_method).parameters
-        )
+        self._wrap_with_kind = "kind" in inspect.signature(gapic_v1.method_async.wrap_method).parameters
         # Wrap messages. This must be done after self._logged_channel exists
         self._prep_wrapped_messages(client_info)
 
@@ -352,12 +337,9 @@ class SiteSearchEngineServiceGrpcAsyncIOTransport(SiteSearchEngineServiceTranspo
         return self._operations_client
 
     @property
-    def get_site_search_engine(
-        self,
-    ) -> Callable[
-        [site_search_engine_service.GetSiteSearchEngineRequest],
-        Awaitable[site_search_engine.SiteSearchEngine],
-    ]:
+    def get_site_search_engine(self) -> Callable[
+            [site_search_engine_service.GetSiteSearchEngineRequest],
+            Awaitable[site_search_engine.SiteSearchEngine]]:
         r"""Return a callable for the get site search engine method over gRPC.
 
         Gets the
@@ -373,21 +355,18 @@ class SiteSearchEngineServiceGrpcAsyncIOTransport(SiteSearchEngineServiceTranspo
         # the request.
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
-        if "get_site_search_engine" not in self._stubs:
-            self._stubs["get_site_search_engine"] = self._logged_channel.unary_unary(
-                "/google.cloud.discoveryengine.v1beta.SiteSearchEngineService/GetSiteSearchEngine",
+        if 'get_site_search_engine' not in self._stubs:
+            self._stubs['get_site_search_engine'] = self._logged_channel.unary_unary(
+                '/google.cloud.discoveryengine.v1beta.SiteSearchEngineService/GetSiteSearchEngine',
                 request_serializer=site_search_engine_service.GetSiteSearchEngineRequest.serialize,
                 response_deserializer=site_search_engine.SiteSearchEngine.deserialize,
             )
-        return self._stubs["get_site_search_engine"]
+        return self._stubs['get_site_search_engine']
 
     @property
-    def create_target_site(
-        self,
-    ) -> Callable[
-        [site_search_engine_service.CreateTargetSiteRequest],
-        Awaitable[operations_pb2.Operation],
-    ]:
+    def create_target_site(self) -> Callable[
+            [site_search_engine_service.CreateTargetSiteRequest],
+            Awaitable[operations_pb2.Operation]]:
         r"""Return a callable for the create target site method over gRPC.
 
         Creates a
@@ -403,21 +382,18 @@ class SiteSearchEngineServiceGrpcAsyncIOTransport(SiteSearchEngineServiceTranspo
         # the request.
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
-        if "create_target_site" not in self._stubs:
-            self._stubs["create_target_site"] = self._logged_channel.unary_unary(
-                "/google.cloud.discoveryengine.v1beta.SiteSearchEngineService/CreateTargetSite",
+        if 'create_target_site' not in self._stubs:
+            self._stubs['create_target_site'] = self._logged_channel.unary_unary(
+                '/google.cloud.discoveryengine.v1beta.SiteSearchEngineService/CreateTargetSite',
                 request_serializer=site_search_engine_service.CreateTargetSiteRequest.serialize,
                 response_deserializer=operations_pb2.Operation.FromString,
             )
-        return self._stubs["create_target_site"]
+        return self._stubs['create_target_site']
 
     @property
-    def batch_create_target_sites(
-        self,
-    ) -> Callable[
-        [site_search_engine_service.BatchCreateTargetSitesRequest],
-        Awaitable[operations_pb2.Operation],
-    ]:
+    def batch_create_target_sites(self) -> Callable[
+            [site_search_engine_service.BatchCreateTargetSitesRequest],
+            Awaitable[operations_pb2.Operation]]:
         r"""Return a callable for the batch create target sites method over gRPC.
 
         Creates
@@ -434,21 +410,18 @@ class SiteSearchEngineServiceGrpcAsyncIOTransport(SiteSearchEngineServiceTranspo
         # the request.
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
-        if "batch_create_target_sites" not in self._stubs:
-            self._stubs["batch_create_target_sites"] = self._logged_channel.unary_unary(
-                "/google.cloud.discoveryengine.v1beta.SiteSearchEngineService/BatchCreateTargetSites",
+        if 'batch_create_target_sites' not in self._stubs:
+            self._stubs['batch_create_target_sites'] = self._logged_channel.unary_unary(
+                '/google.cloud.discoveryengine.v1beta.SiteSearchEngineService/BatchCreateTargetSites',
                 request_serializer=site_search_engine_service.BatchCreateTargetSitesRequest.serialize,
                 response_deserializer=operations_pb2.Operation.FromString,
             )
-        return self._stubs["batch_create_target_sites"]
+        return self._stubs['batch_create_target_sites']
 
     @property
-    def get_target_site(
-        self,
-    ) -> Callable[
-        [site_search_engine_service.GetTargetSiteRequest],
-        Awaitable[site_search_engine.TargetSite],
-    ]:
+    def get_target_site(self) -> Callable[
+            [site_search_engine_service.GetTargetSiteRequest],
+            Awaitable[site_search_engine.TargetSite]]:
         r"""Return a callable for the get target site method over gRPC.
 
         Gets a
@@ -464,21 +437,18 @@ class SiteSearchEngineServiceGrpcAsyncIOTransport(SiteSearchEngineServiceTranspo
         # the request.
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
-        if "get_target_site" not in self._stubs:
-            self._stubs["get_target_site"] = self._logged_channel.unary_unary(
-                "/google.cloud.discoveryengine.v1beta.SiteSearchEngineService/GetTargetSite",
+        if 'get_target_site' not in self._stubs:
+            self._stubs['get_target_site'] = self._logged_channel.unary_unary(
+                '/google.cloud.discoveryengine.v1beta.SiteSearchEngineService/GetTargetSite',
                 request_serializer=site_search_engine_service.GetTargetSiteRequest.serialize,
                 response_deserializer=site_search_engine.TargetSite.deserialize,
             )
-        return self._stubs["get_target_site"]
+        return self._stubs['get_target_site']
 
     @property
-    def update_target_site(
-        self,
-    ) -> Callable[
-        [site_search_engine_service.UpdateTargetSiteRequest],
-        Awaitable[operations_pb2.Operation],
-    ]:
+    def update_target_site(self) -> Callable[
+            [site_search_engine_service.UpdateTargetSiteRequest],
+            Awaitable[operations_pb2.Operation]]:
         r"""Return a callable for the update target site method over gRPC.
 
         Updates a
@@ -494,21 +464,18 @@ class SiteSearchEngineServiceGrpcAsyncIOTransport(SiteSearchEngineServiceTranspo
         # the request.
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
-        if "update_target_site" not in self._stubs:
-            self._stubs["update_target_site"] = self._logged_channel.unary_unary(
-                "/google.cloud.discoveryengine.v1beta.SiteSearchEngineService/UpdateTargetSite",
+        if 'update_target_site' not in self._stubs:
+            self._stubs['update_target_site'] = self._logged_channel.unary_unary(
+                '/google.cloud.discoveryengine.v1beta.SiteSearchEngineService/UpdateTargetSite',
                 request_serializer=site_search_engine_service.UpdateTargetSiteRequest.serialize,
                 response_deserializer=operations_pb2.Operation.FromString,
             )
-        return self._stubs["update_target_site"]
+        return self._stubs['update_target_site']
 
     @property
-    def delete_target_site(
-        self,
-    ) -> Callable[
-        [site_search_engine_service.DeleteTargetSiteRequest],
-        Awaitable[operations_pb2.Operation],
-    ]:
+    def delete_target_site(self) -> Callable[
+            [site_search_engine_service.DeleteTargetSiteRequest],
+            Awaitable[operations_pb2.Operation]]:
         r"""Return a callable for the delete target site method over gRPC.
 
         Deletes a
@@ -524,21 +491,18 @@ class SiteSearchEngineServiceGrpcAsyncIOTransport(SiteSearchEngineServiceTranspo
         # the request.
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
-        if "delete_target_site" not in self._stubs:
-            self._stubs["delete_target_site"] = self._logged_channel.unary_unary(
-                "/google.cloud.discoveryengine.v1beta.SiteSearchEngineService/DeleteTargetSite",
+        if 'delete_target_site' not in self._stubs:
+            self._stubs['delete_target_site'] = self._logged_channel.unary_unary(
+                '/google.cloud.discoveryengine.v1beta.SiteSearchEngineService/DeleteTargetSite',
                 request_serializer=site_search_engine_service.DeleteTargetSiteRequest.serialize,
                 response_deserializer=operations_pb2.Operation.FromString,
             )
-        return self._stubs["delete_target_site"]
+        return self._stubs['delete_target_site']
 
     @property
-    def list_target_sites(
-        self,
-    ) -> Callable[
-        [site_search_engine_service.ListTargetSitesRequest],
-        Awaitable[site_search_engine_service.ListTargetSitesResponse],
-    ]:
+    def list_target_sites(self) -> Callable[
+            [site_search_engine_service.ListTargetSitesRequest],
+            Awaitable[site_search_engine_service.ListTargetSitesResponse]]:
         r"""Return a callable for the list target sites method over gRPC.
 
         Gets a list of
@@ -554,21 +518,18 @@ class SiteSearchEngineServiceGrpcAsyncIOTransport(SiteSearchEngineServiceTranspo
         # the request.
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
-        if "list_target_sites" not in self._stubs:
-            self._stubs["list_target_sites"] = self._logged_channel.unary_unary(
-                "/google.cloud.discoveryengine.v1beta.SiteSearchEngineService/ListTargetSites",
+        if 'list_target_sites' not in self._stubs:
+            self._stubs['list_target_sites'] = self._logged_channel.unary_unary(
+                '/google.cloud.discoveryengine.v1beta.SiteSearchEngineService/ListTargetSites',
                 request_serializer=site_search_engine_service.ListTargetSitesRequest.serialize,
                 response_deserializer=site_search_engine_service.ListTargetSitesResponse.deserialize,
             )
-        return self._stubs["list_target_sites"]
+        return self._stubs['list_target_sites']
 
     @property
-    def create_sitemap(
-        self,
-    ) -> Callable[
-        [site_search_engine_service.CreateSitemapRequest],
-        Awaitable[operations_pb2.Operation],
-    ]:
+    def create_sitemap(self) -> Callable[
+            [site_search_engine_service.CreateSitemapRequest],
+            Awaitable[operations_pb2.Operation]]:
         r"""Return a callable for the create sitemap method over gRPC.
 
         Creates a
@@ -584,21 +545,18 @@ class SiteSearchEngineServiceGrpcAsyncIOTransport(SiteSearchEngineServiceTranspo
         # the request.
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
-        if "create_sitemap" not in self._stubs:
-            self._stubs["create_sitemap"] = self._logged_channel.unary_unary(
-                "/google.cloud.discoveryengine.v1beta.SiteSearchEngineService/CreateSitemap",
+        if 'create_sitemap' not in self._stubs:
+            self._stubs['create_sitemap'] = self._logged_channel.unary_unary(
+                '/google.cloud.discoveryengine.v1beta.SiteSearchEngineService/CreateSitemap',
                 request_serializer=site_search_engine_service.CreateSitemapRequest.serialize,
                 response_deserializer=operations_pb2.Operation.FromString,
             )
-        return self._stubs["create_sitemap"]
+        return self._stubs['create_sitemap']
 
     @property
-    def delete_sitemap(
-        self,
-    ) -> Callable[
-        [site_search_engine_service.DeleteSitemapRequest],
-        Awaitable[operations_pb2.Operation],
-    ]:
+    def delete_sitemap(self) -> Callable[
+            [site_search_engine_service.DeleteSitemapRequest],
+            Awaitable[operations_pb2.Operation]]:
         r"""Return a callable for the delete sitemap method over gRPC.
 
         Deletes a
@@ -614,21 +572,18 @@ class SiteSearchEngineServiceGrpcAsyncIOTransport(SiteSearchEngineServiceTranspo
         # the request.
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
-        if "delete_sitemap" not in self._stubs:
-            self._stubs["delete_sitemap"] = self._logged_channel.unary_unary(
-                "/google.cloud.discoveryengine.v1beta.SiteSearchEngineService/DeleteSitemap",
+        if 'delete_sitemap' not in self._stubs:
+            self._stubs['delete_sitemap'] = self._logged_channel.unary_unary(
+                '/google.cloud.discoveryengine.v1beta.SiteSearchEngineService/DeleteSitemap',
                 request_serializer=site_search_engine_service.DeleteSitemapRequest.serialize,
                 response_deserializer=operations_pb2.Operation.FromString,
             )
-        return self._stubs["delete_sitemap"]
+        return self._stubs['delete_sitemap']
 
     @property
-    def fetch_sitemaps(
-        self,
-    ) -> Callable[
-        [site_search_engine_service.FetchSitemapsRequest],
-        Awaitable[site_search_engine_service.FetchSitemapsResponse],
-    ]:
+    def fetch_sitemaps(self) -> Callable[
+            [site_search_engine_service.FetchSitemapsRequest],
+            Awaitable[site_search_engine_service.FetchSitemapsResponse]]:
         r"""Return a callable for the fetch sitemaps method over gRPC.
 
         Fetch [Sitemap][google.cloud.discoveryengine.v1beta.Sitemap]s in
@@ -644,21 +599,18 @@ class SiteSearchEngineServiceGrpcAsyncIOTransport(SiteSearchEngineServiceTranspo
         # the request.
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
-        if "fetch_sitemaps" not in self._stubs:
-            self._stubs["fetch_sitemaps"] = self._logged_channel.unary_unary(
-                "/google.cloud.discoveryengine.v1beta.SiteSearchEngineService/FetchSitemaps",
+        if 'fetch_sitemaps' not in self._stubs:
+            self._stubs['fetch_sitemaps'] = self._logged_channel.unary_unary(
+                '/google.cloud.discoveryengine.v1beta.SiteSearchEngineService/FetchSitemaps',
                 request_serializer=site_search_engine_service.FetchSitemapsRequest.serialize,
                 response_deserializer=site_search_engine_service.FetchSitemapsResponse.deserialize,
             )
-        return self._stubs["fetch_sitemaps"]
+        return self._stubs['fetch_sitemaps']
 
     @property
-    def enable_advanced_site_search(
-        self,
-    ) -> Callable[
-        [site_search_engine_service.EnableAdvancedSiteSearchRequest],
-        Awaitable[operations_pb2.Operation],
-    ]:
+    def enable_advanced_site_search(self) -> Callable[
+            [site_search_engine_service.EnableAdvancedSiteSearchRequest],
+            Awaitable[operations_pb2.Operation]]:
         r"""Return a callable for the enable advanced site search method over gRPC.
 
         Upgrade from basic site search to advanced site
@@ -674,23 +626,18 @@ class SiteSearchEngineServiceGrpcAsyncIOTransport(SiteSearchEngineServiceTranspo
         # the request.
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
-        if "enable_advanced_site_search" not in self._stubs:
-            self._stubs[
-                "enable_advanced_site_search"
-            ] = self._logged_channel.unary_unary(
-                "/google.cloud.discoveryengine.v1beta.SiteSearchEngineService/EnableAdvancedSiteSearch",
+        if 'enable_advanced_site_search' not in self._stubs:
+            self._stubs['enable_advanced_site_search'] = self._logged_channel.unary_unary(
+                '/google.cloud.discoveryengine.v1beta.SiteSearchEngineService/EnableAdvancedSiteSearch',
                 request_serializer=site_search_engine_service.EnableAdvancedSiteSearchRequest.serialize,
                 response_deserializer=operations_pb2.Operation.FromString,
             )
-        return self._stubs["enable_advanced_site_search"]
+        return self._stubs['enable_advanced_site_search']
 
     @property
-    def disable_advanced_site_search(
-        self,
-    ) -> Callable[
-        [site_search_engine_service.DisableAdvancedSiteSearchRequest],
-        Awaitable[operations_pb2.Operation],
-    ]:
+    def disable_advanced_site_search(self) -> Callable[
+            [site_search_engine_service.DisableAdvancedSiteSearchRequest],
+            Awaitable[operations_pb2.Operation]]:
         r"""Return a callable for the disable advanced site search method over gRPC.
 
         Downgrade from advanced site search to basic site
@@ -706,23 +653,18 @@ class SiteSearchEngineServiceGrpcAsyncIOTransport(SiteSearchEngineServiceTranspo
         # the request.
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
-        if "disable_advanced_site_search" not in self._stubs:
-            self._stubs[
-                "disable_advanced_site_search"
-            ] = self._logged_channel.unary_unary(
-                "/google.cloud.discoveryengine.v1beta.SiteSearchEngineService/DisableAdvancedSiteSearch",
+        if 'disable_advanced_site_search' not in self._stubs:
+            self._stubs['disable_advanced_site_search'] = self._logged_channel.unary_unary(
+                '/google.cloud.discoveryengine.v1beta.SiteSearchEngineService/DisableAdvancedSiteSearch',
                 request_serializer=site_search_engine_service.DisableAdvancedSiteSearchRequest.serialize,
                 response_deserializer=operations_pb2.Operation.FromString,
             )
-        return self._stubs["disable_advanced_site_search"]
+        return self._stubs['disable_advanced_site_search']
 
     @property
-    def recrawl_uris(
-        self,
-    ) -> Callable[
-        [site_search_engine_service.RecrawlUrisRequest],
-        Awaitable[operations_pb2.Operation],
-    ]:
+    def recrawl_uris(self) -> Callable[
+            [site_search_engine_service.RecrawlUrisRequest],
+            Awaitable[operations_pb2.Operation]]:
         r"""Return a callable for the recrawl uris method over gRPC.
 
         Request on-demand recrawl for a list of URIs.
@@ -737,21 +679,18 @@ class SiteSearchEngineServiceGrpcAsyncIOTransport(SiteSearchEngineServiceTranspo
         # the request.
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
-        if "recrawl_uris" not in self._stubs:
-            self._stubs["recrawl_uris"] = self._logged_channel.unary_unary(
-                "/google.cloud.discoveryengine.v1beta.SiteSearchEngineService/RecrawlUris",
+        if 'recrawl_uris' not in self._stubs:
+            self._stubs['recrawl_uris'] = self._logged_channel.unary_unary(
+                '/google.cloud.discoveryengine.v1beta.SiteSearchEngineService/RecrawlUris',
                 request_serializer=site_search_engine_service.RecrawlUrisRequest.serialize,
                 response_deserializer=operations_pb2.Operation.FromString,
             )
-        return self._stubs["recrawl_uris"]
+        return self._stubs['recrawl_uris']
 
     @property
-    def batch_verify_target_sites(
-        self,
-    ) -> Callable[
-        [site_search_engine_service.BatchVerifyTargetSitesRequest],
-        Awaitable[operations_pb2.Operation],
-    ]:
+    def batch_verify_target_sites(self) -> Callable[
+            [site_search_engine_service.BatchVerifyTargetSitesRequest],
+            Awaitable[operations_pb2.Operation]]:
         r"""Return a callable for the batch verify target sites method over gRPC.
 
         Verify target sites' ownership and validity.
@@ -768,21 +707,18 @@ class SiteSearchEngineServiceGrpcAsyncIOTransport(SiteSearchEngineServiceTranspo
         # the request.
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
-        if "batch_verify_target_sites" not in self._stubs:
-            self._stubs["batch_verify_target_sites"] = self._logged_channel.unary_unary(
-                "/google.cloud.discoveryengine.v1beta.SiteSearchEngineService/BatchVerifyTargetSites",
+        if 'batch_verify_target_sites' not in self._stubs:
+            self._stubs['batch_verify_target_sites'] = self._logged_channel.unary_unary(
+                '/google.cloud.discoveryengine.v1beta.SiteSearchEngineService/BatchVerifyTargetSites',
                 request_serializer=site_search_engine_service.BatchVerifyTargetSitesRequest.serialize,
                 response_deserializer=operations_pb2.Operation.FromString,
             )
-        return self._stubs["batch_verify_target_sites"]
+        return self._stubs['batch_verify_target_sites']
 
     @property
-    def fetch_domain_verification_status(
-        self,
-    ) -> Callable[
-        [site_search_engine_service.FetchDomainVerificationStatusRequest],
-        Awaitable[site_search_engine_service.FetchDomainVerificationStatusResponse],
-    ]:
+    def fetch_domain_verification_status(self) -> Callable[
+            [site_search_engine_service.FetchDomainVerificationStatusRequest],
+            Awaitable[site_search_engine_service.FetchDomainVerificationStatusResponse]]:
         r"""Return a callable for the fetch domain verification
         status method over gRPC.
 
@@ -800,18 +736,16 @@ class SiteSearchEngineServiceGrpcAsyncIOTransport(SiteSearchEngineServiceTranspo
         # the request.
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
-        if "fetch_domain_verification_status" not in self._stubs:
-            self._stubs[
-                "fetch_domain_verification_status"
-            ] = self._logged_channel.unary_unary(
-                "/google.cloud.discoveryengine.v1beta.SiteSearchEngineService/FetchDomainVerificationStatus",
+        if 'fetch_domain_verification_status' not in self._stubs:
+            self._stubs['fetch_domain_verification_status'] = self._logged_channel.unary_unary(
+                '/google.cloud.discoveryengine.v1beta.SiteSearchEngineService/FetchDomainVerificationStatus',
                 request_serializer=site_search_engine_service.FetchDomainVerificationStatusRequest.serialize,
                 response_deserializer=site_search_engine_service.FetchDomainVerificationStatusResponse.deserialize,
             )
-        return self._stubs["fetch_domain_verification_status"]
+        return self._stubs['fetch_domain_verification_status']
 
     def _prep_wrapped_messages(self, client_info):
-        """Precompute the wrapped methods, overriding the base class method to use async wrappers."""
+        """ Precompute the wrapped methods, overriding the base class method to use async wrappers."""
         self._wrapped_methods = {
             self.get_site_search_engine: self._wrap_method(
                 self.get_site_search_engine,
@@ -921,7 +855,8 @@ class SiteSearchEngineServiceGrpcAsyncIOTransport(SiteSearchEngineServiceTranspo
     def cancel_operation(
         self,
     ) -> Callable[[operations_pb2.CancelOperationRequest], None]:
-        r"""Return a callable for the cancel_operation method over gRPC."""
+        r"""Return a callable for the cancel_operation method over gRPC.
+        """
         # Generate a "stub function" on-the-fly which will actually make
         # the request.
         # gRPC handles serialization and deserialization, so we just need
@@ -938,7 +873,8 @@ class SiteSearchEngineServiceGrpcAsyncIOTransport(SiteSearchEngineServiceTranspo
     def get_operation(
         self,
     ) -> Callable[[operations_pb2.GetOperationRequest], operations_pb2.Operation]:
-        r"""Return a callable for the get_operation method over gRPC."""
+        r"""Return a callable for the get_operation method over gRPC.
+        """
         # Generate a "stub function" on-the-fly which will actually make
         # the request.
         # gRPC handles serialization and deserialization, so we just need
@@ -954,10 +890,9 @@ class SiteSearchEngineServiceGrpcAsyncIOTransport(SiteSearchEngineServiceTranspo
     @property
     def list_operations(
         self,
-    ) -> Callable[
-        [operations_pb2.ListOperationsRequest], operations_pb2.ListOperationsResponse
-    ]:
-        r"""Return a callable for the list_operations method over gRPC."""
+    ) -> Callable[[operations_pb2.ListOperationsRequest], operations_pb2.ListOperationsResponse]:
+        r"""Return a callable for the list_operations method over gRPC.
+        """
         # Generate a "stub function" on-the-fly which will actually make
         # the request.
         # gRPC handles serialization and deserialization, so we just need
@@ -971,4 +906,6 @@ class SiteSearchEngineServiceGrpcAsyncIOTransport(SiteSearchEngineServiceTranspo
         return self._stubs["list_operations"]
 
 
-__all__ = ("SiteSearchEngineServiceGrpcAsyncIOTransport",)
+__all__ = (
+    'SiteSearchEngineServiceGrpcAsyncIOTransport',
+)

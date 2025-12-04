@@ -60,5 +60,4 @@ async def sample_stream_generate_grounded_content():
     async for response in stream:
         print(response)
 
-
 # [END discoveryengine_v1_generated_GroundedGenerationService_StreamGenerateGroundedContent_async]

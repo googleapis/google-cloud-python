@@ -17,28 +17,29 @@ from __future__ import annotations
 
 from typing import MutableMapping, MutableSequence
 
-from google.protobuf import timestamp_pb2  # type: ignore
-from google.rpc import status_pb2  # type: ignore
 import proto  # type: ignore
 
 from google.cloud.discoveryengine_v1beta.types import import_config
+from google.protobuf import timestamp_pb2  # type: ignore
+from google.rpc import status_pb2  # type: ignore
+
 
 __protobuf__ = proto.module(
-    package="google.cloud.discoveryengine.v1beta",
+    package='google.cloud.discoveryengine.v1beta',
     manifest={
-        "PurgeUserEventsRequest",
-        "PurgeUserEventsResponse",
-        "PurgeUserEventsMetadata",
-        "PurgeErrorConfig",
-        "PurgeDocumentsRequest",
-        "PurgeDocumentsResponse",
-        "PurgeDocumentsMetadata",
-        "PurgeSuggestionDenyListEntriesRequest",
-        "PurgeSuggestionDenyListEntriesResponse",
-        "PurgeSuggestionDenyListEntriesMetadata",
-        "PurgeCompletionSuggestionsRequest",
-        "PurgeCompletionSuggestionsResponse",
-        "PurgeCompletionSuggestionsMetadata",
+        'PurgeUserEventsRequest',
+        'PurgeUserEventsResponse',
+        'PurgeUserEventsMetadata',
+        'PurgeErrorConfig',
+        'PurgeDocumentsRequest',
+        'PurgeDocumentsResponse',
+        'PurgeDocumentsMetadata',
+        'PurgeSuggestionDenyListEntriesRequest',
+        'PurgeSuggestionDenyListEntriesResponse',
+        'PurgeSuggestionDenyListEntriesMetadata',
+        'PurgeCompletionSuggestionsRequest',
+        'PurgeCompletionSuggestionsResponse',
+        'PurgeCompletionSuggestionsMetadata',
     },
 )
 
@@ -56,23 +57,23 @@ class PurgeUserEventsRequest(proto.Message):
             deleted with a length limit of 5,000 characters. The
             eligible fields for filtering are:
 
-            - ``eventType``: Double quoted
-              [UserEvent.event_type][google.cloud.discoveryengine.v1beta.UserEvent.event_type]
-              string.
-            - ``eventTime``: in ISO 8601 "zulu" format.
-            - ``userPseudoId``: Double quoted string. Specifying this
-              will delete all events associated with a visitor.
-            - ``userId``: Double quoted string. Specifying this will
-              delete all events associated with a user.
+            -  ``eventType``: Double quoted
+               [UserEvent.event_type][google.cloud.discoveryengine.v1beta.UserEvent.event_type]
+               string.
+            -  ``eventTime``: in ISO 8601 "zulu" format.
+            -  ``userPseudoId``: Double quoted string. Specifying this
+               will delete all events associated with a visitor.
+            -  ``userId``: Double quoted string. Specifying this will
+               delete all events associated with a user.
 
             Examples:
 
-            - Deleting all events in a time range:
-              ``eventTime > "2012-04-23T18:25:43.511Z" eventTime < "2012-04-23T18:30:43.511Z"``
-            - Deleting specific eventType: ``eventType = "search"``
-            - Deleting all events for a specific visitor:
-              ``userPseudoId = "visitor1024"``
-            - Deleting all events inside a DataStore: ``*``
+            -  Deleting all events in a time range:
+               ``eventTime > "2012-04-23T18:25:43.511Z" eventTime < "2012-04-23T18:30:43.511Z"``
+            -  Deleting specific eventType: ``eventType = "search"``
+            -  Deleting all events for a specific visitor:
+               ``userPseudoId = "visitor1024"``
+            -  Deleting all events inside a DataStore: ``*``
 
             The filtering fields are assumed to have an implicit AND.
         force (bool):
@@ -172,7 +173,7 @@ class PurgeErrorConfig(proto.Message):
     gcs_prefix: str = proto.Field(
         proto.STRING,
         number=1,
-        oneof="destination",
+        oneof='destination',
     )
 
 
@@ -193,9 +194,9 @@ class PurgeDocumentsRequest(proto.Message):
             Cloud Storage location for the input content. Supported
             ``data_schema``:
 
-            - ``document_id``: One valid
-              [Document.id][google.cloud.discoveryengine.v1beta.Document.id]
-              per line.
+            -  ``document_id``: One valid
+               [Document.id][google.cloud.discoveryengine.v1beta.Document.id]
+               per line.
 
             This field is a member of `oneof`_ ``source``.
         inline_source (google.cloud.discoveryengine_v1beta.types.PurgeDocumentsRequest.InlineSource):
@@ -239,13 +240,13 @@ class PurgeDocumentsRequest(proto.Message):
     gcs_source: import_config.GcsSource = proto.Field(
         proto.MESSAGE,
         number=5,
-        oneof="source",
+        oneof='source',
         message=import_config.GcsSource,
     )
     inline_source: InlineSource = proto.Field(
         proto.MESSAGE,
         number=6,
-        oneof="source",
+        oneof='source',
         message=InlineSource,
     )
     parent: str = proto.Field(
@@ -256,10 +257,10 @@ class PurgeDocumentsRequest(proto.Message):
         proto.STRING,
         number=2,
     )
-    error_config: "PurgeErrorConfig" = proto.Field(
+    error_config: 'PurgeErrorConfig' = proto.Field(
         proto.MESSAGE,
         number=7,
-        message="PurgeErrorConfig",
+        message='PurgeErrorConfig',
     )
     force: bool = proto.Field(
         proto.BOOL,

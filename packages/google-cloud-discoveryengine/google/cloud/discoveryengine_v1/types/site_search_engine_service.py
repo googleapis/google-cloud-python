@@ -17,49 +17,48 @@ from __future__ import annotations
 
 from typing import MutableMapping, MutableSequence
 
-from google.protobuf import timestamp_pb2  # type: ignore
 import proto  # type: ignore
 
-from google.cloud.discoveryengine_v1.types import (
-    site_search_engine as gcd_site_search_engine,
-)
+from google.cloud.discoveryengine_v1.types import site_search_engine as gcd_site_search_engine
+from google.protobuf import timestamp_pb2  # type: ignore
+
 
 __protobuf__ = proto.module(
-    package="google.cloud.discoveryengine.v1",
+    package='google.cloud.discoveryengine.v1',
     manifest={
-        "GetSiteSearchEngineRequest",
-        "CreateTargetSiteRequest",
-        "CreateTargetSiteMetadata",
-        "BatchCreateTargetSitesRequest",
-        "GetTargetSiteRequest",
-        "UpdateTargetSiteRequest",
-        "UpdateTargetSiteMetadata",
-        "DeleteTargetSiteRequest",
-        "DeleteTargetSiteMetadata",
-        "ListTargetSitesRequest",
-        "ListTargetSitesResponse",
-        "BatchCreateTargetSiteMetadata",
-        "BatchCreateTargetSitesResponse",
-        "CreateSitemapRequest",
-        "DeleteSitemapRequest",
-        "FetchSitemapsRequest",
-        "CreateSitemapMetadata",
-        "DeleteSitemapMetadata",
-        "FetchSitemapsResponse",
-        "EnableAdvancedSiteSearchRequest",
-        "EnableAdvancedSiteSearchResponse",
-        "EnableAdvancedSiteSearchMetadata",
-        "DisableAdvancedSiteSearchRequest",
-        "DisableAdvancedSiteSearchResponse",
-        "DisableAdvancedSiteSearchMetadata",
-        "RecrawlUrisRequest",
-        "RecrawlUrisResponse",
-        "RecrawlUrisMetadata",
-        "BatchVerifyTargetSitesRequest",
-        "BatchVerifyTargetSitesResponse",
-        "BatchVerifyTargetSitesMetadata",
-        "FetchDomainVerificationStatusRequest",
-        "FetchDomainVerificationStatusResponse",
+        'GetSiteSearchEngineRequest',
+        'CreateTargetSiteRequest',
+        'CreateTargetSiteMetadata',
+        'BatchCreateTargetSitesRequest',
+        'GetTargetSiteRequest',
+        'UpdateTargetSiteRequest',
+        'UpdateTargetSiteMetadata',
+        'DeleteTargetSiteRequest',
+        'DeleteTargetSiteMetadata',
+        'ListTargetSitesRequest',
+        'ListTargetSitesResponse',
+        'BatchCreateTargetSiteMetadata',
+        'BatchCreateTargetSitesResponse',
+        'CreateSitemapRequest',
+        'DeleteSitemapRequest',
+        'FetchSitemapsRequest',
+        'CreateSitemapMetadata',
+        'DeleteSitemapMetadata',
+        'FetchSitemapsResponse',
+        'EnableAdvancedSiteSearchRequest',
+        'EnableAdvancedSiteSearchResponse',
+        'EnableAdvancedSiteSearchMetadata',
+        'DisableAdvancedSiteSearchRequest',
+        'DisableAdvancedSiteSearchResponse',
+        'DisableAdvancedSiteSearchMetadata',
+        'RecrawlUrisRequest',
+        'RecrawlUrisResponse',
+        'RecrawlUrisMetadata',
+        'BatchVerifyTargetSitesRequest',
+        'BatchVerifyTargetSitesResponse',
+        'BatchVerifyTargetSitesMetadata',
+        'FetchDomainVerificationStatusRequest',
+        'FetchDomainVerificationStatusResponse',
     },
 )
 
@@ -163,10 +162,10 @@ class BatchCreateTargetSitesRequest(proto.Message):
         proto.STRING,
         number=1,
     )
-    requests: MutableSequence["CreateTargetSiteRequest"] = proto.RepeatedField(
+    requests: MutableSequence['CreateTargetSiteRequest'] = proto.RepeatedField(
         proto.MESSAGE,
         number=2,
-        message="CreateTargetSiteRequest",
+        message='CreateTargetSiteRequest',
     )
 
 
@@ -371,9 +370,7 @@ class ListTargetSitesResponse(proto.Message):
     def raw_page(self):
         return self
 
-    target_sites: MutableSequence[
-        gcd_site_search_engine.TargetSite
-    ] = proto.RepeatedField(
+    target_sites: MutableSequence[gcd_site_search_engine.TargetSite] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
         message=gcd_site_search_engine.TargetSite,
@@ -424,9 +421,7 @@ class BatchCreateTargetSitesResponse(proto.Message):
             TargetSites created.
     """
 
-    target_sites: MutableSequence[
-        gcd_site_search_engine.TargetSite
-    ] = proto.RepeatedField(
+    target_sites: MutableSequence[gcd_site_search_engine.TargetSite] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
         message=gcd_site_search_engine.TargetSite,
@@ -535,11 +530,11 @@ class FetchSitemapsRequest(proto.Message):
                 This field is a member of `oneof`_ ``matcher``.
         """
 
-        uris_matcher: "FetchSitemapsRequest.UrisMatcher" = proto.Field(
+        uris_matcher: 'FetchSitemapsRequest.UrisMatcher' = proto.Field(
             proto.MESSAGE,
             number=1,
-            oneof="matcher",
-            message="FetchSitemapsRequest.UrisMatcher",
+            oneof='matcher',
+            message='FetchSitemapsRequest.UrisMatcher',
         )
 
     parent: str = proto.Field(
@@ -815,7 +810,6 @@ class RecrawlUrisResponse(proto.Message):
                 error_message (str):
                     Reason why the URI was not crawled.
             """
-
             class CorpusType(proto.Enum):
                 r"""CorpusType for the failed crawling operation.
 
@@ -833,12 +827,10 @@ class RecrawlUrisResponse(proto.Message):
                 DESKTOP = 1
                 MOBILE = 2
 
-            corpus_type: "RecrawlUrisResponse.FailureInfo.FailureReason.CorpusType" = (
-                proto.Field(
-                    proto.ENUM,
-                    number=1,
-                    enum="RecrawlUrisResponse.FailureInfo.FailureReason.CorpusType",
-                )
+            corpus_type: 'RecrawlUrisResponse.FailureInfo.FailureReason.CorpusType' = proto.Field(
+                proto.ENUM,
+                number=1,
+                enum='RecrawlUrisResponse.FailureInfo.FailureReason.CorpusType',
             )
             error_message: str = proto.Field(
                 proto.STRING,
@@ -849,12 +841,10 @@ class RecrawlUrisResponse(proto.Message):
             proto.STRING,
             number=1,
         )
-        failure_reasons: MutableSequence[
-            "RecrawlUrisResponse.FailureInfo.FailureReason"
-        ] = proto.RepeatedField(
+        failure_reasons: MutableSequence['RecrawlUrisResponse.FailureInfo.FailureReason'] = proto.RepeatedField(
             proto.MESSAGE,
             number=2,
-            message="RecrawlUrisResponse.FailureInfo.FailureReason",
+            message='RecrawlUrisResponse.FailureInfo.FailureReason',
         )
 
     failure_samples: MutableSequence[FailureInfo] = proto.RepeatedField(
@@ -1084,9 +1074,7 @@ class FetchDomainVerificationStatusResponse(proto.Message):
     def raw_page(self):
         return self
 
-    target_sites: MutableSequence[
-        gcd_site_search_engine.TargetSite
-    ] = proto.RepeatedField(
+    target_sites: MutableSequence[gcd_site_search_engine.TargetSite] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
         message=gcd_site_search_engine.TargetSite,

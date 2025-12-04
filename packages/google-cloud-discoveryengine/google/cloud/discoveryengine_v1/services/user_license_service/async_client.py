@@ -13,31 +13,21 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-from collections import OrderedDict
 import logging as std_logging
+from collections import OrderedDict
 import re
-from typing import (
-    Callable,
-    Dict,
-    Mapping,
-    MutableMapping,
-    MutableSequence,
-    Optional,
-    Sequence,
-    Tuple,
-    Type,
-    Union,
-)
+from typing import Dict, Callable, Mapping, MutableMapping, MutableSequence, Optional, Sequence, Tuple, Type, Union
 
+from google.cloud.discoveryengine_v1 import gapic_version as package_version
+
+from google.api_core.client_options import ClientOptions
 from google.api_core import exceptions as core_exceptions
 from google.api_core import gapic_v1
 from google.api_core import retry_async as retries
-from google.api_core.client_options import ClientOptions
-from google.auth import credentials as ga_credentials  # type: ignore
-from google.oauth2 import service_account  # type: ignore
+from google.auth import credentials as ga_credentials   # type: ignore
+from google.oauth2 import service_account              # type: ignore
 import google.protobuf
 
-from google.cloud.discoveryengine_v1 import gapic_version as package_version
 
 try:
     OptionalRetry = Union[retries.AsyncRetry, gapic_v1.method._MethodDefault, None]
@@ -46,25 +36,22 @@ except AttributeError:  # pragma: NO COVER
 
 from google.api_core import operation  # type: ignore
 from google.api_core import operation_async  # type: ignore
-from google.cloud.location import locations_pb2  # type: ignore
-from google.longrunning import operations_pb2  # type: ignore
-
 from google.cloud.discoveryengine_v1.services.user_license_service import pagers
-from google.cloud.discoveryengine_v1.types import user_license, user_license_service
-
-from .client import UserLicenseServiceClient
-from .transports.base import DEFAULT_CLIENT_INFO, UserLicenseServiceTransport
+from google.cloud.discoveryengine_v1.types import user_license
+from google.cloud.discoveryengine_v1.types import user_license_service
+from google.cloud.location import locations_pb2 # type: ignore
+from google.longrunning import operations_pb2 # type: ignore
+from .transports.base import UserLicenseServiceTransport, DEFAULT_CLIENT_INFO
 from .transports.grpc_asyncio import UserLicenseServiceGrpcAsyncIOTransport
+from .client import UserLicenseServiceClient
 
 try:
     from google.api_core import client_logging  # type: ignore
-
     CLIENT_LOGGING_SUPPORTED = True  # pragma: NO COVER
 except ImportError:  # pragma: NO COVER
     CLIENT_LOGGING_SUPPORTED = False
 
 _LOGGER = std_logging.getLogger(__name__)
-
 
 class UserLicenseServiceAsyncClient:
     """Service for managing User Licenses."""
@@ -79,35 +66,19 @@ class UserLicenseServiceAsyncClient:
     _DEFAULT_UNIVERSE = UserLicenseServiceClient._DEFAULT_UNIVERSE
 
     license_config_path = staticmethod(UserLicenseServiceClient.license_config_path)
-    parse_license_config_path = staticmethod(
-        UserLicenseServiceClient.parse_license_config_path
-    )
+    parse_license_config_path = staticmethod(UserLicenseServiceClient.parse_license_config_path)
     user_store_path = staticmethod(UserLicenseServiceClient.user_store_path)
     parse_user_store_path = staticmethod(UserLicenseServiceClient.parse_user_store_path)
-    common_billing_account_path = staticmethod(
-        UserLicenseServiceClient.common_billing_account_path
-    )
-    parse_common_billing_account_path = staticmethod(
-        UserLicenseServiceClient.parse_common_billing_account_path
-    )
+    common_billing_account_path = staticmethod(UserLicenseServiceClient.common_billing_account_path)
+    parse_common_billing_account_path = staticmethod(UserLicenseServiceClient.parse_common_billing_account_path)
     common_folder_path = staticmethod(UserLicenseServiceClient.common_folder_path)
-    parse_common_folder_path = staticmethod(
-        UserLicenseServiceClient.parse_common_folder_path
-    )
-    common_organization_path = staticmethod(
-        UserLicenseServiceClient.common_organization_path
-    )
-    parse_common_organization_path = staticmethod(
-        UserLicenseServiceClient.parse_common_organization_path
-    )
+    parse_common_folder_path = staticmethod(UserLicenseServiceClient.parse_common_folder_path)
+    common_organization_path = staticmethod(UserLicenseServiceClient.common_organization_path)
+    parse_common_organization_path = staticmethod(UserLicenseServiceClient.parse_common_organization_path)
     common_project_path = staticmethod(UserLicenseServiceClient.common_project_path)
-    parse_common_project_path = staticmethod(
-        UserLicenseServiceClient.parse_common_project_path
-    )
+    parse_common_project_path = staticmethod(UserLicenseServiceClient.parse_common_project_path)
     common_location_path = staticmethod(UserLicenseServiceClient.common_location_path)
-    parse_common_location_path = staticmethod(
-        UserLicenseServiceClient.parse_common_location_path
-    )
+    parse_common_location_path = staticmethod(UserLicenseServiceClient.parse_common_location_path)
 
     @classmethod
     def from_service_account_info(cls, info: dict, *args, **kwargs):
@@ -143,9 +114,7 @@ class UserLicenseServiceAsyncClient:
     from_service_account_json = from_service_account_file
 
     @classmethod
-    def get_mtls_endpoint_and_cert_source(
-        cls, client_options: Optional[ClientOptions] = None
-    ):
+    def get_mtls_endpoint_and_cert_source(cls, client_options: Optional[ClientOptions] = None):
         """Return the API endpoint and client cert source for mutual TLS.
 
         The client cert source is determined in the following order:
@@ -208,20 +177,12 @@ class UserLicenseServiceAsyncClient:
 
     get_transport_class = UserLicenseServiceClient.get_transport_class
 
-    def __init__(
-        self,
-        *,
-        credentials: Optional[ga_credentials.Credentials] = None,
-        transport: Optional[
-            Union[
-                str,
-                UserLicenseServiceTransport,
-                Callable[..., UserLicenseServiceTransport],
-            ]
-        ] = "grpc_asyncio",
-        client_options: Optional[ClientOptions] = None,
-        client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
-    ) -> None:
+    def __init__(self, *,
+            credentials: Optional[ga_credentials.Credentials] = None,
+            transport: Optional[Union[str, UserLicenseServiceTransport, Callable[..., UserLicenseServiceTransport]]] = "grpc_asyncio",
+            client_options: Optional[ClientOptions] = None,
+            client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
+            ) -> None:
         """Instantiates the user license service async client.
 
         Args:
@@ -276,41 +237,31 @@ class UserLicenseServiceAsyncClient:
             transport=transport,
             client_options=client_options,
             client_info=client_info,
+
         )
 
-        if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-            std_logging.DEBUG
-        ):  # pragma: NO COVER
+        if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(std_logging.DEBUG):  # pragma: NO COVER
             _LOGGER.debug(
                 "Created client `google.cloud.discoveryengine_v1.UserLicenseServiceAsyncClient`.",
-                extra={
+                extra = {
                     "serviceName": "google.cloud.discoveryengine.v1.UserLicenseService",
-                    "universeDomain": getattr(
-                        self._client._transport._credentials, "universe_domain", ""
-                    ),
+                    "universeDomain": getattr(self._client._transport._credentials, "universe_domain", ""),
                     "credentialsType": f"{type(self._client._transport._credentials).__module__}.{type(self._client._transport._credentials).__qualname__}",
-                    "credentialsInfo": getattr(
-                        self.transport._credentials, "get_cred_info", lambda: None
-                    )(),
-                }
-                if hasattr(self._client._transport, "_credentials")
-                else {
+                    "credentialsInfo": getattr(self.transport._credentials, "get_cred_info", lambda: None)(),
+                } if hasattr(self._client._transport, "_credentials") else {
                     "serviceName": "google.cloud.discoveryengine.v1.UserLicenseService",
                     "credentialsType": None,
-                },
+                }
             )
 
-    async def list_user_licenses(
-        self,
-        request: Optional[
-            Union[user_license_service.ListUserLicensesRequest, dict]
-        ] = None,
-        *,
-        parent: Optional[str] = None,
-        retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
-    ) -> pagers.ListUserLicensesAsyncPager:
+    async def list_user_licenses(self,
+            request: Optional[Union[user_license_service.ListUserLicensesRequest, dict]] = None,
+            *,
+            parent: Optional[str] = None,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+            ) -> pagers.ListUserLicensesAsyncPager:
         r"""Lists the User Licenses.
 
         .. code-block:: python
@@ -373,14 +324,10 @@ class UserLicenseServiceAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [parent]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of "
+                             "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -394,14 +341,14 @@ class UserLicenseServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.list_user_licenses
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.list_user_licenses]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
         metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
+            gapic_v1.routing_header.to_grpc_metadata((
+                ("parent", request.parent),
+            )),
         )
 
         # Validate the universe domain.
@@ -429,16 +376,13 @@ class UserLicenseServiceAsyncClient:
         # Done; return the response.
         return response
 
-    async def batch_update_user_licenses(
-        self,
-        request: Optional[
-            Union[user_license_service.BatchUpdateUserLicensesRequest, dict]
-        ] = None,
-        *,
-        retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
-    ) -> operation_async.AsyncOperation:
+    async def batch_update_user_licenses(self,
+            request: Optional[Union[user_license_service.BatchUpdateUserLicensesRequest, dict]] = None,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+            ) -> operation_async.AsyncOperation:
         r"""Updates the User License.
         This method is used for batch assign/unassign licenses
         to users.
@@ -507,14 +451,14 @@ class UserLicenseServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.batch_update_user_licenses
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.batch_update_user_licenses]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
         metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
+            gapic_v1.routing_header.to_grpc_metadata((
+                ("parent", request.parent),
+            )),
         )
 
         # Validate the universe domain.
@@ -577,7 +521,8 @@ class UserLicenseServiceAsyncClient:
         # Certain fields should be provided within the metadata header;
         # add these here.
         metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
+            gapic_v1.routing_header.to_grpc_metadata(
+                (("name", request.name),)),
         )
 
         # Validate the universe domain.
@@ -585,11 +530,7 @@ class UserLicenseServiceAsyncClient:
 
         # Send the request.
         response = await rpc(
-            request,
-            retry=retry,
-            timeout=timeout,
-            metadata=metadata,
-        )
+            request, retry=retry, timeout=timeout, metadata=metadata,)
 
         # Done; return the response.
         return response
@@ -632,7 +573,8 @@ class UserLicenseServiceAsyncClient:
         # Certain fields should be provided within the metadata header;
         # add these here.
         metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
+            gapic_v1.routing_header.to_grpc_metadata(
+                (("name", request.name),)),
         )
 
         # Validate the universe domain.
@@ -640,11 +582,7 @@ class UserLicenseServiceAsyncClient:
 
         # Send the request.
         response = await rpc(
-            request,
-            retry=retry,
-            timeout=timeout,
-            metadata=metadata,
-        )
+            request, retry=retry, timeout=timeout, metadata=metadata,)
 
         # Done; return the response.
         return response
@@ -690,19 +628,15 @@ class UserLicenseServiceAsyncClient:
         # Certain fields should be provided within the metadata header;
         # add these here.
         metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
+            gapic_v1.routing_header.to_grpc_metadata(
+                (("name", request.name),)),
         )
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
 
         # Send the request.
-        await rpc(
-            request,
-            retry=retry,
-            timeout=timeout,
-            metadata=metadata,
-        )
+        await rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
 
     async def __aenter__(self) -> "UserLicenseServiceAsyncClient":
         return self
@@ -710,13 +644,12 @@ class UserLicenseServiceAsyncClient:
     async def __aexit__(self, exc_type, exc, tb):
         await self.transport.close()
 
+DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(gapic_version=package_version.__version__)
 
-DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
-    gapic_version=package_version.__version__
-)
-
-if hasattr(DEFAULT_CLIENT_INFO, "protobuf_runtime_version"):  # pragma: NO COVER
+if hasattr(DEFAULT_CLIENT_INFO, "protobuf_runtime_version"):   # pragma: NO COVER
     DEFAULT_CLIENT_INFO.protobuf_runtime_version = google.protobuf.__version__
 
 
-__all__ = ("UserLicenseServiceAsyncClient",)
+__all__ = (
+    "UserLicenseServiceAsyncClient",
+)

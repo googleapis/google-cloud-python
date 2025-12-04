@@ -17,13 +17,15 @@ from __future__ import annotations
 
 from typing import MutableMapping, MutableSequence
 
-from google.protobuf import struct_pb2  # type: ignore
 import proto  # type: ignore
 
+from google.protobuf import struct_pb2  # type: ignore
+
+
 __protobuf__ = proto.module(
-    package="google.cloud.discoveryengine.v1",
+    package='google.cloud.discoveryengine.v1',
     manifest={
-        "Schema",
+        'Schema',
     },
 )
 
@@ -59,13 +61,13 @@ class Schema(proto.Message):
     struct_schema: struct_pb2.Struct = proto.Field(
         proto.MESSAGE,
         number=2,
-        oneof="schema",
+        oneof='schema',
         message=struct_pb2.Struct,
     )
     json_schema: str = proto.Field(
         proto.STRING,
         number=3,
-        oneof="schema",
+        oneof='schema',
     )
     name: str = proto.Field(
         proto.STRING,

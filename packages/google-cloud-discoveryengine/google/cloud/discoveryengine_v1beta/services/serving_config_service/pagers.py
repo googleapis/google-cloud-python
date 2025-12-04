@@ -13,35 +13,19 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-from typing import (
-    Any,
-    AsyncIterator,
-    Awaitable,
-    Callable,
-    Iterator,
-    Optional,
-    Sequence,
-    Tuple,
-    Union,
-)
-
 from google.api_core import gapic_v1
 from google.api_core import retry as retries
 from google.api_core import retry_async as retries_async
-
+from typing import Any, AsyncIterator, Awaitable, Callable, Sequence, Tuple, Optional, Iterator, Union
 try:
     OptionalRetry = Union[retries.Retry, gapic_v1.method._MethodDefault, None]
-    OptionalAsyncRetry = Union[
-        retries_async.AsyncRetry, gapic_v1.method._MethodDefault, None
-    ]
+    OptionalAsyncRetry = Union[retries_async.AsyncRetry, gapic_v1.method._MethodDefault, None]
 except AttributeError:  # pragma: NO COVER
     OptionalRetry = Union[retries.Retry, object, None]  # type: ignore
     OptionalAsyncRetry = Union[retries_async.AsyncRetry, object, None]  # type: ignore
 
-from google.cloud.discoveryengine_v1beta.types import (
-    serving_config,
-    serving_config_service,
-)
+from google.cloud.discoveryengine_v1beta.types import serving_config
+from google.cloud.discoveryengine_v1beta.types import serving_config_service
 
 
 class ListServingConfigsPager:
@@ -61,17 +45,14 @@ class ListServingConfigsPager:
     attributes are available on the pager. If multiple requests are made, only
     the most recent response is retained, and thus used for attribute lookup.
     """
-
-    def __init__(
-        self,
-        method: Callable[..., serving_config_service.ListServingConfigsResponse],
-        request: serving_config_service.ListServingConfigsRequest,
-        response: serving_config_service.ListServingConfigsResponse,
-        *,
-        retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]] = ()
-    ):
+    def __init__(self,
+            method: Callable[..., serving_config_service.ListServingConfigsResponse],
+            request: serving_config_service.ListServingConfigsRequest,
+            response: serving_config_service.ListServingConfigsResponse,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = ()):
         """Instantiate the pager.
 
         Args:
@@ -104,12 +85,7 @@ class ListServingConfigsPager:
         yield self._response
         while self._response.next_page_token:
             self._request.page_token = self._response.next_page_token
-            self._response = self._method(
-                self._request,
-                retry=self._retry,
-                timeout=self._timeout,
-                metadata=self._metadata,
-            )
+            self._response = self._method(self._request, retry=self._retry, timeout=self._timeout, metadata=self._metadata)
             yield self._response
 
     def __iter__(self) -> Iterator[serving_config.ServingConfig]:
@@ -117,7 +93,7 @@ class ListServingConfigsPager:
             yield from page.serving_configs
 
     def __repr__(self) -> str:
-        return "{0}<{1!r}>".format(self.__class__.__name__, self._response)
+        return '{0}<{1!r}>'.format(self.__class__.__name__, self._response)
 
 
 class ListServingConfigsAsyncPager:
@@ -137,19 +113,14 @@ class ListServingConfigsAsyncPager:
     attributes are available on the pager. If multiple requests are made, only
     the most recent response is retained, and thus used for attribute lookup.
     """
-
-    def __init__(
-        self,
-        method: Callable[
-            ..., Awaitable[serving_config_service.ListServingConfigsResponse]
-        ],
-        request: serving_config_service.ListServingConfigsRequest,
-        response: serving_config_service.ListServingConfigsResponse,
-        *,
-        retry: OptionalAsyncRetry = gapic_v1.method.DEFAULT,
-        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]] = ()
-    ):
+    def __init__(self,
+            method: Callable[..., Awaitable[serving_config_service.ListServingConfigsResponse]],
+            request: serving_config_service.ListServingConfigsRequest,
+            response: serving_config_service.ListServingConfigsResponse,
+            *,
+            retry: OptionalAsyncRetry = gapic_v1.method.DEFAULT,
+            timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = ()):
         """Instantiates the pager.
 
         Args:
@@ -178,20 +149,12 @@ class ListServingConfigsAsyncPager:
         return getattr(self._response, name)
 
     @property
-    async def pages(
-        self,
-    ) -> AsyncIterator[serving_config_service.ListServingConfigsResponse]:
+    async def pages(self) -> AsyncIterator[serving_config_service.ListServingConfigsResponse]:
         yield self._response
         while self._response.next_page_token:
             self._request.page_token = self._response.next_page_token
-            self._response = await self._method(
-                self._request,
-                retry=self._retry,
-                timeout=self._timeout,
-                metadata=self._metadata,
-            )
+            self._response = await self._method(self._request, retry=self._retry, timeout=self._timeout, metadata=self._metadata)
             yield self._response
-
     def __aiter__(self) -> AsyncIterator[serving_config.ServingConfig]:
         async def async_generator():
             async for page in self.pages:
@@ -201,4 +164,4 @@ class ListServingConfigsAsyncPager:
         return async_generator()
 
     def __repr__(self) -> str:
-        return "{0}<{1!r}>".format(self.__class__.__name__, self._response)
+        return '{0}<{1!r}>'.format(self.__class__.__name__, self._response)

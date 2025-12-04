@@ -15,36 +15,35 @@
 #
 import inspect
 import json
-import logging as std_logging
 import pickle
-from typing import Awaitable, Callable, Dict, Optional, Sequence, Tuple, Union
+import logging as std_logging
 import warnings
+from typing import Awaitable, Callable, Dict, Optional, Sequence, Tuple, Union
 
+from google.api_core import gapic_v1
+from google.api_core import grpc_helpers_async
 from google.api_core import exceptions as core_exceptions
-from google.api_core import gapic_v1, grpc_helpers_async, operations_v1
 from google.api_core import retry_async as retries
-from google.auth import credentials as ga_credentials  # type: ignore
+from google.api_core import operations_v1
+from google.auth import credentials as ga_credentials   # type: ignore
 from google.auth.transport.grpc import SslCredentials  # type: ignore
-from google.cloud.location import locations_pb2  # type: ignore
-from google.longrunning import operations_pb2  # type: ignore
 from google.protobuf.json_format import MessageToJson
 import google.protobuf.message
-import grpc  # type: ignore
+
+import grpc                        # type: ignore
+import proto                       # type: ignore
 from grpc.experimental import aio  # type: ignore
-import proto  # type: ignore
 
-from google.cloud.discoveryengine_v1alpha.types import (
-    completion_service,
-    import_config,
-    purge_config,
-)
-
-from .base import DEFAULT_CLIENT_INFO, CompletionServiceTransport
+from google.cloud.discoveryengine_v1alpha.types import completion_service
+from google.cloud.discoveryengine_v1alpha.types import import_config
+from google.cloud.discoveryengine_v1alpha.types import purge_config
+from google.cloud.location import locations_pb2 # type: ignore
+from google.longrunning import operations_pb2 # type: ignore
+from .base import CompletionServiceTransport, DEFAULT_CLIENT_INFO
 from .grpc import CompletionServiceGrpcTransport
 
 try:
     from google.api_core import client_logging  # type: ignore
-
     CLIENT_LOGGING_SUPPORTED = True  # pragma: NO COVER
 except ImportError:  # pragma: NO COVER
     CLIENT_LOGGING_SUPPORTED = False
@@ -52,13 +51,9 @@ except ImportError:  # pragma: NO COVER
 _LOGGER = std_logging.getLogger(__name__)
 
 
-class _LoggingClientAIOInterceptor(
-    grpc.aio.UnaryUnaryClientInterceptor
-):  # pragma: NO COVER
+class _LoggingClientAIOInterceptor(grpc.aio.UnaryUnaryClientInterceptor):  # pragma: NO COVER
     async def intercept_unary_unary(self, continuation, client_call_details, request):
-        logging_enabled = CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-            std_logging.DEBUG
-        )
+        logging_enabled = CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(std_logging.DEBUG)
         if logging_enabled:  # pragma: NO COVER
             request_metadata = client_call_details.metadata
             if isinstance(request, proto.Message):
@@ -79,7 +74,7 @@ class _LoggingClientAIOInterceptor(
             }
             _LOGGER.debug(
                 f"Sending request for {client_call_details.method}",
-                extra={
+                extra = {
                     "serviceName": "google.cloud.discoveryengine.v1alpha.CompletionService",
                     "rpcName": str(client_call_details.method),
                     "request": grpc_request,
@@ -90,11 +85,7 @@ class _LoggingClientAIOInterceptor(
         if logging_enabled:  # pragma: NO COVER
             response_metadata = await response.trailing_metadata()
             # Convert gRPC metadata `<class 'grpc.aio._metadata.Metadata'>` to list of tuples
-            metadata = (
-                dict([(k, str(v)) for k, v in response_metadata])
-                if response_metadata
-                else None
-            )
+            metadata = dict([(k, str(v)) for k, v in response_metadata]) if response_metadata else None
             result = await response
             if isinstance(result, proto.Message):
                 response_payload = type(result).to_json(result)
@@ -109,7 +100,7 @@ class _LoggingClientAIOInterceptor(
             }
             _LOGGER.debug(
                 f"Received response to rpc {client_call_details.method}.",
-                extra={
+                extra = {
                     "serviceName": "google.cloud.discoveryengine.v1alpha.CompletionService",
                     "rpcName": str(client_call_details.method),
                     "response": grpc_response,
@@ -136,15 +127,13 @@ class CompletionServiceGrpcAsyncIOTransport(CompletionServiceTransport):
     _stubs: Dict[str, Callable] = {}
 
     @classmethod
-    def create_channel(
-        cls,
-        host: str = "discoveryengine.googleapis.com",
-        credentials: Optional[ga_credentials.Credentials] = None,
-        credentials_file: Optional[str] = None,
-        scopes: Optional[Sequence[str]] = None,
-        quota_project_id: Optional[str] = None,
-        **kwargs,
-    ) -> aio.Channel:
+    def create_channel(cls,
+                       host: str = 'discoveryengine.googleapis.com',
+                       credentials: Optional[ga_credentials.Credentials] = None,
+                       credentials_file: Optional[str] = None,
+                       scopes: Optional[Sequence[str]] = None,
+                       quota_project_id: Optional[str] = None,
+                       **kwargs) -> aio.Channel:
         """Create and return a gRPC AsyncIO channel object.
         Args:
             host (Optional[str]): The host for the channel to use.
@@ -175,26 +164,24 @@ class CompletionServiceGrpcAsyncIOTransport(CompletionServiceTransport):
             default_scopes=cls.AUTH_SCOPES,
             scopes=scopes,
             default_host=cls.DEFAULT_HOST,
-            **kwargs,
+            **kwargs
         )
 
-    def __init__(
-        self,
-        *,
-        host: str = "discoveryengine.googleapis.com",
-        credentials: Optional[ga_credentials.Credentials] = None,
-        credentials_file: Optional[str] = None,
-        scopes: Optional[Sequence[str]] = None,
-        channel: Optional[Union[aio.Channel, Callable[..., aio.Channel]]] = None,
-        api_mtls_endpoint: Optional[str] = None,
-        client_cert_source: Optional[Callable[[], Tuple[bytes, bytes]]] = None,
-        ssl_channel_credentials: Optional[grpc.ChannelCredentials] = None,
-        client_cert_source_for_mtls: Optional[Callable[[], Tuple[bytes, bytes]]] = None,
-        quota_project_id: Optional[str] = None,
-        client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
-        always_use_jwt_access: Optional[bool] = False,
-        api_audience: Optional[str] = None,
-    ) -> None:
+    def __init__(self, *,
+            host: str = 'discoveryengine.googleapis.com',
+            credentials: Optional[ga_credentials.Credentials] = None,
+            credentials_file: Optional[str] = None,
+            scopes: Optional[Sequence[str]] = None,
+            channel: Optional[Union[aio.Channel, Callable[..., aio.Channel]]] = None,
+            api_mtls_endpoint: Optional[str] = None,
+            client_cert_source: Optional[Callable[[], Tuple[bytes, bytes]]] = None,
+            ssl_channel_credentials: Optional[grpc.ChannelCredentials] = None,
+            client_cert_source_for_mtls: Optional[Callable[[], Tuple[bytes, bytes]]] = None,
+            quota_project_id: Optional[str] = None,
+            client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
+            always_use_jwt_access: Optional[bool] = False,
+            api_audience: Optional[str] = None,
+            ) -> None:
         """Instantiate the transport.
 
         Args:
@@ -320,9 +307,7 @@ class CompletionServiceGrpcAsyncIOTransport(CompletionServiceTransport):
         self._interceptor = _LoggingClientAIOInterceptor()
         self._grpc_channel._unary_unary_interceptors.append(self._interceptor)
         self._logged_channel = self._grpc_channel
-        self._wrap_with_kind = (
-            "kind" in inspect.signature(gapic_v1.method_async.wrap_method).parameters
-        )
+        self._wrap_with_kind = "kind" in inspect.signature(gapic_v1.method_async.wrap_method).parameters
         # Wrap messages. This must be done after self._logged_channel exists
         self._prep_wrapped_messages(client_info)
 
@@ -353,12 +338,9 @@ class CompletionServiceGrpcAsyncIOTransport(CompletionServiceTransport):
         return self._operations_client
 
     @property
-    def complete_query(
-        self,
-    ) -> Callable[
-        [completion_service.CompleteQueryRequest],
-        Awaitable[completion_service.CompleteQueryResponse],
-    ]:
+    def complete_query(self) -> Callable[
+            [completion_service.CompleteQueryRequest],
+            Awaitable[completion_service.CompleteQueryResponse]]:
         r"""Return a callable for the complete query method over gRPC.
 
         Completes the specified user input with keyword
@@ -374,21 +356,18 @@ class CompletionServiceGrpcAsyncIOTransport(CompletionServiceTransport):
         # the request.
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
-        if "complete_query" not in self._stubs:
-            self._stubs["complete_query"] = self._logged_channel.unary_unary(
-                "/google.cloud.discoveryengine.v1alpha.CompletionService/CompleteQuery",
+        if 'complete_query' not in self._stubs:
+            self._stubs['complete_query'] = self._logged_channel.unary_unary(
+                '/google.cloud.discoveryengine.v1alpha.CompletionService/CompleteQuery',
                 request_serializer=completion_service.CompleteQueryRequest.serialize,
                 response_deserializer=completion_service.CompleteQueryResponse.deserialize,
             )
-        return self._stubs["complete_query"]
+        return self._stubs['complete_query']
 
     @property
-    def import_suggestion_deny_list_entries(
-        self,
-    ) -> Callable[
-        [import_config.ImportSuggestionDenyListEntriesRequest],
-        Awaitable[operations_pb2.Operation],
-    ]:
+    def import_suggestion_deny_list_entries(self) -> Callable[
+            [import_config.ImportSuggestionDenyListEntriesRequest],
+            Awaitable[operations_pb2.Operation]]:
         r"""Return a callable for the import suggestion deny list
         entries method over gRPC.
 
@@ -406,23 +385,18 @@ class CompletionServiceGrpcAsyncIOTransport(CompletionServiceTransport):
         # the request.
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
-        if "import_suggestion_deny_list_entries" not in self._stubs:
-            self._stubs[
-                "import_suggestion_deny_list_entries"
-            ] = self._logged_channel.unary_unary(
-                "/google.cloud.discoveryengine.v1alpha.CompletionService/ImportSuggestionDenyListEntries",
+        if 'import_suggestion_deny_list_entries' not in self._stubs:
+            self._stubs['import_suggestion_deny_list_entries'] = self._logged_channel.unary_unary(
+                '/google.cloud.discoveryengine.v1alpha.CompletionService/ImportSuggestionDenyListEntries',
                 request_serializer=import_config.ImportSuggestionDenyListEntriesRequest.serialize,
                 response_deserializer=operations_pb2.Operation.FromString,
             )
-        return self._stubs["import_suggestion_deny_list_entries"]
+        return self._stubs['import_suggestion_deny_list_entries']
 
     @property
-    def purge_suggestion_deny_list_entries(
-        self,
-    ) -> Callable[
-        [purge_config.PurgeSuggestionDenyListEntriesRequest],
-        Awaitable[operations_pb2.Operation],
-    ]:
+    def purge_suggestion_deny_list_entries(self) -> Callable[
+            [purge_config.PurgeSuggestionDenyListEntriesRequest],
+            Awaitable[operations_pb2.Operation]]:
         r"""Return a callable for the purge suggestion deny list
         entries method over gRPC.
 
@@ -440,23 +414,18 @@ class CompletionServiceGrpcAsyncIOTransport(CompletionServiceTransport):
         # the request.
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
-        if "purge_suggestion_deny_list_entries" not in self._stubs:
-            self._stubs[
-                "purge_suggestion_deny_list_entries"
-            ] = self._logged_channel.unary_unary(
-                "/google.cloud.discoveryengine.v1alpha.CompletionService/PurgeSuggestionDenyListEntries",
+        if 'purge_suggestion_deny_list_entries' not in self._stubs:
+            self._stubs['purge_suggestion_deny_list_entries'] = self._logged_channel.unary_unary(
+                '/google.cloud.discoveryengine.v1alpha.CompletionService/PurgeSuggestionDenyListEntries',
                 request_serializer=purge_config.PurgeSuggestionDenyListEntriesRequest.serialize,
                 response_deserializer=operations_pb2.Operation.FromString,
             )
-        return self._stubs["purge_suggestion_deny_list_entries"]
+        return self._stubs['purge_suggestion_deny_list_entries']
 
     @property
-    def import_completion_suggestions(
-        self,
-    ) -> Callable[
-        [import_config.ImportCompletionSuggestionsRequest],
-        Awaitable[operations_pb2.Operation],
-    ]:
+    def import_completion_suggestions(self) -> Callable[
+            [import_config.ImportCompletionSuggestionsRequest],
+            Awaitable[operations_pb2.Operation]]:
         r"""Return a callable for the import completion suggestions method over gRPC.
 
         Imports
@@ -473,23 +442,18 @@ class CompletionServiceGrpcAsyncIOTransport(CompletionServiceTransport):
         # the request.
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
-        if "import_completion_suggestions" not in self._stubs:
-            self._stubs[
-                "import_completion_suggestions"
-            ] = self._logged_channel.unary_unary(
-                "/google.cloud.discoveryengine.v1alpha.CompletionService/ImportCompletionSuggestions",
+        if 'import_completion_suggestions' not in self._stubs:
+            self._stubs['import_completion_suggestions'] = self._logged_channel.unary_unary(
+                '/google.cloud.discoveryengine.v1alpha.CompletionService/ImportCompletionSuggestions',
                 request_serializer=import_config.ImportCompletionSuggestionsRequest.serialize,
                 response_deserializer=operations_pb2.Operation.FromString,
             )
-        return self._stubs["import_completion_suggestions"]
+        return self._stubs['import_completion_suggestions']
 
     @property
-    def purge_completion_suggestions(
-        self,
-    ) -> Callable[
-        [purge_config.PurgeCompletionSuggestionsRequest],
-        Awaitable[operations_pb2.Operation],
-    ]:
+    def purge_completion_suggestions(self) -> Callable[
+            [purge_config.PurgeCompletionSuggestionsRequest],
+            Awaitable[operations_pb2.Operation]]:
         r"""Return a callable for the purge completion suggestions method over gRPC.
 
         Permanently deletes all
@@ -506,18 +470,16 @@ class CompletionServiceGrpcAsyncIOTransport(CompletionServiceTransport):
         # the request.
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
-        if "purge_completion_suggestions" not in self._stubs:
-            self._stubs[
-                "purge_completion_suggestions"
-            ] = self._logged_channel.unary_unary(
-                "/google.cloud.discoveryengine.v1alpha.CompletionService/PurgeCompletionSuggestions",
+        if 'purge_completion_suggestions' not in self._stubs:
+            self._stubs['purge_completion_suggestions'] = self._logged_channel.unary_unary(
+                '/google.cloud.discoveryengine.v1alpha.CompletionService/PurgeCompletionSuggestions',
                 request_serializer=purge_config.PurgeCompletionSuggestionsRequest.serialize,
                 response_deserializer=operations_pb2.Operation.FromString,
             )
-        return self._stubs["purge_completion_suggestions"]
+        return self._stubs['purge_completion_suggestions']
 
     def _prep_wrapped_messages(self, client_info):
-        """Precompute the wrapped methods, overriding the base class method to use async wrappers."""
+        """ Precompute the wrapped methods, overriding the base class method to use async wrappers."""
         self._wrapped_methods = {
             self.complete_query: self._wrap_method(
                 self.complete_query,
@@ -577,7 +539,8 @@ class CompletionServiceGrpcAsyncIOTransport(CompletionServiceTransport):
     def cancel_operation(
         self,
     ) -> Callable[[operations_pb2.CancelOperationRequest], None]:
-        r"""Return a callable for the cancel_operation method over gRPC."""
+        r"""Return a callable for the cancel_operation method over gRPC.
+        """
         # Generate a "stub function" on-the-fly which will actually make
         # the request.
         # gRPC handles serialization and deserialization, so we just need
@@ -594,7 +557,8 @@ class CompletionServiceGrpcAsyncIOTransport(CompletionServiceTransport):
     def get_operation(
         self,
     ) -> Callable[[operations_pb2.GetOperationRequest], operations_pb2.Operation]:
-        r"""Return a callable for the get_operation method over gRPC."""
+        r"""Return a callable for the get_operation method over gRPC.
+        """
         # Generate a "stub function" on-the-fly which will actually make
         # the request.
         # gRPC handles serialization and deserialization, so we just need
@@ -610,10 +574,9 @@ class CompletionServiceGrpcAsyncIOTransport(CompletionServiceTransport):
     @property
     def list_operations(
         self,
-    ) -> Callable[
-        [operations_pb2.ListOperationsRequest], operations_pb2.ListOperationsResponse
-    ]:
-        r"""Return a callable for the list_operations method over gRPC."""
+    ) -> Callable[[operations_pb2.ListOperationsRequest], operations_pb2.ListOperationsResponse]:
+        r"""Return a callable for the list_operations method over gRPC.
+        """
         # Generate a "stub function" on-the-fly which will actually make
         # the request.
         # gRPC handles serialization and deserialization, so we just need
@@ -627,4 +590,6 @@ class CompletionServiceGrpcAsyncIOTransport(CompletionServiceTransport):
         return self._stubs["list_operations"]
 
 
-__all__ = ("CompletionServiceGrpcAsyncIOTransport",)
+__all__ = (
+    'CompletionServiceGrpcAsyncIOTransport',
+)

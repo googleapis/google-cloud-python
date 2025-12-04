@@ -15,38 +15,38 @@
 #
 import inspect
 import json
-import logging as std_logging
 import pickle
-from typing import Awaitable, Callable, Dict, Optional, Sequence, Tuple, Union
+import logging as std_logging
 import warnings
+from typing import Awaitable, Callable, Dict, Optional, Sequence, Tuple, Union
 
+from google.api_core import gapic_v1
+from google.api_core import grpc_helpers_async
 from google.api_core import exceptions as core_exceptions
-from google.api_core import gapic_v1, grpc_helpers_async
 from google.api_core import retry_async as retries
-from google.auth import credentials as ga_credentials  # type: ignore
+from google.auth import credentials as ga_credentials   # type: ignore
 from google.auth.transport.grpc import SslCredentials  # type: ignore
-from google.cloud.location import locations_pb2  # type: ignore
-from google.longrunning import operations_pb2  # type: ignore
-from google.protobuf import empty_pb2  # type: ignore
 from google.protobuf.json_format import MessageToJson
 import google.protobuf.message
-import grpc  # type: ignore
-from grpc.experimental import aio  # type: ignore
-import proto  # type: ignore
 
-from google.cloud.discoveryengine_v1alpha.types import conversation as gcd_conversation
-from google.cloud.discoveryengine_v1alpha.types import conversational_search_service
+import grpc                        # type: ignore
+import proto                       # type: ignore
+from grpc.experimental import aio  # type: ignore
+
 from google.cloud.discoveryengine_v1alpha.types import answer
 from google.cloud.discoveryengine_v1alpha.types import conversation
+from google.cloud.discoveryengine_v1alpha.types import conversation as gcd_conversation
+from google.cloud.discoveryengine_v1alpha.types import conversational_search_service
 from google.cloud.discoveryengine_v1alpha.types import session
 from google.cloud.discoveryengine_v1alpha.types import session as gcd_session
-
-from .base import DEFAULT_CLIENT_INFO, ConversationalSearchServiceTransport
+from google.cloud.location import locations_pb2 # type: ignore
+from google.longrunning import operations_pb2 # type: ignore
+from google.protobuf import empty_pb2  # type: ignore
+from .base import ConversationalSearchServiceTransport, DEFAULT_CLIENT_INFO
 from .grpc import ConversationalSearchServiceGrpcTransport
 
 try:
     from google.api_core import client_logging  # type: ignore
-
     CLIENT_LOGGING_SUPPORTED = True  # pragma: NO COVER
 except ImportError:  # pragma: NO COVER
     CLIENT_LOGGING_SUPPORTED = False
@@ -54,13 +54,9 @@ except ImportError:  # pragma: NO COVER
 _LOGGER = std_logging.getLogger(__name__)
 
 
-class _LoggingClientAIOInterceptor(
-    grpc.aio.UnaryUnaryClientInterceptor
-):  # pragma: NO COVER
+class _LoggingClientAIOInterceptor(grpc.aio.UnaryUnaryClientInterceptor):  # pragma: NO COVER
     async def intercept_unary_unary(self, continuation, client_call_details, request):
-        logging_enabled = CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-            std_logging.DEBUG
-        )
+        logging_enabled = CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(std_logging.DEBUG)
         if logging_enabled:  # pragma: NO COVER
             request_metadata = client_call_details.metadata
             if isinstance(request, proto.Message):
@@ -81,7 +77,7 @@ class _LoggingClientAIOInterceptor(
             }
             _LOGGER.debug(
                 f"Sending request for {client_call_details.method}",
-                extra={
+                extra = {
                     "serviceName": "google.cloud.discoveryengine.v1alpha.ConversationalSearchService",
                     "rpcName": str(client_call_details.method),
                     "request": grpc_request,
@@ -92,11 +88,7 @@ class _LoggingClientAIOInterceptor(
         if logging_enabled:  # pragma: NO COVER
             response_metadata = await response.trailing_metadata()
             # Convert gRPC metadata `<class 'grpc.aio._metadata.Metadata'>` to list of tuples
-            metadata = (
-                dict([(k, str(v)) for k, v in response_metadata])
-                if response_metadata
-                else None
-            )
+            metadata = dict([(k, str(v)) for k, v in response_metadata]) if response_metadata else None
             result = await response
             if isinstance(result, proto.Message):
                 response_payload = type(result).to_json(result)
@@ -111,7 +103,7 @@ class _LoggingClientAIOInterceptor(
             }
             _LOGGER.debug(
                 f"Received response to rpc {client_call_details.method}.",
-                extra={
+                extra = {
                     "serviceName": "google.cloud.discoveryengine.v1alpha.ConversationalSearchService",
                     "rpcName": str(client_call_details.method),
                     "response": grpc_response,
@@ -121,9 +113,7 @@ class _LoggingClientAIOInterceptor(
         return response
 
 
-class ConversationalSearchServiceGrpcAsyncIOTransport(
-    ConversationalSearchServiceTransport
-):
+class ConversationalSearchServiceGrpcAsyncIOTransport(ConversationalSearchServiceTransport):
     """gRPC AsyncIO backend transport for ConversationalSearchService.
 
     Service for conversational search.
@@ -140,15 +130,13 @@ class ConversationalSearchServiceGrpcAsyncIOTransport(
     _stubs: Dict[str, Callable] = {}
 
     @classmethod
-    def create_channel(
-        cls,
-        host: str = "discoveryengine.googleapis.com",
-        credentials: Optional[ga_credentials.Credentials] = None,
-        credentials_file: Optional[str] = None,
-        scopes: Optional[Sequence[str]] = None,
-        quota_project_id: Optional[str] = None,
-        **kwargs,
-    ) -> aio.Channel:
+    def create_channel(cls,
+                       host: str = 'discoveryengine.googleapis.com',
+                       credentials: Optional[ga_credentials.Credentials] = None,
+                       credentials_file: Optional[str] = None,
+                       scopes: Optional[Sequence[str]] = None,
+                       quota_project_id: Optional[str] = None,
+                       **kwargs) -> aio.Channel:
         """Create and return a gRPC AsyncIO channel object.
         Args:
             host (Optional[str]): The host for the channel to use.
@@ -179,26 +167,24 @@ class ConversationalSearchServiceGrpcAsyncIOTransport(
             default_scopes=cls.AUTH_SCOPES,
             scopes=scopes,
             default_host=cls.DEFAULT_HOST,
-            **kwargs,
+            **kwargs
         )
 
-    def __init__(
-        self,
-        *,
-        host: str = "discoveryengine.googleapis.com",
-        credentials: Optional[ga_credentials.Credentials] = None,
-        credentials_file: Optional[str] = None,
-        scopes: Optional[Sequence[str]] = None,
-        channel: Optional[Union[aio.Channel, Callable[..., aio.Channel]]] = None,
-        api_mtls_endpoint: Optional[str] = None,
-        client_cert_source: Optional[Callable[[], Tuple[bytes, bytes]]] = None,
-        ssl_channel_credentials: Optional[grpc.ChannelCredentials] = None,
-        client_cert_source_for_mtls: Optional[Callable[[], Tuple[bytes, bytes]]] = None,
-        quota_project_id: Optional[str] = None,
-        client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
-        always_use_jwt_access: Optional[bool] = False,
-        api_audience: Optional[str] = None,
-    ) -> None:
+    def __init__(self, *,
+            host: str = 'discoveryengine.googleapis.com',
+            credentials: Optional[ga_credentials.Credentials] = None,
+            credentials_file: Optional[str] = None,
+            scopes: Optional[Sequence[str]] = None,
+            channel: Optional[Union[aio.Channel, Callable[..., aio.Channel]]] = None,
+            api_mtls_endpoint: Optional[str] = None,
+            client_cert_source: Optional[Callable[[], Tuple[bytes, bytes]]] = None,
+            ssl_channel_credentials: Optional[grpc.ChannelCredentials] = None,
+            client_cert_source_for_mtls: Optional[Callable[[], Tuple[bytes, bytes]]] = None,
+            quota_project_id: Optional[str] = None,
+            client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
+            always_use_jwt_access: Optional[bool] = False,
+            api_audience: Optional[str] = None,
+            ) -> None:
         """Instantiate the transport.
 
         Args:
@@ -323,9 +309,7 @@ class ConversationalSearchServiceGrpcAsyncIOTransport(
         self._interceptor = _LoggingClientAIOInterceptor()
         self._grpc_channel._unary_unary_interceptors.append(self._interceptor)
         self._logged_channel = self._grpc_channel
-        self._wrap_with_kind = (
-            "kind" in inspect.signature(gapic_v1.method_async.wrap_method).parameters
-        )
+        self._wrap_with_kind = "kind" in inspect.signature(gapic_v1.method_async.wrap_method).parameters
         # Wrap messages. This must be done after self._logged_channel exists
         self._prep_wrapped_messages(client_info)
 
@@ -340,12 +324,9 @@ class ConversationalSearchServiceGrpcAsyncIOTransport(
         return self._grpc_channel
 
     @property
-    def converse_conversation(
-        self,
-    ) -> Callable[
-        [conversational_search_service.ConverseConversationRequest],
-        Awaitable[conversational_search_service.ConverseConversationResponse],
-    ]:
+    def converse_conversation(self) -> Callable[
+            [conversational_search_service.ConverseConversationRequest],
+            Awaitable[conversational_search_service.ConverseConversationResponse]]:
         r"""Return a callable for the converse conversation method over gRPC.
 
         Converses a conversation.
@@ -360,21 +341,18 @@ class ConversationalSearchServiceGrpcAsyncIOTransport(
         # the request.
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
-        if "converse_conversation" not in self._stubs:
-            self._stubs["converse_conversation"] = self._logged_channel.unary_unary(
-                "/google.cloud.discoveryengine.v1alpha.ConversationalSearchService/ConverseConversation",
+        if 'converse_conversation' not in self._stubs:
+            self._stubs['converse_conversation'] = self._logged_channel.unary_unary(
+                '/google.cloud.discoveryengine.v1alpha.ConversationalSearchService/ConverseConversation',
                 request_serializer=conversational_search_service.ConverseConversationRequest.serialize,
                 response_deserializer=conversational_search_service.ConverseConversationResponse.deserialize,
             )
-        return self._stubs["converse_conversation"]
+        return self._stubs['converse_conversation']
 
     @property
-    def create_conversation(
-        self,
-    ) -> Callable[
-        [conversational_search_service.CreateConversationRequest],
-        Awaitable[gcd_conversation.Conversation],
-    ]:
+    def create_conversation(self) -> Callable[
+            [conversational_search_service.CreateConversationRequest],
+            Awaitable[gcd_conversation.Conversation]]:
         r"""Return a callable for the create conversation method over gRPC.
 
         Creates a Conversation.
@@ -393,21 +371,18 @@ class ConversationalSearchServiceGrpcAsyncIOTransport(
         # the request.
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
-        if "create_conversation" not in self._stubs:
-            self._stubs["create_conversation"] = self._logged_channel.unary_unary(
-                "/google.cloud.discoveryengine.v1alpha.ConversationalSearchService/CreateConversation",
+        if 'create_conversation' not in self._stubs:
+            self._stubs['create_conversation'] = self._logged_channel.unary_unary(
+                '/google.cloud.discoveryengine.v1alpha.ConversationalSearchService/CreateConversation',
                 request_serializer=conversational_search_service.CreateConversationRequest.serialize,
                 response_deserializer=gcd_conversation.Conversation.deserialize,
             )
-        return self._stubs["create_conversation"]
+        return self._stubs['create_conversation']
 
     @property
-    def delete_conversation(
-        self,
-    ) -> Callable[
-        [conversational_search_service.DeleteConversationRequest],
-        Awaitable[empty_pb2.Empty],
-    ]:
+    def delete_conversation(self) -> Callable[
+            [conversational_search_service.DeleteConversationRequest],
+            Awaitable[empty_pb2.Empty]]:
         r"""Return a callable for the delete conversation method over gRPC.
 
         Deletes a Conversation.
@@ -426,21 +401,18 @@ class ConversationalSearchServiceGrpcAsyncIOTransport(
         # the request.
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
-        if "delete_conversation" not in self._stubs:
-            self._stubs["delete_conversation"] = self._logged_channel.unary_unary(
-                "/google.cloud.discoveryengine.v1alpha.ConversationalSearchService/DeleteConversation",
+        if 'delete_conversation' not in self._stubs:
+            self._stubs['delete_conversation'] = self._logged_channel.unary_unary(
+                '/google.cloud.discoveryengine.v1alpha.ConversationalSearchService/DeleteConversation',
                 request_serializer=conversational_search_service.DeleteConversationRequest.serialize,
                 response_deserializer=empty_pb2.Empty.FromString,
             )
-        return self._stubs["delete_conversation"]
+        return self._stubs['delete_conversation']
 
     @property
-    def update_conversation(
-        self,
-    ) -> Callable[
-        [conversational_search_service.UpdateConversationRequest],
-        Awaitable[gcd_conversation.Conversation],
-    ]:
+    def update_conversation(self) -> Callable[
+            [conversational_search_service.UpdateConversationRequest],
+            Awaitable[gcd_conversation.Conversation]]:
         r"""Return a callable for the update conversation method over gRPC.
 
         Updates a Conversation.
@@ -460,21 +432,18 @@ class ConversationalSearchServiceGrpcAsyncIOTransport(
         # the request.
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
-        if "update_conversation" not in self._stubs:
-            self._stubs["update_conversation"] = self._logged_channel.unary_unary(
-                "/google.cloud.discoveryengine.v1alpha.ConversationalSearchService/UpdateConversation",
+        if 'update_conversation' not in self._stubs:
+            self._stubs['update_conversation'] = self._logged_channel.unary_unary(
+                '/google.cloud.discoveryengine.v1alpha.ConversationalSearchService/UpdateConversation',
                 request_serializer=conversational_search_service.UpdateConversationRequest.serialize,
                 response_deserializer=gcd_conversation.Conversation.deserialize,
             )
-        return self._stubs["update_conversation"]
+        return self._stubs['update_conversation']
 
     @property
-    def get_conversation(
-        self,
-    ) -> Callable[
-        [conversational_search_service.GetConversationRequest],
-        Awaitable[conversation.Conversation],
-    ]:
+    def get_conversation(self) -> Callable[
+            [conversational_search_service.GetConversationRequest],
+            Awaitable[conversation.Conversation]]:
         r"""Return a callable for the get conversation method over gRPC.
 
         Gets a Conversation.
@@ -489,21 +458,18 @@ class ConversationalSearchServiceGrpcAsyncIOTransport(
         # the request.
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
-        if "get_conversation" not in self._stubs:
-            self._stubs["get_conversation"] = self._logged_channel.unary_unary(
-                "/google.cloud.discoveryengine.v1alpha.ConversationalSearchService/GetConversation",
+        if 'get_conversation' not in self._stubs:
+            self._stubs['get_conversation'] = self._logged_channel.unary_unary(
+                '/google.cloud.discoveryengine.v1alpha.ConversationalSearchService/GetConversation',
                 request_serializer=conversational_search_service.GetConversationRequest.serialize,
                 response_deserializer=conversation.Conversation.deserialize,
             )
-        return self._stubs["get_conversation"]
+        return self._stubs['get_conversation']
 
     @property
-    def list_conversations(
-        self,
-    ) -> Callable[
-        [conversational_search_service.ListConversationsRequest],
-        Awaitable[conversational_search_service.ListConversationsResponse],
-    ]:
+    def list_conversations(self) -> Callable[
+            [conversational_search_service.ListConversationsRequest],
+            Awaitable[conversational_search_service.ListConversationsResponse]]:
         r"""Return a callable for the list conversations method over gRPC.
 
         Lists all Conversations by their parent
@@ -519,21 +485,18 @@ class ConversationalSearchServiceGrpcAsyncIOTransport(
         # the request.
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
-        if "list_conversations" not in self._stubs:
-            self._stubs["list_conversations"] = self._logged_channel.unary_unary(
-                "/google.cloud.discoveryengine.v1alpha.ConversationalSearchService/ListConversations",
+        if 'list_conversations' not in self._stubs:
+            self._stubs['list_conversations'] = self._logged_channel.unary_unary(
+                '/google.cloud.discoveryengine.v1alpha.ConversationalSearchService/ListConversations',
                 request_serializer=conversational_search_service.ListConversationsRequest.serialize,
                 response_deserializer=conversational_search_service.ListConversationsResponse.deserialize,
             )
-        return self._stubs["list_conversations"]
+        return self._stubs['list_conversations']
 
     @property
-    def answer_query(
-        self,
-    ) -> Callable[
-        [conversational_search_service.AnswerQueryRequest],
-        Awaitable[conversational_search_service.AnswerQueryResponse],
-    ]:
+    def answer_query(self) -> Callable[
+            [conversational_search_service.AnswerQueryRequest],
+            Awaitable[conversational_search_service.AnswerQueryResponse]]:
         r"""Return a callable for the answer query method over gRPC.
 
         Answer query method.
@@ -548,20 +511,18 @@ class ConversationalSearchServiceGrpcAsyncIOTransport(
         # the request.
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
-        if "answer_query" not in self._stubs:
-            self._stubs["answer_query"] = self._logged_channel.unary_unary(
-                "/google.cloud.discoveryengine.v1alpha.ConversationalSearchService/AnswerQuery",
+        if 'answer_query' not in self._stubs:
+            self._stubs['answer_query'] = self._logged_channel.unary_unary(
+                '/google.cloud.discoveryengine.v1alpha.ConversationalSearchService/AnswerQuery',
                 request_serializer=conversational_search_service.AnswerQueryRequest.serialize,
                 response_deserializer=conversational_search_service.AnswerQueryResponse.deserialize,
             )
-        return self._stubs["answer_query"]
+        return self._stubs['answer_query']
 
     @property
-    def get_answer(
-        self,
-    ) -> Callable[
-        [conversational_search_service.GetAnswerRequest], Awaitable[answer.Answer]
-    ]:
+    def get_answer(self) -> Callable[
+            [conversational_search_service.GetAnswerRequest],
+            Awaitable[answer.Answer]]:
         r"""Return a callable for the get answer method over gRPC.
 
         Gets a Answer.
@@ -576,21 +537,18 @@ class ConversationalSearchServiceGrpcAsyncIOTransport(
         # the request.
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
-        if "get_answer" not in self._stubs:
-            self._stubs["get_answer"] = self._logged_channel.unary_unary(
-                "/google.cloud.discoveryengine.v1alpha.ConversationalSearchService/GetAnswer",
+        if 'get_answer' not in self._stubs:
+            self._stubs['get_answer'] = self._logged_channel.unary_unary(
+                '/google.cloud.discoveryengine.v1alpha.ConversationalSearchService/GetAnswer',
                 request_serializer=conversational_search_service.GetAnswerRequest.serialize,
                 response_deserializer=answer.Answer.deserialize,
             )
-        return self._stubs["get_answer"]
+        return self._stubs['get_answer']
 
     @property
-    def create_session(
-        self,
-    ) -> Callable[
-        [conversational_search_service.CreateSessionRequest],
-        Awaitable[gcd_session.Session],
-    ]:
+    def create_session(self) -> Callable[
+            [conversational_search_service.CreateSessionRequest],
+            Awaitable[gcd_session.Session]]:
         r"""Return a callable for the create session method over gRPC.
 
         Creates a Session.
@@ -608,20 +566,18 @@ class ConversationalSearchServiceGrpcAsyncIOTransport(
         # the request.
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
-        if "create_session" not in self._stubs:
-            self._stubs["create_session"] = self._logged_channel.unary_unary(
-                "/google.cloud.discoveryengine.v1alpha.ConversationalSearchService/CreateSession",
+        if 'create_session' not in self._stubs:
+            self._stubs['create_session'] = self._logged_channel.unary_unary(
+                '/google.cloud.discoveryengine.v1alpha.ConversationalSearchService/CreateSession',
                 request_serializer=conversational_search_service.CreateSessionRequest.serialize,
                 response_deserializer=gcd_session.Session.deserialize,
             )
-        return self._stubs["create_session"]
+        return self._stubs['create_session']
 
     @property
-    def delete_session(
-        self,
-    ) -> Callable[
-        [conversational_search_service.DeleteSessionRequest], Awaitable[empty_pb2.Empty]
-    ]:
+    def delete_session(self) -> Callable[
+            [conversational_search_service.DeleteSessionRequest],
+            Awaitable[empty_pb2.Empty]]:
         r"""Return a callable for the delete session method over gRPC.
 
         Deletes a Session.
@@ -639,21 +595,18 @@ class ConversationalSearchServiceGrpcAsyncIOTransport(
         # the request.
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
-        if "delete_session" not in self._stubs:
-            self._stubs["delete_session"] = self._logged_channel.unary_unary(
-                "/google.cloud.discoveryengine.v1alpha.ConversationalSearchService/DeleteSession",
+        if 'delete_session' not in self._stubs:
+            self._stubs['delete_session'] = self._logged_channel.unary_unary(
+                '/google.cloud.discoveryengine.v1alpha.ConversationalSearchService/DeleteSession',
                 request_serializer=conversational_search_service.DeleteSessionRequest.serialize,
                 response_deserializer=empty_pb2.Empty.FromString,
             )
-        return self._stubs["delete_session"]
+        return self._stubs['delete_session']
 
     @property
-    def update_session(
-        self,
-    ) -> Callable[
-        [conversational_search_service.UpdateSessionRequest],
-        Awaitable[gcd_session.Session],
-    ]:
+    def update_session(self) -> Callable[
+            [conversational_search_service.UpdateSessionRequest],
+            Awaitable[gcd_session.Session]]:
         r"""Return a callable for the update session method over gRPC.
 
         Updates a Session.
@@ -673,20 +626,18 @@ class ConversationalSearchServiceGrpcAsyncIOTransport(
         # the request.
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
-        if "update_session" not in self._stubs:
-            self._stubs["update_session"] = self._logged_channel.unary_unary(
-                "/google.cloud.discoveryengine.v1alpha.ConversationalSearchService/UpdateSession",
+        if 'update_session' not in self._stubs:
+            self._stubs['update_session'] = self._logged_channel.unary_unary(
+                '/google.cloud.discoveryengine.v1alpha.ConversationalSearchService/UpdateSession',
                 request_serializer=conversational_search_service.UpdateSessionRequest.serialize,
                 response_deserializer=gcd_session.Session.deserialize,
             )
-        return self._stubs["update_session"]
+        return self._stubs['update_session']
 
     @property
-    def get_session(
-        self,
-    ) -> Callable[
-        [conversational_search_service.GetSessionRequest], Awaitable[session.Session]
-    ]:
+    def get_session(self) -> Callable[
+            [conversational_search_service.GetSessionRequest],
+            Awaitable[session.Session]]:
         r"""Return a callable for the get session method over gRPC.
 
         Gets a Session.
@@ -701,21 +652,18 @@ class ConversationalSearchServiceGrpcAsyncIOTransport(
         # the request.
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
-        if "get_session" not in self._stubs:
-            self._stubs["get_session"] = self._logged_channel.unary_unary(
-                "/google.cloud.discoveryengine.v1alpha.ConversationalSearchService/GetSession",
+        if 'get_session' not in self._stubs:
+            self._stubs['get_session'] = self._logged_channel.unary_unary(
+                '/google.cloud.discoveryengine.v1alpha.ConversationalSearchService/GetSession',
                 request_serializer=conversational_search_service.GetSessionRequest.serialize,
                 response_deserializer=session.Session.deserialize,
             )
-        return self._stubs["get_session"]
+        return self._stubs['get_session']
 
     @property
-    def list_sessions(
-        self,
-    ) -> Callable[
-        [conversational_search_service.ListSessionsRequest],
-        Awaitable[conversational_search_service.ListSessionsResponse],
-    ]:
+    def list_sessions(self) -> Callable[
+            [conversational_search_service.ListSessionsRequest],
+            Awaitable[conversational_search_service.ListSessionsResponse]]:
         r"""Return a callable for the list sessions method over gRPC.
 
         Lists all Sessions by their parent
@@ -731,16 +679,16 @@ class ConversationalSearchServiceGrpcAsyncIOTransport(
         # the request.
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
-        if "list_sessions" not in self._stubs:
-            self._stubs["list_sessions"] = self._logged_channel.unary_unary(
-                "/google.cloud.discoveryengine.v1alpha.ConversationalSearchService/ListSessions",
+        if 'list_sessions' not in self._stubs:
+            self._stubs['list_sessions'] = self._logged_channel.unary_unary(
+                '/google.cloud.discoveryengine.v1alpha.ConversationalSearchService/ListSessions',
                 request_serializer=conversational_search_service.ListSessionsRequest.serialize,
                 response_deserializer=conversational_search_service.ListSessionsResponse.deserialize,
             )
-        return self._stubs["list_sessions"]
+        return self._stubs['list_sessions']
 
     def _prep_wrapped_messages(self, client_info):
-        """Precompute the wrapped methods, overriding the base class method to use async wrappers."""
+        """ Precompute the wrapped methods, overriding the base class method to use async wrappers."""
         self._wrapped_methods = {
             self.converse_conversation: self._wrap_method(
                 self.converse_conversation,
@@ -840,7 +788,8 @@ class ConversationalSearchServiceGrpcAsyncIOTransport(
     def cancel_operation(
         self,
     ) -> Callable[[operations_pb2.CancelOperationRequest], None]:
-        r"""Return a callable for the cancel_operation method over gRPC."""
+        r"""Return a callable for the cancel_operation method over gRPC.
+        """
         # Generate a "stub function" on-the-fly which will actually make
         # the request.
         # gRPC handles serialization and deserialization, so we just need
@@ -857,7 +806,8 @@ class ConversationalSearchServiceGrpcAsyncIOTransport(
     def get_operation(
         self,
     ) -> Callable[[operations_pb2.GetOperationRequest], operations_pb2.Operation]:
-        r"""Return a callable for the get_operation method over gRPC."""
+        r"""Return a callable for the get_operation method over gRPC.
+        """
         # Generate a "stub function" on-the-fly which will actually make
         # the request.
         # gRPC handles serialization and deserialization, so we just need
@@ -873,10 +823,9 @@ class ConversationalSearchServiceGrpcAsyncIOTransport(
     @property
     def list_operations(
         self,
-    ) -> Callable[
-        [operations_pb2.ListOperationsRequest], operations_pb2.ListOperationsResponse
-    ]:
-        r"""Return a callable for the list_operations method over gRPC."""
+    ) -> Callable[[operations_pb2.ListOperationsRequest], operations_pb2.ListOperationsResponse]:
+        r"""Return a callable for the list_operations method over gRPC.
+        """
         # Generate a "stub function" on-the-fly which will actually make
         # the request.
         # gRPC handles serialization and deserialization, so we just need
@@ -890,4 +839,6 @@ class ConversationalSearchServiceGrpcAsyncIOTransport(
         return self._stubs["list_operations"]
 
 
-__all__ = ("ConversationalSearchServiceGrpcAsyncIOTransport",)
+__all__ = (
+    'ConversationalSearchServiceGrpcAsyncIOTransport',
+)

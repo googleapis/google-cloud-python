@@ -17,16 +17,17 @@ from __future__ import annotations
 
 from typing import MutableMapping, MutableSequence
 
-from google.protobuf import timestamp_pb2  # type: ignore
 import proto  # type: ignore
 
 from google.cloud.discoveryengine_v1beta.types import answer as gcd_answer
+from google.protobuf import timestamp_pb2  # type: ignore
+
 
 __protobuf__ = proto.module(
-    package="google.cloud.discoveryengine.v1beta",
+    package='google.cloud.discoveryengine.v1beta',
     manifest={
-        "Session",
-        "Query",
+        'Session',
+        'Query',
     },
 )
 
@@ -59,7 +60,6 @@ class Session(proto.Message):
             pinned session will be displayed on the top of
             the session list.
     """
-
     class State(proto.Enum):
         r"""Enumeration of the state of the session.
 
@@ -101,10 +101,10 @@ class Session(proto.Message):
                 reserved for Google-developed functionality.
         """
 
-        query: "Query" = proto.Field(
+        query: 'Query' = proto.Field(
             proto.MESSAGE,
             number=1,
-            message="Query",
+            message='Query',
         )
         answer: str = proto.Field(
             proto.STRING,
@@ -176,7 +176,7 @@ class Query(proto.Message):
     text: str = proto.Field(
         proto.STRING,
         number=2,
-        oneof="content",
+        oneof='content',
     )
     query_id: str = proto.Field(
         proto.STRING,

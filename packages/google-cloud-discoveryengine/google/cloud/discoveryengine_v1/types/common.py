@@ -19,21 +19,22 @@ from typing import MutableMapping, MutableSequence
 
 import proto  # type: ignore
 
+
 __protobuf__ = proto.module(
-    package="google.cloud.discoveryengine.v1",
+    package='google.cloud.discoveryengine.v1',
     manifest={
-        "IndustryVertical",
-        "SolutionType",
-        "SearchUseCase",
-        "SearchTier",
-        "SearchAddOn",
-        "Interval",
-        "CustomAttribute",
-        "UserInfo",
-        "DoubleList",
-        "Principal",
-        "HealthcareFhirConfig",
-        "SearchLinkPromotion",
+        'IndustryVertical',
+        'SolutionType',
+        'SearchUseCase',
+        'SearchTier',
+        'SearchAddOn',
+        'Interval',
+        'CustomAttribute',
+        'UserInfo',
+        'DoubleList',
+        'Principal',
+        'HealthcareFhirConfig',
+        'SearchLinkPromotion',
     },
 )
 
@@ -170,22 +171,22 @@ class Interval(proto.Message):
     minimum: float = proto.Field(
         proto.DOUBLE,
         number=1,
-        oneof="min",
+        oneof='min',
     )
     exclusive_minimum: float = proto.Field(
         proto.DOUBLE,
         number=2,
-        oneof="min",
+        oneof='min',
     )
     maximum: float = proto.Field(
         proto.DOUBLE,
         number=3,
-        oneof="max",
+        oneof='max',
     )
     exclusive_maximum: float = proto.Field(
         proto.DOUBLE,
         number=4,
-        oneof="max",
+        oneof='max',
     )
 
 
@@ -329,17 +330,17 @@ class Principal(proto.Message):
     user_id: str = proto.Field(
         proto.STRING,
         number=1,
-        oneof="principal",
+        oneof='principal',
     )
     group_id: str = proto.Field(
         proto.STRING,
         number=2,
-        oneof="principal",
+        oneof='principal',
     )
     external_entity_id: str = proto.Field(
         proto.STRING,
         number=3,
-        oneof="principal",
+        oneof='principal',
     )
 
 

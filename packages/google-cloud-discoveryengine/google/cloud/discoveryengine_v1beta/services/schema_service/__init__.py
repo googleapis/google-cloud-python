@@ -13,10 +13,10 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-from .async_client import SchemaServiceAsyncClient
 from .client import SchemaServiceClient
+from .async_client import SchemaServiceAsyncClient
 
 __all__ = (
-    "SchemaServiceClient",
-    "SchemaServiceAsyncClient",
+    'SchemaServiceClient',
+    'SchemaServiceAsyncClient',
 )

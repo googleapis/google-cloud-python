@@ -13,31 +13,36 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-import dataclasses
-import json  # type: ignore
 import logging
+import json  # type: ignore
+
+from google.auth.transport.requests import AuthorizedSession  # type: ignore
+from google.auth import credentials as ga_credentials  # type: ignore
+from google.api_core import exceptions as core_exceptions
+from google.api_core import retry as retries
+from google.api_core import rest_helpers
+from google.api_core import rest_streaming
+from google.api_core import gapic_v1
+import google.protobuf
+
+from google.protobuf import json_format
+from google.api_core import operations_v1
+from google.cloud.location import locations_pb2 # type: ignore
+
+from requests import __version__ as requests_version
+import dataclasses
 from typing import Any, Callable, Dict, List, Optional, Sequence, Tuple, Union
 import warnings
 
-from google.api_core import gapic_v1, operations_v1, rest_helpers, rest_streaming
-from google.api_core import exceptions as core_exceptions
-from google.api_core import retry as retries
-from google.auth import credentials as ga_credentials  # type: ignore
-from google.auth.transport.requests import AuthorizedSession  # type: ignore
-from google.cloud.location import locations_pb2  # type: ignore
+
+from google.cloud.discoveryengine_v1.types import completion_service
+from google.cloud.discoveryengine_v1.types import import_config
+from google.cloud.discoveryengine_v1.types import purge_config
 from google.longrunning import operations_pb2  # type: ignore
-import google.protobuf
-from google.protobuf import json_format
-from requests import __version__ as requests_version
 
-from google.cloud.discoveryengine_v1.types import (
-    completion_service,
-    import_config,
-    purge_config,
-)
 
-from .base import DEFAULT_CLIENT_INFO as BASE_DEFAULT_CLIENT_INFO
 from .rest_base import _BaseCompletionServiceRestTransport
+from .base import DEFAULT_CLIENT_INFO as BASE_DEFAULT_CLIENT_INFO
 
 try:
     OptionalRetry = Union[retries.Retry, gapic_v1.method._MethodDefault, None]
@@ -46,7 +51,6 @@ except AttributeError:  # pragma: NO COVER
 
 try:
     from google.api_core import client_logging  # type: ignore
-
     CLIENT_LOGGING_SUPPORTED = True  # pragma: NO COVER
 except ImportError:  # pragma: NO COVER
     CLIENT_LOGGING_SUPPORTED = False
@@ -123,14 +127,7 @@ class CompletionServiceRestInterceptor:
 
 
     """
-
-    def pre_complete_query(
-        self,
-        request: completion_service.CompleteQueryRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        completion_service.CompleteQueryRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+    def pre_complete_query(self, request: completion_service.CompleteQueryRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]) -> Tuple[completion_service.CompleteQueryRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for complete_query
 
         Override in a subclass to manipulate the request or metadata
@@ -138,9 +135,7 @@ class CompletionServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_complete_query(
-        self, response: completion_service.CompleteQueryResponse
-    ) -> completion_service.CompleteQueryResponse:
+    def post_complete_query(self, response: completion_service.CompleteQueryResponse) -> completion_service.CompleteQueryResponse:
         """Post-rpc interceptor for complete_query
 
         DEPRECATED. Please use the `post_complete_query_with_metadata`
@@ -153,14 +148,7 @@ class CompletionServiceRestInterceptor:
         """
         return response
 
-    def post_complete_query_with_metadata(
-        self,
-        response: completion_service.CompleteQueryResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        completion_service.CompleteQueryResponse,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+    def post_complete_query_with_metadata(self, response: completion_service.CompleteQueryResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]) -> Tuple[completion_service.CompleteQueryResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for complete_query
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -175,14 +163,7 @@ class CompletionServiceRestInterceptor:
         """
         return response, metadata
 
-    def pre_import_completion_suggestions(
-        self,
-        request: import_config.ImportCompletionSuggestionsRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        import_config.ImportCompletionSuggestionsRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+    def pre_import_completion_suggestions(self, request: import_config.ImportCompletionSuggestionsRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]) -> Tuple[import_config.ImportCompletionSuggestionsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for import_completion_suggestions
 
         Override in a subclass to manipulate the request or metadata
@@ -190,9 +171,7 @@ class CompletionServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_import_completion_suggestions(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_import_completion_suggestions(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for import_completion_suggestions
 
         DEPRECATED. Please use the `post_import_completion_suggestions_with_metadata`
@@ -205,11 +184,7 @@ class CompletionServiceRestInterceptor:
         """
         return response
 
-    def post_import_completion_suggestions_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
+    def post_import_completion_suggestions_with_metadata(self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for import_completion_suggestions
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -224,14 +199,7 @@ class CompletionServiceRestInterceptor:
         """
         return response, metadata
 
-    def pre_import_suggestion_deny_list_entries(
-        self,
-        request: import_config.ImportSuggestionDenyListEntriesRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        import_config.ImportSuggestionDenyListEntriesRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+    def pre_import_suggestion_deny_list_entries(self, request: import_config.ImportSuggestionDenyListEntriesRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]) -> Tuple[import_config.ImportSuggestionDenyListEntriesRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for import_suggestion_deny_list_entries
 
         Override in a subclass to manipulate the request or metadata
@@ -239,9 +207,7 @@ class CompletionServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_import_suggestion_deny_list_entries(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_import_suggestion_deny_list_entries(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for import_suggestion_deny_list_entries
 
         DEPRECATED. Please use the `post_import_suggestion_deny_list_entries_with_metadata`
@@ -254,11 +220,7 @@ class CompletionServiceRestInterceptor:
         """
         return response
 
-    def post_import_suggestion_deny_list_entries_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
+    def post_import_suggestion_deny_list_entries_with_metadata(self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for import_suggestion_deny_list_entries
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -273,14 +235,7 @@ class CompletionServiceRestInterceptor:
         """
         return response, metadata
 
-    def pre_purge_completion_suggestions(
-        self,
-        request: purge_config.PurgeCompletionSuggestionsRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        purge_config.PurgeCompletionSuggestionsRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+    def pre_purge_completion_suggestions(self, request: purge_config.PurgeCompletionSuggestionsRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]) -> Tuple[purge_config.PurgeCompletionSuggestionsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for purge_completion_suggestions
 
         Override in a subclass to manipulate the request or metadata
@@ -288,9 +243,7 @@ class CompletionServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_purge_completion_suggestions(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_purge_completion_suggestions(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for purge_completion_suggestions
 
         DEPRECATED. Please use the `post_purge_completion_suggestions_with_metadata`
@@ -303,11 +256,7 @@ class CompletionServiceRestInterceptor:
         """
         return response
 
-    def post_purge_completion_suggestions_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
+    def post_purge_completion_suggestions_with_metadata(self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for purge_completion_suggestions
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -322,14 +271,7 @@ class CompletionServiceRestInterceptor:
         """
         return response, metadata
 
-    def pre_purge_suggestion_deny_list_entries(
-        self,
-        request: purge_config.PurgeSuggestionDenyListEntriesRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        purge_config.PurgeSuggestionDenyListEntriesRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+    def pre_purge_suggestion_deny_list_entries(self, request: purge_config.PurgeSuggestionDenyListEntriesRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]) -> Tuple[purge_config.PurgeSuggestionDenyListEntriesRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for purge_suggestion_deny_list_entries
 
         Override in a subclass to manipulate the request or metadata
@@ -337,9 +279,7 @@ class CompletionServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_purge_suggestion_deny_list_entries(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_purge_suggestion_deny_list_entries(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for purge_suggestion_deny_list_entries
 
         DEPRECATED. Please use the `post_purge_suggestion_deny_list_entries_with_metadata`
@@ -352,11 +292,7 @@ class CompletionServiceRestInterceptor:
         """
         return response
 
-    def post_purge_suggestion_deny_list_entries_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
+    def post_purge_suggestion_deny_list_entries_with_metadata(self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for purge_suggestion_deny_list_entries
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -372,12 +308,8 @@ class CompletionServiceRestInterceptor:
         return response, metadata
 
     def pre_cancel_operation(
-        self,
-        request: operations_pb2.CancelOperationRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        operations_pb2.CancelOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: operations_pb2.CancelOperationRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[operations_pb2.CancelOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for cancel_operation
 
         Override in a subclass to manipulate the request or metadata
@@ -385,7 +317,9 @@ class CompletionServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_cancel_operation(self, response: None) -> None:
+    def post_cancel_operation(
+        self, response: None
+    ) -> None:
         """Post-rpc interceptor for cancel_operation
 
         Override in a subclass to manipulate the response
@@ -395,12 +329,8 @@ class CompletionServiceRestInterceptor:
         return response
 
     def pre_get_operation(
-        self,
-        request: operations_pb2.GetOperationRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        operations_pb2.GetOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: operations_pb2.GetOperationRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[operations_pb2.GetOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_operation
 
         Override in a subclass to manipulate the request or metadata
@@ -420,12 +350,8 @@ class CompletionServiceRestInterceptor:
         return response
 
     def pre_list_operations(
-        self,
-        request: operations_pb2.ListOperationsRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        operations_pb2.ListOperationsRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: operations_pb2.ListOperationsRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[operations_pb2.ListOperationsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_operations
 
         Override in a subclass to manipulate the request or metadata
@@ -464,21 +390,20 @@ class CompletionServiceRestTransport(_BaseCompletionServiceRestTransport):
     It sends JSON representations of protocol buffers over HTTP/1.1
     """
 
-    def __init__(
-        self,
-        *,
-        host: str = "discoveryengine.googleapis.com",
-        credentials: Optional[ga_credentials.Credentials] = None,
-        credentials_file: Optional[str] = None,
-        scopes: Optional[Sequence[str]] = None,
-        client_cert_source_for_mtls: Optional[Callable[[], Tuple[bytes, bytes]]] = None,
-        quota_project_id: Optional[str] = None,
-        client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
-        always_use_jwt_access: Optional[bool] = False,
-        url_scheme: str = "https",
-        interceptor: Optional[CompletionServiceRestInterceptor] = None,
-        api_audience: Optional[str] = None,
-    ) -> None:
+    def __init__(self, *,
+            host: str = 'discoveryengine.googleapis.com',
+            credentials: Optional[ga_credentials.Credentials] = None,
+            credentials_file: Optional[str] = None,
+            scopes: Optional[Sequence[str]] = None,
+            client_cert_source_for_mtls: Optional[Callable[[
+                ], Tuple[bytes, bytes]]] = None,
+            quota_project_id: Optional[str] = None,
+            client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
+            always_use_jwt_access: Optional[bool] = False,
+            url_scheme: str = 'https',
+            interceptor: Optional[CompletionServiceRestInterceptor] = None,
+            api_audience: Optional[str] = None,
+            ) -> None:
         """Instantiate the transport.
 
         Args:
@@ -522,11 +447,10 @@ class CompletionServiceRestTransport(_BaseCompletionServiceRestTransport):
             client_info=client_info,
             always_use_jwt_access=always_use_jwt_access,
             url_scheme=url_scheme,
-            api_audience=api_audience,
+            api_audience=api_audience
         )
         self._session = AuthorizedSession(
-            self._credentials, default_host=self.DEFAULT_HOST
-        )
+            self._credentials, default_host=self.DEFAULT_HOST)
         self._operations_client: Optional[operations_v1.AbstractOperationsClient] = None
         if client_cert_source_for_mtls:
             self._session.configure_mtls_channel(client_cert_source_for_mtls)
@@ -543,182 +467,176 @@ class CompletionServiceRestTransport(_BaseCompletionServiceRestTransport):
         # Only create a new client if we do not already have one.
         if self._operations_client is None:
             http_options: Dict[str, List[Dict[str, str]]] = {
-                "google.longrunning.Operations.CancelOperation": [
+                'google.longrunning.Operations.CancelOperation': [
                     {
-                        "method": "post",
-                        "uri": "/v1/{name=projects/*/operations/*}:cancel",
-                        "body": "*",
+                        'method': 'post',
+                        'uri': '/v1/{name=projects/*/operations/*}:cancel',
+                        'body': '*',
                     },
                     {
-                        "method": "post",
-                        "uri": "/v1/{name=projects/*/locations/*/collections/*/dataStores/*/branches/*/operations/*}:cancel",
-                        "body": "*",
+                        'method': 'post',
+                        'uri': '/v1/{name=projects/*/locations/*/collections/*/dataStores/*/branches/*/operations/*}:cancel',
+                        'body': '*',
                     },
                     {
-                        "method": "post",
-                        "uri": "/v1/{name=projects/*/locations/*/collections/*/engines/*/operations/*}:cancel",
-                        "body": "*",
+                        'method': 'post',
+                        'uri': '/v1/{name=projects/*/locations/*/collections/*/engines/*/operations/*}:cancel',
+                        'body': '*',
                     },
                     {
-                        "method": "post",
-                        "uri": "/v1/{name=projects/*/locations/*/dataStores/*/branches/*/operations/*}:cancel",
-                        "body": "*",
-                    },
-                ],
-                "google.longrunning.Operations.GetOperation": [
-                    {
-                        "method": "get",
-                        "uri": "/v1/{name=projects/*/operations/*}",
-                    },
-                    {
-                        "method": "get",
-                        "uri": "/v1/{name=projects/*/locations/*/collections/*/dataConnector/operations/*}",
-                    },
-                    {
-                        "method": "get",
-                        "uri": "/v1/{name=projects/*/locations/*/collections/*/dataStores/*/branches/*/operations/*}",
-                    },
-                    {
-                        "method": "get",
-                        "uri": "/v1/{name=projects/*/locations/*/collections/*/dataStores/*/models/*/operations/*}",
-                    },
-                    {
-                        "method": "get",
-                        "uri": "/v1/{name=projects/*/locations/*/collections/*/dataStores/*/operations/*}",
-                    },
-                    {
-                        "method": "get",
-                        "uri": "/v1/{name=projects/*/locations/*/collections/*/dataStores/*/schemas/*/operations/*}",
-                    },
-                    {
-                        "method": "get",
-                        "uri": "/v1/{name=projects/*/locations/*/collections/*/dataStores/*/siteSearchEngine/operations/*}",
-                    },
-                    {
-                        "method": "get",
-                        "uri": "/v1/{name=projects/*/locations/*/collections/*/dataStores/*/siteSearchEngine/targetSites/operations/*}",
-                    },
-                    {
-                        "method": "get",
-                        "uri": "/v1/{name=projects/*/locations/*/collections/*/engines/*/operations/*}",
-                    },
-                    {
-                        "method": "get",
-                        "uri": "/v1/{name=projects/*/locations/*/collections/*/operations/*}",
-                    },
-                    {
-                        "method": "get",
-                        "uri": "/v1/{name=projects/*/locations/*/dataStores/*/branches/*/operations/*}",
-                    },
-                    {
-                        "method": "get",
-                        "uri": "/v1/{name=projects/*/locations/*/dataStores/*/models/*/operations/*}",
-                    },
-                    {
-                        "method": "get",
-                        "uri": "/v1/{name=projects/*/locations/*/dataStores/*/operations/*}",
-                    },
-                    {
-                        "method": "get",
-                        "uri": "/v1/{name=projects/*/locations/*/identityMappingStores/*/operations/*}",
-                    },
-                    {
-                        "method": "get",
-                        "uri": "/v1/{name=projects/*/locations/*/operations/*}",
-                    },
-                    {
-                        "method": "get",
-                        "uri": "/v1/{name=projects/*/operations/*}",
+                        'method': 'post',
+                        'uri': '/v1/{name=projects/*/locations/*/dataStores/*/branches/*/operations/*}:cancel',
+                        'body': '*',
                     },
                 ],
-                "google.longrunning.Operations.ListOperations": [
+                'google.longrunning.Operations.GetOperation': [
                     {
-                        "method": "get",
-                        "uri": "/v1/{name=projects/*}/operations",
+                        'method': 'get',
+                        'uri': '/v1/{name=projects/*/operations/*}',
                     },
                     {
-                        "method": "get",
-                        "uri": "/v1/{name=projects/*/locations/*/collections/*/dataConnector}/operations",
+                        'method': 'get',
+                        'uri': '/v1/{name=projects/*/locations/*/collections/*/dataConnector/operations/*}',
                     },
                     {
-                        "method": "get",
-                        "uri": "/v1/{name=projects/*/locations/*/collections/*/dataStores/*/branches/*}/operations",
+                        'method': 'get',
+                        'uri': '/v1/{name=projects/*/locations/*/collections/*/dataStores/*/branches/*/operations/*}',
                     },
                     {
-                        "method": "get",
-                        "uri": "/v1/{name=projects/*/locations/*/collections/*/dataStores/*/models/*}/operations",
+                        'method': 'get',
+                        'uri': '/v1/{name=projects/*/locations/*/collections/*/dataStores/*/models/*/operations/*}',
                     },
                     {
-                        "method": "get",
-                        "uri": "/v1/{name=projects/*/locations/*/collections/*/dataStores/*/schemas/*}/operations",
+                        'method': 'get',
+                        'uri': '/v1/{name=projects/*/locations/*/collections/*/dataStores/*/operations/*}',
                     },
                     {
-                        "method": "get",
-                        "uri": "/v1/{name=projects/*/locations/*/collections/*/dataStores/*/siteSearchEngine/targetSites}/operations",
+                        'method': 'get',
+                        'uri': '/v1/{name=projects/*/locations/*/collections/*/dataStores/*/schemas/*/operations/*}',
                     },
                     {
-                        "method": "get",
-                        "uri": "/v1/{name=projects/*/locations/*/collections/*/dataStores/*/siteSearchEngine}/operations",
+                        'method': 'get',
+                        'uri': '/v1/{name=projects/*/locations/*/collections/*/dataStores/*/siteSearchEngine/operations/*}',
                     },
                     {
-                        "method": "get",
-                        "uri": "/v1/{name=projects/*/locations/*/collections/*/dataStores/*}/operations",
+                        'method': 'get',
+                        'uri': '/v1/{name=projects/*/locations/*/collections/*/dataStores/*/siteSearchEngine/targetSites/operations/*}',
                     },
                     {
-                        "method": "get",
-                        "uri": "/v1/{name=projects/*/locations/*/collections/*/engines/*}/operations",
+                        'method': 'get',
+                        'uri': '/v1/{name=projects/*/locations/*/collections/*/engines/*/operations/*}',
                     },
                     {
-                        "method": "get",
-                        "uri": "/v1/{name=projects/*/locations/*/collections/*}/operations",
+                        'method': 'get',
+                        'uri': '/v1/{name=projects/*/locations/*/collections/*/operations/*}',
                     },
                     {
-                        "method": "get",
-                        "uri": "/v1/{name=projects/*/locations/*/dataStores/*/branches/*}/operations",
+                        'method': 'get',
+                        'uri': '/v1/{name=projects/*/locations/*/dataStores/*/branches/*/operations/*}',
                     },
                     {
-                        "method": "get",
-                        "uri": "/v1/{name=projects/*/locations/*/dataStores/*/models/*}/operations",
+                        'method': 'get',
+                        'uri': '/v1/{name=projects/*/locations/*/dataStores/*/models/*/operations/*}',
                     },
                     {
-                        "method": "get",
-                        "uri": "/v1/{name=projects/*/locations/*/dataStores/*}/operations",
+                        'method': 'get',
+                        'uri': '/v1/{name=projects/*/locations/*/dataStores/*/operations/*}',
                     },
                     {
-                        "method": "get",
-                        "uri": "/v1/{name=projects/*/locations/*/identityMappingStores/*}/operations",
+                        'method': 'get',
+                        'uri': '/v1/{name=projects/*/locations/*/identityMappingStores/*/operations/*}',
                     },
                     {
-                        "method": "get",
-                        "uri": "/v1/{name=projects/*/locations/*}/operations",
+                        'method': 'get',
+                        'uri': '/v1/{name=projects/*/locations/*/operations/*}',
                     },
                     {
-                        "method": "get",
-                        "uri": "/v1/{name=projects/*}/operations",
+                        'method': 'get',
+                        'uri': '/v1/{name=projects/*/operations/*}',
+                    },
+                ],
+                'google.longrunning.Operations.ListOperations': [
+                    {
+                        'method': 'get',
+                        'uri': '/v1/{name=projects/*}/operations',
+                    },
+                    {
+                        'method': 'get',
+                        'uri': '/v1/{name=projects/*/locations/*/collections/*/dataConnector}/operations',
+                    },
+                    {
+                        'method': 'get',
+                        'uri': '/v1/{name=projects/*/locations/*/collections/*/dataStores/*/branches/*}/operations',
+                    },
+                    {
+                        'method': 'get',
+                        'uri': '/v1/{name=projects/*/locations/*/collections/*/dataStores/*/models/*}/operations',
+                    },
+                    {
+                        'method': 'get',
+                        'uri': '/v1/{name=projects/*/locations/*/collections/*/dataStores/*/schemas/*}/operations',
+                    },
+                    {
+                        'method': 'get',
+                        'uri': '/v1/{name=projects/*/locations/*/collections/*/dataStores/*/siteSearchEngine/targetSites}/operations',
+                    },
+                    {
+                        'method': 'get',
+                        'uri': '/v1/{name=projects/*/locations/*/collections/*/dataStores/*/siteSearchEngine}/operations',
+                    },
+                    {
+                        'method': 'get',
+                        'uri': '/v1/{name=projects/*/locations/*/collections/*/dataStores/*}/operations',
+                    },
+                    {
+                        'method': 'get',
+                        'uri': '/v1/{name=projects/*/locations/*/collections/*/engines/*}/operations',
+                    },
+                    {
+                        'method': 'get',
+                        'uri': '/v1/{name=projects/*/locations/*/collections/*}/operations',
+                    },
+                    {
+                        'method': 'get',
+                        'uri': '/v1/{name=projects/*/locations/*/dataStores/*/branches/*}/operations',
+                    },
+                    {
+                        'method': 'get',
+                        'uri': '/v1/{name=projects/*/locations/*/dataStores/*/models/*}/operations',
+                    },
+                    {
+                        'method': 'get',
+                        'uri': '/v1/{name=projects/*/locations/*/dataStores/*}/operations',
+                    },
+                    {
+                        'method': 'get',
+                        'uri': '/v1/{name=projects/*/locations/*/identityMappingStores/*}/operations',
+                    },
+                    {
+                        'method': 'get',
+                        'uri': '/v1/{name=projects/*/locations/*}/operations',
+                    },
+                    {
+                        'method': 'get',
+                        'uri': '/v1/{name=projects/*}/operations',
                     },
                 ],
             }
 
             rest_transport = operations_v1.OperationsRestTransport(
-                host=self._host,
-                # use the credentials which are saved
-                credentials=self._credentials,
-                scopes=self._scopes,
-                http_options=http_options,
-                path_prefix="v1",
-            )
+                    host=self._host,
+                    # use the credentials which are saved
+                    credentials=self._credentials,
+                    scopes=self._scopes,
+                    http_options=http_options,
+                    path_prefix="v1")
 
-            self._operations_client = operations_v1.AbstractOperationsClient(
-                transport=rest_transport
-            )
+            self._operations_client = operations_v1.AbstractOperationsClient(transport=rest_transport)
 
         # Return the client from cache.
         return self._operations_client
 
-    class _CompleteQuery(
-        _BaseCompletionServiceRestTransport._BaseCompleteQuery,
-        CompletionServiceRestStub,
-    ):
+    class _CompleteQuery(_BaseCompletionServiceRestTransport._BaseCompleteQuery, CompletionServiceRestStub):
         def __hash__(self):
             return hash("CompletionServiceRestTransport.CompleteQuery")
 
@@ -730,28 +648,26 @@ class CompletionServiceRestTransport(_BaseCompletionServiceRestTransport):
             session,
             timeout,
             transcoded_request,
-            body=None,
-        ):
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+            body=None):
+
+            uri = transcoded_request['uri']
+            method = transcoded_request['method']
             headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
+            headers['Content-Type'] = 'application/json'
             response = getattr(session, method)(
                 "{host}{uri}".format(host=host, uri=uri),
                 timeout=timeout,
                 headers=headers,
                 params=rest_helpers.flatten_query_params(query_params, strict=True),
-            )
+                )
             return response
 
-        def __call__(
-            self,
-            request: completion_service.CompleteQueryRequest,
-            *,
-            retry: OptionalRetry = gapic_v1.method.DEFAULT,
-            timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
-        ) -> completion_service.CompleteQueryResponse:
+        def __call__(self,
+                request: completion_service.CompleteQueryRequest, *,
+                retry: OptionalRetry=gapic_v1.method.DEFAULT,
+                timeout: Optional[float]=None,
+                metadata: Sequence[Tuple[str, Union[str, bytes]]]=(),
+                ) -> completion_service.CompleteQueryResponse:
             r"""Call the complete query method over HTTP.
 
             Args:
@@ -775,40 +691,30 @@ class CompletionServiceRestTransport(_BaseCompletionServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseCompletionServiceRestTransport._BaseCompleteQuery._get_http_options()
-            )
+            http_options = _BaseCompletionServiceRestTransport._BaseCompleteQuery._get_http_options()
 
             request, metadata = self._interceptor.pre_complete_query(request, metadata)
-            transcoded_request = _BaseCompletionServiceRestTransport._BaseCompleteQuery._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseCompletionServiceRestTransport._BaseCompleteQuery._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseCompletionServiceRestTransport._BaseCompleteQuery._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseCompletionServiceRestTransport._BaseCompleteQuery._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
-                method = transcoded_request["method"]
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request['uri'])
+                method = transcoded_request['method']
                 try:
                     request_payload = type(request).to_json(request)
                 except:
                     request_payload = None
                 http_request = {
-                    "payload": request_payload,
-                    "requestMethod": method,
-                    "requestUrl": request_url,
-                    "headers": dict(metadata),
+                  "payload": request_payload,
+                  "requestMethod": method,
+                  "requestUrl": request_url,
+                  "headers": dict(metadata),
                 }
                 _LOGGER.debug(
                     f"Sending request for google.cloud.discoveryengine_v1.CompletionServiceClient.CompleteQuery",
-                    extra={
+                    extra = {
                         "serviceName": "google.cloud.discoveryengine.v1.CompletionService",
                         "rpcName": "CompleteQuery",
                         "httpRequest": http_request,
@@ -817,14 +723,7 @@ class CompletionServiceRestTransport(_BaseCompletionServiceRestTransport):
                 )
 
             # Send the request
-            response = CompletionServiceRestTransport._CompleteQuery._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-            )
+            response = CompletionServiceRestTransport._CompleteQuery._get_response(self._host, metadata, query_params, self._session, timeout, transcoded_request)
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
             # subclass.
@@ -839,26 +738,20 @@ class CompletionServiceRestTransport(_BaseCompletionServiceRestTransport):
 
             resp = self._interceptor.post_complete_query(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_complete_query_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_complete_query_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = completion_service.CompleteQueryResponse.to_json(
-                        response
-                    )
+                    response_payload = completion_service.CompleteQueryResponse.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
-                    "payload": response_payload,
-                    "headers": dict(response.headers),
-                    "status": response.status_code,
+                "payload": response_payload,
+                "headers":  dict(response.headers),
+                "status": response.status_code,
                 }
                 _LOGGER.debug(
                     "Received response for google.cloud.discoveryengine_v1.CompletionServiceClient.complete_query",
-                    extra={
+                    extra = {
                         "serviceName": "google.cloud.discoveryengine.v1.CompletionService",
                         "rpcName": "CompleteQuery",
                         "metadata": http_response["headers"],
@@ -867,10 +760,7 @@ class CompletionServiceRestTransport(_BaseCompletionServiceRestTransport):
                 )
             return resp
 
-    class _ImportCompletionSuggestions(
-        _BaseCompletionServiceRestTransport._BaseImportCompletionSuggestions,
-        CompletionServiceRestStub,
-    ):
+    class _ImportCompletionSuggestions(_BaseCompletionServiceRestTransport._BaseImportCompletionSuggestions, CompletionServiceRestStub):
         def __hash__(self):
             return hash("CompletionServiceRestTransport.ImportCompletionSuggestions")
 
@@ -882,93 +772,77 @@ class CompletionServiceRestTransport(_BaseCompletionServiceRestTransport):
             session,
             timeout,
             transcoded_request,
-            body=None,
-        ):
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+            body=None):
+
+            uri = transcoded_request['uri']
+            method = transcoded_request['method']
             headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
+            headers['Content-Type'] = 'application/json'
             response = getattr(session, method)(
                 "{host}{uri}".format(host=host, uri=uri),
                 timeout=timeout,
                 headers=headers,
                 params=rest_helpers.flatten_query_params(query_params, strict=True),
                 data=body,
-            )
+                )
             return response
 
-        def __call__(
-            self,
-            request: import_config.ImportCompletionSuggestionsRequest,
-            *,
-            retry: OptionalRetry = gapic_v1.method.DEFAULT,
-            timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
-        ) -> operations_pb2.Operation:
+        def __call__(self,
+                request: import_config.ImportCompletionSuggestionsRequest, *,
+                retry: OptionalRetry=gapic_v1.method.DEFAULT,
+                timeout: Optional[float]=None,
+                metadata: Sequence[Tuple[str, Union[str, bytes]]]=(),
+                ) -> operations_pb2.Operation:
             r"""Call the import completion
-            suggestions method over HTTP.
+        suggestions method over HTTP.
 
-                Args:
-                    request (~.import_config.ImportCompletionSuggestionsRequest):
-                        The request object. Request message for
-                    [CompletionService.ImportCompletionSuggestions][google.cloud.discoveryengine.v1.CompletionService.ImportCompletionSuggestions]
-                    method.
-                    retry (google.api_core.retry.Retry): Designation of what errors, if any,
-                        should be retried.
-                    timeout (float): The timeout for this request.
-                    metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
-                        sent along with the request as metadata. Normally, each value must be of type `str`,
-                        but for metadata keys ending with the suffix `-bin`, the corresponding values must
-                        be of type `bytes`.
+            Args:
+                request (~.import_config.ImportCompletionSuggestionsRequest):
+                    The request object. Request message for
+                [CompletionService.ImportCompletionSuggestions][google.cloud.discoveryengine.v1.CompletionService.ImportCompletionSuggestions]
+                method.
+                retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                    should be retried.
+                timeout (float): The timeout for this request.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
-                Returns:
-                    ~.operations_pb2.Operation:
-                        This resource represents a
-                    long-running operation that is the
-                    result of a network API call.
+            Returns:
+                ~.operations_pb2.Operation:
+                    This resource represents a
+                long-running operation that is the
+                result of a network API call.
 
             """
 
-            http_options = (
-                _BaseCompletionServiceRestTransport._BaseImportCompletionSuggestions._get_http_options()
-            )
+            http_options = _BaseCompletionServiceRestTransport._BaseImportCompletionSuggestions._get_http_options()
 
-            request, metadata = self._interceptor.pre_import_completion_suggestions(
-                request, metadata
-            )
-            transcoded_request = _BaseCompletionServiceRestTransport._BaseImportCompletionSuggestions._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_import_completion_suggestions(request, metadata)
+            transcoded_request = _BaseCompletionServiceRestTransport._BaseImportCompletionSuggestions._get_transcoded_request(http_options, request)
 
-            body = _BaseCompletionServiceRestTransport._BaseImportCompletionSuggestions._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseCompletionServiceRestTransport._BaseImportCompletionSuggestions._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseCompletionServiceRestTransport._BaseImportCompletionSuggestions._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseCompletionServiceRestTransport._BaseImportCompletionSuggestions._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
-                method = transcoded_request["method"]
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request['uri'])
+                method = transcoded_request['method']
                 try:
                     request_payload = json_format.MessageToJson(request)
                 except:
                     request_payload = None
                 http_request = {
-                    "payload": request_payload,
-                    "requestMethod": method,
-                    "requestUrl": request_url,
-                    "headers": dict(metadata),
+                  "payload": request_payload,
+                  "requestMethod": method,
+                  "requestUrl": request_url,
+                  "headers": dict(metadata),
                 }
                 _LOGGER.debug(
                     f"Sending request for google.cloud.discoveryengine_v1.CompletionServiceClient.ImportCompletionSuggestions",
-                    extra={
+                    extra = {
                         "serviceName": "google.cloud.discoveryengine.v1.CompletionService",
                         "rpcName": "ImportCompletionSuggestions",
                         "httpRequest": http_request,
@@ -977,15 +851,7 @@ class CompletionServiceRestTransport(_BaseCompletionServiceRestTransport):
                 )
 
             # Send the request
-            response = CompletionServiceRestTransport._ImportCompletionSuggestions._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
-            )
+            response = CompletionServiceRestTransport._ImportCompletionSuggestions._get_response(self._host, metadata, query_params, self._session, timeout, transcoded_request, body)
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
             # subclass.
@@ -998,27 +864,20 @@ class CompletionServiceRestTransport(_BaseCompletionServiceRestTransport):
 
             resp = self._interceptor.post_import_completion_suggestions(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            (
-                resp,
-                _,
-            ) = self._interceptor.post_import_completion_suggestions_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_import_completion_suggestions_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
                     response_payload = None
                 http_response = {
-                    "payload": response_payload,
-                    "headers": dict(response.headers),
-                    "status": response.status_code,
+                "payload": response_payload,
+                "headers":  dict(response.headers),
+                "status": response.status_code,
                 }
                 _LOGGER.debug(
                     "Received response for google.cloud.discoveryengine_v1.CompletionServiceClient.import_completion_suggestions",
-                    extra={
+                    extra = {
                         "serviceName": "google.cloud.discoveryengine.v1.CompletionService",
                         "rpcName": "ImportCompletionSuggestions",
                         "metadata": http_response["headers"],
@@ -1027,14 +886,9 @@ class CompletionServiceRestTransport(_BaseCompletionServiceRestTransport):
                 )
             return resp
 
-    class _ImportSuggestionDenyListEntries(
-        _BaseCompletionServiceRestTransport._BaseImportSuggestionDenyListEntries,
-        CompletionServiceRestStub,
-    ):
+    class _ImportSuggestionDenyListEntries(_BaseCompletionServiceRestTransport._BaseImportSuggestionDenyListEntries, CompletionServiceRestStub):
         def __hash__(self):
-            return hash(
-                "CompletionServiceRestTransport.ImportSuggestionDenyListEntries"
-            )
+            return hash("CompletionServiceRestTransport.ImportSuggestionDenyListEntries")
 
         @staticmethod
         def _get_response(
@@ -1044,96 +898,77 @@ class CompletionServiceRestTransport(_BaseCompletionServiceRestTransport):
             session,
             timeout,
             transcoded_request,
-            body=None,
-        ):
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+            body=None):
+
+            uri = transcoded_request['uri']
+            method = transcoded_request['method']
             headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
+            headers['Content-Type'] = 'application/json'
             response = getattr(session, method)(
                 "{host}{uri}".format(host=host, uri=uri),
                 timeout=timeout,
                 headers=headers,
                 params=rest_helpers.flatten_query_params(query_params, strict=True),
                 data=body,
-            )
+                )
             return response
 
-        def __call__(
-            self,
-            request: import_config.ImportSuggestionDenyListEntriesRequest,
-            *,
-            retry: OptionalRetry = gapic_v1.method.DEFAULT,
-            timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
-        ) -> operations_pb2.Operation:
+        def __call__(self,
+                request: import_config.ImportSuggestionDenyListEntriesRequest, *,
+                retry: OptionalRetry=gapic_v1.method.DEFAULT,
+                timeout: Optional[float]=None,
+                metadata: Sequence[Tuple[str, Union[str, bytes]]]=(),
+                ) -> operations_pb2.Operation:
             r"""Call the import suggestion deny
-            list entries method over HTTP.
+        list entries method over HTTP.
 
-                Args:
-                    request (~.import_config.ImportSuggestionDenyListEntriesRequest):
-                        The request object. Request message for
-                    [CompletionService.ImportSuggestionDenyListEntries][google.cloud.discoveryengine.v1.CompletionService.ImportSuggestionDenyListEntries]
-                    method.
-                    retry (google.api_core.retry.Retry): Designation of what errors, if any,
-                        should be retried.
-                    timeout (float): The timeout for this request.
-                    metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
-                        sent along with the request as metadata. Normally, each value must be of type `str`,
-                        but for metadata keys ending with the suffix `-bin`, the corresponding values must
-                        be of type `bytes`.
+            Args:
+                request (~.import_config.ImportSuggestionDenyListEntriesRequest):
+                    The request object. Request message for
+                [CompletionService.ImportSuggestionDenyListEntries][google.cloud.discoveryengine.v1.CompletionService.ImportSuggestionDenyListEntries]
+                method.
+                retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                    should be retried.
+                timeout (float): The timeout for this request.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
-                Returns:
-                    ~.operations_pb2.Operation:
-                        This resource represents a
-                    long-running operation that is the
-                    result of a network API call.
+            Returns:
+                ~.operations_pb2.Operation:
+                    This resource represents a
+                long-running operation that is the
+                result of a network API call.
 
             """
 
-            http_options = (
-                _BaseCompletionServiceRestTransport._BaseImportSuggestionDenyListEntries._get_http_options()
-            )
+            http_options = _BaseCompletionServiceRestTransport._BaseImportSuggestionDenyListEntries._get_http_options()
 
-            (
-                request,
-                metadata,
-            ) = self._interceptor.pre_import_suggestion_deny_list_entries(
-                request, metadata
-            )
-            transcoded_request = _BaseCompletionServiceRestTransport._BaseImportSuggestionDenyListEntries._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_import_suggestion_deny_list_entries(request, metadata)
+            transcoded_request = _BaseCompletionServiceRestTransport._BaseImportSuggestionDenyListEntries._get_transcoded_request(http_options, request)
 
-            body = _BaseCompletionServiceRestTransport._BaseImportSuggestionDenyListEntries._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseCompletionServiceRestTransport._BaseImportSuggestionDenyListEntries._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseCompletionServiceRestTransport._BaseImportSuggestionDenyListEntries._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseCompletionServiceRestTransport._BaseImportSuggestionDenyListEntries._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
-                method = transcoded_request["method"]
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request['uri'])
+                method = transcoded_request['method']
                 try:
                     request_payload = json_format.MessageToJson(request)
                 except:
                     request_payload = None
                 http_request = {
-                    "payload": request_payload,
-                    "requestMethod": method,
-                    "requestUrl": request_url,
-                    "headers": dict(metadata),
+                  "payload": request_payload,
+                  "requestMethod": method,
+                  "requestUrl": request_url,
+                  "headers": dict(metadata),
                 }
                 _LOGGER.debug(
                     f"Sending request for google.cloud.discoveryengine_v1.CompletionServiceClient.ImportSuggestionDenyListEntries",
-                    extra={
+                    extra = {
                         "serviceName": "google.cloud.discoveryengine.v1.CompletionService",
                         "rpcName": "ImportSuggestionDenyListEntries",
                         "httpRequest": http_request,
@@ -1142,15 +977,7 @@ class CompletionServiceRestTransport(_BaseCompletionServiceRestTransport):
                 )
 
             # Send the request
-            response = CompletionServiceRestTransport._ImportSuggestionDenyListEntries._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
-            )
+            response = CompletionServiceRestTransport._ImportSuggestionDenyListEntries._get_response(self._host, metadata, query_params, self._session, timeout, transcoded_request, body)
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
             # subclass.
@@ -1163,27 +990,20 @@ class CompletionServiceRestTransport(_BaseCompletionServiceRestTransport):
 
             resp = self._interceptor.post_import_suggestion_deny_list_entries(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            (
-                resp,
-                _,
-            ) = self._interceptor.post_import_suggestion_deny_list_entries_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_import_suggestion_deny_list_entries_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
                     response_payload = None
                 http_response = {
-                    "payload": response_payload,
-                    "headers": dict(response.headers),
-                    "status": response.status_code,
+                "payload": response_payload,
+                "headers":  dict(response.headers),
+                "status": response.status_code,
                 }
                 _LOGGER.debug(
                     "Received response for google.cloud.discoveryengine_v1.CompletionServiceClient.import_suggestion_deny_list_entries",
-                    extra={
+                    extra = {
                         "serviceName": "google.cloud.discoveryengine.v1.CompletionService",
                         "rpcName": "ImportSuggestionDenyListEntries",
                         "metadata": http_response["headers"],
@@ -1192,10 +1012,7 @@ class CompletionServiceRestTransport(_BaseCompletionServiceRestTransport):
                 )
             return resp
 
-    class _PurgeCompletionSuggestions(
-        _BaseCompletionServiceRestTransport._BasePurgeCompletionSuggestions,
-        CompletionServiceRestStub,
-    ):
+    class _PurgeCompletionSuggestions(_BaseCompletionServiceRestTransport._BasePurgeCompletionSuggestions, CompletionServiceRestStub):
         def __hash__(self):
             return hash("CompletionServiceRestTransport.PurgeCompletionSuggestions")
 
@@ -1207,93 +1024,77 @@ class CompletionServiceRestTransport(_BaseCompletionServiceRestTransport):
             session,
             timeout,
             transcoded_request,
-            body=None,
-        ):
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+            body=None):
+
+            uri = transcoded_request['uri']
+            method = transcoded_request['method']
             headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
+            headers['Content-Type'] = 'application/json'
             response = getattr(session, method)(
                 "{host}{uri}".format(host=host, uri=uri),
                 timeout=timeout,
                 headers=headers,
                 params=rest_helpers.flatten_query_params(query_params, strict=True),
                 data=body,
-            )
+                )
             return response
 
-        def __call__(
-            self,
-            request: purge_config.PurgeCompletionSuggestionsRequest,
-            *,
-            retry: OptionalRetry = gapic_v1.method.DEFAULT,
-            timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
-        ) -> operations_pb2.Operation:
+        def __call__(self,
+                request: purge_config.PurgeCompletionSuggestionsRequest, *,
+                retry: OptionalRetry=gapic_v1.method.DEFAULT,
+                timeout: Optional[float]=None,
+                metadata: Sequence[Tuple[str, Union[str, bytes]]]=(),
+                ) -> operations_pb2.Operation:
             r"""Call the purge completion
-            suggestions method over HTTP.
+        suggestions method over HTTP.
 
-                Args:
-                    request (~.purge_config.PurgeCompletionSuggestionsRequest):
-                        The request object. Request message for
-                    [CompletionService.PurgeCompletionSuggestions][google.cloud.discoveryengine.v1.CompletionService.PurgeCompletionSuggestions]
-                    method.
-                    retry (google.api_core.retry.Retry): Designation of what errors, if any,
-                        should be retried.
-                    timeout (float): The timeout for this request.
-                    metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
-                        sent along with the request as metadata. Normally, each value must be of type `str`,
-                        but for metadata keys ending with the suffix `-bin`, the corresponding values must
-                        be of type `bytes`.
+            Args:
+                request (~.purge_config.PurgeCompletionSuggestionsRequest):
+                    The request object. Request message for
+                [CompletionService.PurgeCompletionSuggestions][google.cloud.discoveryengine.v1.CompletionService.PurgeCompletionSuggestions]
+                method.
+                retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                    should be retried.
+                timeout (float): The timeout for this request.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
-                Returns:
-                    ~.operations_pb2.Operation:
-                        This resource represents a
-                    long-running operation that is the
-                    result of a network API call.
+            Returns:
+                ~.operations_pb2.Operation:
+                    This resource represents a
+                long-running operation that is the
+                result of a network API call.
 
             """
 
-            http_options = (
-                _BaseCompletionServiceRestTransport._BasePurgeCompletionSuggestions._get_http_options()
-            )
+            http_options = _BaseCompletionServiceRestTransport._BasePurgeCompletionSuggestions._get_http_options()
 
-            request, metadata = self._interceptor.pre_purge_completion_suggestions(
-                request, metadata
-            )
-            transcoded_request = _BaseCompletionServiceRestTransport._BasePurgeCompletionSuggestions._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_purge_completion_suggestions(request, metadata)
+            transcoded_request = _BaseCompletionServiceRestTransport._BasePurgeCompletionSuggestions._get_transcoded_request(http_options, request)
 
-            body = _BaseCompletionServiceRestTransport._BasePurgeCompletionSuggestions._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseCompletionServiceRestTransport._BasePurgeCompletionSuggestions._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseCompletionServiceRestTransport._BasePurgeCompletionSuggestions._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseCompletionServiceRestTransport._BasePurgeCompletionSuggestions._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
-                method = transcoded_request["method"]
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request['uri'])
+                method = transcoded_request['method']
                 try:
                     request_payload = json_format.MessageToJson(request)
                 except:
                     request_payload = None
                 http_request = {
-                    "payload": request_payload,
-                    "requestMethod": method,
-                    "requestUrl": request_url,
-                    "headers": dict(metadata),
+                  "payload": request_payload,
+                  "requestMethod": method,
+                  "requestUrl": request_url,
+                  "headers": dict(metadata),
                 }
                 _LOGGER.debug(
                     f"Sending request for google.cloud.discoveryengine_v1.CompletionServiceClient.PurgeCompletionSuggestions",
-                    extra={
+                    extra = {
                         "serviceName": "google.cloud.discoveryengine.v1.CompletionService",
                         "rpcName": "PurgeCompletionSuggestions",
                         "httpRequest": http_request,
@@ -1302,15 +1103,7 @@ class CompletionServiceRestTransport(_BaseCompletionServiceRestTransport):
                 )
 
             # Send the request
-            response = CompletionServiceRestTransport._PurgeCompletionSuggestions._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
-            )
+            response = CompletionServiceRestTransport._PurgeCompletionSuggestions._get_response(self._host, metadata, query_params, self._session, timeout, transcoded_request, body)
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
             # subclass.
@@ -1323,24 +1116,20 @@ class CompletionServiceRestTransport(_BaseCompletionServiceRestTransport):
 
             resp = self._interceptor.post_purge_completion_suggestions(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_purge_completion_suggestions_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_purge_completion_suggestions_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
                     response_payload = None
                 http_response = {
-                    "payload": response_payload,
-                    "headers": dict(response.headers),
-                    "status": response.status_code,
+                "payload": response_payload,
+                "headers":  dict(response.headers),
+                "status": response.status_code,
                 }
                 _LOGGER.debug(
                     "Received response for google.cloud.discoveryengine_v1.CompletionServiceClient.purge_completion_suggestions",
-                    extra={
+                    extra = {
                         "serviceName": "google.cloud.discoveryengine.v1.CompletionService",
                         "rpcName": "PurgeCompletionSuggestions",
                         "metadata": http_response["headers"],
@@ -1349,10 +1138,7 @@ class CompletionServiceRestTransport(_BaseCompletionServiceRestTransport):
                 )
             return resp
 
-    class _PurgeSuggestionDenyListEntries(
-        _BaseCompletionServiceRestTransport._BasePurgeSuggestionDenyListEntries,
-        CompletionServiceRestStub,
-    ):
+    class _PurgeSuggestionDenyListEntries(_BaseCompletionServiceRestTransport._BasePurgeSuggestionDenyListEntries, CompletionServiceRestStub):
         def __hash__(self):
             return hash("CompletionServiceRestTransport.PurgeSuggestionDenyListEntries")
 
@@ -1364,96 +1150,77 @@ class CompletionServiceRestTransport(_BaseCompletionServiceRestTransport):
             session,
             timeout,
             transcoded_request,
-            body=None,
-        ):
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+            body=None):
+
+            uri = transcoded_request['uri']
+            method = transcoded_request['method']
             headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
+            headers['Content-Type'] = 'application/json'
             response = getattr(session, method)(
                 "{host}{uri}".format(host=host, uri=uri),
                 timeout=timeout,
                 headers=headers,
                 params=rest_helpers.flatten_query_params(query_params, strict=True),
                 data=body,
-            )
+                )
             return response
 
-        def __call__(
-            self,
-            request: purge_config.PurgeSuggestionDenyListEntriesRequest,
-            *,
-            retry: OptionalRetry = gapic_v1.method.DEFAULT,
-            timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
-        ) -> operations_pb2.Operation:
+        def __call__(self,
+                request: purge_config.PurgeSuggestionDenyListEntriesRequest, *,
+                retry: OptionalRetry=gapic_v1.method.DEFAULT,
+                timeout: Optional[float]=None,
+                metadata: Sequence[Tuple[str, Union[str, bytes]]]=(),
+                ) -> operations_pb2.Operation:
             r"""Call the purge suggestion deny
-            list entries method over HTTP.
+        list entries method over HTTP.
 
-                Args:
-                    request (~.purge_config.PurgeSuggestionDenyListEntriesRequest):
-                        The request object. Request message for
-                    [CompletionService.PurgeSuggestionDenyListEntries][google.cloud.discoveryengine.v1.CompletionService.PurgeSuggestionDenyListEntries]
-                    method.
-                    retry (google.api_core.retry.Retry): Designation of what errors, if any,
-                        should be retried.
-                    timeout (float): The timeout for this request.
-                    metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
-                        sent along with the request as metadata. Normally, each value must be of type `str`,
-                        but for metadata keys ending with the suffix `-bin`, the corresponding values must
-                        be of type `bytes`.
+            Args:
+                request (~.purge_config.PurgeSuggestionDenyListEntriesRequest):
+                    The request object. Request message for
+                [CompletionService.PurgeSuggestionDenyListEntries][google.cloud.discoveryengine.v1.CompletionService.PurgeSuggestionDenyListEntries]
+                method.
+                retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                    should be retried.
+                timeout (float): The timeout for this request.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
-                Returns:
-                    ~.operations_pb2.Operation:
-                        This resource represents a
-                    long-running operation that is the
-                    result of a network API call.
+            Returns:
+                ~.operations_pb2.Operation:
+                    This resource represents a
+                long-running operation that is the
+                result of a network API call.
 
             """
 
-            http_options = (
-                _BaseCompletionServiceRestTransport._BasePurgeSuggestionDenyListEntries._get_http_options()
-            )
+            http_options = _BaseCompletionServiceRestTransport._BasePurgeSuggestionDenyListEntries._get_http_options()
 
-            (
-                request,
-                metadata,
-            ) = self._interceptor.pre_purge_suggestion_deny_list_entries(
-                request, metadata
-            )
-            transcoded_request = _BaseCompletionServiceRestTransport._BasePurgeSuggestionDenyListEntries._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_purge_suggestion_deny_list_entries(request, metadata)
+            transcoded_request = _BaseCompletionServiceRestTransport._BasePurgeSuggestionDenyListEntries._get_transcoded_request(http_options, request)
 
-            body = _BaseCompletionServiceRestTransport._BasePurgeSuggestionDenyListEntries._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseCompletionServiceRestTransport._BasePurgeSuggestionDenyListEntries._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseCompletionServiceRestTransport._BasePurgeSuggestionDenyListEntries._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseCompletionServiceRestTransport._BasePurgeSuggestionDenyListEntries._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
-                method = transcoded_request["method"]
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request['uri'])
+                method = transcoded_request['method']
                 try:
                     request_payload = json_format.MessageToJson(request)
                 except:
                     request_payload = None
                 http_request = {
-                    "payload": request_payload,
-                    "requestMethod": method,
-                    "requestUrl": request_url,
-                    "headers": dict(metadata),
+                  "payload": request_payload,
+                  "requestMethod": method,
+                  "requestUrl": request_url,
+                  "headers": dict(metadata),
                 }
                 _LOGGER.debug(
                     f"Sending request for google.cloud.discoveryengine_v1.CompletionServiceClient.PurgeSuggestionDenyListEntries",
-                    extra={
+                    extra = {
                         "serviceName": "google.cloud.discoveryengine.v1.CompletionService",
                         "rpcName": "PurgeSuggestionDenyListEntries",
                         "httpRequest": http_request,
@@ -1462,15 +1229,7 @@ class CompletionServiceRestTransport(_BaseCompletionServiceRestTransport):
                 )
 
             # Send the request
-            response = CompletionServiceRestTransport._PurgeSuggestionDenyListEntries._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
-            )
+            response = CompletionServiceRestTransport._PurgeSuggestionDenyListEntries._get_response(self._host, metadata, query_params, self._session, timeout, transcoded_request, body)
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
             # subclass.
@@ -1483,27 +1242,20 @@ class CompletionServiceRestTransport(_BaseCompletionServiceRestTransport):
 
             resp = self._interceptor.post_purge_suggestion_deny_list_entries(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            (
-                resp,
-                _,
-            ) = self._interceptor.post_purge_suggestion_deny_list_entries_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_purge_suggestion_deny_list_entries_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
                     response_payload = None
                 http_response = {
-                    "payload": response_payload,
-                    "headers": dict(response.headers),
-                    "status": response.status_code,
+                "payload": response_payload,
+                "headers":  dict(response.headers),
+                "status": response.status_code,
                 }
                 _LOGGER.debug(
                     "Received response for google.cloud.discoveryengine_v1.CompletionServiceClient.purge_suggestion_deny_list_entries",
-                    extra={
+                    extra = {
                         "serviceName": "google.cloud.discoveryengine.v1.CompletionService",
                         "rpcName": "PurgeSuggestionDenyListEntries",
                         "metadata": http_response["headers"],
@@ -1513,64 +1265,50 @@ class CompletionServiceRestTransport(_BaseCompletionServiceRestTransport):
             return resp
 
     @property
-    def complete_query(
-        self,
-    ) -> Callable[
-        [completion_service.CompleteQueryRequest],
-        completion_service.CompleteQueryResponse,
-    ]:
+    def complete_query(self) -> Callable[
+            [completion_service.CompleteQueryRequest],
+            completion_service.CompleteQueryResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return self._CompleteQuery(self._session, self._host, self._interceptor)  # type: ignore
+        return self._CompleteQuery(self._session, self._host, self._interceptor) # type: ignore
 
     @property
-    def import_completion_suggestions(
-        self,
-    ) -> Callable[
-        [import_config.ImportCompletionSuggestionsRequest], operations_pb2.Operation
-    ]:
+    def import_completion_suggestions(self) -> Callable[
+            [import_config.ImportCompletionSuggestionsRequest],
+            operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return self._ImportCompletionSuggestions(self._session, self._host, self._interceptor)  # type: ignore
+        return self._ImportCompletionSuggestions(self._session, self._host, self._interceptor) # type: ignore
 
     @property
-    def import_suggestion_deny_list_entries(
-        self,
-    ) -> Callable[
-        [import_config.ImportSuggestionDenyListEntriesRequest], operations_pb2.Operation
-    ]:
+    def import_suggestion_deny_list_entries(self) -> Callable[
+            [import_config.ImportSuggestionDenyListEntriesRequest],
+            operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return self._ImportSuggestionDenyListEntries(self._session, self._host, self._interceptor)  # type: ignore
+        return self._ImportSuggestionDenyListEntries(self._session, self._host, self._interceptor) # type: ignore
 
     @property
-    def purge_completion_suggestions(
-        self,
-    ) -> Callable[
-        [purge_config.PurgeCompletionSuggestionsRequest], operations_pb2.Operation
-    ]:
+    def purge_completion_suggestions(self) -> Callable[
+            [purge_config.PurgeCompletionSuggestionsRequest],
+            operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return self._PurgeCompletionSuggestions(self._session, self._host, self._interceptor)  # type: ignore
+        return self._PurgeCompletionSuggestions(self._session, self._host, self._interceptor) # type: ignore
 
     @property
-    def purge_suggestion_deny_list_entries(
-        self,
-    ) -> Callable[
-        [purge_config.PurgeSuggestionDenyListEntriesRequest], operations_pb2.Operation
-    ]:
+    def purge_suggestion_deny_list_entries(self) -> Callable[
+            [purge_config.PurgeSuggestionDenyListEntriesRequest],
+            operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return self._PurgeSuggestionDenyListEntries(self._session, self._host, self._interceptor)  # type: ignore
+        return self._PurgeSuggestionDenyListEntries(self._session, self._host, self._interceptor) # type: ignore
 
     @property
     def cancel_operation(self):
-        return self._CancelOperation(self._session, self._host, self._interceptor)  # type: ignore
+        return self._CancelOperation(self._session, self._host, self._interceptor) # type: ignore
 
-    class _CancelOperation(
-        _BaseCompletionServiceRestTransport._BaseCancelOperation,
-        CompletionServiceRestStub,
-    ):
+    class _CancelOperation(_BaseCompletionServiceRestTransport._BaseCancelOperation, CompletionServiceRestStub):
         def __hash__(self):
             return hash("CompletionServiceRestTransport.CancelOperation")
 
@@ -1582,29 +1320,28 @@ class CompletionServiceRestTransport(_BaseCompletionServiceRestTransport):
             session,
             timeout,
             transcoded_request,
-            body=None,
-        ):
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+            body=None):
+
+            uri = transcoded_request['uri']
+            method = transcoded_request['method']
             headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
+            headers['Content-Type'] = 'application/json'
             response = getattr(session, method)(
                 "{host}{uri}".format(host=host, uri=uri),
                 timeout=timeout,
                 headers=headers,
                 params=rest_helpers.flatten_query_params(query_params, strict=True),
                 data=body,
-            )
+                )
             return response
 
-        def __call__(
-            self,
-            request: operations_pb2.CancelOperationRequest,
-            *,
-            retry: OptionalRetry = gapic_v1.method.DEFAULT,
-            timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
-        ) -> None:
+        def __call__(self,
+            request: operations_pb2.CancelOperationRequest, *,
+            retry: OptionalRetry=gapic_v1.method.DEFAULT,
+            timeout: Optional[float]=None,
+            metadata: Sequence[Tuple[str, Union[str, bytes]]]=(),
+            ) -> None:
+
             r"""Call the cancel operation method over HTTP.
 
             Args:
@@ -1619,46 +1356,32 @@ class CompletionServiceRestTransport(_BaseCompletionServiceRestTransport):
                     be of type `bytes`.
             """
 
-            http_options = (
-                _BaseCompletionServiceRestTransport._BaseCancelOperation._get_http_options()
-            )
+            http_options = _BaseCompletionServiceRestTransport._BaseCancelOperation._get_http_options()
 
-            request, metadata = self._interceptor.pre_cancel_operation(
-                request, metadata
-            )
-            transcoded_request = _BaseCompletionServiceRestTransport._BaseCancelOperation._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_cancel_operation(request, metadata)
+            transcoded_request = _BaseCompletionServiceRestTransport._BaseCancelOperation._get_transcoded_request(http_options, request)
 
-            body = _BaseCompletionServiceRestTransport._BaseCancelOperation._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseCompletionServiceRestTransport._BaseCancelOperation._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseCompletionServiceRestTransport._BaseCancelOperation._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseCompletionServiceRestTransport._BaseCancelOperation._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
-                method = transcoded_request["method"]
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request['uri'])
+                method = transcoded_request['method']
                 try:
                     request_payload = json_format.MessageToJson(request)
                 except:
                     request_payload = None
                 http_request = {
-                    "payload": request_payload,
-                    "requestMethod": method,
-                    "requestUrl": request_url,
-                    "headers": dict(metadata),
+                  "payload": request_payload,
+                  "requestMethod": method,
+                  "requestUrl": request_url,
+                  "headers": dict(metadata),
                 }
                 _LOGGER.debug(
                     f"Sending request for google.cloud.discoveryengine_v1.CompletionServiceClient.CancelOperation",
-                    extra={
+                    extra = {
                         "serviceName": "google.cloud.discoveryengine.v1.CompletionService",
                         "rpcName": "CancelOperation",
                         "httpRequest": http_request,
@@ -1667,15 +1390,7 @@ class CompletionServiceRestTransport(_BaseCompletionServiceRestTransport):
                 )
 
             # Send the request
-            response = CompletionServiceRestTransport._CancelOperation._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
-            )
+            response = CompletionServiceRestTransport._CancelOperation._get_response(self._host, metadata, query_params, self._session, timeout, transcoded_request, body)
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
             # subclass.
@@ -1686,11 +1401,9 @@ class CompletionServiceRestTransport(_BaseCompletionServiceRestTransport):
 
     @property
     def get_operation(self):
-        return self._GetOperation(self._session, self._host, self._interceptor)  # type: ignore
+        return self._GetOperation(self._session, self._host, self._interceptor) # type: ignore
 
-    class _GetOperation(
-        _BaseCompletionServiceRestTransport._BaseGetOperation, CompletionServiceRestStub
-    ):
+    class _GetOperation(_BaseCompletionServiceRestTransport._BaseGetOperation, CompletionServiceRestStub):
         def __hash__(self):
             return hash("CompletionServiceRestTransport.GetOperation")
 
@@ -1702,28 +1415,27 @@ class CompletionServiceRestTransport(_BaseCompletionServiceRestTransport):
             session,
             timeout,
             transcoded_request,
-            body=None,
-        ):
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+            body=None):
+
+            uri = transcoded_request['uri']
+            method = transcoded_request['method']
             headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
+            headers['Content-Type'] = 'application/json'
             response = getattr(session, method)(
                 "{host}{uri}".format(host=host, uri=uri),
                 timeout=timeout,
                 headers=headers,
                 params=rest_helpers.flatten_query_params(query_params, strict=True),
-            )
+                )
             return response
 
-        def __call__(
-            self,
-            request: operations_pb2.GetOperationRequest,
-            *,
-            retry: OptionalRetry = gapic_v1.method.DEFAULT,
-            timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
-        ) -> operations_pb2.Operation:
+        def __call__(self,
+            request: operations_pb2.GetOperationRequest, *,
+            retry: OptionalRetry=gapic_v1.method.DEFAULT,
+            timeout: Optional[float]=None,
+            metadata: Sequence[Tuple[str, Union[str, bytes]]]=(),
+            ) -> operations_pb2.Operation:
+
             r"""Call the get operation method over HTTP.
 
             Args:
@@ -1741,40 +1453,30 @@ class CompletionServiceRestTransport(_BaseCompletionServiceRestTransport):
                 operations_pb2.Operation: Response from GetOperation method.
             """
 
-            http_options = (
-                _BaseCompletionServiceRestTransport._BaseGetOperation._get_http_options()
-            )
+            http_options = _BaseCompletionServiceRestTransport._BaseGetOperation._get_http_options()
 
             request, metadata = self._interceptor.pre_get_operation(request, metadata)
-            transcoded_request = _BaseCompletionServiceRestTransport._BaseGetOperation._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseCompletionServiceRestTransport._BaseGetOperation._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseCompletionServiceRestTransport._BaseGetOperation._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseCompletionServiceRestTransport._BaseGetOperation._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
-                method = transcoded_request["method"]
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request['uri'])
+                method = transcoded_request['method']
                 try:
                     request_payload = json_format.MessageToJson(request)
                 except:
                     request_payload = None
                 http_request = {
-                    "payload": request_payload,
-                    "requestMethod": method,
-                    "requestUrl": request_url,
-                    "headers": dict(metadata),
+                  "payload": request_payload,
+                  "requestMethod": method,
+                  "requestUrl": request_url,
+                  "headers": dict(metadata),
                 }
                 _LOGGER.debug(
                     f"Sending request for google.cloud.discoveryengine_v1.CompletionServiceClient.GetOperation",
-                    extra={
+                    extra = {
                         "serviceName": "google.cloud.discoveryengine.v1.CompletionService",
                         "rpcName": "GetOperation",
                         "httpRequest": http_request,
@@ -1783,14 +1485,7 @@ class CompletionServiceRestTransport(_BaseCompletionServiceRestTransport):
                 )
 
             # Send the request
-            response = CompletionServiceRestTransport._GetOperation._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-            )
+            response = CompletionServiceRestTransport._GetOperation._get_response(self._host, metadata, query_params, self._session, timeout, transcoded_request)
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
             # subclass.
@@ -1801,21 +1496,19 @@ class CompletionServiceRestTransport(_BaseCompletionServiceRestTransport):
             resp = operations_pb2.Operation()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_get_operation(resp)
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
-                    "headers": dict(response.headers),
+                    "headers":  dict(response.headers),
                     "status": response.status_code,
                 }
                 _LOGGER.debug(
                     "Received response for google.cloud.discoveryengine_v1.CompletionServiceAsyncClient.GetOperation",
-                    extra={
+                    extra = {
                         "serviceName": "google.cloud.discoveryengine.v1.CompletionService",
                         "rpcName": "GetOperation",
                         "httpResponse": http_response,
@@ -1826,12 +1519,9 @@ class CompletionServiceRestTransport(_BaseCompletionServiceRestTransport):
 
     @property
     def list_operations(self):
-        return self._ListOperations(self._session, self._host, self._interceptor)  # type: ignore
+        return self._ListOperations(self._session, self._host, self._interceptor) # type: ignore
 
-    class _ListOperations(
-        _BaseCompletionServiceRestTransport._BaseListOperations,
-        CompletionServiceRestStub,
-    ):
+    class _ListOperations(_BaseCompletionServiceRestTransport._BaseListOperations, CompletionServiceRestStub):
         def __hash__(self):
             return hash("CompletionServiceRestTransport.ListOperations")
 
@@ -1843,28 +1533,27 @@ class CompletionServiceRestTransport(_BaseCompletionServiceRestTransport):
             session,
             timeout,
             transcoded_request,
-            body=None,
-        ):
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+            body=None):
+
+            uri = transcoded_request['uri']
+            method = transcoded_request['method']
             headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
+            headers['Content-Type'] = 'application/json'
             response = getattr(session, method)(
                 "{host}{uri}".format(host=host, uri=uri),
                 timeout=timeout,
                 headers=headers,
                 params=rest_helpers.flatten_query_params(query_params, strict=True),
-            )
+                )
             return response
 
-        def __call__(
-            self,
-            request: operations_pb2.ListOperationsRequest,
-            *,
-            retry: OptionalRetry = gapic_v1.method.DEFAULT,
-            timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
-        ) -> operations_pb2.ListOperationsResponse:
+        def __call__(self,
+            request: operations_pb2.ListOperationsRequest, *,
+            retry: OptionalRetry=gapic_v1.method.DEFAULT,
+            timeout: Optional[float]=None,
+            metadata: Sequence[Tuple[str, Union[str, bytes]]]=(),
+            ) -> operations_pb2.ListOperationsResponse:
+
             r"""Call the list operations method over HTTP.
 
             Args:
@@ -1882,40 +1571,30 @@ class CompletionServiceRestTransport(_BaseCompletionServiceRestTransport):
                 operations_pb2.ListOperationsResponse: Response from ListOperations method.
             """
 
-            http_options = (
-                _BaseCompletionServiceRestTransport._BaseListOperations._get_http_options()
-            )
+            http_options = _BaseCompletionServiceRestTransport._BaseListOperations._get_http_options()
 
             request, metadata = self._interceptor.pre_list_operations(request, metadata)
-            transcoded_request = _BaseCompletionServiceRestTransport._BaseListOperations._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseCompletionServiceRestTransport._BaseListOperations._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseCompletionServiceRestTransport._BaseListOperations._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseCompletionServiceRestTransport._BaseListOperations._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
-                method = transcoded_request["method"]
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request['uri'])
+                method = transcoded_request['method']
                 try:
                     request_payload = json_format.MessageToJson(request)
                 except:
                     request_payload = None
                 http_request = {
-                    "payload": request_payload,
-                    "requestMethod": method,
-                    "requestUrl": request_url,
-                    "headers": dict(metadata),
+                  "payload": request_payload,
+                  "requestMethod": method,
+                  "requestUrl": request_url,
+                  "headers": dict(metadata),
                 }
                 _LOGGER.debug(
                     f"Sending request for google.cloud.discoveryengine_v1.CompletionServiceClient.ListOperations",
-                    extra={
+                    extra = {
                         "serviceName": "google.cloud.discoveryengine.v1.CompletionService",
                         "rpcName": "ListOperations",
                         "httpRequest": http_request,
@@ -1924,14 +1603,7 @@ class CompletionServiceRestTransport(_BaseCompletionServiceRestTransport):
                 )
 
             # Send the request
-            response = CompletionServiceRestTransport._ListOperations._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-            )
+            response = CompletionServiceRestTransport._ListOperations._get_response(self._host, metadata, query_params, self._session, timeout, transcoded_request)
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
             # subclass.
@@ -1942,21 +1614,19 @@ class CompletionServiceRestTransport(_BaseCompletionServiceRestTransport):
             resp = operations_pb2.ListOperationsResponse()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_list_operations(resp)
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
-                    "headers": dict(response.headers),
+                    "headers":  dict(response.headers),
                     "status": response.status_code,
                 }
                 _LOGGER.debug(
                     "Received response for google.cloud.discoveryengine_v1.CompletionServiceAsyncClient.ListOperations",
-                    extra={
+                    extra = {
                         "serviceName": "google.cloud.discoveryengine.v1.CompletionService",
                         "rpcName": "ListOperations",
                         "httpResponse": http_response,
@@ -1973,4 +1643,6 @@ class CompletionServiceRestTransport(_BaseCompletionServiceRestTransport):
         self._session.close()
 
 
-__all__ = ("CompletionServiceRestTransport",)
+__all__=(
+    'CompletionServiceRestTransport',
+)

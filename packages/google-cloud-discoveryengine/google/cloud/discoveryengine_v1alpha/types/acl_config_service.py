@@ -21,11 +21,12 @@ import proto  # type: ignore
 
 from google.cloud.discoveryengine_v1alpha.types import acl_config as gcd_acl_config
 
+
 __protobuf__ = proto.module(
-    package="google.cloud.discoveryengine.v1alpha",
+    package='google.cloud.discoveryengine.v1alpha',
     manifest={
-        "GetAclConfigRequest",
-        "UpdateAclConfigRequest",
+        'GetAclConfigRequest',
+        'UpdateAclConfigRequest',
     },
 )
 

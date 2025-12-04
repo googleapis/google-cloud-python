@@ -19,33 +19,21 @@ import json
 import logging as std_logging
 import os
 import re
-from typing import (
-    Callable,
-    Dict,
-    Mapping,
-    MutableMapping,
-    MutableSequence,
-    Optional,
-    Sequence,
-    Tuple,
-    Type,
-    Union,
-    cast,
-)
+from typing import Dict, Callable, Mapping, MutableMapping, MutableSequence, Optional, Sequence, Tuple, Type, Union, cast
 import warnings
+
+from google.cloud.discoveryengine_v1beta import gapic_version as package_version
 
 from google.api_core import client_options as client_options_lib
 from google.api_core import exceptions as core_exceptions
 from google.api_core import gapic_v1
 from google.api_core import retry as retries
-from google.auth import credentials as ga_credentials  # type: ignore
-from google.auth.exceptions import MutualTLSChannelError  # type: ignore
-from google.auth.transport import mtls  # type: ignore
-from google.auth.transport.grpc import SslCredentials  # type: ignore
-from google.oauth2 import service_account  # type: ignore
+from google.auth import credentials as ga_credentials             # type: ignore
+from google.auth.transport import mtls                            # type: ignore
+from google.auth.transport.grpc import SslCredentials             # type: ignore
+from google.auth.exceptions import MutualTLSChannelError          # type: ignore
+from google.oauth2 import service_account                         # type: ignore
 import google.protobuf
-
-from google.cloud.discoveryengine_v1beta import gapic_version as package_version
 
 try:
     OptionalRetry = Union[retries.Retry, gapic_v1.method._MethodDefault, None]
@@ -54,27 +42,23 @@ except AttributeError:  # pragma: NO COVER
 
 try:
     from google.api_core import client_logging  # type: ignore
-
     CLIENT_LOGGING_SUPPORTED = True  # pragma: NO COVER
 except ImportError:  # pragma: NO COVER
     CLIENT_LOGGING_SUPPORTED = False
 
 _LOGGER = std_logging.getLogger(__name__)
 
-from google.cloud.location import locations_pb2  # type: ignore
-from google.longrunning import operations_pb2  # type: ignore
+from google.cloud.discoveryengine_v1beta.services.serving_config_service import pagers
+from google.cloud.discoveryengine_v1beta.types import common
+from google.cloud.discoveryengine_v1beta.types import search_service
+from google.cloud.discoveryengine_v1beta.types import serving_config
+from google.cloud.discoveryengine_v1beta.types import serving_config as gcd_serving_config
+from google.cloud.discoveryengine_v1beta.types import serving_config_service
+from google.cloud.location import locations_pb2 # type: ignore
+from google.longrunning import operations_pb2 # type: ignore
 from google.protobuf import field_mask_pb2  # type: ignore
 from google.protobuf import timestamp_pb2  # type: ignore
-
-from google.cloud.discoveryengine_v1beta.services.serving_config_service import pagers
-from google.cloud.discoveryengine_v1beta.types import (
-    serving_config as gcd_serving_config,
-)
-from google.cloud.discoveryengine_v1beta.types import common, search_service
-from google.cloud.discoveryengine_v1beta.types import serving_config
-from google.cloud.discoveryengine_v1beta.types import serving_config_service
-
-from .transports.base import DEFAULT_CLIENT_INFO, ServingConfigServiceTransport
+from .transports.base import ServingConfigServiceTransport, DEFAULT_CLIENT_INFO
 from .transports.grpc import ServingConfigServiceGrpcTransport
 from .transports.grpc_asyncio import ServingConfigServiceGrpcAsyncIOTransport
 from .transports.rest import ServingConfigServiceRestTransport
@@ -87,18 +71,14 @@ class ServingConfigServiceClientMeta(type):
     support objects (e.g. transport) without polluting the client instance
     objects.
     """
-
-    _transport_registry = (
-        OrderedDict()
-    )  # type: Dict[str, Type[ServingConfigServiceTransport]]
+    _transport_registry = OrderedDict()  # type: Dict[str, Type[ServingConfigServiceTransport]]
     _transport_registry["grpc"] = ServingConfigServiceGrpcTransport
     _transport_registry["grpc_asyncio"] = ServingConfigServiceGrpcAsyncIOTransport
     _transport_registry["rest"] = ServingConfigServiceRestTransport
 
-    def get_transport_class(
-        cls,
-        label: Optional[str] = None,
-    ) -> Type[ServingConfigServiceTransport]:
+    def get_transport_class(cls,
+            label: Optional[str] = None,
+        ) -> Type[ServingConfigServiceTransport]:
         """Returns an appropriate transport class.
 
         Args:
@@ -192,7 +172,8 @@ class ServingConfigServiceClient(metaclass=ServingConfigServiceClientMeta):
         Returns:
             ServingConfigServiceClient: The constructed client.
         """
-        credentials = service_account.Credentials.from_service_account_file(filename)
+        credentials = service_account.Credentials.from_service_account_file(
+            filename)
         kwargs["credentials"] = credentials
         return cls(*args, **kwargs)
 
@@ -209,110 +190,73 @@ class ServingConfigServiceClient(metaclass=ServingConfigServiceClientMeta):
         return self._transport
 
     @staticmethod
-    def serving_config_path(
-        project: str,
-        location: str,
-        data_store: str,
-        serving_config: str,
-    ) -> str:
+    def serving_config_path(project: str,location: str,data_store: str,serving_config: str,) -> str:
         """Returns a fully-qualified serving_config string."""
-        return "projects/{project}/locations/{location}/dataStores/{data_store}/servingConfigs/{serving_config}".format(
-            project=project,
-            location=location,
-            data_store=data_store,
-            serving_config=serving_config,
-        )
+        return "projects/{project}/locations/{location}/dataStores/{data_store}/servingConfigs/{serving_config}".format(project=project, location=location, data_store=data_store, serving_config=serving_config, )
 
     @staticmethod
-    def parse_serving_config_path(path: str) -> Dict[str, str]:
+    def parse_serving_config_path(path: str) -> Dict[str,str]:
         """Parses a serving_config path into its component segments."""
-        m = re.match(
-            r"^projects/(?P<project>.+?)/locations/(?P<location>.+?)/dataStores/(?P<data_store>.+?)/servingConfigs/(?P<serving_config>.+?)$",
-            path,
-        )
+        m = re.match(r"^projects/(?P<project>.+?)/locations/(?P<location>.+?)/dataStores/(?P<data_store>.+?)/servingConfigs/(?P<serving_config>.+?)$", path)
         return m.groupdict() if m else {}
 
     @staticmethod
-    def common_billing_account_path(
-        billing_account: str,
-    ) -> str:
+    def common_billing_account_path(billing_account: str, ) -> str:
         """Returns a fully-qualified billing_account string."""
-        return "billingAccounts/{billing_account}".format(
-            billing_account=billing_account,
-        )
+        return "billingAccounts/{billing_account}".format(billing_account=billing_account, )
 
     @staticmethod
-    def parse_common_billing_account_path(path: str) -> Dict[str, str]:
+    def parse_common_billing_account_path(path: str) -> Dict[str,str]:
         """Parse a billing_account path into its component segments."""
         m = re.match(r"^billingAccounts/(?P<billing_account>.+?)$", path)
         return m.groupdict() if m else {}
 
     @staticmethod
-    def common_folder_path(
-        folder: str,
-    ) -> str:
+    def common_folder_path(folder: str, ) -> str:
         """Returns a fully-qualified folder string."""
-        return "folders/{folder}".format(
-            folder=folder,
-        )
+        return "folders/{folder}".format(folder=folder, )
 
     @staticmethod
-    def parse_common_folder_path(path: str) -> Dict[str, str]:
+    def parse_common_folder_path(path: str) -> Dict[str,str]:
         """Parse a folder path into its component segments."""
         m = re.match(r"^folders/(?P<folder>.+?)$", path)
         return m.groupdict() if m else {}
 
     @staticmethod
-    def common_organization_path(
-        organization: str,
-    ) -> str:
+    def common_organization_path(organization: str, ) -> str:
         """Returns a fully-qualified organization string."""
-        return "organizations/{organization}".format(
-            organization=organization,
-        )
+        return "organizations/{organization}".format(organization=organization, )
 
     @staticmethod
-    def parse_common_organization_path(path: str) -> Dict[str, str]:
+    def parse_common_organization_path(path: str) -> Dict[str,str]:
         """Parse a organization path into its component segments."""
         m = re.match(r"^organizations/(?P<organization>.+?)$", path)
         return m.groupdict() if m else {}
 
     @staticmethod
-    def common_project_path(
-        project: str,
-    ) -> str:
+    def common_project_path(project: str, ) -> str:
         """Returns a fully-qualified project string."""
-        return "projects/{project}".format(
-            project=project,
-        )
+        return "projects/{project}".format(project=project, )
 
     @staticmethod
-    def parse_common_project_path(path: str) -> Dict[str, str]:
+    def parse_common_project_path(path: str) -> Dict[str,str]:
         """Parse a project path into its component segments."""
         m = re.match(r"^projects/(?P<project>.+?)$", path)
         return m.groupdict() if m else {}
 
     @staticmethod
-    def common_location_path(
-        project: str,
-        location: str,
-    ) -> str:
+    def common_location_path(project: str, location: str, ) -> str:
         """Returns a fully-qualified location string."""
-        return "projects/{project}/locations/{location}".format(
-            project=project,
-            location=location,
-        )
+        return "projects/{project}/locations/{location}".format(project=project, location=location, )
 
     @staticmethod
-    def parse_common_location_path(path: str) -> Dict[str, str]:
+    def parse_common_location_path(path: str) -> Dict[str,str]:
         """Parse a location path into its component segments."""
         m = re.match(r"^projects/(?P<project>.+?)/locations/(?P<location>.+?)$", path)
         return m.groupdict() if m else {}
 
     @classmethod
-    def get_mtls_endpoint_and_cert_source(
-        cls, client_options: Optional[client_options_lib.ClientOptions] = None
-    ):
+    def get_mtls_endpoint_and_cert_source(cls, client_options: Optional[client_options_lib.ClientOptions] = None):
         """Deprecated. Return the API endpoint and client cert source for mutual TLS.
 
         The client cert source is determined in the following order:
@@ -344,22 +288,16 @@ class ServingConfigServiceClient(metaclass=ServingConfigServiceClientMeta):
             google.auth.exceptions.MutualTLSChannelError: If any errors happen.
         """
 
-        warnings.warn(
-            "get_mtls_endpoint_and_cert_source is deprecated. Use the api_endpoint property instead.",
-            DeprecationWarning,
-        )
+        warnings.warn("get_mtls_endpoint_and_cert_source is deprecated. Use the api_endpoint property instead.",
+            DeprecationWarning)
         if client_options is None:
             client_options = client_options_lib.ClientOptions()
         use_client_cert = os.getenv("GOOGLE_API_USE_CLIENT_CERTIFICATE", "false")
         use_mtls_endpoint = os.getenv("GOOGLE_API_USE_MTLS_ENDPOINT", "auto")
         if use_client_cert not in ("true", "false"):
-            raise ValueError(
-                "Environment variable `GOOGLE_API_USE_CLIENT_CERTIFICATE` must be either `true` or `false`"
-            )
+            raise ValueError("Environment variable `GOOGLE_API_USE_CLIENT_CERTIFICATE` must be either `true` or `false`")
         if use_mtls_endpoint not in ("auto", "never", "always"):
-            raise MutualTLSChannelError(
-                "Environment variable `GOOGLE_API_USE_MTLS_ENDPOINT` must be `never`, `auto` or `always`"
-            )
+            raise MutualTLSChannelError("Environment variable `GOOGLE_API_USE_MTLS_ENDPOINT` must be `never`, `auto` or `always`")
 
         # Figure out the client cert source to use.
         client_cert_source = None
@@ -372,9 +310,7 @@ class ServingConfigServiceClient(metaclass=ServingConfigServiceClientMeta):
         # Figure out which api endpoint to use.
         if client_options.api_endpoint is not None:
             api_endpoint = client_options.api_endpoint
-        elif use_mtls_endpoint == "always" or (
-            use_mtls_endpoint == "auto" and client_cert_source
-        ):
+        elif use_mtls_endpoint == "always" or (use_mtls_endpoint == "auto" and client_cert_source):
             api_endpoint = cls.DEFAULT_MTLS_ENDPOINT
         else:
             api_endpoint = cls.DEFAULT_ENDPOINT
@@ -395,19 +331,13 @@ class ServingConfigServiceClient(metaclass=ServingConfigServiceClientMeta):
             google.auth.exceptions.MutualTLSChannelError: If GOOGLE_API_USE_MTLS_ENDPOINT
                 is not any of ["auto", "never", "always"].
         """
-        use_client_cert = os.getenv(
-            "GOOGLE_API_USE_CLIENT_CERTIFICATE", "false"
-        ).lower()
+        use_client_cert = os.getenv("GOOGLE_API_USE_CLIENT_CERTIFICATE", "false").lower()
         use_mtls_endpoint = os.getenv("GOOGLE_API_USE_MTLS_ENDPOINT", "auto").lower()
         universe_domain_env = os.getenv("GOOGLE_CLOUD_UNIVERSE_DOMAIN")
         if use_client_cert not in ("true", "false"):
-            raise ValueError(
-                "Environment variable `GOOGLE_API_USE_CLIENT_CERTIFICATE` must be either `true` or `false`"
-            )
+            raise ValueError("Environment variable `GOOGLE_API_USE_CLIENT_CERTIFICATE` must be either `true` or `false`")
         if use_mtls_endpoint not in ("auto", "never", "always"):
-            raise MutualTLSChannelError(
-                "Environment variable `GOOGLE_API_USE_MTLS_ENDPOINT` must be `never`, `auto` or `always`"
-            )
+            raise MutualTLSChannelError("Environment variable `GOOGLE_API_USE_MTLS_ENDPOINT` must be `never`, `auto` or `always`")
         return use_client_cert == "true", use_mtls_endpoint, universe_domain_env
 
     @staticmethod
@@ -430,9 +360,7 @@ class ServingConfigServiceClient(metaclass=ServingConfigServiceClientMeta):
         return client_cert_source
 
     @staticmethod
-    def _get_api_endpoint(
-        api_override, client_cert_source, universe_domain, use_mtls_endpoint
-    ):
+    def _get_api_endpoint(api_override, client_cert_source, universe_domain, use_mtls_endpoint):
         """Return the API endpoint used by the client.
 
         Args:
@@ -448,25 +376,17 @@ class ServingConfigServiceClient(metaclass=ServingConfigServiceClientMeta):
         """
         if api_override is not None:
             api_endpoint = api_override
-        elif use_mtls_endpoint == "always" or (
-            use_mtls_endpoint == "auto" and client_cert_source
-        ):
+        elif use_mtls_endpoint == "always" or (use_mtls_endpoint == "auto" and client_cert_source):
             _default_universe = ServingConfigServiceClient._DEFAULT_UNIVERSE
             if universe_domain != _default_universe:
-                raise MutualTLSChannelError(
-                    f"mTLS is not supported in any universe other than {_default_universe}."
-                )
+                raise MutualTLSChannelError(f"mTLS is not supported in any universe other than {_default_universe}.")
             api_endpoint = ServingConfigServiceClient.DEFAULT_MTLS_ENDPOINT
         else:
-            api_endpoint = ServingConfigServiceClient._DEFAULT_ENDPOINT_TEMPLATE.format(
-                UNIVERSE_DOMAIN=universe_domain
-            )
+            api_endpoint = ServingConfigServiceClient._DEFAULT_ENDPOINT_TEMPLATE.format(UNIVERSE_DOMAIN=universe_domain)
         return api_endpoint
 
     @staticmethod
-    def _get_universe_domain(
-        client_universe_domain: Optional[str], universe_domain_env: Optional[str]
-    ) -> str:
+    def _get_universe_domain(client_universe_domain: Optional[str], universe_domain_env: Optional[str]) -> str:
         """Return the universe domain used by the client.
 
         Args:
@@ -502,18 +422,15 @@ class ServingConfigServiceClient(metaclass=ServingConfigServiceClientMeta):
         return True
 
     def _add_cred_info_for_auth_errors(
-        self, error: core_exceptions.GoogleAPICallError
+        self,
+        error: core_exceptions.GoogleAPICallError
     ) -> None:
         """Adds credential info string to error details for 401/403/404 errors.
 
         Args:
             error (google.api_core.exceptions.GoogleAPICallError): The error to add the cred info.
         """
-        if error.code not in [
-            HTTPStatus.UNAUTHORIZED,
-            HTTPStatus.FORBIDDEN,
-            HTTPStatus.NOT_FOUND,
-        ]:
+        if error.code not in [HTTPStatus.UNAUTHORIZED, HTTPStatus.FORBIDDEN, HTTPStatus.NOT_FOUND]:
             return
 
         cred = self._transport._credentials
@@ -546,20 +463,12 @@ class ServingConfigServiceClient(metaclass=ServingConfigServiceClientMeta):
         """
         return self._universe_domain
 
-    def __init__(
-        self,
-        *,
-        credentials: Optional[ga_credentials.Credentials] = None,
-        transport: Optional[
-            Union[
-                str,
-                ServingConfigServiceTransport,
-                Callable[..., ServingConfigServiceTransport],
-            ]
-        ] = None,
-        client_options: Optional[Union[client_options_lib.ClientOptions, dict]] = None,
-        client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
-    ) -> None:
+    def __init__(self, *,
+            credentials: Optional[ga_credentials.Credentials] = None,
+            transport: Optional[Union[str, ServingConfigServiceTransport, Callable[..., ServingConfigServiceTransport]]] = None,
+            client_options: Optional[Union[client_options_lib.ClientOptions, dict]] = None,
+            client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
+            ) -> None:
         """Instantiates the serving config service client.
 
         Args:
@@ -614,24 +523,14 @@ class ServingConfigServiceClient(metaclass=ServingConfigServiceClientMeta):
             self._client_options = client_options_lib.from_dict(self._client_options)
         if self._client_options is None:
             self._client_options = client_options_lib.ClientOptions()
-        self._client_options = cast(
-            client_options_lib.ClientOptions, self._client_options
-        )
+        self._client_options = cast(client_options_lib.ClientOptions, self._client_options)
 
-        universe_domain_opt = getattr(self._client_options, "universe_domain", None)
+        universe_domain_opt = getattr(self._client_options, 'universe_domain', None)
 
-        (
-            self._use_client_cert,
-            self._use_mtls_endpoint,
-            self._universe_domain_env,
-        ) = ServingConfigServiceClient._read_environment_variables()
-        self._client_cert_source = ServingConfigServiceClient._get_client_cert_source(
-            self._client_options.client_cert_source, self._use_client_cert
-        )
-        self._universe_domain = ServingConfigServiceClient._get_universe_domain(
-            universe_domain_opt, self._universe_domain_env
-        )
-        self._api_endpoint = None  # updated below, depending on `transport`
+        self._use_client_cert, self._use_mtls_endpoint, self._universe_domain_env = ServingConfigServiceClient._read_environment_variables()
+        self._client_cert_source = ServingConfigServiceClient._get_client_cert_source(self._client_options.client_cert_source, self._use_client_cert)
+        self._universe_domain = ServingConfigServiceClient._get_universe_domain(universe_domain_opt, self._universe_domain_env)
+        self._api_endpoint = None # updated below, depending on `transport`
 
         # Initialize the universe domain validation.
         self._is_universe_domain_valid = False
@@ -642,9 +541,7 @@ class ServingConfigServiceClient(metaclass=ServingConfigServiceClientMeta):
 
         api_key_value = getattr(self._client_options, "api_key", None)
         if api_key_value and credentials:
-            raise ValueError(
-                "client_options.api_key and credentials are mutually exclusive"
-            )
+            raise ValueError("client_options.api_key and credentials are mutually exclusive")
 
         # Save or instantiate the transport.
         # Ordinarily, we provide the transport, but allowing a custom transport
@@ -653,10 +550,8 @@ class ServingConfigServiceClient(metaclass=ServingConfigServiceClientMeta):
         if transport_provided:
             # transport is a ServingConfigServiceTransport instance.
             if credentials or self._client_options.credentials_file or api_key_value:
-                raise ValueError(
-                    "When providing a transport instance, "
-                    "provide its credentials directly."
-                )
+                raise ValueError("When providing a transport instance, "
+                                 "provide its credentials directly.")
             if self._client_options.scopes:
                 raise ValueError(
                     "When providing a transport instance, provide its scopes "
@@ -665,30 +560,20 @@ class ServingConfigServiceClient(metaclass=ServingConfigServiceClientMeta):
             self._transport = cast(ServingConfigServiceTransport, transport)
             self._api_endpoint = self._transport.host
 
-        self._api_endpoint = (
-            self._api_endpoint
-            or ServingConfigServiceClient._get_api_endpoint(
+        self._api_endpoint = (self._api_endpoint or
+            ServingConfigServiceClient._get_api_endpoint(
                 self._client_options.api_endpoint,
                 self._client_cert_source,
                 self._universe_domain,
-                self._use_mtls_endpoint,
-            )
-        )
+                self._use_mtls_endpoint))
 
         if not transport_provided:
             import google.auth._default  # type: ignore
 
-            if api_key_value and hasattr(
-                google.auth._default, "get_api_key_credentials"
-            ):
-                credentials = google.auth._default.get_api_key_credentials(
-                    api_key_value
-                )
+            if api_key_value and hasattr(google.auth._default, "get_api_key_credentials"):
+                credentials = google.auth._default.get_api_key_credentials(api_key_value)
 
-            transport_init: Union[
-                Type[ServingConfigServiceTransport],
-                Callable[..., ServingConfigServiceTransport],
-            ] = (
+            transport_init: Union[Type[ServingConfigServiceTransport], Callable[..., ServingConfigServiceTransport]] = (
                 ServingConfigServiceClient.get_transport_class(transport)
                 if isinstance(transport, str) or transport is None
                 else cast(Callable[..., ServingConfigServiceTransport], transport)
@@ -707,40 +592,29 @@ class ServingConfigServiceClient(metaclass=ServingConfigServiceClientMeta):
             )
 
         if "async" not in str(self._transport):
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                std_logging.DEBUG
-            ):  # pragma: NO COVER
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(std_logging.DEBUG):  # pragma: NO COVER
                 _LOGGER.debug(
                     "Created client `google.cloud.discoveryengine_v1beta.ServingConfigServiceClient`.",
-                    extra={
+                    extra = {
                         "serviceName": "google.cloud.discoveryengine.v1beta.ServingConfigService",
-                        "universeDomain": getattr(
-                            self._transport._credentials, "universe_domain", ""
-                        ),
+                        "universeDomain": getattr(self._transport._credentials, "universe_domain", ""),
                         "credentialsType": f"{type(self._transport._credentials).__module__}.{type(self._transport._credentials).__qualname__}",
-                        "credentialsInfo": getattr(
-                            self.transport._credentials, "get_cred_info", lambda: None
-                        )(),
-                    }
-                    if hasattr(self._transport, "_credentials")
-                    else {
+                        "credentialsInfo": getattr(self.transport._credentials, "get_cred_info", lambda: None)(),
+                    } if hasattr(self._transport, "_credentials") else {
                         "serviceName": "google.cloud.discoveryengine.v1beta.ServingConfigService",
                         "credentialsType": None,
-                    },
+                    }
                 )
 
-    def update_serving_config(
-        self,
-        request: Optional[
-            Union[serving_config_service.UpdateServingConfigRequest, dict]
-        ] = None,
-        *,
-        serving_config: Optional[gcd_serving_config.ServingConfig] = None,
-        update_mask: Optional[field_mask_pb2.FieldMask] = None,
-        retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
-    ) -> gcd_serving_config.ServingConfig:
+    def update_serving_config(self,
+            request: Optional[Union[serving_config_service.UpdateServingConfigRequest, dict]] = None,
+            *,
+            serving_config: Optional[gcd_serving_config.ServingConfig] = None,
+            update_mask: Optional[field_mask_pb2.FieldMask] = None,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+            ) -> gcd_serving_config.ServingConfig:
         r"""Updates a ServingConfig.
 
         Returns a NOT_FOUND error if the ServingConfig does not exist.
@@ -792,7 +666,7 @@ class ServingConfigServiceClient(metaclass=ServingConfigServiceClientMeta):
                 [ServingConfig][google.cloud.discoveryengine.v1beta.ServingConfig]
                 to update. The following are NOT supported:
 
-                - [ServingConfig.name][google.cloud.discoveryengine.v1beta.ServingConfig.name]
+                -  [ServingConfig.name][google.cloud.discoveryengine.v1beta.ServingConfig.name]
 
                 If not set, all supported fields are updated.
 
@@ -821,14 +695,10 @@ class ServingConfigServiceClient(metaclass=ServingConfigServiceClientMeta):
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [serving_config, update_mask]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError('If the `request` argument is set, then none of '
+                             'the individual field arguments should be set.')
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -848,9 +718,9 @@ class ServingConfigServiceClient(metaclass=ServingConfigServiceClientMeta):
         # Certain fields should be provided within the metadata header;
         # add these here.
         metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata(
-                (("serving_config.name", request.serving_config.name),)
-            ),
+            gapic_v1.routing_header.to_grpc_metadata((
+                ("serving_config.name", request.serving_config.name),
+            )),
         )
 
         # Validate the universe domain.
@@ -867,17 +737,14 @@ class ServingConfigServiceClient(metaclass=ServingConfigServiceClientMeta):
         # Done; return the response.
         return response
 
-    def get_serving_config(
-        self,
-        request: Optional[
-            Union[serving_config_service.GetServingConfigRequest, dict]
-        ] = None,
-        *,
-        name: Optional[str] = None,
-        retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
-    ) -> serving_config.ServingConfig:
+    def get_serving_config(self,
+            request: Optional[Union[serving_config_service.GetServingConfigRequest, dict]] = None,
+            *,
+            name: Optional[str] = None,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+            ) -> serving_config.ServingConfig:
         r"""Gets a ServingConfig.
 
         Returns a NotFound error if the ServingConfig does not
@@ -942,14 +809,10 @@ class ServingConfigServiceClient(metaclass=ServingConfigServiceClientMeta):
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [name]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError('If the `request` argument is set, then none of '
+                             'the individual field arguments should be set.')
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -967,7 +830,9 @@ class ServingConfigServiceClient(metaclass=ServingConfigServiceClientMeta):
         # Certain fields should be provided within the metadata header;
         # add these here.
         metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
+            gapic_v1.routing_header.to_grpc_metadata((
+                ("name", request.name),
+            )),
         )
 
         # Validate the universe domain.
@@ -984,17 +849,14 @@ class ServingConfigServiceClient(metaclass=ServingConfigServiceClientMeta):
         # Done; return the response.
         return response
 
-    def list_serving_configs(
-        self,
-        request: Optional[
-            Union[serving_config_service.ListServingConfigsRequest, dict]
-        ] = None,
-        *,
-        parent: Optional[str] = None,
-        retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
-    ) -> pagers.ListServingConfigsPager:
+    def list_serving_configs(self,
+            request: Optional[Union[serving_config_service.ListServingConfigsRequest, dict]] = None,
+            *,
+            parent: Optional[str] = None,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+            ) -> pagers.ListServingConfigsPager:
         r"""Lists all ServingConfigs linked to this dataStore.
 
         .. code-block:: python
@@ -1057,14 +919,10 @@ class ServingConfigServiceClient(metaclass=ServingConfigServiceClientMeta):
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [parent]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError('If the `request` argument is set, then none of '
+                             'the individual field arguments should be set.')
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -1082,7 +940,9 @@ class ServingConfigServiceClient(metaclass=ServingConfigServiceClientMeta):
         # Certain fields should be provided within the metadata header;
         # add these here.
         metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
+            gapic_v1.routing_header.to_grpc_metadata((
+                ("parent", request.parent),
+            )),
         )
 
         # Validate the universe domain.
@@ -1161,7 +1021,8 @@ class ServingConfigServiceClient(metaclass=ServingConfigServiceClientMeta):
         # Certain fields should be provided within the metadata header;
         # add these here.
         metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
+            gapic_v1.routing_header.to_grpc_metadata(
+                (("name", request.name),)),
         )
 
         # Validate the universe domain.
@@ -1170,11 +1031,7 @@ class ServingConfigServiceClient(metaclass=ServingConfigServiceClientMeta):
         try:
             # Send the request.
             response = rpc(
-                request,
-                retry=retry,
-                timeout=timeout,
-                metadata=metadata,
-            )
+                request, retry=retry, timeout=timeout, metadata=metadata,)
 
             # Done; return the response.
             return response
@@ -1220,7 +1077,8 @@ class ServingConfigServiceClient(metaclass=ServingConfigServiceClientMeta):
         # Certain fields should be provided within the metadata header;
         # add these here.
         metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
+            gapic_v1.routing_header.to_grpc_metadata(
+                (("name", request.name),)),
         )
 
         # Validate the universe domain.
@@ -1229,11 +1087,7 @@ class ServingConfigServiceClient(metaclass=ServingConfigServiceClientMeta):
         try:
             # Send the request.
             response = rpc(
-                request,
-                retry=retry,
-                timeout=timeout,
-                metadata=metadata,
-            )
+                request, retry=retry, timeout=timeout, metadata=metadata,)
 
             # Done; return the response.
             return response
@@ -1282,26 +1136,28 @@ class ServingConfigServiceClient(metaclass=ServingConfigServiceClientMeta):
         # Certain fields should be provided within the metadata header;
         # add these here.
         metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
+            gapic_v1.routing_header.to_grpc_metadata(
+                (("name", request.name),)),
         )
 
         # Validate the universe domain.
         self._validate_universe_domain()
 
         # Send the request.
-        rpc(
-            request,
-            retry=retry,
-            timeout=timeout,
-            metadata=metadata,
-        )
+        rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
 
 
-DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
-    gapic_version=package_version.__version__
-)
+
+
+
+
+
+
+DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(gapic_version=package_version.__version__)
 
 if hasattr(DEFAULT_CLIENT_INFO, "protobuf_runtime_version"):  # pragma: NO COVER
     DEFAULT_CLIENT_INFO.protobuf_runtime_version = google.protobuf.__version__
 
-__all__ = ("ServingConfigServiceClient",)
+__all__ = (
+    "ServingConfigServiceClient",
+)

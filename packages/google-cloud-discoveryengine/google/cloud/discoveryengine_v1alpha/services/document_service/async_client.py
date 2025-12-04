@@ -13,31 +13,21 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-from collections import OrderedDict
 import logging as std_logging
+from collections import OrderedDict
 import re
-from typing import (
-    Callable,
-    Dict,
-    Mapping,
-    MutableMapping,
-    MutableSequence,
-    Optional,
-    Sequence,
-    Tuple,
-    Type,
-    Union,
-)
+from typing import Dict, Callable, Mapping, MutableMapping, MutableSequence, Optional, Sequence, Tuple, Type, Union
 
+from google.cloud.discoveryengine_v1alpha import gapic_version as package_version
+
+from google.api_core.client_options import ClientOptions
 from google.api_core import exceptions as core_exceptions
 from google.api_core import gapic_v1
 from google.api_core import retry_async as retries
-from google.api_core.client_options import ClientOptions
-from google.auth import credentials as ga_credentials  # type: ignore
-from google.oauth2 import service_account  # type: ignore
+from google.auth import credentials as ga_credentials   # type: ignore
+from google.oauth2 import service_account              # type: ignore
 import google.protobuf
 
-from google.cloud.discoveryengine_v1alpha import gapic_version as package_version
 
 try:
     OptionalRetry = Union[retries.AsyncRetry, gapic_v1.method._MethodDefault, None]
@@ -46,34 +36,28 @@ except AttributeError:  # pragma: NO COVER
 
 from google.api_core import operation  # type: ignore
 from google.api_core import operation_async  # type: ignore
-from google.cloud.location import locations_pb2  # type: ignore
-from google.longrunning import operations_pb2  # type: ignore
+from google.cloud.discoveryengine_v1alpha.services.document_service import pagers
+from google.cloud.discoveryengine_v1alpha.types import document
+from google.cloud.discoveryengine_v1alpha.types import document as gcd_document
+from google.cloud.discoveryengine_v1alpha.types import document_service
+from google.cloud.discoveryengine_v1alpha.types import import_config
+from google.cloud.discoveryengine_v1alpha.types import purge_config
+from google.cloud.location import locations_pb2 # type: ignore
+from google.longrunning import operations_pb2 # type: ignore
 from google.protobuf import field_mask_pb2  # type: ignore
 from google.protobuf import struct_pb2  # type: ignore
 from google.protobuf import timestamp_pb2  # type: ignore
-
-from google.cloud.discoveryengine_v1alpha.services.document_service import pagers
-from google.cloud.discoveryengine_v1alpha.types import (
-    document_service,
-    import_config,
-    purge_config,
-)
-from google.cloud.discoveryengine_v1alpha.types import document
-from google.cloud.discoveryengine_v1alpha.types import document as gcd_document
-
-from .client import DocumentServiceClient
-from .transports.base import DEFAULT_CLIENT_INFO, DocumentServiceTransport
+from .transports.base import DocumentServiceTransport, DEFAULT_CLIENT_INFO
 from .transports.grpc_asyncio import DocumentServiceGrpcAsyncIOTransport
+from .client import DocumentServiceClient
 
 try:
     from google.api_core import client_logging  # type: ignore
-
     CLIENT_LOGGING_SUPPORTED = True  # pragma: NO COVER
 except ImportError:  # pragma: NO COVER
     CLIENT_LOGGING_SUPPORTED = False
 
 _LOGGER = std_logging.getLogger(__name__)
-
 
 class DocumentServiceAsyncClient:
     """Service for ingesting
@@ -96,30 +80,16 @@ class DocumentServiceAsyncClient:
     parse_document_path = staticmethod(DocumentServiceClient.parse_document_path)
     fhir_store_path = staticmethod(DocumentServiceClient.fhir_store_path)
     parse_fhir_store_path = staticmethod(DocumentServiceClient.parse_fhir_store_path)
-    common_billing_account_path = staticmethod(
-        DocumentServiceClient.common_billing_account_path
-    )
-    parse_common_billing_account_path = staticmethod(
-        DocumentServiceClient.parse_common_billing_account_path
-    )
+    common_billing_account_path = staticmethod(DocumentServiceClient.common_billing_account_path)
+    parse_common_billing_account_path = staticmethod(DocumentServiceClient.parse_common_billing_account_path)
     common_folder_path = staticmethod(DocumentServiceClient.common_folder_path)
-    parse_common_folder_path = staticmethod(
-        DocumentServiceClient.parse_common_folder_path
-    )
-    common_organization_path = staticmethod(
-        DocumentServiceClient.common_organization_path
-    )
-    parse_common_organization_path = staticmethod(
-        DocumentServiceClient.parse_common_organization_path
-    )
+    parse_common_folder_path = staticmethod(DocumentServiceClient.parse_common_folder_path)
+    common_organization_path = staticmethod(DocumentServiceClient.common_organization_path)
+    parse_common_organization_path = staticmethod(DocumentServiceClient.parse_common_organization_path)
     common_project_path = staticmethod(DocumentServiceClient.common_project_path)
-    parse_common_project_path = staticmethod(
-        DocumentServiceClient.parse_common_project_path
-    )
+    parse_common_project_path = staticmethod(DocumentServiceClient.parse_common_project_path)
     common_location_path = staticmethod(DocumentServiceClient.common_location_path)
-    parse_common_location_path = staticmethod(
-        DocumentServiceClient.parse_common_location_path
-    )
+    parse_common_location_path = staticmethod(DocumentServiceClient.parse_common_location_path)
 
     @classmethod
     def from_service_account_info(cls, info: dict, *args, **kwargs):
@@ -155,9 +125,7 @@ class DocumentServiceAsyncClient:
     from_service_account_json = from_service_account_file
 
     @classmethod
-    def get_mtls_endpoint_and_cert_source(
-        cls, client_options: Optional[ClientOptions] = None
-    ):
+    def get_mtls_endpoint_and_cert_source(cls, client_options: Optional[ClientOptions] = None):
         """Return the API endpoint and client cert source for mutual TLS.
 
         The client cert source is determined in the following order:
@@ -220,18 +188,12 @@ class DocumentServiceAsyncClient:
 
     get_transport_class = DocumentServiceClient.get_transport_class
 
-    def __init__(
-        self,
-        *,
-        credentials: Optional[ga_credentials.Credentials] = None,
-        transport: Optional[
-            Union[
-                str, DocumentServiceTransport, Callable[..., DocumentServiceTransport]
-            ]
-        ] = "grpc_asyncio",
-        client_options: Optional[ClientOptions] = None,
-        client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
-    ) -> None:
+    def __init__(self, *,
+            credentials: Optional[ga_credentials.Credentials] = None,
+            transport: Optional[Union[str, DocumentServiceTransport, Callable[..., DocumentServiceTransport]]] = "grpc_asyncio",
+            client_options: Optional[ClientOptions] = None,
+            client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
+            ) -> None:
         """Instantiates the document service async client.
 
         Args:
@@ -286,39 +248,31 @@ class DocumentServiceAsyncClient:
             transport=transport,
             client_options=client_options,
             client_info=client_info,
+
         )
 
-        if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-            std_logging.DEBUG
-        ):  # pragma: NO COVER
+        if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(std_logging.DEBUG):  # pragma: NO COVER
             _LOGGER.debug(
                 "Created client `google.cloud.discoveryengine_v1alpha.DocumentServiceAsyncClient`.",
-                extra={
+                extra = {
                     "serviceName": "google.cloud.discoveryengine.v1alpha.DocumentService",
-                    "universeDomain": getattr(
-                        self._client._transport._credentials, "universe_domain", ""
-                    ),
+                    "universeDomain": getattr(self._client._transport._credentials, "universe_domain", ""),
                     "credentialsType": f"{type(self._client._transport._credentials).__module__}.{type(self._client._transport._credentials).__qualname__}",
-                    "credentialsInfo": getattr(
-                        self.transport._credentials, "get_cred_info", lambda: None
-                    )(),
-                }
-                if hasattr(self._client._transport, "_credentials")
-                else {
+                    "credentialsInfo": getattr(self.transport._credentials, "get_cred_info", lambda: None)(),
+                } if hasattr(self._client._transport, "_credentials") else {
                     "serviceName": "google.cloud.discoveryengine.v1alpha.DocumentService",
                     "credentialsType": None,
-                },
+                }
             )
 
-    async def get_document(
-        self,
-        request: Optional[Union[document_service.GetDocumentRequest, dict]] = None,
-        *,
-        name: Optional[str] = None,
-        retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
-    ) -> document.Document:
+    async def get_document(self,
+            request: Optional[Union[document_service.GetDocumentRequest, dict]] = None,
+            *,
+            name: Optional[str] = None,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+            ) -> document.Document:
         r"""Gets a
         [Document][google.cloud.discoveryengine.v1alpha.Document].
 
@@ -390,14 +344,10 @@ class DocumentServiceAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [name]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of "
+                             "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -411,14 +361,14 @@ class DocumentServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.get_document
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.get_document]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
         metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
+            gapic_v1.routing_header.to_grpc_metadata((
+                ("name", request.name),
+            )),
         )
 
         # Validate the universe domain.
@@ -435,15 +385,14 @@ class DocumentServiceAsyncClient:
         # Done; return the response.
         return response
 
-    async def list_documents(
-        self,
-        request: Optional[Union[document_service.ListDocumentsRequest, dict]] = None,
-        *,
-        parent: Optional[str] = None,
-        retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
-    ) -> pagers.ListDocumentsAsyncPager:
+    async def list_documents(self,
+            request: Optional[Union[document_service.ListDocumentsRequest, dict]] = None,
+            *,
+            parent: Optional[str] = None,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+            ) -> pagers.ListDocumentsAsyncPager:
         r"""Gets a list of
         [Document][google.cloud.discoveryengine.v1alpha.Document]s.
 
@@ -516,14 +465,10 @@ class DocumentServiceAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [parent]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of "
+                             "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -537,14 +482,14 @@ class DocumentServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.list_documents
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.list_documents]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
         metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
+            gapic_v1.routing_header.to_grpc_metadata((
+                ("parent", request.parent),
+            )),
         )
 
         # Validate the universe domain.
@@ -572,17 +517,16 @@ class DocumentServiceAsyncClient:
         # Done; return the response.
         return response
 
-    async def create_document(
-        self,
-        request: Optional[Union[document_service.CreateDocumentRequest, dict]] = None,
-        *,
-        parent: Optional[str] = None,
-        document: Optional[gcd_document.Document] = None,
-        document_id: Optional[str] = None,
-        retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
-    ) -> gcd_document.Document:
+    async def create_document(self,
+            request: Optional[Union[document_service.CreateDocumentRequest, dict]] = None,
+            *,
+            parent: Optional[str] = None,
+            document: Optional[gcd_document.Document] = None,
+            document_id: Optional[str] = None,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+            ) -> gcd_document.Document:
         r"""Creates a
         [Document][google.cloud.discoveryengine.v1alpha.Document].
 
@@ -677,14 +621,10 @@ class DocumentServiceAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [parent, document, document_id]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of "
+                             "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -702,14 +642,14 @@ class DocumentServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.create_document
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.create_document]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
         metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
+            gapic_v1.routing_header.to_grpc_metadata((
+                ("parent", request.parent),
+            )),
         )
 
         # Validate the universe domain.
@@ -726,16 +666,15 @@ class DocumentServiceAsyncClient:
         # Done; return the response.
         return response
 
-    async def update_document(
-        self,
-        request: Optional[Union[document_service.UpdateDocumentRequest, dict]] = None,
-        *,
-        document: Optional[gcd_document.Document] = None,
-        update_mask: Optional[field_mask_pb2.FieldMask] = None,
-        retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
-    ) -> gcd_document.Document:
+    async def update_document(self,
+            request: Optional[Union[document_service.UpdateDocumentRequest, dict]] = None,
+            *,
+            document: Optional[gcd_document.Document] = None,
+            update_mask: Optional[field_mask_pb2.FieldMask] = None,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+            ) -> gcd_document.Document:
         r"""Updates a
         [Document][google.cloud.discoveryengine.v1alpha.Document].
 
@@ -814,14 +753,10 @@ class DocumentServiceAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [document, update_mask]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of "
+                             "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -837,16 +772,14 @@ class DocumentServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.update_document
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.update_document]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
         metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata(
-                (("document.name", request.document.name),)
-            ),
+            gapic_v1.routing_header.to_grpc_metadata((
+                ("document.name", request.document.name),
+            )),
         )
 
         # Validate the universe domain.
@@ -863,15 +796,14 @@ class DocumentServiceAsyncClient:
         # Done; return the response.
         return response
 
-    async def delete_document(
-        self,
-        request: Optional[Union[document_service.DeleteDocumentRequest, dict]] = None,
-        *,
-        name: Optional[str] = None,
-        retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
-    ) -> None:
+    async def delete_document(self,
+            request: Optional[Union[document_service.DeleteDocumentRequest, dict]] = None,
+            *,
+            name: Optional[str] = None,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+            ) -> None:
         r"""Deletes a
         [Document][google.cloud.discoveryengine.v1alpha.Document].
 
@@ -934,14 +866,10 @@ class DocumentServiceAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [name]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of "
+                             "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -955,14 +883,14 @@ class DocumentServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.delete_document
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.delete_document]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
         metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
+            gapic_v1.routing_header.to_grpc_metadata((
+                ("name", request.name),
+            )),
         )
 
         # Validate the universe domain.
@@ -976,14 +904,13 @@ class DocumentServiceAsyncClient:
             metadata=metadata,
         )
 
-    async def import_documents(
-        self,
-        request: Optional[Union[import_config.ImportDocumentsRequest, dict]] = None,
-        *,
-        retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
-    ) -> operation_async.AsyncOperation:
+    async def import_documents(self,
+            request: Optional[Union[import_config.ImportDocumentsRequest, dict]] = None,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+            ) -> operation_async.AsyncOperation:
         r"""Bulk import of multiple
         [Document][google.cloud.discoveryengine.v1alpha.Document]s.
         Request processing may be synchronous. Non-existing items are
@@ -1054,14 +981,14 @@ class DocumentServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.import_documents
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.import_documents]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
         metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
+            gapic_v1.routing_header.to_grpc_metadata((
+                ("parent", request.parent),
+            )),
         )
 
         # Validate the universe domain.
@@ -1086,14 +1013,13 @@ class DocumentServiceAsyncClient:
         # Done; return the response.
         return response
 
-    async def purge_documents(
-        self,
-        request: Optional[Union[purge_config.PurgeDocumentsRequest, dict]] = None,
-        *,
-        retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
-    ) -> operation_async.AsyncOperation:
+    async def purge_documents(self,
+            request: Optional[Union[purge_config.PurgeDocumentsRequest, dict]] = None,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+            ) -> operation_async.AsyncOperation:
         r"""Permanently deletes all selected
         [Document][google.cloud.discoveryengine.v1alpha.Document]s in a
         branch.
@@ -1181,14 +1107,14 @@ class DocumentServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.purge_documents
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.purge_documents]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
         metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
+            gapic_v1.routing_header.to_grpc_metadata((
+                ("parent", request.parent),
+            )),
         )
 
         # Validate the universe domain.
@@ -1213,17 +1139,14 @@ class DocumentServiceAsyncClient:
         # Done; return the response.
         return response
 
-    async def get_processed_document(
-        self,
-        request: Optional[
-            Union[document_service.GetProcessedDocumentRequest, dict]
-        ] = None,
-        *,
-        name: Optional[str] = None,
-        retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
-    ) -> document.ProcessedDocument:
+    async def get_processed_document(self,
+            request: Optional[Union[document_service.GetProcessedDocumentRequest, dict]] = None,
+            *,
+            name: Optional[str] = None,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+            ) -> document.ProcessedDocument:
         r"""Gets the parsed layout information for a
         [Document][google.cloud.discoveryengine.v1alpha.Document].
 
@@ -1296,14 +1219,10 @@ class DocumentServiceAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [name]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of "
+                             "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -1317,14 +1236,14 @@ class DocumentServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.get_processed_document
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.get_processed_document]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
         metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
+            gapic_v1.routing_header.to_grpc_metadata((
+                ("name", request.name),
+            )),
         )
 
         # Validate the universe domain.
@@ -1341,17 +1260,14 @@ class DocumentServiceAsyncClient:
         # Done; return the response.
         return response
 
-    async def batch_get_documents_metadata(
-        self,
-        request: Optional[
-            Union[document_service.BatchGetDocumentsMetadataRequest, dict]
-        ] = None,
-        *,
-        parent: Optional[str] = None,
-        retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
-    ) -> document_service.BatchGetDocumentsMetadataResponse:
+    async def batch_get_documents_metadata(self,
+            request: Optional[Union[document_service.BatchGetDocumentsMetadataRequest, dict]] = None,
+            *,
+            parent: Optional[str] = None,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+            ) -> document_service.BatchGetDocumentsMetadataResponse:
         r"""Gets index freshness metadata for
         [Document][google.cloud.discoveryengine.v1alpha.Document]s.
         Supported for website search only.
@@ -1413,14 +1329,10 @@ class DocumentServiceAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [parent]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of "
+                             "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -1434,14 +1346,14 @@ class DocumentServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.batch_get_documents_metadata
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.batch_get_documents_metadata]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
         metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
+            gapic_v1.routing_header.to_grpc_metadata((
+                ("parent", request.parent),
+            )),
         )
 
         # Validate the universe domain.
@@ -1496,7 +1408,8 @@ class DocumentServiceAsyncClient:
         # Certain fields should be provided within the metadata header;
         # add these here.
         metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
+            gapic_v1.routing_header.to_grpc_metadata(
+                (("name", request.name),)),
         )
 
         # Validate the universe domain.
@@ -1504,11 +1417,7 @@ class DocumentServiceAsyncClient:
 
         # Send the request.
         response = await rpc(
-            request,
-            retry=retry,
-            timeout=timeout,
-            metadata=metadata,
-        )
+            request, retry=retry, timeout=timeout, metadata=metadata,)
 
         # Done; return the response.
         return response
@@ -1551,7 +1460,8 @@ class DocumentServiceAsyncClient:
         # Certain fields should be provided within the metadata header;
         # add these here.
         metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
+            gapic_v1.routing_header.to_grpc_metadata(
+                (("name", request.name),)),
         )
 
         # Validate the universe domain.
@@ -1559,11 +1469,7 @@ class DocumentServiceAsyncClient:
 
         # Send the request.
         response = await rpc(
-            request,
-            retry=retry,
-            timeout=timeout,
-            metadata=metadata,
-        )
+            request, retry=retry, timeout=timeout, metadata=metadata,)
 
         # Done; return the response.
         return response
@@ -1609,19 +1515,15 @@ class DocumentServiceAsyncClient:
         # Certain fields should be provided within the metadata header;
         # add these here.
         metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
+            gapic_v1.routing_header.to_grpc_metadata(
+                (("name", request.name),)),
         )
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
 
         # Send the request.
-        await rpc(
-            request,
-            retry=retry,
-            timeout=timeout,
-            metadata=metadata,
-        )
+        await rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
 
     async def __aenter__(self) -> "DocumentServiceAsyncClient":
         return self
@@ -1629,13 +1531,12 @@ class DocumentServiceAsyncClient:
     async def __aexit__(self, exc_type, exc, tb):
         await self.transport.close()
 
+DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(gapic_version=package_version.__version__)
 
-DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
-    gapic_version=package_version.__version__
-)
-
-if hasattr(DEFAULT_CLIENT_INFO, "protobuf_runtime_version"):  # pragma: NO COVER
+if hasattr(DEFAULT_CLIENT_INFO, "protobuf_runtime_version"):   # pragma: NO COVER
     DEFAULT_CLIENT_INFO.protobuf_runtime_version = google.protobuf.__version__
 
 
-__all__ = ("DocumentServiceAsyncClient",)
+__all__ = (
+    "DocumentServiceAsyncClient",
+)

@@ -13,35 +13,19 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-from typing import (
-    Any,
-    AsyncIterator,
-    Awaitable,
-    Callable,
-    Iterator,
-    Optional,
-    Sequence,
-    Tuple,
-    Union,
-)
-
 from google.api_core import gapic_v1
 from google.api_core import retry as retries
 from google.api_core import retry_async as retries_async
-
+from typing import Any, AsyncIterator, Awaitable, Callable, Sequence, Tuple, Optional, Iterator, Union
 try:
     OptionalRetry = Union[retries.Retry, gapic_v1.method._MethodDefault, None]
-    OptionalAsyncRetry = Union[
-        retries_async.AsyncRetry, gapic_v1.method._MethodDefault, None
-    ]
+    OptionalAsyncRetry = Union[retries_async.AsyncRetry, gapic_v1.method._MethodDefault, None]
 except AttributeError:  # pragma: NO COVER
     OptionalRetry = Union[retries.Retry, object, None]  # type: ignore
     OptionalAsyncRetry = Union[retries_async.AsyncRetry, object, None]  # type: ignore
 
-from google.cloud.discoveryengine_v1.types import (
-    identity_mapping_store,
-    identity_mapping_store_service,
-)
+from google.cloud.discoveryengine_v1.types import identity_mapping_store
+from google.cloud.discoveryengine_v1.types import identity_mapping_store_service
 
 
 class ListIdentityMappingsPager:
@@ -61,19 +45,14 @@ class ListIdentityMappingsPager:
     attributes are available on the pager. If multiple requests are made, only
     the most recent response is retained, and thus used for attribute lookup.
     """
-
-    def __init__(
-        self,
-        method: Callable[
-            ..., identity_mapping_store_service.ListIdentityMappingsResponse
-        ],
-        request: identity_mapping_store_service.ListIdentityMappingsRequest,
-        response: identity_mapping_store_service.ListIdentityMappingsResponse,
-        *,
-        retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]] = ()
-    ):
+    def __init__(self,
+            method: Callable[..., identity_mapping_store_service.ListIdentityMappingsResponse],
+            request: identity_mapping_store_service.ListIdentityMappingsRequest,
+            response: identity_mapping_store_service.ListIdentityMappingsResponse,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = ()):
         """Instantiate the pager.
 
         Args:
@@ -92,9 +71,7 @@ class ListIdentityMappingsPager:
                 be of type `bytes`.
         """
         self._method = method
-        self._request = identity_mapping_store_service.ListIdentityMappingsRequest(
-            request
-        )
+        self._request = identity_mapping_store_service.ListIdentityMappingsRequest(request)
         self._response = response
         self._retry = retry
         self._timeout = timeout
@@ -104,18 +81,11 @@ class ListIdentityMappingsPager:
         return getattr(self._response, name)
 
     @property
-    def pages(
-        self,
-    ) -> Iterator[identity_mapping_store_service.ListIdentityMappingsResponse]:
+    def pages(self) -> Iterator[identity_mapping_store_service.ListIdentityMappingsResponse]:
         yield self._response
         while self._response.next_page_token:
             self._request.page_token = self._response.next_page_token
-            self._response = self._method(
-                self._request,
-                retry=self._retry,
-                timeout=self._timeout,
-                metadata=self._metadata,
-            )
+            self._response = self._method(self._request, retry=self._retry, timeout=self._timeout, metadata=self._metadata)
             yield self._response
 
     def __iter__(self) -> Iterator[identity_mapping_store.IdentityMappingEntry]:
@@ -123,7 +93,7 @@ class ListIdentityMappingsPager:
             yield from page.identity_mapping_entries
 
     def __repr__(self) -> str:
-        return "{0}<{1!r}>".format(self.__class__.__name__, self._response)
+        return '{0}<{1!r}>'.format(self.__class__.__name__, self._response)
 
 
 class ListIdentityMappingsAsyncPager:
@@ -143,19 +113,14 @@ class ListIdentityMappingsAsyncPager:
     attributes are available on the pager. If multiple requests are made, only
     the most recent response is retained, and thus used for attribute lookup.
     """
-
-    def __init__(
-        self,
-        method: Callable[
-            ..., Awaitable[identity_mapping_store_service.ListIdentityMappingsResponse]
-        ],
-        request: identity_mapping_store_service.ListIdentityMappingsRequest,
-        response: identity_mapping_store_service.ListIdentityMappingsResponse,
-        *,
-        retry: OptionalAsyncRetry = gapic_v1.method.DEFAULT,
-        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]] = ()
-    ):
+    def __init__(self,
+            method: Callable[..., Awaitable[identity_mapping_store_service.ListIdentityMappingsResponse]],
+            request: identity_mapping_store_service.ListIdentityMappingsRequest,
+            response: identity_mapping_store_service.ListIdentityMappingsResponse,
+            *,
+            retry: OptionalAsyncRetry = gapic_v1.method.DEFAULT,
+            timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = ()):
         """Instantiates the pager.
 
         Args:
@@ -174,9 +139,7 @@ class ListIdentityMappingsAsyncPager:
                 be of type `bytes`.
         """
         self._method = method
-        self._request = identity_mapping_store_service.ListIdentityMappingsRequest(
-            request
-        )
+        self._request = identity_mapping_store_service.ListIdentityMappingsRequest(request)
         self._response = response
         self._retry = retry
         self._timeout = timeout
@@ -186,20 +149,12 @@ class ListIdentityMappingsAsyncPager:
         return getattr(self._response, name)
 
     @property
-    async def pages(
-        self,
-    ) -> AsyncIterator[identity_mapping_store_service.ListIdentityMappingsResponse]:
+    async def pages(self) -> AsyncIterator[identity_mapping_store_service.ListIdentityMappingsResponse]:
         yield self._response
         while self._response.next_page_token:
             self._request.page_token = self._response.next_page_token
-            self._response = await self._method(
-                self._request,
-                retry=self._retry,
-                timeout=self._timeout,
-                metadata=self._metadata,
-            )
+            self._response = await self._method(self._request, retry=self._retry, timeout=self._timeout, metadata=self._metadata)
             yield self._response
-
     def __aiter__(self) -> AsyncIterator[identity_mapping_store.IdentityMappingEntry]:
         async def async_generator():
             async for page in self.pages:
@@ -209,7 +164,7 @@ class ListIdentityMappingsAsyncPager:
         return async_generator()
 
     def __repr__(self) -> str:
-        return "{0}<{1!r}>".format(self.__class__.__name__, self._response)
+        return '{0}<{1!r}>'.format(self.__class__.__name__, self._response)
 
 
 class ListIdentityMappingStoresPager:
@@ -229,19 +184,14 @@ class ListIdentityMappingStoresPager:
     attributes are available on the pager. If multiple requests are made, only
     the most recent response is retained, and thus used for attribute lookup.
     """
-
-    def __init__(
-        self,
-        method: Callable[
-            ..., identity_mapping_store_service.ListIdentityMappingStoresResponse
-        ],
-        request: identity_mapping_store_service.ListIdentityMappingStoresRequest,
-        response: identity_mapping_store_service.ListIdentityMappingStoresResponse,
-        *,
-        retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]] = ()
-    ):
+    def __init__(self,
+            method: Callable[..., identity_mapping_store_service.ListIdentityMappingStoresResponse],
+            request: identity_mapping_store_service.ListIdentityMappingStoresRequest,
+            response: identity_mapping_store_service.ListIdentityMappingStoresResponse,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = ()):
         """Instantiate the pager.
 
         Args:
@@ -260,9 +210,7 @@ class ListIdentityMappingStoresPager:
                 be of type `bytes`.
         """
         self._method = method
-        self._request = identity_mapping_store_service.ListIdentityMappingStoresRequest(
-            request
-        )
+        self._request = identity_mapping_store_service.ListIdentityMappingStoresRequest(request)
         self._response = response
         self._retry = retry
         self._timeout = timeout
@@ -272,18 +220,11 @@ class ListIdentityMappingStoresPager:
         return getattr(self._response, name)
 
     @property
-    def pages(
-        self,
-    ) -> Iterator[identity_mapping_store_service.ListIdentityMappingStoresResponse]:
+    def pages(self) -> Iterator[identity_mapping_store_service.ListIdentityMappingStoresResponse]:
         yield self._response
         while self._response.next_page_token:
             self._request.page_token = self._response.next_page_token
-            self._response = self._method(
-                self._request,
-                retry=self._retry,
-                timeout=self._timeout,
-                metadata=self._metadata,
-            )
+            self._response = self._method(self._request, retry=self._retry, timeout=self._timeout, metadata=self._metadata)
             yield self._response
 
     def __iter__(self) -> Iterator[identity_mapping_store.IdentityMappingStore]:
@@ -291,7 +232,7 @@ class ListIdentityMappingStoresPager:
             yield from page.identity_mapping_stores
 
     def __repr__(self) -> str:
-        return "{0}<{1!r}>".format(self.__class__.__name__, self._response)
+        return '{0}<{1!r}>'.format(self.__class__.__name__, self._response)
 
 
 class ListIdentityMappingStoresAsyncPager:
@@ -311,20 +252,14 @@ class ListIdentityMappingStoresAsyncPager:
     attributes are available on the pager. If multiple requests are made, only
     the most recent response is retained, and thus used for attribute lookup.
     """
-
-    def __init__(
-        self,
-        method: Callable[
-            ...,
-            Awaitable[identity_mapping_store_service.ListIdentityMappingStoresResponse],
-        ],
-        request: identity_mapping_store_service.ListIdentityMappingStoresRequest,
-        response: identity_mapping_store_service.ListIdentityMappingStoresResponse,
-        *,
-        retry: OptionalAsyncRetry = gapic_v1.method.DEFAULT,
-        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]] = ()
-    ):
+    def __init__(self,
+            method: Callable[..., Awaitable[identity_mapping_store_service.ListIdentityMappingStoresResponse]],
+            request: identity_mapping_store_service.ListIdentityMappingStoresRequest,
+            response: identity_mapping_store_service.ListIdentityMappingStoresResponse,
+            *,
+            retry: OptionalAsyncRetry = gapic_v1.method.DEFAULT,
+            timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = ()):
         """Instantiates the pager.
 
         Args:
@@ -343,9 +278,7 @@ class ListIdentityMappingStoresAsyncPager:
                 be of type `bytes`.
         """
         self._method = method
-        self._request = identity_mapping_store_service.ListIdentityMappingStoresRequest(
-            request
-        )
+        self._request = identity_mapping_store_service.ListIdentityMappingStoresRequest(request)
         self._response = response
         self._retry = retry
         self._timeout = timeout
@@ -355,22 +288,12 @@ class ListIdentityMappingStoresAsyncPager:
         return getattr(self._response, name)
 
     @property
-    async def pages(
-        self,
-    ) -> AsyncIterator[
-        identity_mapping_store_service.ListIdentityMappingStoresResponse
-    ]:
+    async def pages(self) -> AsyncIterator[identity_mapping_store_service.ListIdentityMappingStoresResponse]:
         yield self._response
         while self._response.next_page_token:
             self._request.page_token = self._response.next_page_token
-            self._response = await self._method(
-                self._request,
-                retry=self._retry,
-                timeout=self._timeout,
-                metadata=self._metadata,
-            )
+            self._response = await self._method(self._request, retry=self._retry, timeout=self._timeout, metadata=self._metadata)
             yield self._response
-
     def __aiter__(self) -> AsyncIterator[identity_mapping_store.IdentityMappingStore]:
         async def async_generator():
             async for page in self.pages:
@@ -380,4 +303,4 @@ class ListIdentityMappingStoresAsyncPager:
         return async_generator()
 
     def __repr__(self) -> str:
-        return "{0}<{1!r}>".format(self.__class__.__name__, self._response)
+        return '{0}<{1!r}>'.format(self.__class__.__name__, self._response)

@@ -17,23 +17,24 @@ from __future__ import annotations
 
 from typing import MutableMapping, MutableSequence
 
-from google.protobuf import field_mask_pb2  # type: ignore
-from google.protobuf import timestamp_pb2  # type: ignore
 import proto  # type: ignore
 
 from google.cloud.discoveryengine_v1.types import document as gcd_document
+from google.protobuf import field_mask_pb2  # type: ignore
+from google.protobuf import timestamp_pb2  # type: ignore
+
 
 __protobuf__ = proto.module(
-    package="google.cloud.discoveryengine.v1",
+    package='google.cloud.discoveryengine.v1',
     manifest={
-        "GetDocumentRequest",
-        "ListDocumentsRequest",
-        "ListDocumentsResponse",
-        "CreateDocumentRequest",
-        "UpdateDocumentRequest",
-        "DeleteDocumentRequest",
-        "BatchGetDocumentsMetadataRequest",
-        "BatchGetDocumentsMetadataResponse",
+        'GetDocumentRequest',
+        'ListDocumentsRequest',
+        'ListDocumentsResponse',
+        'CreateDocumentRequest',
+        'UpdateDocumentRequest',
+        'DeleteDocumentRequest',
+        'BatchGetDocumentsMetadataRequest',
+        'BatchGetDocumentsMetadataResponse',
     },
 )
 
@@ -338,17 +339,17 @@ class BatchGetDocumentsMetadataRequest(proto.Message):
                 This field is a member of `oneof`_ ``matcher``.
         """
 
-        uris_matcher: "BatchGetDocumentsMetadataRequest.UrisMatcher" = proto.Field(
+        uris_matcher: 'BatchGetDocumentsMetadataRequest.UrisMatcher' = proto.Field(
             proto.MESSAGE,
             number=1,
-            oneof="matcher",
-            message="BatchGetDocumentsMetadataRequest.UrisMatcher",
+            oneof='matcher',
+            message='BatchGetDocumentsMetadataRequest.UrisMatcher',
         )
-        fhir_matcher: "BatchGetDocumentsMetadataRequest.FhirMatcher" = proto.Field(
+        fhir_matcher: 'BatchGetDocumentsMetadataRequest.FhirMatcher' = proto.Field(
             proto.MESSAGE,
             number=2,
-            oneof="matcher",
-            message="BatchGetDocumentsMetadataRequest.FhirMatcher",
+            oneof='matcher',
+            message='BatchGetDocumentsMetadataRequest.FhirMatcher',
         )
 
     parent: str = proto.Field(
@@ -372,7 +373,6 @@ class BatchGetDocumentsMetadataResponse(proto.Message):
             The metadata of the
             [Document][google.cloud.discoveryengine.v1.Document]s.
     """
-
     class State(proto.Enum):
         r"""The state of the
         [Document][google.cloud.discoveryengine.v1.Document].
@@ -416,10 +416,10 @@ class BatchGetDocumentsMetadataResponse(proto.Message):
 
                 Allowed values are:
 
-                - ``batch``: Data ingested via Batch API, e.g.,
-                  ImportDocuments.
-                - ``streaming`` Data ingested via Streaming API, e.g., FHIR
-                  streaming.
+                -  ``batch``: Data ingested via Batch API, e.g.,
+                   ImportDocuments.
+                -  ``streaming`` Data ingested via Streaming API, e.g., FHIR
+                   streaming.
         """
 
         class MatcherValue(proto.Message):
@@ -449,23 +449,23 @@ class BatchGetDocumentsMetadataResponse(proto.Message):
             uri: str = proto.Field(
                 proto.STRING,
                 number=1,
-                oneof="matcher_value",
+                oneof='matcher_value',
             )
             fhir_resource: str = proto.Field(
                 proto.STRING,
                 number=2,
-                oneof="matcher_value",
+                oneof='matcher_value',
             )
 
-        matcher_value: "BatchGetDocumentsMetadataResponse.DocumentMetadata.MatcherValue" = proto.Field(
+        matcher_value: 'BatchGetDocumentsMetadataResponse.DocumentMetadata.MatcherValue' = proto.Field(
             proto.MESSAGE,
             number=2,
-            message="BatchGetDocumentsMetadataResponse.DocumentMetadata.MatcherValue",
+            message='BatchGetDocumentsMetadataResponse.DocumentMetadata.MatcherValue',
         )
-        state: "BatchGetDocumentsMetadataResponse.State" = proto.Field(
+        state: 'BatchGetDocumentsMetadataResponse.State' = proto.Field(
             proto.ENUM,
             number=3,
-            enum="BatchGetDocumentsMetadataResponse.State",
+            enum='BatchGetDocumentsMetadataResponse.State',
         )
         last_refreshed_time: timestamp_pb2.Timestamp = proto.Field(
             proto.MESSAGE,

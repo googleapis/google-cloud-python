@@ -13,31 +13,37 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-import dataclasses
-import json  # type: ignore
 import logging
+import json  # type: ignore
+
+from google.auth.transport.requests import AuthorizedSession  # type: ignore
+from google.auth import credentials as ga_credentials  # type: ignore
+from google.api_core import exceptions as core_exceptions
+from google.api_core import retry as retries
+from google.api_core import rest_helpers
+from google.api_core import rest_streaming
+from google.api_core import gapic_v1
+import google.protobuf
+
+from google.protobuf import json_format
+from google.cloud.location import locations_pb2 # type: ignore
+
+from requests import __version__ as requests_version
+import dataclasses
 from typing import Any, Callable, Dict, List, Optional, Sequence, Tuple, Union
 import warnings
 
-from google.api_core import exceptions as core_exceptions
-from google.api_core import gapic_v1, rest_helpers, rest_streaming
-from google.api_core import retry as retries
-from google.auth import credentials as ga_credentials  # type: ignore
-from google.auth.transport.requests import AuthorizedSession  # type: ignore
-from google.cloud.location import locations_pb2  # type: ignore
-from google.longrunning import operations_pb2  # type: ignore
-import google.protobuf
-from google.protobuf import empty_pb2  # type: ignore
-from google.protobuf import json_format
-from requests import __version__ as requests_version
 
 from google.cloud.discoveryengine_v1alpha.types import conversational_search_service
 from google.cloud.discoveryengine_v1alpha.types import session
 from google.cloud.discoveryengine_v1alpha.types import session as gcd_session
 from google.cloud.discoveryengine_v1alpha.types import session_service
+from google.protobuf import empty_pb2  # type: ignore
+from google.longrunning import operations_pb2  # type: ignore
 
-from .base import DEFAULT_CLIENT_INFO as BASE_DEFAULT_CLIENT_INFO
+
 from .rest_base import _BaseSessionServiceRestTransport
+from .base import DEFAULT_CLIENT_INFO as BASE_DEFAULT_CLIENT_INFO
 
 try:
     OptionalRetry = Union[retries.Retry, gapic_v1.method._MethodDefault, None]
@@ -46,7 +52,6 @@ except AttributeError:  # pragma: NO COVER
 
 try:
     from google.api_core import client_logging  # type: ignore
-
     CLIENT_LOGGING_SUPPORTED = True  # pragma: NO COVER
 except ImportError:  # pragma: NO COVER
     CLIENT_LOGGING_SUPPORTED = False
@@ -127,15 +132,7 @@ class SessionServiceRestInterceptor:
 
 
     """
-
-    def pre_create_session(
-        self,
-        request: conversational_search_service.CreateSessionRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        conversational_search_service.CreateSessionRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+    def pre_create_session(self, request: conversational_search_service.CreateSessionRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]) -> Tuple[conversational_search_service.CreateSessionRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for create_session
 
         Override in a subclass to manipulate the request or metadata
@@ -156,11 +153,7 @@ class SessionServiceRestInterceptor:
         """
         return response
 
-    def post_create_session_with_metadata(
-        self,
-        response: gcd_session.Session,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[gcd_session.Session, Sequence[Tuple[str, Union[str, bytes]]]]:
+    def post_create_session_with_metadata(self, response: gcd_session.Session, metadata: Sequence[Tuple[str, Union[str, bytes]]]) -> Tuple[gcd_session.Session, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for create_session
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -175,14 +168,7 @@ class SessionServiceRestInterceptor:
         """
         return response, metadata
 
-    def pre_delete_session(
-        self,
-        request: conversational_search_service.DeleteSessionRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        conversational_search_service.DeleteSessionRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+    def pre_delete_session(self, request: conversational_search_service.DeleteSessionRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]) -> Tuple[conversational_search_service.DeleteSessionRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for delete_session
 
         Override in a subclass to manipulate the request or metadata
@@ -190,14 +176,7 @@ class SessionServiceRestInterceptor:
         """
         return request, metadata
 
-    def pre_get_session(
-        self,
-        request: conversational_search_service.GetSessionRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        conversational_search_service.GetSessionRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+    def pre_get_session(self, request: conversational_search_service.GetSessionRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]) -> Tuple[conversational_search_service.GetSessionRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_session
 
         Override in a subclass to manipulate the request or metadata
@@ -218,11 +197,7 @@ class SessionServiceRestInterceptor:
         """
         return response
 
-    def post_get_session_with_metadata(
-        self,
-        response: session.Session,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[session.Session, Sequence[Tuple[str, Union[str, bytes]]]]:
+    def post_get_session_with_metadata(self, response: session.Session, metadata: Sequence[Tuple[str, Union[str, bytes]]]) -> Tuple[session.Session, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for get_session
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -237,13 +212,7 @@ class SessionServiceRestInterceptor:
         """
         return response, metadata
 
-    def pre_list_files(
-        self,
-        request: session_service.ListFilesRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        session_service.ListFilesRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+    def pre_list_files(self, request: session_service.ListFilesRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]) -> Tuple[session_service.ListFilesRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_files
 
         Override in a subclass to manipulate the request or metadata
@@ -251,9 +220,7 @@ class SessionServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_list_files(
-        self, response: session_service.ListFilesResponse
-    ) -> session_service.ListFilesResponse:
+    def post_list_files(self, response: session_service.ListFilesResponse) -> session_service.ListFilesResponse:
         """Post-rpc interceptor for list_files
 
         DEPRECATED. Please use the `post_list_files_with_metadata`
@@ -266,13 +233,7 @@ class SessionServiceRestInterceptor:
         """
         return response
 
-    def post_list_files_with_metadata(
-        self,
-        response: session_service.ListFilesResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        session_service.ListFilesResponse, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+    def post_list_files_with_metadata(self, response: session_service.ListFilesResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]) -> Tuple[session_service.ListFilesResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for list_files
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -287,14 +248,7 @@ class SessionServiceRestInterceptor:
         """
         return response, metadata
 
-    def pre_list_sessions(
-        self,
-        request: conversational_search_service.ListSessionsRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        conversational_search_service.ListSessionsRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+    def pre_list_sessions(self, request: conversational_search_service.ListSessionsRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]) -> Tuple[conversational_search_service.ListSessionsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_sessions
 
         Override in a subclass to manipulate the request or metadata
@@ -302,9 +256,7 @@ class SessionServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_list_sessions(
-        self, response: conversational_search_service.ListSessionsResponse
-    ) -> conversational_search_service.ListSessionsResponse:
+    def post_list_sessions(self, response: conversational_search_service.ListSessionsResponse) -> conversational_search_service.ListSessionsResponse:
         """Post-rpc interceptor for list_sessions
 
         DEPRECATED. Please use the `post_list_sessions_with_metadata`
@@ -317,14 +269,7 @@ class SessionServiceRestInterceptor:
         """
         return response
 
-    def post_list_sessions_with_metadata(
-        self,
-        response: conversational_search_service.ListSessionsResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        conversational_search_service.ListSessionsResponse,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+    def post_list_sessions_with_metadata(self, response: conversational_search_service.ListSessionsResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]) -> Tuple[conversational_search_service.ListSessionsResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for list_sessions
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -339,14 +284,7 @@ class SessionServiceRestInterceptor:
         """
         return response, metadata
 
-    def pre_update_session(
-        self,
-        request: conversational_search_service.UpdateSessionRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        conversational_search_service.UpdateSessionRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+    def pre_update_session(self, request: conversational_search_service.UpdateSessionRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]) -> Tuple[conversational_search_service.UpdateSessionRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for update_session
 
         Override in a subclass to manipulate the request or metadata
@@ -367,11 +305,7 @@ class SessionServiceRestInterceptor:
         """
         return response
 
-    def post_update_session_with_metadata(
-        self,
-        response: gcd_session.Session,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[gcd_session.Session, Sequence[Tuple[str, Union[str, bytes]]]]:
+    def post_update_session_with_metadata(self, response: gcd_session.Session, metadata: Sequence[Tuple[str, Union[str, bytes]]]) -> Tuple[gcd_session.Session, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for update_session
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -387,12 +321,8 @@ class SessionServiceRestInterceptor:
         return response, metadata
 
     def pre_cancel_operation(
-        self,
-        request: operations_pb2.CancelOperationRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        operations_pb2.CancelOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: operations_pb2.CancelOperationRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[operations_pb2.CancelOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for cancel_operation
 
         Override in a subclass to manipulate the request or metadata
@@ -400,7 +330,9 @@ class SessionServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_cancel_operation(self, response: None) -> None:
+    def post_cancel_operation(
+        self, response: None
+    ) -> None:
         """Post-rpc interceptor for cancel_operation
 
         Override in a subclass to manipulate the response
@@ -410,12 +342,8 @@ class SessionServiceRestInterceptor:
         return response
 
     def pre_get_operation(
-        self,
-        request: operations_pb2.GetOperationRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        operations_pb2.GetOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: operations_pb2.GetOperationRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[operations_pb2.GetOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_operation
 
         Override in a subclass to manipulate the request or metadata
@@ -435,12 +363,8 @@ class SessionServiceRestInterceptor:
         return response
 
     def pre_list_operations(
-        self,
-        request: operations_pb2.ListOperationsRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        operations_pb2.ListOperationsRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: operations_pb2.ListOperationsRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[operations_pb2.ListOperationsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_operations
 
         Override in a subclass to manipulate the request or metadata
@@ -479,21 +403,20 @@ class SessionServiceRestTransport(_BaseSessionServiceRestTransport):
     It sends JSON representations of protocol buffers over HTTP/1.1
     """
 
-    def __init__(
-        self,
-        *,
-        host: str = "discoveryengine.googleapis.com",
-        credentials: Optional[ga_credentials.Credentials] = None,
-        credentials_file: Optional[str] = None,
-        scopes: Optional[Sequence[str]] = None,
-        client_cert_source_for_mtls: Optional[Callable[[], Tuple[bytes, bytes]]] = None,
-        quota_project_id: Optional[str] = None,
-        client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
-        always_use_jwt_access: Optional[bool] = False,
-        url_scheme: str = "https",
-        interceptor: Optional[SessionServiceRestInterceptor] = None,
-        api_audience: Optional[str] = None,
-    ) -> None:
+    def __init__(self, *,
+            host: str = 'discoveryengine.googleapis.com',
+            credentials: Optional[ga_credentials.Credentials] = None,
+            credentials_file: Optional[str] = None,
+            scopes: Optional[Sequence[str]] = None,
+            client_cert_source_for_mtls: Optional[Callable[[
+                ], Tuple[bytes, bytes]]] = None,
+            quota_project_id: Optional[str] = None,
+            client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
+            always_use_jwt_access: Optional[bool] = False,
+            url_scheme: str = 'https',
+            interceptor: Optional[SessionServiceRestInterceptor] = None,
+            api_audience: Optional[str] = None,
+            ) -> None:
         """Instantiate the transport.
 
         Args:
@@ -537,19 +460,16 @@ class SessionServiceRestTransport(_BaseSessionServiceRestTransport):
             client_info=client_info,
             always_use_jwt_access=always_use_jwt_access,
             url_scheme=url_scheme,
-            api_audience=api_audience,
+            api_audience=api_audience
         )
         self._session = AuthorizedSession(
-            self._credentials, default_host=self.DEFAULT_HOST
-        )
+            self._credentials, default_host=self.DEFAULT_HOST)
         if client_cert_source_for_mtls:
             self._session.configure_mtls_channel(client_cert_source_for_mtls)
         self._interceptor = interceptor or SessionServiceRestInterceptor()
         self._prep_wrapped_messages(client_info)
 
-    class _CreateSession(
-        _BaseSessionServiceRestTransport._BaseCreateSession, SessionServiceRestStub
-    ):
+    class _CreateSession(_BaseSessionServiceRestTransport._BaseCreateSession, SessionServiceRestStub):
         def __hash__(self):
             return hash("SessionServiceRestTransport.CreateSession")
 
@@ -561,29 +481,27 @@ class SessionServiceRestTransport(_BaseSessionServiceRestTransport):
             session,
             timeout,
             transcoded_request,
-            body=None,
-        ):
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+            body=None):
+
+            uri = transcoded_request['uri']
+            method = transcoded_request['method']
             headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
+            headers['Content-Type'] = 'application/json'
             response = getattr(session, method)(
                 "{host}{uri}".format(host=host, uri=uri),
                 timeout=timeout,
                 headers=headers,
                 params=rest_helpers.flatten_query_params(query_params, strict=True),
                 data=body,
-            )
+                )
             return response
 
-        def __call__(
-            self,
-            request: conversational_search_service.CreateSessionRequest,
-            *,
-            retry: OptionalRetry = gapic_v1.method.DEFAULT,
-            timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
-        ) -> gcd_session.Session:
+        def __call__(self,
+                request: conversational_search_service.CreateSessionRequest, *,
+                retry: OptionalRetry=gapic_v1.method.DEFAULT,
+                timeout: Optional[float]=None,
+                metadata: Sequence[Tuple[str, Union[str, bytes]]]=(),
+                ) -> gcd_session.Session:
             r"""Call the create session method over HTTP.
 
             Args:
@@ -602,44 +520,32 @@ class SessionServiceRestTransport(_BaseSessionServiceRestTransport):
                     External session proto definition.
             """
 
-            http_options = (
-                _BaseSessionServiceRestTransport._BaseCreateSession._get_http_options()
-            )
+            http_options = _BaseSessionServiceRestTransport._BaseCreateSession._get_http_options()
 
             request, metadata = self._interceptor.pre_create_session(request, metadata)
-            transcoded_request = _BaseSessionServiceRestTransport._BaseCreateSession._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseSessionServiceRestTransport._BaseCreateSession._get_transcoded_request(http_options, request)
 
-            body = _BaseSessionServiceRestTransport._BaseCreateSession._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseSessionServiceRestTransport._BaseCreateSession._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseSessionServiceRestTransport._BaseCreateSession._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseSessionServiceRestTransport._BaseCreateSession._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
-                method = transcoded_request["method"]
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request['uri'])
+                method = transcoded_request['method']
                 try:
                     request_payload = type(request).to_json(request)
                 except:
                     request_payload = None
                 http_request = {
-                    "payload": request_payload,
-                    "requestMethod": method,
-                    "requestUrl": request_url,
-                    "headers": dict(metadata),
+                  "payload": request_payload,
+                  "requestMethod": method,
+                  "requestUrl": request_url,
+                  "headers": dict(metadata),
                 }
                 _LOGGER.debug(
                     f"Sending request for google.cloud.discoveryengine_v1alpha.SessionServiceClient.CreateSession",
-                    extra={
+                    extra = {
                         "serviceName": "google.cloud.discoveryengine.v1alpha.SessionService",
                         "rpcName": "CreateSession",
                         "httpRequest": http_request,
@@ -648,15 +554,7 @@ class SessionServiceRestTransport(_BaseSessionServiceRestTransport):
                 )
 
             # Send the request
-            response = SessionServiceRestTransport._CreateSession._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
-            )
+            response = SessionServiceRestTransport._CreateSession._get_response(self._host, metadata, query_params, self._session, timeout, transcoded_request, body)
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
             # subclass.
@@ -671,24 +569,20 @@ class SessionServiceRestTransport(_BaseSessionServiceRestTransport):
 
             resp = self._interceptor.post_create_session(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_create_session_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_create_session_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = gcd_session.Session.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
-                    "payload": response_payload,
-                    "headers": dict(response.headers),
-                    "status": response.status_code,
+                "payload": response_payload,
+                "headers":  dict(response.headers),
+                "status": response.status_code,
                 }
                 _LOGGER.debug(
                     "Received response for google.cloud.discoveryengine_v1alpha.SessionServiceClient.create_session",
-                    extra={
+                    extra = {
                         "serviceName": "google.cloud.discoveryengine.v1alpha.SessionService",
                         "rpcName": "CreateSession",
                         "metadata": http_response["headers"],
@@ -697,9 +591,7 @@ class SessionServiceRestTransport(_BaseSessionServiceRestTransport):
                 )
             return resp
 
-    class _DeleteSession(
-        _BaseSessionServiceRestTransport._BaseDeleteSession, SessionServiceRestStub
-    ):
+    class _DeleteSession(_BaseSessionServiceRestTransport._BaseDeleteSession, SessionServiceRestStub):
         def __hash__(self):
             return hash("SessionServiceRestTransport.DeleteSession")
 
@@ -711,28 +603,26 @@ class SessionServiceRestTransport(_BaseSessionServiceRestTransport):
             session,
             timeout,
             transcoded_request,
-            body=None,
-        ):
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+            body=None):
+
+            uri = transcoded_request['uri']
+            method = transcoded_request['method']
             headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
+            headers['Content-Type'] = 'application/json'
             response = getattr(session, method)(
                 "{host}{uri}".format(host=host, uri=uri),
                 timeout=timeout,
                 headers=headers,
                 params=rest_helpers.flatten_query_params(query_params, strict=True),
-            )
+                )
             return response
 
-        def __call__(
-            self,
-            request: conversational_search_service.DeleteSessionRequest,
-            *,
-            retry: OptionalRetry = gapic_v1.method.DEFAULT,
-            timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
-        ):
+        def __call__(self,
+                request: conversational_search_service.DeleteSessionRequest, *,
+                retry: OptionalRetry=gapic_v1.method.DEFAULT,
+                timeout: Optional[float]=None,
+                metadata: Sequence[Tuple[str, Union[str, bytes]]]=(),
+                ):
             r"""Call the delete session method over HTTP.
 
             Args:
@@ -747,40 +637,30 @@ class SessionServiceRestTransport(_BaseSessionServiceRestTransport):
                     be of type `bytes`.
             """
 
-            http_options = (
-                _BaseSessionServiceRestTransport._BaseDeleteSession._get_http_options()
-            )
+            http_options = _BaseSessionServiceRestTransport._BaseDeleteSession._get_http_options()
 
             request, metadata = self._interceptor.pre_delete_session(request, metadata)
-            transcoded_request = _BaseSessionServiceRestTransport._BaseDeleteSession._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseSessionServiceRestTransport._BaseDeleteSession._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseSessionServiceRestTransport._BaseDeleteSession._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseSessionServiceRestTransport._BaseDeleteSession._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
-                method = transcoded_request["method"]
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request['uri'])
+                method = transcoded_request['method']
                 try:
                     request_payload = json_format.MessageToJson(request)
                 except:
                     request_payload = None
                 http_request = {
-                    "payload": request_payload,
-                    "requestMethod": method,
-                    "requestUrl": request_url,
-                    "headers": dict(metadata),
+                  "payload": request_payload,
+                  "requestMethod": method,
+                  "requestUrl": request_url,
+                  "headers": dict(metadata),
                 }
                 _LOGGER.debug(
                     f"Sending request for google.cloud.discoveryengine_v1alpha.SessionServiceClient.DeleteSession",
-                    extra={
+                    extra = {
                         "serviceName": "google.cloud.discoveryengine.v1alpha.SessionService",
                         "rpcName": "DeleteSession",
                         "httpRequest": http_request,
@@ -789,23 +669,14 @@ class SessionServiceRestTransport(_BaseSessionServiceRestTransport):
                 )
 
             # Send the request
-            response = SessionServiceRestTransport._DeleteSession._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-            )
+            response = SessionServiceRestTransport._DeleteSession._get_response(self._host, metadata, query_params, self._session, timeout, transcoded_request)
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
             # subclass.
             if response.status_code >= 400:
                 raise core_exceptions.from_http_response(response)
 
-    class _GetSession(
-        _BaseSessionServiceRestTransport._BaseGetSession, SessionServiceRestStub
-    ):
+    class _GetSession(_BaseSessionServiceRestTransport._BaseGetSession, SessionServiceRestStub):
         def __hash__(self):
             return hash("SessionServiceRestTransport.GetSession")
 
@@ -817,28 +688,26 @@ class SessionServiceRestTransport(_BaseSessionServiceRestTransport):
             session,
             timeout,
             transcoded_request,
-            body=None,
-        ):
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+            body=None):
+
+            uri = transcoded_request['uri']
+            method = transcoded_request['method']
             headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
+            headers['Content-Type'] = 'application/json'
             response = getattr(session, method)(
                 "{host}{uri}".format(host=host, uri=uri),
                 timeout=timeout,
                 headers=headers,
                 params=rest_helpers.flatten_query_params(query_params, strict=True),
-            )
+                )
             return response
 
-        def __call__(
-            self,
-            request: conversational_search_service.GetSessionRequest,
-            *,
-            retry: OptionalRetry = gapic_v1.method.DEFAULT,
-            timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
-        ) -> session.Session:
+        def __call__(self,
+                request: conversational_search_service.GetSessionRequest, *,
+                retry: OptionalRetry=gapic_v1.method.DEFAULT,
+                timeout: Optional[float]=None,
+                metadata: Sequence[Tuple[str, Union[str, bytes]]]=(),
+                ) -> session.Session:
             r"""Call the get session method over HTTP.
 
             Args:
@@ -857,42 +726,30 @@ class SessionServiceRestTransport(_BaseSessionServiceRestTransport):
                     External session proto definition.
             """
 
-            http_options = (
-                _BaseSessionServiceRestTransport._BaseGetSession._get_http_options()
-            )
+            http_options = _BaseSessionServiceRestTransport._BaseGetSession._get_http_options()
 
             request, metadata = self._interceptor.pre_get_session(request, metadata)
-            transcoded_request = _BaseSessionServiceRestTransport._BaseGetSession._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseSessionServiceRestTransport._BaseGetSession._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseSessionServiceRestTransport._BaseGetSession._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseSessionServiceRestTransport._BaseGetSession._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
-                method = transcoded_request["method"]
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request['uri'])
+                method = transcoded_request['method']
                 try:
                     request_payload = type(request).to_json(request)
                 except:
                     request_payload = None
                 http_request = {
-                    "payload": request_payload,
-                    "requestMethod": method,
-                    "requestUrl": request_url,
-                    "headers": dict(metadata),
+                  "payload": request_payload,
+                  "requestMethod": method,
+                  "requestUrl": request_url,
+                  "headers": dict(metadata),
                 }
                 _LOGGER.debug(
                     f"Sending request for google.cloud.discoveryengine_v1alpha.SessionServiceClient.GetSession",
-                    extra={
+                    extra = {
                         "serviceName": "google.cloud.discoveryengine.v1alpha.SessionService",
                         "rpcName": "GetSession",
                         "httpRequest": http_request,
@@ -901,14 +758,7 @@ class SessionServiceRestTransport(_BaseSessionServiceRestTransport):
                 )
 
             # Send the request
-            response = SessionServiceRestTransport._GetSession._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-            )
+            response = SessionServiceRestTransport._GetSession._get_response(self._host, metadata, query_params, self._session, timeout, transcoded_request)
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
             # subclass.
@@ -923,24 +773,20 @@ class SessionServiceRestTransport(_BaseSessionServiceRestTransport):
 
             resp = self._interceptor.post_get_session(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_get_session_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_get_session_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = session.Session.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
-                    "payload": response_payload,
-                    "headers": dict(response.headers),
-                    "status": response.status_code,
+                "payload": response_payload,
+                "headers":  dict(response.headers),
+                "status": response.status_code,
                 }
                 _LOGGER.debug(
                     "Received response for google.cloud.discoveryengine_v1alpha.SessionServiceClient.get_session",
-                    extra={
+                    extra = {
                         "serviceName": "google.cloud.discoveryengine.v1alpha.SessionService",
                         "rpcName": "GetSession",
                         "metadata": http_response["headers"],
@@ -949,9 +795,7 @@ class SessionServiceRestTransport(_BaseSessionServiceRestTransport):
                 )
             return resp
 
-    class _ListFiles(
-        _BaseSessionServiceRestTransport._BaseListFiles, SessionServiceRestStub
-    ):
+    class _ListFiles(_BaseSessionServiceRestTransport._BaseListFiles, SessionServiceRestStub):
         def __hash__(self):
             return hash("SessionServiceRestTransport.ListFiles")
 
@@ -963,28 +807,26 @@ class SessionServiceRestTransport(_BaseSessionServiceRestTransport):
             session,
             timeout,
             transcoded_request,
-            body=None,
-        ):
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+            body=None):
+
+            uri = transcoded_request['uri']
+            method = transcoded_request['method']
             headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
+            headers['Content-Type'] = 'application/json'
             response = getattr(session, method)(
                 "{host}{uri}".format(host=host, uri=uri),
                 timeout=timeout,
                 headers=headers,
                 params=rest_helpers.flatten_query_params(query_params, strict=True),
-            )
+                )
             return response
 
-        def __call__(
-            self,
-            request: session_service.ListFilesRequest,
-            *,
-            retry: OptionalRetry = gapic_v1.method.DEFAULT,
-            timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
-        ) -> session_service.ListFilesResponse:
+        def __call__(self,
+                request: session_service.ListFilesRequest, *,
+                retry: OptionalRetry=gapic_v1.method.DEFAULT,
+                timeout: Optional[float]=None,
+                metadata: Sequence[Tuple[str, Union[str, bytes]]]=(),
+                ) -> session_service.ListFilesResponse:
             r"""Call the list files method over HTTP.
 
             Args:
@@ -1008,44 +850,30 @@ class SessionServiceRestTransport(_BaseSessionServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseSessionServiceRestTransport._BaseListFiles._get_http_options()
-            )
+            http_options = _BaseSessionServiceRestTransport._BaseListFiles._get_http_options()
 
             request, metadata = self._interceptor.pre_list_files(request, metadata)
-            transcoded_request = (
-                _BaseSessionServiceRestTransport._BaseListFiles._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            transcoded_request = _BaseSessionServiceRestTransport._BaseListFiles._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseSessionServiceRestTransport._BaseListFiles._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseSessionServiceRestTransport._BaseListFiles._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
-                method = transcoded_request["method"]
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request['uri'])
+                method = transcoded_request['method']
                 try:
                     request_payload = type(request).to_json(request)
                 except:
                     request_payload = None
                 http_request = {
-                    "payload": request_payload,
-                    "requestMethod": method,
-                    "requestUrl": request_url,
-                    "headers": dict(metadata),
+                  "payload": request_payload,
+                  "requestMethod": method,
+                  "requestUrl": request_url,
+                  "headers": dict(metadata),
                 }
                 _LOGGER.debug(
                     f"Sending request for google.cloud.discoveryengine_v1alpha.SessionServiceClient.ListFiles",
-                    extra={
+                    extra = {
                         "serviceName": "google.cloud.discoveryengine.v1alpha.SessionService",
                         "rpcName": "ListFiles",
                         "httpRequest": http_request,
@@ -1054,14 +882,7 @@ class SessionServiceRestTransport(_BaseSessionServiceRestTransport):
                 )
 
             # Send the request
-            response = SessionServiceRestTransport._ListFiles._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-            )
+            response = SessionServiceRestTransport._ListFiles._get_response(self._host, metadata, query_params, self._session, timeout, transcoded_request)
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
             # subclass.
@@ -1076,26 +897,20 @@ class SessionServiceRestTransport(_BaseSessionServiceRestTransport):
 
             resp = self._interceptor.post_list_files(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_list_files_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_list_files_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = session_service.ListFilesResponse.to_json(
-                        response
-                    )
+                    response_payload = session_service.ListFilesResponse.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
-                    "payload": response_payload,
-                    "headers": dict(response.headers),
-                    "status": response.status_code,
+                "payload": response_payload,
+                "headers":  dict(response.headers),
+                "status": response.status_code,
                 }
                 _LOGGER.debug(
                     "Received response for google.cloud.discoveryengine_v1alpha.SessionServiceClient.list_files",
-                    extra={
+                    extra = {
                         "serviceName": "google.cloud.discoveryengine.v1alpha.SessionService",
                         "rpcName": "ListFiles",
                         "metadata": http_response["headers"],
@@ -1104,9 +919,7 @@ class SessionServiceRestTransport(_BaseSessionServiceRestTransport):
                 )
             return resp
 
-    class _ListSessions(
-        _BaseSessionServiceRestTransport._BaseListSessions, SessionServiceRestStub
-    ):
+    class _ListSessions(_BaseSessionServiceRestTransport._BaseListSessions, SessionServiceRestStub):
         def __hash__(self):
             return hash("SessionServiceRestTransport.ListSessions")
 
@@ -1118,28 +931,26 @@ class SessionServiceRestTransport(_BaseSessionServiceRestTransport):
             session,
             timeout,
             transcoded_request,
-            body=None,
-        ):
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+            body=None):
+
+            uri = transcoded_request['uri']
+            method = transcoded_request['method']
             headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
+            headers['Content-Type'] = 'application/json'
             response = getattr(session, method)(
                 "{host}{uri}".format(host=host, uri=uri),
                 timeout=timeout,
                 headers=headers,
                 params=rest_helpers.flatten_query_params(query_params, strict=True),
-            )
+                )
             return response
 
-        def __call__(
-            self,
-            request: conversational_search_service.ListSessionsRequest,
-            *,
-            retry: OptionalRetry = gapic_v1.method.DEFAULT,
-            timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
-        ) -> conversational_search_service.ListSessionsResponse:
+        def __call__(self,
+                request: conversational_search_service.ListSessionsRequest, *,
+                retry: OptionalRetry=gapic_v1.method.DEFAULT,
+                timeout: Optional[float]=None,
+                metadata: Sequence[Tuple[str, Union[str, bytes]]]=(),
+                ) -> conversational_search_service.ListSessionsResponse:
             r"""Call the list sessions method over HTTP.
 
             Args:
@@ -1158,40 +969,30 @@ class SessionServiceRestTransport(_BaseSessionServiceRestTransport):
                     Response for ListSessions method.
             """
 
-            http_options = (
-                _BaseSessionServiceRestTransport._BaseListSessions._get_http_options()
-            )
+            http_options = _BaseSessionServiceRestTransport._BaseListSessions._get_http_options()
 
             request, metadata = self._interceptor.pre_list_sessions(request, metadata)
-            transcoded_request = _BaseSessionServiceRestTransport._BaseListSessions._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseSessionServiceRestTransport._BaseListSessions._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseSessionServiceRestTransport._BaseListSessions._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseSessionServiceRestTransport._BaseListSessions._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
-                method = transcoded_request["method"]
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request['uri'])
+                method = transcoded_request['method']
                 try:
                     request_payload = type(request).to_json(request)
                 except:
                     request_payload = None
                 http_request = {
-                    "payload": request_payload,
-                    "requestMethod": method,
-                    "requestUrl": request_url,
-                    "headers": dict(metadata),
+                  "payload": request_payload,
+                  "requestMethod": method,
+                  "requestUrl": request_url,
+                  "headers": dict(metadata),
                 }
                 _LOGGER.debug(
                     f"Sending request for google.cloud.discoveryengine_v1alpha.SessionServiceClient.ListSessions",
-                    extra={
+                    extra = {
                         "serviceName": "google.cloud.discoveryengine.v1alpha.SessionService",
                         "rpcName": "ListSessions",
                         "httpRequest": http_request,
@@ -1200,14 +1001,7 @@ class SessionServiceRestTransport(_BaseSessionServiceRestTransport):
                 )
 
             # Send the request
-            response = SessionServiceRestTransport._ListSessions._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-            )
+            response = SessionServiceRestTransport._ListSessions._get_response(self._host, metadata, query_params, self._session, timeout, transcoded_request)
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
             # subclass.
@@ -1222,28 +1016,20 @@ class SessionServiceRestTransport(_BaseSessionServiceRestTransport):
 
             resp = self._interceptor.post_list_sessions(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_list_sessions_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_list_sessions_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = (
-                        conversational_search_service.ListSessionsResponse.to_json(
-                            response
-                        )
-                    )
+                    response_payload = conversational_search_service.ListSessionsResponse.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
-                    "payload": response_payload,
-                    "headers": dict(response.headers),
-                    "status": response.status_code,
+                "payload": response_payload,
+                "headers":  dict(response.headers),
+                "status": response.status_code,
                 }
                 _LOGGER.debug(
                     "Received response for google.cloud.discoveryengine_v1alpha.SessionServiceClient.list_sessions",
-                    extra={
+                    extra = {
                         "serviceName": "google.cloud.discoveryengine.v1alpha.SessionService",
                         "rpcName": "ListSessions",
                         "metadata": http_response["headers"],
@@ -1252,9 +1038,7 @@ class SessionServiceRestTransport(_BaseSessionServiceRestTransport):
                 )
             return resp
 
-    class _UpdateSession(
-        _BaseSessionServiceRestTransport._BaseUpdateSession, SessionServiceRestStub
-    ):
+    class _UpdateSession(_BaseSessionServiceRestTransport._BaseUpdateSession, SessionServiceRestStub):
         def __hash__(self):
             return hash("SessionServiceRestTransport.UpdateSession")
 
@@ -1266,29 +1050,27 @@ class SessionServiceRestTransport(_BaseSessionServiceRestTransport):
             session,
             timeout,
             transcoded_request,
-            body=None,
-        ):
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+            body=None):
+
+            uri = transcoded_request['uri']
+            method = transcoded_request['method']
             headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
+            headers['Content-Type'] = 'application/json'
             response = getattr(session, method)(
                 "{host}{uri}".format(host=host, uri=uri),
                 timeout=timeout,
                 headers=headers,
                 params=rest_helpers.flatten_query_params(query_params, strict=True),
                 data=body,
-            )
+                )
             return response
 
-        def __call__(
-            self,
-            request: conversational_search_service.UpdateSessionRequest,
-            *,
-            retry: OptionalRetry = gapic_v1.method.DEFAULT,
-            timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
-        ) -> gcd_session.Session:
+        def __call__(self,
+                request: conversational_search_service.UpdateSessionRequest, *,
+                retry: OptionalRetry=gapic_v1.method.DEFAULT,
+                timeout: Optional[float]=None,
+                metadata: Sequence[Tuple[str, Union[str, bytes]]]=(),
+                ) -> gcd_session.Session:
             r"""Call the update session method over HTTP.
 
             Args:
@@ -1307,44 +1089,32 @@ class SessionServiceRestTransport(_BaseSessionServiceRestTransport):
                     External session proto definition.
             """
 
-            http_options = (
-                _BaseSessionServiceRestTransport._BaseUpdateSession._get_http_options()
-            )
+            http_options = _BaseSessionServiceRestTransport._BaseUpdateSession._get_http_options()
 
             request, metadata = self._interceptor.pre_update_session(request, metadata)
-            transcoded_request = _BaseSessionServiceRestTransport._BaseUpdateSession._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseSessionServiceRestTransport._BaseUpdateSession._get_transcoded_request(http_options, request)
 
-            body = _BaseSessionServiceRestTransport._BaseUpdateSession._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseSessionServiceRestTransport._BaseUpdateSession._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseSessionServiceRestTransport._BaseUpdateSession._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseSessionServiceRestTransport._BaseUpdateSession._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
-                method = transcoded_request["method"]
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request['uri'])
+                method = transcoded_request['method']
                 try:
                     request_payload = type(request).to_json(request)
                 except:
                     request_payload = None
                 http_request = {
-                    "payload": request_payload,
-                    "requestMethod": method,
-                    "requestUrl": request_url,
-                    "headers": dict(metadata),
+                  "payload": request_payload,
+                  "requestMethod": method,
+                  "requestUrl": request_url,
+                  "headers": dict(metadata),
                 }
                 _LOGGER.debug(
                     f"Sending request for google.cloud.discoveryengine_v1alpha.SessionServiceClient.UpdateSession",
-                    extra={
+                    extra = {
                         "serviceName": "google.cloud.discoveryengine.v1alpha.SessionService",
                         "rpcName": "UpdateSession",
                         "httpRequest": http_request,
@@ -1353,15 +1123,7 @@ class SessionServiceRestTransport(_BaseSessionServiceRestTransport):
                 )
 
             # Send the request
-            response = SessionServiceRestTransport._UpdateSession._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
-            )
+            response = SessionServiceRestTransport._UpdateSession._get_response(self._host, metadata, query_params, self._session, timeout, transcoded_request, body)
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
             # subclass.
@@ -1376,24 +1138,20 @@ class SessionServiceRestTransport(_BaseSessionServiceRestTransport):
 
             resp = self._interceptor.post_update_session(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_update_session_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_update_session_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = gcd_session.Session.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
-                    "payload": response_payload,
-                    "headers": dict(response.headers),
-                    "status": response.status_code,
+                "payload": response_payload,
+                "headers":  dict(response.headers),
+                "status": response.status_code,
                 }
                 _LOGGER.debug(
                     "Received response for google.cloud.discoveryengine_v1alpha.SessionServiceClient.update_session",
-                    extra={
+                    extra = {
                         "serviceName": "google.cloud.discoveryengine.v1alpha.SessionService",
                         "rpcName": "UpdateSession",
                         "metadata": http_response["headers"],
@@ -1403,71 +1161,58 @@ class SessionServiceRestTransport(_BaseSessionServiceRestTransport):
             return resp
 
     @property
-    def create_session(
-        self,
-    ) -> Callable[
-        [conversational_search_service.CreateSessionRequest], gcd_session.Session
-    ]:
+    def create_session(self) -> Callable[
+            [conversational_search_service.CreateSessionRequest],
+            gcd_session.Session]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return self._CreateSession(self._session, self._host, self._interceptor)  # type: ignore
+        return self._CreateSession(self._session, self._host, self._interceptor) # type: ignore
 
     @property
-    def delete_session(
-        self,
-    ) -> Callable[
-        [conversational_search_service.DeleteSessionRequest], empty_pb2.Empty
-    ]:
+    def delete_session(self) -> Callable[
+            [conversational_search_service.DeleteSessionRequest],
+            empty_pb2.Empty]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return self._DeleteSession(self._session, self._host, self._interceptor)  # type: ignore
+        return self._DeleteSession(self._session, self._host, self._interceptor) # type: ignore
 
     @property
-    def get_session(
-        self,
-    ) -> Callable[[conversational_search_service.GetSessionRequest], session.Session]:
+    def get_session(self) -> Callable[
+            [conversational_search_service.GetSessionRequest],
+            session.Session]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return self._GetSession(self._session, self._host, self._interceptor)  # type: ignore
+        return self._GetSession(self._session, self._host, self._interceptor) # type: ignore
 
     @property
-    def list_files(
-        self,
-    ) -> Callable[
-        [session_service.ListFilesRequest], session_service.ListFilesResponse
-    ]:
+    def list_files(self) -> Callable[
+            [session_service.ListFilesRequest],
+            session_service.ListFilesResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return self._ListFiles(self._session, self._host, self._interceptor)  # type: ignore
+        return self._ListFiles(self._session, self._host, self._interceptor) # type: ignore
 
     @property
-    def list_sessions(
-        self,
-    ) -> Callable[
-        [conversational_search_service.ListSessionsRequest],
-        conversational_search_service.ListSessionsResponse,
-    ]:
+    def list_sessions(self) -> Callable[
+            [conversational_search_service.ListSessionsRequest],
+            conversational_search_service.ListSessionsResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return self._ListSessions(self._session, self._host, self._interceptor)  # type: ignore
+        return self._ListSessions(self._session, self._host, self._interceptor) # type: ignore
 
     @property
-    def update_session(
-        self,
-    ) -> Callable[
-        [conversational_search_service.UpdateSessionRequest], gcd_session.Session
-    ]:
+    def update_session(self) -> Callable[
+            [conversational_search_service.UpdateSessionRequest],
+            gcd_session.Session]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return self._UpdateSession(self._session, self._host, self._interceptor)  # type: ignore
+        return self._UpdateSession(self._session, self._host, self._interceptor) # type: ignore
 
     @property
     def cancel_operation(self):
-        return self._CancelOperation(self._session, self._host, self._interceptor)  # type: ignore
+        return self._CancelOperation(self._session, self._host, self._interceptor) # type: ignore
 
-    class _CancelOperation(
-        _BaseSessionServiceRestTransport._BaseCancelOperation, SessionServiceRestStub
-    ):
+    class _CancelOperation(_BaseSessionServiceRestTransport._BaseCancelOperation, SessionServiceRestStub):
         def __hash__(self):
             return hash("SessionServiceRestTransport.CancelOperation")
 
@@ -1479,29 +1224,28 @@ class SessionServiceRestTransport(_BaseSessionServiceRestTransport):
             session,
             timeout,
             transcoded_request,
-            body=None,
-        ):
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+            body=None):
+
+            uri = transcoded_request['uri']
+            method = transcoded_request['method']
             headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
+            headers['Content-Type'] = 'application/json'
             response = getattr(session, method)(
                 "{host}{uri}".format(host=host, uri=uri),
                 timeout=timeout,
                 headers=headers,
                 params=rest_helpers.flatten_query_params(query_params, strict=True),
                 data=body,
-            )
+                )
             return response
 
-        def __call__(
-            self,
-            request: operations_pb2.CancelOperationRequest,
-            *,
-            retry: OptionalRetry = gapic_v1.method.DEFAULT,
-            timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
-        ) -> None:
+        def __call__(self,
+            request: operations_pb2.CancelOperationRequest, *,
+            retry: OptionalRetry=gapic_v1.method.DEFAULT,
+            timeout: Optional[float]=None,
+            metadata: Sequence[Tuple[str, Union[str, bytes]]]=(),
+            ) -> None:
+
             r"""Call the cancel operation method over HTTP.
 
             Args:
@@ -1516,46 +1260,32 @@ class SessionServiceRestTransport(_BaseSessionServiceRestTransport):
                     be of type `bytes`.
             """
 
-            http_options = (
-                _BaseSessionServiceRestTransport._BaseCancelOperation._get_http_options()
-            )
+            http_options = _BaseSessionServiceRestTransport._BaseCancelOperation._get_http_options()
 
-            request, metadata = self._interceptor.pre_cancel_operation(
-                request, metadata
-            )
-            transcoded_request = _BaseSessionServiceRestTransport._BaseCancelOperation._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_cancel_operation(request, metadata)
+            transcoded_request = _BaseSessionServiceRestTransport._BaseCancelOperation._get_transcoded_request(http_options, request)
 
-            body = _BaseSessionServiceRestTransport._BaseCancelOperation._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseSessionServiceRestTransport._BaseCancelOperation._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseSessionServiceRestTransport._BaseCancelOperation._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseSessionServiceRestTransport._BaseCancelOperation._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
-                method = transcoded_request["method"]
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request['uri'])
+                method = transcoded_request['method']
                 try:
                     request_payload = json_format.MessageToJson(request)
                 except:
                     request_payload = None
                 http_request = {
-                    "payload": request_payload,
-                    "requestMethod": method,
-                    "requestUrl": request_url,
-                    "headers": dict(metadata),
+                  "payload": request_payload,
+                  "requestMethod": method,
+                  "requestUrl": request_url,
+                  "headers": dict(metadata),
                 }
                 _LOGGER.debug(
                     f"Sending request for google.cloud.discoveryengine_v1alpha.SessionServiceClient.CancelOperation",
-                    extra={
+                    extra = {
                         "serviceName": "google.cloud.discoveryengine.v1alpha.SessionService",
                         "rpcName": "CancelOperation",
                         "httpRequest": http_request,
@@ -1564,15 +1294,7 @@ class SessionServiceRestTransport(_BaseSessionServiceRestTransport):
                 )
 
             # Send the request
-            response = SessionServiceRestTransport._CancelOperation._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
-            )
+            response = SessionServiceRestTransport._CancelOperation._get_response(self._host, metadata, query_params, self._session, timeout, transcoded_request, body)
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
             # subclass.
@@ -1583,11 +1305,9 @@ class SessionServiceRestTransport(_BaseSessionServiceRestTransport):
 
     @property
     def get_operation(self):
-        return self._GetOperation(self._session, self._host, self._interceptor)  # type: ignore
+        return self._GetOperation(self._session, self._host, self._interceptor) # type: ignore
 
-    class _GetOperation(
-        _BaseSessionServiceRestTransport._BaseGetOperation, SessionServiceRestStub
-    ):
+    class _GetOperation(_BaseSessionServiceRestTransport._BaseGetOperation, SessionServiceRestStub):
         def __hash__(self):
             return hash("SessionServiceRestTransport.GetOperation")
 
@@ -1599,28 +1319,27 @@ class SessionServiceRestTransport(_BaseSessionServiceRestTransport):
             session,
             timeout,
             transcoded_request,
-            body=None,
-        ):
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+            body=None):
+
+            uri = transcoded_request['uri']
+            method = transcoded_request['method']
             headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
+            headers['Content-Type'] = 'application/json'
             response = getattr(session, method)(
                 "{host}{uri}".format(host=host, uri=uri),
                 timeout=timeout,
                 headers=headers,
                 params=rest_helpers.flatten_query_params(query_params, strict=True),
-            )
+                )
             return response
 
-        def __call__(
-            self,
-            request: operations_pb2.GetOperationRequest,
-            *,
-            retry: OptionalRetry = gapic_v1.method.DEFAULT,
-            timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
-        ) -> operations_pb2.Operation:
+        def __call__(self,
+            request: operations_pb2.GetOperationRequest, *,
+            retry: OptionalRetry=gapic_v1.method.DEFAULT,
+            timeout: Optional[float]=None,
+            metadata: Sequence[Tuple[str, Union[str, bytes]]]=(),
+            ) -> operations_pb2.Operation:
+
             r"""Call the get operation method over HTTP.
 
             Args:
@@ -1638,40 +1357,30 @@ class SessionServiceRestTransport(_BaseSessionServiceRestTransport):
                 operations_pb2.Operation: Response from GetOperation method.
             """
 
-            http_options = (
-                _BaseSessionServiceRestTransport._BaseGetOperation._get_http_options()
-            )
+            http_options = _BaseSessionServiceRestTransport._BaseGetOperation._get_http_options()
 
             request, metadata = self._interceptor.pre_get_operation(request, metadata)
-            transcoded_request = _BaseSessionServiceRestTransport._BaseGetOperation._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseSessionServiceRestTransport._BaseGetOperation._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseSessionServiceRestTransport._BaseGetOperation._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseSessionServiceRestTransport._BaseGetOperation._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
-                method = transcoded_request["method"]
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request['uri'])
+                method = transcoded_request['method']
                 try:
                     request_payload = json_format.MessageToJson(request)
                 except:
                     request_payload = None
                 http_request = {
-                    "payload": request_payload,
-                    "requestMethod": method,
-                    "requestUrl": request_url,
-                    "headers": dict(metadata),
+                  "payload": request_payload,
+                  "requestMethod": method,
+                  "requestUrl": request_url,
+                  "headers": dict(metadata),
                 }
                 _LOGGER.debug(
                     f"Sending request for google.cloud.discoveryengine_v1alpha.SessionServiceClient.GetOperation",
-                    extra={
+                    extra = {
                         "serviceName": "google.cloud.discoveryengine.v1alpha.SessionService",
                         "rpcName": "GetOperation",
                         "httpRequest": http_request,
@@ -1680,14 +1389,7 @@ class SessionServiceRestTransport(_BaseSessionServiceRestTransport):
                 )
 
             # Send the request
-            response = SessionServiceRestTransport._GetOperation._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-            )
+            response = SessionServiceRestTransport._GetOperation._get_response(self._host, metadata, query_params, self._session, timeout, transcoded_request)
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
             # subclass.
@@ -1698,21 +1400,19 @@ class SessionServiceRestTransport(_BaseSessionServiceRestTransport):
             resp = operations_pb2.Operation()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_get_operation(resp)
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
-                    "headers": dict(response.headers),
+                    "headers":  dict(response.headers),
                     "status": response.status_code,
                 }
                 _LOGGER.debug(
                     "Received response for google.cloud.discoveryengine_v1alpha.SessionServiceAsyncClient.GetOperation",
-                    extra={
+                    extra = {
                         "serviceName": "google.cloud.discoveryengine.v1alpha.SessionService",
                         "rpcName": "GetOperation",
                         "httpResponse": http_response,
@@ -1723,11 +1423,9 @@ class SessionServiceRestTransport(_BaseSessionServiceRestTransport):
 
     @property
     def list_operations(self):
-        return self._ListOperations(self._session, self._host, self._interceptor)  # type: ignore
+        return self._ListOperations(self._session, self._host, self._interceptor) # type: ignore
 
-    class _ListOperations(
-        _BaseSessionServiceRestTransport._BaseListOperations, SessionServiceRestStub
-    ):
+    class _ListOperations(_BaseSessionServiceRestTransport._BaseListOperations, SessionServiceRestStub):
         def __hash__(self):
             return hash("SessionServiceRestTransport.ListOperations")
 
@@ -1739,28 +1437,27 @@ class SessionServiceRestTransport(_BaseSessionServiceRestTransport):
             session,
             timeout,
             transcoded_request,
-            body=None,
-        ):
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+            body=None):
+
+            uri = transcoded_request['uri']
+            method = transcoded_request['method']
             headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
+            headers['Content-Type'] = 'application/json'
             response = getattr(session, method)(
                 "{host}{uri}".format(host=host, uri=uri),
                 timeout=timeout,
                 headers=headers,
                 params=rest_helpers.flatten_query_params(query_params, strict=True),
-            )
+                )
             return response
 
-        def __call__(
-            self,
-            request: operations_pb2.ListOperationsRequest,
-            *,
-            retry: OptionalRetry = gapic_v1.method.DEFAULT,
-            timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
-        ) -> operations_pb2.ListOperationsResponse:
+        def __call__(self,
+            request: operations_pb2.ListOperationsRequest, *,
+            retry: OptionalRetry=gapic_v1.method.DEFAULT,
+            timeout: Optional[float]=None,
+            metadata: Sequence[Tuple[str, Union[str, bytes]]]=(),
+            ) -> operations_pb2.ListOperationsResponse:
+
             r"""Call the list operations method over HTTP.
 
             Args:
@@ -1778,40 +1475,30 @@ class SessionServiceRestTransport(_BaseSessionServiceRestTransport):
                 operations_pb2.ListOperationsResponse: Response from ListOperations method.
             """
 
-            http_options = (
-                _BaseSessionServiceRestTransport._BaseListOperations._get_http_options()
-            )
+            http_options = _BaseSessionServiceRestTransport._BaseListOperations._get_http_options()
 
             request, metadata = self._interceptor.pre_list_operations(request, metadata)
-            transcoded_request = _BaseSessionServiceRestTransport._BaseListOperations._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseSessionServiceRestTransport._BaseListOperations._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseSessionServiceRestTransport._BaseListOperations._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseSessionServiceRestTransport._BaseListOperations._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
-                method = transcoded_request["method"]
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request['uri'])
+                method = transcoded_request['method']
                 try:
                     request_payload = json_format.MessageToJson(request)
                 except:
                     request_payload = None
                 http_request = {
-                    "payload": request_payload,
-                    "requestMethod": method,
-                    "requestUrl": request_url,
-                    "headers": dict(metadata),
+                  "payload": request_payload,
+                  "requestMethod": method,
+                  "requestUrl": request_url,
+                  "headers": dict(metadata),
                 }
                 _LOGGER.debug(
                     f"Sending request for google.cloud.discoveryengine_v1alpha.SessionServiceClient.ListOperations",
-                    extra={
+                    extra = {
                         "serviceName": "google.cloud.discoveryengine.v1alpha.SessionService",
                         "rpcName": "ListOperations",
                         "httpRequest": http_request,
@@ -1820,14 +1507,7 @@ class SessionServiceRestTransport(_BaseSessionServiceRestTransport):
                 )
 
             # Send the request
-            response = SessionServiceRestTransport._ListOperations._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-            )
+            response = SessionServiceRestTransport._ListOperations._get_response(self._host, metadata, query_params, self._session, timeout, transcoded_request)
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
             # subclass.
@@ -1838,21 +1518,19 @@ class SessionServiceRestTransport(_BaseSessionServiceRestTransport):
             resp = operations_pb2.ListOperationsResponse()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_list_operations(resp)
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
-                    "headers": dict(response.headers),
+                    "headers":  dict(response.headers),
                     "status": response.status_code,
                 }
                 _LOGGER.debug(
                     "Received response for google.cloud.discoveryengine_v1alpha.SessionServiceAsyncClient.ListOperations",
-                    extra={
+                    extra = {
                         "serviceName": "google.cloud.discoveryengine.v1alpha.SessionService",
                         "rpcName": "ListOperations",
                         "httpResponse": http_response,
@@ -1869,4 +1547,6 @@ class SessionServiceRestTransport(_BaseSessionServiceRestTransport):
         self._session.close()
 
 
-__all__ = ("SessionServiceRestTransport",)
+__all__=(
+    'SessionServiceRestTransport',
+)

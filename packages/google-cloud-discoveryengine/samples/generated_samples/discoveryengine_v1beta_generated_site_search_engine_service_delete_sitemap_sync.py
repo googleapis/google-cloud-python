@@ -53,5 +53,4 @@ def sample_delete_sitemap():
     # Handle the response
     print(response)
 
-
 # [END discoveryengine_v1beta_generated_SiteSearchEngineService_DeleteSitemap_sync]

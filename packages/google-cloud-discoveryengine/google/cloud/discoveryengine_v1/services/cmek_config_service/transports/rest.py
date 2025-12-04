@@ -13,27 +13,34 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-import dataclasses
-import json  # type: ignore
 import logging
+import json  # type: ignore
+
+from google.auth.transport.requests import AuthorizedSession  # type: ignore
+from google.auth import credentials as ga_credentials  # type: ignore
+from google.api_core import exceptions as core_exceptions
+from google.api_core import retry as retries
+from google.api_core import rest_helpers
+from google.api_core import rest_streaming
+from google.api_core import gapic_v1
+import google.protobuf
+
+from google.protobuf import json_format
+from google.api_core import operations_v1
+from google.cloud.location import locations_pb2 # type: ignore
+
+from requests import __version__ as requests_version
+import dataclasses
 from typing import Any, Callable, Dict, List, Optional, Sequence, Tuple, Union
 import warnings
 
-from google.api_core import gapic_v1, operations_v1, rest_helpers, rest_streaming
-from google.api_core import exceptions as core_exceptions
-from google.api_core import retry as retries
-from google.auth import credentials as ga_credentials  # type: ignore
-from google.auth.transport.requests import AuthorizedSession  # type: ignore
-from google.cloud.location import locations_pb2  # type: ignore
-from google.longrunning import operations_pb2  # type: ignore
-import google.protobuf
-from google.protobuf import json_format
-from requests import __version__ as requests_version
 
 from google.cloud.discoveryengine_v1.types import cmek_config_service
+from google.longrunning import operations_pb2  # type: ignore
 
-from .base import DEFAULT_CLIENT_INFO as BASE_DEFAULT_CLIENT_INFO
+
 from .rest_base import _BaseCmekConfigServiceRestTransport
+from .base import DEFAULT_CLIENT_INFO as BASE_DEFAULT_CLIENT_INFO
 
 try:
     OptionalRetry = Union[retries.Retry, gapic_v1.method._MethodDefault, None]
@@ -42,7 +49,6 @@ except AttributeError:  # pragma: NO COVER
 
 try:
     from google.api_core import client_logging  # type: ignore
-
     CLIENT_LOGGING_SUPPORTED = True  # pragma: NO COVER
 except ImportError:  # pragma: NO COVER
     CLIENT_LOGGING_SUPPORTED = False
@@ -111,15 +117,7 @@ class CmekConfigServiceRestInterceptor:
 
 
     """
-
-    def pre_delete_cmek_config(
-        self,
-        request: cmek_config_service.DeleteCmekConfigRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        cmek_config_service.DeleteCmekConfigRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+    def pre_delete_cmek_config(self, request: cmek_config_service.DeleteCmekConfigRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]) -> Tuple[cmek_config_service.DeleteCmekConfigRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for delete_cmek_config
 
         Override in a subclass to manipulate the request or metadata
@@ -127,9 +125,7 @@ class CmekConfigServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_delete_cmek_config(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_delete_cmek_config(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for delete_cmek_config
 
         DEPRECATED. Please use the `post_delete_cmek_config_with_metadata`
@@ -142,11 +138,7 @@ class CmekConfigServiceRestInterceptor:
         """
         return response
 
-    def post_delete_cmek_config_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
+    def post_delete_cmek_config_with_metadata(self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for delete_cmek_config
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -161,14 +153,7 @@ class CmekConfigServiceRestInterceptor:
         """
         return response, metadata
 
-    def pre_get_cmek_config(
-        self,
-        request: cmek_config_service.GetCmekConfigRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        cmek_config_service.GetCmekConfigRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+    def pre_get_cmek_config(self, request: cmek_config_service.GetCmekConfigRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]) -> Tuple[cmek_config_service.GetCmekConfigRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_cmek_config
 
         Override in a subclass to manipulate the request or metadata
@@ -176,9 +161,7 @@ class CmekConfigServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_get_cmek_config(
-        self, response: cmek_config_service.CmekConfig
-    ) -> cmek_config_service.CmekConfig:
+    def post_get_cmek_config(self, response: cmek_config_service.CmekConfig) -> cmek_config_service.CmekConfig:
         """Post-rpc interceptor for get_cmek_config
 
         DEPRECATED. Please use the `post_get_cmek_config_with_metadata`
@@ -191,11 +174,7 @@ class CmekConfigServiceRestInterceptor:
         """
         return response
 
-    def post_get_cmek_config_with_metadata(
-        self,
-        response: cmek_config_service.CmekConfig,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[cmek_config_service.CmekConfig, Sequence[Tuple[str, Union[str, bytes]]]]:
+    def post_get_cmek_config_with_metadata(self, response: cmek_config_service.CmekConfig, metadata: Sequence[Tuple[str, Union[str, bytes]]]) -> Tuple[cmek_config_service.CmekConfig, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for get_cmek_config
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -210,14 +189,7 @@ class CmekConfigServiceRestInterceptor:
         """
         return response, metadata
 
-    def pre_list_cmek_configs(
-        self,
-        request: cmek_config_service.ListCmekConfigsRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        cmek_config_service.ListCmekConfigsRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+    def pre_list_cmek_configs(self, request: cmek_config_service.ListCmekConfigsRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]) -> Tuple[cmek_config_service.ListCmekConfigsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_cmek_configs
 
         Override in a subclass to manipulate the request or metadata
@@ -225,9 +197,7 @@ class CmekConfigServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_list_cmek_configs(
-        self, response: cmek_config_service.ListCmekConfigsResponse
-    ) -> cmek_config_service.ListCmekConfigsResponse:
+    def post_list_cmek_configs(self, response: cmek_config_service.ListCmekConfigsResponse) -> cmek_config_service.ListCmekConfigsResponse:
         """Post-rpc interceptor for list_cmek_configs
 
         DEPRECATED. Please use the `post_list_cmek_configs_with_metadata`
@@ -240,14 +210,7 @@ class CmekConfigServiceRestInterceptor:
         """
         return response
 
-    def post_list_cmek_configs_with_metadata(
-        self,
-        response: cmek_config_service.ListCmekConfigsResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        cmek_config_service.ListCmekConfigsResponse,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+    def post_list_cmek_configs_with_metadata(self, response: cmek_config_service.ListCmekConfigsResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]) -> Tuple[cmek_config_service.ListCmekConfigsResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for list_cmek_configs
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -262,14 +225,7 @@ class CmekConfigServiceRestInterceptor:
         """
         return response, metadata
 
-    def pre_update_cmek_config(
-        self,
-        request: cmek_config_service.UpdateCmekConfigRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        cmek_config_service.UpdateCmekConfigRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+    def pre_update_cmek_config(self, request: cmek_config_service.UpdateCmekConfigRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]) -> Tuple[cmek_config_service.UpdateCmekConfigRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for update_cmek_config
 
         Override in a subclass to manipulate the request or metadata
@@ -277,9 +233,7 @@ class CmekConfigServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_update_cmek_config(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_update_cmek_config(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for update_cmek_config
 
         DEPRECATED. Please use the `post_update_cmek_config_with_metadata`
@@ -292,11 +246,7 @@ class CmekConfigServiceRestInterceptor:
         """
         return response
 
-    def post_update_cmek_config_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
+    def post_update_cmek_config_with_metadata(self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for update_cmek_config
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -312,12 +262,8 @@ class CmekConfigServiceRestInterceptor:
         return response, metadata
 
     def pre_cancel_operation(
-        self,
-        request: operations_pb2.CancelOperationRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        operations_pb2.CancelOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: operations_pb2.CancelOperationRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[operations_pb2.CancelOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for cancel_operation
 
         Override in a subclass to manipulate the request or metadata
@@ -325,7 +271,9 @@ class CmekConfigServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_cancel_operation(self, response: None) -> None:
+    def post_cancel_operation(
+        self, response: None
+    ) -> None:
         """Post-rpc interceptor for cancel_operation
 
         Override in a subclass to manipulate the response
@@ -335,12 +283,8 @@ class CmekConfigServiceRestInterceptor:
         return response
 
     def pre_get_operation(
-        self,
-        request: operations_pb2.GetOperationRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        operations_pb2.GetOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: operations_pb2.GetOperationRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[operations_pb2.GetOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_operation
 
         Override in a subclass to manipulate the request or metadata
@@ -360,12 +304,8 @@ class CmekConfigServiceRestInterceptor:
         return response
 
     def pre_list_operations(
-        self,
-        request: operations_pb2.ListOperationsRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        operations_pb2.ListOperationsRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: operations_pb2.ListOperationsRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[operations_pb2.ListOperationsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_operations
 
         Override in a subclass to manipulate the request or metadata
@@ -404,21 +344,20 @@ class CmekConfigServiceRestTransport(_BaseCmekConfigServiceRestTransport):
     It sends JSON representations of protocol buffers over HTTP/1.1
     """
 
-    def __init__(
-        self,
-        *,
-        host: str = "discoveryengine.googleapis.com",
-        credentials: Optional[ga_credentials.Credentials] = None,
-        credentials_file: Optional[str] = None,
-        scopes: Optional[Sequence[str]] = None,
-        client_cert_source_for_mtls: Optional[Callable[[], Tuple[bytes, bytes]]] = None,
-        quota_project_id: Optional[str] = None,
-        client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
-        always_use_jwt_access: Optional[bool] = False,
-        url_scheme: str = "https",
-        interceptor: Optional[CmekConfigServiceRestInterceptor] = None,
-        api_audience: Optional[str] = None,
-    ) -> None:
+    def __init__(self, *,
+            host: str = 'discoveryengine.googleapis.com',
+            credentials: Optional[ga_credentials.Credentials] = None,
+            credentials_file: Optional[str] = None,
+            scopes: Optional[Sequence[str]] = None,
+            client_cert_source_for_mtls: Optional[Callable[[
+                ], Tuple[bytes, bytes]]] = None,
+            quota_project_id: Optional[str] = None,
+            client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
+            always_use_jwt_access: Optional[bool] = False,
+            url_scheme: str = 'https',
+            interceptor: Optional[CmekConfigServiceRestInterceptor] = None,
+            api_audience: Optional[str] = None,
+            ) -> None:
         """Instantiate the transport.
 
         Args:
@@ -462,11 +401,10 @@ class CmekConfigServiceRestTransport(_BaseCmekConfigServiceRestTransport):
             client_info=client_info,
             always_use_jwt_access=always_use_jwt_access,
             url_scheme=url_scheme,
-            api_audience=api_audience,
+            api_audience=api_audience
         )
         self._session = AuthorizedSession(
-            self._credentials, default_host=self.DEFAULT_HOST
-        )
+            self._credentials, default_host=self.DEFAULT_HOST)
         self._operations_client: Optional[operations_v1.AbstractOperationsClient] = None
         if client_cert_source_for_mtls:
             self._session.configure_mtls_channel(client_cert_source_for_mtls)
@@ -483,182 +421,176 @@ class CmekConfigServiceRestTransport(_BaseCmekConfigServiceRestTransport):
         # Only create a new client if we do not already have one.
         if self._operations_client is None:
             http_options: Dict[str, List[Dict[str, str]]] = {
-                "google.longrunning.Operations.CancelOperation": [
+                'google.longrunning.Operations.CancelOperation': [
                     {
-                        "method": "post",
-                        "uri": "/v1/{name=projects/*/operations/*}:cancel",
-                        "body": "*",
+                        'method': 'post',
+                        'uri': '/v1/{name=projects/*/operations/*}:cancel',
+                        'body': '*',
                     },
                     {
-                        "method": "post",
-                        "uri": "/v1/{name=projects/*/locations/*/collections/*/dataStores/*/branches/*/operations/*}:cancel",
-                        "body": "*",
+                        'method': 'post',
+                        'uri': '/v1/{name=projects/*/locations/*/collections/*/dataStores/*/branches/*/operations/*}:cancel',
+                        'body': '*',
                     },
                     {
-                        "method": "post",
-                        "uri": "/v1/{name=projects/*/locations/*/collections/*/engines/*/operations/*}:cancel",
-                        "body": "*",
+                        'method': 'post',
+                        'uri': '/v1/{name=projects/*/locations/*/collections/*/engines/*/operations/*}:cancel',
+                        'body': '*',
                     },
                     {
-                        "method": "post",
-                        "uri": "/v1/{name=projects/*/locations/*/dataStores/*/branches/*/operations/*}:cancel",
-                        "body": "*",
-                    },
-                ],
-                "google.longrunning.Operations.GetOperation": [
-                    {
-                        "method": "get",
-                        "uri": "/v1/{name=projects/*/operations/*}",
-                    },
-                    {
-                        "method": "get",
-                        "uri": "/v1/{name=projects/*/locations/*/collections/*/dataConnector/operations/*}",
-                    },
-                    {
-                        "method": "get",
-                        "uri": "/v1/{name=projects/*/locations/*/collections/*/dataStores/*/branches/*/operations/*}",
-                    },
-                    {
-                        "method": "get",
-                        "uri": "/v1/{name=projects/*/locations/*/collections/*/dataStores/*/models/*/operations/*}",
-                    },
-                    {
-                        "method": "get",
-                        "uri": "/v1/{name=projects/*/locations/*/collections/*/dataStores/*/operations/*}",
-                    },
-                    {
-                        "method": "get",
-                        "uri": "/v1/{name=projects/*/locations/*/collections/*/dataStores/*/schemas/*/operations/*}",
-                    },
-                    {
-                        "method": "get",
-                        "uri": "/v1/{name=projects/*/locations/*/collections/*/dataStores/*/siteSearchEngine/operations/*}",
-                    },
-                    {
-                        "method": "get",
-                        "uri": "/v1/{name=projects/*/locations/*/collections/*/dataStores/*/siteSearchEngine/targetSites/operations/*}",
-                    },
-                    {
-                        "method": "get",
-                        "uri": "/v1/{name=projects/*/locations/*/collections/*/engines/*/operations/*}",
-                    },
-                    {
-                        "method": "get",
-                        "uri": "/v1/{name=projects/*/locations/*/collections/*/operations/*}",
-                    },
-                    {
-                        "method": "get",
-                        "uri": "/v1/{name=projects/*/locations/*/dataStores/*/branches/*/operations/*}",
-                    },
-                    {
-                        "method": "get",
-                        "uri": "/v1/{name=projects/*/locations/*/dataStores/*/models/*/operations/*}",
-                    },
-                    {
-                        "method": "get",
-                        "uri": "/v1/{name=projects/*/locations/*/dataStores/*/operations/*}",
-                    },
-                    {
-                        "method": "get",
-                        "uri": "/v1/{name=projects/*/locations/*/identityMappingStores/*/operations/*}",
-                    },
-                    {
-                        "method": "get",
-                        "uri": "/v1/{name=projects/*/locations/*/operations/*}",
-                    },
-                    {
-                        "method": "get",
-                        "uri": "/v1/{name=projects/*/operations/*}",
+                        'method': 'post',
+                        'uri': '/v1/{name=projects/*/locations/*/dataStores/*/branches/*/operations/*}:cancel',
+                        'body': '*',
                     },
                 ],
-                "google.longrunning.Operations.ListOperations": [
+                'google.longrunning.Operations.GetOperation': [
                     {
-                        "method": "get",
-                        "uri": "/v1/{name=projects/*}/operations",
+                        'method': 'get',
+                        'uri': '/v1/{name=projects/*/operations/*}',
                     },
                     {
-                        "method": "get",
-                        "uri": "/v1/{name=projects/*/locations/*/collections/*/dataConnector}/operations",
+                        'method': 'get',
+                        'uri': '/v1/{name=projects/*/locations/*/collections/*/dataConnector/operations/*}',
                     },
                     {
-                        "method": "get",
-                        "uri": "/v1/{name=projects/*/locations/*/collections/*/dataStores/*/branches/*}/operations",
+                        'method': 'get',
+                        'uri': '/v1/{name=projects/*/locations/*/collections/*/dataStores/*/branches/*/operations/*}',
                     },
                     {
-                        "method": "get",
-                        "uri": "/v1/{name=projects/*/locations/*/collections/*/dataStores/*/models/*}/operations",
+                        'method': 'get',
+                        'uri': '/v1/{name=projects/*/locations/*/collections/*/dataStores/*/models/*/operations/*}',
                     },
                     {
-                        "method": "get",
-                        "uri": "/v1/{name=projects/*/locations/*/collections/*/dataStores/*/schemas/*}/operations",
+                        'method': 'get',
+                        'uri': '/v1/{name=projects/*/locations/*/collections/*/dataStores/*/operations/*}',
                     },
                     {
-                        "method": "get",
-                        "uri": "/v1/{name=projects/*/locations/*/collections/*/dataStores/*/siteSearchEngine/targetSites}/operations",
+                        'method': 'get',
+                        'uri': '/v1/{name=projects/*/locations/*/collections/*/dataStores/*/schemas/*/operations/*}',
                     },
                     {
-                        "method": "get",
-                        "uri": "/v1/{name=projects/*/locations/*/collections/*/dataStores/*/siteSearchEngine}/operations",
+                        'method': 'get',
+                        'uri': '/v1/{name=projects/*/locations/*/collections/*/dataStores/*/siteSearchEngine/operations/*}',
                     },
                     {
-                        "method": "get",
-                        "uri": "/v1/{name=projects/*/locations/*/collections/*/dataStores/*}/operations",
+                        'method': 'get',
+                        'uri': '/v1/{name=projects/*/locations/*/collections/*/dataStores/*/siteSearchEngine/targetSites/operations/*}',
                     },
                     {
-                        "method": "get",
-                        "uri": "/v1/{name=projects/*/locations/*/collections/*/engines/*}/operations",
+                        'method': 'get',
+                        'uri': '/v1/{name=projects/*/locations/*/collections/*/engines/*/operations/*}',
                     },
                     {
-                        "method": "get",
-                        "uri": "/v1/{name=projects/*/locations/*/collections/*}/operations",
+                        'method': 'get',
+                        'uri': '/v1/{name=projects/*/locations/*/collections/*/operations/*}',
                     },
                     {
-                        "method": "get",
-                        "uri": "/v1/{name=projects/*/locations/*/dataStores/*/branches/*}/operations",
+                        'method': 'get',
+                        'uri': '/v1/{name=projects/*/locations/*/dataStores/*/branches/*/operations/*}',
                     },
                     {
-                        "method": "get",
-                        "uri": "/v1/{name=projects/*/locations/*/dataStores/*/models/*}/operations",
+                        'method': 'get',
+                        'uri': '/v1/{name=projects/*/locations/*/dataStores/*/models/*/operations/*}',
                     },
                     {
-                        "method": "get",
-                        "uri": "/v1/{name=projects/*/locations/*/dataStores/*}/operations",
+                        'method': 'get',
+                        'uri': '/v1/{name=projects/*/locations/*/dataStores/*/operations/*}',
                     },
                     {
-                        "method": "get",
-                        "uri": "/v1/{name=projects/*/locations/*/identityMappingStores/*}/operations",
+                        'method': 'get',
+                        'uri': '/v1/{name=projects/*/locations/*/identityMappingStores/*/operations/*}',
                     },
                     {
-                        "method": "get",
-                        "uri": "/v1/{name=projects/*/locations/*}/operations",
+                        'method': 'get',
+                        'uri': '/v1/{name=projects/*/locations/*/operations/*}',
                     },
                     {
-                        "method": "get",
-                        "uri": "/v1/{name=projects/*}/operations",
+                        'method': 'get',
+                        'uri': '/v1/{name=projects/*/operations/*}',
+                    },
+                ],
+                'google.longrunning.Operations.ListOperations': [
+                    {
+                        'method': 'get',
+                        'uri': '/v1/{name=projects/*}/operations',
+                    },
+                    {
+                        'method': 'get',
+                        'uri': '/v1/{name=projects/*/locations/*/collections/*/dataConnector}/operations',
+                    },
+                    {
+                        'method': 'get',
+                        'uri': '/v1/{name=projects/*/locations/*/collections/*/dataStores/*/branches/*}/operations',
+                    },
+                    {
+                        'method': 'get',
+                        'uri': '/v1/{name=projects/*/locations/*/collections/*/dataStores/*/models/*}/operations',
+                    },
+                    {
+                        'method': 'get',
+                        'uri': '/v1/{name=projects/*/locations/*/collections/*/dataStores/*/schemas/*}/operations',
+                    },
+                    {
+                        'method': 'get',
+                        'uri': '/v1/{name=projects/*/locations/*/collections/*/dataStores/*/siteSearchEngine/targetSites}/operations',
+                    },
+                    {
+                        'method': 'get',
+                        'uri': '/v1/{name=projects/*/locations/*/collections/*/dataStores/*/siteSearchEngine}/operations',
+                    },
+                    {
+                        'method': 'get',
+                        'uri': '/v1/{name=projects/*/locations/*/collections/*/dataStores/*}/operations',
+                    },
+                    {
+                        'method': 'get',
+                        'uri': '/v1/{name=projects/*/locations/*/collections/*/engines/*}/operations',
+                    },
+                    {
+                        'method': 'get',
+                        'uri': '/v1/{name=projects/*/locations/*/collections/*}/operations',
+                    },
+                    {
+                        'method': 'get',
+                        'uri': '/v1/{name=projects/*/locations/*/dataStores/*/branches/*}/operations',
+                    },
+                    {
+                        'method': 'get',
+                        'uri': '/v1/{name=projects/*/locations/*/dataStores/*/models/*}/operations',
+                    },
+                    {
+                        'method': 'get',
+                        'uri': '/v1/{name=projects/*/locations/*/dataStores/*}/operations',
+                    },
+                    {
+                        'method': 'get',
+                        'uri': '/v1/{name=projects/*/locations/*/identityMappingStores/*}/operations',
+                    },
+                    {
+                        'method': 'get',
+                        'uri': '/v1/{name=projects/*/locations/*}/operations',
+                    },
+                    {
+                        'method': 'get',
+                        'uri': '/v1/{name=projects/*}/operations',
                     },
                 ],
             }
 
             rest_transport = operations_v1.OperationsRestTransport(
-                host=self._host,
-                # use the credentials which are saved
-                credentials=self._credentials,
-                scopes=self._scopes,
-                http_options=http_options,
-                path_prefix="v1",
-            )
+                    host=self._host,
+                    # use the credentials which are saved
+                    credentials=self._credentials,
+                    scopes=self._scopes,
+                    http_options=http_options,
+                    path_prefix="v1")
 
-            self._operations_client = operations_v1.AbstractOperationsClient(
-                transport=rest_transport
-            )
+            self._operations_client = operations_v1.AbstractOperationsClient(transport=rest_transport)
 
         # Return the client from cache.
         return self._operations_client
 
-    class _DeleteCmekConfig(
-        _BaseCmekConfigServiceRestTransport._BaseDeleteCmekConfig,
-        CmekConfigServiceRestStub,
-    ):
+    class _DeleteCmekConfig(_BaseCmekConfigServiceRestTransport._BaseDeleteCmekConfig, CmekConfigServiceRestStub):
         def __hash__(self):
             return hash("CmekConfigServiceRestTransport.DeleteCmekConfig")
 
@@ -670,28 +602,26 @@ class CmekConfigServiceRestTransport(_BaseCmekConfigServiceRestTransport):
             session,
             timeout,
             transcoded_request,
-            body=None,
-        ):
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+            body=None):
+
+            uri = transcoded_request['uri']
+            method = transcoded_request['method']
             headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
+            headers['Content-Type'] = 'application/json'
             response = getattr(session, method)(
                 "{host}{uri}".format(host=host, uri=uri),
                 timeout=timeout,
                 headers=headers,
                 params=rest_helpers.flatten_query_params(query_params, strict=True),
-            )
+                )
             return response
 
-        def __call__(
-            self,
-            request: cmek_config_service.DeleteCmekConfigRequest,
-            *,
-            retry: OptionalRetry = gapic_v1.method.DEFAULT,
-            timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
-        ) -> operations_pb2.Operation:
+        def __call__(self,
+                request: cmek_config_service.DeleteCmekConfigRequest, *,
+                retry: OptionalRetry=gapic_v1.method.DEFAULT,
+                timeout: Optional[float]=None,
+                metadata: Sequence[Tuple[str, Union[str, bytes]]]=(),
+                ) -> operations_pb2.Operation:
             r"""Call the delete cmek config method over HTTP.
 
             Args:
@@ -715,42 +645,30 @@ class CmekConfigServiceRestTransport(_BaseCmekConfigServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseCmekConfigServiceRestTransport._BaseDeleteCmekConfig._get_http_options()
-            )
+            http_options = _BaseCmekConfigServiceRestTransport._BaseDeleteCmekConfig._get_http_options()
 
-            request, metadata = self._interceptor.pre_delete_cmek_config(
-                request, metadata
-            )
-            transcoded_request = _BaseCmekConfigServiceRestTransport._BaseDeleteCmekConfig._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_delete_cmek_config(request, metadata)
+            transcoded_request = _BaseCmekConfigServiceRestTransport._BaseDeleteCmekConfig._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseCmekConfigServiceRestTransport._BaseDeleteCmekConfig._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseCmekConfigServiceRestTransport._BaseDeleteCmekConfig._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
-                method = transcoded_request["method"]
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request['uri'])
+                method = transcoded_request['method']
                 try:
                     request_payload = json_format.MessageToJson(request)
                 except:
                     request_payload = None
                 http_request = {
-                    "payload": request_payload,
-                    "requestMethod": method,
-                    "requestUrl": request_url,
-                    "headers": dict(metadata),
+                  "payload": request_payload,
+                  "requestMethod": method,
+                  "requestUrl": request_url,
+                  "headers": dict(metadata),
                 }
                 _LOGGER.debug(
                     f"Sending request for google.cloud.discoveryengine_v1.CmekConfigServiceClient.DeleteCmekConfig",
-                    extra={
+                    extra = {
                         "serviceName": "google.cloud.discoveryengine.v1.CmekConfigService",
                         "rpcName": "DeleteCmekConfig",
                         "httpRequest": http_request,
@@ -759,14 +677,7 @@ class CmekConfigServiceRestTransport(_BaseCmekConfigServiceRestTransport):
                 )
 
             # Send the request
-            response = CmekConfigServiceRestTransport._DeleteCmekConfig._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-            )
+            response = CmekConfigServiceRestTransport._DeleteCmekConfig._get_response(self._host, metadata, query_params, self._session, timeout, transcoded_request)
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
             # subclass.
@@ -779,24 +690,20 @@ class CmekConfigServiceRestTransport(_BaseCmekConfigServiceRestTransport):
 
             resp = self._interceptor.post_delete_cmek_config(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_delete_cmek_config_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_delete_cmek_config_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
                     response_payload = None
                 http_response = {
-                    "payload": response_payload,
-                    "headers": dict(response.headers),
-                    "status": response.status_code,
+                "payload": response_payload,
+                "headers":  dict(response.headers),
+                "status": response.status_code,
                 }
                 _LOGGER.debug(
                     "Received response for google.cloud.discoveryengine_v1.CmekConfigServiceClient.delete_cmek_config",
-                    extra={
+                    extra = {
                         "serviceName": "google.cloud.discoveryengine.v1.CmekConfigService",
                         "rpcName": "DeleteCmekConfig",
                         "metadata": http_response["headers"],
@@ -805,10 +712,7 @@ class CmekConfigServiceRestTransport(_BaseCmekConfigServiceRestTransport):
                 )
             return resp
 
-    class _GetCmekConfig(
-        _BaseCmekConfigServiceRestTransport._BaseGetCmekConfig,
-        CmekConfigServiceRestStub,
-    ):
+    class _GetCmekConfig(_BaseCmekConfigServiceRestTransport._BaseGetCmekConfig, CmekConfigServiceRestStub):
         def __hash__(self):
             return hash("CmekConfigServiceRestTransport.GetCmekConfig")
 
@@ -820,28 +724,26 @@ class CmekConfigServiceRestTransport(_BaseCmekConfigServiceRestTransport):
             session,
             timeout,
             transcoded_request,
-            body=None,
-        ):
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+            body=None):
+
+            uri = transcoded_request['uri']
+            method = transcoded_request['method']
             headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
+            headers['Content-Type'] = 'application/json'
             response = getattr(session, method)(
                 "{host}{uri}".format(host=host, uri=uri),
                 timeout=timeout,
                 headers=headers,
                 params=rest_helpers.flatten_query_params(query_params, strict=True),
-            )
+                )
             return response
 
-        def __call__(
-            self,
-            request: cmek_config_service.GetCmekConfigRequest,
-            *,
-            retry: OptionalRetry = gapic_v1.method.DEFAULT,
-            timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
-        ) -> cmek_config_service.CmekConfig:
+        def __call__(self,
+                request: cmek_config_service.GetCmekConfigRequest, *,
+                retry: OptionalRetry=gapic_v1.method.DEFAULT,
+                timeout: Optional[float]=None,
+                metadata: Sequence[Tuple[str, Union[str, bytes]]]=(),
+                ) -> cmek_config_service.CmekConfig:
             r"""Call the get cmek config method over HTTP.
 
             Args:
@@ -863,40 +765,30 @@ class CmekConfigServiceRestTransport(_BaseCmekConfigServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseCmekConfigServiceRestTransport._BaseGetCmekConfig._get_http_options()
-            )
+            http_options = _BaseCmekConfigServiceRestTransport._BaseGetCmekConfig._get_http_options()
 
             request, metadata = self._interceptor.pre_get_cmek_config(request, metadata)
-            transcoded_request = _BaseCmekConfigServiceRestTransport._BaseGetCmekConfig._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseCmekConfigServiceRestTransport._BaseGetCmekConfig._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseCmekConfigServiceRestTransport._BaseGetCmekConfig._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseCmekConfigServiceRestTransport._BaseGetCmekConfig._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
-                method = transcoded_request["method"]
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request['uri'])
+                method = transcoded_request['method']
                 try:
                     request_payload = type(request).to_json(request)
                 except:
                     request_payload = None
                 http_request = {
-                    "payload": request_payload,
-                    "requestMethod": method,
-                    "requestUrl": request_url,
-                    "headers": dict(metadata),
+                  "payload": request_payload,
+                  "requestMethod": method,
+                  "requestUrl": request_url,
+                  "headers": dict(metadata),
                 }
                 _LOGGER.debug(
                     f"Sending request for google.cloud.discoveryengine_v1.CmekConfigServiceClient.GetCmekConfig",
-                    extra={
+                    extra = {
                         "serviceName": "google.cloud.discoveryengine.v1.CmekConfigService",
                         "rpcName": "GetCmekConfig",
                         "httpRequest": http_request,
@@ -905,14 +797,7 @@ class CmekConfigServiceRestTransport(_BaseCmekConfigServiceRestTransport):
                 )
 
             # Send the request
-            response = CmekConfigServiceRestTransport._GetCmekConfig._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-            )
+            response = CmekConfigServiceRestTransport._GetCmekConfig._get_response(self._host, metadata, query_params, self._session, timeout, transcoded_request)
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
             # subclass.
@@ -927,24 +812,20 @@ class CmekConfigServiceRestTransport(_BaseCmekConfigServiceRestTransport):
 
             resp = self._interceptor.post_get_cmek_config(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_get_cmek_config_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_get_cmek_config_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = cmek_config_service.CmekConfig.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
-                    "payload": response_payload,
-                    "headers": dict(response.headers),
-                    "status": response.status_code,
+                "payload": response_payload,
+                "headers":  dict(response.headers),
+                "status": response.status_code,
                 }
                 _LOGGER.debug(
                     "Received response for google.cloud.discoveryengine_v1.CmekConfigServiceClient.get_cmek_config",
-                    extra={
+                    extra = {
                         "serviceName": "google.cloud.discoveryengine.v1.CmekConfigService",
                         "rpcName": "GetCmekConfig",
                         "metadata": http_response["headers"],
@@ -953,10 +834,7 @@ class CmekConfigServiceRestTransport(_BaseCmekConfigServiceRestTransport):
                 )
             return resp
 
-    class _ListCmekConfigs(
-        _BaseCmekConfigServiceRestTransport._BaseListCmekConfigs,
-        CmekConfigServiceRestStub,
-    ):
+    class _ListCmekConfigs(_BaseCmekConfigServiceRestTransport._BaseListCmekConfigs, CmekConfigServiceRestStub):
         def __hash__(self):
             return hash("CmekConfigServiceRestTransport.ListCmekConfigs")
 
@@ -968,28 +846,26 @@ class CmekConfigServiceRestTransport(_BaseCmekConfigServiceRestTransport):
             session,
             timeout,
             transcoded_request,
-            body=None,
-        ):
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+            body=None):
+
+            uri = transcoded_request['uri']
+            method = transcoded_request['method']
             headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
+            headers['Content-Type'] = 'application/json'
             response = getattr(session, method)(
                 "{host}{uri}".format(host=host, uri=uri),
                 timeout=timeout,
                 headers=headers,
                 params=rest_helpers.flatten_query_params(query_params, strict=True),
-            )
+                )
             return response
 
-        def __call__(
-            self,
-            request: cmek_config_service.ListCmekConfigsRequest,
-            *,
-            retry: OptionalRetry = gapic_v1.method.DEFAULT,
-            timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
-        ) -> cmek_config_service.ListCmekConfigsResponse:
+        def __call__(self,
+                request: cmek_config_service.ListCmekConfigsRequest, *,
+                retry: OptionalRetry=gapic_v1.method.DEFAULT,
+                timeout: Optional[float]=None,
+                metadata: Sequence[Tuple[str, Union[str, bytes]]]=(),
+                ) -> cmek_config_service.ListCmekConfigsResponse:
             r"""Call the list cmek configs method over HTTP.
 
             Args:
@@ -1013,42 +889,30 @@ class CmekConfigServiceRestTransport(_BaseCmekConfigServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseCmekConfigServiceRestTransport._BaseListCmekConfigs._get_http_options()
-            )
+            http_options = _BaseCmekConfigServiceRestTransport._BaseListCmekConfigs._get_http_options()
 
-            request, metadata = self._interceptor.pre_list_cmek_configs(
-                request, metadata
-            )
-            transcoded_request = _BaseCmekConfigServiceRestTransport._BaseListCmekConfigs._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_list_cmek_configs(request, metadata)
+            transcoded_request = _BaseCmekConfigServiceRestTransport._BaseListCmekConfigs._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseCmekConfigServiceRestTransport._BaseListCmekConfigs._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseCmekConfigServiceRestTransport._BaseListCmekConfigs._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
-                method = transcoded_request["method"]
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request['uri'])
+                method = transcoded_request['method']
                 try:
                     request_payload = type(request).to_json(request)
                 except:
                     request_payload = None
                 http_request = {
-                    "payload": request_payload,
-                    "requestMethod": method,
-                    "requestUrl": request_url,
-                    "headers": dict(metadata),
+                  "payload": request_payload,
+                  "requestMethod": method,
+                  "requestUrl": request_url,
+                  "headers": dict(metadata),
                 }
                 _LOGGER.debug(
                     f"Sending request for google.cloud.discoveryengine_v1.CmekConfigServiceClient.ListCmekConfigs",
-                    extra={
+                    extra = {
                         "serviceName": "google.cloud.discoveryengine.v1.CmekConfigService",
                         "rpcName": "ListCmekConfigs",
                         "httpRequest": http_request,
@@ -1057,14 +921,7 @@ class CmekConfigServiceRestTransport(_BaseCmekConfigServiceRestTransport):
                 )
 
             # Send the request
-            response = CmekConfigServiceRestTransport._ListCmekConfigs._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-            )
+            response = CmekConfigServiceRestTransport._ListCmekConfigs._get_response(self._host, metadata, query_params, self._session, timeout, transcoded_request)
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
             # subclass.
@@ -1079,26 +936,20 @@ class CmekConfigServiceRestTransport(_BaseCmekConfigServiceRestTransport):
 
             resp = self._interceptor.post_list_cmek_configs(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_list_cmek_configs_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_list_cmek_configs_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = (
-                        cmek_config_service.ListCmekConfigsResponse.to_json(response)
-                    )
+                    response_payload = cmek_config_service.ListCmekConfigsResponse.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
-                    "payload": response_payload,
-                    "headers": dict(response.headers),
-                    "status": response.status_code,
+                "payload": response_payload,
+                "headers":  dict(response.headers),
+                "status": response.status_code,
                 }
                 _LOGGER.debug(
                     "Received response for google.cloud.discoveryengine_v1.CmekConfigServiceClient.list_cmek_configs",
-                    extra={
+                    extra = {
                         "serviceName": "google.cloud.discoveryengine.v1.CmekConfigService",
                         "rpcName": "ListCmekConfigs",
                         "metadata": http_response["headers"],
@@ -1107,10 +958,7 @@ class CmekConfigServiceRestTransport(_BaseCmekConfigServiceRestTransport):
                 )
             return resp
 
-    class _UpdateCmekConfig(
-        _BaseCmekConfigServiceRestTransport._BaseUpdateCmekConfig,
-        CmekConfigServiceRestStub,
-    ):
+    class _UpdateCmekConfig(_BaseCmekConfigServiceRestTransport._BaseUpdateCmekConfig, CmekConfigServiceRestStub):
         def __hash__(self):
             return hash("CmekConfigServiceRestTransport.UpdateCmekConfig")
 
@@ -1122,29 +970,27 @@ class CmekConfigServiceRestTransport(_BaseCmekConfigServiceRestTransport):
             session,
             timeout,
             transcoded_request,
-            body=None,
-        ):
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+            body=None):
+
+            uri = transcoded_request['uri']
+            method = transcoded_request['method']
             headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
+            headers['Content-Type'] = 'application/json'
             response = getattr(session, method)(
                 "{host}{uri}".format(host=host, uri=uri),
                 timeout=timeout,
                 headers=headers,
                 params=rest_helpers.flatten_query_params(query_params, strict=True),
                 data=body,
-            )
+                )
             return response
 
-        def __call__(
-            self,
-            request: cmek_config_service.UpdateCmekConfigRequest,
-            *,
-            retry: OptionalRetry = gapic_v1.method.DEFAULT,
-            timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
-        ) -> operations_pb2.Operation:
+        def __call__(self,
+                request: cmek_config_service.UpdateCmekConfigRequest, *,
+                retry: OptionalRetry=gapic_v1.method.DEFAULT,
+                timeout: Optional[float]=None,
+                metadata: Sequence[Tuple[str, Union[str, bytes]]]=(),
+                ) -> operations_pb2.Operation:
             r"""Call the update cmek config method over HTTP.
 
             Args:
@@ -1167,46 +1013,32 @@ class CmekConfigServiceRestTransport(_BaseCmekConfigServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseCmekConfigServiceRestTransport._BaseUpdateCmekConfig._get_http_options()
-            )
+            http_options = _BaseCmekConfigServiceRestTransport._BaseUpdateCmekConfig._get_http_options()
 
-            request, metadata = self._interceptor.pre_update_cmek_config(
-                request, metadata
-            )
-            transcoded_request = _BaseCmekConfigServiceRestTransport._BaseUpdateCmekConfig._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_update_cmek_config(request, metadata)
+            transcoded_request = _BaseCmekConfigServiceRestTransport._BaseUpdateCmekConfig._get_transcoded_request(http_options, request)
 
-            body = _BaseCmekConfigServiceRestTransport._BaseUpdateCmekConfig._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseCmekConfigServiceRestTransport._BaseUpdateCmekConfig._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseCmekConfigServiceRestTransport._BaseUpdateCmekConfig._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseCmekConfigServiceRestTransport._BaseUpdateCmekConfig._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
-                method = transcoded_request["method"]
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request['uri'])
+                method = transcoded_request['method']
                 try:
                     request_payload = json_format.MessageToJson(request)
                 except:
                     request_payload = None
                 http_request = {
-                    "payload": request_payload,
-                    "requestMethod": method,
-                    "requestUrl": request_url,
-                    "headers": dict(metadata),
+                  "payload": request_payload,
+                  "requestMethod": method,
+                  "requestUrl": request_url,
+                  "headers": dict(metadata),
                 }
                 _LOGGER.debug(
                     f"Sending request for google.cloud.discoveryengine_v1.CmekConfigServiceClient.UpdateCmekConfig",
-                    extra={
+                    extra = {
                         "serviceName": "google.cloud.discoveryengine.v1.CmekConfigService",
                         "rpcName": "UpdateCmekConfig",
                         "httpRequest": http_request,
@@ -1215,15 +1047,7 @@ class CmekConfigServiceRestTransport(_BaseCmekConfigServiceRestTransport):
                 )
 
             # Send the request
-            response = CmekConfigServiceRestTransport._UpdateCmekConfig._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
-            )
+            response = CmekConfigServiceRestTransport._UpdateCmekConfig._get_response(self._host, metadata, query_params, self._session, timeout, transcoded_request, body)
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
             # subclass.
@@ -1236,24 +1060,20 @@ class CmekConfigServiceRestTransport(_BaseCmekConfigServiceRestTransport):
 
             resp = self._interceptor.post_update_cmek_config(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_update_cmek_config_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_update_cmek_config_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
                     response_payload = None
                 http_response = {
-                    "payload": response_payload,
-                    "headers": dict(response.headers),
-                    "status": response.status_code,
+                "payload": response_payload,
+                "headers":  dict(response.headers),
+                "status": response.status_code,
                 }
                 _LOGGER.debug(
                     "Received response for google.cloud.discoveryengine_v1.CmekConfigServiceClient.update_cmek_config",
-                    extra={
+                    extra = {
                         "serviceName": "google.cloud.discoveryengine.v1.CmekConfigService",
                         "rpcName": "UpdateCmekConfig",
                         "metadata": http_response["headers"],
@@ -1263,54 +1083,42 @@ class CmekConfigServiceRestTransport(_BaseCmekConfigServiceRestTransport):
             return resp
 
     @property
-    def delete_cmek_config(
-        self,
-    ) -> Callable[
-        [cmek_config_service.DeleteCmekConfigRequest], operations_pb2.Operation
-    ]:
+    def delete_cmek_config(self) -> Callable[
+            [cmek_config_service.DeleteCmekConfigRequest],
+            operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return self._DeleteCmekConfig(self._session, self._host, self._interceptor)  # type: ignore
+        return self._DeleteCmekConfig(self._session, self._host, self._interceptor) # type: ignore
 
     @property
-    def get_cmek_config(
-        self,
-    ) -> Callable[
-        [cmek_config_service.GetCmekConfigRequest], cmek_config_service.CmekConfig
-    ]:
+    def get_cmek_config(self) -> Callable[
+            [cmek_config_service.GetCmekConfigRequest],
+            cmek_config_service.CmekConfig]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return self._GetCmekConfig(self._session, self._host, self._interceptor)  # type: ignore
+        return self._GetCmekConfig(self._session, self._host, self._interceptor) # type: ignore
 
     @property
-    def list_cmek_configs(
-        self,
-    ) -> Callable[
-        [cmek_config_service.ListCmekConfigsRequest],
-        cmek_config_service.ListCmekConfigsResponse,
-    ]:
+    def list_cmek_configs(self) -> Callable[
+            [cmek_config_service.ListCmekConfigsRequest],
+            cmek_config_service.ListCmekConfigsResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return self._ListCmekConfigs(self._session, self._host, self._interceptor)  # type: ignore
+        return self._ListCmekConfigs(self._session, self._host, self._interceptor) # type: ignore
 
     @property
-    def update_cmek_config(
-        self,
-    ) -> Callable[
-        [cmek_config_service.UpdateCmekConfigRequest], operations_pb2.Operation
-    ]:
+    def update_cmek_config(self) -> Callable[
+            [cmek_config_service.UpdateCmekConfigRequest],
+            operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return self._UpdateCmekConfig(self._session, self._host, self._interceptor)  # type: ignore
+        return self._UpdateCmekConfig(self._session, self._host, self._interceptor) # type: ignore
 
     @property
     def cancel_operation(self):
-        return self._CancelOperation(self._session, self._host, self._interceptor)  # type: ignore
+        return self._CancelOperation(self._session, self._host, self._interceptor) # type: ignore
 
-    class _CancelOperation(
-        _BaseCmekConfigServiceRestTransport._BaseCancelOperation,
-        CmekConfigServiceRestStub,
-    ):
+    class _CancelOperation(_BaseCmekConfigServiceRestTransport._BaseCancelOperation, CmekConfigServiceRestStub):
         def __hash__(self):
             return hash("CmekConfigServiceRestTransport.CancelOperation")
 
@@ -1322,29 +1130,28 @@ class CmekConfigServiceRestTransport(_BaseCmekConfigServiceRestTransport):
             session,
             timeout,
             transcoded_request,
-            body=None,
-        ):
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+            body=None):
+
+            uri = transcoded_request['uri']
+            method = transcoded_request['method']
             headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
+            headers['Content-Type'] = 'application/json'
             response = getattr(session, method)(
                 "{host}{uri}".format(host=host, uri=uri),
                 timeout=timeout,
                 headers=headers,
                 params=rest_helpers.flatten_query_params(query_params, strict=True),
                 data=body,
-            )
+                )
             return response
 
-        def __call__(
-            self,
-            request: operations_pb2.CancelOperationRequest,
-            *,
-            retry: OptionalRetry = gapic_v1.method.DEFAULT,
-            timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
-        ) -> None:
+        def __call__(self,
+            request: operations_pb2.CancelOperationRequest, *,
+            retry: OptionalRetry=gapic_v1.method.DEFAULT,
+            timeout: Optional[float]=None,
+            metadata: Sequence[Tuple[str, Union[str, bytes]]]=(),
+            ) -> None:
+
             r"""Call the cancel operation method over HTTP.
 
             Args:
@@ -1359,46 +1166,32 @@ class CmekConfigServiceRestTransport(_BaseCmekConfigServiceRestTransport):
                     be of type `bytes`.
             """
 
-            http_options = (
-                _BaseCmekConfigServiceRestTransport._BaseCancelOperation._get_http_options()
-            )
+            http_options = _BaseCmekConfigServiceRestTransport._BaseCancelOperation._get_http_options()
 
-            request, metadata = self._interceptor.pre_cancel_operation(
-                request, metadata
-            )
-            transcoded_request = _BaseCmekConfigServiceRestTransport._BaseCancelOperation._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_cancel_operation(request, metadata)
+            transcoded_request = _BaseCmekConfigServiceRestTransport._BaseCancelOperation._get_transcoded_request(http_options, request)
 
-            body = _BaseCmekConfigServiceRestTransport._BaseCancelOperation._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseCmekConfigServiceRestTransport._BaseCancelOperation._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseCmekConfigServiceRestTransport._BaseCancelOperation._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseCmekConfigServiceRestTransport._BaseCancelOperation._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
-                method = transcoded_request["method"]
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request['uri'])
+                method = transcoded_request['method']
                 try:
                     request_payload = json_format.MessageToJson(request)
                 except:
                     request_payload = None
                 http_request = {
-                    "payload": request_payload,
-                    "requestMethod": method,
-                    "requestUrl": request_url,
-                    "headers": dict(metadata),
+                  "payload": request_payload,
+                  "requestMethod": method,
+                  "requestUrl": request_url,
+                  "headers": dict(metadata),
                 }
                 _LOGGER.debug(
                     f"Sending request for google.cloud.discoveryengine_v1.CmekConfigServiceClient.CancelOperation",
-                    extra={
+                    extra = {
                         "serviceName": "google.cloud.discoveryengine.v1.CmekConfigService",
                         "rpcName": "CancelOperation",
                         "httpRequest": http_request,
@@ -1407,15 +1200,7 @@ class CmekConfigServiceRestTransport(_BaseCmekConfigServiceRestTransport):
                 )
 
             # Send the request
-            response = CmekConfigServiceRestTransport._CancelOperation._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
-            )
+            response = CmekConfigServiceRestTransport._CancelOperation._get_response(self._host, metadata, query_params, self._session, timeout, transcoded_request, body)
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
             # subclass.
@@ -1426,11 +1211,9 @@ class CmekConfigServiceRestTransport(_BaseCmekConfigServiceRestTransport):
 
     @property
     def get_operation(self):
-        return self._GetOperation(self._session, self._host, self._interceptor)  # type: ignore
+        return self._GetOperation(self._session, self._host, self._interceptor) # type: ignore
 
-    class _GetOperation(
-        _BaseCmekConfigServiceRestTransport._BaseGetOperation, CmekConfigServiceRestStub
-    ):
+    class _GetOperation(_BaseCmekConfigServiceRestTransport._BaseGetOperation, CmekConfigServiceRestStub):
         def __hash__(self):
             return hash("CmekConfigServiceRestTransport.GetOperation")
 
@@ -1442,28 +1225,27 @@ class CmekConfigServiceRestTransport(_BaseCmekConfigServiceRestTransport):
             session,
             timeout,
             transcoded_request,
-            body=None,
-        ):
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+            body=None):
+
+            uri = transcoded_request['uri']
+            method = transcoded_request['method']
             headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
+            headers['Content-Type'] = 'application/json'
             response = getattr(session, method)(
                 "{host}{uri}".format(host=host, uri=uri),
                 timeout=timeout,
                 headers=headers,
                 params=rest_helpers.flatten_query_params(query_params, strict=True),
-            )
+                )
             return response
 
-        def __call__(
-            self,
-            request: operations_pb2.GetOperationRequest,
-            *,
-            retry: OptionalRetry = gapic_v1.method.DEFAULT,
-            timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
-        ) -> operations_pb2.Operation:
+        def __call__(self,
+            request: operations_pb2.GetOperationRequest, *,
+            retry: OptionalRetry=gapic_v1.method.DEFAULT,
+            timeout: Optional[float]=None,
+            metadata: Sequence[Tuple[str, Union[str, bytes]]]=(),
+            ) -> operations_pb2.Operation:
+
             r"""Call the get operation method over HTTP.
 
             Args:
@@ -1481,40 +1263,30 @@ class CmekConfigServiceRestTransport(_BaseCmekConfigServiceRestTransport):
                 operations_pb2.Operation: Response from GetOperation method.
             """
 
-            http_options = (
-                _BaseCmekConfigServiceRestTransport._BaseGetOperation._get_http_options()
-            )
+            http_options = _BaseCmekConfigServiceRestTransport._BaseGetOperation._get_http_options()
 
             request, metadata = self._interceptor.pre_get_operation(request, metadata)
-            transcoded_request = _BaseCmekConfigServiceRestTransport._BaseGetOperation._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseCmekConfigServiceRestTransport._BaseGetOperation._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseCmekConfigServiceRestTransport._BaseGetOperation._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseCmekConfigServiceRestTransport._BaseGetOperation._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
-                method = transcoded_request["method"]
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request['uri'])
+                method = transcoded_request['method']
                 try:
                     request_payload = json_format.MessageToJson(request)
                 except:
                     request_payload = None
                 http_request = {
-                    "payload": request_payload,
-                    "requestMethod": method,
-                    "requestUrl": request_url,
-                    "headers": dict(metadata),
+                  "payload": request_payload,
+                  "requestMethod": method,
+                  "requestUrl": request_url,
+                  "headers": dict(metadata),
                 }
                 _LOGGER.debug(
                     f"Sending request for google.cloud.discoveryengine_v1.CmekConfigServiceClient.GetOperation",
-                    extra={
+                    extra = {
                         "serviceName": "google.cloud.discoveryengine.v1.CmekConfigService",
                         "rpcName": "GetOperation",
                         "httpRequest": http_request,
@@ -1523,14 +1295,7 @@ class CmekConfigServiceRestTransport(_BaseCmekConfigServiceRestTransport):
                 )
 
             # Send the request
-            response = CmekConfigServiceRestTransport._GetOperation._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-            )
+            response = CmekConfigServiceRestTransport._GetOperation._get_response(self._host, metadata, query_params, self._session, timeout, transcoded_request)
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
             # subclass.
@@ -1541,21 +1306,19 @@ class CmekConfigServiceRestTransport(_BaseCmekConfigServiceRestTransport):
             resp = operations_pb2.Operation()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_get_operation(resp)
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
-                    "headers": dict(response.headers),
+                    "headers":  dict(response.headers),
                     "status": response.status_code,
                 }
                 _LOGGER.debug(
                     "Received response for google.cloud.discoveryengine_v1.CmekConfigServiceAsyncClient.GetOperation",
-                    extra={
+                    extra = {
                         "serviceName": "google.cloud.discoveryengine.v1.CmekConfigService",
                         "rpcName": "GetOperation",
                         "httpResponse": http_response,
@@ -1566,12 +1329,9 @@ class CmekConfigServiceRestTransport(_BaseCmekConfigServiceRestTransport):
 
     @property
     def list_operations(self):
-        return self._ListOperations(self._session, self._host, self._interceptor)  # type: ignore
+        return self._ListOperations(self._session, self._host, self._interceptor) # type: ignore
 
-    class _ListOperations(
-        _BaseCmekConfigServiceRestTransport._BaseListOperations,
-        CmekConfigServiceRestStub,
-    ):
+    class _ListOperations(_BaseCmekConfigServiceRestTransport._BaseListOperations, CmekConfigServiceRestStub):
         def __hash__(self):
             return hash("CmekConfigServiceRestTransport.ListOperations")
 
@@ -1583,28 +1343,27 @@ class CmekConfigServiceRestTransport(_BaseCmekConfigServiceRestTransport):
             session,
             timeout,
             transcoded_request,
-            body=None,
-        ):
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+            body=None):
+
+            uri = transcoded_request['uri']
+            method = transcoded_request['method']
             headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
+            headers['Content-Type'] = 'application/json'
             response = getattr(session, method)(
                 "{host}{uri}".format(host=host, uri=uri),
                 timeout=timeout,
                 headers=headers,
                 params=rest_helpers.flatten_query_params(query_params, strict=True),
-            )
+                )
             return response
 
-        def __call__(
-            self,
-            request: operations_pb2.ListOperationsRequest,
-            *,
-            retry: OptionalRetry = gapic_v1.method.DEFAULT,
-            timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
-        ) -> operations_pb2.ListOperationsResponse:
+        def __call__(self,
+            request: operations_pb2.ListOperationsRequest, *,
+            retry: OptionalRetry=gapic_v1.method.DEFAULT,
+            timeout: Optional[float]=None,
+            metadata: Sequence[Tuple[str, Union[str, bytes]]]=(),
+            ) -> operations_pb2.ListOperationsResponse:
+
             r"""Call the list operations method over HTTP.
 
             Args:
@@ -1622,40 +1381,30 @@ class CmekConfigServiceRestTransport(_BaseCmekConfigServiceRestTransport):
                 operations_pb2.ListOperationsResponse: Response from ListOperations method.
             """
 
-            http_options = (
-                _BaseCmekConfigServiceRestTransport._BaseListOperations._get_http_options()
-            )
+            http_options = _BaseCmekConfigServiceRestTransport._BaseListOperations._get_http_options()
 
             request, metadata = self._interceptor.pre_list_operations(request, metadata)
-            transcoded_request = _BaseCmekConfigServiceRestTransport._BaseListOperations._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseCmekConfigServiceRestTransport._BaseListOperations._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseCmekConfigServiceRestTransport._BaseListOperations._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseCmekConfigServiceRestTransport._BaseListOperations._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
-                method = transcoded_request["method"]
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request['uri'])
+                method = transcoded_request['method']
                 try:
                     request_payload = json_format.MessageToJson(request)
                 except:
                     request_payload = None
                 http_request = {
-                    "payload": request_payload,
-                    "requestMethod": method,
-                    "requestUrl": request_url,
-                    "headers": dict(metadata),
+                  "payload": request_payload,
+                  "requestMethod": method,
+                  "requestUrl": request_url,
+                  "headers": dict(metadata),
                 }
                 _LOGGER.debug(
                     f"Sending request for google.cloud.discoveryengine_v1.CmekConfigServiceClient.ListOperations",
-                    extra={
+                    extra = {
                         "serviceName": "google.cloud.discoveryengine.v1.CmekConfigService",
                         "rpcName": "ListOperations",
                         "httpRequest": http_request,
@@ -1664,14 +1413,7 @@ class CmekConfigServiceRestTransport(_BaseCmekConfigServiceRestTransport):
                 )
 
             # Send the request
-            response = CmekConfigServiceRestTransport._ListOperations._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-            )
+            response = CmekConfigServiceRestTransport._ListOperations._get_response(self._host, metadata, query_params, self._session, timeout, transcoded_request)
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
             # subclass.
@@ -1682,21 +1424,19 @@ class CmekConfigServiceRestTransport(_BaseCmekConfigServiceRestTransport):
             resp = operations_pb2.ListOperationsResponse()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_list_operations(resp)
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
-                    "headers": dict(response.headers),
+                    "headers":  dict(response.headers),
                     "status": response.status_code,
                 }
                 _LOGGER.debug(
                     "Received response for google.cloud.discoveryengine_v1.CmekConfigServiceAsyncClient.ListOperations",
-                    extra={
+                    extra = {
                         "serviceName": "google.cloud.discoveryengine.v1.CmekConfigService",
                         "rpcName": "ListOperations",
                         "httpResponse": http_response,
@@ -1713,4 +1453,6 @@ class CmekConfigServiceRestTransport(_BaseCmekConfigServiceRestTransport):
         self._session.close()
 
 
-__all__ = ("CmekConfigServiceRestTransport",)
+__all__=(
+    'CmekConfigServiceRestTransport',
+)

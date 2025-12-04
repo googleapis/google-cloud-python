@@ -13,10 +13,10 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-from .async_client import ControlServiceAsyncClient
 from .client import ControlServiceClient
+from .async_client import ControlServiceAsyncClient
 
 __all__ = (
-    "ControlServiceClient",
-    "ControlServiceAsyncClient",
+    'ControlServiceClient',
+    'ControlServiceAsyncClient',
 )

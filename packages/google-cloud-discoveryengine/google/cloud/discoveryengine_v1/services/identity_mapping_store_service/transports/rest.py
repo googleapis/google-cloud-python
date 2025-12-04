@@ -13,31 +13,36 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-import dataclasses
-import json  # type: ignore
 import logging
+import json  # type: ignore
+
+from google.auth.transport.requests import AuthorizedSession  # type: ignore
+from google.auth import credentials as ga_credentials  # type: ignore
+from google.api_core import exceptions as core_exceptions
+from google.api_core import retry as retries
+from google.api_core import rest_helpers
+from google.api_core import rest_streaming
+from google.api_core import gapic_v1
+import google.protobuf
+
+from google.protobuf import json_format
+from google.api_core import operations_v1
+from google.cloud.location import locations_pb2 # type: ignore
+
+from requests import __version__ as requests_version
+import dataclasses
 from typing import Any, Callable, Dict, List, Optional, Sequence, Tuple, Union
 import warnings
 
-from google.api_core import gapic_v1, operations_v1, rest_helpers, rest_streaming
-from google.api_core import exceptions as core_exceptions
-from google.api_core import retry as retries
-from google.auth import credentials as ga_credentials  # type: ignore
-from google.auth.transport.requests import AuthorizedSession  # type: ignore
-from google.cloud.location import locations_pb2  # type: ignore
-from google.longrunning import operations_pb2  # type: ignore
-import google.protobuf
-from google.protobuf import json_format
-from requests import __version__ as requests_version
 
-from google.cloud.discoveryengine_v1.types import (
-    identity_mapping_store as gcd_identity_mapping_store,
-)
-from google.cloud.discoveryengine_v1.types import identity_mapping_store_service
 from google.cloud.discoveryengine_v1.types import identity_mapping_store
+from google.cloud.discoveryengine_v1.types import identity_mapping_store as gcd_identity_mapping_store
+from google.cloud.discoveryengine_v1.types import identity_mapping_store_service
+from google.longrunning import operations_pb2  # type: ignore
 
-from .base import DEFAULT_CLIENT_INFO as BASE_DEFAULT_CLIENT_INFO
+
 from .rest_base import _BaseIdentityMappingStoreServiceRestTransport
+from .base import DEFAULT_CLIENT_INFO as BASE_DEFAULT_CLIENT_INFO
 
 try:
     OptionalRetry = Union[retries.Retry, gapic_v1.method._MethodDefault, None]
@@ -46,7 +51,6 @@ except AttributeError:  # pragma: NO COVER
 
 try:
     from google.api_core import client_logging  # type: ignore
-
     CLIENT_LOGGING_SUPPORTED = True  # pragma: NO COVER
 except ImportError:  # pragma: NO COVER
     CLIENT_LOGGING_SUPPORTED = False
@@ -139,15 +143,7 @@ class IdentityMappingStoreServiceRestInterceptor:
 
 
     """
-
-    def pre_create_identity_mapping_store(
-        self,
-        request: identity_mapping_store_service.CreateIdentityMappingStoreRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        identity_mapping_store_service.CreateIdentityMappingStoreRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+    def pre_create_identity_mapping_store(self, request: identity_mapping_store_service.CreateIdentityMappingStoreRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]) -> Tuple[identity_mapping_store_service.CreateIdentityMappingStoreRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for create_identity_mapping_store
 
         Override in a subclass to manipulate the request or metadata
@@ -155,9 +151,7 @@ class IdentityMappingStoreServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_create_identity_mapping_store(
-        self, response: gcd_identity_mapping_store.IdentityMappingStore
-    ) -> gcd_identity_mapping_store.IdentityMappingStore:
+    def post_create_identity_mapping_store(self, response: gcd_identity_mapping_store.IdentityMappingStore) -> gcd_identity_mapping_store.IdentityMappingStore:
         """Post-rpc interceptor for create_identity_mapping_store
 
         DEPRECATED. Please use the `post_create_identity_mapping_store_with_metadata`
@@ -170,14 +164,7 @@ class IdentityMappingStoreServiceRestInterceptor:
         """
         return response
 
-    def post_create_identity_mapping_store_with_metadata(
-        self,
-        response: gcd_identity_mapping_store.IdentityMappingStore,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        gcd_identity_mapping_store.IdentityMappingStore,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+    def post_create_identity_mapping_store_with_metadata(self, response: gcd_identity_mapping_store.IdentityMappingStore, metadata: Sequence[Tuple[str, Union[str, bytes]]]) -> Tuple[gcd_identity_mapping_store.IdentityMappingStore, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for create_identity_mapping_store
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -192,14 +179,7 @@ class IdentityMappingStoreServiceRestInterceptor:
         """
         return response, metadata
 
-    def pre_delete_identity_mapping_store(
-        self,
-        request: identity_mapping_store_service.DeleteIdentityMappingStoreRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        identity_mapping_store_service.DeleteIdentityMappingStoreRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+    def pre_delete_identity_mapping_store(self, request: identity_mapping_store_service.DeleteIdentityMappingStoreRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]) -> Tuple[identity_mapping_store_service.DeleteIdentityMappingStoreRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for delete_identity_mapping_store
 
         Override in a subclass to manipulate the request or metadata
@@ -207,9 +187,7 @@ class IdentityMappingStoreServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_delete_identity_mapping_store(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_delete_identity_mapping_store(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for delete_identity_mapping_store
 
         DEPRECATED. Please use the `post_delete_identity_mapping_store_with_metadata`
@@ -222,11 +200,7 @@ class IdentityMappingStoreServiceRestInterceptor:
         """
         return response
 
-    def post_delete_identity_mapping_store_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
+    def post_delete_identity_mapping_store_with_metadata(self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for delete_identity_mapping_store
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -241,14 +215,7 @@ class IdentityMappingStoreServiceRestInterceptor:
         """
         return response, metadata
 
-    def pre_get_identity_mapping_store(
-        self,
-        request: identity_mapping_store_service.GetIdentityMappingStoreRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        identity_mapping_store_service.GetIdentityMappingStoreRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+    def pre_get_identity_mapping_store(self, request: identity_mapping_store_service.GetIdentityMappingStoreRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]) -> Tuple[identity_mapping_store_service.GetIdentityMappingStoreRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_identity_mapping_store
 
         Override in a subclass to manipulate the request or metadata
@@ -256,9 +223,7 @@ class IdentityMappingStoreServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_get_identity_mapping_store(
-        self, response: identity_mapping_store.IdentityMappingStore
-    ) -> identity_mapping_store.IdentityMappingStore:
+    def post_get_identity_mapping_store(self, response: identity_mapping_store.IdentityMappingStore) -> identity_mapping_store.IdentityMappingStore:
         """Post-rpc interceptor for get_identity_mapping_store
 
         DEPRECATED. Please use the `post_get_identity_mapping_store_with_metadata`
@@ -271,14 +236,7 @@ class IdentityMappingStoreServiceRestInterceptor:
         """
         return response
 
-    def post_get_identity_mapping_store_with_metadata(
-        self,
-        response: identity_mapping_store.IdentityMappingStore,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        identity_mapping_store.IdentityMappingStore,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+    def post_get_identity_mapping_store_with_metadata(self, response: identity_mapping_store.IdentityMappingStore, metadata: Sequence[Tuple[str, Union[str, bytes]]]) -> Tuple[identity_mapping_store.IdentityMappingStore, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for get_identity_mapping_store
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -293,14 +251,7 @@ class IdentityMappingStoreServiceRestInterceptor:
         """
         return response, metadata
 
-    def pre_import_identity_mappings(
-        self,
-        request: identity_mapping_store_service.ImportIdentityMappingsRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        identity_mapping_store_service.ImportIdentityMappingsRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+    def pre_import_identity_mappings(self, request: identity_mapping_store_service.ImportIdentityMappingsRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]) -> Tuple[identity_mapping_store_service.ImportIdentityMappingsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for import_identity_mappings
 
         Override in a subclass to manipulate the request or metadata
@@ -308,9 +259,7 @@ class IdentityMappingStoreServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_import_identity_mappings(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_import_identity_mappings(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for import_identity_mappings
 
         DEPRECATED. Please use the `post_import_identity_mappings_with_metadata`
@@ -323,11 +272,7 @@ class IdentityMappingStoreServiceRestInterceptor:
         """
         return response
 
-    def post_import_identity_mappings_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
+    def post_import_identity_mappings_with_metadata(self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for import_identity_mappings
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -342,14 +287,7 @@ class IdentityMappingStoreServiceRestInterceptor:
         """
         return response, metadata
 
-    def pre_list_identity_mappings(
-        self,
-        request: identity_mapping_store_service.ListIdentityMappingsRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        identity_mapping_store_service.ListIdentityMappingsRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+    def pre_list_identity_mappings(self, request: identity_mapping_store_service.ListIdentityMappingsRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]) -> Tuple[identity_mapping_store_service.ListIdentityMappingsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_identity_mappings
 
         Override in a subclass to manipulate the request or metadata
@@ -357,9 +295,7 @@ class IdentityMappingStoreServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_list_identity_mappings(
-        self, response: identity_mapping_store_service.ListIdentityMappingsResponse
-    ) -> identity_mapping_store_service.ListIdentityMappingsResponse:
+    def post_list_identity_mappings(self, response: identity_mapping_store_service.ListIdentityMappingsResponse) -> identity_mapping_store_service.ListIdentityMappingsResponse:
         """Post-rpc interceptor for list_identity_mappings
 
         DEPRECATED. Please use the `post_list_identity_mappings_with_metadata`
@@ -372,14 +308,7 @@ class IdentityMappingStoreServiceRestInterceptor:
         """
         return response
 
-    def post_list_identity_mappings_with_metadata(
-        self,
-        response: identity_mapping_store_service.ListIdentityMappingsResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        identity_mapping_store_service.ListIdentityMappingsResponse,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+    def post_list_identity_mappings_with_metadata(self, response: identity_mapping_store_service.ListIdentityMappingsResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]) -> Tuple[identity_mapping_store_service.ListIdentityMappingsResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for list_identity_mappings
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -394,14 +323,7 @@ class IdentityMappingStoreServiceRestInterceptor:
         """
         return response, metadata
 
-    def pre_list_identity_mapping_stores(
-        self,
-        request: identity_mapping_store_service.ListIdentityMappingStoresRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        identity_mapping_store_service.ListIdentityMappingStoresRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+    def pre_list_identity_mapping_stores(self, request: identity_mapping_store_service.ListIdentityMappingStoresRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]) -> Tuple[identity_mapping_store_service.ListIdentityMappingStoresRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_identity_mapping_stores
 
         Override in a subclass to manipulate the request or metadata
@@ -409,9 +331,7 @@ class IdentityMappingStoreServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_list_identity_mapping_stores(
-        self, response: identity_mapping_store_service.ListIdentityMappingStoresResponse
-    ) -> identity_mapping_store_service.ListIdentityMappingStoresResponse:
+    def post_list_identity_mapping_stores(self, response: identity_mapping_store_service.ListIdentityMappingStoresResponse) -> identity_mapping_store_service.ListIdentityMappingStoresResponse:
         """Post-rpc interceptor for list_identity_mapping_stores
 
         DEPRECATED. Please use the `post_list_identity_mapping_stores_with_metadata`
@@ -424,14 +344,7 @@ class IdentityMappingStoreServiceRestInterceptor:
         """
         return response
 
-    def post_list_identity_mapping_stores_with_metadata(
-        self,
-        response: identity_mapping_store_service.ListIdentityMappingStoresResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        identity_mapping_store_service.ListIdentityMappingStoresResponse,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+    def post_list_identity_mapping_stores_with_metadata(self, response: identity_mapping_store_service.ListIdentityMappingStoresResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]) -> Tuple[identity_mapping_store_service.ListIdentityMappingStoresResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for list_identity_mapping_stores
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -446,14 +359,7 @@ class IdentityMappingStoreServiceRestInterceptor:
         """
         return response, metadata
 
-    def pre_purge_identity_mappings(
-        self,
-        request: identity_mapping_store_service.PurgeIdentityMappingsRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        identity_mapping_store_service.PurgeIdentityMappingsRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+    def pre_purge_identity_mappings(self, request: identity_mapping_store_service.PurgeIdentityMappingsRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]) -> Tuple[identity_mapping_store_service.PurgeIdentityMappingsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for purge_identity_mappings
 
         Override in a subclass to manipulate the request or metadata
@@ -461,9 +367,7 @@ class IdentityMappingStoreServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_purge_identity_mappings(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_purge_identity_mappings(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for purge_identity_mappings
 
         DEPRECATED. Please use the `post_purge_identity_mappings_with_metadata`
@@ -476,11 +380,7 @@ class IdentityMappingStoreServiceRestInterceptor:
         """
         return response
 
-    def post_purge_identity_mappings_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
+    def post_purge_identity_mappings_with_metadata(self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for purge_identity_mappings
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -496,12 +396,8 @@ class IdentityMappingStoreServiceRestInterceptor:
         return response, metadata
 
     def pre_cancel_operation(
-        self,
-        request: operations_pb2.CancelOperationRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        operations_pb2.CancelOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: operations_pb2.CancelOperationRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[operations_pb2.CancelOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for cancel_operation
 
         Override in a subclass to manipulate the request or metadata
@@ -509,7 +405,9 @@ class IdentityMappingStoreServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_cancel_operation(self, response: None) -> None:
+    def post_cancel_operation(
+        self, response: None
+    ) -> None:
         """Post-rpc interceptor for cancel_operation
 
         Override in a subclass to manipulate the response
@@ -519,12 +417,8 @@ class IdentityMappingStoreServiceRestInterceptor:
         return response
 
     def pre_get_operation(
-        self,
-        request: operations_pb2.GetOperationRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        operations_pb2.GetOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: operations_pb2.GetOperationRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[operations_pb2.GetOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_operation
 
         Override in a subclass to manipulate the request or metadata
@@ -544,12 +438,8 @@ class IdentityMappingStoreServiceRestInterceptor:
         return response
 
     def pre_list_operations(
-        self,
-        request: operations_pb2.ListOperationsRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        operations_pb2.ListOperationsRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: operations_pb2.ListOperationsRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[operations_pb2.ListOperationsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_operations
 
         Override in a subclass to manipulate the request or metadata
@@ -576,9 +466,7 @@ class IdentityMappingStoreServiceRestStub:
     _interceptor: IdentityMappingStoreServiceRestInterceptor
 
 
-class IdentityMappingStoreServiceRestTransport(
-    _BaseIdentityMappingStoreServiceRestTransport
-):
+class IdentityMappingStoreServiceRestTransport(_BaseIdentityMappingStoreServiceRestTransport):
     """REST backend synchronous transport for IdentityMappingStoreService.
 
     Service for managing Identity Mapping Stores.
@@ -590,21 +478,20 @@ class IdentityMappingStoreServiceRestTransport(
     It sends JSON representations of protocol buffers over HTTP/1.1
     """
 
-    def __init__(
-        self,
-        *,
-        host: str = "discoveryengine.googleapis.com",
-        credentials: Optional[ga_credentials.Credentials] = None,
-        credentials_file: Optional[str] = None,
-        scopes: Optional[Sequence[str]] = None,
-        client_cert_source_for_mtls: Optional[Callable[[], Tuple[bytes, bytes]]] = None,
-        quota_project_id: Optional[str] = None,
-        client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
-        always_use_jwt_access: Optional[bool] = False,
-        url_scheme: str = "https",
-        interceptor: Optional[IdentityMappingStoreServiceRestInterceptor] = None,
-        api_audience: Optional[str] = None,
-    ) -> None:
+    def __init__(self, *,
+            host: str = 'discoveryengine.googleapis.com',
+            credentials: Optional[ga_credentials.Credentials] = None,
+            credentials_file: Optional[str] = None,
+            scopes: Optional[Sequence[str]] = None,
+            client_cert_source_for_mtls: Optional[Callable[[
+                ], Tuple[bytes, bytes]]] = None,
+            quota_project_id: Optional[str] = None,
+            client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
+            always_use_jwt_access: Optional[bool] = False,
+            url_scheme: str = 'https',
+            interceptor: Optional[IdentityMappingStoreServiceRestInterceptor] = None,
+            api_audience: Optional[str] = None,
+            ) -> None:
         """Instantiate the transport.
 
         Args:
@@ -648,11 +535,10 @@ class IdentityMappingStoreServiceRestTransport(
             client_info=client_info,
             always_use_jwt_access=always_use_jwt_access,
             url_scheme=url_scheme,
-            api_audience=api_audience,
+            api_audience=api_audience
         )
         self._session = AuthorizedSession(
-            self._credentials, default_host=self.DEFAULT_HOST
-        )
+            self._credentials, default_host=self.DEFAULT_HOST)
         self._operations_client: Optional[operations_v1.AbstractOperationsClient] = None
         if client_cert_source_for_mtls:
             self._session.configure_mtls_channel(client_cert_source_for_mtls)
@@ -669,186 +555,178 @@ class IdentityMappingStoreServiceRestTransport(
         # Only create a new client if we do not already have one.
         if self._operations_client is None:
             http_options: Dict[str, List[Dict[str, str]]] = {
-                "google.longrunning.Operations.CancelOperation": [
+                'google.longrunning.Operations.CancelOperation': [
                     {
-                        "method": "post",
-                        "uri": "/v1/{name=projects/*/operations/*}:cancel",
-                        "body": "*",
+                        'method': 'post',
+                        'uri': '/v1/{name=projects/*/operations/*}:cancel',
+                        'body': '*',
                     },
                     {
-                        "method": "post",
-                        "uri": "/v1/{name=projects/*/locations/*/collections/*/dataStores/*/branches/*/operations/*}:cancel",
-                        "body": "*",
+                        'method': 'post',
+                        'uri': '/v1/{name=projects/*/locations/*/collections/*/dataStores/*/branches/*/operations/*}:cancel',
+                        'body': '*',
                     },
                     {
-                        "method": "post",
-                        "uri": "/v1/{name=projects/*/locations/*/collections/*/engines/*/operations/*}:cancel",
-                        "body": "*",
+                        'method': 'post',
+                        'uri': '/v1/{name=projects/*/locations/*/collections/*/engines/*/operations/*}:cancel',
+                        'body': '*',
                     },
                     {
-                        "method": "post",
-                        "uri": "/v1/{name=projects/*/locations/*/dataStores/*/branches/*/operations/*}:cancel",
-                        "body": "*",
-                    },
-                ],
-                "google.longrunning.Operations.GetOperation": [
-                    {
-                        "method": "get",
-                        "uri": "/v1/{name=projects/*/operations/*}",
-                    },
-                    {
-                        "method": "get",
-                        "uri": "/v1/{name=projects/*/locations/*/collections/*/dataConnector/operations/*}",
-                    },
-                    {
-                        "method": "get",
-                        "uri": "/v1/{name=projects/*/locations/*/collections/*/dataStores/*/branches/*/operations/*}",
-                    },
-                    {
-                        "method": "get",
-                        "uri": "/v1/{name=projects/*/locations/*/collections/*/dataStores/*/models/*/operations/*}",
-                    },
-                    {
-                        "method": "get",
-                        "uri": "/v1/{name=projects/*/locations/*/collections/*/dataStores/*/operations/*}",
-                    },
-                    {
-                        "method": "get",
-                        "uri": "/v1/{name=projects/*/locations/*/collections/*/dataStores/*/schemas/*/operations/*}",
-                    },
-                    {
-                        "method": "get",
-                        "uri": "/v1/{name=projects/*/locations/*/collections/*/dataStores/*/siteSearchEngine/operations/*}",
-                    },
-                    {
-                        "method": "get",
-                        "uri": "/v1/{name=projects/*/locations/*/collections/*/dataStores/*/siteSearchEngine/targetSites/operations/*}",
-                    },
-                    {
-                        "method": "get",
-                        "uri": "/v1/{name=projects/*/locations/*/collections/*/engines/*/operations/*}",
-                    },
-                    {
-                        "method": "get",
-                        "uri": "/v1/{name=projects/*/locations/*/collections/*/operations/*}",
-                    },
-                    {
-                        "method": "get",
-                        "uri": "/v1/{name=projects/*/locations/*/dataStores/*/branches/*/operations/*}",
-                    },
-                    {
-                        "method": "get",
-                        "uri": "/v1/{name=projects/*/locations/*/dataStores/*/models/*/operations/*}",
-                    },
-                    {
-                        "method": "get",
-                        "uri": "/v1/{name=projects/*/locations/*/dataStores/*/operations/*}",
-                    },
-                    {
-                        "method": "get",
-                        "uri": "/v1/{name=projects/*/locations/*/identityMappingStores/*/operations/*}",
-                    },
-                    {
-                        "method": "get",
-                        "uri": "/v1/{name=projects/*/locations/*/operations/*}",
-                    },
-                    {
-                        "method": "get",
-                        "uri": "/v1/{name=projects/*/operations/*}",
+                        'method': 'post',
+                        'uri': '/v1/{name=projects/*/locations/*/dataStores/*/branches/*/operations/*}:cancel',
+                        'body': '*',
                     },
                 ],
-                "google.longrunning.Operations.ListOperations": [
+                'google.longrunning.Operations.GetOperation': [
                     {
-                        "method": "get",
-                        "uri": "/v1/{name=projects/*}/operations",
+                        'method': 'get',
+                        'uri': '/v1/{name=projects/*/operations/*}',
                     },
                     {
-                        "method": "get",
-                        "uri": "/v1/{name=projects/*/locations/*/collections/*/dataConnector}/operations",
+                        'method': 'get',
+                        'uri': '/v1/{name=projects/*/locations/*/collections/*/dataConnector/operations/*}',
                     },
                     {
-                        "method": "get",
-                        "uri": "/v1/{name=projects/*/locations/*/collections/*/dataStores/*/branches/*}/operations",
+                        'method': 'get',
+                        'uri': '/v1/{name=projects/*/locations/*/collections/*/dataStores/*/branches/*/operations/*}',
                     },
                     {
-                        "method": "get",
-                        "uri": "/v1/{name=projects/*/locations/*/collections/*/dataStores/*/models/*}/operations",
+                        'method': 'get',
+                        'uri': '/v1/{name=projects/*/locations/*/collections/*/dataStores/*/models/*/operations/*}',
                     },
                     {
-                        "method": "get",
-                        "uri": "/v1/{name=projects/*/locations/*/collections/*/dataStores/*/schemas/*}/operations",
+                        'method': 'get',
+                        'uri': '/v1/{name=projects/*/locations/*/collections/*/dataStores/*/operations/*}',
                     },
                     {
-                        "method": "get",
-                        "uri": "/v1/{name=projects/*/locations/*/collections/*/dataStores/*/siteSearchEngine/targetSites}/operations",
+                        'method': 'get',
+                        'uri': '/v1/{name=projects/*/locations/*/collections/*/dataStores/*/schemas/*/operations/*}',
                     },
                     {
-                        "method": "get",
-                        "uri": "/v1/{name=projects/*/locations/*/collections/*/dataStores/*/siteSearchEngine}/operations",
+                        'method': 'get',
+                        'uri': '/v1/{name=projects/*/locations/*/collections/*/dataStores/*/siteSearchEngine/operations/*}',
                     },
                     {
-                        "method": "get",
-                        "uri": "/v1/{name=projects/*/locations/*/collections/*/dataStores/*}/operations",
+                        'method': 'get',
+                        'uri': '/v1/{name=projects/*/locations/*/collections/*/dataStores/*/siteSearchEngine/targetSites/operations/*}',
                     },
                     {
-                        "method": "get",
-                        "uri": "/v1/{name=projects/*/locations/*/collections/*/engines/*}/operations",
+                        'method': 'get',
+                        'uri': '/v1/{name=projects/*/locations/*/collections/*/engines/*/operations/*}',
                     },
                     {
-                        "method": "get",
-                        "uri": "/v1/{name=projects/*/locations/*/collections/*}/operations",
+                        'method': 'get',
+                        'uri': '/v1/{name=projects/*/locations/*/collections/*/operations/*}',
                     },
                     {
-                        "method": "get",
-                        "uri": "/v1/{name=projects/*/locations/*/dataStores/*/branches/*}/operations",
+                        'method': 'get',
+                        'uri': '/v1/{name=projects/*/locations/*/dataStores/*/branches/*/operations/*}',
                     },
                     {
-                        "method": "get",
-                        "uri": "/v1/{name=projects/*/locations/*/dataStores/*/models/*}/operations",
+                        'method': 'get',
+                        'uri': '/v1/{name=projects/*/locations/*/dataStores/*/models/*/operations/*}',
                     },
                     {
-                        "method": "get",
-                        "uri": "/v1/{name=projects/*/locations/*/dataStores/*}/operations",
+                        'method': 'get',
+                        'uri': '/v1/{name=projects/*/locations/*/dataStores/*/operations/*}',
                     },
                     {
-                        "method": "get",
-                        "uri": "/v1/{name=projects/*/locations/*/identityMappingStores/*}/operations",
+                        'method': 'get',
+                        'uri': '/v1/{name=projects/*/locations/*/identityMappingStores/*/operations/*}',
                     },
                     {
-                        "method": "get",
-                        "uri": "/v1/{name=projects/*/locations/*}/operations",
+                        'method': 'get',
+                        'uri': '/v1/{name=projects/*/locations/*/operations/*}',
                     },
                     {
-                        "method": "get",
-                        "uri": "/v1/{name=projects/*}/operations",
+                        'method': 'get',
+                        'uri': '/v1/{name=projects/*/operations/*}',
+                    },
+                ],
+                'google.longrunning.Operations.ListOperations': [
+                    {
+                        'method': 'get',
+                        'uri': '/v1/{name=projects/*}/operations',
+                    },
+                    {
+                        'method': 'get',
+                        'uri': '/v1/{name=projects/*/locations/*/collections/*/dataConnector}/operations',
+                    },
+                    {
+                        'method': 'get',
+                        'uri': '/v1/{name=projects/*/locations/*/collections/*/dataStores/*/branches/*}/operations',
+                    },
+                    {
+                        'method': 'get',
+                        'uri': '/v1/{name=projects/*/locations/*/collections/*/dataStores/*/models/*}/operations',
+                    },
+                    {
+                        'method': 'get',
+                        'uri': '/v1/{name=projects/*/locations/*/collections/*/dataStores/*/schemas/*}/operations',
+                    },
+                    {
+                        'method': 'get',
+                        'uri': '/v1/{name=projects/*/locations/*/collections/*/dataStores/*/siteSearchEngine/targetSites}/operations',
+                    },
+                    {
+                        'method': 'get',
+                        'uri': '/v1/{name=projects/*/locations/*/collections/*/dataStores/*/siteSearchEngine}/operations',
+                    },
+                    {
+                        'method': 'get',
+                        'uri': '/v1/{name=projects/*/locations/*/collections/*/dataStores/*}/operations',
+                    },
+                    {
+                        'method': 'get',
+                        'uri': '/v1/{name=projects/*/locations/*/collections/*/engines/*}/operations',
+                    },
+                    {
+                        'method': 'get',
+                        'uri': '/v1/{name=projects/*/locations/*/collections/*}/operations',
+                    },
+                    {
+                        'method': 'get',
+                        'uri': '/v1/{name=projects/*/locations/*/dataStores/*/branches/*}/operations',
+                    },
+                    {
+                        'method': 'get',
+                        'uri': '/v1/{name=projects/*/locations/*/dataStores/*/models/*}/operations',
+                    },
+                    {
+                        'method': 'get',
+                        'uri': '/v1/{name=projects/*/locations/*/dataStores/*}/operations',
+                    },
+                    {
+                        'method': 'get',
+                        'uri': '/v1/{name=projects/*/locations/*/identityMappingStores/*}/operations',
+                    },
+                    {
+                        'method': 'get',
+                        'uri': '/v1/{name=projects/*/locations/*}/operations',
+                    },
+                    {
+                        'method': 'get',
+                        'uri': '/v1/{name=projects/*}/operations',
                     },
                 ],
             }
 
             rest_transport = operations_v1.OperationsRestTransport(
-                host=self._host,
-                # use the credentials which are saved
-                credentials=self._credentials,
-                scopes=self._scopes,
-                http_options=http_options,
-                path_prefix="v1",
-            )
+                    host=self._host,
+                    # use the credentials which are saved
+                    credentials=self._credentials,
+                    scopes=self._scopes,
+                    http_options=http_options,
+                    path_prefix="v1")
 
-            self._operations_client = operations_v1.AbstractOperationsClient(
-                transport=rest_transport
-            )
+            self._operations_client = operations_v1.AbstractOperationsClient(transport=rest_transport)
 
         # Return the client from cache.
         return self._operations_client
 
-    class _CreateIdentityMappingStore(
-        _BaseIdentityMappingStoreServiceRestTransport._BaseCreateIdentityMappingStore,
-        IdentityMappingStoreServiceRestStub,
-    ):
+    class _CreateIdentityMappingStore(_BaseIdentityMappingStoreServiceRestTransport._BaseCreateIdentityMappingStore, IdentityMappingStoreServiceRestStub):
         def __hash__(self):
-            return hash(
-                "IdentityMappingStoreServiceRestTransport.CreateIdentityMappingStore"
-            )
+            return hash("IdentityMappingStoreServiceRestTransport.CreateIdentityMappingStore")
 
         @staticmethod
         def _get_response(
@@ -858,91 +736,75 @@ class IdentityMappingStoreServiceRestTransport(
             session,
             timeout,
             transcoded_request,
-            body=None,
-        ):
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+            body=None):
+
+            uri = transcoded_request['uri']
+            method = transcoded_request['method']
             headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
+            headers['Content-Type'] = 'application/json'
             response = getattr(session, method)(
                 "{host}{uri}".format(host=host, uri=uri),
                 timeout=timeout,
                 headers=headers,
                 params=rest_helpers.flatten_query_params(query_params, strict=True),
                 data=body,
-            )
+                )
             return response
 
-        def __call__(
-            self,
-            request: identity_mapping_store_service.CreateIdentityMappingStoreRequest,
-            *,
-            retry: OptionalRetry = gapic_v1.method.DEFAULT,
-            timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
-        ) -> gcd_identity_mapping_store.IdentityMappingStore:
+        def __call__(self,
+                request: identity_mapping_store_service.CreateIdentityMappingStoreRequest, *,
+                retry: OptionalRetry=gapic_v1.method.DEFAULT,
+                timeout: Optional[float]=None,
+                metadata: Sequence[Tuple[str, Union[str, bytes]]]=(),
+                ) -> gcd_identity_mapping_store.IdentityMappingStore:
             r"""Call the create identity mapping
-            store method over HTTP.
+        store method over HTTP.
 
-                Args:
-                    request (~.identity_mapping_store_service.CreateIdentityMappingStoreRequest):
-                        The request object. Request message for
-                    [IdentityMappingStoreService.CreateIdentityMappingStore][google.cloud.discoveryengine.v1.IdentityMappingStoreService.CreateIdentityMappingStore]
-                    retry (google.api_core.retry.Retry): Designation of what errors, if any,
-                        should be retried.
-                    timeout (float): The timeout for this request.
-                    metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
-                        sent along with the request as metadata. Normally, each value must be of type `str`,
-                        but for metadata keys ending with the suffix `-bin`, the corresponding values must
-                        be of type `bytes`.
+            Args:
+                request (~.identity_mapping_store_service.CreateIdentityMappingStoreRequest):
+                    The request object. Request message for
+                [IdentityMappingStoreService.CreateIdentityMappingStore][google.cloud.discoveryengine.v1.IdentityMappingStoreService.CreateIdentityMappingStore]
+                retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                    should be retried.
+                timeout (float): The timeout for this request.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
-                Returns:
-                    ~.gcd_identity_mapping_store.IdentityMappingStore:
-                        Identity Mapping Store which contains
-                    Identity Mapping Entries.
+            Returns:
+                ~.gcd_identity_mapping_store.IdentityMappingStore:
+                    Identity Mapping Store which contains
+                Identity Mapping Entries.
 
             """
 
-            http_options = (
-                _BaseIdentityMappingStoreServiceRestTransport._BaseCreateIdentityMappingStore._get_http_options()
-            )
+            http_options = _BaseIdentityMappingStoreServiceRestTransport._BaseCreateIdentityMappingStore._get_http_options()
 
-            request, metadata = self._interceptor.pre_create_identity_mapping_store(
-                request, metadata
-            )
-            transcoded_request = _BaseIdentityMappingStoreServiceRestTransport._BaseCreateIdentityMappingStore._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_create_identity_mapping_store(request, metadata)
+            transcoded_request = _BaseIdentityMappingStoreServiceRestTransport._BaseCreateIdentityMappingStore._get_transcoded_request(http_options, request)
 
-            body = _BaseIdentityMappingStoreServiceRestTransport._BaseCreateIdentityMappingStore._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseIdentityMappingStoreServiceRestTransport._BaseCreateIdentityMappingStore._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseIdentityMappingStoreServiceRestTransport._BaseCreateIdentityMappingStore._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseIdentityMappingStoreServiceRestTransport._BaseCreateIdentityMappingStore._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
-                method = transcoded_request["method"]
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request['uri'])
+                method = transcoded_request['method']
                 try:
                     request_payload = type(request).to_json(request)
                 except:
                     request_payload = None
                 http_request = {
-                    "payload": request_payload,
-                    "requestMethod": method,
-                    "requestUrl": request_url,
-                    "headers": dict(metadata),
+                  "payload": request_payload,
+                  "requestMethod": method,
+                  "requestUrl": request_url,
+                  "headers": dict(metadata),
                 }
                 _LOGGER.debug(
                     f"Sending request for google.cloud.discoveryengine_v1.IdentityMappingStoreServiceClient.CreateIdentityMappingStore",
-                    extra={
+                    extra = {
                         "serviceName": "google.cloud.discoveryengine.v1.IdentityMappingStoreService",
                         "rpcName": "CreateIdentityMappingStore",
                         "httpRequest": http_request,
@@ -951,15 +813,7 @@ class IdentityMappingStoreServiceRestTransport(
                 )
 
             # Send the request
-            response = IdentityMappingStoreServiceRestTransport._CreateIdentityMappingStore._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
-            )
+            response = IdentityMappingStoreServiceRestTransport._CreateIdentityMappingStore._get_response(self._host, metadata, query_params, self._session, timeout, transcoded_request, body)
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
             # subclass.
@@ -974,31 +828,20 @@ class IdentityMappingStoreServiceRestTransport(
 
             resp = self._interceptor.post_create_identity_mapping_store(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            (
-                resp,
-                _,
-            ) = self._interceptor.post_create_identity_mapping_store_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_create_identity_mapping_store_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = (
-                        gcd_identity_mapping_store.IdentityMappingStore.to_json(
-                            response
-                        )
-                    )
+                    response_payload = gcd_identity_mapping_store.IdentityMappingStore.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
-                    "payload": response_payload,
-                    "headers": dict(response.headers),
-                    "status": response.status_code,
+                "payload": response_payload,
+                "headers":  dict(response.headers),
+                "status": response.status_code,
                 }
                 _LOGGER.debug(
                     "Received response for google.cloud.discoveryengine_v1.IdentityMappingStoreServiceClient.create_identity_mapping_store",
-                    extra={
+                    extra = {
                         "serviceName": "google.cloud.discoveryengine.v1.IdentityMappingStoreService",
                         "rpcName": "CreateIdentityMappingStore",
                         "metadata": http_response["headers"],
@@ -1007,14 +850,9 @@ class IdentityMappingStoreServiceRestTransport(
                 )
             return resp
 
-    class _DeleteIdentityMappingStore(
-        _BaseIdentityMappingStoreServiceRestTransport._BaseDeleteIdentityMappingStore,
-        IdentityMappingStoreServiceRestStub,
-    ):
+    class _DeleteIdentityMappingStore(_BaseIdentityMappingStoreServiceRestTransport._BaseDeleteIdentityMappingStore, IdentityMappingStoreServiceRestStub):
         def __hash__(self):
-            return hash(
-                "IdentityMappingStoreServiceRestTransport.DeleteIdentityMappingStore"
-            )
+            return hash("IdentityMappingStoreServiceRestTransport.DeleteIdentityMappingStore")
 
         @staticmethod
         def _get_response(
@@ -1024,87 +862,73 @@ class IdentityMappingStoreServiceRestTransport(
             session,
             timeout,
             transcoded_request,
-            body=None,
-        ):
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+            body=None):
+
+            uri = transcoded_request['uri']
+            method = transcoded_request['method']
             headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
+            headers['Content-Type'] = 'application/json'
             response = getattr(session, method)(
                 "{host}{uri}".format(host=host, uri=uri),
                 timeout=timeout,
                 headers=headers,
                 params=rest_helpers.flatten_query_params(query_params, strict=True),
-            )
+                )
             return response
 
-        def __call__(
-            self,
-            request: identity_mapping_store_service.DeleteIdentityMappingStoreRequest,
-            *,
-            retry: OptionalRetry = gapic_v1.method.DEFAULT,
-            timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
-        ) -> operations_pb2.Operation:
+        def __call__(self,
+                request: identity_mapping_store_service.DeleteIdentityMappingStoreRequest, *,
+                retry: OptionalRetry=gapic_v1.method.DEFAULT,
+                timeout: Optional[float]=None,
+                metadata: Sequence[Tuple[str, Union[str, bytes]]]=(),
+                ) -> operations_pb2.Operation:
             r"""Call the delete identity mapping
-            store method over HTTP.
+        store method over HTTP.
 
-                Args:
-                    request (~.identity_mapping_store_service.DeleteIdentityMappingStoreRequest):
-                        The request object. Request message for
-                    [IdentityMappingStoreService.DeleteIdentityMappingStore][google.cloud.discoveryengine.v1.IdentityMappingStoreService.DeleteIdentityMappingStore]
-                    retry (google.api_core.retry.Retry): Designation of what errors, if any,
-                        should be retried.
-                    timeout (float): The timeout for this request.
-                    metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
-                        sent along with the request as metadata. Normally, each value must be of type `str`,
-                        but for metadata keys ending with the suffix `-bin`, the corresponding values must
-                        be of type `bytes`.
+            Args:
+                request (~.identity_mapping_store_service.DeleteIdentityMappingStoreRequest):
+                    The request object. Request message for
+                [IdentityMappingStoreService.DeleteIdentityMappingStore][google.cloud.discoveryengine.v1.IdentityMappingStoreService.DeleteIdentityMappingStore]
+                retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                    should be retried.
+                timeout (float): The timeout for this request.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
-                Returns:
-                    ~.operations_pb2.Operation:
-                        This resource represents a
-                    long-running operation that is the
-                    result of a network API call.
+            Returns:
+                ~.operations_pb2.Operation:
+                    This resource represents a
+                long-running operation that is the
+                result of a network API call.
 
             """
 
-            http_options = (
-                _BaseIdentityMappingStoreServiceRestTransport._BaseDeleteIdentityMappingStore._get_http_options()
-            )
+            http_options = _BaseIdentityMappingStoreServiceRestTransport._BaseDeleteIdentityMappingStore._get_http_options()
 
-            request, metadata = self._interceptor.pre_delete_identity_mapping_store(
-                request, metadata
-            )
-            transcoded_request = _BaseIdentityMappingStoreServiceRestTransport._BaseDeleteIdentityMappingStore._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_delete_identity_mapping_store(request, metadata)
+            transcoded_request = _BaseIdentityMappingStoreServiceRestTransport._BaseDeleteIdentityMappingStore._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseIdentityMappingStoreServiceRestTransport._BaseDeleteIdentityMappingStore._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseIdentityMappingStoreServiceRestTransport._BaseDeleteIdentityMappingStore._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
-                method = transcoded_request["method"]
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request['uri'])
+                method = transcoded_request['method']
                 try:
                     request_payload = json_format.MessageToJson(request)
                 except:
                     request_payload = None
                 http_request = {
-                    "payload": request_payload,
-                    "requestMethod": method,
-                    "requestUrl": request_url,
-                    "headers": dict(metadata),
+                  "payload": request_payload,
+                  "requestMethod": method,
+                  "requestUrl": request_url,
+                  "headers": dict(metadata),
                 }
                 _LOGGER.debug(
                     f"Sending request for google.cloud.discoveryengine_v1.IdentityMappingStoreServiceClient.DeleteIdentityMappingStore",
-                    extra={
+                    extra = {
                         "serviceName": "google.cloud.discoveryengine.v1.IdentityMappingStoreService",
                         "rpcName": "DeleteIdentityMappingStore",
                         "httpRequest": http_request,
@@ -1113,14 +937,7 @@ class IdentityMappingStoreServiceRestTransport(
                 )
 
             # Send the request
-            response = IdentityMappingStoreServiceRestTransport._DeleteIdentityMappingStore._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-            )
+            response = IdentityMappingStoreServiceRestTransport._DeleteIdentityMappingStore._get_response(self._host, metadata, query_params, self._session, timeout, transcoded_request)
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
             # subclass.
@@ -1133,27 +950,20 @@ class IdentityMappingStoreServiceRestTransport(
 
             resp = self._interceptor.post_delete_identity_mapping_store(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            (
-                resp,
-                _,
-            ) = self._interceptor.post_delete_identity_mapping_store_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_delete_identity_mapping_store_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
                     response_payload = None
                 http_response = {
-                    "payload": response_payload,
-                    "headers": dict(response.headers),
-                    "status": response.status_code,
+                "payload": response_payload,
+                "headers":  dict(response.headers),
+                "status": response.status_code,
                 }
                 _LOGGER.debug(
                     "Received response for google.cloud.discoveryengine_v1.IdentityMappingStoreServiceClient.delete_identity_mapping_store",
-                    extra={
+                    extra = {
                         "serviceName": "google.cloud.discoveryengine.v1.IdentityMappingStoreService",
                         "rpcName": "DeleteIdentityMappingStore",
                         "metadata": http_response["headers"],
@@ -1162,14 +972,9 @@ class IdentityMappingStoreServiceRestTransport(
                 )
             return resp
 
-    class _GetIdentityMappingStore(
-        _BaseIdentityMappingStoreServiceRestTransport._BaseGetIdentityMappingStore,
-        IdentityMappingStoreServiceRestStub,
-    ):
+    class _GetIdentityMappingStore(_BaseIdentityMappingStoreServiceRestTransport._BaseGetIdentityMappingStore, IdentityMappingStoreServiceRestStub):
         def __hash__(self):
-            return hash(
-                "IdentityMappingStoreServiceRestTransport.GetIdentityMappingStore"
-            )
+            return hash("IdentityMappingStoreServiceRestTransport.GetIdentityMappingStore")
 
         @staticmethod
         def _get_response(
@@ -1179,86 +984,72 @@ class IdentityMappingStoreServiceRestTransport(
             session,
             timeout,
             transcoded_request,
-            body=None,
-        ):
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+            body=None):
+
+            uri = transcoded_request['uri']
+            method = transcoded_request['method']
             headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
+            headers['Content-Type'] = 'application/json'
             response = getattr(session, method)(
                 "{host}{uri}".format(host=host, uri=uri),
                 timeout=timeout,
                 headers=headers,
                 params=rest_helpers.flatten_query_params(query_params, strict=True),
-            )
+                )
             return response
 
-        def __call__(
-            self,
-            request: identity_mapping_store_service.GetIdentityMappingStoreRequest,
-            *,
-            retry: OptionalRetry = gapic_v1.method.DEFAULT,
-            timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
-        ) -> identity_mapping_store.IdentityMappingStore:
+        def __call__(self,
+                request: identity_mapping_store_service.GetIdentityMappingStoreRequest, *,
+                retry: OptionalRetry=gapic_v1.method.DEFAULT,
+                timeout: Optional[float]=None,
+                metadata: Sequence[Tuple[str, Union[str, bytes]]]=(),
+                ) -> identity_mapping_store.IdentityMappingStore:
             r"""Call the get identity mapping
-            store method over HTTP.
+        store method over HTTP.
 
-                Args:
-                    request (~.identity_mapping_store_service.GetIdentityMappingStoreRequest):
-                        The request object. Request message for
-                    [IdentityMappingStoreService.GetIdentityMappingStore][google.cloud.discoveryengine.v1.IdentityMappingStoreService.GetIdentityMappingStore]
-                    retry (google.api_core.retry.Retry): Designation of what errors, if any,
-                        should be retried.
-                    timeout (float): The timeout for this request.
-                    metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
-                        sent along with the request as metadata. Normally, each value must be of type `str`,
-                        but for metadata keys ending with the suffix `-bin`, the corresponding values must
-                        be of type `bytes`.
+            Args:
+                request (~.identity_mapping_store_service.GetIdentityMappingStoreRequest):
+                    The request object. Request message for
+                [IdentityMappingStoreService.GetIdentityMappingStore][google.cloud.discoveryengine.v1.IdentityMappingStoreService.GetIdentityMappingStore]
+                retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                    should be retried.
+                timeout (float): The timeout for this request.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
-                Returns:
-                    ~.identity_mapping_store.IdentityMappingStore:
-                        Identity Mapping Store which contains
-                    Identity Mapping Entries.
+            Returns:
+                ~.identity_mapping_store.IdentityMappingStore:
+                    Identity Mapping Store which contains
+                Identity Mapping Entries.
 
             """
 
-            http_options = (
-                _BaseIdentityMappingStoreServiceRestTransport._BaseGetIdentityMappingStore._get_http_options()
-            )
+            http_options = _BaseIdentityMappingStoreServiceRestTransport._BaseGetIdentityMappingStore._get_http_options()
 
-            request, metadata = self._interceptor.pre_get_identity_mapping_store(
-                request, metadata
-            )
-            transcoded_request = _BaseIdentityMappingStoreServiceRestTransport._BaseGetIdentityMappingStore._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_get_identity_mapping_store(request, metadata)
+            transcoded_request = _BaseIdentityMappingStoreServiceRestTransport._BaseGetIdentityMappingStore._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseIdentityMappingStoreServiceRestTransport._BaseGetIdentityMappingStore._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseIdentityMappingStoreServiceRestTransport._BaseGetIdentityMappingStore._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
-                method = transcoded_request["method"]
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request['uri'])
+                method = transcoded_request['method']
                 try:
                     request_payload = type(request).to_json(request)
                 except:
                     request_payload = None
                 http_request = {
-                    "payload": request_payload,
-                    "requestMethod": method,
-                    "requestUrl": request_url,
-                    "headers": dict(metadata),
+                  "payload": request_payload,
+                  "requestMethod": method,
+                  "requestUrl": request_url,
+                  "headers": dict(metadata),
                 }
                 _LOGGER.debug(
                     f"Sending request for google.cloud.discoveryengine_v1.IdentityMappingStoreServiceClient.GetIdentityMappingStore",
-                    extra={
+                    extra = {
                         "serviceName": "google.cloud.discoveryengine.v1.IdentityMappingStoreService",
                         "rpcName": "GetIdentityMappingStore",
                         "httpRequest": http_request,
@@ -1267,14 +1058,7 @@ class IdentityMappingStoreServiceRestTransport(
                 )
 
             # Send the request
-            response = IdentityMappingStoreServiceRestTransport._GetIdentityMappingStore._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-            )
+            response = IdentityMappingStoreServiceRestTransport._GetIdentityMappingStore._get_response(self._host, metadata, query_params, self._session, timeout, transcoded_request)
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
             # subclass.
@@ -1289,26 +1073,20 @@ class IdentityMappingStoreServiceRestTransport(
 
             resp = self._interceptor.post_get_identity_mapping_store(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_get_identity_mapping_store_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_get_identity_mapping_store_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = (
-                        identity_mapping_store.IdentityMappingStore.to_json(response)
-                    )
+                    response_payload = identity_mapping_store.IdentityMappingStore.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
-                    "payload": response_payload,
-                    "headers": dict(response.headers),
-                    "status": response.status_code,
+                "payload": response_payload,
+                "headers":  dict(response.headers),
+                "status": response.status_code,
                 }
                 _LOGGER.debug(
                     "Received response for google.cloud.discoveryengine_v1.IdentityMappingStoreServiceClient.get_identity_mapping_store",
-                    extra={
+                    extra = {
                         "serviceName": "google.cloud.discoveryengine.v1.IdentityMappingStoreService",
                         "rpcName": "GetIdentityMappingStore",
                         "metadata": http_response["headers"],
@@ -1317,14 +1095,9 @@ class IdentityMappingStoreServiceRestTransport(
                 )
             return resp
 
-    class _ImportIdentityMappings(
-        _BaseIdentityMappingStoreServiceRestTransport._BaseImportIdentityMappings,
-        IdentityMappingStoreServiceRestStub,
-    ):
+    class _ImportIdentityMappings(_BaseIdentityMappingStoreServiceRestTransport._BaseImportIdentityMappings, IdentityMappingStoreServiceRestStub):
         def __hash__(self):
-            return hash(
-                "IdentityMappingStoreServiceRestTransport.ImportIdentityMappings"
-            )
+            return hash("IdentityMappingStoreServiceRestTransport.ImportIdentityMappings")
 
         @staticmethod
         def _get_response(
@@ -1334,29 +1107,27 @@ class IdentityMappingStoreServiceRestTransport(
             session,
             timeout,
             transcoded_request,
-            body=None,
-        ):
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+            body=None):
+
+            uri = transcoded_request['uri']
+            method = transcoded_request['method']
             headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
+            headers['Content-Type'] = 'application/json'
             response = getattr(session, method)(
                 "{host}{uri}".format(host=host, uri=uri),
                 timeout=timeout,
                 headers=headers,
                 params=rest_helpers.flatten_query_params(query_params, strict=True),
                 data=body,
-            )
+                )
             return response
 
-        def __call__(
-            self,
-            request: identity_mapping_store_service.ImportIdentityMappingsRequest,
-            *,
-            retry: OptionalRetry = gapic_v1.method.DEFAULT,
-            timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
-        ) -> operations_pb2.Operation:
+        def __call__(self,
+                request: identity_mapping_store_service.ImportIdentityMappingsRequest, *,
+                retry: OptionalRetry=gapic_v1.method.DEFAULT,
+                timeout: Optional[float]=None,
+                metadata: Sequence[Tuple[str, Union[str, bytes]]]=(),
+                ) -> operations_pb2.Operation:
             r"""Call the import identity mappings method over HTTP.
 
             Args:
@@ -1379,46 +1150,32 @@ class IdentityMappingStoreServiceRestTransport(
 
             """
 
-            http_options = (
-                _BaseIdentityMappingStoreServiceRestTransport._BaseImportIdentityMappings._get_http_options()
-            )
+            http_options = _BaseIdentityMappingStoreServiceRestTransport._BaseImportIdentityMappings._get_http_options()
 
-            request, metadata = self._interceptor.pre_import_identity_mappings(
-                request, metadata
-            )
-            transcoded_request = _BaseIdentityMappingStoreServiceRestTransport._BaseImportIdentityMappings._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_import_identity_mappings(request, metadata)
+            transcoded_request = _BaseIdentityMappingStoreServiceRestTransport._BaseImportIdentityMappings._get_transcoded_request(http_options, request)
 
-            body = _BaseIdentityMappingStoreServiceRestTransport._BaseImportIdentityMappings._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseIdentityMappingStoreServiceRestTransport._BaseImportIdentityMappings._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseIdentityMappingStoreServiceRestTransport._BaseImportIdentityMappings._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseIdentityMappingStoreServiceRestTransport._BaseImportIdentityMappings._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
-                method = transcoded_request["method"]
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request['uri'])
+                method = transcoded_request['method']
                 try:
                     request_payload = json_format.MessageToJson(request)
                 except:
                     request_payload = None
                 http_request = {
-                    "payload": request_payload,
-                    "requestMethod": method,
-                    "requestUrl": request_url,
-                    "headers": dict(metadata),
+                  "payload": request_payload,
+                  "requestMethod": method,
+                  "requestUrl": request_url,
+                  "headers": dict(metadata),
                 }
                 _LOGGER.debug(
                     f"Sending request for google.cloud.discoveryengine_v1.IdentityMappingStoreServiceClient.ImportIdentityMappings",
-                    extra={
+                    extra = {
                         "serviceName": "google.cloud.discoveryengine.v1.IdentityMappingStoreService",
                         "rpcName": "ImportIdentityMappings",
                         "httpRequest": http_request,
@@ -1427,15 +1184,7 @@ class IdentityMappingStoreServiceRestTransport(
                 )
 
             # Send the request
-            response = IdentityMappingStoreServiceRestTransport._ImportIdentityMappings._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
-            )
+            response = IdentityMappingStoreServiceRestTransport._ImportIdentityMappings._get_response(self._host, metadata, query_params, self._session, timeout, transcoded_request, body)
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
             # subclass.
@@ -1448,24 +1197,20 @@ class IdentityMappingStoreServiceRestTransport(
 
             resp = self._interceptor.post_import_identity_mappings(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_import_identity_mappings_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_import_identity_mappings_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
                     response_payload = None
                 http_response = {
-                    "payload": response_payload,
-                    "headers": dict(response.headers),
-                    "status": response.status_code,
+                "payload": response_payload,
+                "headers":  dict(response.headers),
+                "status": response.status_code,
                 }
                 _LOGGER.debug(
                     "Received response for google.cloud.discoveryengine_v1.IdentityMappingStoreServiceClient.import_identity_mappings",
-                    extra={
+                    extra = {
                         "serviceName": "google.cloud.discoveryengine.v1.IdentityMappingStoreService",
                         "rpcName": "ImportIdentityMappings",
                         "metadata": http_response["headers"],
@@ -1474,10 +1219,7 @@ class IdentityMappingStoreServiceRestTransport(
                 )
             return resp
 
-    class _ListIdentityMappings(
-        _BaseIdentityMappingStoreServiceRestTransport._BaseListIdentityMappings,
-        IdentityMappingStoreServiceRestStub,
-    ):
+    class _ListIdentityMappings(_BaseIdentityMappingStoreServiceRestTransport._BaseListIdentityMappings, IdentityMappingStoreServiceRestStub):
         def __hash__(self):
             return hash("IdentityMappingStoreServiceRestTransport.ListIdentityMappings")
 
@@ -1489,28 +1231,26 @@ class IdentityMappingStoreServiceRestTransport(
             session,
             timeout,
             transcoded_request,
-            body=None,
-        ):
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+            body=None):
+
+            uri = transcoded_request['uri']
+            method = transcoded_request['method']
             headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
+            headers['Content-Type'] = 'application/json'
             response = getattr(session, method)(
                 "{host}{uri}".format(host=host, uri=uri),
                 timeout=timeout,
                 headers=headers,
                 params=rest_helpers.flatten_query_params(query_params, strict=True),
-            )
+                )
             return response
 
-        def __call__(
-            self,
-            request: identity_mapping_store_service.ListIdentityMappingsRequest,
-            *,
-            retry: OptionalRetry = gapic_v1.method.DEFAULT,
-            timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
-        ) -> identity_mapping_store_service.ListIdentityMappingsResponse:
+        def __call__(self,
+                request: identity_mapping_store_service.ListIdentityMappingsRequest, *,
+                retry: OptionalRetry=gapic_v1.method.DEFAULT,
+                timeout: Optional[float]=None,
+                metadata: Sequence[Tuple[str, Union[str, bytes]]]=(),
+                ) -> identity_mapping_store_service.ListIdentityMappingsResponse:
             r"""Call the list identity mappings method over HTTP.
 
             Args:
@@ -1532,42 +1272,30 @@ class IdentityMappingStoreServiceRestTransport(
 
             """
 
-            http_options = (
-                _BaseIdentityMappingStoreServiceRestTransport._BaseListIdentityMappings._get_http_options()
-            )
+            http_options = _BaseIdentityMappingStoreServiceRestTransport._BaseListIdentityMappings._get_http_options()
 
-            request, metadata = self._interceptor.pre_list_identity_mappings(
-                request, metadata
-            )
-            transcoded_request = _BaseIdentityMappingStoreServiceRestTransport._BaseListIdentityMappings._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_list_identity_mappings(request, metadata)
+            transcoded_request = _BaseIdentityMappingStoreServiceRestTransport._BaseListIdentityMappings._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseIdentityMappingStoreServiceRestTransport._BaseListIdentityMappings._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseIdentityMappingStoreServiceRestTransport._BaseListIdentityMappings._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
-                method = transcoded_request["method"]
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request['uri'])
+                method = transcoded_request['method']
                 try:
                     request_payload = type(request).to_json(request)
                 except:
                     request_payload = None
                 http_request = {
-                    "payload": request_payload,
-                    "requestMethod": method,
-                    "requestUrl": request_url,
-                    "headers": dict(metadata),
+                  "payload": request_payload,
+                  "requestMethod": method,
+                  "requestUrl": request_url,
+                  "headers": dict(metadata),
                 }
                 _LOGGER.debug(
                     f"Sending request for google.cloud.discoveryengine_v1.IdentityMappingStoreServiceClient.ListIdentityMappings",
-                    extra={
+                    extra = {
                         "serviceName": "google.cloud.discoveryengine.v1.IdentityMappingStoreService",
                         "rpcName": "ListIdentityMappings",
                         "httpRequest": http_request,
@@ -1576,14 +1304,7 @@ class IdentityMappingStoreServiceRestTransport(
                 )
 
             # Send the request
-            response = IdentityMappingStoreServiceRestTransport._ListIdentityMappings._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-            )
+            response = IdentityMappingStoreServiceRestTransport._ListIdentityMappings._get_response(self._host, metadata, query_params, self._session, timeout, transcoded_request)
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
             # subclass.
@@ -1592,34 +1313,26 @@ class IdentityMappingStoreServiceRestTransport(
 
             # Return the response
             resp = identity_mapping_store_service.ListIdentityMappingsResponse()
-            pb_resp = identity_mapping_store_service.ListIdentityMappingsResponse.pb(
-                resp
-            )
+            pb_resp = identity_mapping_store_service.ListIdentityMappingsResponse.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_list_identity_mappings(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_list_identity_mappings_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_list_identity_mappings_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = identity_mapping_store_service.ListIdentityMappingsResponse.to_json(
-                        response
-                    )
+                    response_payload = identity_mapping_store_service.ListIdentityMappingsResponse.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
-                    "payload": response_payload,
-                    "headers": dict(response.headers),
-                    "status": response.status_code,
+                "payload": response_payload,
+                "headers":  dict(response.headers),
+                "status": response.status_code,
                 }
                 _LOGGER.debug(
                     "Received response for google.cloud.discoveryengine_v1.IdentityMappingStoreServiceClient.list_identity_mappings",
-                    extra={
+                    extra = {
                         "serviceName": "google.cloud.discoveryengine.v1.IdentityMappingStoreService",
                         "rpcName": "ListIdentityMappings",
                         "metadata": http_response["headers"],
@@ -1628,14 +1341,9 @@ class IdentityMappingStoreServiceRestTransport(
                 )
             return resp
 
-    class _ListIdentityMappingStores(
-        _BaseIdentityMappingStoreServiceRestTransport._BaseListIdentityMappingStores,
-        IdentityMappingStoreServiceRestStub,
-    ):
+    class _ListIdentityMappingStores(_BaseIdentityMappingStoreServiceRestTransport._BaseListIdentityMappingStores, IdentityMappingStoreServiceRestStub):
         def __hash__(self):
-            return hash(
-                "IdentityMappingStoreServiceRestTransport.ListIdentityMappingStores"
-            )
+            return hash("IdentityMappingStoreServiceRestTransport.ListIdentityMappingStores")
 
         @staticmethod
         def _get_response(
@@ -1645,86 +1353,72 @@ class IdentityMappingStoreServiceRestTransport(
             session,
             timeout,
             transcoded_request,
-            body=None,
-        ):
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+            body=None):
+
+            uri = transcoded_request['uri']
+            method = transcoded_request['method']
             headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
+            headers['Content-Type'] = 'application/json'
             response = getattr(session, method)(
                 "{host}{uri}".format(host=host, uri=uri),
                 timeout=timeout,
                 headers=headers,
                 params=rest_helpers.flatten_query_params(query_params, strict=True),
-            )
+                )
             return response
 
-        def __call__(
-            self,
-            request: identity_mapping_store_service.ListIdentityMappingStoresRequest,
-            *,
-            retry: OptionalRetry = gapic_v1.method.DEFAULT,
-            timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
-        ) -> identity_mapping_store_service.ListIdentityMappingStoresResponse:
+        def __call__(self,
+                request: identity_mapping_store_service.ListIdentityMappingStoresRequest, *,
+                retry: OptionalRetry=gapic_v1.method.DEFAULT,
+                timeout: Optional[float]=None,
+                metadata: Sequence[Tuple[str, Union[str, bytes]]]=(),
+                ) -> identity_mapping_store_service.ListIdentityMappingStoresResponse:
             r"""Call the list identity mapping
-            stores method over HTTP.
+        stores method over HTTP.
 
-                Args:
-                    request (~.identity_mapping_store_service.ListIdentityMappingStoresRequest):
-                        The request object. Request message for
-                    [IdentityMappingStoreService.ListIdentityMappingStores][google.cloud.discoveryengine.v1.IdentityMappingStoreService.ListIdentityMappingStores]
-                    retry (google.api_core.retry.Retry): Designation of what errors, if any,
-                        should be retried.
-                    timeout (float): The timeout for this request.
-                    metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
-                        sent along with the request as metadata. Normally, each value must be of type `str`,
-                        but for metadata keys ending with the suffix `-bin`, the corresponding values must
-                        be of type `bytes`.
+            Args:
+                request (~.identity_mapping_store_service.ListIdentityMappingStoresRequest):
+                    The request object. Request message for
+                [IdentityMappingStoreService.ListIdentityMappingStores][google.cloud.discoveryengine.v1.IdentityMappingStoreService.ListIdentityMappingStores]
+                retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                    should be retried.
+                timeout (float): The timeout for this request.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
-                Returns:
-                    ~.identity_mapping_store_service.ListIdentityMappingStoresResponse:
-                        Response message for
-                    [IdentityMappingStoreService.ListIdentityMappingStores][google.cloud.discoveryengine.v1.IdentityMappingStoreService.ListIdentityMappingStores]
+            Returns:
+                ~.identity_mapping_store_service.ListIdentityMappingStoresResponse:
+                    Response message for
+                [IdentityMappingStoreService.ListIdentityMappingStores][google.cloud.discoveryengine.v1.IdentityMappingStoreService.ListIdentityMappingStores]
 
             """
 
-            http_options = (
-                _BaseIdentityMappingStoreServiceRestTransport._BaseListIdentityMappingStores._get_http_options()
-            )
+            http_options = _BaseIdentityMappingStoreServiceRestTransport._BaseListIdentityMappingStores._get_http_options()
 
-            request, metadata = self._interceptor.pre_list_identity_mapping_stores(
-                request, metadata
-            )
-            transcoded_request = _BaseIdentityMappingStoreServiceRestTransport._BaseListIdentityMappingStores._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_list_identity_mapping_stores(request, metadata)
+            transcoded_request = _BaseIdentityMappingStoreServiceRestTransport._BaseListIdentityMappingStores._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseIdentityMappingStoreServiceRestTransport._BaseListIdentityMappingStores._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseIdentityMappingStoreServiceRestTransport._BaseListIdentityMappingStores._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
-                method = transcoded_request["method"]
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request['uri'])
+                method = transcoded_request['method']
                 try:
                     request_payload = type(request).to_json(request)
                 except:
                     request_payload = None
                 http_request = {
-                    "payload": request_payload,
-                    "requestMethod": method,
-                    "requestUrl": request_url,
-                    "headers": dict(metadata),
+                  "payload": request_payload,
+                  "requestMethod": method,
+                  "requestUrl": request_url,
+                  "headers": dict(metadata),
                 }
                 _LOGGER.debug(
                     f"Sending request for google.cloud.discoveryengine_v1.IdentityMappingStoreServiceClient.ListIdentityMappingStores",
-                    extra={
+                    extra = {
                         "serviceName": "google.cloud.discoveryengine.v1.IdentityMappingStoreService",
                         "rpcName": "ListIdentityMappingStores",
                         "httpRequest": http_request,
@@ -1733,14 +1427,7 @@ class IdentityMappingStoreServiceRestTransport(
                 )
 
             # Send the request
-            response = IdentityMappingStoreServiceRestTransport._ListIdentityMappingStores._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-            )
+            response = IdentityMappingStoreServiceRestTransport._ListIdentityMappingStores._get_response(self._host, metadata, query_params, self._session, timeout, transcoded_request)
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
             # subclass.
@@ -1749,36 +1436,26 @@ class IdentityMappingStoreServiceRestTransport(
 
             # Return the response
             resp = identity_mapping_store_service.ListIdentityMappingStoresResponse()
-            pb_resp = (
-                identity_mapping_store_service.ListIdentityMappingStoresResponse.pb(
-                    resp
-                )
-            )
+            pb_resp = identity_mapping_store_service.ListIdentityMappingStoresResponse.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_list_identity_mapping_stores(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_list_identity_mapping_stores_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_list_identity_mapping_stores_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = identity_mapping_store_service.ListIdentityMappingStoresResponse.to_json(
-                        response
-                    )
+                    response_payload = identity_mapping_store_service.ListIdentityMappingStoresResponse.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
-                    "payload": response_payload,
-                    "headers": dict(response.headers),
-                    "status": response.status_code,
+                "payload": response_payload,
+                "headers":  dict(response.headers),
+                "status": response.status_code,
                 }
                 _LOGGER.debug(
                     "Received response for google.cloud.discoveryengine_v1.IdentityMappingStoreServiceClient.list_identity_mapping_stores",
-                    extra={
+                    extra = {
                         "serviceName": "google.cloud.discoveryengine.v1.IdentityMappingStoreService",
                         "rpcName": "ListIdentityMappingStores",
                         "metadata": http_response["headers"],
@@ -1787,14 +1464,9 @@ class IdentityMappingStoreServiceRestTransport(
                 )
             return resp
 
-    class _PurgeIdentityMappings(
-        _BaseIdentityMappingStoreServiceRestTransport._BasePurgeIdentityMappings,
-        IdentityMappingStoreServiceRestStub,
-    ):
+    class _PurgeIdentityMappings(_BaseIdentityMappingStoreServiceRestTransport._BasePurgeIdentityMappings, IdentityMappingStoreServiceRestStub):
         def __hash__(self):
-            return hash(
-                "IdentityMappingStoreServiceRestTransport.PurgeIdentityMappings"
-            )
+            return hash("IdentityMappingStoreServiceRestTransport.PurgeIdentityMappings")
 
         @staticmethod
         def _get_response(
@@ -1804,29 +1476,27 @@ class IdentityMappingStoreServiceRestTransport(
             session,
             timeout,
             transcoded_request,
-            body=None,
-        ):
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+            body=None):
+
+            uri = transcoded_request['uri']
+            method = transcoded_request['method']
             headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
+            headers['Content-Type'] = 'application/json'
             response = getattr(session, method)(
                 "{host}{uri}".format(host=host, uri=uri),
                 timeout=timeout,
                 headers=headers,
                 params=rest_helpers.flatten_query_params(query_params, strict=True),
                 data=body,
-            )
+                )
             return response
 
-        def __call__(
-            self,
-            request: identity_mapping_store_service.PurgeIdentityMappingsRequest,
-            *,
-            retry: OptionalRetry = gapic_v1.method.DEFAULT,
-            timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
-        ) -> operations_pb2.Operation:
+        def __call__(self,
+                request: identity_mapping_store_service.PurgeIdentityMappingsRequest, *,
+                retry: OptionalRetry=gapic_v1.method.DEFAULT,
+                timeout: Optional[float]=None,
+                metadata: Sequence[Tuple[str, Union[str, bytes]]]=(),
+                ) -> operations_pb2.Operation:
             r"""Call the purge identity mappings method over HTTP.
 
             Args:
@@ -1849,46 +1519,32 @@ class IdentityMappingStoreServiceRestTransport(
 
             """
 
-            http_options = (
-                _BaseIdentityMappingStoreServiceRestTransport._BasePurgeIdentityMappings._get_http_options()
-            )
+            http_options = _BaseIdentityMappingStoreServiceRestTransport._BasePurgeIdentityMappings._get_http_options()
 
-            request, metadata = self._interceptor.pre_purge_identity_mappings(
-                request, metadata
-            )
-            transcoded_request = _BaseIdentityMappingStoreServiceRestTransport._BasePurgeIdentityMappings._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_purge_identity_mappings(request, metadata)
+            transcoded_request = _BaseIdentityMappingStoreServiceRestTransport._BasePurgeIdentityMappings._get_transcoded_request(http_options, request)
 
-            body = _BaseIdentityMappingStoreServiceRestTransport._BasePurgeIdentityMappings._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseIdentityMappingStoreServiceRestTransport._BasePurgeIdentityMappings._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseIdentityMappingStoreServiceRestTransport._BasePurgeIdentityMappings._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseIdentityMappingStoreServiceRestTransport._BasePurgeIdentityMappings._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
-                method = transcoded_request["method"]
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request['uri'])
+                method = transcoded_request['method']
                 try:
                     request_payload = json_format.MessageToJson(request)
                 except:
                     request_payload = None
                 http_request = {
-                    "payload": request_payload,
-                    "requestMethod": method,
-                    "requestUrl": request_url,
-                    "headers": dict(metadata),
+                  "payload": request_payload,
+                  "requestMethod": method,
+                  "requestUrl": request_url,
+                  "headers": dict(metadata),
                 }
                 _LOGGER.debug(
                     f"Sending request for google.cloud.discoveryengine_v1.IdentityMappingStoreServiceClient.PurgeIdentityMappings",
-                    extra={
+                    extra = {
                         "serviceName": "google.cloud.discoveryengine.v1.IdentityMappingStoreService",
                         "rpcName": "PurgeIdentityMappings",
                         "httpRequest": http_request,
@@ -1897,15 +1553,7 @@ class IdentityMappingStoreServiceRestTransport(
                 )
 
             # Send the request
-            response = IdentityMappingStoreServiceRestTransport._PurgeIdentityMappings._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
-            )
+            response = IdentityMappingStoreServiceRestTransport._PurgeIdentityMappings._get_response(self._host, metadata, query_params, self._session, timeout, transcoded_request, body)
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
             # subclass.
@@ -1918,24 +1566,20 @@ class IdentityMappingStoreServiceRestTransport(
 
             resp = self._interceptor.post_purge_identity_mappings(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_purge_identity_mappings_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_purge_identity_mappings_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
                     response_payload = None
                 http_response = {
-                    "payload": response_payload,
-                    "headers": dict(response.headers),
-                    "status": response.status_code,
+                "payload": response_payload,
+                "headers":  dict(response.headers),
+                "status": response.status_code,
                 }
                 _LOGGER.debug(
                     "Received response for google.cloud.discoveryengine_v1.IdentityMappingStoreServiceClient.purge_identity_mappings",
-                    extra={
+                    extra = {
                         "serviceName": "google.cloud.discoveryengine.v1.IdentityMappingStoreService",
                         "rpcName": "PurgeIdentityMappings",
                         "metadata": http_response["headers"],
@@ -1945,90 +1589,66 @@ class IdentityMappingStoreServiceRestTransport(
             return resp
 
     @property
-    def create_identity_mapping_store(
-        self,
-    ) -> Callable[
-        [identity_mapping_store_service.CreateIdentityMappingStoreRequest],
-        gcd_identity_mapping_store.IdentityMappingStore,
-    ]:
+    def create_identity_mapping_store(self) -> Callable[
+            [identity_mapping_store_service.CreateIdentityMappingStoreRequest],
+            gcd_identity_mapping_store.IdentityMappingStore]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return self._CreateIdentityMappingStore(self._session, self._host, self._interceptor)  # type: ignore
+        return self._CreateIdentityMappingStore(self._session, self._host, self._interceptor) # type: ignore
 
     @property
-    def delete_identity_mapping_store(
-        self,
-    ) -> Callable[
-        [identity_mapping_store_service.DeleteIdentityMappingStoreRequest],
-        operations_pb2.Operation,
-    ]:
+    def delete_identity_mapping_store(self) -> Callable[
+            [identity_mapping_store_service.DeleteIdentityMappingStoreRequest],
+            operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return self._DeleteIdentityMappingStore(self._session, self._host, self._interceptor)  # type: ignore
+        return self._DeleteIdentityMappingStore(self._session, self._host, self._interceptor) # type: ignore
 
     @property
-    def get_identity_mapping_store(
-        self,
-    ) -> Callable[
-        [identity_mapping_store_service.GetIdentityMappingStoreRequest],
-        identity_mapping_store.IdentityMappingStore,
-    ]:
+    def get_identity_mapping_store(self) -> Callable[
+            [identity_mapping_store_service.GetIdentityMappingStoreRequest],
+            identity_mapping_store.IdentityMappingStore]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return self._GetIdentityMappingStore(self._session, self._host, self._interceptor)  # type: ignore
+        return self._GetIdentityMappingStore(self._session, self._host, self._interceptor) # type: ignore
 
     @property
-    def import_identity_mappings(
-        self,
-    ) -> Callable[
-        [identity_mapping_store_service.ImportIdentityMappingsRequest],
-        operations_pb2.Operation,
-    ]:
+    def import_identity_mappings(self) -> Callable[
+            [identity_mapping_store_service.ImportIdentityMappingsRequest],
+            operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return self._ImportIdentityMappings(self._session, self._host, self._interceptor)  # type: ignore
+        return self._ImportIdentityMappings(self._session, self._host, self._interceptor) # type: ignore
 
     @property
-    def list_identity_mappings(
-        self,
-    ) -> Callable[
-        [identity_mapping_store_service.ListIdentityMappingsRequest],
-        identity_mapping_store_service.ListIdentityMappingsResponse,
-    ]:
+    def list_identity_mappings(self) -> Callable[
+            [identity_mapping_store_service.ListIdentityMappingsRequest],
+            identity_mapping_store_service.ListIdentityMappingsResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return self._ListIdentityMappings(self._session, self._host, self._interceptor)  # type: ignore
+        return self._ListIdentityMappings(self._session, self._host, self._interceptor) # type: ignore
 
     @property
-    def list_identity_mapping_stores(
-        self,
-    ) -> Callable[
-        [identity_mapping_store_service.ListIdentityMappingStoresRequest],
-        identity_mapping_store_service.ListIdentityMappingStoresResponse,
-    ]:
+    def list_identity_mapping_stores(self) -> Callable[
+            [identity_mapping_store_service.ListIdentityMappingStoresRequest],
+            identity_mapping_store_service.ListIdentityMappingStoresResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return self._ListIdentityMappingStores(self._session, self._host, self._interceptor)  # type: ignore
+        return self._ListIdentityMappingStores(self._session, self._host, self._interceptor) # type: ignore
 
     @property
-    def purge_identity_mappings(
-        self,
-    ) -> Callable[
-        [identity_mapping_store_service.PurgeIdentityMappingsRequest],
-        operations_pb2.Operation,
-    ]:
+    def purge_identity_mappings(self) -> Callable[
+            [identity_mapping_store_service.PurgeIdentityMappingsRequest],
+            operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return self._PurgeIdentityMappings(self._session, self._host, self._interceptor)  # type: ignore
+        return self._PurgeIdentityMappings(self._session, self._host, self._interceptor) # type: ignore
 
     @property
     def cancel_operation(self):
-        return self._CancelOperation(self._session, self._host, self._interceptor)  # type: ignore
+        return self._CancelOperation(self._session, self._host, self._interceptor) # type: ignore
 
-    class _CancelOperation(
-        _BaseIdentityMappingStoreServiceRestTransport._BaseCancelOperation,
-        IdentityMappingStoreServiceRestStub,
-    ):
+    class _CancelOperation(_BaseIdentityMappingStoreServiceRestTransport._BaseCancelOperation, IdentityMappingStoreServiceRestStub):
         def __hash__(self):
             return hash("IdentityMappingStoreServiceRestTransport.CancelOperation")
 
@@ -2040,29 +1660,28 @@ class IdentityMappingStoreServiceRestTransport(
             session,
             timeout,
             transcoded_request,
-            body=None,
-        ):
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+            body=None):
+
+            uri = transcoded_request['uri']
+            method = transcoded_request['method']
             headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
+            headers['Content-Type'] = 'application/json'
             response = getattr(session, method)(
                 "{host}{uri}".format(host=host, uri=uri),
                 timeout=timeout,
                 headers=headers,
                 params=rest_helpers.flatten_query_params(query_params, strict=True),
                 data=body,
-            )
+                )
             return response
 
-        def __call__(
-            self,
-            request: operations_pb2.CancelOperationRequest,
-            *,
-            retry: OptionalRetry = gapic_v1.method.DEFAULT,
-            timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
-        ) -> None:
+        def __call__(self,
+            request: operations_pb2.CancelOperationRequest, *,
+            retry: OptionalRetry=gapic_v1.method.DEFAULT,
+            timeout: Optional[float]=None,
+            metadata: Sequence[Tuple[str, Union[str, bytes]]]=(),
+            ) -> None:
+
             r"""Call the cancel operation method over HTTP.
 
             Args:
@@ -2077,46 +1696,32 @@ class IdentityMappingStoreServiceRestTransport(
                     be of type `bytes`.
             """
 
-            http_options = (
-                _BaseIdentityMappingStoreServiceRestTransport._BaseCancelOperation._get_http_options()
-            )
+            http_options = _BaseIdentityMappingStoreServiceRestTransport._BaseCancelOperation._get_http_options()
 
-            request, metadata = self._interceptor.pre_cancel_operation(
-                request, metadata
-            )
-            transcoded_request = _BaseIdentityMappingStoreServiceRestTransport._BaseCancelOperation._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_cancel_operation(request, metadata)
+            transcoded_request = _BaseIdentityMappingStoreServiceRestTransport._BaseCancelOperation._get_transcoded_request(http_options, request)
 
-            body = _BaseIdentityMappingStoreServiceRestTransport._BaseCancelOperation._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseIdentityMappingStoreServiceRestTransport._BaseCancelOperation._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseIdentityMappingStoreServiceRestTransport._BaseCancelOperation._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseIdentityMappingStoreServiceRestTransport._BaseCancelOperation._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
-                method = transcoded_request["method"]
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request['uri'])
+                method = transcoded_request['method']
                 try:
                     request_payload = json_format.MessageToJson(request)
                 except:
                     request_payload = None
                 http_request = {
-                    "payload": request_payload,
-                    "requestMethod": method,
-                    "requestUrl": request_url,
-                    "headers": dict(metadata),
+                  "payload": request_payload,
+                  "requestMethod": method,
+                  "requestUrl": request_url,
+                  "headers": dict(metadata),
                 }
                 _LOGGER.debug(
                     f"Sending request for google.cloud.discoveryengine_v1.IdentityMappingStoreServiceClient.CancelOperation",
-                    extra={
+                    extra = {
                         "serviceName": "google.cloud.discoveryengine.v1.IdentityMappingStoreService",
                         "rpcName": "CancelOperation",
                         "httpRequest": http_request,
@@ -2125,17 +1730,7 @@ class IdentityMappingStoreServiceRestTransport(
                 )
 
             # Send the request
-            response = (
-                IdentityMappingStoreServiceRestTransport._CancelOperation._get_response(
-                    self._host,
-                    metadata,
-                    query_params,
-                    self._session,
-                    timeout,
-                    transcoded_request,
-                    body,
-                )
-            )
+            response = IdentityMappingStoreServiceRestTransport._CancelOperation._get_response(self._host, metadata, query_params, self._session, timeout, transcoded_request, body)
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
             # subclass.
@@ -2146,12 +1741,9 @@ class IdentityMappingStoreServiceRestTransport(
 
     @property
     def get_operation(self):
-        return self._GetOperation(self._session, self._host, self._interceptor)  # type: ignore
+        return self._GetOperation(self._session, self._host, self._interceptor) # type: ignore
 
-    class _GetOperation(
-        _BaseIdentityMappingStoreServiceRestTransport._BaseGetOperation,
-        IdentityMappingStoreServiceRestStub,
-    ):
+    class _GetOperation(_BaseIdentityMappingStoreServiceRestTransport._BaseGetOperation, IdentityMappingStoreServiceRestStub):
         def __hash__(self):
             return hash("IdentityMappingStoreServiceRestTransport.GetOperation")
 
@@ -2163,28 +1755,27 @@ class IdentityMappingStoreServiceRestTransport(
             session,
             timeout,
             transcoded_request,
-            body=None,
-        ):
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+            body=None):
+
+            uri = transcoded_request['uri']
+            method = transcoded_request['method']
             headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
+            headers['Content-Type'] = 'application/json'
             response = getattr(session, method)(
                 "{host}{uri}".format(host=host, uri=uri),
                 timeout=timeout,
                 headers=headers,
                 params=rest_helpers.flatten_query_params(query_params, strict=True),
-            )
+                )
             return response
 
-        def __call__(
-            self,
-            request: operations_pb2.GetOperationRequest,
-            *,
-            retry: OptionalRetry = gapic_v1.method.DEFAULT,
-            timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
-        ) -> operations_pb2.Operation:
+        def __call__(self,
+            request: operations_pb2.GetOperationRequest, *,
+            retry: OptionalRetry=gapic_v1.method.DEFAULT,
+            timeout: Optional[float]=None,
+            metadata: Sequence[Tuple[str, Union[str, bytes]]]=(),
+            ) -> operations_pb2.Operation:
+
             r"""Call the get operation method over HTTP.
 
             Args:
@@ -2202,40 +1793,30 @@ class IdentityMappingStoreServiceRestTransport(
                 operations_pb2.Operation: Response from GetOperation method.
             """
 
-            http_options = (
-                _BaseIdentityMappingStoreServiceRestTransport._BaseGetOperation._get_http_options()
-            )
+            http_options = _BaseIdentityMappingStoreServiceRestTransport._BaseGetOperation._get_http_options()
 
             request, metadata = self._interceptor.pre_get_operation(request, metadata)
-            transcoded_request = _BaseIdentityMappingStoreServiceRestTransport._BaseGetOperation._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseIdentityMappingStoreServiceRestTransport._BaseGetOperation._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseIdentityMappingStoreServiceRestTransport._BaseGetOperation._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseIdentityMappingStoreServiceRestTransport._BaseGetOperation._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
-                method = transcoded_request["method"]
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request['uri'])
+                method = transcoded_request['method']
                 try:
                     request_payload = json_format.MessageToJson(request)
                 except:
                     request_payload = None
                 http_request = {
-                    "payload": request_payload,
-                    "requestMethod": method,
-                    "requestUrl": request_url,
-                    "headers": dict(metadata),
+                  "payload": request_payload,
+                  "requestMethod": method,
+                  "requestUrl": request_url,
+                  "headers": dict(metadata),
                 }
                 _LOGGER.debug(
                     f"Sending request for google.cloud.discoveryengine_v1.IdentityMappingStoreServiceClient.GetOperation",
-                    extra={
+                    extra = {
                         "serviceName": "google.cloud.discoveryengine.v1.IdentityMappingStoreService",
                         "rpcName": "GetOperation",
                         "httpRequest": http_request,
@@ -2244,16 +1825,7 @@ class IdentityMappingStoreServiceRestTransport(
                 )
 
             # Send the request
-            response = (
-                IdentityMappingStoreServiceRestTransport._GetOperation._get_response(
-                    self._host,
-                    metadata,
-                    query_params,
-                    self._session,
-                    timeout,
-                    transcoded_request,
-                )
-            )
+            response = IdentityMappingStoreServiceRestTransport._GetOperation._get_response(self._host, metadata, query_params, self._session, timeout, transcoded_request)
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
             # subclass.
@@ -2264,21 +1836,19 @@ class IdentityMappingStoreServiceRestTransport(
             resp = operations_pb2.Operation()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_get_operation(resp)
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
-                    "headers": dict(response.headers),
+                    "headers":  dict(response.headers),
                     "status": response.status_code,
                 }
                 _LOGGER.debug(
                     "Received response for google.cloud.discoveryengine_v1.IdentityMappingStoreServiceAsyncClient.GetOperation",
-                    extra={
+                    extra = {
                         "serviceName": "google.cloud.discoveryengine.v1.IdentityMappingStoreService",
                         "rpcName": "GetOperation",
                         "httpResponse": http_response,
@@ -2289,12 +1859,9 @@ class IdentityMappingStoreServiceRestTransport(
 
     @property
     def list_operations(self):
-        return self._ListOperations(self._session, self._host, self._interceptor)  # type: ignore
+        return self._ListOperations(self._session, self._host, self._interceptor) # type: ignore
 
-    class _ListOperations(
-        _BaseIdentityMappingStoreServiceRestTransport._BaseListOperations,
-        IdentityMappingStoreServiceRestStub,
-    ):
+    class _ListOperations(_BaseIdentityMappingStoreServiceRestTransport._BaseListOperations, IdentityMappingStoreServiceRestStub):
         def __hash__(self):
             return hash("IdentityMappingStoreServiceRestTransport.ListOperations")
 
@@ -2306,28 +1873,27 @@ class IdentityMappingStoreServiceRestTransport(
             session,
             timeout,
             transcoded_request,
-            body=None,
-        ):
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+            body=None):
+
+            uri = transcoded_request['uri']
+            method = transcoded_request['method']
             headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
+            headers['Content-Type'] = 'application/json'
             response = getattr(session, method)(
                 "{host}{uri}".format(host=host, uri=uri),
                 timeout=timeout,
                 headers=headers,
                 params=rest_helpers.flatten_query_params(query_params, strict=True),
-            )
+                )
             return response
 
-        def __call__(
-            self,
-            request: operations_pb2.ListOperationsRequest,
-            *,
-            retry: OptionalRetry = gapic_v1.method.DEFAULT,
-            timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
-        ) -> operations_pb2.ListOperationsResponse:
+        def __call__(self,
+            request: operations_pb2.ListOperationsRequest, *,
+            retry: OptionalRetry=gapic_v1.method.DEFAULT,
+            timeout: Optional[float]=None,
+            metadata: Sequence[Tuple[str, Union[str, bytes]]]=(),
+            ) -> operations_pb2.ListOperationsResponse:
+
             r"""Call the list operations method over HTTP.
 
             Args:
@@ -2345,40 +1911,30 @@ class IdentityMappingStoreServiceRestTransport(
                 operations_pb2.ListOperationsResponse: Response from ListOperations method.
             """
 
-            http_options = (
-                _BaseIdentityMappingStoreServiceRestTransport._BaseListOperations._get_http_options()
-            )
+            http_options = _BaseIdentityMappingStoreServiceRestTransport._BaseListOperations._get_http_options()
 
             request, metadata = self._interceptor.pre_list_operations(request, metadata)
-            transcoded_request = _BaseIdentityMappingStoreServiceRestTransport._BaseListOperations._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseIdentityMappingStoreServiceRestTransport._BaseListOperations._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseIdentityMappingStoreServiceRestTransport._BaseListOperations._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseIdentityMappingStoreServiceRestTransport._BaseListOperations._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
-                method = transcoded_request["method"]
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request['uri'])
+                method = transcoded_request['method']
                 try:
                     request_payload = json_format.MessageToJson(request)
                 except:
                     request_payload = None
                 http_request = {
-                    "payload": request_payload,
-                    "requestMethod": method,
-                    "requestUrl": request_url,
-                    "headers": dict(metadata),
+                  "payload": request_payload,
+                  "requestMethod": method,
+                  "requestUrl": request_url,
+                  "headers": dict(metadata),
                 }
                 _LOGGER.debug(
                     f"Sending request for google.cloud.discoveryengine_v1.IdentityMappingStoreServiceClient.ListOperations",
-                    extra={
+                    extra = {
                         "serviceName": "google.cloud.discoveryengine.v1.IdentityMappingStoreService",
                         "rpcName": "ListOperations",
                         "httpRequest": http_request,
@@ -2387,16 +1943,7 @@ class IdentityMappingStoreServiceRestTransport(
                 )
 
             # Send the request
-            response = (
-                IdentityMappingStoreServiceRestTransport._ListOperations._get_response(
-                    self._host,
-                    metadata,
-                    query_params,
-                    self._session,
-                    timeout,
-                    transcoded_request,
-                )
-            )
+            response = IdentityMappingStoreServiceRestTransport._ListOperations._get_response(self._host, metadata, query_params, self._session, timeout, transcoded_request)
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
             # subclass.
@@ -2407,21 +1954,19 @@ class IdentityMappingStoreServiceRestTransport(
             resp = operations_pb2.ListOperationsResponse()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_list_operations(resp)
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
-                    "headers": dict(response.headers),
+                    "headers":  dict(response.headers),
                     "status": response.status_code,
                 }
                 _LOGGER.debug(
                     "Received response for google.cloud.discoveryengine_v1.IdentityMappingStoreServiceAsyncClient.ListOperations",
-                    extra={
+                    extra = {
                         "serviceName": "google.cloud.discoveryengine.v1.IdentityMappingStoreService",
                         "rpcName": "ListOperations",
                         "httpResponse": http_response,
@@ -2438,4 +1983,6 @@ class IdentityMappingStoreServiceRestTransport(
         self._session.close()
 
 
-__all__ = ("IdentityMappingStoreServiceRestTransport",)
+__all__=(
+    'IdentityMappingStoreServiceRestTransport',
+)

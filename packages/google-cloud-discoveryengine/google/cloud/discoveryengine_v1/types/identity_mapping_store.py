@@ -21,11 +21,12 @@ import proto  # type: ignore
 
 from google.cloud.discoveryengine_v1.types import cmek_config_service
 
+
 __protobuf__ = proto.module(
-    package="google.cloud.discoveryengine.v1",
+    package='google.cloud.discoveryengine.v1',
     manifest={
-        "IdentityMappingStore",
-        "IdentityMappingEntry",
+        'IdentityMappingStore',
+        'IdentityMappingEntry',
     },
 )
 
@@ -106,12 +107,12 @@ class IdentityMappingEntry(proto.Message):
     user_id: str = proto.Field(
         proto.STRING,
         number=2,
-        oneof="identity_provider_id",
+        oneof='identity_provider_id',
     )
     group_id: str = proto.Field(
         proto.STRING,
         number=3,
-        oneof="identity_provider_id",
+        oneof='identity_provider_id',
     )
     external_identity: str = proto.Field(
         proto.STRING,

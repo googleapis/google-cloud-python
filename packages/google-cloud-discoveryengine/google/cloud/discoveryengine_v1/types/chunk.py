@@ -17,13 +17,15 @@ from __future__ import annotations
 
 from typing import MutableMapping, MutableSequence
 
-from google.protobuf import struct_pb2  # type: ignore
 import proto  # type: ignore
 
+from google.protobuf import struct_pb2  # type: ignore
+
+
 __protobuf__ = proto.module(
-    package="google.cloud.discoveryengine.v1",
+    package='google.cloud.discoveryengine.v1',
     manifest={
-        "Chunk",
+        'Chunk',
     },
 )
 
@@ -77,7 +79,6 @@ class Chunk(proto.Message):
             Output only. The annotation metadata includes
             structured content in the current chunk.
     """
-
     class StructureType(proto.Enum):
         r"""Defines the types of the structured content that can be
         extracted.
@@ -168,15 +169,15 @@ class Chunk(proto.Message):
                 API.
         """
 
-        previous_chunks: MutableSequence["Chunk"] = proto.RepeatedField(
+        previous_chunks: MutableSequence['Chunk'] = proto.RepeatedField(
             proto.MESSAGE,
             number=1,
-            message="Chunk",
+            message='Chunk',
         )
-        next_chunks: MutableSequence["Chunk"] = proto.RepeatedField(
+        next_chunks: MutableSequence['Chunk'] = proto.RepeatedField(
             proto.MESSAGE,
             number=2,
-            message="Chunk",
+            message='Chunk',
         )
 
     class StructuredContent(proto.Message):
@@ -191,10 +192,10 @@ class Chunk(proto.Message):
                 content.
         """
 
-        structure_type: "Chunk.StructureType" = proto.Field(
+        structure_type: 'Chunk.StructureType' = proto.Field(
             proto.ENUM,
             number=1,
-            enum="Chunk.StructureType",
+            enum='Chunk.StructureType',
         )
         content: str = proto.Field(
             proto.STRING,
@@ -214,10 +215,10 @@ class Chunk(proto.Message):
                 structured content is based on an image.
         """
 
-        structured_content: "Chunk.StructuredContent" = proto.Field(
+        structured_content: 'Chunk.StructuredContent' = proto.Field(
             proto.MESSAGE,
             number=1,
-            message="Chunk.StructuredContent",
+            message='Chunk.StructuredContent',
         )
         image_id: str = proto.Field(
             proto.STRING,

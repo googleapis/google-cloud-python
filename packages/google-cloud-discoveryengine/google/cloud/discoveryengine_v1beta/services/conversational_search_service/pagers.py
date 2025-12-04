@@ -13,36 +13,20 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-from typing import (
-    Any,
-    AsyncIterator,
-    Awaitable,
-    Callable,
-    Iterator,
-    Optional,
-    Sequence,
-    Tuple,
-    Union,
-)
-
 from google.api_core import gapic_v1
 from google.api_core import retry as retries
 from google.api_core import retry_async as retries_async
-
+from typing import Any, AsyncIterator, Awaitable, Callable, Sequence, Tuple, Optional, Iterator, Union
 try:
     OptionalRetry = Union[retries.Retry, gapic_v1.method._MethodDefault, None]
-    OptionalAsyncRetry = Union[
-        retries_async.AsyncRetry, gapic_v1.method._MethodDefault, None
-    ]
+    OptionalAsyncRetry = Union[retries_async.AsyncRetry, gapic_v1.method._MethodDefault, None]
 except AttributeError:  # pragma: NO COVER
     OptionalRetry = Union[retries.Retry, object, None]  # type: ignore
     OptionalAsyncRetry = Union[retries_async.AsyncRetry, object, None]  # type: ignore
 
-from google.cloud.discoveryengine_v1beta.types import (
-    conversation,
-    conversational_search_service,
-    session,
-)
+from google.cloud.discoveryengine_v1beta.types import conversation
+from google.cloud.discoveryengine_v1beta.types import conversational_search_service
+from google.cloud.discoveryengine_v1beta.types import session
 
 
 class ListConversationsPager:
@@ -62,17 +46,14 @@ class ListConversationsPager:
     attributes are available on the pager. If multiple requests are made, only
     the most recent response is retained, and thus used for attribute lookup.
     """
-
-    def __init__(
-        self,
-        method: Callable[..., conversational_search_service.ListConversationsResponse],
-        request: conversational_search_service.ListConversationsRequest,
-        response: conversational_search_service.ListConversationsResponse,
-        *,
-        retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]] = ()
-    ):
+    def __init__(self,
+            method: Callable[..., conversational_search_service.ListConversationsResponse],
+            request: conversational_search_service.ListConversationsRequest,
+            response: conversational_search_service.ListConversationsResponse,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = ()):
         """Instantiate the pager.
 
         Args:
@@ -101,18 +82,11 @@ class ListConversationsPager:
         return getattr(self._response, name)
 
     @property
-    def pages(
-        self,
-    ) -> Iterator[conversational_search_service.ListConversationsResponse]:
+    def pages(self) -> Iterator[conversational_search_service.ListConversationsResponse]:
         yield self._response
         while self._response.next_page_token:
             self._request.page_token = self._response.next_page_token
-            self._response = self._method(
-                self._request,
-                retry=self._retry,
-                timeout=self._timeout,
-                metadata=self._metadata,
-            )
+            self._response = self._method(self._request, retry=self._retry, timeout=self._timeout, metadata=self._metadata)
             yield self._response
 
     def __iter__(self) -> Iterator[conversation.Conversation]:
@@ -120,7 +94,7 @@ class ListConversationsPager:
             yield from page.conversations
 
     def __repr__(self) -> str:
-        return "{0}<{1!r}>".format(self.__class__.__name__, self._response)
+        return '{0}<{1!r}>'.format(self.__class__.__name__, self._response)
 
 
 class ListConversationsAsyncPager:
@@ -140,19 +114,14 @@ class ListConversationsAsyncPager:
     attributes are available on the pager. If multiple requests are made, only
     the most recent response is retained, and thus used for attribute lookup.
     """
-
-    def __init__(
-        self,
-        method: Callable[
-            ..., Awaitable[conversational_search_service.ListConversationsResponse]
-        ],
-        request: conversational_search_service.ListConversationsRequest,
-        response: conversational_search_service.ListConversationsResponse,
-        *,
-        retry: OptionalAsyncRetry = gapic_v1.method.DEFAULT,
-        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]] = ()
-    ):
+    def __init__(self,
+            method: Callable[..., Awaitable[conversational_search_service.ListConversationsResponse]],
+            request: conversational_search_service.ListConversationsRequest,
+            response: conversational_search_service.ListConversationsResponse,
+            *,
+            retry: OptionalAsyncRetry = gapic_v1.method.DEFAULT,
+            timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = ()):
         """Instantiates the pager.
 
         Args:
@@ -181,20 +150,12 @@ class ListConversationsAsyncPager:
         return getattr(self._response, name)
 
     @property
-    async def pages(
-        self,
-    ) -> AsyncIterator[conversational_search_service.ListConversationsResponse]:
+    async def pages(self) -> AsyncIterator[conversational_search_service.ListConversationsResponse]:
         yield self._response
         while self._response.next_page_token:
             self._request.page_token = self._response.next_page_token
-            self._response = await self._method(
-                self._request,
-                retry=self._retry,
-                timeout=self._timeout,
-                metadata=self._metadata,
-            )
+            self._response = await self._method(self._request, retry=self._retry, timeout=self._timeout, metadata=self._metadata)
             yield self._response
-
     def __aiter__(self) -> AsyncIterator[conversation.Conversation]:
         async def async_generator():
             async for page in self.pages:
@@ -204,7 +165,7 @@ class ListConversationsAsyncPager:
         return async_generator()
 
     def __repr__(self) -> str:
-        return "{0}<{1!r}>".format(self.__class__.__name__, self._response)
+        return '{0}<{1!r}>'.format(self.__class__.__name__, self._response)
 
 
 class ListSessionsPager:
@@ -224,17 +185,14 @@ class ListSessionsPager:
     attributes are available on the pager. If multiple requests are made, only
     the most recent response is retained, and thus used for attribute lookup.
     """
-
-    def __init__(
-        self,
-        method: Callable[..., conversational_search_service.ListSessionsResponse],
-        request: conversational_search_service.ListSessionsRequest,
-        response: conversational_search_service.ListSessionsResponse,
-        *,
-        retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]] = ()
-    ):
+    def __init__(self,
+            method: Callable[..., conversational_search_service.ListSessionsResponse],
+            request: conversational_search_service.ListSessionsRequest,
+            response: conversational_search_service.ListSessionsResponse,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = ()):
         """Instantiate the pager.
 
         Args:
@@ -267,12 +225,7 @@ class ListSessionsPager:
         yield self._response
         while self._response.next_page_token:
             self._request.page_token = self._response.next_page_token
-            self._response = self._method(
-                self._request,
-                retry=self._retry,
-                timeout=self._timeout,
-                metadata=self._metadata,
-            )
+            self._response = self._method(self._request, retry=self._retry, timeout=self._timeout, metadata=self._metadata)
             yield self._response
 
     def __iter__(self) -> Iterator[session.Session]:
@@ -280,7 +233,7 @@ class ListSessionsPager:
             yield from page.sessions
 
     def __repr__(self) -> str:
-        return "{0}<{1!r}>".format(self.__class__.__name__, self._response)
+        return '{0}<{1!r}>'.format(self.__class__.__name__, self._response)
 
 
 class ListSessionsAsyncPager:
@@ -300,19 +253,14 @@ class ListSessionsAsyncPager:
     attributes are available on the pager. If multiple requests are made, only
     the most recent response is retained, and thus used for attribute lookup.
     """
-
-    def __init__(
-        self,
-        method: Callable[
-            ..., Awaitable[conversational_search_service.ListSessionsResponse]
-        ],
-        request: conversational_search_service.ListSessionsRequest,
-        response: conversational_search_service.ListSessionsResponse,
-        *,
-        retry: OptionalAsyncRetry = gapic_v1.method.DEFAULT,
-        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]] = ()
-    ):
+    def __init__(self,
+            method: Callable[..., Awaitable[conversational_search_service.ListSessionsResponse]],
+            request: conversational_search_service.ListSessionsRequest,
+            response: conversational_search_service.ListSessionsResponse,
+            *,
+            retry: OptionalAsyncRetry = gapic_v1.method.DEFAULT,
+            timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = ()):
         """Instantiates the pager.
 
         Args:
@@ -341,20 +289,12 @@ class ListSessionsAsyncPager:
         return getattr(self._response, name)
 
     @property
-    async def pages(
-        self,
-    ) -> AsyncIterator[conversational_search_service.ListSessionsResponse]:
+    async def pages(self) -> AsyncIterator[conversational_search_service.ListSessionsResponse]:
         yield self._response
         while self._response.next_page_token:
             self._request.page_token = self._response.next_page_token
-            self._response = await self._method(
-                self._request,
-                retry=self._retry,
-                timeout=self._timeout,
-                metadata=self._metadata,
-            )
+            self._response = await self._method(self._request, retry=self._retry, timeout=self._timeout, metadata=self._metadata)
             yield self._response
-
     def __aiter__(self) -> AsyncIterator[session.Session]:
         async def async_generator():
             async for page in self.pages:
@@ -364,4 +304,4 @@ class ListSessionsAsyncPager:
         return async_generator()
 
     def __repr__(self) -> str:
-        return "{0}<{1!r}>".format(self.__class__.__name__, self._response)
+        return '{0}<{1!r}>'.format(self.__class__.__name__, self._response)

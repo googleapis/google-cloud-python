@@ -13,10 +13,10 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-from .async_client import ServingConfigServiceAsyncClient
 from .client import ServingConfigServiceClient
+from .async_client import ServingConfigServiceAsyncClient
 
 __all__ = (
-    "ServingConfigServiceClient",
-    "ServingConfigServiceAsyncClient",
+    'ServingConfigServiceClient',
+    'ServingConfigServiceAsyncClient',
 )

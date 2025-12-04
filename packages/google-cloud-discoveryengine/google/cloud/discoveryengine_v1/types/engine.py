@@ -17,15 +17,16 @@ from __future__ import annotations
 
 from typing import MutableMapping, MutableSequence
 
-from google.protobuf import timestamp_pb2  # type: ignore
 import proto  # type: ignore
 
 from google.cloud.discoveryengine_v1.types import common
+from google.protobuf import timestamp_pb2  # type: ignore
+
 
 __protobuf__ = proto.module(
-    package="google.cloud.discoveryengine.v1",
+    package='google.cloud.discoveryengine.v1',
     manifest={
-        "Engine",
+        'Engine',
     },
 )
 
@@ -217,7 +218,6 @@ class Engine(proto.Message):
             engine_features_config (google.cloud.discoveryengine_v1.types.Engine.MediaRecommendationEngineConfig.EngineFeaturesConfig):
                 Optional. Additional engine features config.
         """
-
         class TrainingState(proto.Enum):
             r"""The training state of the engine.
 
@@ -275,17 +275,17 @@ class Engine(proto.Message):
                     This field is a member of `oneof`_ ``type_dedicated_config``.
             """
 
-            recommended_for_you_config: "Engine.MediaRecommendationEngineConfig.RecommendedForYouFeatureConfig" = proto.Field(
+            recommended_for_you_config: 'Engine.MediaRecommendationEngineConfig.RecommendedForYouFeatureConfig' = proto.Field(
                 proto.MESSAGE,
                 number=1,
-                oneof="type_dedicated_config",
-                message="Engine.MediaRecommendationEngineConfig.RecommendedForYouFeatureConfig",
+                oneof='type_dedicated_config',
+                message='Engine.MediaRecommendationEngineConfig.RecommendedForYouFeatureConfig',
             )
-            most_popular_config: "Engine.MediaRecommendationEngineConfig.MostPopularFeatureConfig" = proto.Field(
+            most_popular_config: 'Engine.MediaRecommendationEngineConfig.MostPopularFeatureConfig' = proto.Field(
                 proto.MESSAGE,
                 number=2,
-                oneof="type_dedicated_config",
-                message="Engine.MediaRecommendationEngineConfig.MostPopularFeatureConfig",
+                oneof='type_dedicated_config',
+                message='Engine.MediaRecommendationEngineConfig.MostPopularFeatureConfig',
             )
 
         class RecommendedForYouFeatureConfig(proto.Message):
@@ -335,22 +335,20 @@ class Engine(proto.Message):
             proto.STRING,
             number=2,
         )
-        optimization_objective_config: "Engine.MediaRecommendationEngineConfig.OptimizationObjectiveConfig" = proto.Field(
+        optimization_objective_config: 'Engine.MediaRecommendationEngineConfig.OptimizationObjectiveConfig' = proto.Field(
             proto.MESSAGE,
             number=3,
-            message="Engine.MediaRecommendationEngineConfig.OptimizationObjectiveConfig",
+            message='Engine.MediaRecommendationEngineConfig.OptimizationObjectiveConfig',
         )
-        training_state: "Engine.MediaRecommendationEngineConfig.TrainingState" = (
-            proto.Field(
-                proto.ENUM,
-                number=4,
-                enum="Engine.MediaRecommendationEngineConfig.TrainingState",
-            )
+        training_state: 'Engine.MediaRecommendationEngineConfig.TrainingState' = proto.Field(
+            proto.ENUM,
+            number=4,
+            enum='Engine.MediaRecommendationEngineConfig.TrainingState',
         )
-        engine_features_config: "Engine.MediaRecommendationEngineConfig.EngineFeaturesConfig" = proto.Field(
+        engine_features_config: 'Engine.MediaRecommendationEngineConfig.EngineFeaturesConfig' = proto.Field(
             proto.MESSAGE,
             number=5,
-            message="Engine.MediaRecommendationEngineConfig.EngineFeaturesConfig",
+            message='Engine.MediaRecommendationEngineConfig.EngineFeaturesConfig',
         )
 
     class ChatEngineConfig(proto.Message):
@@ -452,12 +450,10 @@ class Engine(proto.Message):
                 number=4,
             )
 
-        agent_creation_config: "Engine.ChatEngineConfig.AgentCreationConfig" = (
-            proto.Field(
-                proto.MESSAGE,
-                number=1,
-                message="Engine.ChatEngineConfig.AgentCreationConfig",
-            )
+        agent_creation_config: 'Engine.ChatEngineConfig.AgentCreationConfig' = proto.Field(
+            proto.MESSAGE,
+            number=1,
+            message='Engine.ChatEngineConfig.AgentCreationConfig',
         )
         dialogflow_agent_to_link: str = proto.Field(
             proto.STRING,
@@ -504,25 +500,25 @@ class Engine(proto.Message):
     chat_engine_config: ChatEngineConfig = proto.Field(
         proto.MESSAGE,
         number=11,
-        oneof="engine_config",
+        oneof='engine_config',
         message=ChatEngineConfig,
     )
     search_engine_config: SearchEngineConfig = proto.Field(
         proto.MESSAGE,
         number=13,
-        oneof="engine_config",
+        oneof='engine_config',
         message=SearchEngineConfig,
     )
     media_recommendation_engine_config: MediaRecommendationEngineConfig = proto.Field(
         proto.MESSAGE,
         number=14,
-        oneof="engine_config",
+        oneof='engine_config',
         message=MediaRecommendationEngineConfig,
     )
     chat_engine_metadata: ChatEngineMetadata = proto.Field(
         proto.MESSAGE,
         number=12,
-        oneof="engine_metadata",
+        oneof='engine_metadata',
         message=ChatEngineMetadata,
     )
     name: str = proto.Field(

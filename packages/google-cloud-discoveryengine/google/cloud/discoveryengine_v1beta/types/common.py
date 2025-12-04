@@ -19,19 +19,20 @@ from typing import MutableMapping, MutableSequence
 
 import proto  # type: ignore
 
+
 __protobuf__ = proto.module(
-    package="google.cloud.discoveryengine.v1beta",
+    package='google.cloud.discoveryengine.v1beta',
     manifest={
-        "IndustryVertical",
-        "SolutionType",
-        "SearchUseCase",
-        "SearchTier",
-        "SearchAddOn",
-        "Interval",
-        "CustomAttribute",
-        "UserInfo",
-        "EmbeddingConfig",
-        "DoubleList",
+        'IndustryVertical',
+        'SolutionType',
+        'SearchUseCase',
+        'SearchTier',
+        'SearchAddOn',
+        'Interval',
+        'CustomAttribute',
+        'UserInfo',
+        'EmbeddingConfig',
+        'DoubleList',
     },
 )
 
@@ -168,22 +169,22 @@ class Interval(proto.Message):
     minimum: float = proto.Field(
         proto.DOUBLE,
         number=1,
-        oneof="min",
+        oneof='min',
     )
     exclusive_minimum: float = proto.Field(
         proto.DOUBLE,
         number=2,
-        oneof="min",
+        oneof='min',
     )
     maximum: float = proto.Field(
         proto.DOUBLE,
         number=3,
-        oneof="max",
+        oneof='max',
     )
     exclusive_maximum: float = proto.Field(
         proto.DOUBLE,
         number=4,
-        oneof="max",
+        oneof='max',
     )
 
 

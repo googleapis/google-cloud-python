@@ -16,29 +16,27 @@
 import abc
 from typing import Awaitable, Callable, Dict, Optional, Sequence, Union
 
+from google.cloud.discoveryengine_v1alpha import gapic_version as package_version
+
+import google.auth  # type: ignore
 import google.api_core
 from google.api_core import exceptions as core_exceptions
-from google.api_core import gapic_v1, operations_v1
+from google.api_core import gapic_v1
 from google.api_core import retry as retries
-import google.auth  # type: ignore
+from google.api_core import operations_v1
 from google.auth import credentials as ga_credentials  # type: ignore
-from google.cloud.location import locations_pb2  # type: ignore
-from google.longrunning import operations_pb2  # type: ignore
-from google.oauth2 import service_account  # type: ignore
+from google.oauth2 import service_account # type: ignore
 import google.protobuf
 
-from google.cloud.discoveryengine_v1alpha import gapic_version as package_version
-from google.cloud.discoveryengine_v1alpha.types import data_store as gcd_data_store
-from google.cloud.discoveryengine_v1alpha.types import document_processing_config
-from google.cloud.discoveryengine_v1alpha.types import (
-    document_processing_config as gcd_document_processing_config,
-)
 from google.cloud.discoveryengine_v1alpha.types import data_store
+from google.cloud.discoveryengine_v1alpha.types import data_store as gcd_data_store
 from google.cloud.discoveryengine_v1alpha.types import data_store_service
+from google.cloud.discoveryengine_v1alpha.types import document_processing_config
+from google.cloud.discoveryengine_v1alpha.types import document_processing_config as gcd_document_processing_config
+from google.cloud.location import locations_pb2 # type: ignore
+from google.longrunning import operations_pb2 # type: ignore
 
-DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
-    gapic_version=package_version.__version__
-)
+DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(gapic_version=package_version.__version__)
 
 if hasattr(DEFAULT_CLIENT_INFO, "protobuf_runtime_version"):  # pragma: NO COVER
     DEFAULT_CLIENT_INFO.protobuf_runtime_version = google.protobuf.__version__
@@ -47,23 +45,24 @@ if hasattr(DEFAULT_CLIENT_INFO, "protobuf_runtime_version"):  # pragma: NO COVER
 class DataStoreServiceTransport(abc.ABC):
     """Abstract transport class for DataStoreService."""
 
-    AUTH_SCOPES = ("https://www.googleapis.com/auth/cloud-platform",)
+    AUTH_SCOPES = (
+        'https://www.googleapis.com/auth/cloud-platform',
+    )
 
-    DEFAULT_HOST: str = "discoveryengine.googleapis.com"
+    DEFAULT_HOST: str = 'discoveryengine.googleapis.com'
 
     def __init__(
-        self,
-        *,
-        host: str = DEFAULT_HOST,
-        credentials: Optional[ga_credentials.Credentials] = None,
-        credentials_file: Optional[str] = None,
-        scopes: Optional[Sequence[str]] = None,
-        quota_project_id: Optional[str] = None,
-        client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
-        always_use_jwt_access: Optional[bool] = False,
-        api_audience: Optional[str] = None,
-        **kwargs,
-    ) -> None:
+            self, *,
+            host: str = DEFAULT_HOST,
+            credentials: Optional[ga_credentials.Credentials] = None,
+            credentials_file: Optional[str] = None,
+            scopes: Optional[Sequence[str]] = None,
+            quota_project_id: Optional[str] = None,
+            client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
+            always_use_jwt_access: Optional[bool] = False,
+            api_audience: Optional[str] = None,
+            **kwargs,
+            ) -> None:
         """Instantiate the transport.
 
         Args:
@@ -100,38 +99,30 @@ class DataStoreServiceTransport(abc.ABC):
         # If no credentials are provided, then determine the appropriate
         # defaults.
         if credentials and credentials_file:
-            raise core_exceptions.DuplicateCredentialArgs(
-                "'credentials_file' and 'credentials' are mutually exclusive"
-            )
+            raise core_exceptions.DuplicateCredentialArgs("'credentials_file' and 'credentials' are mutually exclusive")
 
         if credentials_file is not None:
             credentials, _ = google.auth.load_credentials_from_file(
-                credentials_file, **scopes_kwargs, quota_project_id=quota_project_id
-            )
+                                credentials_file,
+                                **scopes_kwargs,
+                                quota_project_id=quota_project_id
+                            )
         elif credentials is None and not self._ignore_credentials:
-            credentials, _ = google.auth.default(
-                **scopes_kwargs, quota_project_id=quota_project_id
-            )
+            credentials, _ = google.auth.default(**scopes_kwargs, quota_project_id=quota_project_id)
             # Don't apply audience if the credentials file passed from user.
             if hasattr(credentials, "with_gdch_audience"):
-                credentials = credentials.with_gdch_audience(
-                    api_audience if api_audience else host
-                )
+                credentials = credentials.with_gdch_audience(api_audience if api_audience else host)
 
         # If the credentials are service account credentials, then always try to use self signed JWT.
-        if (
-            always_use_jwt_access
-            and isinstance(credentials, service_account.Credentials)
-            and hasattr(service_account.Credentials, "with_always_use_jwt_access")
-        ):
+        if always_use_jwt_access and isinstance(credentials, service_account.Credentials) and hasattr(service_account.Credentials, "with_always_use_jwt_access"):
             credentials = credentials.with_always_use_jwt_access(True)
 
         # Save the credentials.
         self._credentials = credentials
 
         # Save the hostname. Default to port 443 (HTTPS) if none is specified.
-        if ":" not in host:
-            host += ":443"
+        if ':' not in host:
+            host += ':443'
         self._host = host
 
     @property
@@ -191,14 +182,14 @@ class DataStoreServiceTransport(abc.ABC):
                 default_timeout=None,
                 client_info=client_info,
             ),
-        }
+         }
 
     def close(self):
         """Closes resources associated with the transport.
 
-        .. warning::
-             Only call this method if the transport is NOT shared
-             with other clients - this may cause errors in other clients!
+       .. warning::
+            Only call this method if the transport is NOT shared
+            with other clients - this may cause errors in other clients!
         """
         raise NotImplementedError()
 
@@ -208,75 +199,66 @@ class DataStoreServiceTransport(abc.ABC):
         raise NotImplementedError()
 
     @property
-    def create_data_store(
-        self,
-    ) -> Callable[
-        [data_store_service.CreateDataStoreRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    def create_data_store(self) -> Callable[
+            [data_store_service.CreateDataStoreRequest],
+            Union[
+                operations_pb2.Operation,
+                Awaitable[operations_pb2.Operation]
+            ]]:
         raise NotImplementedError()
 
     @property
-    def get_data_store(
-        self,
-    ) -> Callable[
-        [data_store_service.GetDataStoreRequest],
-        Union[data_store.DataStore, Awaitable[data_store.DataStore]],
-    ]:
+    def get_data_store(self) -> Callable[
+            [data_store_service.GetDataStoreRequest],
+            Union[
+                data_store.DataStore,
+                Awaitable[data_store.DataStore]
+            ]]:
         raise NotImplementedError()
 
     @property
-    def list_data_stores(
-        self,
-    ) -> Callable[
-        [data_store_service.ListDataStoresRequest],
-        Union[
-            data_store_service.ListDataStoresResponse,
-            Awaitable[data_store_service.ListDataStoresResponse],
-        ],
-    ]:
+    def list_data_stores(self) -> Callable[
+            [data_store_service.ListDataStoresRequest],
+            Union[
+                data_store_service.ListDataStoresResponse,
+                Awaitable[data_store_service.ListDataStoresResponse]
+            ]]:
         raise NotImplementedError()
 
     @property
-    def delete_data_store(
-        self,
-    ) -> Callable[
-        [data_store_service.DeleteDataStoreRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    def delete_data_store(self) -> Callable[
+            [data_store_service.DeleteDataStoreRequest],
+            Union[
+                operations_pb2.Operation,
+                Awaitable[operations_pb2.Operation]
+            ]]:
         raise NotImplementedError()
 
     @property
-    def update_data_store(
-        self,
-    ) -> Callable[
-        [data_store_service.UpdateDataStoreRequest],
-        Union[gcd_data_store.DataStore, Awaitable[gcd_data_store.DataStore]],
-    ]:
+    def update_data_store(self) -> Callable[
+            [data_store_service.UpdateDataStoreRequest],
+            Union[
+                gcd_data_store.DataStore,
+                Awaitable[gcd_data_store.DataStore]
+            ]]:
         raise NotImplementedError()
 
     @property
-    def get_document_processing_config(
-        self,
-    ) -> Callable[
-        [data_store_service.GetDocumentProcessingConfigRequest],
-        Union[
-            document_processing_config.DocumentProcessingConfig,
-            Awaitable[document_processing_config.DocumentProcessingConfig],
-        ],
-    ]:
+    def get_document_processing_config(self) -> Callable[
+            [data_store_service.GetDocumentProcessingConfigRequest],
+            Union[
+                document_processing_config.DocumentProcessingConfig,
+                Awaitable[document_processing_config.DocumentProcessingConfig]
+            ]]:
         raise NotImplementedError()
 
     @property
-    def update_document_processing_config(
-        self,
-    ) -> Callable[
-        [data_store_service.UpdateDocumentProcessingConfigRequest],
-        Union[
-            gcd_document_processing_config.DocumentProcessingConfig,
-            Awaitable[gcd_document_processing_config.DocumentProcessingConfig],
-        ],
-    ]:
+    def update_document_processing_config(self) -> Callable[
+            [data_store_service.UpdateDocumentProcessingConfigRequest],
+            Union[
+                gcd_document_processing_config.DocumentProcessingConfig,
+                Awaitable[gcd_document_processing_config.DocumentProcessingConfig]
+            ]]:
         raise NotImplementedError()
 
     @property
@@ -284,10 +266,7 @@ class DataStoreServiceTransport(abc.ABC):
         self,
     ) -> Callable[
         [operations_pb2.ListOperationsRequest],
-        Union[
-            operations_pb2.ListOperationsResponse,
-            Awaitable[operations_pb2.ListOperationsResponse],
-        ],
+        Union[operations_pb2.ListOperationsResponse, Awaitable[operations_pb2.ListOperationsResponse]],
     ]:
         raise NotImplementedError()
 
@@ -303,7 +282,10 @@ class DataStoreServiceTransport(abc.ABC):
     @property
     def cancel_operation(
         self,
-    ) -> Callable[[operations_pb2.CancelOperationRequest], None,]:
+    ) -> Callable[
+        [operations_pb2.CancelOperationRequest],
+        None,
+    ]:
         raise NotImplementedError()
 
     @property
@@ -311,4 +293,6 @@ class DataStoreServiceTransport(abc.ABC):
         raise NotImplementedError()
 
 
-__all__ = ("DataStoreServiceTransport",)
+__all__ = (
+    'DataStoreServiceTransport',
+)

@@ -49,5 +49,4 @@ async def sample_fetch_sitemaps():
     # Handle the response
     print(response)
 
-
 # [END discoveryengine_v1_generated_SiteSearchEngineService_FetchSitemaps_async]

@@ -17,23 +17,24 @@ from __future__ import annotations
 
 from typing import MutableMapping, MutableSequence
 
-from google.protobuf import timestamp_pb2  # type: ignore
 import proto  # type: ignore
 
 from google.cloud.discoveryengine_v1alpha.types import schema as gcd_schema
+from google.protobuf import timestamp_pb2  # type: ignore
+
 
 __protobuf__ = proto.module(
-    package="google.cloud.discoveryengine.v1alpha",
+    package='google.cloud.discoveryengine.v1alpha',
     manifest={
-        "GetSchemaRequest",
-        "ListSchemasRequest",
-        "ListSchemasResponse",
-        "CreateSchemaRequest",
-        "UpdateSchemaRequest",
-        "DeleteSchemaRequest",
-        "CreateSchemaMetadata",
-        "UpdateSchemaMetadata",
-        "DeleteSchemaMetadata",
+        'GetSchemaRequest',
+        'ListSchemasRequest',
+        'ListSchemasResponse',
+        'CreateSchemaRequest',
+        'UpdateSchemaRequest',
+        'DeleteSchemaRequest',
+        'CreateSchemaMetadata',
+        'UpdateSchemaMetadata',
+        'DeleteSchemaMetadata',
     },
 )
 

@@ -17,15 +17,17 @@ from __future__ import annotations
 
 from typing import MutableMapping, MutableSequence
 
-from google.protobuf import timestamp_pb2  # type: ignore
 import proto  # type: ignore
 
+from google.protobuf import timestamp_pb2  # type: ignore
+
+
 __protobuf__ = proto.module(
-    package="google.cloud.discoveryengine.v1alpha",
+    package='google.cloud.discoveryengine.v1alpha',
     manifest={
-        "SiteSearchEngine",
-        "TargetSite",
-        "SiteVerificationInfo",
+        'SiteSearchEngine',
+        'TargetSite',
+        'SiteVerificationInfo',
     },
 )
 
@@ -88,7 +90,6 @@ class TargetSite(proto.Message):
         failure_reason (google.cloud.discoveryengine_v1alpha.types.TargetSite.FailureReason):
             Output only. Failure reason.
     """
-
     class Type(proto.Enum):
         r"""Possible target site types.
 
@@ -162,11 +163,11 @@ class TargetSite(proto.Message):
                 number=1,
             )
 
-        quota_failure: "TargetSite.FailureReason.QuotaFailure" = proto.Field(
+        quota_failure: 'TargetSite.FailureReason.QuotaFailure' = proto.Field(
             proto.MESSAGE,
             number=1,
-            oneof="failure",
-            message="TargetSite.FailureReason.QuotaFailure",
+            oneof='failure',
+            message='TargetSite.FailureReason.QuotaFailure',
         )
 
     name: str = proto.Field(
@@ -194,10 +195,10 @@ class TargetSite(proto.Message):
         proto.STRING,
         number=10,
     )
-    site_verification_info: "SiteVerificationInfo" = proto.Field(
+    site_verification_info: 'SiteVerificationInfo' = proto.Field(
         proto.MESSAGE,
         number=7,
-        message="SiteVerificationInfo",
+        message='SiteVerificationInfo',
     )
     indexing_status: IndexingStatus = proto.Field(
         proto.ENUM,
@@ -227,7 +228,6 @@ class SiteVerificationInfo(proto.Message):
         verify_time (google.protobuf.timestamp_pb2.Timestamp):
             Latest site verification time.
     """
-
     class SiteVerificationState(proto.Enum):
         r"""Site verification state.
 

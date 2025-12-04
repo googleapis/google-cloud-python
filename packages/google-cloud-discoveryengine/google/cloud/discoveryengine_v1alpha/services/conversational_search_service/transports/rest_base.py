@@ -14,28 +14,28 @@
 # limitations under the License.
 #
 import json  # type: ignore
+from google.api_core import path_template
+from google.api_core import gapic_v1
+
+from google.protobuf import json_format
+from google.cloud.location import locations_pb2 # type: ignore
+from .base import ConversationalSearchServiceTransport, DEFAULT_CLIENT_INFO
+
 import re
 from typing import Any, Callable, Dict, List, Optional, Sequence, Tuple, Union
 
-from google.api_core import gapic_v1, path_template
-from google.cloud.location import locations_pb2  # type: ignore
-from google.longrunning import operations_pb2  # type: ignore
-from google.protobuf import empty_pb2  # type: ignore
-from google.protobuf import json_format
 
-from google.cloud.discoveryengine_v1alpha.types import conversation as gcd_conversation
-from google.cloud.discoveryengine_v1alpha.types import conversational_search_service
 from google.cloud.discoveryengine_v1alpha.types import answer
 from google.cloud.discoveryengine_v1alpha.types import conversation
+from google.cloud.discoveryengine_v1alpha.types import conversation as gcd_conversation
+from google.cloud.discoveryengine_v1alpha.types import conversational_search_service
 from google.cloud.discoveryengine_v1alpha.types import session
 from google.cloud.discoveryengine_v1alpha.types import session as gcd_session
+from google.protobuf import empty_pb2  # type: ignore
+from google.longrunning import operations_pb2  # type: ignore
 
-from .base import DEFAULT_CLIENT_INFO, ConversationalSearchServiceTransport
 
-
-class _BaseConversationalSearchServiceRestTransport(
-    ConversationalSearchServiceTransport
-):
+class _BaseConversationalSearchServiceRestTransport(ConversationalSearchServiceTransport):
     """Base REST backend transport for ConversationalSearchService.
 
     Note: This class is not meant to be used directly. Use its sync and
@@ -48,16 +48,14 @@ class _BaseConversationalSearchServiceRestTransport(
     It sends JSON representations of protocol buffers over HTTP/1.1
     """
 
-    def __init__(
-        self,
-        *,
-        host: str = "discoveryengine.googleapis.com",
-        credentials: Optional[Any] = None,
-        client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
-        always_use_jwt_access: Optional[bool] = False,
-        url_scheme: str = "https",
-        api_audience: Optional[str] = None,
-    ) -> None:
+    def __init__(self, *,
+            host: str = 'discoveryengine.googleapis.com',
+            credentials: Optional[Any] = None,
+            client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
+            always_use_jwt_access: Optional[bool] = False,
+            url_scheme: str = 'https',
+            api_audience: Optional[str] = None,
+            ) -> None:
         """Instantiate the transport.
         Args:
             host (Optional[str]):
@@ -81,9 +79,7 @@ class _BaseConversationalSearchServiceRestTransport(
         # Run the base constructor
         maybe_url_match = re.match("^(?P<scheme>http(?:s)?://)?(?P<host>.*)$", host)
         if maybe_url_match is None:
-            raise ValueError(
-                f"Unexpected hostname structure: {host}"
-            )  # pragma: NO COVER
+            raise ValueError(f"Unexpected hostname structure: {host}")  # pragma: NO COVER
 
         url_match_items = maybe_url_match.groupdict()
 
@@ -94,41 +90,37 @@ class _BaseConversationalSearchServiceRestTransport(
             credentials=credentials,
             client_info=client_info,
             always_use_jwt_access=always_use_jwt_access,
-            api_audience=api_audience,
+            api_audience=api_audience
         )
 
     class _BaseAnswerQuery:
         def __hash__(self):  # pragma: NO COVER
             return NotImplementedError("__hash__ must be implemented.")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] =  {
+        }
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "post",
-                    "uri": "/v1alpha/{serving_config=projects/*/locations/*/dataStores/*/servingConfigs/*}:answer",
-                    "body": "*",
-                },
-                {
-                    "method": "post",
-                    "uri": "/v1alpha/{serving_config=projects/*/locations/*/collections/*/dataStores/*/servingConfigs/*}:answer",
-                    "body": "*",
-                },
-                {
-                    "method": "post",
-                    "uri": "/v1alpha/{serving_config=projects/*/locations/*/collections/*/engines/*/servingConfigs/*}:answer",
-                    "body": "*",
-                },
+            http_options: List[Dict[str, str]] = [{
+                'method': 'post',
+                'uri': '/v1alpha/{serving_config=projects/*/locations/*/dataStores/*/servingConfigs/*}:answer',
+                'body': '*',
+            },
+        {
+                'method': 'post',
+                'uri': '/v1alpha/{serving_config=projects/*/locations/*/collections/*/dataStores/*/servingConfigs/*}:answer',
+                'body': '*',
+            },
+        {
+                'method': 'post',
+                'uri': '/v1alpha/{serving_config=projects/*/locations/*/collections/*/engines/*/servingConfigs/*}:answer',
+                'body': '*',
+            },
             ]
             return http_options
 
@@ -143,23 +135,17 @@ class _BaseConversationalSearchServiceRestTransport(
             # Jsonify the request body
 
             body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
+                transcoded_request['body'],
+                use_integers_for_enums=True
             )
             return body
-
         @staticmethod
         def _get_query_params_json(transcoded_request):
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
-            )
-            query_params.update(
-                _BaseConversationalSearchServiceRestTransport._BaseAnswerQuery._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params = json.loads(json_format.MessageToJson(
+                transcoded_request['query_params'],
+                use_integers_for_enums=True,
+            ))
+            query_params.update(_BaseConversationalSearchServiceRestTransport._BaseAnswerQuery._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -168,42 +154,36 @@ class _BaseConversationalSearchServiceRestTransport(
         def __hash__(self):  # pragma: NO COVER
             return NotImplementedError("__hash__ must be implemented.")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] =  {
+        }
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "post",
-                    "uri": "/v1alpha/{name=projects/*/locations/*/dataStores/*/conversations/*}:converse",
-                    "body": "*",
-                },
-                {
-                    "method": "post",
-                    "uri": "/v1alpha/{name=projects/*/locations/*/collections/*/dataStores/*/conversations/*}:converse",
-                    "body": "*",
-                },
-                {
-                    "method": "post",
-                    "uri": "/v1alpha/{name=projects/*/locations/*/collections/*/engines/*/conversations/*}:converse",
-                    "body": "*",
-                },
+            http_options: List[Dict[str, str]] = [{
+                'method': 'post',
+                'uri': '/v1alpha/{name=projects/*/locations/*/dataStores/*/conversations/*}:converse',
+                'body': '*',
+            },
+        {
+                'method': 'post',
+                'uri': '/v1alpha/{name=projects/*/locations/*/collections/*/dataStores/*/conversations/*}:converse',
+                'body': '*',
+            },
+        {
+                'method': 'post',
+                'uri': '/v1alpha/{name=projects/*/locations/*/collections/*/engines/*/conversations/*}:converse',
+                'body': '*',
+            },
             ]
             return http_options
 
         @staticmethod
         def _get_transcoded_request(http_options, request):
-            pb_request = conversational_search_service.ConverseConversationRequest.pb(
-                request
-            )
+            pb_request = conversational_search_service.ConverseConversationRequest.pb(request)
             transcoded_request = path_template.transcode(http_options, pb_request)
             return transcoded_request
 
@@ -212,23 +192,17 @@ class _BaseConversationalSearchServiceRestTransport(
             # Jsonify the request body
 
             body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
+                transcoded_request['body'],
+                use_integers_for_enums=True
             )
             return body
-
         @staticmethod
         def _get_query_params_json(transcoded_request):
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
-            )
-            query_params.update(
-                _BaseConversationalSearchServiceRestTransport._BaseConverseConversation._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params = json.loads(json_format.MessageToJson(
+                transcoded_request['query_params'],
+                use_integers_for_enums=True,
+            ))
+            query_params.update(_BaseConversationalSearchServiceRestTransport._BaseConverseConversation._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -237,42 +211,36 @@ class _BaseConversationalSearchServiceRestTransport(
         def __hash__(self):  # pragma: NO COVER
             return NotImplementedError("__hash__ must be implemented.")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] =  {
+        }
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "post",
-                    "uri": "/v1alpha/{parent=projects/*/locations/*/dataStores/*}/conversations",
-                    "body": "conversation",
-                },
-                {
-                    "method": "post",
-                    "uri": "/v1alpha/{parent=projects/*/locations/*/collections/*/dataStores/*}/conversations",
-                    "body": "conversation",
-                },
-                {
-                    "method": "post",
-                    "uri": "/v1alpha/{parent=projects/*/locations/*/collections/*/engines/*}/conversations",
-                    "body": "conversation",
-                },
+            http_options: List[Dict[str, str]] = [{
+                'method': 'post',
+                'uri': '/v1alpha/{parent=projects/*/locations/*/dataStores/*}/conversations',
+                'body': 'conversation',
+            },
+        {
+                'method': 'post',
+                'uri': '/v1alpha/{parent=projects/*/locations/*/collections/*/dataStores/*}/conversations',
+                'body': 'conversation',
+            },
+        {
+                'method': 'post',
+                'uri': '/v1alpha/{parent=projects/*/locations/*/collections/*/engines/*}/conversations',
+                'body': 'conversation',
+            },
             ]
             return http_options
 
         @staticmethod
         def _get_transcoded_request(http_options, request):
-            pb_request = conversational_search_service.CreateConversationRequest.pb(
-                request
-            )
+            pb_request = conversational_search_service.CreateConversationRequest.pb(request)
             transcoded_request = path_template.transcode(http_options, pb_request)
             return transcoded_request
 
@@ -281,23 +249,17 @@ class _BaseConversationalSearchServiceRestTransport(
             # Jsonify the request body
 
             body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
+                transcoded_request['body'],
+                use_integers_for_enums=True
             )
             return body
-
         @staticmethod
         def _get_query_params_json(transcoded_request):
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
-            )
-            query_params.update(
-                _BaseConversationalSearchServiceRestTransport._BaseCreateConversation._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params = json.loads(json_format.MessageToJson(
+                transcoded_request['query_params'],
+                use_integers_for_enums=True,
+            ))
+            query_params.update(_BaseConversationalSearchServiceRestTransport._BaseCreateConversation._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -306,34 +268,30 @@ class _BaseConversationalSearchServiceRestTransport(
         def __hash__(self):  # pragma: NO COVER
             return NotImplementedError("__hash__ must be implemented.")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] =  {
+        }
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "post",
-                    "uri": "/v1alpha/{parent=projects/*/locations/*/dataStores/*}/sessions",
-                    "body": "session",
-                },
-                {
-                    "method": "post",
-                    "uri": "/v1alpha/{parent=projects/*/locations/*/collections/*/dataStores/*}/sessions",
-                    "body": "session",
-                },
-                {
-                    "method": "post",
-                    "uri": "/v1alpha/{parent=projects/*/locations/*/collections/*/engines/*}/sessions",
-                    "body": "session",
-                },
+            http_options: List[Dict[str, str]] = [{
+                'method': 'post',
+                'uri': '/v1alpha/{parent=projects/*/locations/*/dataStores/*}/sessions',
+                'body': 'session',
+            },
+        {
+                'method': 'post',
+                'uri': '/v1alpha/{parent=projects/*/locations/*/collections/*/dataStores/*}/sessions',
+                'body': 'session',
+            },
+        {
+                'method': 'post',
+                'uri': '/v1alpha/{parent=projects/*/locations/*/collections/*/engines/*}/sessions',
+                'body': 'session',
+            },
             ]
             return http_options
 
@@ -348,23 +306,17 @@ class _BaseConversationalSearchServiceRestTransport(
             # Jsonify the request body
 
             body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
+                transcoded_request['body'],
+                use_integers_for_enums=True
             )
             return body
-
         @staticmethod
         def _get_query_params_json(transcoded_request):
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
-            )
-            query_params.update(
-                _BaseConversationalSearchServiceRestTransport._BaseCreateSession._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params = json.loads(json_format.MessageToJson(
+                transcoded_request['query_params'],
+                use_integers_for_enums=True,
+            ))
+            query_params.update(_BaseConversationalSearchServiceRestTransport._BaseCreateSession._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -373,55 +325,43 @@ class _BaseConversationalSearchServiceRestTransport(
         def __hash__(self):  # pragma: NO COVER
             return NotImplementedError("__hash__ must be implemented.")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] =  {
+        }
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "delete",
-                    "uri": "/v1alpha/{name=projects/*/locations/*/dataStores/*/conversations/*}",
-                },
-                {
-                    "method": "delete",
-                    "uri": "/v1alpha/{name=projects/*/locations/*/collections/*/dataStores/*/conversations/*}",
-                },
-                {
-                    "method": "delete",
-                    "uri": "/v1alpha/{name=projects/*/locations/*/collections/*/engines/*/conversations/*}",
-                },
+            http_options: List[Dict[str, str]] = [{
+                'method': 'delete',
+                'uri': '/v1alpha/{name=projects/*/locations/*/dataStores/*/conversations/*}',
+            },
+        {
+                'method': 'delete',
+                'uri': '/v1alpha/{name=projects/*/locations/*/collections/*/dataStores/*/conversations/*}',
+            },
+        {
+                'method': 'delete',
+                'uri': '/v1alpha/{name=projects/*/locations/*/collections/*/engines/*/conversations/*}',
+            },
             ]
             return http_options
 
         @staticmethod
         def _get_transcoded_request(http_options, request):
-            pb_request = conversational_search_service.DeleteConversationRequest.pb(
-                request
-            )
+            pb_request = conversational_search_service.DeleteConversationRequest.pb(request)
             transcoded_request = path_template.transcode(http_options, pb_request)
             return transcoded_request
 
         @staticmethod
         def _get_query_params_json(transcoded_request):
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
-            )
-            query_params.update(
-                _BaseConversationalSearchServiceRestTransport._BaseDeleteConversation._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params = json.loads(json_format.MessageToJson(
+                transcoded_request['query_params'],
+                use_integers_for_enums=True,
+            ))
+            query_params.update(_BaseConversationalSearchServiceRestTransport._BaseDeleteConversation._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -430,31 +370,27 @@ class _BaseConversationalSearchServiceRestTransport(
         def __hash__(self):  # pragma: NO COVER
             return NotImplementedError("__hash__ must be implemented.")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] =  {
+        }
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "delete",
-                    "uri": "/v1alpha/{name=projects/*/locations/*/dataStores/*/sessions/*}",
-                },
-                {
-                    "method": "delete",
-                    "uri": "/v1alpha/{name=projects/*/locations/*/collections/*/dataStores/*/sessions/*}",
-                },
-                {
-                    "method": "delete",
-                    "uri": "/v1alpha/{name=projects/*/locations/*/collections/*/engines/*/sessions/*}",
-                },
+            http_options: List[Dict[str, str]] = [{
+                'method': 'delete',
+                'uri': '/v1alpha/{name=projects/*/locations/*/dataStores/*/sessions/*}',
+            },
+        {
+                'method': 'delete',
+                'uri': '/v1alpha/{name=projects/*/locations/*/collections/*/dataStores/*/sessions/*}',
+            },
+        {
+                'method': 'delete',
+                'uri': '/v1alpha/{name=projects/*/locations/*/collections/*/engines/*/sessions/*}',
+            },
             ]
             return http_options
 
@@ -466,17 +402,11 @@ class _BaseConversationalSearchServiceRestTransport(
 
         @staticmethod
         def _get_query_params_json(transcoded_request):
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
-            )
-            query_params.update(
-                _BaseConversationalSearchServiceRestTransport._BaseDeleteSession._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params = json.loads(json_format.MessageToJson(
+                transcoded_request['query_params'],
+                use_integers_for_enums=True,
+            ))
+            query_params.update(_BaseConversationalSearchServiceRestTransport._BaseDeleteSession._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -485,31 +415,27 @@ class _BaseConversationalSearchServiceRestTransport(
         def __hash__(self):  # pragma: NO COVER
             return NotImplementedError("__hash__ must be implemented.")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] =  {
+        }
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "get",
-                    "uri": "/v1alpha/{name=projects/*/locations/*/dataStores/*/sessions/*/answers/*}",
-                },
-                {
-                    "method": "get",
-                    "uri": "/v1alpha/{name=projects/*/locations/*/collections/*/dataStores/*/sessions/*/answers/*}",
-                },
-                {
-                    "method": "get",
-                    "uri": "/v1alpha/{name=projects/*/locations/*/collections/*/engines/*/sessions/*/answers/*}",
-                },
+            http_options: List[Dict[str, str]] = [{
+                'method': 'get',
+                'uri': '/v1alpha/{name=projects/*/locations/*/dataStores/*/sessions/*/answers/*}',
+            },
+        {
+                'method': 'get',
+                'uri': '/v1alpha/{name=projects/*/locations/*/collections/*/dataStores/*/sessions/*/answers/*}',
+            },
+        {
+                'method': 'get',
+                'uri': '/v1alpha/{name=projects/*/locations/*/collections/*/engines/*/sessions/*/answers/*}',
+            },
             ]
             return http_options
 
@@ -521,17 +447,11 @@ class _BaseConversationalSearchServiceRestTransport(
 
         @staticmethod
         def _get_query_params_json(transcoded_request):
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
-            )
-            query_params.update(
-                _BaseConversationalSearchServiceRestTransport._BaseGetAnswer._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params = json.loads(json_format.MessageToJson(
+                transcoded_request['query_params'],
+                use_integers_for_enums=True,
+            ))
+            query_params.update(_BaseConversationalSearchServiceRestTransport._BaseGetAnswer._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -540,55 +460,43 @@ class _BaseConversationalSearchServiceRestTransport(
         def __hash__(self):  # pragma: NO COVER
             return NotImplementedError("__hash__ must be implemented.")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] =  {
+        }
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "get",
-                    "uri": "/v1alpha/{name=projects/*/locations/*/dataStores/*/conversations/*}",
-                },
-                {
-                    "method": "get",
-                    "uri": "/v1alpha/{name=projects/*/locations/*/collections/*/dataStores/*/conversations/*}",
-                },
-                {
-                    "method": "get",
-                    "uri": "/v1alpha/{name=projects/*/locations/*/collections/*/engines/*/conversations/*}",
-                },
+            http_options: List[Dict[str, str]] = [{
+                'method': 'get',
+                'uri': '/v1alpha/{name=projects/*/locations/*/dataStores/*/conversations/*}',
+            },
+        {
+                'method': 'get',
+                'uri': '/v1alpha/{name=projects/*/locations/*/collections/*/dataStores/*/conversations/*}',
+            },
+        {
+                'method': 'get',
+                'uri': '/v1alpha/{name=projects/*/locations/*/collections/*/engines/*/conversations/*}',
+            },
             ]
             return http_options
 
         @staticmethod
         def _get_transcoded_request(http_options, request):
-            pb_request = conversational_search_service.GetConversationRequest.pb(
-                request
-            )
+            pb_request = conversational_search_service.GetConversationRequest.pb(request)
             transcoded_request = path_template.transcode(http_options, pb_request)
             return transcoded_request
 
         @staticmethod
         def _get_query_params_json(transcoded_request):
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
-            )
-            query_params.update(
-                _BaseConversationalSearchServiceRestTransport._BaseGetConversation._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params = json.loads(json_format.MessageToJson(
+                transcoded_request['query_params'],
+                use_integers_for_enums=True,
+            ))
+            query_params.update(_BaseConversationalSearchServiceRestTransport._BaseGetConversation._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -597,31 +505,27 @@ class _BaseConversationalSearchServiceRestTransport(
         def __hash__(self):  # pragma: NO COVER
             return NotImplementedError("__hash__ must be implemented.")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] =  {
+        }
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "get",
-                    "uri": "/v1alpha/{name=projects/*/locations/*/dataStores/*/sessions/*}",
-                },
-                {
-                    "method": "get",
-                    "uri": "/v1alpha/{name=projects/*/locations/*/collections/*/dataStores/*/sessions/*}",
-                },
-                {
-                    "method": "get",
-                    "uri": "/v1alpha/{name=projects/*/locations/*/collections/*/engines/*/sessions/*}",
-                },
+            http_options: List[Dict[str, str]] = [{
+                'method': 'get',
+                'uri': '/v1alpha/{name=projects/*/locations/*/dataStores/*/sessions/*}',
+            },
+        {
+                'method': 'get',
+                'uri': '/v1alpha/{name=projects/*/locations/*/collections/*/dataStores/*/sessions/*}',
+            },
+        {
+                'method': 'get',
+                'uri': '/v1alpha/{name=projects/*/locations/*/collections/*/engines/*/sessions/*}',
+            },
             ]
             return http_options
 
@@ -633,17 +537,11 @@ class _BaseConversationalSearchServiceRestTransport(
 
         @staticmethod
         def _get_query_params_json(transcoded_request):
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
-            )
-            query_params.update(
-                _BaseConversationalSearchServiceRestTransport._BaseGetSession._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params = json.loads(json_format.MessageToJson(
+                transcoded_request['query_params'],
+                use_integers_for_enums=True,
+            ))
+            query_params.update(_BaseConversationalSearchServiceRestTransport._BaseGetSession._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -652,55 +550,43 @@ class _BaseConversationalSearchServiceRestTransport(
         def __hash__(self):  # pragma: NO COVER
             return NotImplementedError("__hash__ must be implemented.")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] =  {
+        }
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "get",
-                    "uri": "/v1alpha/{parent=projects/*/locations/*/dataStores/*}/conversations",
-                },
-                {
-                    "method": "get",
-                    "uri": "/v1alpha/{parent=projects/*/locations/*/collections/*/dataStores/*}/conversations",
-                },
-                {
-                    "method": "get",
-                    "uri": "/v1alpha/{parent=projects/*/locations/*/collections/*/engines/*}/conversations",
-                },
+            http_options: List[Dict[str, str]] = [{
+                'method': 'get',
+                'uri': '/v1alpha/{parent=projects/*/locations/*/dataStores/*}/conversations',
+            },
+        {
+                'method': 'get',
+                'uri': '/v1alpha/{parent=projects/*/locations/*/collections/*/dataStores/*}/conversations',
+            },
+        {
+                'method': 'get',
+                'uri': '/v1alpha/{parent=projects/*/locations/*/collections/*/engines/*}/conversations',
+            },
             ]
             return http_options
 
         @staticmethod
         def _get_transcoded_request(http_options, request):
-            pb_request = conversational_search_service.ListConversationsRequest.pb(
-                request
-            )
+            pb_request = conversational_search_service.ListConversationsRequest.pb(request)
             transcoded_request = path_template.transcode(http_options, pb_request)
             return transcoded_request
 
         @staticmethod
         def _get_query_params_json(transcoded_request):
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
-            )
-            query_params.update(
-                _BaseConversationalSearchServiceRestTransport._BaseListConversations._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params = json.loads(json_format.MessageToJson(
+                transcoded_request['query_params'],
+                use_integers_for_enums=True,
+            ))
+            query_params.update(_BaseConversationalSearchServiceRestTransport._BaseListConversations._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -709,31 +595,27 @@ class _BaseConversationalSearchServiceRestTransport(
         def __hash__(self):  # pragma: NO COVER
             return NotImplementedError("__hash__ must be implemented.")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] =  {
+        }
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "get",
-                    "uri": "/v1alpha/{parent=projects/*/locations/*/dataStores/*}/sessions",
-                },
-                {
-                    "method": "get",
-                    "uri": "/v1alpha/{parent=projects/*/locations/*/collections/*/dataStores/*}/sessions",
-                },
-                {
-                    "method": "get",
-                    "uri": "/v1alpha/{parent=projects/*/locations/*/collections/*/engines/*}/sessions",
-                },
+            http_options: List[Dict[str, str]] = [{
+                'method': 'get',
+                'uri': '/v1alpha/{parent=projects/*/locations/*/dataStores/*}/sessions',
+            },
+        {
+                'method': 'get',
+                'uri': '/v1alpha/{parent=projects/*/locations/*/collections/*/dataStores/*}/sessions',
+            },
+        {
+                'method': 'get',
+                'uri': '/v1alpha/{parent=projects/*/locations/*/collections/*/engines/*}/sessions',
+            },
             ]
             return http_options
 
@@ -745,17 +627,11 @@ class _BaseConversationalSearchServiceRestTransport(
 
         @staticmethod
         def _get_query_params_json(transcoded_request):
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
-            )
-            query_params.update(
-                _BaseConversationalSearchServiceRestTransport._BaseListSessions._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params = json.loads(json_format.MessageToJson(
+                transcoded_request['query_params'],
+                use_integers_for_enums=True,
+            ))
+            query_params.update(_BaseConversationalSearchServiceRestTransport._BaseListSessions._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -764,42 +640,36 @@ class _BaseConversationalSearchServiceRestTransport(
         def __hash__(self):  # pragma: NO COVER
             return NotImplementedError("__hash__ must be implemented.")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] =  {
+        }
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "patch",
-                    "uri": "/v1alpha/{conversation.name=projects/*/locations/*/dataStores/*/conversations/*}",
-                    "body": "conversation",
-                },
-                {
-                    "method": "patch",
-                    "uri": "/v1alpha/{conversation.name=projects/*/locations/*/collections/*/dataStores/*/conversations/*}",
-                    "body": "conversation",
-                },
-                {
-                    "method": "patch",
-                    "uri": "/v1alpha/{conversation.name=projects/*/locations/*/collections/*/engines/*/conversations/*}",
-                    "body": "conversation",
-                },
+            http_options: List[Dict[str, str]] = [{
+                'method': 'patch',
+                'uri': '/v1alpha/{conversation.name=projects/*/locations/*/dataStores/*/conversations/*}',
+                'body': 'conversation',
+            },
+        {
+                'method': 'patch',
+                'uri': '/v1alpha/{conversation.name=projects/*/locations/*/collections/*/dataStores/*/conversations/*}',
+                'body': 'conversation',
+            },
+        {
+                'method': 'patch',
+                'uri': '/v1alpha/{conversation.name=projects/*/locations/*/collections/*/engines/*/conversations/*}',
+                'body': 'conversation',
+            },
             ]
             return http_options
 
         @staticmethod
         def _get_transcoded_request(http_options, request):
-            pb_request = conversational_search_service.UpdateConversationRequest.pb(
-                request
-            )
+            pb_request = conversational_search_service.UpdateConversationRequest.pb(request)
             transcoded_request = path_template.transcode(http_options, pb_request)
             return transcoded_request
 
@@ -808,23 +678,17 @@ class _BaseConversationalSearchServiceRestTransport(
             # Jsonify the request body
 
             body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
+                transcoded_request['body'],
+                use_integers_for_enums=True
             )
             return body
-
         @staticmethod
         def _get_query_params_json(transcoded_request):
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
-            )
-            query_params.update(
-                _BaseConversationalSearchServiceRestTransport._BaseUpdateConversation._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params = json.loads(json_format.MessageToJson(
+                transcoded_request['query_params'],
+                use_integers_for_enums=True,
+            ))
+            query_params.update(_BaseConversationalSearchServiceRestTransport._BaseUpdateConversation._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -833,34 +697,30 @@ class _BaseConversationalSearchServiceRestTransport(
         def __hash__(self):  # pragma: NO COVER
             return NotImplementedError("__hash__ must be implemented.")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] =  {
+        }
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "patch",
-                    "uri": "/v1alpha/{session.name=projects/*/locations/*/dataStores/*/sessions/*}",
-                    "body": "session",
-                },
-                {
-                    "method": "patch",
-                    "uri": "/v1alpha/{session.name=projects/*/locations/*/collections/*/dataStores/*/sessions/*}",
-                    "body": "session",
-                },
-                {
-                    "method": "patch",
-                    "uri": "/v1alpha/{session.name=projects/*/locations/*/collections/*/engines/*/sessions/*}",
-                    "body": "session",
-                },
+            http_options: List[Dict[str, str]] = [{
+                'method': 'patch',
+                'uri': '/v1alpha/{session.name=projects/*/locations/*/dataStores/*/sessions/*}',
+                'body': 'session',
+            },
+        {
+                'method': 'patch',
+                'uri': '/v1alpha/{session.name=projects/*/locations/*/collections/*/dataStores/*/sessions/*}',
+                'body': 'session',
+            },
+        {
+                'method': 'patch',
+                'uri': '/v1alpha/{session.name=projects/*/locations/*/collections/*/engines/*/sessions/*}',
+                'body': 'session',
+            },
             ]
             return http_options
 
@@ -875,23 +735,17 @@ class _BaseConversationalSearchServiceRestTransport(
             # Jsonify the request body
 
             body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
+                transcoded_request['body'],
+                use_integers_for_enums=True
             )
             return body
-
         @staticmethod
         def _get_query_params_json(transcoded_request):
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
-            )
-            query_params.update(
-                _BaseConversationalSearchServiceRestTransport._BaseUpdateSession._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params = json.loads(json_format.MessageToJson(
+                transcoded_request['query_params'],
+                use_integers_for_enums=True,
+            ))
+            query_params.update(_BaseConversationalSearchServiceRestTransport._BaseUpdateSession._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -902,34 +756,33 @@ class _BaseConversationalSearchServiceRestTransport(
 
         @staticmethod
         def _get_http_options():
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "post",
-                    "uri": "/v1alpha/{name=projects/*/locations/*/collections/*/dataStores/*/branches/*/operations/*}:cancel",
-                    "body": "*",
-                },
-                {
-                    "method": "post",
-                    "uri": "/v1alpha/{name=projects/*/locations/*/dataStores/*/branches/*/operations/*}:cancel",
-                    "body": "*",
-                },
+            http_options: List[Dict[str, str]] = [{
+                'method': 'post',
+                'uri': '/v1alpha/{name=projects/*/locations/*/collections/*/dataStores/*/branches/*/operations/*}:cancel',
+                'body': '*',
+            },
+        {
+                'method': 'post',
+                'uri': '/v1alpha/{name=projects/*/locations/*/dataStores/*/branches/*/operations/*}:cancel',
+                'body': '*',
+            },
             ]
             return http_options
 
         @staticmethod
         def _get_transcoded_request(http_options, request):
             request_kwargs = json_format.MessageToDict(request)
-            transcoded_request = path_template.transcode(http_options, **request_kwargs)
+            transcoded_request = path_template.transcode(
+                http_options, **request_kwargs)
             return transcoded_request
 
         @staticmethod
         def _get_request_body_json(transcoded_request):
-            body = json.dumps(transcoded_request["body"])
+            body = json.dumps(transcoded_request['body'])
             return body
-
         @staticmethod
         def _get_query_params_json(transcoded_request):
-            query_params = json.loads(json.dumps(transcoded_request["query_params"]))
+            query_params = json.loads(json.dumps(transcoded_request['query_params']))
             return query_params
 
     class _BaseGetOperation:
@@ -938,87 +791,87 @@ class _BaseConversationalSearchServiceRestTransport(
 
         @staticmethod
         def _get_http_options():
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "get",
-                    "uri": "/v1alpha/{name=projects/*/locations/*/collections/*/dataConnector/operations/*}",
-                },
-                {
-                    "method": "get",
-                    "uri": "/v1alpha/{name=projects/*/locations/*/collections/*/dataStores/*/branches/*/operations/*}",
-                },
-                {
-                    "method": "get",
-                    "uri": "/v1alpha/{name=projects/*/locations/*/collections/*/dataStores/*/models/*/operations/*}",
-                },
-                {
-                    "method": "get",
-                    "uri": "/v1alpha/{name=projects/*/locations/*/collections/*/dataStores/*/operations/*}",
-                },
-                {
-                    "method": "get",
-                    "uri": "/v1alpha/{name=projects/*/locations/*/collections/*/dataStores/*/schemas/*/operations/*}",
-                },
-                {
-                    "method": "get",
-                    "uri": "/v1alpha/{name=projects/*/locations/*/collections/*/dataStores/*/siteSearchEngine/operations/*}",
-                },
-                {
-                    "method": "get",
-                    "uri": "/v1alpha/{name=projects/*/locations/*/collections/*/dataStores/*/siteSearchEngine/targetSites/operations/*}",
-                },
-                {
-                    "method": "get",
-                    "uri": "/v1alpha/{name=projects/*/locations/*/collections/*/engines/*/operations/*}",
-                },
-                {
-                    "method": "get",
-                    "uri": "/v1alpha/{name=projects/*/locations/*/collections/*/operations/*}",
-                },
-                {
-                    "method": "get",
-                    "uri": "/v1alpha/{name=projects/*/locations/*/dataStores/*/branches/*/operations/*}",
-                },
-                {
-                    "method": "get",
-                    "uri": "/v1alpha/{name=projects/*/locations/*/dataStores/*/models/*/operations/*}",
-                },
-                {
-                    "method": "get",
-                    "uri": "/v1alpha/{name=projects/*/locations/*/dataStores/*/operations/*}",
-                },
-                {
-                    "method": "get",
-                    "uri": "/v1alpha/{name=projects/*/locations/*/evaluations/*/operations/*}",
-                },
-                {
-                    "method": "get",
-                    "uri": "/v1alpha/{name=projects/*/locations/*/identity_mapping_stores/*/operations/*}",
-                },
-                {
-                    "method": "get",
-                    "uri": "/v1alpha/{name=projects/*/locations/*/operations/*}",
-                },
-                {
-                    "method": "get",
-                    "uri": "/v1alpha/{name=projects/*/locations/*/sampleQuerySets/*/operations/*}",
-                },
-                {
-                    "method": "get",
-                    "uri": "/v1alpha/{name=projects/*/operations/*}",
-                },
+            http_options: List[Dict[str, str]] = [{
+                'method': 'get',
+                'uri': '/v1alpha/{name=projects/*/locations/*/collections/*/dataConnector/operations/*}',
+            },
+        {
+                'method': 'get',
+                'uri': '/v1alpha/{name=projects/*/locations/*/collections/*/dataStores/*/branches/*/operations/*}',
+            },
+        {
+                'method': 'get',
+                'uri': '/v1alpha/{name=projects/*/locations/*/collections/*/dataStores/*/models/*/operations/*}',
+            },
+        {
+                'method': 'get',
+                'uri': '/v1alpha/{name=projects/*/locations/*/collections/*/dataStores/*/operations/*}',
+            },
+        {
+                'method': 'get',
+                'uri': '/v1alpha/{name=projects/*/locations/*/collections/*/dataStores/*/schemas/*/operations/*}',
+            },
+        {
+                'method': 'get',
+                'uri': '/v1alpha/{name=projects/*/locations/*/collections/*/dataStores/*/siteSearchEngine/operations/*}',
+            },
+        {
+                'method': 'get',
+                'uri': '/v1alpha/{name=projects/*/locations/*/collections/*/dataStores/*/siteSearchEngine/targetSites/operations/*}',
+            },
+        {
+                'method': 'get',
+                'uri': '/v1alpha/{name=projects/*/locations/*/collections/*/engines/*/operations/*}',
+            },
+        {
+                'method': 'get',
+                'uri': '/v1alpha/{name=projects/*/locations/*/collections/*/operations/*}',
+            },
+        {
+                'method': 'get',
+                'uri': '/v1alpha/{name=projects/*/locations/*/dataStores/*/branches/*/operations/*}',
+            },
+        {
+                'method': 'get',
+                'uri': '/v1alpha/{name=projects/*/locations/*/dataStores/*/models/*/operations/*}',
+            },
+        {
+                'method': 'get',
+                'uri': '/v1alpha/{name=projects/*/locations/*/dataStores/*/operations/*}',
+            },
+        {
+                'method': 'get',
+                'uri': '/v1alpha/{name=projects/*/locations/*/evaluations/*/operations/*}',
+            },
+        {
+                'method': 'get',
+                'uri': '/v1alpha/{name=projects/*/locations/*/identity_mapping_stores/*/operations/*}',
+            },
+        {
+                'method': 'get',
+                'uri': '/v1alpha/{name=projects/*/locations/*/operations/*}',
+            },
+        {
+                'method': 'get',
+                'uri': '/v1alpha/{name=projects/*/locations/*/sampleQuerySets/*/operations/*}',
+            },
+        {
+                'method': 'get',
+                'uri': '/v1alpha/{name=projects/*/operations/*}',
+            },
             ]
             return http_options
 
         @staticmethod
         def _get_transcoded_request(http_options, request):
             request_kwargs = json_format.MessageToDict(request)
-            transcoded_request = path_template.transcode(http_options, **request_kwargs)
+            transcoded_request = path_template.transcode(
+                http_options, **request_kwargs)
             return transcoded_request
 
         @staticmethod
         def _get_query_params_json(transcoded_request):
-            query_params = json.loads(json.dumps(transcoded_request["query_params"]))
+            query_params = json.loads(json.dumps(transcoded_request['query_params']))
             return query_params
 
     class _BaseListOperations:
@@ -1027,80 +880,82 @@ class _BaseConversationalSearchServiceRestTransport(
 
         @staticmethod
         def _get_http_options():
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "get",
-                    "uri": "/v1alpha/{name=projects/*/locations/*/collections/*/dataConnector}/operations",
-                },
-                {
-                    "method": "get",
-                    "uri": "/v1alpha/{name=projects/*/locations/*/collections/*/dataStores/*/branches/*}/operations",
-                },
-                {
-                    "method": "get",
-                    "uri": "/v1alpha/{name=projects/*/locations/*/collections/*/dataStores/*/models/*}/operations",
-                },
-                {
-                    "method": "get",
-                    "uri": "/v1alpha/{name=projects/*/locations/*/collections/*/dataStores/*/schemas/*}/operations",
-                },
-                {
-                    "method": "get",
-                    "uri": "/v1alpha/{name=projects/*/locations/*/collections/*/dataStores/*/siteSearchEngine/targetSites}/operations",
-                },
-                {
-                    "method": "get",
-                    "uri": "/v1alpha/{name=projects/*/locations/*/collections/*/dataStores/*/siteSearchEngine}/operations",
-                },
-                {
-                    "method": "get",
-                    "uri": "/v1alpha/{name=projects/*/locations/*/collections/*/dataStores/*}/operations",
-                },
-                {
-                    "method": "get",
-                    "uri": "/v1alpha/{name=projects/*/locations/*/collections/*/engines/*}/operations",
-                },
-                {
-                    "method": "get",
-                    "uri": "/v1alpha/{name=projects/*/locations/*/collections/*}/operations",
-                },
-                {
-                    "method": "get",
-                    "uri": "/v1alpha/{name=projects/*/locations/*/dataStores/*/branches/*}/operations",
-                },
-                {
-                    "method": "get",
-                    "uri": "/v1alpha/{name=projects/*/locations/*/dataStores/*/models/*}/operations",
-                },
-                {
-                    "method": "get",
-                    "uri": "/v1alpha/{name=projects/*/locations/*/dataStores/*}/operations",
-                },
-                {
-                    "method": "get",
-                    "uri": "/v1alpha/{name=projects/*/locations/*/identity_mapping_stores/*}/operations",
-                },
-                {
-                    "method": "get",
-                    "uri": "/v1alpha/{name=projects/*/locations/*}/operations",
-                },
-                {
-                    "method": "get",
-                    "uri": "/v1alpha/{name=projects/*}/operations",
-                },
+            http_options: List[Dict[str, str]] = [{
+                'method': 'get',
+                'uri': '/v1alpha/{name=projects/*/locations/*/collections/*/dataConnector}/operations',
+            },
+        {
+                'method': 'get',
+                'uri': '/v1alpha/{name=projects/*/locations/*/collections/*/dataStores/*/branches/*}/operations',
+            },
+        {
+                'method': 'get',
+                'uri': '/v1alpha/{name=projects/*/locations/*/collections/*/dataStores/*/models/*}/operations',
+            },
+        {
+                'method': 'get',
+                'uri': '/v1alpha/{name=projects/*/locations/*/collections/*/dataStores/*/schemas/*}/operations',
+            },
+        {
+                'method': 'get',
+                'uri': '/v1alpha/{name=projects/*/locations/*/collections/*/dataStores/*/siteSearchEngine/targetSites}/operations',
+            },
+        {
+                'method': 'get',
+                'uri': '/v1alpha/{name=projects/*/locations/*/collections/*/dataStores/*/siteSearchEngine}/operations',
+            },
+        {
+                'method': 'get',
+                'uri': '/v1alpha/{name=projects/*/locations/*/collections/*/dataStores/*}/operations',
+            },
+        {
+                'method': 'get',
+                'uri': '/v1alpha/{name=projects/*/locations/*/collections/*/engines/*}/operations',
+            },
+        {
+                'method': 'get',
+                'uri': '/v1alpha/{name=projects/*/locations/*/collections/*}/operations',
+            },
+        {
+                'method': 'get',
+                'uri': '/v1alpha/{name=projects/*/locations/*/dataStores/*/branches/*}/operations',
+            },
+        {
+                'method': 'get',
+                'uri': '/v1alpha/{name=projects/*/locations/*/dataStores/*/models/*}/operations',
+            },
+        {
+                'method': 'get',
+                'uri': '/v1alpha/{name=projects/*/locations/*/dataStores/*}/operations',
+            },
+        {
+                'method': 'get',
+                'uri': '/v1alpha/{name=projects/*/locations/*/identity_mapping_stores/*}/operations',
+            },
+        {
+                'method': 'get',
+                'uri': '/v1alpha/{name=projects/*/locations/*}/operations',
+            },
+        {
+                'method': 'get',
+                'uri': '/v1alpha/{name=projects/*}/operations',
+            },
             ]
             return http_options
 
         @staticmethod
         def _get_transcoded_request(http_options, request):
             request_kwargs = json_format.MessageToDict(request)
-            transcoded_request = path_template.transcode(http_options, **request_kwargs)
+            transcoded_request = path_template.transcode(
+                http_options, **request_kwargs)
             return transcoded_request
 
         @staticmethod
         def _get_query_params_json(transcoded_request):
-            query_params = json.loads(json.dumps(transcoded_request["query_params"]))
+            query_params = json.loads(json.dumps(transcoded_request['query_params']))
             return query_params
 
 
-__all__ = ("_BaseConversationalSearchServiceRestTransport",)
+__all__=(
+    '_BaseConversationalSearchServiceRestTransport',
+)

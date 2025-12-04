@@ -19,18 +19,20 @@ from typing import Dict, Type
 from .base import AclConfigServiceTransport
 from .grpc import AclConfigServiceGrpcTransport
 from .grpc_asyncio import AclConfigServiceGrpcAsyncIOTransport
-from .rest import AclConfigServiceRestInterceptor, AclConfigServiceRestTransport
+from .rest import AclConfigServiceRestTransport
+from .rest import AclConfigServiceRestInterceptor
+
 
 # Compile a registry of transports.
 _transport_registry = OrderedDict()  # type: Dict[str, Type[AclConfigServiceTransport]]
-_transport_registry["grpc"] = AclConfigServiceGrpcTransport
-_transport_registry["grpc_asyncio"] = AclConfigServiceGrpcAsyncIOTransport
-_transport_registry["rest"] = AclConfigServiceRestTransport
+_transport_registry['grpc'] = AclConfigServiceGrpcTransport
+_transport_registry['grpc_asyncio'] = AclConfigServiceGrpcAsyncIOTransport
+_transport_registry['rest'] = AclConfigServiceRestTransport
 
 __all__ = (
-    "AclConfigServiceTransport",
-    "AclConfigServiceGrpcTransport",
-    "AclConfigServiceGrpcAsyncIOTransport",
-    "AclConfigServiceRestTransport",
-    "AclConfigServiceRestInterceptor",
+    'AclConfigServiceTransport',
+    'AclConfigServiceGrpcTransport',
+    'AclConfigServiceGrpcAsyncIOTransport',
+    'AclConfigServiceRestTransport',
+    'AclConfigServiceRestInterceptor',
 )

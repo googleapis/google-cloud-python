@@ -13,10 +13,10 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-from .async_client import SessionServiceAsyncClient
 from .client import SessionServiceClient
+from .async_client import SessionServiceAsyncClient
 
 __all__ = (
-    "SessionServiceClient",
-    "SessionServiceAsyncClient",
+    'SessionServiceClient',
+    'SessionServiceAsyncClient',
 )

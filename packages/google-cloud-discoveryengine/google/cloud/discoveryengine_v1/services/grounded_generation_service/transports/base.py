@@ -16,23 +16,22 @@
 import abc
 from typing import Awaitable, Callable, Dict, Optional, Sequence, Union
 
+from google.cloud.discoveryengine_v1 import gapic_version as package_version
+
+import google.auth  # type: ignore
 import google.api_core
 from google.api_core import exceptions as core_exceptions
 from google.api_core import gapic_v1
 from google.api_core import retry as retries
-import google.auth  # type: ignore
 from google.auth import credentials as ga_credentials  # type: ignore
-from google.cloud.location import locations_pb2  # type: ignore
-from google.longrunning import operations_pb2  # type: ignore
-from google.oauth2 import service_account  # type: ignore
+from google.oauth2 import service_account # type: ignore
 import google.protobuf
 
-from google.cloud.discoveryengine_v1 import gapic_version as package_version
 from google.cloud.discoveryengine_v1.types import grounded_generation_service
+from google.cloud.location import locations_pb2 # type: ignore
+from google.longrunning import operations_pb2 # type: ignore
 
-DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
-    gapic_version=package_version.__version__
-)
+DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(gapic_version=package_version.__version__)
 
 if hasattr(DEFAULT_CLIENT_INFO, "protobuf_runtime_version"):  # pragma: NO COVER
     DEFAULT_CLIENT_INFO.protobuf_runtime_version = google.protobuf.__version__
@@ -41,23 +40,24 @@ if hasattr(DEFAULT_CLIENT_INFO, "protobuf_runtime_version"):  # pragma: NO COVER
 class GroundedGenerationServiceTransport(abc.ABC):
     """Abstract transport class for GroundedGenerationService."""
 
-    AUTH_SCOPES = ("https://www.googleapis.com/auth/cloud-platform",)
+    AUTH_SCOPES = (
+        'https://www.googleapis.com/auth/cloud-platform',
+    )
 
-    DEFAULT_HOST: str = "discoveryengine.googleapis.com"
+    DEFAULT_HOST: str = 'discoveryengine.googleapis.com'
 
     def __init__(
-        self,
-        *,
-        host: str = DEFAULT_HOST,
-        credentials: Optional[ga_credentials.Credentials] = None,
-        credentials_file: Optional[str] = None,
-        scopes: Optional[Sequence[str]] = None,
-        quota_project_id: Optional[str] = None,
-        client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
-        always_use_jwt_access: Optional[bool] = False,
-        api_audience: Optional[str] = None,
-        **kwargs,
-    ) -> None:
+            self, *,
+            host: str = DEFAULT_HOST,
+            credentials: Optional[ga_credentials.Credentials] = None,
+            credentials_file: Optional[str] = None,
+            scopes: Optional[Sequence[str]] = None,
+            quota_project_id: Optional[str] = None,
+            client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
+            always_use_jwt_access: Optional[bool] = False,
+            api_audience: Optional[str] = None,
+            **kwargs,
+            ) -> None:
         """Instantiate the transport.
 
         Args:
@@ -94,38 +94,30 @@ class GroundedGenerationServiceTransport(abc.ABC):
         # If no credentials are provided, then determine the appropriate
         # defaults.
         if credentials and credentials_file:
-            raise core_exceptions.DuplicateCredentialArgs(
-                "'credentials_file' and 'credentials' are mutually exclusive"
-            )
+            raise core_exceptions.DuplicateCredentialArgs("'credentials_file' and 'credentials' are mutually exclusive")
 
         if credentials_file is not None:
             credentials, _ = google.auth.load_credentials_from_file(
-                credentials_file, **scopes_kwargs, quota_project_id=quota_project_id
-            )
+                                credentials_file,
+                                **scopes_kwargs,
+                                quota_project_id=quota_project_id
+                            )
         elif credentials is None and not self._ignore_credentials:
-            credentials, _ = google.auth.default(
-                **scopes_kwargs, quota_project_id=quota_project_id
-            )
+            credentials, _ = google.auth.default(**scopes_kwargs, quota_project_id=quota_project_id)
             # Don't apply audience if the credentials file passed from user.
             if hasattr(credentials, "with_gdch_audience"):
-                credentials = credentials.with_gdch_audience(
-                    api_audience if api_audience else host
-                )
+                credentials = credentials.with_gdch_audience(api_audience if api_audience else host)
 
         # If the credentials are service account credentials, then always try to use self signed JWT.
-        if (
-            always_use_jwt_access
-            and isinstance(credentials, service_account.Credentials)
-            and hasattr(service_account.Credentials, "with_always_use_jwt_access")
-        ):
+        if always_use_jwt_access and isinstance(credentials, service_account.Credentials) and hasattr(service_account.Credentials, "with_always_use_jwt_access"):
             credentials = credentials.with_always_use_jwt_access(True)
 
         # Save the credentials.
         self._credentials = credentials
 
         # Save the hostname. Default to port 443 (HTTPS) if none is specified.
-        if ":" not in host:
-            host += ":443"
+        if ':' not in host:
+            host += ':443'
         self._host = host
 
     @property
@@ -165,51 +157,42 @@ class GroundedGenerationServiceTransport(abc.ABC):
                 default_timeout=None,
                 client_info=client_info,
             ),
-        }
+         }
 
     def close(self):
         """Closes resources associated with the transport.
 
-        .. warning::
-             Only call this method if the transport is NOT shared
-             with other clients - this may cause errors in other clients!
+       .. warning::
+            Only call this method if the transport is NOT shared
+            with other clients - this may cause errors in other clients!
         """
         raise NotImplementedError()
 
     @property
-    def stream_generate_grounded_content(
-        self,
-    ) -> Callable[
-        [grounded_generation_service.GenerateGroundedContentRequest],
-        Union[
-            grounded_generation_service.GenerateGroundedContentResponse,
-            Awaitable[grounded_generation_service.GenerateGroundedContentResponse],
-        ],
-    ]:
+    def stream_generate_grounded_content(self) -> Callable[
+            [grounded_generation_service.GenerateGroundedContentRequest],
+            Union[
+                grounded_generation_service.GenerateGroundedContentResponse,
+                Awaitable[grounded_generation_service.GenerateGroundedContentResponse]
+            ]]:
         raise NotImplementedError()
 
     @property
-    def generate_grounded_content(
-        self,
-    ) -> Callable[
-        [grounded_generation_service.GenerateGroundedContentRequest],
-        Union[
-            grounded_generation_service.GenerateGroundedContentResponse,
-            Awaitable[grounded_generation_service.GenerateGroundedContentResponse],
-        ],
-    ]:
+    def generate_grounded_content(self) -> Callable[
+            [grounded_generation_service.GenerateGroundedContentRequest],
+            Union[
+                grounded_generation_service.GenerateGroundedContentResponse,
+                Awaitable[grounded_generation_service.GenerateGroundedContentResponse]
+            ]]:
         raise NotImplementedError()
 
     @property
-    def check_grounding(
-        self,
-    ) -> Callable[
-        [grounded_generation_service.CheckGroundingRequest],
-        Union[
-            grounded_generation_service.CheckGroundingResponse,
-            Awaitable[grounded_generation_service.CheckGroundingResponse],
-        ],
-    ]:
+    def check_grounding(self) -> Callable[
+            [grounded_generation_service.CheckGroundingRequest],
+            Union[
+                grounded_generation_service.CheckGroundingResponse,
+                Awaitable[grounded_generation_service.CheckGroundingResponse]
+            ]]:
         raise NotImplementedError()
 
     @property
@@ -217,10 +200,7 @@ class GroundedGenerationServiceTransport(abc.ABC):
         self,
     ) -> Callable[
         [operations_pb2.ListOperationsRequest],
-        Union[
-            operations_pb2.ListOperationsResponse,
-            Awaitable[operations_pb2.ListOperationsResponse],
-        ],
+        Union[operations_pb2.ListOperationsResponse, Awaitable[operations_pb2.ListOperationsResponse]],
     ]:
         raise NotImplementedError()
 
@@ -236,7 +216,10 @@ class GroundedGenerationServiceTransport(abc.ABC):
     @property
     def cancel_operation(
         self,
-    ) -> Callable[[operations_pb2.CancelOperationRequest], None,]:
+    ) -> Callable[
+        [operations_pb2.CancelOperationRequest],
+        None,
+    ]:
         raise NotImplementedError()
 
     @property
@@ -244,4 +227,6 @@ class GroundedGenerationServiceTransport(abc.ABC):
         raise NotImplementedError()
 
 
-__all__ = ("GroundedGenerationServiceTransport",)
+__all__ = (
+    'GroundedGenerationServiceTransport',
+)

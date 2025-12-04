@@ -19,11 +19,12 @@ from typing import MutableMapping, MutableSequence
 
 import proto  # type: ignore
 
+
 __protobuf__ = proto.module(
-    package="google.cloud.discoveryengine.v1",
+    package='google.cloud.discoveryengine.v1',
     manifest={
-        "ProvisionProjectRequest",
-        "ProvisionProjectMetadata",
+        'ProvisionProjectRequest',
+        'ProvisionProjectMetadata',
     },
 )
 
@@ -66,7 +67,8 @@ class ProvisionProjectRequest(proto.Message):
 
 
 class ProvisionProjectMetadata(proto.Message):
-    r"""Metadata associated with a project provision operation."""
+    r"""Metadata associated with a project provision operation.
+    """
 
 
 __all__ = tuple(sorted(__protobuf__.manifest))

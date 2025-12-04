@@ -17,29 +17,28 @@ from __future__ import annotations
 
 from typing import MutableMapping, MutableSequence
 
-from google.protobuf import timestamp_pb2  # type: ignore
-from google.rpc import status_pb2  # type: ignore
 import proto  # type: ignore
 
-from google.cloud.discoveryengine_v1.types import (
-    identity_mapping_store as gcd_identity_mapping_store,
-)
+from google.cloud.discoveryengine_v1.types import identity_mapping_store as gcd_identity_mapping_store
+from google.protobuf import timestamp_pb2  # type: ignore
+from google.rpc import status_pb2  # type: ignore
+
 
 __protobuf__ = proto.module(
-    package="google.cloud.discoveryengine.v1",
+    package='google.cloud.discoveryengine.v1',
     manifest={
-        "CreateIdentityMappingStoreRequest",
-        "GetIdentityMappingStoreRequest",
-        "DeleteIdentityMappingStoreRequest",
-        "ImportIdentityMappingsRequest",
-        "ImportIdentityMappingsResponse",
-        "PurgeIdentityMappingsRequest",
-        "ListIdentityMappingsRequest",
-        "ListIdentityMappingsResponse",
-        "ListIdentityMappingStoresRequest",
-        "ListIdentityMappingStoresResponse",
-        "IdentityMappingEntryOperationMetadata",
-        "DeleteIdentityMappingStoreMetadata",
+        'CreateIdentityMappingStoreRequest',
+        'GetIdentityMappingStoreRequest',
+        'DeleteIdentityMappingStoreRequest',
+        'ImportIdentityMappingsRequest',
+        'ImportIdentityMappingsResponse',
+        'PurgeIdentityMappingsRequest',
+        'ListIdentityMappingsRequest',
+        'ListIdentityMappingsResponse',
+        'ListIdentityMappingStoresRequest',
+        'ListIdentityMappingStoresResponse',
+        'IdentityMappingEntryOperationMetadata',
+        'DeleteIdentityMappingStoreMetadata',
     },
 )
 
@@ -85,12 +84,12 @@ class CreateIdentityMappingStoreRequest(proto.Message):
     cmek_config_name: str = proto.Field(
         proto.STRING,
         number=5,
-        oneof="cmek_options",
+        oneof='cmek_options',
     )
     disable_cmek: bool = proto.Field(
         proto.BOOL,
         number=6,
-        oneof="cmek_options",
+        oneof='cmek_options',
     )
     parent: str = proto.Field(
         proto.STRING,
@@ -100,12 +99,10 @@ class CreateIdentityMappingStoreRequest(proto.Message):
         proto.STRING,
         number=2,
     )
-    identity_mapping_store: gcd_identity_mapping_store.IdentityMappingStore = (
-        proto.Field(
-            proto.MESSAGE,
-            number=3,
-            message=gcd_identity_mapping_store.IdentityMappingStore,
-        )
+    identity_mapping_store: gcd_identity_mapping_store.IdentityMappingStore = proto.Field(
+        proto.MESSAGE,
+        number=3,
+        message=gcd_identity_mapping_store.IdentityMappingStore,
     )
 
 
@@ -171,9 +168,7 @@ class ImportIdentityMappingsRequest(proto.Message):
                 one time
         """
 
-        identity_mapping_entries: MutableSequence[
-            gcd_identity_mapping_store.IdentityMappingEntry
-        ] = proto.RepeatedField(
+        identity_mapping_entries: MutableSequence[gcd_identity_mapping_store.IdentityMappingEntry] = proto.RepeatedField(
             proto.MESSAGE,
             number=1,
             message=gcd_identity_mapping_store.IdentityMappingEntry,
@@ -182,7 +177,7 @@ class ImportIdentityMappingsRequest(proto.Message):
     inline_source: InlineSource = proto.Field(
         proto.MESSAGE,
         number=2,
-        oneof="source",
+        oneof='source',
         message=InlineSource,
     )
     identity_mapping_store: str = proto.Field(
@@ -229,17 +224,17 @@ class PurgeIdentityMappingsRequest(proto.Message):
             Filter matching identity mappings to purge. The eligible
             field for filtering is:
 
-            - ``update_time``: in ISO 8601 "zulu" format.
-            - ``external_id``
+            -  ``update_time``: in ISO 8601 "zulu" format.
+            -  ``external_id``
 
             Examples:
 
-            - Deleting all identity mappings updated in a time range:
-              ``update_time > "2012-04-23T18:25:43.511Z" AND update_time < "2012-04-23T18:30:43.511Z"``
-            - Deleting all identity mappings for a given external_id:
-              ``external_id = "id1"``
-            - Deleting all identity mappings inside an identity mapping
-              store: ``*``
+            -  Deleting all identity mappings updated in a time range:
+               ``update_time > "2012-04-23T18:25:43.511Z" AND update_time < "2012-04-23T18:30:43.511Z"``
+            -  Deleting all identity mappings for a given external_id:
+               ``external_id = "id1"``
+            -  Deleting all identity mappings inside an identity mapping
+               store: ``*``
 
             The filtering fields are assumed to have an implicit AND.
             Should not be used with source. An error will be thrown, if
@@ -263,9 +258,7 @@ class PurgeIdentityMappingsRequest(proto.Message):
                 one time
         """
 
-        identity_mapping_entries: MutableSequence[
-            gcd_identity_mapping_store.IdentityMappingEntry
-        ] = proto.RepeatedField(
+        identity_mapping_entries: MutableSequence[gcd_identity_mapping_store.IdentityMappingEntry] = proto.RepeatedField(
             proto.MESSAGE,
             number=1,
             message=gcd_identity_mapping_store.IdentityMappingEntry,
@@ -274,7 +267,7 @@ class PurgeIdentityMappingsRequest(proto.Message):
     inline_source: InlineSource = proto.Field(
         proto.MESSAGE,
         number=2,
-        oneof="source",
+        oneof='source',
         message=InlineSource,
     )
     identity_mapping_store: str = proto.Field(
@@ -347,9 +340,7 @@ class ListIdentityMappingsResponse(proto.Message):
     def raw_page(self):
         return self
 
-    identity_mapping_entries: MutableSequence[
-        gcd_identity_mapping_store.IdentityMappingEntry
-    ] = proto.RepeatedField(
+    identity_mapping_entries: MutableSequence[gcd_identity_mapping_store.IdentityMappingEntry] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
         message=gcd_identity_mapping_store.IdentityMappingEntry,
@@ -414,9 +405,7 @@ class ListIdentityMappingStoresResponse(proto.Message):
     def raw_page(self):
         return self
 
-    identity_mapping_stores: MutableSequence[
-        gcd_identity_mapping_store.IdentityMappingStore
-    ] = proto.RepeatedField(
+    identity_mapping_stores: MutableSequence[gcd_identity_mapping_store.IdentityMappingStore] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
         message=gcd_identity_mapping_store.IdentityMappingStore,

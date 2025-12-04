@@ -17,19 +17,20 @@ from __future__ import annotations
 
 from typing import MutableMapping, MutableSequence
 
-from google.protobuf import timestamp_pb2  # type: ignore
 import proto  # type: ignore
 
 from google.cloud.discoveryengine_v1beta.types import search_service
+from google.protobuf import timestamp_pb2  # type: ignore
+
 
 __protobuf__ = proto.module(
-    package="google.cloud.discoveryengine.v1beta",
+    package='google.cloud.discoveryengine.v1beta',
     manifest={
-        "Conversation",
-        "Reply",
-        "ConversationContext",
-        "TextInput",
-        "ConversationMessage",
+        'Conversation',
+        'Reply',
+        'ConversationContext',
+        'TextInput',
+        'ConversationMessage',
     },
 )
 
@@ -56,7 +57,6 @@ class Conversation(proto.Message):
             Output only. The time the conversation
             finished.
     """
-
     class State(proto.Enum):
         r"""Enumeration of the state of the conversation.
 
@@ -85,10 +85,10 @@ class Conversation(proto.Message):
         proto.STRING,
         number=3,
     )
-    messages: MutableSequence["ConversationMessage"] = proto.RepeatedField(
+    messages: MutableSequence['ConversationMessage'] = proto.RepeatedField(
         proto.MESSAGE,
         number=4,
-        message="ConversationMessage",
+        message='ConversationMessage',
     )
     start_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
@@ -198,10 +198,10 @@ class TextInput(proto.Message):
         proto.STRING,
         number=1,
     )
-    context: "ConversationContext" = proto.Field(
+    context: 'ConversationContext' = proto.Field(
         proto.MESSAGE,
         number=2,
-        message="ConversationContext",
+        message='ConversationContext',
     )
 
 
@@ -228,17 +228,17 @@ class ConversationMessage(proto.Message):
             Output only. Message creation timestamp.
     """
 
-    user_input: "TextInput" = proto.Field(
+    user_input: 'TextInput' = proto.Field(
         proto.MESSAGE,
         number=1,
-        oneof="message",
-        message="TextInput",
+        oneof='message',
+        message='TextInput',
     )
-    reply: "Reply" = proto.Field(
+    reply: 'Reply' = proto.Field(
         proto.MESSAGE,
         number=2,
-        oneof="message",
-        message="Reply",
+        oneof='message',
+        message='Reply',
     )
     create_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,

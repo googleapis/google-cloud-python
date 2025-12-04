@@ -17,21 +17,21 @@ from __future__ import annotations
 
 from typing import MutableMapping, MutableSequence
 
-from google.protobuf import timestamp_pb2  # type: ignore
 import proto  # type: ignore
 
-from google.cloud.discoveryengine_v1.types import (
-    document_processing_config as gcd_document_processing_config,
-)
-from google.cloud.discoveryengine_v1.types import cmek_config_service, common
+from google.cloud.discoveryengine_v1.types import cmek_config_service
+from google.cloud.discoveryengine_v1.types import common
+from google.cloud.discoveryengine_v1.types import document_processing_config as gcd_document_processing_config
 from google.cloud.discoveryengine_v1.types import schema
+from google.protobuf import timestamp_pb2  # type: ignore
+
 
 __protobuf__ = proto.module(
-    package="google.cloud.discoveryengine.v1",
+    package='google.cloud.discoveryengine.v1',
     manifest={
-        "DataStore",
-        "AdvancedSiteSearchConfig",
-        "WorkspaceConfig",
+        'DataStore',
+        'AdvancedSiteSearchConfig',
+        'WorkspaceConfig',
     },
 )
 
@@ -62,10 +62,11 @@ class DataStore(proto.Message):
             solutions for each
             [industry_vertical][google.cloud.discoveryengine.v1.DataStore.industry_vertical]:
 
-            - ``MEDIA``: ``SOLUTION_TYPE_RECOMMENDATION`` and
-              ``SOLUTION_TYPE_SEARCH``.
-            - ``SITE_SEARCH``: ``SOLUTION_TYPE_SEARCH`` is automatically
-              enrolled. Other solutions cannot be enrolled.
+            -  ``MEDIA``: ``SOLUTION_TYPE_RECOMMENDATION`` and
+               ``SOLUTION_TYPE_SEARCH``.
+            -  ``SITE_SEARCH``: ``SOLUTION_TYPE_SEARCH`` is
+               automatically enrolled. Other solutions cannot be
+               enrolled.
         default_schema_id (str):
             Output only. The id of the default
             [Schema][google.cloud.discoveryengine.v1.Schema] associated
@@ -153,7 +154,6 @@ class DataStore(proto.Message):
             ``THIRD_PARTY`` or ``GSUITE`` IdP. Format:
             ``projects/{project}/locations/{location}/identityMappingStores/{identity_mapping_store}``.
     """
-
     class ContentConfig(proto.Enum):
         r"""Content config of the data store.
 
@@ -260,10 +260,10 @@ class DataStore(proto.Message):
         number=4,
         message=timestamp_pb2.Timestamp,
     )
-    advanced_site_search_config: "AdvancedSiteSearchConfig" = proto.Field(
+    advanced_site_search_config: 'AdvancedSiteSearchConfig' = proto.Field(
         proto.MESSAGE,
         number=12,
-        message="AdvancedSiteSearchConfig",
+        message='AdvancedSiteSearchConfig',
     )
     kms_key_name: str = proto.Field(
         proto.STRING,
@@ -283,10 +283,10 @@ class DataStore(proto.Message):
         proto.BOOL,
         number=24,
     )
-    workspace_config: "WorkspaceConfig" = proto.Field(
+    workspace_config: 'WorkspaceConfig' = proto.Field(
         proto.MESSAGE,
         number=25,
-        message="WorkspaceConfig",
+        message='WorkspaceConfig',
     )
     document_processing_config: gcd_document_processing_config.DocumentProcessingConfig = proto.Field(
         proto.MESSAGE,
@@ -359,7 +359,6 @@ class WorkspaceConfig(proto.Message):
             generation. For now we only use it for Native
             Google Drive connector data ingestion.
     """
-
     class Type(proto.Enum):
         r"""Specifies the type of Workspace App supported by this
         DataStore

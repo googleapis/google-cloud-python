@@ -13,55 +13,41 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-from collections import OrderedDict
 import logging as std_logging
+from collections import OrderedDict
 import re
-from typing import (
-    Callable,
-    Dict,
-    Mapping,
-    MutableMapping,
-    MutableSequence,
-    Optional,
-    Sequence,
-    Tuple,
-    Type,
-    Union,
-)
+from typing import Dict, Callable, Mapping, MutableMapping, MutableSequence, Optional, Sequence, Tuple, Type, Union
 
+from google.cloud.discoveryengine_v1alpha import gapic_version as package_version
+
+from google.api_core.client_options import ClientOptions
 from google.api_core import exceptions as core_exceptions
 from google.api_core import gapic_v1
 from google.api_core import retry_async as retries
-from google.api_core.client_options import ClientOptions
-from google.auth import credentials as ga_credentials  # type: ignore
-from google.oauth2 import service_account  # type: ignore
+from google.auth import credentials as ga_credentials   # type: ignore
+from google.oauth2 import service_account              # type: ignore
 import google.protobuf
 
-from google.cloud.discoveryengine_v1alpha import gapic_version as package_version
 
 try:
     OptionalRetry = Union[retries.AsyncRetry, gapic_v1.method._MethodDefault, None]
 except AttributeError:  # pragma: NO COVER
     OptionalRetry = Union[retries.AsyncRetry, object, None]  # type: ignore
 
-from google.cloud.location import locations_pb2  # type: ignore
-from google.longrunning import operations_pb2  # type: ignore
-
 from google.cloud.discoveryengine_v1alpha.types import rank_service
-
-from .client import RankServiceClient
-from .transports.base import DEFAULT_CLIENT_INFO, RankServiceTransport
+from google.cloud.location import locations_pb2 # type: ignore
+from google.longrunning import operations_pb2 # type: ignore
+from .transports.base import RankServiceTransport, DEFAULT_CLIENT_INFO
 from .transports.grpc_asyncio import RankServiceGrpcAsyncIOTransport
+from .client import RankServiceClient
 
 try:
     from google.api_core import client_logging  # type: ignore
-
     CLIENT_LOGGING_SUPPORTED = True  # pragma: NO COVER
 except ImportError:  # pragma: NO COVER
     CLIENT_LOGGING_SUPPORTED = False
 
 _LOGGER = std_logging.getLogger(__name__)
-
 
 class RankServiceAsyncClient:
     """Service for ranking text records."""
@@ -76,29 +62,17 @@ class RankServiceAsyncClient:
     _DEFAULT_UNIVERSE = RankServiceClient._DEFAULT_UNIVERSE
 
     ranking_config_path = staticmethod(RankServiceClient.ranking_config_path)
-    parse_ranking_config_path = staticmethod(
-        RankServiceClient.parse_ranking_config_path
-    )
-    common_billing_account_path = staticmethod(
-        RankServiceClient.common_billing_account_path
-    )
-    parse_common_billing_account_path = staticmethod(
-        RankServiceClient.parse_common_billing_account_path
-    )
+    parse_ranking_config_path = staticmethod(RankServiceClient.parse_ranking_config_path)
+    common_billing_account_path = staticmethod(RankServiceClient.common_billing_account_path)
+    parse_common_billing_account_path = staticmethod(RankServiceClient.parse_common_billing_account_path)
     common_folder_path = staticmethod(RankServiceClient.common_folder_path)
     parse_common_folder_path = staticmethod(RankServiceClient.parse_common_folder_path)
     common_organization_path = staticmethod(RankServiceClient.common_organization_path)
-    parse_common_organization_path = staticmethod(
-        RankServiceClient.parse_common_organization_path
-    )
+    parse_common_organization_path = staticmethod(RankServiceClient.parse_common_organization_path)
     common_project_path = staticmethod(RankServiceClient.common_project_path)
-    parse_common_project_path = staticmethod(
-        RankServiceClient.parse_common_project_path
-    )
+    parse_common_project_path = staticmethod(RankServiceClient.parse_common_project_path)
     common_location_path = staticmethod(RankServiceClient.common_location_path)
-    parse_common_location_path = staticmethod(
-        RankServiceClient.parse_common_location_path
-    )
+    parse_common_location_path = staticmethod(RankServiceClient.parse_common_location_path)
 
     @classmethod
     def from_service_account_info(cls, info: dict, *args, **kwargs):
@@ -134,9 +108,7 @@ class RankServiceAsyncClient:
     from_service_account_json = from_service_account_file
 
     @classmethod
-    def get_mtls_endpoint_and_cert_source(
-        cls, client_options: Optional[ClientOptions] = None
-    ):
+    def get_mtls_endpoint_and_cert_source(cls, client_options: Optional[ClientOptions] = None):
         """Return the API endpoint and client cert source for mutual TLS.
 
         The client cert source is determined in the following order:
@@ -199,16 +171,12 @@ class RankServiceAsyncClient:
 
     get_transport_class = RankServiceClient.get_transport_class
 
-    def __init__(
-        self,
-        *,
-        credentials: Optional[ga_credentials.Credentials] = None,
-        transport: Optional[
-            Union[str, RankServiceTransport, Callable[..., RankServiceTransport]]
-        ] = "grpc_asyncio",
-        client_options: Optional[ClientOptions] = None,
-        client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
-    ) -> None:
+    def __init__(self, *,
+            credentials: Optional[ga_credentials.Credentials] = None,
+            transport: Optional[Union[str, RankServiceTransport, Callable[..., RankServiceTransport]]] = "grpc_asyncio",
+            client_options: Optional[ClientOptions] = None,
+            client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
+            ) -> None:
         """Instantiates the rank service async client.
 
         Args:
@@ -263,38 +231,30 @@ class RankServiceAsyncClient:
             transport=transport,
             client_options=client_options,
             client_info=client_info,
+
         )
 
-        if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-            std_logging.DEBUG
-        ):  # pragma: NO COVER
+        if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(std_logging.DEBUG):  # pragma: NO COVER
             _LOGGER.debug(
                 "Created client `google.cloud.discoveryengine_v1alpha.RankServiceAsyncClient`.",
-                extra={
+                extra = {
                     "serviceName": "google.cloud.discoveryengine.v1alpha.RankService",
-                    "universeDomain": getattr(
-                        self._client._transport._credentials, "universe_domain", ""
-                    ),
+                    "universeDomain": getattr(self._client._transport._credentials, "universe_domain", ""),
                     "credentialsType": f"{type(self._client._transport._credentials).__module__}.{type(self._client._transport._credentials).__qualname__}",
-                    "credentialsInfo": getattr(
-                        self.transport._credentials, "get_cred_info", lambda: None
-                    )(),
-                }
-                if hasattr(self._client._transport, "_credentials")
-                else {
+                    "credentialsInfo": getattr(self.transport._credentials, "get_cred_info", lambda: None)(),
+                } if hasattr(self._client._transport, "_credentials") else {
                     "serviceName": "google.cloud.discoveryengine.v1alpha.RankService",
                     "credentialsType": None,
-                },
+                }
             )
 
-    async def rank(
-        self,
-        request: Optional[Union[rank_service.RankRequest, dict]] = None,
-        *,
-        retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
-    ) -> rank_service.RankResponse:
+    async def rank(self,
+            request: Optional[Union[rank_service.RankRequest, dict]] = None,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+            ) -> rank_service.RankResponse:
         r"""Ranks a list of text records based on the given input
         query.
 
@@ -357,9 +317,9 @@ class RankServiceAsyncClient:
         # Certain fields should be provided within the metadata header;
         # add these here.
         metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata(
-                (("ranking_config", request.ranking_config),)
-            ),
+            gapic_v1.routing_header.to_grpc_metadata((
+                ("ranking_config", request.ranking_config),
+            )),
         )
 
         # Validate the universe domain.
@@ -414,7 +374,8 @@ class RankServiceAsyncClient:
         # Certain fields should be provided within the metadata header;
         # add these here.
         metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
+            gapic_v1.routing_header.to_grpc_metadata(
+                (("name", request.name),)),
         )
 
         # Validate the universe domain.
@@ -422,11 +383,7 @@ class RankServiceAsyncClient:
 
         # Send the request.
         response = await rpc(
-            request,
-            retry=retry,
-            timeout=timeout,
-            metadata=metadata,
-        )
+            request, retry=retry, timeout=timeout, metadata=metadata,)
 
         # Done; return the response.
         return response
@@ -469,7 +426,8 @@ class RankServiceAsyncClient:
         # Certain fields should be provided within the metadata header;
         # add these here.
         metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
+            gapic_v1.routing_header.to_grpc_metadata(
+                (("name", request.name),)),
         )
 
         # Validate the universe domain.
@@ -477,11 +435,7 @@ class RankServiceAsyncClient:
 
         # Send the request.
         response = await rpc(
-            request,
-            retry=retry,
-            timeout=timeout,
-            metadata=metadata,
-        )
+            request, retry=retry, timeout=timeout, metadata=metadata,)
 
         # Done; return the response.
         return response
@@ -527,19 +481,15 @@ class RankServiceAsyncClient:
         # Certain fields should be provided within the metadata header;
         # add these here.
         metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
+            gapic_v1.routing_header.to_grpc_metadata(
+                (("name", request.name),)),
         )
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
 
         # Send the request.
-        await rpc(
-            request,
-            retry=retry,
-            timeout=timeout,
-            metadata=metadata,
-        )
+        await rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
 
     async def __aenter__(self) -> "RankServiceAsyncClient":
         return self
@@ -547,13 +497,12 @@ class RankServiceAsyncClient:
     async def __aexit__(self, exc_type, exc, tb):
         await self.transport.close()
 
+DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(gapic_version=package_version.__version__)
 
-DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
-    gapic_version=package_version.__version__
-)
-
-if hasattr(DEFAULT_CLIENT_INFO, "protobuf_runtime_version"):  # pragma: NO COVER
+if hasattr(DEFAULT_CLIENT_INFO, "protobuf_runtime_version"):   # pragma: NO COVER
     DEFAULT_CLIENT_INFO.protobuf_runtime_version = google.protobuf.__version__
 
 
-__all__ = ("RankServiceAsyncClient",)
+__all__ = (
+    "RankServiceAsyncClient",
+)

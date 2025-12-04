@@ -19,23 +19,20 @@ from typing import Dict, Type
 from .base import SampleQuerySetServiceTransport
 from .grpc import SampleQuerySetServiceGrpcTransport
 from .grpc_asyncio import SampleQuerySetServiceGrpcAsyncIOTransport
-from .rest import (
-    SampleQuerySetServiceRestInterceptor,
-    SampleQuerySetServiceRestTransport,
-)
+from .rest import SampleQuerySetServiceRestTransport
+from .rest import SampleQuerySetServiceRestInterceptor
+
 
 # Compile a registry of transports.
-_transport_registry = (
-    OrderedDict()
-)  # type: Dict[str, Type[SampleQuerySetServiceTransport]]
-_transport_registry["grpc"] = SampleQuerySetServiceGrpcTransport
-_transport_registry["grpc_asyncio"] = SampleQuerySetServiceGrpcAsyncIOTransport
-_transport_registry["rest"] = SampleQuerySetServiceRestTransport
+_transport_registry = OrderedDict()  # type: Dict[str, Type[SampleQuerySetServiceTransport]]
+_transport_registry['grpc'] = SampleQuerySetServiceGrpcTransport
+_transport_registry['grpc_asyncio'] = SampleQuerySetServiceGrpcAsyncIOTransport
+_transport_registry['rest'] = SampleQuerySetServiceRestTransport
 
 __all__ = (
-    "SampleQuerySetServiceTransport",
-    "SampleQuerySetServiceGrpcTransport",
-    "SampleQuerySetServiceGrpcAsyncIOTransport",
-    "SampleQuerySetServiceRestTransport",
-    "SampleQuerySetServiceRestInterceptor",
+    'SampleQuerySetServiceTransport',
+    'SampleQuerySetServiceGrpcTransport',
+    'SampleQuerySetServiceGrpcAsyncIOTransport',
+    'SampleQuerySetServiceRestTransport',
+    'SampleQuerySetServiceRestInterceptor',
 )

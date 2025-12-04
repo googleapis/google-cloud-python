@@ -17,14 +17,16 @@ from __future__ import annotations
 
 from typing import MutableMapping, MutableSequence
 
-from google.protobuf import struct_pb2  # type: ignore
 import proto  # type: ignore
 
+from google.protobuf import struct_pb2  # type: ignore
+
+
 __protobuf__ = proto.module(
-    package="google.cloud.discoveryengine.v1alpha",
+    package='google.cloud.discoveryengine.v1alpha',
     manifest={
-        "Schema",
-        "FieldConfig",
+        'Schema',
+        'FieldConfig',
     },
 )
 
@@ -63,22 +65,22 @@ class Schema(proto.Message):
     struct_schema: struct_pb2.Struct = proto.Field(
         proto.MESSAGE,
         number=2,
-        oneof="schema",
+        oneof='schema',
         message=struct_pb2.Struct,
     )
     json_schema: str = proto.Field(
         proto.STRING,
         number=3,
-        oneof="schema",
+        oneof='schema',
     )
     name: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    field_configs: MutableSequence["FieldConfig"] = proto.RepeatedField(
+    field_configs: MutableSequence['FieldConfig'] = proto.RepeatedField(
         proto.MESSAGE,
         number=4,
-        message="FieldConfig",
+        message='FieldConfig',
     )
 
 
@@ -259,10 +261,9 @@ class FieldConfig(proto.Message):
             starting from ``_root``, with a period ``.`` as the
             delimiter. Examples:
 
-            - Publish date of the root: \_root.datePublished
-            - Publish date of the reviews: \_root.review.datePublished
+            -  Publish date of the root: \_root.datePublished
+            -  Publish date of the reviews: \_root.review.datePublished
     """
-
     class FieldType(proto.Enum):
         r"""Field value type in the Schema.
 
@@ -283,13 +284,13 @@ class FieldConfig(proto.Message):
                 Field value type is Geolocation. Geolocation is expressed as
                 an object with the following keys:
 
-                - ``id``: a string representing the location id
-                - ``longitude``: a number representing the longitude
-                  coordinate of the location
-                - ``latitude``: a number repesenting the latitude coordinate
-                  of the location
-                - ``address``: a string representing the full address of the
-                  location
+                -  ``id``: a string representing the location id
+                -  ``longitude``: a number representing the longitude
+                   coordinate of the location
+                -  ``latitude``: a number repesenting the latitude
+                   coordinate of the location
+                -  ``address``: a string representing the full address of
+                   the location
 
                 ``latitude`` and ``longitude`` must always be provided
                 together. At least one of a) ``address`` or b)
@@ -298,13 +299,13 @@ class FieldConfig(proto.Message):
                 Field value type is Datetime. Datetime can be expressed as
                 either:
 
-                - a number representing milliseconds-since-the-epoch
-                - a string representing milliseconds-since-the-epoch. e.g.
-                  ``"1420070400001"``
-                - a string representing the `ISO
-                  8601 <https://en.wikipedia.org/wiki/ISO_8601>`__ date or
-                  date and time. e.g. ``"2015-01-01"`` or
-                  ``"2015-01-01T12:10:30Z"``
+                -  a number representing milliseconds-since-the-epoch
+                -  a string representing milliseconds-since-the-epoch. e.g.
+                   ``"1420070400001"``
+                -  a string representing the `ISO
+                   8601 <https://en.wikipedia.org/wiki/ISO_8601>`__ date or
+                   date and time. e.g. ``"2015-01-01"`` or
+                   ``"2015-01-01T12:10:30Z"``
         """
         FIELD_TYPE_UNSPECIFIED = 0
         OBJECT = 1
@@ -479,9 +480,7 @@ class FieldConfig(proto.Message):
         proto.STRING,
         number=7,
     )
-    advanced_site_search_data_sources: MutableSequence[
-        AdvancedSiteSearchDataSource
-    ] = proto.RepeatedField(
+    advanced_site_search_data_sources: MutableSequence[AdvancedSiteSearchDataSource] = proto.RepeatedField(
         proto.ENUM,
         number=10,
         enum=AdvancedSiteSearchDataSource,

@@ -19,12 +19,13 @@ from typing import MutableMapping, MutableSequence
 
 import proto  # type: ignore
 
+
 __protobuf__ = proto.module(
-    package="google.cloud.discoveryengine.v1",
+    package='google.cloud.discoveryengine.v1',
     manifest={
-        "AssistAnswer",
-        "AssistantContent",
-        "AssistantGroundedContent",
+        'AssistAnswer',
+        'AssistantContent',
+        'AssistantGroundedContent',
     },
 )
 
@@ -47,7 +48,6 @@ class AssistAnswer(proto.Message):
         assist_skipped_reasons (MutableSequence[google.cloud.discoveryengine_v1.types.AssistAnswer.AssistSkippedReason]):
             Reasons for not answering the assist call.
     """
-
     class State(proto.Enum):
         r"""State of the answer generation.
 
@@ -101,11 +101,11 @@ class AssistAnswer(proto.Message):
                 This field is a member of `oneof`_ ``reply``.
         """
 
-        grounded_content: "AssistantGroundedContent" = proto.Field(
+        grounded_content: 'AssistantGroundedContent' = proto.Field(
             proto.MESSAGE,
             number=1,
-            oneof="reply",
-            message="AssistantGroundedContent",
+            oneof='reply',
+            message='AssistantGroundedContent',
         )
 
     name: str = proto.Field(
@@ -235,7 +235,6 @@ class AssistantContent(proto.Message):
                 is successful, stderr or other description
                 otherwise.
         """
-
         class Outcome(proto.Enum):
             r"""Enumeration of possible outcomes of the code execution.
 
@@ -258,10 +257,10 @@ class AssistantContent(proto.Message):
             OUTCOME_FAILED = 2
             OUTCOME_DEADLINE_EXCEEDED = 3
 
-        outcome: "AssistantContent.CodeExecutionResult.Outcome" = proto.Field(
+        outcome: 'AssistantContent.CodeExecutionResult.Outcome' = proto.Field(
             proto.ENUM,
             number=1,
-            enum="AssistantContent.CodeExecutionResult.Outcome",
+            enum='AssistantContent.CodeExecutionResult.Outcome',
         )
         output: str = proto.Field(
             proto.STRING,
@@ -271,30 +270,30 @@ class AssistantContent(proto.Message):
     text: str = proto.Field(
         proto.STRING,
         number=2,
-        oneof="data",
+        oneof='data',
     )
     inline_data: Blob = proto.Field(
         proto.MESSAGE,
         number=3,
-        oneof="data",
+        oneof='data',
         message=Blob,
     )
     file: File = proto.Field(
         proto.MESSAGE,
         number=4,
-        oneof="data",
+        oneof='data',
         message=File,
     )
     executable_code: ExecutableCode = proto.Field(
         proto.MESSAGE,
         number=7,
-        oneof="data",
+        oneof='data',
         message=ExecutableCode,
     )
     code_execution_result: CodeExecutionResult = proto.Field(
         proto.MESSAGE,
         number=8,
-        oneof="data",
+        oneof='data',
         message=CodeExecutionResult,
     )
     role: str = proto.Field(
@@ -447,37 +446,33 @@ class AssistantGroundedContent(proto.Message):
                 proto.STRING,
                 number=1,
             )
-            document_metadata: "AssistantGroundedContent.TextGroundingMetadata.Reference.DocumentMetadata" = proto.Field(
+            document_metadata: 'AssistantGroundedContent.TextGroundingMetadata.Reference.DocumentMetadata' = proto.Field(
                 proto.MESSAGE,
                 number=2,
-                message="AssistantGroundedContent.TextGroundingMetadata.Reference.DocumentMetadata",
+                message='AssistantGroundedContent.TextGroundingMetadata.Reference.DocumentMetadata',
             )
 
-        segments: MutableSequence[
-            "AssistantGroundedContent.TextGroundingMetadata.Segment"
-        ] = proto.RepeatedField(
+        segments: MutableSequence['AssistantGroundedContent.TextGroundingMetadata.Segment'] = proto.RepeatedField(
             proto.MESSAGE,
             number=4,
-            message="AssistantGroundedContent.TextGroundingMetadata.Segment",
+            message='AssistantGroundedContent.TextGroundingMetadata.Segment',
         )
-        references: MutableSequence[
-            "AssistantGroundedContent.TextGroundingMetadata.Reference"
-        ] = proto.RepeatedField(
+        references: MutableSequence['AssistantGroundedContent.TextGroundingMetadata.Reference'] = proto.RepeatedField(
             proto.MESSAGE,
             number=2,
-            message="AssistantGroundedContent.TextGroundingMetadata.Reference",
+            message='AssistantGroundedContent.TextGroundingMetadata.Reference',
         )
 
     text_grounding_metadata: TextGroundingMetadata = proto.Field(
         proto.MESSAGE,
         number=3,
-        oneof="metadata",
+        oneof='metadata',
         message=TextGroundingMetadata,
     )
-    content: "AssistantContent" = proto.Field(
+    content: 'AssistantContent' = proto.Field(
         proto.MESSAGE,
         number=1,
-        message="AssistantContent",
+        message='AssistantContent',
     )
 
 

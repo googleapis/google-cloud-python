@@ -17,13 +17,15 @@ from __future__ import annotations
 
 from typing import MutableMapping, MutableSequence
 
-from google.protobuf import timestamp_pb2  # type: ignore
 import proto  # type: ignore
 
+from google.protobuf import timestamp_pb2  # type: ignore
+
+
 __protobuf__ = proto.module(
-    package="google.cloud.discoveryengine.v1beta",
+    package='google.cloud.discoveryengine.v1beta',
     manifest={
-        "CustomTuningModel",
+        'CustomTuningModel',
     },
 )
 
@@ -58,7 +60,6 @@ class CustomTuningModel(proto.Message):
             Currently this is only populated if the model state is
             ``INPUT_VALIDATION_FAILED``.
     """
-
     class ModelState(proto.Enum):
         r"""The state of the model.
 

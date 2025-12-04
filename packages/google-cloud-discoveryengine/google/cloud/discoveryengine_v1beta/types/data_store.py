@@ -17,22 +17,21 @@ from __future__ import annotations
 
 from typing import MutableMapping, MutableSequence
 
-from google.protobuf import timestamp_pb2  # type: ignore
 import proto  # type: ignore
 
-from google.cloud.discoveryengine_v1beta.types import (
-    document_processing_config as gcd_document_processing_config,
-)
 from google.cloud.discoveryengine_v1beta.types import common
+from google.cloud.discoveryengine_v1beta.types import document_processing_config as gcd_document_processing_config
 from google.cloud.discoveryengine_v1beta.types import schema
+from google.protobuf import timestamp_pb2  # type: ignore
+
 
 __protobuf__ = proto.module(
-    package="google.cloud.discoveryengine.v1beta",
+    package='google.cloud.discoveryengine.v1beta',
     manifest={
-        "DataStore",
-        "LanguageInfo",
-        "NaturalLanguageQueryUnderstandingConfig",
-        "WorkspaceConfig",
+        'DataStore',
+        'LanguageInfo',
+        'NaturalLanguageQueryUnderstandingConfig',
+        'WorkspaceConfig',
     },
 )
 
@@ -62,10 +61,11 @@ class DataStore(proto.Message):
             solutions for each
             [industry_vertical][google.cloud.discoveryengine.v1beta.DataStore.industry_vertical]:
 
-            - ``MEDIA``: ``SOLUTION_TYPE_RECOMMENDATION`` and
-              ``SOLUTION_TYPE_SEARCH``.
-            - ``SITE_SEARCH``: ``SOLUTION_TYPE_SEARCH`` is automatically
-              enrolled. Other solutions cannot be enrolled.
+            -  ``MEDIA``: ``SOLUTION_TYPE_RECOMMENDATION`` and
+               ``SOLUTION_TYPE_SEARCH``.
+            -  ``SITE_SEARCH``: ``SOLUTION_TYPE_SEARCH`` is
+               automatically enrolled. Other solutions cannot be
+               enrolled.
         default_schema_id (str):
             Output only. The id of the default
             [Schema][google.cloud.discoveryengine.v1beta.Schema]
@@ -117,7 +117,6 @@ class DataStore(proto.Message):
             Optional. Stores serving config at DataStore
             level.
     """
-
     class ContentConfig(proto.Enum):
         r"""Content config of the data store.
 
@@ -239,25 +238,25 @@ class DataStore(proto.Message):
         number=4,
         message=timestamp_pb2.Timestamp,
     )
-    language_info: "LanguageInfo" = proto.Field(
+    language_info: 'LanguageInfo' = proto.Field(
         proto.MESSAGE,
         number=14,
-        message="LanguageInfo",
+        message='LanguageInfo',
     )
-    natural_language_query_understanding_config: "NaturalLanguageQueryUnderstandingConfig" = proto.Field(
+    natural_language_query_understanding_config: 'NaturalLanguageQueryUnderstandingConfig' = proto.Field(
         proto.MESSAGE,
         number=34,
-        message="NaturalLanguageQueryUnderstandingConfig",
+        message='NaturalLanguageQueryUnderstandingConfig',
     )
     billing_estimation: BillingEstimation = proto.Field(
         proto.MESSAGE,
         number=23,
         message=BillingEstimation,
     )
-    workspace_config: "WorkspaceConfig" = proto.Field(
+    workspace_config: 'WorkspaceConfig' = proto.Field(
         proto.MESSAGE,
         number=25,
-        message="WorkspaceConfig",
+        message='WorkspaceConfig',
     )
     document_processing_config: gcd_document_processing_config.DocumentProcessingConfig = proto.Field(
         proto.MESSAGE,
@@ -323,7 +322,6 @@ class NaturalLanguageQueryUnderstandingConfig(proto.Message):
             is unset, the behavior defaults to
             [NaturalLanguageQueryUnderstandingConfig.Mode.DISABLED][google.cloud.discoveryengine.v1beta.NaturalLanguageQueryUnderstandingConfig.Mode.DISABLED].
     """
-
     class Mode(proto.Enum):
         r"""Mode of Natural Language Query Understanding. When the
         NaturalLanguageQueryUnderstandingConfig.Mode is ENABLED, the
@@ -373,7 +371,6 @@ class WorkspaceConfig(proto.Message):
             generation. For now we only use it for Native
             Google Drive connector data ingestion.
     """
-
     class Type(proto.Enum):
         r"""Specifies the type of Workspace App supported by this
         DataStore

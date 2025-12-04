@@ -17,18 +17,19 @@ from __future__ import annotations
 
 from typing import MutableMapping, MutableSequence
 
-from google.protobuf import struct_pb2  # type: ignore
 import proto  # type: ignore
 
 from google.cloud.discoveryengine_v1alpha.types import chunk as gcd_chunk
 from google.cloud.discoveryengine_v1alpha.types import common
 from google.cloud.discoveryengine_v1alpha.types import document as gcd_document
+from google.protobuf import struct_pb2  # type: ignore
+
 
 __protobuf__ = proto.module(
-    package="google.cloud.discoveryengine.v1alpha",
+    package='google.cloud.discoveryengine.v1alpha',
     manifest={
-        "SearchRequest",
-        "SearchResponse",
+        'SearchRequest',
+        'SearchResponse',
     },
 )
 
@@ -64,11 +65,11 @@ class SearchRequest(proto.Message):
             type. Values above the maximum value are coerced to the
             maximum value.
 
-            - Websites with basic indexing: Default ``10``, Maximum
-              ``25``.
-            - Websites with advanced indexing: Default ``25``, Maximum
-              ``50``.
-            - Other: Default ``50``, Maximum ``100``.
+            -  Websites with basic indexing: Default ``10``, Maximum
+               ``25``.
+            -  Websites with advanced indexing: Default ``25``, Maximum
+               ``50``.
+            -  Other: Default ``50``, Maximum ``100``.
 
             If this field is negative, an ``INVALID_ARGUMENT`` is
             returned.
@@ -180,18 +181,18 @@ class SearchRequest(proto.Message):
 
             For public website search only, supported values are:
 
-            - ``user_country_code``: string. Default empty. If set to
-              non-empty, results are restricted or boosted based on the
-              location provided. For example,
-              ``user_country_code: "au"``
+            -  ``user_country_code``: string. Default empty. If set to
+               non-empty, results are restricted or boosted based on the
+               location provided. For example,
+               ``user_country_code: "au"``
 
-              For available codes see `Country
-              Codes <https://developers.google.com/custom-search/docs/json_api_reference#countryCodes>`__
+               For available codes see `Country
+               Codes <https://developers.google.com/custom-search/docs/json_api_reference#countryCodes>`__
 
-            - ``search_type``: double. Default empty. Enables
-              non-webpage searching depending on the value. The only
-              valid non-default value is 1, which enables image
-              searching. For example, ``search_type: 1``
+            -  ``search_type``: double. Default empty. Enables
+               non-webpage searching depending on the value. The only
+               valid non-default value is 1, which enables image
+               searching. For example, ``search_type: 1``
         query_expansion_spec (google.cloud.discoveryengine_v1alpha.types.SearchRequest.QueryExpansionSpec):
             The query expansion specification that
             specifies the conditions under which query
@@ -248,21 +249,21 @@ class SearchRequest(proto.Message):
             be a single function or multiple functions that are joined
             by "+".
 
-            - ranking_expression = function, { " + ", function };
+            -  ranking_expression = function, { " + ", function };
 
             Supported functions:
 
-            - double \* relevance_score
-            - double \* dotProduct(embedding_field_path)
+            -  double \* relevance_score
+            -  double \* dotProduct(embedding_field_path)
 
             Function variables:
 
-            - ``relevance_score``: pre-defined keywords, used for
-              measure relevance between query and document.
-            - ``embedding_field_path``: the document embedding field
-              used with query embedding vector.
-            - ``dotProduct``: embedding function between
-              ``embedding_field_path`` and query embedding vector.
+            -  ``relevance_score``: pre-defined keywords, used for
+               measure relevance between query and document.
+            -  ``embedding_field_path``: the document embedding field
+               used with query embedding vector.
+            -  ``dotProduct``: embedding function between
+               ``embedding_field_path`` and query embedding vector.
 
             Example ranking expression:
 
@@ -276,66 +277,68 @@ class SearchRequest(proto.Message):
             is set to ``RANK_BY_FORMULA``, the following expression
             types (and combinations of those chained using + or
 
-            - operators) are supported:
+            -  operators) are supported:
 
-              - ``double``
-              - ``signal``
-              - ``log(signal)``
-              - ``exp(signal)``
-              - ``rr(signal, double > 0)`` -- reciprocal rank
-                transformation with second argument being a denominator
-                constant.
-              - ``is_nan(signal)`` -- returns 0 if signal is NaN, 1
-                otherwise.
-              - ``fill_nan(signal1, signal2 | double)`` -- if signal1 is
-                NaN, returns signal2 \| double, else returns signal1.
+               -  ``double``
+               -  ``signal``
+               -  ``log(signal)``
+               -  ``exp(signal)``
+               -  ``rr(signal, double > 0)`` -- reciprocal rank
+                  transformation with second argument being a
+                  denominator constant.
+               -  ``is_nan(signal)`` -- returns 0 if signal is NaN, 1
+                  otherwise.
+               -  ``fill_nan(signal1, signal2 | double)`` -- if signal1
+                  is NaN, returns signal2 \| double, else returns
+                  signal1.
 
-              Here are a few examples of ranking formulas that use the
-              supported ranking expression types:
+               Here are a few examples of ranking formulas that use the
+               supported ranking expression types:
 
-              - ``0.2 * semantic_similarity_score + 0.8 * log(keyword_similarity_score)``
-                -- mostly rank by the logarithm of
-                ``keyword_similarity_score`` with slight
-                ``semantic_smilarity_score`` adjustment.
-              - ``0.2 * exp(fill_nan(semantic_similarity_score, 0)) + 0.3 * is_nan(keyword_similarity_score)``
-                -- rank by the exponent of ``semantic_similarity_score``
-                filling the value with 0 if it's NaN, also add constant
-                0.3 adjustment to the final score if
-                ``semantic_similarity_score`` is NaN.
-              - ``0.2 * rr(semantic_similarity_score, 16) + 0.8 * rr(keyword_similarity_score, 16)``
-                -- mostly rank by the reciprocal rank of
-                ``keyword_similarity_score`` with slight adjustment of
-                reciprocal rank of ``semantic_smilarity_score``.
+               -  ``0.2 * semantic_similarity_score + 0.8 * log(keyword_similarity_score)``
+                  -- mostly rank by the logarithm of
+                  ``keyword_similarity_score`` with slight
+                  ``semantic_smilarity_score`` adjustment.
+               -  ``0.2 * exp(fill_nan(semantic_similarity_score, 0)) + 0.3 * is_nan(keyword_similarity_score)``
+                  -- rank by the exponent of
+                  ``semantic_similarity_score`` filling the value with 0
+                  if it's NaN, also add constant 0.3 adjustment to the
+                  final score if ``semantic_similarity_score`` is NaN.
+               -  ``0.2 * rr(semantic_similarity_score, 16) + 0.8 * rr(keyword_similarity_score, 16)``
+                  -- mostly rank by the reciprocal rank of
+                  ``keyword_similarity_score`` with slight adjustment of
+                  reciprocal rank of ``semantic_smilarity_score``.
 
             The following signals are supported:
 
-            - ``semantic_similarity_score``: semantic similarity
-              adjustment that is calculated using the embeddings
-              generated by a proprietary Google model. This score
-              determines how semantically similar a search query is to a
-              document.
-            - ``keyword_similarity_score``: keyword match adjustment
-              uses the Best Match 25 (BM25) ranking function. This score
-              is calculated using a probabilistic model to estimate the
-              probability that a document is relevant to a given query.
-            - ``relevance_score``: semantic relevance adjustment that
-              uses a proprietary Google model to determine the meaning
-              and intent behind a user's query in context with the
-              content in the documents.
-            - ``pctr_rank``: predicted conversion rate adjustment as a
-              rank use predicted Click-through rate (pCTR) to gauge the
-              relevance and attractiveness of a search result from a
-              user's perspective. A higher pCTR suggests that the result
-              is more likely to satisfy the user's query and intent,
-              making it a valuable signal for ranking.
-            - ``freshness_rank``: freshness adjustment as a rank
-            - ``document_age``: The time in hours elapsed since the
-              document was last updated, a floating-point number (e.g.,
-              0.25 means 15 minutes).
-            - ``topicality_rank``: topicality adjustment as a rank. Uses
-              proprietary Google model to determine the keyword-based
-              overlap between the query and the document.
-            - ``base_rank``: the default rank of the result
+            -  ``semantic_similarity_score``: semantic similarity
+               adjustment that is calculated using the embeddings
+               generated by a proprietary Google model. This score
+               determines how semantically similar a search query is to
+               a document.
+            -  ``keyword_similarity_score``: keyword match adjustment
+               uses the Best Match 25 (BM25) ranking function. This
+               score is calculated using a probabilistic model to
+               estimate the probability that a document is relevant to a
+               given query.
+            -  ``relevance_score``: semantic relevance adjustment that
+               uses a proprietary Google model to determine the meaning
+               and intent behind a user's query in context with the
+               content in the documents.
+            -  ``pctr_rank``: predicted conversion rate adjustment as a
+               rank use predicted Click-through rate (pCTR) to gauge the
+               relevance and attractiveness of a search result from a
+               user's perspective. A higher pCTR suggests that the
+               result is more likely to satisfy the user's query and
+               intent, making it a valuable signal for ranking.
+            -  ``freshness_rank``: freshness adjustment as a rank
+            -  ``document_age``: The time in hours elapsed since the
+               document was last updated, a floating-point number (e.g.,
+               0.25 means 15 minutes).
+            -  ``topicality_rank``: topicality adjustment as a rank.
+               Uses proprietary Google model to determine the
+               keyword-based overlap between the query and the document.
+            -  ``base_rank``: the default rank of the result
         ranking_expression_backend (google.cloud.discoveryengine_v1alpha.types.SearchRequest.RankingExpressionBackend):
             The backend to use for the ranking expression
             evaluation.
@@ -346,20 +349,20 @@ class SearchRequest(proto.Message):
             The user labels applied to a resource must meet the
             following requirements:
 
-            - Each resource can have multiple labels, up to a maximum of
-              64.
-            - Each label must be a key-value pair.
-            - Keys have a minimum length of 1 character and a maximum
-              length of 63 characters and cannot be empty. Values can be
-              empty and have a maximum length of 63 characters.
-            - Keys and values can contain only lowercase letters,
-              numeric characters, underscores, and dashes. All
-              characters must use UTF-8 encoding, and international
-              characters are allowed.
-            - The key portion of a label must be unique. However, you
-              can use the same key with multiple resources.
-            - Keys must start with a lowercase letter or international
-              character.
+            -  Each resource can have multiple labels, up to a maximum
+               of 64.
+            -  Each label must be a key-value pair.
+            -  Keys have a minimum length of 1 character and a maximum
+               length of 63 characters and cannot be empty. Values can
+               be empty and have a maximum length of 63 characters.
+            -  Keys and values can contain only lowercase letters,
+               numeric characters, underscores, and dashes. All
+               characters must use UTF-8 encoding, and international
+               characters are allowed.
+            -  The key portion of a label must be unique. However, you
+               can use the same key with multiple resources.
+            -  Keys must start with a lowercase letter or international
+               character.
 
             See `Google Cloud
             Document <https://cloud.google.com/resource-manager/docs/creating-managing-labels#requirements>`__
@@ -418,7 +421,6 @@ class SearchRequest(proto.Message):
             both highly accurate results and comprehensive
             coverage of relevant information.
     """
-
     class RelevanceThreshold(proto.Enum):
         r"""The relevance threshold of the search results. The higher
         relevance threshold is, the higher relevant results are shown
@@ -476,7 +478,7 @@ class SearchRequest(proto.Message):
         image_bytes: str = proto.Field(
             proto.STRING,
             number=1,
-            oneof="image",
+            oneof='image',
         )
 
     class DataStoreSpec(proto.Message):
@@ -564,11 +566,11 @@ class SearchRequest(proto.Message):
                 Another example, assuming you have the following facets in
                 the request:
 
-                - "rating", enable_dynamic_position = true
+                -  "rating", enable_dynamic_position = true
 
-                - "price", enable_dynamic_position = false
+                -  "price", enable_dynamic_position = false
 
-                - "brands", enable_dynamic_position = false
+                -  "brands", enable_dynamic_position = false
 
                 And also you have a dynamic facets enabled, which generates
                 a facet ``gender``. Then the final order of the facets in
@@ -627,13 +629,13 @@ class SearchRequest(proto.Message):
 
                     Allowed values are:
 
-                    - "count desc", which means order by
-                      [SearchResponse.Facet.values.count][google.cloud.discoveryengine.v1alpha.SearchResponse.Facet.FacetValue.count]
-                      descending.
+                    -  "count desc", which means order by
+                       [SearchResponse.Facet.values.count][google.cloud.discoveryengine.v1alpha.SearchResponse.Facet.FacetValue.count]
+                       descending.
 
-                    - "value desc", which means order by
-                      [SearchResponse.Facet.values.value][google.cloud.discoveryengine.v1alpha.SearchResponse.Facet.FacetValue.value]
-                      descending. Only applies to textual facets.
+                    -  "value desc", which means order by
+                       [SearchResponse.Facet.values.value][google.cloud.discoveryengine.v1alpha.SearchResponse.Facet.FacetValue.value]
+                       descending. Only applies to textual facets.
 
                     If not set, textual values are sorted in `natural
                     order <https://en.wikipedia.org/wiki/Natural_sort_order>`__;
@@ -671,10 +673,10 @@ class SearchRequest(proto.Message):
                 number=7,
             )
 
-        facet_key: "SearchRequest.FacetSpec.FacetKey" = proto.Field(
+        facet_key: 'SearchRequest.FacetSpec.FacetKey' = proto.Field(
             proto.MESSAGE,
             number=1,
-            message="SearchRequest.FacetSpec.FacetKey",
+            message='SearchRequest.FacetSpec.FacetKey',
         )
         limit: int = proto.Field(
             proto.INT32,
@@ -715,9 +717,9 @@ class SearchRequest(proto.Message):
 
                     Examples:
 
-                    - To boost documents with document ID "doc_1" or "doc_2",
-                      and color "Red" or "Blue":
-                      ``(document_id: ANY("doc_1", "doc_2")) AND (color: ANY("Red", "Blue"))``
+                    -  To boost documents with document ID "doc_1" or "doc_2",
+                       and color "Red" or "Blue":
+                       ``(document_id: ANY("doc_1", "doc_2")) AND (color: ANY("Red", "Blue"))``
                 boost (float):
                     Strength of the condition boost, which should be in [-1, 1].
                     Negative boost means demotion. Default is 0.0.
@@ -769,7 +771,6 @@ class SearchRequest(proto.Message):
                         function (defined through the interpolation_type above)
                         passes through the control points listed here.
                 """
-
                 class AttributeType(proto.Enum):
                     r"""The attribute(or function) for which the custom ranking is to
                     be applied.
@@ -843,22 +844,20 @@ class SearchRequest(proto.Message):
                     proto.STRING,
                     number=1,
                 )
-                attribute_type: "SearchRequest.BoostSpec.ConditionBoostSpec.BoostControlSpec.AttributeType" = proto.Field(
+                attribute_type: 'SearchRequest.BoostSpec.ConditionBoostSpec.BoostControlSpec.AttributeType' = proto.Field(
                     proto.ENUM,
                     number=2,
-                    enum="SearchRequest.BoostSpec.ConditionBoostSpec.BoostControlSpec.AttributeType",
+                    enum='SearchRequest.BoostSpec.ConditionBoostSpec.BoostControlSpec.AttributeType',
                 )
-                interpolation_type: "SearchRequest.BoostSpec.ConditionBoostSpec.BoostControlSpec.InterpolationType" = proto.Field(
+                interpolation_type: 'SearchRequest.BoostSpec.ConditionBoostSpec.BoostControlSpec.InterpolationType' = proto.Field(
                     proto.ENUM,
                     number=3,
-                    enum="SearchRequest.BoostSpec.ConditionBoostSpec.BoostControlSpec.InterpolationType",
+                    enum='SearchRequest.BoostSpec.ConditionBoostSpec.BoostControlSpec.InterpolationType',
                 )
-                control_points: MutableSequence[
-                    "SearchRequest.BoostSpec.ConditionBoostSpec.BoostControlSpec.ControlPoint"
-                ] = proto.RepeatedField(
+                control_points: MutableSequence['SearchRequest.BoostSpec.ConditionBoostSpec.BoostControlSpec.ControlPoint'] = proto.RepeatedField(
                     proto.MESSAGE,
                     number=4,
-                    message="SearchRequest.BoostSpec.ConditionBoostSpec.BoostControlSpec.ControlPoint",
+                    message='SearchRequest.BoostSpec.ConditionBoostSpec.BoostControlSpec.ControlPoint',
                 )
 
             condition: str = proto.Field(
@@ -869,18 +868,16 @@ class SearchRequest(proto.Message):
                 proto.FLOAT,
                 number=2,
             )
-            boost_control_spec: "SearchRequest.BoostSpec.ConditionBoostSpec.BoostControlSpec" = proto.Field(
+            boost_control_spec: 'SearchRequest.BoostSpec.ConditionBoostSpec.BoostControlSpec' = proto.Field(
                 proto.MESSAGE,
                 number=3,
-                message="SearchRequest.BoostSpec.ConditionBoostSpec.BoostControlSpec",
+                message='SearchRequest.BoostSpec.ConditionBoostSpec.BoostControlSpec',
             )
 
-        condition_boost_specs: MutableSequence[
-            "SearchRequest.BoostSpec.ConditionBoostSpec"
-        ] = proto.RepeatedField(
+        condition_boost_specs: MutableSequence['SearchRequest.BoostSpec.ConditionBoostSpec'] = proto.RepeatedField(
             proto.MESSAGE,
             number=1,
-            message="SearchRequest.BoostSpec.ConditionBoostSpec",
+            message='SearchRequest.BoostSpec.ConditionBoostSpec',
         )
 
     class QueryExpansionSpec(proto.Message):
@@ -898,7 +895,6 @@ class SearchRequest(proto.Message):
                 always at the top of the search results,
                 followed by the expanded results.
         """
-
         class Condition(proto.Enum):
             r"""Enum describing under which condition query expansion should
             occur.
@@ -921,10 +917,10 @@ class SearchRequest(proto.Message):
             DISABLED = 1
             AUTO = 2
 
-        condition: "SearchRequest.QueryExpansionSpec.Condition" = proto.Field(
+        condition: 'SearchRequest.QueryExpansionSpec.Condition' = proto.Field(
             proto.ENUM,
             number=1,
-            enum="SearchRequest.QueryExpansionSpec.Condition",
+            enum='SearchRequest.QueryExpansionSpec.Condition',
         )
         pin_unexpanded_results: bool = proto.Field(
             proto.BOOL,
@@ -940,7 +936,6 @@ class SearchRequest(proto.Message):
                 search query. Defaults to
                 [Mode.AUTO][google.cloud.discoveryengine.v1alpha.SearchRequest.SpellCorrectionSpec.Mode.AUTO].
         """
-
         class Mode(proto.Enum):
             r"""Enum describing under which mode spell correction should
             occur.
@@ -964,10 +959,10 @@ class SearchRequest(proto.Message):
             SUGGESTION_ONLY = 1
             AUTO = 2
 
-        mode: "SearchRequest.SpellCorrectionSpec.Mode" = proto.Field(
+        mode: 'SearchRequest.SpellCorrectionSpec.Mode' = proto.Field(
             proto.ENUM,
             number=1,
-            enum="SearchRequest.SpellCorrectionSpec.Mode",
+            enum='SearchRequest.SpellCorrectionSpec.Mode',
         )
 
     class ContentSearchSpec(proto.Message):
@@ -994,7 +989,6 @@ class SearchRequest(proto.Message):
                 is set to
                 [CHUNKS][google.cloud.discoveryengine.v1alpha.SearchRequest.ContentSearchSpec.SearchResultMode.CHUNKS]
         """
-
         class SearchResultMode(proto.Enum):
             r"""Specifies the search result mode. If unspecified, the search result
             mode defaults to ``DOCUMENTS``.
@@ -1162,15 +1156,15 @@ class SearchRequest(proto.Message):
 
                         Supported values are:
 
-                        - ``stable``: string. Default value when no value is
-                          specified. Uses a generally available, fine-tuned model.
-                          For more information, see `Answer generation model
-                          versions and
-                          lifecycle <https://cloud.google.com/generative-ai-app-builder/docs/answer-generation-models>`__.
-                        - ``preview``: string. (Public preview) Uses a preview
-                          model. For more information, see `Answer generation model
-                          versions and
-                          lifecycle <https://cloud.google.com/generative-ai-app-builder/docs/answer-generation-models>`__.
+                        -  ``stable``: string. Default value when no value is
+                           specified. Uses a generally available, fine-tuned model.
+                           For more information, see `Answer generation model
+                           versions and
+                           lifecycle <https://cloud.google.com/generative-ai-app-builder/docs/answer-generation-models>`__.
+                        -  ``preview``: string. (Public preview) Uses a preview
+                           model. For more information, see `Answer generation model
+                           versions and
+                           lifecycle <https://cloud.google.com/generative-ai-app-builder/docs/answer-generation-models>`__.
                 """
 
                 version: str = proto.Field(
@@ -1198,21 +1192,19 @@ class SearchRequest(proto.Message):
                 proto.BOOL,
                 number=9,
             )
-            model_prompt_spec: "SearchRequest.ContentSearchSpec.SummarySpec.ModelPromptSpec" = proto.Field(
+            model_prompt_spec: 'SearchRequest.ContentSearchSpec.SummarySpec.ModelPromptSpec' = proto.Field(
                 proto.MESSAGE,
                 number=5,
-                message="SearchRequest.ContentSearchSpec.SummarySpec.ModelPromptSpec",
+                message='SearchRequest.ContentSearchSpec.SummarySpec.ModelPromptSpec',
             )
             language_code: str = proto.Field(
                 proto.STRING,
                 number=6,
             )
-            model_spec: "SearchRequest.ContentSearchSpec.SummarySpec.ModelSpec" = (
-                proto.Field(
-                    proto.MESSAGE,
-                    number=7,
-                    message="SearchRequest.ContentSearchSpec.SummarySpec.ModelSpec",
-                )
+            model_spec: 'SearchRequest.ContentSearchSpec.SummarySpec.ModelSpec' = proto.Field(
+                proto.MESSAGE,
+                number=7,
+                message='SearchRequest.ContentSearchSpec.SummarySpec.ModelSpec',
             )
             use_semantic_chunks: bool = proto.Field(
                 proto.BOOL,
@@ -1324,32 +1316,30 @@ class SearchRequest(proto.Message):
                 number=2,
             )
 
-        snippet_spec: "SearchRequest.ContentSearchSpec.SnippetSpec" = proto.Field(
+        snippet_spec: 'SearchRequest.ContentSearchSpec.SnippetSpec' = proto.Field(
             proto.MESSAGE,
             number=1,
-            message="SearchRequest.ContentSearchSpec.SnippetSpec",
+            message='SearchRequest.ContentSearchSpec.SnippetSpec',
         )
-        summary_spec: "SearchRequest.ContentSearchSpec.SummarySpec" = proto.Field(
+        summary_spec: 'SearchRequest.ContentSearchSpec.SummarySpec' = proto.Field(
             proto.MESSAGE,
             number=2,
-            message="SearchRequest.ContentSearchSpec.SummarySpec",
+            message='SearchRequest.ContentSearchSpec.SummarySpec',
         )
-        extractive_content_spec: "SearchRequest.ContentSearchSpec.ExtractiveContentSpec" = proto.Field(
+        extractive_content_spec: 'SearchRequest.ContentSearchSpec.ExtractiveContentSpec' = proto.Field(
             proto.MESSAGE,
             number=3,
-            message="SearchRequest.ContentSearchSpec.ExtractiveContentSpec",
+            message='SearchRequest.ContentSearchSpec.ExtractiveContentSpec',
         )
-        search_result_mode: "SearchRequest.ContentSearchSpec.SearchResultMode" = (
-            proto.Field(
-                proto.ENUM,
-                number=4,
-                enum="SearchRequest.ContentSearchSpec.SearchResultMode",
-            )
+        search_result_mode: 'SearchRequest.ContentSearchSpec.SearchResultMode' = proto.Field(
+            proto.ENUM,
+            number=4,
+            enum='SearchRequest.ContentSearchSpec.SearchResultMode',
         )
-        chunk_spec: "SearchRequest.ContentSearchSpec.ChunkSpec" = proto.Field(
+        chunk_spec: 'SearchRequest.ContentSearchSpec.ChunkSpec' = proto.Field(
             proto.MESSAGE,
             number=5,
-            message="SearchRequest.ContentSearchSpec.ChunkSpec",
+            message='SearchRequest.ContentSearchSpec.ChunkSpec',
         )
 
     class EmbeddingSpec(proto.Message):
@@ -1381,12 +1371,10 @@ class SearchRequest(proto.Message):
                 number=2,
             )
 
-        embedding_vectors: MutableSequence[
-            "SearchRequest.EmbeddingSpec.EmbeddingVector"
-        ] = proto.RepeatedField(
+        embedding_vectors: MutableSequence['SearchRequest.EmbeddingSpec.EmbeddingVector'] = proto.RepeatedField(
             proto.MESSAGE,
             number=1,
-            message="SearchRequest.EmbeddingSpec.EmbeddingVector",
+            message='SearchRequest.EmbeddingSpec.EmbeddingVector',
         )
 
     class NaturalLanguageQueryUnderstandingSpec(proto.Message):
@@ -1406,7 +1394,6 @@ class SearchRequest(proto.Message):
                 If this field is set, it overrides the field names set in
                 [ServingConfig.geo_search_query_detection_field_names][google.cloud.discoveryengine.v1alpha.ServingConfig.geo_search_query_detection_field_names].
         """
-
         class FilterExtractionCondition(proto.Enum):
             r"""Enum describing under which condition filter extraction
             should occur.
@@ -1423,14 +1410,12 @@ class SearchRequest(proto.Message):
             DISABLED = 1
             ENABLED = 2
 
-        filter_extraction_condition: "SearchRequest.NaturalLanguageQueryUnderstandingSpec.FilterExtractionCondition" = proto.Field(
+        filter_extraction_condition: 'SearchRequest.NaturalLanguageQueryUnderstandingSpec.FilterExtractionCondition' = proto.Field(
             proto.ENUM,
             number=1,
-            enum="SearchRequest.NaturalLanguageQueryUnderstandingSpec.FilterExtractionCondition",
+            enum='SearchRequest.NaturalLanguageQueryUnderstandingSpec.FilterExtractionCondition',
         )
-        geo_search_query_detection_field_names: MutableSequence[
-            str
-        ] = proto.RepeatedField(
+        geo_search_query_detection_field_names: MutableSequence[str] = proto.RepeatedField(
             proto.STRING,
             number=2,
         )
@@ -1444,7 +1429,6 @@ class SearchRequest(proto.Message):
                 Default to
                 [Condition.DISABLED][google.cloud.discoveryengine.v1alpha.SearchRequest.SearchAsYouTypeSpec.Condition.DISABLED].
         """
-
         class Condition(proto.Enum):
             r"""Enum describing under which condition search as you type
             should occur.
@@ -1462,10 +1446,10 @@ class SearchRequest(proto.Message):
             DISABLED = 1
             ENABLED = 2
 
-        condition: "SearchRequest.SearchAsYouTypeSpec.Condition" = proto.Field(
+        condition: 'SearchRequest.SearchAsYouTypeSpec.Condition' = proto.Field(
             proto.ENUM,
             number=1,
-            enum="SearchRequest.SearchAsYouTypeSpec.Condition",
+            enum='SearchRequest.SearchAsYouTypeSpec.Condition',
         )
 
     class SessionSpec(proto.Message):
@@ -1644,12 +1628,10 @@ class SearchRequest(proto.Message):
         proto.STRING,
         number=22,
     )
-    natural_language_query_understanding_spec: NaturalLanguageQueryUnderstandingSpec = (
-        proto.Field(
-            proto.MESSAGE,
-            number=28,
-            message=NaturalLanguageQueryUnderstandingSpec,
-        )
+    natural_language_query_understanding_spec: NaturalLanguageQueryUnderstandingSpec = proto.Field(
+        proto.MESSAGE,
+        number=28,
+        message=NaturalLanguageQueryUnderstandingSpec,
     )
     search_as_you_type_spec: SearchAsYouTypeSpec = proto.Field(
         proto.MESSAGE,
@@ -1870,12 +1852,10 @@ class SearchResponse(proto.Message):
                 proto.FLOAT,
                 number=32,
             )
-            custom_signals: MutableSequence[
-                "SearchResponse.SearchResult.RankSignals.CustomSignal"
-            ] = proto.RepeatedField(
+            custom_signals: MutableSequence['SearchResponse.SearchResult.RankSignals.CustomSignal'] = proto.RepeatedField(
                 proto.MESSAGE,
                 number=33,
-                message="SearchResponse.SearchResult.RankSignals.CustomSignal",
+                message='SearchResponse.SearchResult.RankSignals.CustomSignal',
             )
 
         id: str = proto.Field(
@@ -1898,10 +1878,10 @@ class SearchResponse(proto.Message):
             number=4,
             message=common.DoubleList,
         )
-        rank_signals: "SearchResponse.SearchResult.RankSignals" = proto.Field(
+        rank_signals: 'SearchResponse.SearchResult.RankSignals' = proto.Field(
             proto.MESSAGE,
             number=7,
-            message="SearchResponse.SearchResult.RankSignals",
+            message='SearchResponse.SearchResult.RankSignals',
         )
 
     class Facet(proto.Message):
@@ -1947,12 +1927,12 @@ class SearchResponse(proto.Message):
             value: str = proto.Field(
                 proto.STRING,
                 number=1,
-                oneof="facet_value",
+                oneof='facet_value',
             )
             interval: common.Interval = proto.Field(
                 proto.MESSAGE,
                 number=2,
-                oneof="facet_value",
+                oneof='facet_value',
                 message=common.Interval,
             )
             count: int = proto.Field(
@@ -1964,12 +1944,10 @@ class SearchResponse(proto.Message):
             proto.STRING,
             number=1,
         )
-        values: MutableSequence[
-            "SearchResponse.Facet.FacetValue"
-        ] = proto.RepeatedField(
+        values: MutableSequence['SearchResponse.Facet.FacetValue'] = proto.RepeatedField(
             proto.MESSAGE,
             number=2,
-            message="SearchResponse.Facet.FacetValue",
+            message='SearchResponse.Facet.FacetValue',
         )
         dynamic_facet: bool = proto.Field(
             proto.BOOL,
@@ -2009,12 +1987,10 @@ class SearchResponse(proto.Message):
                 number=2,
             )
 
-        refinement_attributes: MutableSequence[
-            "SearchResponse.GuidedSearchResult.RefinementAttribute"
-        ] = proto.RepeatedField(
+        refinement_attributes: MutableSequence['SearchResponse.GuidedSearchResult.RefinementAttribute'] = proto.RepeatedField(
             proto.MESSAGE,
             number=1,
-            message="SearchResponse.GuidedSearchResult.RefinementAttribute",
+            message='SearchResponse.GuidedSearchResult.RefinementAttribute',
         )
         follow_up_questions: MutableSequence[str] = proto.RepeatedField(
             proto.STRING,
@@ -2038,7 +2014,6 @@ class SearchResponse(proto.Message):
             summary_with_metadata (google.cloud.discoveryengine_v1alpha.types.SearchResponse.Summary.SummaryWithMetadata):
                 Summary with metadata information.
         """
-
         class SummarySkippedReason(proto.Enum):
             r"""An Enum for summary-skipped reasons.
 
@@ -2145,12 +2120,10 @@ class SearchResponse(proto.Message):
                     Citations for segments.
             """
 
-            citations: MutableSequence[
-                "SearchResponse.Summary.Citation"
-            ] = proto.RepeatedField(
+            citations: MutableSequence['SearchResponse.Summary.Citation'] = proto.RepeatedField(
                 proto.MESSAGE,
                 number=1,
-                message="SearchResponse.Summary.Citation",
+                message='SearchResponse.Summary.Citation',
             )
 
         class Citation(proto.Message):
@@ -2174,12 +2147,10 @@ class SearchResponse(proto.Message):
                 proto.INT64,
                 number=2,
             )
-            sources: MutableSequence[
-                "SearchResponse.Summary.CitationSource"
-            ] = proto.RepeatedField(
+            sources: MutableSequence['SearchResponse.Summary.CitationSource'] = proto.RepeatedField(
                 proto.MESSAGE,
                 number=3,
-                message="SearchResponse.Summary.CitationSource",
+                message='SearchResponse.Summary.CitationSource',
             )
 
         class CitationSource(proto.Message):
@@ -2248,12 +2219,10 @@ class SearchResponse(proto.Message):
                 proto.STRING,
                 number=3,
             )
-            chunk_contents: MutableSequence[
-                "SearchResponse.Summary.Reference.ChunkContent"
-            ] = proto.RepeatedField(
+            chunk_contents: MutableSequence['SearchResponse.Summary.Reference.ChunkContent'] = proto.RepeatedField(
                 proto.MESSAGE,
                 number=4,
-                message="SearchResponse.Summary.Reference.ChunkContent",
+                message='SearchResponse.Summary.Reference.ChunkContent',
             )
 
         class SummaryWithMetadata(proto.Message):
@@ -2272,41 +2241,35 @@ class SearchResponse(proto.Message):
                 proto.STRING,
                 number=1,
             )
-            citation_metadata: "SearchResponse.Summary.CitationMetadata" = proto.Field(
+            citation_metadata: 'SearchResponse.Summary.CitationMetadata' = proto.Field(
                 proto.MESSAGE,
                 number=2,
-                message="SearchResponse.Summary.CitationMetadata",
+                message='SearchResponse.Summary.CitationMetadata',
             )
-            references: MutableSequence[
-                "SearchResponse.Summary.Reference"
-            ] = proto.RepeatedField(
+            references: MutableSequence['SearchResponse.Summary.Reference'] = proto.RepeatedField(
                 proto.MESSAGE,
                 number=3,
-                message="SearchResponse.Summary.Reference",
+                message='SearchResponse.Summary.Reference',
             )
 
         summary_text: str = proto.Field(
             proto.STRING,
             number=1,
         )
-        summary_skipped_reasons: MutableSequence[
-            "SearchResponse.Summary.SummarySkippedReason"
-        ] = proto.RepeatedField(
+        summary_skipped_reasons: MutableSequence['SearchResponse.Summary.SummarySkippedReason'] = proto.RepeatedField(
             proto.ENUM,
             number=2,
-            enum="SearchResponse.Summary.SummarySkippedReason",
+            enum='SearchResponse.Summary.SummarySkippedReason',
         )
-        safety_attributes: "SearchResponse.Summary.SafetyAttributes" = proto.Field(
+        safety_attributes: 'SearchResponse.Summary.SafetyAttributes' = proto.Field(
             proto.MESSAGE,
             number=3,
-            message="SearchResponse.Summary.SafetyAttributes",
+            message='SearchResponse.Summary.SafetyAttributes',
         )
-        summary_with_metadata: "SearchResponse.Summary.SummaryWithMetadata" = (
-            proto.Field(
-                proto.MESSAGE,
-                number=4,
-                message="SearchResponse.Summary.SummaryWithMetadata",
-            )
+        summary_with_metadata: 'SearchResponse.Summary.SummaryWithMetadata' = proto.Field(
+            proto.MESSAGE,
+            number=4,
+            message='SearchResponse.Summary.SummaryWithMetadata',
         )
 
     class GeoSearchDebugInfo(proto.Message):
@@ -2433,7 +2396,6 @@ class SearchResponse(proto.Message):
                         Identifies the keywords within the search
                         query that match a filter.
                 """
-
                 class Comparison(proto.Enum):
                     r"""The comparison operation that was performed.
 
@@ -2462,10 +2424,10 @@ class SearchResponse(proto.Message):
                     proto.STRING,
                     number=1,
                 )
-                comparison: "SearchResponse.NaturalLanguageQueryUnderstandingInfo.StructuredExtractedFilter.NumberConstraint.Comparison" = proto.Field(
+                comparison: 'SearchResponse.NaturalLanguageQueryUnderstandingInfo.StructuredExtractedFilter.NumberConstraint.Comparison' = proto.Field(
                     proto.ENUM,
                     number=2,
-                    enum="SearchResponse.NaturalLanguageQueryUnderstandingInfo.StructuredExtractedFilter.NumberConstraint.Comparison",
+                    enum='SearchResponse.NaturalLanguageQueryUnderstandingInfo.StructuredExtractedFilter.NumberConstraint.Comparison',
                 )
                 value: float = proto.Field(
                     proto.DOUBLE,
@@ -2530,12 +2492,10 @@ class SearchResponse(proto.Message):
                         The expressions that were ANDed together.
                 """
 
-                expressions: MutableSequence[
-                    "SearchResponse.NaturalLanguageQueryUnderstandingInfo.StructuredExtractedFilter.Expression"
-                ] = proto.RepeatedField(
+                expressions: MutableSequence['SearchResponse.NaturalLanguageQueryUnderstandingInfo.StructuredExtractedFilter.Expression'] = proto.RepeatedField(
                     proto.MESSAGE,
                     number=1,
-                    message="SearchResponse.NaturalLanguageQueryUnderstandingInfo.StructuredExtractedFilter.Expression",
+                    message='SearchResponse.NaturalLanguageQueryUnderstandingInfo.StructuredExtractedFilter.Expression',
                 )
 
             class OrExpression(proto.Message):
@@ -2546,12 +2506,10 @@ class SearchResponse(proto.Message):
                         The expressions that were ORed together.
                 """
 
-                expressions: MutableSequence[
-                    "SearchResponse.NaturalLanguageQueryUnderstandingInfo.StructuredExtractedFilter.Expression"
-                ] = proto.RepeatedField(
+                expressions: MutableSequence['SearchResponse.NaturalLanguageQueryUnderstandingInfo.StructuredExtractedFilter.Expression'] = proto.RepeatedField(
                     proto.MESSAGE,
                     number=1,
-                    message="SearchResponse.NaturalLanguageQueryUnderstandingInfo.StructuredExtractedFilter.Expression",
+                    message='SearchResponse.NaturalLanguageQueryUnderstandingInfo.StructuredExtractedFilter.Expression',
                 )
 
             class Expression(proto.Message):
@@ -2590,41 +2548,41 @@ class SearchResponse(proto.Message):
                         This field is a member of `oneof`_ ``expr``.
                 """
 
-                string_constraint: "SearchResponse.NaturalLanguageQueryUnderstandingInfo.StructuredExtractedFilter.StringConstraint" = proto.Field(
+                string_constraint: 'SearchResponse.NaturalLanguageQueryUnderstandingInfo.StructuredExtractedFilter.StringConstraint' = proto.Field(
                     proto.MESSAGE,
                     number=1,
-                    oneof="expr",
-                    message="SearchResponse.NaturalLanguageQueryUnderstandingInfo.StructuredExtractedFilter.StringConstraint",
+                    oneof='expr',
+                    message='SearchResponse.NaturalLanguageQueryUnderstandingInfo.StructuredExtractedFilter.StringConstraint',
                 )
-                number_constraint: "SearchResponse.NaturalLanguageQueryUnderstandingInfo.StructuredExtractedFilter.NumberConstraint" = proto.Field(
+                number_constraint: 'SearchResponse.NaturalLanguageQueryUnderstandingInfo.StructuredExtractedFilter.NumberConstraint' = proto.Field(
                     proto.MESSAGE,
                     number=2,
-                    oneof="expr",
-                    message="SearchResponse.NaturalLanguageQueryUnderstandingInfo.StructuredExtractedFilter.NumberConstraint",
+                    oneof='expr',
+                    message='SearchResponse.NaturalLanguageQueryUnderstandingInfo.StructuredExtractedFilter.NumberConstraint',
                 )
-                geolocation_constraint: "SearchResponse.NaturalLanguageQueryUnderstandingInfo.StructuredExtractedFilter.GeolocationConstraint" = proto.Field(
+                geolocation_constraint: 'SearchResponse.NaturalLanguageQueryUnderstandingInfo.StructuredExtractedFilter.GeolocationConstraint' = proto.Field(
                     proto.MESSAGE,
                     number=3,
-                    oneof="expr",
-                    message="SearchResponse.NaturalLanguageQueryUnderstandingInfo.StructuredExtractedFilter.GeolocationConstraint",
+                    oneof='expr',
+                    message='SearchResponse.NaturalLanguageQueryUnderstandingInfo.StructuredExtractedFilter.GeolocationConstraint',
                 )
-                and_expr: "SearchResponse.NaturalLanguageQueryUnderstandingInfo.StructuredExtractedFilter.AndExpression" = proto.Field(
+                and_expr: 'SearchResponse.NaturalLanguageQueryUnderstandingInfo.StructuredExtractedFilter.AndExpression' = proto.Field(
                     proto.MESSAGE,
                     number=4,
-                    oneof="expr",
-                    message="SearchResponse.NaturalLanguageQueryUnderstandingInfo.StructuredExtractedFilter.AndExpression",
+                    oneof='expr',
+                    message='SearchResponse.NaturalLanguageQueryUnderstandingInfo.StructuredExtractedFilter.AndExpression',
                 )
-                or_expr: "SearchResponse.NaturalLanguageQueryUnderstandingInfo.StructuredExtractedFilter.OrExpression" = proto.Field(
+                or_expr: 'SearchResponse.NaturalLanguageQueryUnderstandingInfo.StructuredExtractedFilter.OrExpression' = proto.Field(
                     proto.MESSAGE,
                     number=5,
-                    oneof="expr",
-                    message="SearchResponse.NaturalLanguageQueryUnderstandingInfo.StructuredExtractedFilter.OrExpression",
+                    oneof='expr',
+                    message='SearchResponse.NaturalLanguageQueryUnderstandingInfo.StructuredExtractedFilter.OrExpression',
                 )
 
-            expression: "SearchResponse.NaturalLanguageQueryUnderstandingInfo.StructuredExtractedFilter.Expression" = proto.Field(
+            expression: 'SearchResponse.NaturalLanguageQueryUnderstandingInfo.StructuredExtractedFilter.Expression' = proto.Field(
                 proto.MESSAGE,
                 number=1,
-                message="SearchResponse.NaturalLanguageQueryUnderstandingInfo.StructuredExtractedFilter.Expression",
+                message='SearchResponse.NaturalLanguageQueryUnderstandingInfo.StructuredExtractedFilter.Expression',
             )
 
         extracted_filters: str = proto.Field(
@@ -2635,10 +2593,10 @@ class SearchResponse(proto.Message):
             proto.STRING,
             number=2,
         )
-        structured_extracted_filter: "SearchResponse.NaturalLanguageQueryUnderstandingInfo.StructuredExtractedFilter" = proto.Field(
+        structured_extracted_filter: 'SearchResponse.NaturalLanguageQueryUnderstandingInfo.StructuredExtractedFilter' = proto.Field(
             proto.MESSAGE,
             number=3,
-            message="SearchResponse.NaturalLanguageQueryUnderstandingInfo.StructuredExtractedFilter",
+            message='SearchResponse.NaturalLanguageQueryUnderstandingInfo.StructuredExtractedFilter',
         )
 
     class SessionInfo(proto.Message):
@@ -2680,7 +2638,6 @@ class SearchResponse(proto.Message):
             search_results (MutableSequence[google.cloud.discoveryengine_v1alpha.types.SearchResponse.SearchResult]):
                 The search results for this One Box.
         """
-
         class OneBoxType(proto.Enum):
             r"""The type of One Box result.
 
@@ -2699,17 +2656,15 @@ class SearchResponse(proto.Message):
             ORGANIZATION = 2
             SLACK = 3
 
-        one_box_type: "SearchResponse.OneBoxResult.OneBoxType" = proto.Field(
+        one_box_type: 'SearchResponse.OneBoxResult.OneBoxType' = proto.Field(
             proto.ENUM,
             number=1,
-            enum="SearchResponse.OneBoxResult.OneBoxType",
+            enum='SearchResponse.OneBoxResult.OneBoxType',
         )
-        search_results: MutableSequence[
-            "SearchResponse.SearchResult"
-        ] = proto.RepeatedField(
+        search_results: MutableSequence['SearchResponse.SearchResult'] = proto.RepeatedField(
             proto.MESSAGE,
             number=2,
-            message="SearchResponse.SearchResult",
+            message='SearchResponse.SearchResult',
         )
 
     @property
@@ -2770,12 +2725,10 @@ class SearchResponse(proto.Message):
         number=14,
         message=QueryExpansionInfo,
     )
-    natural_language_query_understanding_info: NaturalLanguageQueryUnderstandingInfo = (
-        proto.Field(
-            proto.MESSAGE,
-            number=15,
-            message=NaturalLanguageQueryUnderstandingInfo,
-        )
+    natural_language_query_understanding_info: NaturalLanguageQueryUnderstandingInfo = proto.Field(
+        proto.MESSAGE,
+        number=15,
+        message=NaturalLanguageQueryUnderstandingInfo,
     )
     session_info: SessionInfo = proto.Field(
         proto.MESSAGE,

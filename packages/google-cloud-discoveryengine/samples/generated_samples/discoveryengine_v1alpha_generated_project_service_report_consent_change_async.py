@@ -52,5 +52,4 @@ async def sample_report_consent_change():
     # Handle the response
     print(response)
 
-
 # [END discoveryengine_v1alpha_generated_ProjectService_ReportConsentChange_async]

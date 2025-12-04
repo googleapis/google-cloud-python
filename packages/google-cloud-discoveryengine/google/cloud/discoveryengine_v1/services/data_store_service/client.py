@@ -19,33 +19,21 @@ import json
 import logging as std_logging
 import os
 import re
-from typing import (
-    Callable,
-    Dict,
-    Mapping,
-    MutableMapping,
-    MutableSequence,
-    Optional,
-    Sequence,
-    Tuple,
-    Type,
-    Union,
-    cast,
-)
+from typing import Dict, Callable, Mapping, MutableMapping, MutableSequence, Optional, Sequence, Tuple, Type, Union, cast
 import warnings
+
+from google.cloud.discoveryengine_v1 import gapic_version as package_version
 
 from google.api_core import client_options as client_options_lib
 from google.api_core import exceptions as core_exceptions
 from google.api_core import gapic_v1
 from google.api_core import retry as retries
-from google.auth import credentials as ga_credentials  # type: ignore
-from google.auth.exceptions import MutualTLSChannelError  # type: ignore
-from google.auth.transport import mtls  # type: ignore
-from google.auth.transport.grpc import SslCredentials  # type: ignore
-from google.oauth2 import service_account  # type: ignore
+from google.auth import credentials as ga_credentials             # type: ignore
+from google.auth.transport import mtls                            # type: ignore
+from google.auth.transport.grpc import SslCredentials             # type: ignore
+from google.auth.exceptions import MutualTLSChannelError          # type: ignore
+from google.oauth2 import service_account                         # type: ignore
 import google.protobuf
-
-from google.cloud.discoveryengine_v1 import gapic_version as package_version
 
 try:
     OptionalRetry = Union[retries.Retry, gapic_v1.method._MethodDefault, None]
@@ -54,7 +42,6 @@ except AttributeError:  # pragma: NO COVER
 
 try:
     from google.api_core import client_logging  # type: ignore
-
     CLIENT_LOGGING_SUPPORTED = True  # pragma: NO COVER
 except ImportError:  # pragma: NO COVER
     CLIENT_LOGGING_SUPPORTED = False
@@ -63,23 +50,20 @@ _LOGGER = std_logging.getLogger(__name__)
 
 from google.api_core import operation  # type: ignore
 from google.api_core import operation_async  # type: ignore
-from google.cloud.location import locations_pb2  # type: ignore
-from google.longrunning import operations_pb2  # type: ignore
+from google.cloud.discoveryengine_v1.services.data_store_service import pagers
+from google.cloud.discoveryengine_v1.types import cmek_config_service
+from google.cloud.discoveryengine_v1.types import common
+from google.cloud.discoveryengine_v1.types import data_store
+from google.cloud.discoveryengine_v1.types import data_store as gcd_data_store
+from google.cloud.discoveryengine_v1.types import data_store_service
+from google.cloud.discoveryengine_v1.types import document_processing_config
+from google.cloud.discoveryengine_v1.types import schema
+from google.cloud.location import locations_pb2 # type: ignore
+from google.longrunning import operations_pb2 # type: ignore
 from google.protobuf import empty_pb2  # type: ignore
 from google.protobuf import field_mask_pb2  # type: ignore
 from google.protobuf import timestamp_pb2  # type: ignore
-
-from google.cloud.discoveryengine_v1.services.data_store_service import pagers
-from google.cloud.discoveryengine_v1.types import (
-    data_store_service,
-    document_processing_config,
-    schema,
-)
-from google.cloud.discoveryengine_v1.types import cmek_config_service, common
-from google.cloud.discoveryengine_v1.types import data_store
-from google.cloud.discoveryengine_v1.types import data_store as gcd_data_store
-
-from .transports.base import DEFAULT_CLIENT_INFO, DataStoreServiceTransport
+from .transports.base import DataStoreServiceTransport, DEFAULT_CLIENT_INFO
 from .transports.grpc import DataStoreServiceGrpcTransport
 from .transports.grpc_asyncio import DataStoreServiceGrpcAsyncIOTransport
 from .transports.rest import DataStoreServiceRestTransport
@@ -92,18 +76,14 @@ class DataStoreServiceClientMeta(type):
     support objects (e.g. transport) without polluting the client instance
     objects.
     """
-
-    _transport_registry = (
-        OrderedDict()
-    )  # type: Dict[str, Type[DataStoreServiceTransport]]
+    _transport_registry = OrderedDict()  # type: Dict[str, Type[DataStoreServiceTransport]]
     _transport_registry["grpc"] = DataStoreServiceGrpcTransport
     _transport_registry["grpc_asyncio"] = DataStoreServiceGrpcAsyncIOTransport
     _transport_registry["rest"] = DataStoreServiceRestTransport
 
-    def get_transport_class(
-        cls,
-        label: Optional[str] = None,
-    ) -> Type[DataStoreServiceTransport]:
+    def get_transport_class(cls,
+            label: Optional[str] = None,
+        ) -> Type[DataStoreServiceTransport]:
         """Returns an appropriate transport class.
 
         Args:
@@ -198,7 +178,8 @@ class DataStoreServiceClient(metaclass=DataStoreServiceClientMeta):
         Returns:
             DataStoreServiceClient: The constructed client.
         """
-        credentials = service_account.Credentials.from_service_account_file(filename)
+        credentials = service_account.Credentials.from_service_account_file(
+            filename)
         kwargs["credentials"] = credentials
         return cls(*args, **kwargs)
 
@@ -215,269 +196,150 @@ class DataStoreServiceClient(metaclass=DataStoreServiceClientMeta):
         return self._transport
 
     @staticmethod
-    def cmek_config_path(
-        project: str,
-        location: str,
-    ) -> str:
+    def cmek_config_path(project: str,location: str,) -> str:
         """Returns a fully-qualified cmek_config string."""
-        return "projects/{project}/locations/{location}/cmekConfig".format(
-            project=project,
-            location=location,
-        )
+        return "projects/{project}/locations/{location}/cmekConfig".format(project=project, location=location, )
 
     @staticmethod
-    def parse_cmek_config_path(path: str) -> Dict[str, str]:
+    def parse_cmek_config_path(path: str) -> Dict[str,str]:
         """Parses a cmek_config path into its component segments."""
-        m = re.match(
-            r"^projects/(?P<project>.+?)/locations/(?P<location>.+?)/cmekConfig$", path
-        )
+        m = re.match(r"^projects/(?P<project>.+?)/locations/(?P<location>.+?)/cmekConfig$", path)
         return m.groupdict() if m else {}
 
     @staticmethod
-    def collection_path(
-        project: str,
-        location: str,
-        collection: str,
-    ) -> str:
+    def collection_path(project: str,location: str,collection: str,) -> str:
         """Returns a fully-qualified collection string."""
-        return (
-            "projects/{project}/locations/{location}/collections/{collection}".format(
-                project=project,
-                location=location,
-                collection=collection,
-            )
-        )
+        return "projects/{project}/locations/{location}/collections/{collection}".format(project=project, location=location, collection=collection, )
 
     @staticmethod
-    def parse_collection_path(path: str) -> Dict[str, str]:
+    def parse_collection_path(path: str) -> Dict[str,str]:
         """Parses a collection path into its component segments."""
-        m = re.match(
-            r"^projects/(?P<project>.+?)/locations/(?P<location>.+?)/collections/(?P<collection>.+?)$",
-            path,
-        )
+        m = re.match(r"^projects/(?P<project>.+?)/locations/(?P<location>.+?)/collections/(?P<collection>.+?)$", path)
         return m.groupdict() if m else {}
 
     @staticmethod
-    def crypto_keys_path(
-        project: str,
-        location: str,
-        key_ring: str,
-        crypto_key: str,
-    ) -> str:
+    def crypto_keys_path(project: str,location: str,key_ring: str,crypto_key: str,) -> str:
         """Returns a fully-qualified crypto_keys string."""
-        return "projects/{project}/locations/{location}/keyRings/{key_ring}/cryptoKeys/{crypto_key}".format(
-            project=project,
-            location=location,
-            key_ring=key_ring,
-            crypto_key=crypto_key,
-        )
+        return "projects/{project}/locations/{location}/keyRings/{key_ring}/cryptoKeys/{crypto_key}".format(project=project, location=location, key_ring=key_ring, crypto_key=crypto_key, )
 
     @staticmethod
-    def parse_crypto_keys_path(path: str) -> Dict[str, str]:
+    def parse_crypto_keys_path(path: str) -> Dict[str,str]:
         """Parses a crypto_keys path into its component segments."""
-        m = re.match(
-            r"^projects/(?P<project>.+?)/locations/(?P<location>.+?)/keyRings/(?P<key_ring>.+?)/cryptoKeys/(?P<crypto_key>.+?)$",
-            path,
-        )
+        m = re.match(r"^projects/(?P<project>.+?)/locations/(?P<location>.+?)/keyRings/(?P<key_ring>.+?)/cryptoKeys/(?P<crypto_key>.+?)$", path)
         return m.groupdict() if m else {}
 
     @staticmethod
-    def crypto_key_versions_path(
-        project: str,
-        location: str,
-        key_ring: str,
-        crypto_key: str,
-        crypto_key_version: str,
-    ) -> str:
+    def crypto_key_versions_path(project: str,location: str,key_ring: str,crypto_key: str,crypto_key_version: str,) -> str:
         """Returns a fully-qualified crypto_key_versions string."""
-        return "projects/{project}/locations/{location}/keyRings/{key_ring}/cryptoKeys/{crypto_key}/cryptoKeyVersions/{crypto_key_version}".format(
-            project=project,
-            location=location,
-            key_ring=key_ring,
-            crypto_key=crypto_key,
-            crypto_key_version=crypto_key_version,
-        )
+        return "projects/{project}/locations/{location}/keyRings/{key_ring}/cryptoKeys/{crypto_key}/cryptoKeyVersions/{crypto_key_version}".format(project=project, location=location, key_ring=key_ring, crypto_key=crypto_key, crypto_key_version=crypto_key_version, )
 
     @staticmethod
-    def parse_crypto_key_versions_path(path: str) -> Dict[str, str]:
+    def parse_crypto_key_versions_path(path: str) -> Dict[str,str]:
         """Parses a crypto_key_versions path into its component segments."""
-        m = re.match(
-            r"^projects/(?P<project>.+?)/locations/(?P<location>.+?)/keyRings/(?P<key_ring>.+?)/cryptoKeys/(?P<crypto_key>.+?)/cryptoKeyVersions/(?P<crypto_key_version>.+?)$",
-            path,
-        )
+        m = re.match(r"^projects/(?P<project>.+?)/locations/(?P<location>.+?)/keyRings/(?P<key_ring>.+?)/cryptoKeys/(?P<crypto_key>.+?)/cryptoKeyVersions/(?P<crypto_key_version>.+?)$", path)
         return m.groupdict() if m else {}
 
     @staticmethod
-    def data_store_path(
-        project: str,
-        location: str,
-        data_store: str,
-    ) -> str:
+    def data_store_path(project: str,location: str,data_store: str,) -> str:
         """Returns a fully-qualified data_store string."""
-        return "projects/{project}/locations/{location}/dataStores/{data_store}".format(
-            project=project,
-            location=location,
-            data_store=data_store,
-        )
+        return "projects/{project}/locations/{location}/dataStores/{data_store}".format(project=project, location=location, data_store=data_store, )
 
     @staticmethod
-    def parse_data_store_path(path: str) -> Dict[str, str]:
+    def parse_data_store_path(path: str) -> Dict[str,str]:
         """Parses a data_store path into its component segments."""
-        m = re.match(
-            r"^projects/(?P<project>.+?)/locations/(?P<location>.+?)/dataStores/(?P<data_store>.+?)$",
-            path,
-        )
+        m = re.match(r"^projects/(?P<project>.+?)/locations/(?P<location>.+?)/dataStores/(?P<data_store>.+?)$", path)
         return m.groupdict() if m else {}
 
     @staticmethod
-    def document_processing_config_path(
-        project: str,
-        location: str,
-        data_store: str,
-    ) -> str:
+    def document_processing_config_path(project: str,location: str,data_store: str,) -> str:
         """Returns a fully-qualified document_processing_config string."""
-        return "projects/{project}/locations/{location}/dataStores/{data_store}/documentProcessingConfig".format(
-            project=project,
-            location=location,
-            data_store=data_store,
-        )
+        return "projects/{project}/locations/{location}/dataStores/{data_store}/documentProcessingConfig".format(project=project, location=location, data_store=data_store, )
 
     @staticmethod
-    def parse_document_processing_config_path(path: str) -> Dict[str, str]:
+    def parse_document_processing_config_path(path: str) -> Dict[str,str]:
         """Parses a document_processing_config path into its component segments."""
-        m = re.match(
-            r"^projects/(?P<project>.+?)/locations/(?P<location>.+?)/dataStores/(?P<data_store>.+?)/documentProcessingConfig$",
-            path,
-        )
+        m = re.match(r"^projects/(?P<project>.+?)/locations/(?P<location>.+?)/dataStores/(?P<data_store>.+?)/documentProcessingConfig$", path)
         return m.groupdict() if m else {}
 
     @staticmethod
-    def identity_mapping_store_path(
-        project: str,
-        location: str,
-        identity_mapping_store: str,
-    ) -> str:
+    def identity_mapping_store_path(project: str,location: str,identity_mapping_store: str,) -> str:
         """Returns a fully-qualified identity_mapping_store string."""
-        return "projects/{project}/locations/{location}/identityMappingStores/{identity_mapping_store}".format(
-            project=project,
-            location=location,
-            identity_mapping_store=identity_mapping_store,
-        )
+        return "projects/{project}/locations/{location}/identityMappingStores/{identity_mapping_store}".format(project=project, location=location, identity_mapping_store=identity_mapping_store, )
 
     @staticmethod
-    def parse_identity_mapping_store_path(path: str) -> Dict[str, str]:
+    def parse_identity_mapping_store_path(path: str) -> Dict[str,str]:
         """Parses a identity_mapping_store path into its component segments."""
-        m = re.match(
-            r"^projects/(?P<project>.+?)/locations/(?P<location>.+?)/identityMappingStores/(?P<identity_mapping_store>.+?)$",
-            path,
-        )
+        m = re.match(r"^projects/(?P<project>.+?)/locations/(?P<location>.+?)/identityMappingStores/(?P<identity_mapping_store>.+?)$", path)
         return m.groupdict() if m else {}
 
     @staticmethod
-    def schema_path(
-        project: str,
-        location: str,
-        data_store: str,
-        schema: str,
-    ) -> str:
+    def schema_path(project: str,location: str,data_store: str,schema: str,) -> str:
         """Returns a fully-qualified schema string."""
-        return "projects/{project}/locations/{location}/dataStores/{data_store}/schemas/{schema}".format(
-            project=project,
-            location=location,
-            data_store=data_store,
-            schema=schema,
-        )
+        return "projects/{project}/locations/{location}/dataStores/{data_store}/schemas/{schema}".format(project=project, location=location, data_store=data_store, schema=schema, )
 
     @staticmethod
-    def parse_schema_path(path: str) -> Dict[str, str]:
+    def parse_schema_path(path: str) -> Dict[str,str]:
         """Parses a schema path into its component segments."""
-        m = re.match(
-            r"^projects/(?P<project>.+?)/locations/(?P<location>.+?)/dataStores/(?P<data_store>.+?)/schemas/(?P<schema>.+?)$",
-            path,
-        )
+        m = re.match(r"^projects/(?P<project>.+?)/locations/(?P<location>.+?)/dataStores/(?P<data_store>.+?)/schemas/(?P<schema>.+?)$", path)
         return m.groupdict() if m else {}
 
     @staticmethod
-    def common_billing_account_path(
-        billing_account: str,
-    ) -> str:
+    def common_billing_account_path(billing_account: str, ) -> str:
         """Returns a fully-qualified billing_account string."""
-        return "billingAccounts/{billing_account}".format(
-            billing_account=billing_account,
-        )
+        return "billingAccounts/{billing_account}".format(billing_account=billing_account, )
 
     @staticmethod
-    def parse_common_billing_account_path(path: str) -> Dict[str, str]:
+    def parse_common_billing_account_path(path: str) -> Dict[str,str]:
         """Parse a billing_account path into its component segments."""
         m = re.match(r"^billingAccounts/(?P<billing_account>.+?)$", path)
         return m.groupdict() if m else {}
 
     @staticmethod
-    def common_folder_path(
-        folder: str,
-    ) -> str:
+    def common_folder_path(folder: str, ) -> str:
         """Returns a fully-qualified folder string."""
-        return "folders/{folder}".format(
-            folder=folder,
-        )
+        return "folders/{folder}".format(folder=folder, )
 
     @staticmethod
-    def parse_common_folder_path(path: str) -> Dict[str, str]:
+    def parse_common_folder_path(path: str) -> Dict[str,str]:
         """Parse a folder path into its component segments."""
         m = re.match(r"^folders/(?P<folder>.+?)$", path)
         return m.groupdict() if m else {}
 
     @staticmethod
-    def common_organization_path(
-        organization: str,
-    ) -> str:
+    def common_organization_path(organization: str, ) -> str:
         """Returns a fully-qualified organization string."""
-        return "organizations/{organization}".format(
-            organization=organization,
-        )
+        return "organizations/{organization}".format(organization=organization, )
 
     @staticmethod
-    def parse_common_organization_path(path: str) -> Dict[str, str]:
+    def parse_common_organization_path(path: str) -> Dict[str,str]:
         """Parse a organization path into its component segments."""
         m = re.match(r"^organizations/(?P<organization>.+?)$", path)
         return m.groupdict() if m else {}
 
     @staticmethod
-    def common_project_path(
-        project: str,
-    ) -> str:
+    def common_project_path(project: str, ) -> str:
         """Returns a fully-qualified project string."""
-        return "projects/{project}".format(
-            project=project,
-        )
+        return "projects/{project}".format(project=project, )
 
     @staticmethod
-    def parse_common_project_path(path: str) -> Dict[str, str]:
+    def parse_common_project_path(path: str) -> Dict[str,str]:
         """Parse a project path into its component segments."""
         m = re.match(r"^projects/(?P<project>.+?)$", path)
         return m.groupdict() if m else {}
 
     @staticmethod
-    def common_location_path(
-        project: str,
-        location: str,
-    ) -> str:
+    def common_location_path(project: str, location: str, ) -> str:
         """Returns a fully-qualified location string."""
-        return "projects/{project}/locations/{location}".format(
-            project=project,
-            location=location,
-        )
+        return "projects/{project}/locations/{location}".format(project=project, location=location, )
 
     @staticmethod
-    def parse_common_location_path(path: str) -> Dict[str, str]:
+    def parse_common_location_path(path: str) -> Dict[str,str]:
         """Parse a location path into its component segments."""
         m = re.match(r"^projects/(?P<project>.+?)/locations/(?P<location>.+?)$", path)
         return m.groupdict() if m else {}
 
     @classmethod
-    def get_mtls_endpoint_and_cert_source(
-        cls, client_options: Optional[client_options_lib.ClientOptions] = None
-    ):
+    def get_mtls_endpoint_and_cert_source(cls, client_options: Optional[client_options_lib.ClientOptions] = None):
         """Deprecated. Return the API endpoint and client cert source for mutual TLS.
 
         The client cert source is determined in the following order:
@@ -509,22 +371,16 @@ class DataStoreServiceClient(metaclass=DataStoreServiceClientMeta):
             google.auth.exceptions.MutualTLSChannelError: If any errors happen.
         """
 
-        warnings.warn(
-            "get_mtls_endpoint_and_cert_source is deprecated. Use the api_endpoint property instead.",
-            DeprecationWarning,
-        )
+        warnings.warn("get_mtls_endpoint_and_cert_source is deprecated. Use the api_endpoint property instead.",
+            DeprecationWarning)
         if client_options is None:
             client_options = client_options_lib.ClientOptions()
         use_client_cert = os.getenv("GOOGLE_API_USE_CLIENT_CERTIFICATE", "false")
         use_mtls_endpoint = os.getenv("GOOGLE_API_USE_MTLS_ENDPOINT", "auto")
         if use_client_cert not in ("true", "false"):
-            raise ValueError(
-                "Environment variable `GOOGLE_API_USE_CLIENT_CERTIFICATE` must be either `true` or `false`"
-            )
+            raise ValueError("Environment variable `GOOGLE_API_USE_CLIENT_CERTIFICATE` must be either `true` or `false`")
         if use_mtls_endpoint not in ("auto", "never", "always"):
-            raise MutualTLSChannelError(
-                "Environment variable `GOOGLE_API_USE_MTLS_ENDPOINT` must be `never`, `auto` or `always`"
-            )
+            raise MutualTLSChannelError("Environment variable `GOOGLE_API_USE_MTLS_ENDPOINT` must be `never`, `auto` or `always`")
 
         # Figure out the client cert source to use.
         client_cert_source = None
@@ -537,9 +393,7 @@ class DataStoreServiceClient(metaclass=DataStoreServiceClientMeta):
         # Figure out which api endpoint to use.
         if client_options.api_endpoint is not None:
             api_endpoint = client_options.api_endpoint
-        elif use_mtls_endpoint == "always" or (
-            use_mtls_endpoint == "auto" and client_cert_source
-        ):
+        elif use_mtls_endpoint == "always" or (use_mtls_endpoint == "auto" and client_cert_source):
             api_endpoint = cls.DEFAULT_MTLS_ENDPOINT
         else:
             api_endpoint = cls.DEFAULT_ENDPOINT
@@ -560,19 +414,13 @@ class DataStoreServiceClient(metaclass=DataStoreServiceClientMeta):
             google.auth.exceptions.MutualTLSChannelError: If GOOGLE_API_USE_MTLS_ENDPOINT
                 is not any of ["auto", "never", "always"].
         """
-        use_client_cert = os.getenv(
-            "GOOGLE_API_USE_CLIENT_CERTIFICATE", "false"
-        ).lower()
+        use_client_cert = os.getenv("GOOGLE_API_USE_CLIENT_CERTIFICATE", "false").lower()
         use_mtls_endpoint = os.getenv("GOOGLE_API_USE_MTLS_ENDPOINT", "auto").lower()
         universe_domain_env = os.getenv("GOOGLE_CLOUD_UNIVERSE_DOMAIN")
         if use_client_cert not in ("true", "false"):
-            raise ValueError(
-                "Environment variable `GOOGLE_API_USE_CLIENT_CERTIFICATE` must be either `true` or `false`"
-            )
+            raise ValueError("Environment variable `GOOGLE_API_USE_CLIENT_CERTIFICATE` must be either `true` or `false`")
         if use_mtls_endpoint not in ("auto", "never", "always"):
-            raise MutualTLSChannelError(
-                "Environment variable `GOOGLE_API_USE_MTLS_ENDPOINT` must be `never`, `auto` or `always`"
-            )
+            raise MutualTLSChannelError("Environment variable `GOOGLE_API_USE_MTLS_ENDPOINT` must be `never`, `auto` or `always`")
         return use_client_cert == "true", use_mtls_endpoint, universe_domain_env
 
     @staticmethod
@@ -595,9 +443,7 @@ class DataStoreServiceClient(metaclass=DataStoreServiceClientMeta):
         return client_cert_source
 
     @staticmethod
-    def _get_api_endpoint(
-        api_override, client_cert_source, universe_domain, use_mtls_endpoint
-    ):
+    def _get_api_endpoint(api_override, client_cert_source, universe_domain, use_mtls_endpoint):
         """Return the API endpoint used by the client.
 
         Args:
@@ -613,25 +459,17 @@ class DataStoreServiceClient(metaclass=DataStoreServiceClientMeta):
         """
         if api_override is not None:
             api_endpoint = api_override
-        elif use_mtls_endpoint == "always" or (
-            use_mtls_endpoint == "auto" and client_cert_source
-        ):
+        elif use_mtls_endpoint == "always" or (use_mtls_endpoint == "auto" and client_cert_source):
             _default_universe = DataStoreServiceClient._DEFAULT_UNIVERSE
             if universe_domain != _default_universe:
-                raise MutualTLSChannelError(
-                    f"mTLS is not supported in any universe other than {_default_universe}."
-                )
+                raise MutualTLSChannelError(f"mTLS is not supported in any universe other than {_default_universe}.")
             api_endpoint = DataStoreServiceClient.DEFAULT_MTLS_ENDPOINT
         else:
-            api_endpoint = DataStoreServiceClient._DEFAULT_ENDPOINT_TEMPLATE.format(
-                UNIVERSE_DOMAIN=universe_domain
-            )
+            api_endpoint = DataStoreServiceClient._DEFAULT_ENDPOINT_TEMPLATE.format(UNIVERSE_DOMAIN=universe_domain)
         return api_endpoint
 
     @staticmethod
-    def _get_universe_domain(
-        client_universe_domain: Optional[str], universe_domain_env: Optional[str]
-    ) -> str:
+    def _get_universe_domain(client_universe_domain: Optional[str], universe_domain_env: Optional[str]) -> str:
         """Return the universe domain used by the client.
 
         Args:
@@ -667,18 +505,15 @@ class DataStoreServiceClient(metaclass=DataStoreServiceClientMeta):
         return True
 
     def _add_cred_info_for_auth_errors(
-        self, error: core_exceptions.GoogleAPICallError
+        self,
+        error: core_exceptions.GoogleAPICallError
     ) -> None:
         """Adds credential info string to error details for 401/403/404 errors.
 
         Args:
             error (google.api_core.exceptions.GoogleAPICallError): The error to add the cred info.
         """
-        if error.code not in [
-            HTTPStatus.UNAUTHORIZED,
-            HTTPStatus.FORBIDDEN,
-            HTTPStatus.NOT_FOUND,
-        ]:
+        if error.code not in [HTTPStatus.UNAUTHORIZED, HTTPStatus.FORBIDDEN, HTTPStatus.NOT_FOUND]:
             return
 
         cred = self._transport._credentials
@@ -711,18 +546,12 @@ class DataStoreServiceClient(metaclass=DataStoreServiceClientMeta):
         """
         return self._universe_domain
 
-    def __init__(
-        self,
-        *,
-        credentials: Optional[ga_credentials.Credentials] = None,
-        transport: Optional[
-            Union[
-                str, DataStoreServiceTransport, Callable[..., DataStoreServiceTransport]
-            ]
-        ] = None,
-        client_options: Optional[Union[client_options_lib.ClientOptions, dict]] = None,
-        client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
-    ) -> None:
+    def __init__(self, *,
+            credentials: Optional[ga_credentials.Credentials] = None,
+            transport: Optional[Union[str, DataStoreServiceTransport, Callable[..., DataStoreServiceTransport]]] = None,
+            client_options: Optional[Union[client_options_lib.ClientOptions, dict]] = None,
+            client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
+            ) -> None:
         """Instantiates the data store service client.
 
         Args:
@@ -777,24 +606,14 @@ class DataStoreServiceClient(metaclass=DataStoreServiceClientMeta):
             self._client_options = client_options_lib.from_dict(self._client_options)
         if self._client_options is None:
             self._client_options = client_options_lib.ClientOptions()
-        self._client_options = cast(
-            client_options_lib.ClientOptions, self._client_options
-        )
+        self._client_options = cast(client_options_lib.ClientOptions, self._client_options)
 
-        universe_domain_opt = getattr(self._client_options, "universe_domain", None)
+        universe_domain_opt = getattr(self._client_options, 'universe_domain', None)
 
-        (
-            self._use_client_cert,
-            self._use_mtls_endpoint,
-            self._universe_domain_env,
-        ) = DataStoreServiceClient._read_environment_variables()
-        self._client_cert_source = DataStoreServiceClient._get_client_cert_source(
-            self._client_options.client_cert_source, self._use_client_cert
-        )
-        self._universe_domain = DataStoreServiceClient._get_universe_domain(
-            universe_domain_opt, self._universe_domain_env
-        )
-        self._api_endpoint = None  # updated below, depending on `transport`
+        self._use_client_cert, self._use_mtls_endpoint, self._universe_domain_env = DataStoreServiceClient._read_environment_variables()
+        self._client_cert_source = DataStoreServiceClient._get_client_cert_source(self._client_options.client_cert_source, self._use_client_cert)
+        self._universe_domain = DataStoreServiceClient._get_universe_domain(universe_domain_opt, self._universe_domain_env)
+        self._api_endpoint = None # updated below, depending on `transport`
 
         # Initialize the universe domain validation.
         self._is_universe_domain_valid = False
@@ -805,9 +624,7 @@ class DataStoreServiceClient(metaclass=DataStoreServiceClientMeta):
 
         api_key_value = getattr(self._client_options, "api_key", None)
         if api_key_value and credentials:
-            raise ValueError(
-                "client_options.api_key and credentials are mutually exclusive"
-            )
+            raise ValueError("client_options.api_key and credentials are mutually exclusive")
 
         # Save or instantiate the transport.
         # Ordinarily, we provide the transport, but allowing a custom transport
@@ -816,10 +633,8 @@ class DataStoreServiceClient(metaclass=DataStoreServiceClientMeta):
         if transport_provided:
             # transport is a DataStoreServiceTransport instance.
             if credentials or self._client_options.credentials_file or api_key_value:
-                raise ValueError(
-                    "When providing a transport instance, "
-                    "provide its credentials directly."
-                )
+                raise ValueError("When providing a transport instance, "
+                                 "provide its credentials directly.")
             if self._client_options.scopes:
                 raise ValueError(
                     "When providing a transport instance, provide its scopes "
@@ -828,30 +643,20 @@ class DataStoreServiceClient(metaclass=DataStoreServiceClientMeta):
             self._transport = cast(DataStoreServiceTransport, transport)
             self._api_endpoint = self._transport.host
 
-        self._api_endpoint = (
-            self._api_endpoint
-            or DataStoreServiceClient._get_api_endpoint(
+        self._api_endpoint = (self._api_endpoint or
+            DataStoreServiceClient._get_api_endpoint(
                 self._client_options.api_endpoint,
                 self._client_cert_source,
                 self._universe_domain,
-                self._use_mtls_endpoint,
-            )
-        )
+                self._use_mtls_endpoint))
 
         if not transport_provided:
             import google.auth._default  # type: ignore
 
-            if api_key_value and hasattr(
-                google.auth._default, "get_api_key_credentials"
-            ):
-                credentials = google.auth._default.get_api_key_credentials(
-                    api_key_value
-                )
+            if api_key_value and hasattr(google.auth._default, "get_api_key_credentials"):
+                credentials = google.auth._default.get_api_key_credentials(api_key_value)
 
-            transport_init: Union[
-                Type[DataStoreServiceTransport],
-                Callable[..., DataStoreServiceTransport],
-            ] = (
+            transport_init: Union[Type[DataStoreServiceTransport], Callable[..., DataStoreServiceTransport]] = (
                 DataStoreServiceClient.get_transport_class(transport)
                 if isinstance(transport, str) or transport is None
                 else cast(Callable[..., DataStoreServiceTransport], transport)
@@ -870,41 +675,30 @@ class DataStoreServiceClient(metaclass=DataStoreServiceClientMeta):
             )
 
         if "async" not in str(self._transport):
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                std_logging.DEBUG
-            ):  # pragma: NO COVER
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(std_logging.DEBUG):  # pragma: NO COVER
                 _LOGGER.debug(
                     "Created client `google.cloud.discoveryengine_v1.DataStoreServiceClient`.",
-                    extra={
+                    extra = {
                         "serviceName": "google.cloud.discoveryengine.v1.DataStoreService",
-                        "universeDomain": getattr(
-                            self._transport._credentials, "universe_domain", ""
-                        ),
+                        "universeDomain": getattr(self._transport._credentials, "universe_domain", ""),
                         "credentialsType": f"{type(self._transport._credentials).__module__}.{type(self._transport._credentials).__qualname__}",
-                        "credentialsInfo": getattr(
-                            self.transport._credentials, "get_cred_info", lambda: None
-                        )(),
-                    }
-                    if hasattr(self._transport, "_credentials")
-                    else {
+                        "credentialsInfo": getattr(self.transport._credentials, "get_cred_info", lambda: None)(),
+                    } if hasattr(self._transport, "_credentials") else {
                         "serviceName": "google.cloud.discoveryengine.v1.DataStoreService",
                         "credentialsType": None,
-                    },
+                    }
                 )
 
-    def create_data_store(
-        self,
-        request: Optional[
-            Union[data_store_service.CreateDataStoreRequest, dict]
-        ] = None,
-        *,
-        parent: Optional[str] = None,
-        data_store: Optional[gcd_data_store.DataStore] = None,
-        data_store_id: Optional[str] = None,
-        retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
-    ) -> operation.Operation:
+    def create_data_store(self,
+            request: Optional[Union[data_store_service.CreateDataStoreRequest, dict]] = None,
+            *,
+            parent: Optional[str] = None,
+            data_store: Optional[gcd_data_store.DataStore] = None,
+            data_store_id: Optional[str] = None,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+            ) -> operation.Operation:
         r"""Creates a
         [DataStore][google.cloud.discoveryengine.v1.DataStore].
 
@@ -1007,14 +801,10 @@ class DataStoreServiceClient(metaclass=DataStoreServiceClientMeta):
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [parent, data_store, data_store_id]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError('If the `request` argument is set, then none of '
+                             'the individual field arguments should be set.')
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -1036,7 +826,9 @@ class DataStoreServiceClient(metaclass=DataStoreServiceClientMeta):
         # Certain fields should be provided within the metadata header;
         # add these here.
         metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
+            gapic_v1.routing_header.to_grpc_metadata((
+                ("parent", request.parent),
+            )),
         )
 
         # Validate the universe domain.
@@ -1061,15 +853,14 @@ class DataStoreServiceClient(metaclass=DataStoreServiceClientMeta):
         # Done; return the response.
         return response
 
-    def get_data_store(
-        self,
-        request: Optional[Union[data_store_service.GetDataStoreRequest, dict]] = None,
-        *,
-        name: Optional[str] = None,
-        retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
-    ) -> data_store.DataStore:
+    def get_data_store(self,
+            request: Optional[Union[data_store_service.GetDataStoreRequest, dict]] = None,
+            *,
+            name: Optional[str] = None,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+            ) -> data_store.DataStore:
         r"""Gets a [DataStore][google.cloud.discoveryengine.v1.DataStore].
 
         .. code-block:: python
@@ -1139,14 +930,10 @@ class DataStoreServiceClient(metaclass=DataStoreServiceClientMeta):
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [name]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError('If the `request` argument is set, then none of '
+                             'the individual field arguments should be set.')
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -1164,7 +951,9 @@ class DataStoreServiceClient(metaclass=DataStoreServiceClientMeta):
         # Certain fields should be provided within the metadata header;
         # add these here.
         metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
+            gapic_v1.routing_header.to_grpc_metadata((
+                ("name", request.name),
+            )),
         )
 
         # Validate the universe domain.
@@ -1181,15 +970,14 @@ class DataStoreServiceClient(metaclass=DataStoreServiceClientMeta):
         # Done; return the response.
         return response
 
-    def list_data_stores(
-        self,
-        request: Optional[Union[data_store_service.ListDataStoresRequest, dict]] = None,
-        *,
-        parent: Optional[str] = None,
-        retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
-    ) -> pagers.ListDataStoresPager:
+    def list_data_stores(self,
+            request: Optional[Union[data_store_service.ListDataStoresRequest, dict]] = None,
+            *,
+            parent: Optional[str] = None,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+            ) -> pagers.ListDataStoresPager:
         r"""Lists all the
         [DataStore][google.cloud.discoveryengine.v1.DataStore]s
         associated with the project.
@@ -1261,14 +1049,10 @@ class DataStoreServiceClient(metaclass=DataStoreServiceClientMeta):
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [parent]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError('If the `request` argument is set, then none of '
+                             'the individual field arguments should be set.')
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -1286,7 +1070,9 @@ class DataStoreServiceClient(metaclass=DataStoreServiceClientMeta):
         # Certain fields should be provided within the metadata header;
         # add these here.
         metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
+            gapic_v1.routing_header.to_grpc_metadata((
+                ("parent", request.parent),
+            )),
         )
 
         # Validate the universe domain.
@@ -1314,17 +1100,14 @@ class DataStoreServiceClient(metaclass=DataStoreServiceClientMeta):
         # Done; return the response.
         return response
 
-    def delete_data_store(
-        self,
-        request: Optional[
-            Union[data_store_service.DeleteDataStoreRequest, dict]
-        ] = None,
-        *,
-        name: Optional[str] = None,
-        retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
-    ) -> operation.Operation:
+    def delete_data_store(self,
+            request: Optional[Union[data_store_service.DeleteDataStoreRequest, dict]] = None,
+            *,
+            name: Optional[str] = None,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+            ) -> operation.Operation:
         r"""Deletes a
         [DataStore][google.cloud.discoveryengine.v1.DataStore].
 
@@ -1409,14 +1192,10 @@ class DataStoreServiceClient(metaclass=DataStoreServiceClientMeta):
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [name]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError('If the `request` argument is set, then none of '
+                             'the individual field arguments should be set.')
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -1434,7 +1213,9 @@ class DataStoreServiceClient(metaclass=DataStoreServiceClientMeta):
         # Certain fields should be provided within the metadata header;
         # add these here.
         metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
+            gapic_v1.routing_header.to_grpc_metadata((
+                ("name", request.name),
+            )),
         )
 
         # Validate the universe domain.
@@ -1459,18 +1240,15 @@ class DataStoreServiceClient(metaclass=DataStoreServiceClientMeta):
         # Done; return the response.
         return response
 
-    def update_data_store(
-        self,
-        request: Optional[
-            Union[data_store_service.UpdateDataStoreRequest, dict]
-        ] = None,
-        *,
-        data_store: Optional[gcd_data_store.DataStore] = None,
-        update_mask: Optional[field_mask_pb2.FieldMask] = None,
-        retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
-    ) -> gcd_data_store.DataStore:
+    def update_data_store(self,
+            request: Optional[Union[data_store_service.UpdateDataStoreRequest, dict]] = None,
+            *,
+            data_store: Optional[gcd_data_store.DataStore] = None,
+            update_mask: Optional[field_mask_pb2.FieldMask] = None,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+            ) -> gcd_data_store.DataStore:
         r"""Updates a [DataStore][google.cloud.discoveryengine.v1.DataStore]
 
         .. code-block:: python
@@ -1553,14 +1331,10 @@ class DataStoreServiceClient(metaclass=DataStoreServiceClientMeta):
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [data_store, update_mask]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError('If the `request` argument is set, then none of '
+                             'the individual field arguments should be set.')
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -1580,9 +1354,9 @@ class DataStoreServiceClient(metaclass=DataStoreServiceClientMeta):
         # Certain fields should be provided within the metadata header;
         # add these here.
         metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata(
-                (("data_store.name", request.data_store.name),)
-            ),
+            gapic_v1.routing_header.to_grpc_metadata((
+                ("data_store.name", request.data_store.name),
+            )),
         )
 
         # Validate the universe domain.
@@ -1650,7 +1424,8 @@ class DataStoreServiceClient(metaclass=DataStoreServiceClientMeta):
         # Certain fields should be provided within the metadata header;
         # add these here.
         metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
+            gapic_v1.routing_header.to_grpc_metadata(
+                (("name", request.name),)),
         )
 
         # Validate the universe domain.
@@ -1659,11 +1434,7 @@ class DataStoreServiceClient(metaclass=DataStoreServiceClientMeta):
         try:
             # Send the request.
             response = rpc(
-                request,
-                retry=retry,
-                timeout=timeout,
-                metadata=metadata,
-            )
+                request, retry=retry, timeout=timeout, metadata=metadata,)
 
             # Done; return the response.
             return response
@@ -1709,7 +1480,8 @@ class DataStoreServiceClient(metaclass=DataStoreServiceClientMeta):
         # Certain fields should be provided within the metadata header;
         # add these here.
         metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
+            gapic_v1.routing_header.to_grpc_metadata(
+                (("name", request.name),)),
         )
 
         # Validate the universe domain.
@@ -1718,11 +1490,7 @@ class DataStoreServiceClient(metaclass=DataStoreServiceClientMeta):
         try:
             # Send the request.
             response = rpc(
-                request,
-                retry=retry,
-                timeout=timeout,
-                metadata=metadata,
-            )
+                request, retry=retry, timeout=timeout, metadata=metadata,)
 
             # Done; return the response.
             return response
@@ -1771,26 +1539,28 @@ class DataStoreServiceClient(metaclass=DataStoreServiceClientMeta):
         # Certain fields should be provided within the metadata header;
         # add these here.
         metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
+            gapic_v1.routing_header.to_grpc_metadata(
+                (("name", request.name),)),
         )
 
         # Validate the universe domain.
         self._validate_universe_domain()
 
         # Send the request.
-        rpc(
-            request,
-            retry=retry,
-            timeout=timeout,
-            metadata=metadata,
-        )
+        rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
 
 
-DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
-    gapic_version=package_version.__version__
-)
+
+
+
+
+
+
+DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(gapic_version=package_version.__version__)
 
 if hasattr(DEFAULT_CLIENT_INFO, "protobuf_runtime_version"):  # pragma: NO COVER
     DEFAULT_CLIENT_INFO.protobuf_runtime_version = google.protobuf.__version__
 
-__all__ = ("DataStoreServiceClient",)
+__all__ = (
+    "DataStoreServiceClient",
+)

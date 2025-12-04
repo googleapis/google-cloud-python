@@ -53,5 +53,4 @@ async def sample_estimate_data_size():
     # Handle the response
     print(response)
 
-
 # [END discoveryengine_v1alpha_generated_EstimateBillingService_EstimateDataSize_async]

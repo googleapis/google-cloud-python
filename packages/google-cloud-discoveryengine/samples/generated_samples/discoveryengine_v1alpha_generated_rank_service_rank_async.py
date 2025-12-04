@@ -49,5 +49,4 @@ async def sample_rank():
     # Handle the response
     print(response)
 
-
 # [END discoveryengine_v1alpha_generated_RankService_Rank_async]

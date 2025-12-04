@@ -19,20 +19,20 @@ from typing import Dict, Type
 from .base import UserLicenseServiceTransport
 from .grpc import UserLicenseServiceGrpcTransport
 from .grpc_asyncio import UserLicenseServiceGrpcAsyncIOTransport
-from .rest import UserLicenseServiceRestInterceptor, UserLicenseServiceRestTransport
+from .rest import UserLicenseServiceRestTransport
+from .rest import UserLicenseServiceRestInterceptor
+
 
 # Compile a registry of transports.
-_transport_registry = (
-    OrderedDict()
-)  # type: Dict[str, Type[UserLicenseServiceTransport]]
-_transport_registry["grpc"] = UserLicenseServiceGrpcTransport
-_transport_registry["grpc_asyncio"] = UserLicenseServiceGrpcAsyncIOTransport
-_transport_registry["rest"] = UserLicenseServiceRestTransport
+_transport_registry = OrderedDict()  # type: Dict[str, Type[UserLicenseServiceTransport]]
+_transport_registry['grpc'] = UserLicenseServiceGrpcTransport
+_transport_registry['grpc_asyncio'] = UserLicenseServiceGrpcAsyncIOTransport
+_transport_registry['rest'] = UserLicenseServiceRestTransport
 
 __all__ = (
-    "UserLicenseServiceTransport",
-    "UserLicenseServiceGrpcTransport",
-    "UserLicenseServiceGrpcAsyncIOTransport",
-    "UserLicenseServiceRestTransport",
-    "UserLicenseServiceRestInterceptor",
+    'UserLicenseServiceTransport',
+    'UserLicenseServiceGrpcTransport',
+    'UserLicenseServiceGrpcAsyncIOTransport',
+    'UserLicenseServiceRestTransport',
+    'UserLicenseServiceRestInterceptor',
 )

@@ -17,13 +17,15 @@ from __future__ import annotations
 
 from typing import MutableMapping, MutableSequence
 
-from google.protobuf import timestamp_pb2  # type: ignore
 import proto  # type: ignore
 
+from google.protobuf import timestamp_pb2  # type: ignore
+
+
 __protobuf__ = proto.module(
-    package="google.cloud.discoveryengine.v1",
+    package='google.cloud.discoveryengine.v1',
     manifest={
-        "UserLicense",
+        'UserLicense',
     },
 )
 
@@ -63,7 +65,6 @@ class UserLicense(proto.Message):
             If the user has not logged in yet, this field
             will be empty.
     """
-
     class LicenseAssignmentState(proto.Enum):
         r"""License assignment state enumeration.
 

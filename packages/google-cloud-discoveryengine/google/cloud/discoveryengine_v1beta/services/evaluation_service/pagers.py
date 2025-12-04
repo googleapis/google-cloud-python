@@ -13,32 +13,19 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-from typing import (
-    Any,
-    AsyncIterator,
-    Awaitable,
-    Callable,
-    Iterator,
-    Optional,
-    Sequence,
-    Tuple,
-    Union,
-)
-
 from google.api_core import gapic_v1
 from google.api_core import retry as retries
 from google.api_core import retry_async as retries_async
-
+from typing import Any, AsyncIterator, Awaitable, Callable, Sequence, Tuple, Optional, Iterator, Union
 try:
     OptionalRetry = Union[retries.Retry, gapic_v1.method._MethodDefault, None]
-    OptionalAsyncRetry = Union[
-        retries_async.AsyncRetry, gapic_v1.method._MethodDefault, None
-    ]
+    OptionalAsyncRetry = Union[retries_async.AsyncRetry, gapic_v1.method._MethodDefault, None]
 except AttributeError:  # pragma: NO COVER
     OptionalRetry = Union[retries.Retry, object, None]  # type: ignore
     OptionalAsyncRetry = Union[retries_async.AsyncRetry, object, None]  # type: ignore
 
-from google.cloud.discoveryengine_v1beta.types import evaluation, evaluation_service
+from google.cloud.discoveryengine_v1beta.types import evaluation
+from google.cloud.discoveryengine_v1beta.types import evaluation_service
 
 
 class ListEvaluationsPager:
@@ -58,17 +45,14 @@ class ListEvaluationsPager:
     attributes are available on the pager. If multiple requests are made, only
     the most recent response is retained, and thus used for attribute lookup.
     """
-
-    def __init__(
-        self,
-        method: Callable[..., evaluation_service.ListEvaluationsResponse],
-        request: evaluation_service.ListEvaluationsRequest,
-        response: evaluation_service.ListEvaluationsResponse,
-        *,
-        retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]] = ()
-    ):
+    def __init__(self,
+            method: Callable[..., evaluation_service.ListEvaluationsResponse],
+            request: evaluation_service.ListEvaluationsRequest,
+            response: evaluation_service.ListEvaluationsResponse,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = ()):
         """Instantiate the pager.
 
         Args:
@@ -101,12 +85,7 @@ class ListEvaluationsPager:
         yield self._response
         while self._response.next_page_token:
             self._request.page_token = self._response.next_page_token
-            self._response = self._method(
-                self._request,
-                retry=self._retry,
-                timeout=self._timeout,
-                metadata=self._metadata,
-            )
+            self._response = self._method(self._request, retry=self._retry, timeout=self._timeout, metadata=self._metadata)
             yield self._response
 
     def __iter__(self) -> Iterator[evaluation.Evaluation]:
@@ -114,7 +93,7 @@ class ListEvaluationsPager:
             yield from page.evaluations
 
     def __repr__(self) -> str:
-        return "{0}<{1!r}>".format(self.__class__.__name__, self._response)
+        return '{0}<{1!r}>'.format(self.__class__.__name__, self._response)
 
 
 class ListEvaluationsAsyncPager:
@@ -134,17 +113,14 @@ class ListEvaluationsAsyncPager:
     attributes are available on the pager. If multiple requests are made, only
     the most recent response is retained, and thus used for attribute lookup.
     """
-
-    def __init__(
-        self,
-        method: Callable[..., Awaitable[evaluation_service.ListEvaluationsResponse]],
-        request: evaluation_service.ListEvaluationsRequest,
-        response: evaluation_service.ListEvaluationsResponse,
-        *,
-        retry: OptionalAsyncRetry = gapic_v1.method.DEFAULT,
-        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]] = ()
-    ):
+    def __init__(self,
+            method: Callable[..., Awaitable[evaluation_service.ListEvaluationsResponse]],
+            request: evaluation_service.ListEvaluationsRequest,
+            response: evaluation_service.ListEvaluationsResponse,
+            *,
+            retry: OptionalAsyncRetry = gapic_v1.method.DEFAULT,
+            timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = ()):
         """Instantiates the pager.
 
         Args:
@@ -177,14 +153,8 @@ class ListEvaluationsAsyncPager:
         yield self._response
         while self._response.next_page_token:
             self._request.page_token = self._response.next_page_token
-            self._response = await self._method(
-                self._request,
-                retry=self._retry,
-                timeout=self._timeout,
-                metadata=self._metadata,
-            )
+            self._response = await self._method(self._request, retry=self._retry, timeout=self._timeout, metadata=self._metadata)
             yield self._response
-
     def __aiter__(self) -> AsyncIterator[evaluation.Evaluation]:
         async def async_generator():
             async for page in self.pages:
@@ -194,7 +164,7 @@ class ListEvaluationsAsyncPager:
         return async_generator()
 
     def __repr__(self) -> str:
-        return "{0}<{1!r}>".format(self.__class__.__name__, self._response)
+        return '{0}<{1!r}>'.format(self.__class__.__name__, self._response)
 
 
 class ListEvaluationResultsPager:
@@ -214,17 +184,14 @@ class ListEvaluationResultsPager:
     attributes are available on the pager. If multiple requests are made, only
     the most recent response is retained, and thus used for attribute lookup.
     """
-
-    def __init__(
-        self,
-        method: Callable[..., evaluation_service.ListEvaluationResultsResponse],
-        request: evaluation_service.ListEvaluationResultsRequest,
-        response: evaluation_service.ListEvaluationResultsResponse,
-        *,
-        retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]] = ()
-    ):
+    def __init__(self,
+            method: Callable[..., evaluation_service.ListEvaluationResultsResponse],
+            request: evaluation_service.ListEvaluationResultsRequest,
+            response: evaluation_service.ListEvaluationResultsResponse,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = ()):
         """Instantiate the pager.
 
         Args:
@@ -257,22 +224,15 @@ class ListEvaluationResultsPager:
         yield self._response
         while self._response.next_page_token:
             self._request.page_token = self._response.next_page_token
-            self._response = self._method(
-                self._request,
-                retry=self._retry,
-                timeout=self._timeout,
-                metadata=self._metadata,
-            )
+            self._response = self._method(self._request, retry=self._retry, timeout=self._timeout, metadata=self._metadata)
             yield self._response
 
-    def __iter__(
-        self,
-    ) -> Iterator[evaluation_service.ListEvaluationResultsResponse.EvaluationResult]:
+    def __iter__(self) -> Iterator[evaluation_service.ListEvaluationResultsResponse.EvaluationResult]:
         for page in self.pages:
             yield from page.evaluation_results
 
     def __repr__(self) -> str:
-        return "{0}<{1!r}>".format(self.__class__.__name__, self._response)
+        return '{0}<{1!r}>'.format(self.__class__.__name__, self._response)
 
 
 class ListEvaluationResultsAsyncPager:
@@ -292,19 +252,14 @@ class ListEvaluationResultsAsyncPager:
     attributes are available on the pager. If multiple requests are made, only
     the most recent response is retained, and thus used for attribute lookup.
     """
-
-    def __init__(
-        self,
-        method: Callable[
-            ..., Awaitable[evaluation_service.ListEvaluationResultsResponse]
-        ],
-        request: evaluation_service.ListEvaluationResultsRequest,
-        response: evaluation_service.ListEvaluationResultsResponse,
-        *,
-        retry: OptionalAsyncRetry = gapic_v1.method.DEFAULT,
-        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]] = ()
-    ):
+    def __init__(self,
+            method: Callable[..., Awaitable[evaluation_service.ListEvaluationResultsResponse]],
+            request: evaluation_service.ListEvaluationResultsRequest,
+            response: evaluation_service.ListEvaluationResultsResponse,
+            *,
+            retry: OptionalAsyncRetry = gapic_v1.method.DEFAULT,
+            timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = ()):
         """Instantiates the pager.
 
         Args:
@@ -333,25 +288,13 @@ class ListEvaluationResultsAsyncPager:
         return getattr(self._response, name)
 
     @property
-    async def pages(
-        self,
-    ) -> AsyncIterator[evaluation_service.ListEvaluationResultsResponse]:
+    async def pages(self) -> AsyncIterator[evaluation_service.ListEvaluationResultsResponse]:
         yield self._response
         while self._response.next_page_token:
             self._request.page_token = self._response.next_page_token
-            self._response = await self._method(
-                self._request,
-                retry=self._retry,
-                timeout=self._timeout,
-                metadata=self._metadata,
-            )
+            self._response = await self._method(self._request, retry=self._retry, timeout=self._timeout, metadata=self._metadata)
             yield self._response
-
-    def __aiter__(
-        self,
-    ) -> AsyncIterator[
-        evaluation_service.ListEvaluationResultsResponse.EvaluationResult
-    ]:
+    def __aiter__(self) -> AsyncIterator[evaluation_service.ListEvaluationResultsResponse.EvaluationResult]:
         async def async_generator():
             async for page in self.pages:
                 for response in page.evaluation_results:
@@ -360,4 +303,4 @@ class ListEvaluationResultsAsyncPager:
         return async_generator()
 
     def __repr__(self) -> str:
-        return "{0}<{1!r}>".format(self.__class__.__name__, self._response)
+        return '{0}<{1!r}>'.format(self.__class__.__name__, self._response)

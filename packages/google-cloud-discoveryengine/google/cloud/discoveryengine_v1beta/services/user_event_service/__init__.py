@@ -13,10 +13,10 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-from .async_client import UserEventServiceAsyncClient
 from .client import UserEventServiceClient
+from .async_client import UserEventServiceAsyncClient
 
 __all__ = (
-    "UserEventServiceClient",
-    "UserEventServiceAsyncClient",
+    'UserEventServiceClient',
+    'UserEventServiceAsyncClient',
 )

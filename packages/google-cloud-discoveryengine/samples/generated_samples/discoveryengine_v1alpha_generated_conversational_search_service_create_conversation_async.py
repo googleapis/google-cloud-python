@@ -49,5 +49,4 @@ async def sample_create_conversation():
     # Handle the response
     print(response)
 
-
 # [END discoveryengine_v1alpha_generated_ConversationalSearchService_CreateConversation_async]

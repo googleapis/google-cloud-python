@@ -17,15 +17,16 @@ from __future__ import annotations
 
 from typing import MutableMapping, MutableSequence
 
-from google.protobuf import timestamp_pb2  # type: ignore
 import proto  # type: ignore
 
 from google.cloud.discoveryengine_v1beta.types import common
+from google.protobuf import timestamp_pb2  # type: ignore
+
 
 __protobuf__ = proto.module(
-    package="google.cloud.discoveryengine.v1beta",
+    package='google.cloud.discoveryengine.v1beta',
     manifest={
-        "Engine",
+        'Engine',
     },
 )
 
@@ -238,12 +239,10 @@ class Engine(proto.Message):
                 number=4,
             )
 
-        agent_creation_config: "Engine.ChatEngineConfig.AgentCreationConfig" = (
-            proto.Field(
-                proto.MESSAGE,
-                number=1,
-                message="Engine.ChatEngineConfig.AgentCreationConfig",
-            )
+        agent_creation_config: 'Engine.ChatEngineConfig.AgentCreationConfig' = proto.Field(
+            proto.MESSAGE,
+            number=1,
+            message='Engine.ChatEngineConfig.AgentCreationConfig',
         )
         dialogflow_agent_to_link: str = proto.Field(
             proto.STRING,
@@ -286,19 +285,19 @@ class Engine(proto.Message):
     chat_engine_config: ChatEngineConfig = proto.Field(
         proto.MESSAGE,
         number=11,
-        oneof="engine_config",
+        oneof='engine_config',
         message=ChatEngineConfig,
     )
     search_engine_config: SearchEngineConfig = proto.Field(
         proto.MESSAGE,
         number=13,
-        oneof="engine_config",
+        oneof='engine_config',
         message=SearchEngineConfig,
     )
     chat_engine_metadata: ChatEngineMetadata = proto.Field(
         proto.MESSAGE,
         number=12,
-        oneof="engine_metadata",
+        oneof='engine_metadata',
         message=ChatEngineMetadata,
     )
     name: str = proto.Field(

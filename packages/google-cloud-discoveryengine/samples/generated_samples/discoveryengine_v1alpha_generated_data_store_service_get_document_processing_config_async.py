@@ -49,5 +49,4 @@ async def sample_get_document_processing_config():
     # Handle the response
     print(response)
 
-
 # [END discoveryengine_v1alpha_generated_DataStoreService_GetDocumentProcessingConfig_async]

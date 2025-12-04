@@ -19,23 +19,20 @@ from typing import Dict, Type
 from .base import IdentityMappingStoreServiceTransport
 from .grpc import IdentityMappingStoreServiceGrpcTransport
 from .grpc_asyncio import IdentityMappingStoreServiceGrpcAsyncIOTransport
-from .rest import (
-    IdentityMappingStoreServiceRestInterceptor,
-    IdentityMappingStoreServiceRestTransport,
-)
+from .rest import IdentityMappingStoreServiceRestTransport
+from .rest import IdentityMappingStoreServiceRestInterceptor
+
 
 # Compile a registry of transports.
-_transport_registry = (
-    OrderedDict()
-)  # type: Dict[str, Type[IdentityMappingStoreServiceTransport]]
-_transport_registry["grpc"] = IdentityMappingStoreServiceGrpcTransport
-_transport_registry["grpc_asyncio"] = IdentityMappingStoreServiceGrpcAsyncIOTransport
-_transport_registry["rest"] = IdentityMappingStoreServiceRestTransport
+_transport_registry = OrderedDict()  # type: Dict[str, Type[IdentityMappingStoreServiceTransport]]
+_transport_registry['grpc'] = IdentityMappingStoreServiceGrpcTransport
+_transport_registry['grpc_asyncio'] = IdentityMappingStoreServiceGrpcAsyncIOTransport
+_transport_registry['rest'] = IdentityMappingStoreServiceRestTransport
 
 __all__ = (
-    "IdentityMappingStoreServiceTransport",
-    "IdentityMappingStoreServiceGrpcTransport",
-    "IdentityMappingStoreServiceGrpcAsyncIOTransport",
-    "IdentityMappingStoreServiceRestTransport",
-    "IdentityMappingStoreServiceRestInterceptor",
+    'IdentityMappingStoreServiceTransport',
+    'IdentityMappingStoreServiceGrpcTransport',
+    'IdentityMappingStoreServiceGrpcAsyncIOTransport',
+    'IdentityMappingStoreServiceRestTransport',
+    'IdentityMappingStoreServiceRestInterceptor',
 )

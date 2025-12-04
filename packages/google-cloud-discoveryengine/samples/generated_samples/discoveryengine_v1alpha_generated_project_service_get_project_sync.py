@@ -49,5 +49,4 @@ def sample_get_project():
     # Handle the response
     print(response)
 
-
 # [END discoveryengine_v1alpha_generated_ProjectService_GetProject_sync]

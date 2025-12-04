@@ -13,31 +13,21 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-from collections import OrderedDict
 import logging as std_logging
+from collections import OrderedDict
 import re
-from typing import (
-    Callable,
-    Dict,
-    Mapping,
-    MutableMapping,
-    MutableSequence,
-    Optional,
-    Sequence,
-    Tuple,
-    Type,
-    Union,
-)
+from typing import Dict, Callable, Mapping, MutableMapping, MutableSequence, Optional, Sequence, Tuple, Type, Union
 
+from google.cloud.discoveryengine_v1 import gapic_version as package_version
+
+from google.api_core.client_options import ClientOptions
 from google.api_core import exceptions as core_exceptions
 from google.api_core import gapic_v1
 from google.api_core import retry_async as retries
-from google.api_core.client_options import ClientOptions
-from google.auth import credentials as ga_credentials  # type: ignore
-from google.oauth2 import service_account  # type: ignore
+from google.auth import credentials as ga_credentials   # type: ignore
+from google.oauth2 import service_account              # type: ignore
 import google.protobuf
 
-from google.cloud.discoveryengine_v1 import gapic_version as package_version
 
 try:
     OptionalRetry = Union[retries.AsyncRetry, gapic_v1.method._MethodDefault, None]
@@ -46,35 +36,30 @@ except AttributeError:  # pragma: NO COVER
 
 from google.api_core import operation  # type: ignore
 from google.api_core import operation_async  # type: ignore
-from google.cloud.location import locations_pb2  # type: ignore
-from google.longrunning import operations_pb2  # type: ignore
+from google.cloud.discoveryengine_v1.services.data_store_service import pagers
+from google.cloud.discoveryengine_v1.types import cmek_config_service
+from google.cloud.discoveryengine_v1.types import common
+from google.cloud.discoveryengine_v1.types import data_store
+from google.cloud.discoveryengine_v1.types import data_store as gcd_data_store
+from google.cloud.discoveryengine_v1.types import data_store_service
+from google.cloud.discoveryengine_v1.types import document_processing_config
+from google.cloud.discoveryengine_v1.types import schema
+from google.cloud.location import locations_pb2 # type: ignore
+from google.longrunning import operations_pb2 # type: ignore
 from google.protobuf import empty_pb2  # type: ignore
 from google.protobuf import field_mask_pb2  # type: ignore
 from google.protobuf import timestamp_pb2  # type: ignore
-
-from google.cloud.discoveryengine_v1.services.data_store_service import pagers
-from google.cloud.discoveryengine_v1.types import (
-    data_store_service,
-    document_processing_config,
-    schema,
-)
-from google.cloud.discoveryengine_v1.types import cmek_config_service, common
-from google.cloud.discoveryengine_v1.types import data_store
-from google.cloud.discoveryengine_v1.types import data_store as gcd_data_store
-
-from .client import DataStoreServiceClient
-from .transports.base import DEFAULT_CLIENT_INFO, DataStoreServiceTransport
+from .transports.base import DataStoreServiceTransport, DEFAULT_CLIENT_INFO
 from .transports.grpc_asyncio import DataStoreServiceGrpcAsyncIOTransport
+from .client import DataStoreServiceClient
 
 try:
     from google.api_core import client_logging  # type: ignore
-
     CLIENT_LOGGING_SUPPORTED = True  # pragma: NO COVER
 except ImportError:  # pragma: NO COVER
     CLIENT_LOGGING_SUPPORTED = False
 
 _LOGGER = std_logging.getLogger(__name__)
-
 
 class DataStoreServiceAsyncClient:
     """Service for managing
@@ -97,52 +82,26 @@ class DataStoreServiceAsyncClient:
     parse_collection_path = staticmethod(DataStoreServiceClient.parse_collection_path)
     crypto_keys_path = staticmethod(DataStoreServiceClient.crypto_keys_path)
     parse_crypto_keys_path = staticmethod(DataStoreServiceClient.parse_crypto_keys_path)
-    crypto_key_versions_path = staticmethod(
-        DataStoreServiceClient.crypto_key_versions_path
-    )
-    parse_crypto_key_versions_path = staticmethod(
-        DataStoreServiceClient.parse_crypto_key_versions_path
-    )
+    crypto_key_versions_path = staticmethod(DataStoreServiceClient.crypto_key_versions_path)
+    parse_crypto_key_versions_path = staticmethod(DataStoreServiceClient.parse_crypto_key_versions_path)
     data_store_path = staticmethod(DataStoreServiceClient.data_store_path)
     parse_data_store_path = staticmethod(DataStoreServiceClient.parse_data_store_path)
-    document_processing_config_path = staticmethod(
-        DataStoreServiceClient.document_processing_config_path
-    )
-    parse_document_processing_config_path = staticmethod(
-        DataStoreServiceClient.parse_document_processing_config_path
-    )
-    identity_mapping_store_path = staticmethod(
-        DataStoreServiceClient.identity_mapping_store_path
-    )
-    parse_identity_mapping_store_path = staticmethod(
-        DataStoreServiceClient.parse_identity_mapping_store_path
-    )
+    document_processing_config_path = staticmethod(DataStoreServiceClient.document_processing_config_path)
+    parse_document_processing_config_path = staticmethod(DataStoreServiceClient.parse_document_processing_config_path)
+    identity_mapping_store_path = staticmethod(DataStoreServiceClient.identity_mapping_store_path)
+    parse_identity_mapping_store_path = staticmethod(DataStoreServiceClient.parse_identity_mapping_store_path)
     schema_path = staticmethod(DataStoreServiceClient.schema_path)
     parse_schema_path = staticmethod(DataStoreServiceClient.parse_schema_path)
-    common_billing_account_path = staticmethod(
-        DataStoreServiceClient.common_billing_account_path
-    )
-    parse_common_billing_account_path = staticmethod(
-        DataStoreServiceClient.parse_common_billing_account_path
-    )
+    common_billing_account_path = staticmethod(DataStoreServiceClient.common_billing_account_path)
+    parse_common_billing_account_path = staticmethod(DataStoreServiceClient.parse_common_billing_account_path)
     common_folder_path = staticmethod(DataStoreServiceClient.common_folder_path)
-    parse_common_folder_path = staticmethod(
-        DataStoreServiceClient.parse_common_folder_path
-    )
-    common_organization_path = staticmethod(
-        DataStoreServiceClient.common_organization_path
-    )
-    parse_common_organization_path = staticmethod(
-        DataStoreServiceClient.parse_common_organization_path
-    )
+    parse_common_folder_path = staticmethod(DataStoreServiceClient.parse_common_folder_path)
+    common_organization_path = staticmethod(DataStoreServiceClient.common_organization_path)
+    parse_common_organization_path = staticmethod(DataStoreServiceClient.parse_common_organization_path)
     common_project_path = staticmethod(DataStoreServiceClient.common_project_path)
-    parse_common_project_path = staticmethod(
-        DataStoreServiceClient.parse_common_project_path
-    )
+    parse_common_project_path = staticmethod(DataStoreServiceClient.parse_common_project_path)
     common_location_path = staticmethod(DataStoreServiceClient.common_location_path)
-    parse_common_location_path = staticmethod(
-        DataStoreServiceClient.parse_common_location_path
-    )
+    parse_common_location_path = staticmethod(DataStoreServiceClient.parse_common_location_path)
 
     @classmethod
     def from_service_account_info(cls, info: dict, *args, **kwargs):
@@ -178,9 +137,7 @@ class DataStoreServiceAsyncClient:
     from_service_account_json = from_service_account_file
 
     @classmethod
-    def get_mtls_endpoint_and_cert_source(
-        cls, client_options: Optional[ClientOptions] = None
-    ):
+    def get_mtls_endpoint_and_cert_source(cls, client_options: Optional[ClientOptions] = None):
         """Return the API endpoint and client cert source for mutual TLS.
 
         The client cert source is determined in the following order:
@@ -243,18 +200,12 @@ class DataStoreServiceAsyncClient:
 
     get_transport_class = DataStoreServiceClient.get_transport_class
 
-    def __init__(
-        self,
-        *,
-        credentials: Optional[ga_credentials.Credentials] = None,
-        transport: Optional[
-            Union[
-                str, DataStoreServiceTransport, Callable[..., DataStoreServiceTransport]
-            ]
-        ] = "grpc_asyncio",
-        client_options: Optional[ClientOptions] = None,
-        client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
-    ) -> None:
+    def __init__(self, *,
+            credentials: Optional[ga_credentials.Credentials] = None,
+            transport: Optional[Union[str, DataStoreServiceTransport, Callable[..., DataStoreServiceTransport]]] = "grpc_asyncio",
+            client_options: Optional[ClientOptions] = None,
+            client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
+            ) -> None:
         """Instantiates the data store service async client.
 
         Args:
@@ -309,43 +260,33 @@ class DataStoreServiceAsyncClient:
             transport=transport,
             client_options=client_options,
             client_info=client_info,
+
         )
 
-        if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-            std_logging.DEBUG
-        ):  # pragma: NO COVER
+        if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(std_logging.DEBUG):  # pragma: NO COVER
             _LOGGER.debug(
                 "Created client `google.cloud.discoveryengine_v1.DataStoreServiceAsyncClient`.",
-                extra={
+                extra = {
                     "serviceName": "google.cloud.discoveryengine.v1.DataStoreService",
-                    "universeDomain": getattr(
-                        self._client._transport._credentials, "universe_domain", ""
-                    ),
+                    "universeDomain": getattr(self._client._transport._credentials, "universe_domain", ""),
                     "credentialsType": f"{type(self._client._transport._credentials).__module__}.{type(self._client._transport._credentials).__qualname__}",
-                    "credentialsInfo": getattr(
-                        self.transport._credentials, "get_cred_info", lambda: None
-                    )(),
-                }
-                if hasattr(self._client._transport, "_credentials")
-                else {
+                    "credentialsInfo": getattr(self.transport._credentials, "get_cred_info", lambda: None)(),
+                } if hasattr(self._client._transport, "_credentials") else {
                     "serviceName": "google.cloud.discoveryengine.v1.DataStoreService",
                     "credentialsType": None,
-                },
+                }
             )
 
-    async def create_data_store(
-        self,
-        request: Optional[
-            Union[data_store_service.CreateDataStoreRequest, dict]
-        ] = None,
-        *,
-        parent: Optional[str] = None,
-        data_store: Optional[gcd_data_store.DataStore] = None,
-        data_store_id: Optional[str] = None,
-        retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
-    ) -> operation_async.AsyncOperation:
+    async def create_data_store(self,
+            request: Optional[Union[data_store_service.CreateDataStoreRequest, dict]] = None,
+            *,
+            parent: Optional[str] = None,
+            data_store: Optional[gcd_data_store.DataStore] = None,
+            data_store_id: Optional[str] = None,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+            ) -> operation_async.AsyncOperation:
         r"""Creates a
         [DataStore][google.cloud.discoveryengine.v1.DataStore].
 
@@ -448,14 +389,10 @@ class DataStoreServiceAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [parent, data_store, data_store_id]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of "
+                             "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -473,14 +410,14 @@ class DataStoreServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.create_data_store
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.create_data_store]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
         metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
+            gapic_v1.routing_header.to_grpc_metadata((
+                ("parent", request.parent),
+            )),
         )
 
         # Validate the universe domain.
@@ -505,15 +442,14 @@ class DataStoreServiceAsyncClient:
         # Done; return the response.
         return response
 
-    async def get_data_store(
-        self,
-        request: Optional[Union[data_store_service.GetDataStoreRequest, dict]] = None,
-        *,
-        name: Optional[str] = None,
-        retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
-    ) -> data_store.DataStore:
+    async def get_data_store(self,
+            request: Optional[Union[data_store_service.GetDataStoreRequest, dict]] = None,
+            *,
+            name: Optional[str] = None,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+            ) -> data_store.DataStore:
         r"""Gets a [DataStore][google.cloud.discoveryengine.v1.DataStore].
 
         .. code-block:: python
@@ -583,14 +519,10 @@ class DataStoreServiceAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [name]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of "
+                             "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -604,14 +536,14 @@ class DataStoreServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.get_data_store
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.get_data_store]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
         metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
+            gapic_v1.routing_header.to_grpc_metadata((
+                ("name", request.name),
+            )),
         )
 
         # Validate the universe domain.
@@ -628,15 +560,14 @@ class DataStoreServiceAsyncClient:
         # Done; return the response.
         return response
 
-    async def list_data_stores(
-        self,
-        request: Optional[Union[data_store_service.ListDataStoresRequest, dict]] = None,
-        *,
-        parent: Optional[str] = None,
-        retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
-    ) -> pagers.ListDataStoresAsyncPager:
+    async def list_data_stores(self,
+            request: Optional[Union[data_store_service.ListDataStoresRequest, dict]] = None,
+            *,
+            parent: Optional[str] = None,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+            ) -> pagers.ListDataStoresAsyncPager:
         r"""Lists all the
         [DataStore][google.cloud.discoveryengine.v1.DataStore]s
         associated with the project.
@@ -708,14 +639,10 @@ class DataStoreServiceAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [parent]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of "
+                             "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -729,14 +656,14 @@ class DataStoreServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.list_data_stores
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.list_data_stores]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
         metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
+            gapic_v1.routing_header.to_grpc_metadata((
+                ("parent", request.parent),
+            )),
         )
 
         # Validate the universe domain.
@@ -764,17 +691,14 @@ class DataStoreServiceAsyncClient:
         # Done; return the response.
         return response
 
-    async def delete_data_store(
-        self,
-        request: Optional[
-            Union[data_store_service.DeleteDataStoreRequest, dict]
-        ] = None,
-        *,
-        name: Optional[str] = None,
-        retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
-    ) -> operation_async.AsyncOperation:
+    async def delete_data_store(self,
+            request: Optional[Union[data_store_service.DeleteDataStoreRequest, dict]] = None,
+            *,
+            name: Optional[str] = None,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+            ) -> operation_async.AsyncOperation:
         r"""Deletes a
         [DataStore][google.cloud.discoveryengine.v1.DataStore].
 
@@ -859,14 +783,10 @@ class DataStoreServiceAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [name]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of "
+                             "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -880,14 +800,14 @@ class DataStoreServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.delete_data_store
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.delete_data_store]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
         metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
+            gapic_v1.routing_header.to_grpc_metadata((
+                ("name", request.name),
+            )),
         )
 
         # Validate the universe domain.
@@ -912,18 +832,15 @@ class DataStoreServiceAsyncClient:
         # Done; return the response.
         return response
 
-    async def update_data_store(
-        self,
-        request: Optional[
-            Union[data_store_service.UpdateDataStoreRequest, dict]
-        ] = None,
-        *,
-        data_store: Optional[gcd_data_store.DataStore] = None,
-        update_mask: Optional[field_mask_pb2.FieldMask] = None,
-        retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
-    ) -> gcd_data_store.DataStore:
+    async def update_data_store(self,
+            request: Optional[Union[data_store_service.UpdateDataStoreRequest, dict]] = None,
+            *,
+            data_store: Optional[gcd_data_store.DataStore] = None,
+            update_mask: Optional[field_mask_pb2.FieldMask] = None,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+            ) -> gcd_data_store.DataStore:
         r"""Updates a [DataStore][google.cloud.discoveryengine.v1.DataStore]
 
         .. code-block:: python
@@ -1006,14 +923,10 @@ class DataStoreServiceAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [data_store, update_mask]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of "
+                             "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -1029,16 +942,14 @@ class DataStoreServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.update_data_store
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.update_data_store]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
         metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata(
-                (("data_store.name", request.data_store.name),)
-            ),
+            gapic_v1.routing_header.to_grpc_metadata((
+                ("data_store.name", request.data_store.name),
+            )),
         )
 
         # Validate the universe domain.
@@ -1093,7 +1004,8 @@ class DataStoreServiceAsyncClient:
         # Certain fields should be provided within the metadata header;
         # add these here.
         metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
+            gapic_v1.routing_header.to_grpc_metadata(
+                (("name", request.name),)),
         )
 
         # Validate the universe domain.
@@ -1101,11 +1013,7 @@ class DataStoreServiceAsyncClient:
 
         # Send the request.
         response = await rpc(
-            request,
-            retry=retry,
-            timeout=timeout,
-            metadata=metadata,
-        )
+            request, retry=retry, timeout=timeout, metadata=metadata,)
 
         # Done; return the response.
         return response
@@ -1148,7 +1056,8 @@ class DataStoreServiceAsyncClient:
         # Certain fields should be provided within the metadata header;
         # add these here.
         metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
+            gapic_v1.routing_header.to_grpc_metadata(
+                (("name", request.name),)),
         )
 
         # Validate the universe domain.
@@ -1156,11 +1065,7 @@ class DataStoreServiceAsyncClient:
 
         # Send the request.
         response = await rpc(
-            request,
-            retry=retry,
-            timeout=timeout,
-            metadata=metadata,
-        )
+            request, retry=retry, timeout=timeout, metadata=metadata,)
 
         # Done; return the response.
         return response
@@ -1206,19 +1111,15 @@ class DataStoreServiceAsyncClient:
         # Certain fields should be provided within the metadata header;
         # add these here.
         metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
+            gapic_v1.routing_header.to_grpc_metadata(
+                (("name", request.name),)),
         )
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
 
         # Send the request.
-        await rpc(
-            request,
-            retry=retry,
-            timeout=timeout,
-            metadata=metadata,
-        )
+        await rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
 
     async def __aenter__(self) -> "DataStoreServiceAsyncClient":
         return self
@@ -1226,13 +1127,12 @@ class DataStoreServiceAsyncClient:
     async def __aexit__(self, exc_type, exc, tb):
         await self.transport.close()
 
+DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(gapic_version=package_version.__version__)
 
-DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
-    gapic_version=package_version.__version__
-)
-
-if hasattr(DEFAULT_CLIENT_INFO, "protobuf_runtime_version"):  # pragma: NO COVER
+if hasattr(DEFAULT_CLIENT_INFO, "protobuf_runtime_version"):   # pragma: NO COVER
     DEFAULT_CLIENT_INFO.protobuf_runtime_version = google.protobuf.__version__
 
 
-__all__ = ("DataStoreServiceAsyncClient",)
+__all__ = (
+    "DataStoreServiceAsyncClient",
+)

@@ -17,13 +17,15 @@ from __future__ import annotations
 
 from typing import MutableMapping, MutableSequence
 
-from google.protobuf import timestamp_pb2  # type: ignore
 import proto  # type: ignore
 
+from google.protobuf import timestamp_pb2  # type: ignore
+
+
 __protobuf__ = proto.module(
-    package="google.cloud.discoveryengine.v1beta",
+    package='google.cloud.discoveryengine.v1beta',
     manifest={
-        "SampleQuery",
+        'SampleQuery',
     },
 )
 
@@ -104,16 +106,16 @@ class SampleQuery(proto.Message):
             proto.STRING,
             number=1,
         )
-        targets: MutableSequence["SampleQuery.QueryEntry.Target"] = proto.RepeatedField(
+        targets: MutableSequence['SampleQuery.QueryEntry.Target'] = proto.RepeatedField(
             proto.MESSAGE,
             number=3,
-            message="SampleQuery.QueryEntry.Target",
+            message='SampleQuery.QueryEntry.Target',
         )
 
     query_entry: QueryEntry = proto.Field(
         proto.MESSAGE,
         number=2,
-        oneof="content",
+        oneof='content',
         message=QueryEntry,
     )
     name: str = proto.Field(

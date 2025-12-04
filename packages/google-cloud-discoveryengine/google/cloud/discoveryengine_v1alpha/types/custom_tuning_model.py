@@ -17,13 +17,15 @@ from __future__ import annotations
 
 from typing import MutableMapping, MutableSequence
 
-from google.protobuf import timestamp_pb2  # type: ignore
 import proto  # type: ignore
 
+from google.protobuf import timestamp_pb2  # type: ignore
+
+
 __protobuf__ = proto.module(
-    package="google.cloud.discoveryengine.v1alpha",
+    package='google.cloud.discoveryengine.v1alpha',
     manifest={
-        "CustomTuningModel",
+        'CustomTuningModel',
     },
 )
 
@@ -53,7 +55,6 @@ class CustomTuningModel(proto.Message):
         metrics (MutableMapping[str, float]):
             The metrics of the trained model.
     """
-
     class ModelState(proto.Enum):
         r"""The state of the model.
 

@@ -15,36 +15,37 @@
 #
 import inspect
 import json
-import logging as std_logging
 import pickle
-from typing import Awaitable, Callable, Dict, Optional, Sequence, Tuple, Union
+import logging as std_logging
 import warnings
+from typing import Awaitable, Callable, Dict, Optional, Sequence, Tuple, Union
 
+from google.api_core import gapic_v1
+from google.api_core import grpc_helpers_async
 from google.api_core import exceptions as core_exceptions
-from google.api_core import gapic_v1, grpc_helpers_async, operations_v1
 from google.api_core import retry_async as retries
-from google.auth import credentials as ga_credentials  # type: ignore
+from google.api_core import operations_v1
+from google.auth import credentials as ga_credentials   # type: ignore
 from google.auth.transport.grpc import SslCredentials  # type: ignore
-from google.cloud.location import locations_pb2  # type: ignore
-from google.longrunning import operations_pb2  # type: ignore
-from google.protobuf import empty_pb2  # type: ignore
 from google.protobuf.json_format import MessageToJson
 import google.protobuf.message
-import grpc  # type: ignore
-from grpc.experimental import aio  # type: ignore
-import proto  # type: ignore
 
-from google.cloud.discoveryengine_v1alpha.types import sample_query as gcd_sample_query
+import grpc                        # type: ignore
+import proto                       # type: ignore
+from grpc.experimental import aio  # type: ignore
+
 from google.cloud.discoveryengine_v1alpha.types import import_config
 from google.cloud.discoveryengine_v1alpha.types import sample_query
+from google.cloud.discoveryengine_v1alpha.types import sample_query as gcd_sample_query
 from google.cloud.discoveryengine_v1alpha.types import sample_query_service
-
-from .base import DEFAULT_CLIENT_INFO, SampleQueryServiceTransport
+from google.cloud.location import locations_pb2 # type: ignore
+from google.longrunning import operations_pb2 # type: ignore
+from google.protobuf import empty_pb2  # type: ignore
+from .base import SampleQueryServiceTransport, DEFAULT_CLIENT_INFO
 from .grpc import SampleQueryServiceGrpcTransport
 
 try:
     from google.api_core import client_logging  # type: ignore
-
     CLIENT_LOGGING_SUPPORTED = True  # pragma: NO COVER
 except ImportError:  # pragma: NO COVER
     CLIENT_LOGGING_SUPPORTED = False
@@ -52,13 +53,9 @@ except ImportError:  # pragma: NO COVER
 _LOGGER = std_logging.getLogger(__name__)
 
 
-class _LoggingClientAIOInterceptor(
-    grpc.aio.UnaryUnaryClientInterceptor
-):  # pragma: NO COVER
+class _LoggingClientAIOInterceptor(grpc.aio.UnaryUnaryClientInterceptor):  # pragma: NO COVER
     async def intercept_unary_unary(self, continuation, client_call_details, request):
-        logging_enabled = CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-            std_logging.DEBUG
-        )
+        logging_enabled = CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(std_logging.DEBUG)
         if logging_enabled:  # pragma: NO COVER
             request_metadata = client_call_details.metadata
             if isinstance(request, proto.Message):
@@ -79,7 +76,7 @@ class _LoggingClientAIOInterceptor(
             }
             _LOGGER.debug(
                 f"Sending request for {client_call_details.method}",
-                extra={
+                extra = {
                     "serviceName": "google.cloud.discoveryengine.v1alpha.SampleQueryService",
                     "rpcName": str(client_call_details.method),
                     "request": grpc_request,
@@ -90,11 +87,7 @@ class _LoggingClientAIOInterceptor(
         if logging_enabled:  # pragma: NO COVER
             response_metadata = await response.trailing_metadata()
             # Convert gRPC metadata `<class 'grpc.aio._metadata.Metadata'>` to list of tuples
-            metadata = (
-                dict([(k, str(v)) for k, v in response_metadata])
-                if response_metadata
-                else None
-            )
+            metadata = dict([(k, str(v)) for k, v in response_metadata]) if response_metadata else None
             result = await response
             if isinstance(result, proto.Message):
                 response_payload = type(result).to_json(result)
@@ -109,7 +102,7 @@ class _LoggingClientAIOInterceptor(
             }
             _LOGGER.debug(
                 f"Received response to rpc {client_call_details.method}.",
-                extra={
+                extra = {
                     "serviceName": "google.cloud.discoveryengine.v1alpha.SampleQueryService",
                     "rpcName": str(client_call_details.method),
                     "response": grpc_response,
@@ -137,15 +130,13 @@ class SampleQueryServiceGrpcAsyncIOTransport(SampleQueryServiceTransport):
     _stubs: Dict[str, Callable] = {}
 
     @classmethod
-    def create_channel(
-        cls,
-        host: str = "discoveryengine.googleapis.com",
-        credentials: Optional[ga_credentials.Credentials] = None,
-        credentials_file: Optional[str] = None,
-        scopes: Optional[Sequence[str]] = None,
-        quota_project_id: Optional[str] = None,
-        **kwargs,
-    ) -> aio.Channel:
+    def create_channel(cls,
+                       host: str = 'discoveryengine.googleapis.com',
+                       credentials: Optional[ga_credentials.Credentials] = None,
+                       credentials_file: Optional[str] = None,
+                       scopes: Optional[Sequence[str]] = None,
+                       quota_project_id: Optional[str] = None,
+                       **kwargs) -> aio.Channel:
         """Create and return a gRPC AsyncIO channel object.
         Args:
             host (Optional[str]): The host for the channel to use.
@@ -176,26 +167,24 @@ class SampleQueryServiceGrpcAsyncIOTransport(SampleQueryServiceTransport):
             default_scopes=cls.AUTH_SCOPES,
             scopes=scopes,
             default_host=cls.DEFAULT_HOST,
-            **kwargs,
+            **kwargs
         )
 
-    def __init__(
-        self,
-        *,
-        host: str = "discoveryengine.googleapis.com",
-        credentials: Optional[ga_credentials.Credentials] = None,
-        credentials_file: Optional[str] = None,
-        scopes: Optional[Sequence[str]] = None,
-        channel: Optional[Union[aio.Channel, Callable[..., aio.Channel]]] = None,
-        api_mtls_endpoint: Optional[str] = None,
-        client_cert_source: Optional[Callable[[], Tuple[bytes, bytes]]] = None,
-        ssl_channel_credentials: Optional[grpc.ChannelCredentials] = None,
-        client_cert_source_for_mtls: Optional[Callable[[], Tuple[bytes, bytes]]] = None,
-        quota_project_id: Optional[str] = None,
-        client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
-        always_use_jwt_access: Optional[bool] = False,
-        api_audience: Optional[str] = None,
-    ) -> None:
+    def __init__(self, *,
+            host: str = 'discoveryengine.googleapis.com',
+            credentials: Optional[ga_credentials.Credentials] = None,
+            credentials_file: Optional[str] = None,
+            scopes: Optional[Sequence[str]] = None,
+            channel: Optional[Union[aio.Channel, Callable[..., aio.Channel]]] = None,
+            api_mtls_endpoint: Optional[str] = None,
+            client_cert_source: Optional[Callable[[], Tuple[bytes, bytes]]] = None,
+            ssl_channel_credentials: Optional[grpc.ChannelCredentials] = None,
+            client_cert_source_for_mtls: Optional[Callable[[], Tuple[bytes, bytes]]] = None,
+            quota_project_id: Optional[str] = None,
+            client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
+            always_use_jwt_access: Optional[bool] = False,
+            api_audience: Optional[str] = None,
+            ) -> None:
         """Instantiate the transport.
 
         Args:
@@ -321,9 +310,7 @@ class SampleQueryServiceGrpcAsyncIOTransport(SampleQueryServiceTransport):
         self._interceptor = _LoggingClientAIOInterceptor()
         self._grpc_channel._unary_unary_interceptors.append(self._interceptor)
         self._logged_channel = self._grpc_channel
-        self._wrap_with_kind = (
-            "kind" in inspect.signature(gapic_v1.method_async.wrap_method).parameters
-        )
+        self._wrap_with_kind = "kind" in inspect.signature(gapic_v1.method_async.wrap_method).parameters
         # Wrap messages. This must be done after self._logged_channel exists
         self._prep_wrapped_messages(client_info)
 
@@ -354,12 +341,9 @@ class SampleQueryServiceGrpcAsyncIOTransport(SampleQueryServiceTransport):
         return self._operations_client
 
     @property
-    def get_sample_query(
-        self,
-    ) -> Callable[
-        [sample_query_service.GetSampleQueryRequest],
-        Awaitable[sample_query.SampleQuery],
-    ]:
+    def get_sample_query(self) -> Callable[
+            [sample_query_service.GetSampleQueryRequest],
+            Awaitable[sample_query.SampleQuery]]:
         r"""Return a callable for the get sample query method over gRPC.
 
         Gets a
@@ -375,21 +359,18 @@ class SampleQueryServiceGrpcAsyncIOTransport(SampleQueryServiceTransport):
         # the request.
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
-        if "get_sample_query" not in self._stubs:
-            self._stubs["get_sample_query"] = self._logged_channel.unary_unary(
-                "/google.cloud.discoveryengine.v1alpha.SampleQueryService/GetSampleQuery",
+        if 'get_sample_query' not in self._stubs:
+            self._stubs['get_sample_query'] = self._logged_channel.unary_unary(
+                '/google.cloud.discoveryengine.v1alpha.SampleQueryService/GetSampleQuery',
                 request_serializer=sample_query_service.GetSampleQueryRequest.serialize,
                 response_deserializer=sample_query.SampleQuery.deserialize,
             )
-        return self._stubs["get_sample_query"]
+        return self._stubs['get_sample_query']
 
     @property
-    def list_sample_queries(
-        self,
-    ) -> Callable[
-        [sample_query_service.ListSampleQueriesRequest],
-        Awaitable[sample_query_service.ListSampleQueriesResponse],
-    ]:
+    def list_sample_queries(self) -> Callable[
+            [sample_query_service.ListSampleQueriesRequest],
+            Awaitable[sample_query_service.ListSampleQueriesResponse]]:
         r"""Return a callable for the list sample queries method over gRPC.
 
         Gets a list of
@@ -405,21 +386,18 @@ class SampleQueryServiceGrpcAsyncIOTransport(SampleQueryServiceTransport):
         # the request.
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
-        if "list_sample_queries" not in self._stubs:
-            self._stubs["list_sample_queries"] = self._logged_channel.unary_unary(
-                "/google.cloud.discoveryengine.v1alpha.SampleQueryService/ListSampleQueries",
+        if 'list_sample_queries' not in self._stubs:
+            self._stubs['list_sample_queries'] = self._logged_channel.unary_unary(
+                '/google.cloud.discoveryengine.v1alpha.SampleQueryService/ListSampleQueries',
                 request_serializer=sample_query_service.ListSampleQueriesRequest.serialize,
                 response_deserializer=sample_query_service.ListSampleQueriesResponse.deserialize,
             )
-        return self._stubs["list_sample_queries"]
+        return self._stubs['list_sample_queries']
 
     @property
-    def create_sample_query(
-        self,
-    ) -> Callable[
-        [sample_query_service.CreateSampleQueryRequest],
-        Awaitable[gcd_sample_query.SampleQuery],
-    ]:
+    def create_sample_query(self) -> Callable[
+            [sample_query_service.CreateSampleQueryRequest],
+            Awaitable[gcd_sample_query.SampleQuery]]:
         r"""Return a callable for the create sample query method over gRPC.
 
         Creates a
@@ -435,21 +413,18 @@ class SampleQueryServiceGrpcAsyncIOTransport(SampleQueryServiceTransport):
         # the request.
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
-        if "create_sample_query" not in self._stubs:
-            self._stubs["create_sample_query"] = self._logged_channel.unary_unary(
-                "/google.cloud.discoveryengine.v1alpha.SampleQueryService/CreateSampleQuery",
+        if 'create_sample_query' not in self._stubs:
+            self._stubs['create_sample_query'] = self._logged_channel.unary_unary(
+                '/google.cloud.discoveryengine.v1alpha.SampleQueryService/CreateSampleQuery',
                 request_serializer=sample_query_service.CreateSampleQueryRequest.serialize,
                 response_deserializer=gcd_sample_query.SampleQuery.deserialize,
             )
-        return self._stubs["create_sample_query"]
+        return self._stubs['create_sample_query']
 
     @property
-    def update_sample_query(
-        self,
-    ) -> Callable[
-        [sample_query_service.UpdateSampleQueryRequest],
-        Awaitable[gcd_sample_query.SampleQuery],
-    ]:
+    def update_sample_query(self) -> Callable[
+            [sample_query_service.UpdateSampleQueryRequest],
+            Awaitable[gcd_sample_query.SampleQuery]]:
         r"""Return a callable for the update sample query method over gRPC.
 
         Updates a
@@ -465,20 +440,18 @@ class SampleQueryServiceGrpcAsyncIOTransport(SampleQueryServiceTransport):
         # the request.
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
-        if "update_sample_query" not in self._stubs:
-            self._stubs["update_sample_query"] = self._logged_channel.unary_unary(
-                "/google.cloud.discoveryengine.v1alpha.SampleQueryService/UpdateSampleQuery",
+        if 'update_sample_query' not in self._stubs:
+            self._stubs['update_sample_query'] = self._logged_channel.unary_unary(
+                '/google.cloud.discoveryengine.v1alpha.SampleQueryService/UpdateSampleQuery',
                 request_serializer=sample_query_service.UpdateSampleQueryRequest.serialize,
                 response_deserializer=gcd_sample_query.SampleQuery.deserialize,
             )
-        return self._stubs["update_sample_query"]
+        return self._stubs['update_sample_query']
 
     @property
-    def delete_sample_query(
-        self,
-    ) -> Callable[
-        [sample_query_service.DeleteSampleQueryRequest], Awaitable[empty_pb2.Empty]
-    ]:
+    def delete_sample_query(self) -> Callable[
+            [sample_query_service.DeleteSampleQueryRequest],
+            Awaitable[empty_pb2.Empty]]:
         r"""Return a callable for the delete sample query method over gRPC.
 
         Deletes a
@@ -494,20 +467,18 @@ class SampleQueryServiceGrpcAsyncIOTransport(SampleQueryServiceTransport):
         # the request.
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
-        if "delete_sample_query" not in self._stubs:
-            self._stubs["delete_sample_query"] = self._logged_channel.unary_unary(
-                "/google.cloud.discoveryengine.v1alpha.SampleQueryService/DeleteSampleQuery",
+        if 'delete_sample_query' not in self._stubs:
+            self._stubs['delete_sample_query'] = self._logged_channel.unary_unary(
+                '/google.cloud.discoveryengine.v1alpha.SampleQueryService/DeleteSampleQuery',
                 request_serializer=sample_query_service.DeleteSampleQueryRequest.serialize,
                 response_deserializer=empty_pb2.Empty.FromString,
             )
-        return self._stubs["delete_sample_query"]
+        return self._stubs['delete_sample_query']
 
     @property
-    def import_sample_queries(
-        self,
-    ) -> Callable[
-        [import_config.ImportSampleQueriesRequest], Awaitable[operations_pb2.Operation]
-    ]:
+    def import_sample_queries(self) -> Callable[
+            [import_config.ImportSampleQueriesRequest],
+            Awaitable[operations_pb2.Operation]]:
         r"""Return a callable for the import sample queries method over gRPC.
 
         Bulk import of multiple
@@ -528,16 +499,16 @@ class SampleQueryServiceGrpcAsyncIOTransport(SampleQueryServiceTransport):
         # the request.
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
-        if "import_sample_queries" not in self._stubs:
-            self._stubs["import_sample_queries"] = self._logged_channel.unary_unary(
-                "/google.cloud.discoveryengine.v1alpha.SampleQueryService/ImportSampleQueries",
+        if 'import_sample_queries' not in self._stubs:
+            self._stubs['import_sample_queries'] = self._logged_channel.unary_unary(
+                '/google.cloud.discoveryengine.v1alpha.SampleQueryService/ImportSampleQueries',
                 request_serializer=import_config.ImportSampleQueriesRequest.serialize,
                 response_deserializer=operations_pb2.Operation.FromString,
             )
-        return self._stubs["import_sample_queries"]
+        return self._stubs['import_sample_queries']
 
     def _prep_wrapped_messages(self, client_info):
-        """Precompute the wrapped methods, overriding the base class method to use async wrappers."""
+        """ Precompute the wrapped methods, overriding the base class method to use async wrappers."""
         self._wrapped_methods = {
             self.get_sample_query: self._wrap_method(
                 self.get_sample_query,
@@ -602,7 +573,8 @@ class SampleQueryServiceGrpcAsyncIOTransport(SampleQueryServiceTransport):
     def cancel_operation(
         self,
     ) -> Callable[[operations_pb2.CancelOperationRequest], None]:
-        r"""Return a callable for the cancel_operation method over gRPC."""
+        r"""Return a callable for the cancel_operation method over gRPC.
+        """
         # Generate a "stub function" on-the-fly which will actually make
         # the request.
         # gRPC handles serialization and deserialization, so we just need
@@ -619,7 +591,8 @@ class SampleQueryServiceGrpcAsyncIOTransport(SampleQueryServiceTransport):
     def get_operation(
         self,
     ) -> Callable[[operations_pb2.GetOperationRequest], operations_pb2.Operation]:
-        r"""Return a callable for the get_operation method over gRPC."""
+        r"""Return a callable for the get_operation method over gRPC.
+        """
         # Generate a "stub function" on-the-fly which will actually make
         # the request.
         # gRPC handles serialization and deserialization, so we just need
@@ -635,10 +608,9 @@ class SampleQueryServiceGrpcAsyncIOTransport(SampleQueryServiceTransport):
     @property
     def list_operations(
         self,
-    ) -> Callable[
-        [operations_pb2.ListOperationsRequest], operations_pb2.ListOperationsResponse
-    ]:
-        r"""Return a callable for the list_operations method over gRPC."""
+    ) -> Callable[[operations_pb2.ListOperationsRequest], operations_pb2.ListOperationsResponse]:
+        r"""Return a callable for the list_operations method over gRPC.
+        """
         # Generate a "stub function" on-the-fly which will actually make
         # the request.
         # gRPC handles serialization and deserialization, so we just need
@@ -652,4 +624,6 @@ class SampleQueryServiceGrpcAsyncIOTransport(SampleQueryServiceTransport):
         return self._stubs["list_operations"]
 
 
-__all__ = ("SampleQueryServiceGrpcAsyncIOTransport",)
+__all__ = (
+    'SampleQueryServiceGrpcAsyncIOTransport',
+)

@@ -13,10 +13,10 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-from .async_client import IdentityMappingStoreServiceAsyncClient
 from .client import IdentityMappingStoreServiceClient
+from .async_client import IdentityMappingStoreServiceAsyncClient
 
 __all__ = (
-    "IdentityMappingStoreServiceClient",
-    "IdentityMappingStoreServiceAsyncClient",
+    'IdentityMappingStoreServiceClient',
+    'IdentityMappingStoreServiceAsyncClient',
 )

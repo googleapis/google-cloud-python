@@ -13,10 +13,10 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-from .async_client import ProjectServiceAsyncClient
 from .client import ProjectServiceClient
+from .async_client import ProjectServiceAsyncClient
 
 __all__ = (
-    "ProjectServiceClient",
-    "ProjectServiceAsyncClient",
+    'ProjectServiceClient',
+    'ProjectServiceAsyncClient',
 )

@@ -16,28 +16,25 @@
 import abc
 from typing import Awaitable, Callable, Dict, Optional, Sequence, Union
 
+from google.cloud.discoveryengine_v1beta import gapic_version as package_version
+
+import google.auth  # type: ignore
 import google.api_core
 from google.api_core import exceptions as core_exceptions
 from google.api_core import gapic_v1
 from google.api_core import retry as retries
-import google.auth  # type: ignore
 from google.auth import credentials as ga_credentials  # type: ignore
-from google.cloud.location import locations_pb2  # type: ignore
-from google.longrunning import operations_pb2  # type: ignore
-from google.oauth2 import service_account  # type: ignore
+from google.oauth2 import service_account # type: ignore
 import google.protobuf
+
+from google.cloud.discoveryengine_v1beta.types import sample_query_set
+from google.cloud.discoveryengine_v1beta.types import sample_query_set as gcd_sample_query_set
+from google.cloud.discoveryengine_v1beta.types import sample_query_set_service
+from google.cloud.location import locations_pb2 # type: ignore
+from google.longrunning import operations_pb2 # type: ignore
 from google.protobuf import empty_pb2  # type: ignore
 
-from google.cloud.discoveryengine_v1beta import gapic_version as package_version
-from google.cloud.discoveryengine_v1beta.types import (
-    sample_query_set as gcd_sample_query_set,
-)
-from google.cloud.discoveryengine_v1beta.types import sample_query_set
-from google.cloud.discoveryengine_v1beta.types import sample_query_set_service
-
-DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
-    gapic_version=package_version.__version__
-)
+DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(gapic_version=package_version.__version__)
 
 if hasattr(DEFAULT_CLIENT_INFO, "protobuf_runtime_version"):  # pragma: NO COVER
     DEFAULT_CLIENT_INFO.protobuf_runtime_version = google.protobuf.__version__
@@ -46,23 +43,24 @@ if hasattr(DEFAULT_CLIENT_INFO, "protobuf_runtime_version"):  # pragma: NO COVER
 class SampleQuerySetServiceTransport(abc.ABC):
     """Abstract transport class for SampleQuerySetService."""
 
-    AUTH_SCOPES = ("https://www.googleapis.com/auth/cloud-platform",)
+    AUTH_SCOPES = (
+        'https://www.googleapis.com/auth/cloud-platform',
+    )
 
-    DEFAULT_HOST: str = "discoveryengine.googleapis.com"
+    DEFAULT_HOST: str = 'discoveryengine.googleapis.com'
 
     def __init__(
-        self,
-        *,
-        host: str = DEFAULT_HOST,
-        credentials: Optional[ga_credentials.Credentials] = None,
-        credentials_file: Optional[str] = None,
-        scopes: Optional[Sequence[str]] = None,
-        quota_project_id: Optional[str] = None,
-        client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
-        always_use_jwt_access: Optional[bool] = False,
-        api_audience: Optional[str] = None,
-        **kwargs,
-    ) -> None:
+            self, *,
+            host: str = DEFAULT_HOST,
+            credentials: Optional[ga_credentials.Credentials] = None,
+            credentials_file: Optional[str] = None,
+            scopes: Optional[Sequence[str]] = None,
+            quota_project_id: Optional[str] = None,
+            client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
+            always_use_jwt_access: Optional[bool] = False,
+            api_audience: Optional[str] = None,
+            **kwargs,
+            ) -> None:
         """Instantiate the transport.
 
         Args:
@@ -99,38 +97,30 @@ class SampleQuerySetServiceTransport(abc.ABC):
         # If no credentials are provided, then determine the appropriate
         # defaults.
         if credentials and credentials_file:
-            raise core_exceptions.DuplicateCredentialArgs(
-                "'credentials_file' and 'credentials' are mutually exclusive"
-            )
+            raise core_exceptions.DuplicateCredentialArgs("'credentials_file' and 'credentials' are mutually exclusive")
 
         if credentials_file is not None:
             credentials, _ = google.auth.load_credentials_from_file(
-                credentials_file, **scopes_kwargs, quota_project_id=quota_project_id
-            )
+                                credentials_file,
+                                **scopes_kwargs,
+                                quota_project_id=quota_project_id
+                            )
         elif credentials is None and not self._ignore_credentials:
-            credentials, _ = google.auth.default(
-                **scopes_kwargs, quota_project_id=quota_project_id
-            )
+            credentials, _ = google.auth.default(**scopes_kwargs, quota_project_id=quota_project_id)
             # Don't apply audience if the credentials file passed from user.
             if hasattr(credentials, "with_gdch_audience"):
-                credentials = credentials.with_gdch_audience(
-                    api_audience if api_audience else host
-                )
+                credentials = credentials.with_gdch_audience(api_audience if api_audience else host)
 
         # If the credentials are service account credentials, then always try to use self signed JWT.
-        if (
-            always_use_jwt_access
-            and isinstance(credentials, service_account.Credentials)
-            and hasattr(service_account.Credentials, "with_always_use_jwt_access")
-        ):
+        if always_use_jwt_access and isinstance(credentials, service_account.Credentials) and hasattr(service_account.Credentials, "with_always_use_jwt_access"):
             credentials = credentials.with_always_use_jwt_access(True)
 
         # Save the credentials.
         self._credentials = credentials
 
         # Save the hostname. Default to port 443 (HTTPS) if none is specified.
-        if ":" not in host:
-            host += ":443"
+        if ':' not in host:
+            host += ':443'
         self._host = host
 
     @property
@@ -180,71 +170,60 @@ class SampleQuerySetServiceTransport(abc.ABC):
                 default_timeout=None,
                 client_info=client_info,
             ),
-        }
+         }
 
     def close(self):
         """Closes resources associated with the transport.
 
-        .. warning::
-             Only call this method if the transport is NOT shared
-             with other clients - this may cause errors in other clients!
+       .. warning::
+            Only call this method if the transport is NOT shared
+            with other clients - this may cause errors in other clients!
         """
         raise NotImplementedError()
 
     @property
-    def get_sample_query_set(
-        self,
-    ) -> Callable[
-        [sample_query_set_service.GetSampleQuerySetRequest],
-        Union[
-            sample_query_set.SampleQuerySet, Awaitable[sample_query_set.SampleQuerySet]
-        ],
-    ]:
+    def get_sample_query_set(self) -> Callable[
+            [sample_query_set_service.GetSampleQuerySetRequest],
+            Union[
+                sample_query_set.SampleQuerySet,
+                Awaitable[sample_query_set.SampleQuerySet]
+            ]]:
         raise NotImplementedError()
 
     @property
-    def list_sample_query_sets(
-        self,
-    ) -> Callable[
-        [sample_query_set_service.ListSampleQuerySetsRequest],
-        Union[
-            sample_query_set_service.ListSampleQuerySetsResponse,
-            Awaitable[sample_query_set_service.ListSampleQuerySetsResponse],
-        ],
-    ]:
+    def list_sample_query_sets(self) -> Callable[
+            [sample_query_set_service.ListSampleQuerySetsRequest],
+            Union[
+                sample_query_set_service.ListSampleQuerySetsResponse,
+                Awaitable[sample_query_set_service.ListSampleQuerySetsResponse]
+            ]]:
         raise NotImplementedError()
 
     @property
-    def create_sample_query_set(
-        self,
-    ) -> Callable[
-        [sample_query_set_service.CreateSampleQuerySetRequest],
-        Union[
-            gcd_sample_query_set.SampleQuerySet,
-            Awaitable[gcd_sample_query_set.SampleQuerySet],
-        ],
-    ]:
+    def create_sample_query_set(self) -> Callable[
+            [sample_query_set_service.CreateSampleQuerySetRequest],
+            Union[
+                gcd_sample_query_set.SampleQuerySet,
+                Awaitable[gcd_sample_query_set.SampleQuerySet]
+            ]]:
         raise NotImplementedError()
 
     @property
-    def update_sample_query_set(
-        self,
-    ) -> Callable[
-        [sample_query_set_service.UpdateSampleQuerySetRequest],
-        Union[
-            gcd_sample_query_set.SampleQuerySet,
-            Awaitable[gcd_sample_query_set.SampleQuerySet],
-        ],
-    ]:
+    def update_sample_query_set(self) -> Callable[
+            [sample_query_set_service.UpdateSampleQuerySetRequest],
+            Union[
+                gcd_sample_query_set.SampleQuerySet,
+                Awaitable[gcd_sample_query_set.SampleQuerySet]
+            ]]:
         raise NotImplementedError()
 
     @property
-    def delete_sample_query_set(
-        self,
-    ) -> Callable[
-        [sample_query_set_service.DeleteSampleQuerySetRequest],
-        Union[empty_pb2.Empty, Awaitable[empty_pb2.Empty]],
-    ]:
+    def delete_sample_query_set(self) -> Callable[
+            [sample_query_set_service.DeleteSampleQuerySetRequest],
+            Union[
+                empty_pb2.Empty,
+                Awaitable[empty_pb2.Empty]
+            ]]:
         raise NotImplementedError()
 
     @property
@@ -252,10 +231,7 @@ class SampleQuerySetServiceTransport(abc.ABC):
         self,
     ) -> Callable[
         [operations_pb2.ListOperationsRequest],
-        Union[
-            operations_pb2.ListOperationsResponse,
-            Awaitable[operations_pb2.ListOperationsResponse],
-        ],
+        Union[operations_pb2.ListOperationsResponse, Awaitable[operations_pb2.ListOperationsResponse]],
     ]:
         raise NotImplementedError()
 
@@ -271,7 +247,10 @@ class SampleQuerySetServiceTransport(abc.ABC):
     @property
     def cancel_operation(
         self,
-    ) -> Callable[[operations_pb2.CancelOperationRequest], None,]:
+    ) -> Callable[
+        [operations_pb2.CancelOperationRequest],
+        None,
+    ]:
         raise NotImplementedError()
 
     @property
@@ -279,4 +258,6 @@ class SampleQuerySetServiceTransport(abc.ABC):
         raise NotImplementedError()
 
 
-__all__ = ("SampleQuerySetServiceTransport",)
+__all__ = (
+    'SampleQuerySetServiceTransport',
+)

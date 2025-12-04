@@ -13,30 +13,35 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-import dataclasses
-import json  # type: ignore
 import logging
+import json  # type: ignore
+
+from google.auth.transport.requests import AuthorizedSession  # type: ignore
+from google.auth import credentials as ga_credentials  # type: ignore
+from google.api_core import exceptions as core_exceptions
+from google.api_core import retry as retries
+from google.api_core import rest_helpers
+from google.api_core import rest_streaming
+from google.api_core import gapic_v1
+import google.protobuf
+
+from google.protobuf import json_format
+from google.api_core import operations_v1
+from google.cloud.location import locations_pb2 # type: ignore
+
+from requests import __version__ as requests_version
+import dataclasses
 from typing import Any, Callable, Dict, List, Optional, Sequence, Tuple, Union
 import warnings
 
-from google.api_core import gapic_v1, operations_v1, rest_helpers, rest_streaming
-from google.api_core import exceptions as core_exceptions
-from google.api_core import retry as retries
-from google.auth import credentials as ga_credentials  # type: ignore
-from google.auth.transport.requests import AuthorizedSession  # type: ignore
-from google.cloud.location import locations_pb2  # type: ignore
+
+from google.cloud.discoveryengine_v1alpha.types import site_search_engine
+from google.cloud.discoveryengine_v1alpha.types import site_search_engine_service
 from google.longrunning import operations_pb2  # type: ignore
-import google.protobuf
-from google.protobuf import json_format
-from requests import __version__ as requests_version
 
-from google.cloud.discoveryengine_v1alpha.types import (
-    site_search_engine,
-    site_search_engine_service,
-)
 
-from .base import DEFAULT_CLIENT_INFO as BASE_DEFAULT_CLIENT_INFO
 from .rest_base import _BaseSiteSearchEngineServiceRestTransport
+from .base import DEFAULT_CLIENT_INFO as BASE_DEFAULT_CLIENT_INFO
 
 try:
     OptionalRetry = Union[retries.Retry, gapic_v1.method._MethodDefault, None]
@@ -45,7 +50,6 @@ except AttributeError:  # pragma: NO COVER
 
 try:
     from google.api_core import client_logging  # type: ignore
-
     CLIENT_LOGGING_SUPPORTED = True  # pragma: NO COVER
 except ImportError:  # pragma: NO COVER
     CLIENT_LOGGING_SUPPORTED = False
@@ -194,15 +198,7 @@ class SiteSearchEngineServiceRestInterceptor:
 
 
     """
-
-    def pre_batch_create_target_sites(
-        self,
-        request: site_search_engine_service.BatchCreateTargetSitesRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        site_search_engine_service.BatchCreateTargetSitesRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+    def pre_batch_create_target_sites(self, request: site_search_engine_service.BatchCreateTargetSitesRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]) -> Tuple[site_search_engine_service.BatchCreateTargetSitesRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for batch_create_target_sites
 
         Override in a subclass to manipulate the request or metadata
@@ -210,9 +206,7 @@ class SiteSearchEngineServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_batch_create_target_sites(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_batch_create_target_sites(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for batch_create_target_sites
 
         DEPRECATED. Please use the `post_batch_create_target_sites_with_metadata`
@@ -225,11 +219,7 @@ class SiteSearchEngineServiceRestInterceptor:
         """
         return response
 
-    def post_batch_create_target_sites_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
+    def post_batch_create_target_sites_with_metadata(self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for batch_create_target_sites
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -244,14 +234,7 @@ class SiteSearchEngineServiceRestInterceptor:
         """
         return response, metadata
 
-    def pre_batch_verify_target_sites(
-        self,
-        request: site_search_engine_service.BatchVerifyTargetSitesRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        site_search_engine_service.BatchVerifyTargetSitesRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+    def pre_batch_verify_target_sites(self, request: site_search_engine_service.BatchVerifyTargetSitesRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]) -> Tuple[site_search_engine_service.BatchVerifyTargetSitesRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for batch_verify_target_sites
 
         Override in a subclass to manipulate the request or metadata
@@ -259,9 +242,7 @@ class SiteSearchEngineServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_batch_verify_target_sites(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_batch_verify_target_sites(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for batch_verify_target_sites
 
         DEPRECATED. Please use the `post_batch_verify_target_sites_with_metadata`
@@ -274,11 +255,7 @@ class SiteSearchEngineServiceRestInterceptor:
         """
         return response
 
-    def post_batch_verify_target_sites_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
+    def post_batch_verify_target_sites_with_metadata(self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for batch_verify_target_sites
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -293,14 +270,7 @@ class SiteSearchEngineServiceRestInterceptor:
         """
         return response, metadata
 
-    def pre_create_target_site(
-        self,
-        request: site_search_engine_service.CreateTargetSiteRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        site_search_engine_service.CreateTargetSiteRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+    def pre_create_target_site(self, request: site_search_engine_service.CreateTargetSiteRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]) -> Tuple[site_search_engine_service.CreateTargetSiteRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for create_target_site
 
         Override in a subclass to manipulate the request or metadata
@@ -308,9 +278,7 @@ class SiteSearchEngineServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_create_target_site(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_create_target_site(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for create_target_site
 
         DEPRECATED. Please use the `post_create_target_site_with_metadata`
@@ -323,11 +291,7 @@ class SiteSearchEngineServiceRestInterceptor:
         """
         return response
 
-    def post_create_target_site_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
+    def post_create_target_site_with_metadata(self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for create_target_site
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -342,14 +306,7 @@ class SiteSearchEngineServiceRestInterceptor:
         """
         return response, metadata
 
-    def pre_delete_target_site(
-        self,
-        request: site_search_engine_service.DeleteTargetSiteRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        site_search_engine_service.DeleteTargetSiteRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+    def pre_delete_target_site(self, request: site_search_engine_service.DeleteTargetSiteRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]) -> Tuple[site_search_engine_service.DeleteTargetSiteRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for delete_target_site
 
         Override in a subclass to manipulate the request or metadata
@@ -357,9 +314,7 @@ class SiteSearchEngineServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_delete_target_site(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_delete_target_site(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for delete_target_site
 
         DEPRECATED. Please use the `post_delete_target_site_with_metadata`
@@ -372,11 +327,7 @@ class SiteSearchEngineServiceRestInterceptor:
         """
         return response
 
-    def post_delete_target_site_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
+    def post_delete_target_site_with_metadata(self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for delete_target_site
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -391,14 +342,7 @@ class SiteSearchEngineServiceRestInterceptor:
         """
         return response, metadata
 
-    def pre_disable_advanced_site_search(
-        self,
-        request: site_search_engine_service.DisableAdvancedSiteSearchRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        site_search_engine_service.DisableAdvancedSiteSearchRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+    def pre_disable_advanced_site_search(self, request: site_search_engine_service.DisableAdvancedSiteSearchRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]) -> Tuple[site_search_engine_service.DisableAdvancedSiteSearchRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for disable_advanced_site_search
 
         Override in a subclass to manipulate the request or metadata
@@ -406,9 +350,7 @@ class SiteSearchEngineServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_disable_advanced_site_search(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_disable_advanced_site_search(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for disable_advanced_site_search
 
         DEPRECATED. Please use the `post_disable_advanced_site_search_with_metadata`
@@ -421,11 +363,7 @@ class SiteSearchEngineServiceRestInterceptor:
         """
         return response
 
-    def post_disable_advanced_site_search_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
+    def post_disable_advanced_site_search_with_metadata(self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for disable_advanced_site_search
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -440,14 +378,7 @@ class SiteSearchEngineServiceRestInterceptor:
         """
         return response, metadata
 
-    def pre_enable_advanced_site_search(
-        self,
-        request: site_search_engine_service.EnableAdvancedSiteSearchRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        site_search_engine_service.EnableAdvancedSiteSearchRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+    def pre_enable_advanced_site_search(self, request: site_search_engine_service.EnableAdvancedSiteSearchRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]) -> Tuple[site_search_engine_service.EnableAdvancedSiteSearchRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for enable_advanced_site_search
 
         Override in a subclass to manipulate the request or metadata
@@ -455,9 +386,7 @@ class SiteSearchEngineServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_enable_advanced_site_search(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_enable_advanced_site_search(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for enable_advanced_site_search
 
         DEPRECATED. Please use the `post_enable_advanced_site_search_with_metadata`
@@ -470,11 +399,7 @@ class SiteSearchEngineServiceRestInterceptor:
         """
         return response
 
-    def post_enable_advanced_site_search_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
+    def post_enable_advanced_site_search_with_metadata(self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for enable_advanced_site_search
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -489,14 +414,7 @@ class SiteSearchEngineServiceRestInterceptor:
         """
         return response, metadata
 
-    def pre_fetch_domain_verification_status(
-        self,
-        request: site_search_engine_service.FetchDomainVerificationStatusRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        site_search_engine_service.FetchDomainVerificationStatusRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+    def pre_fetch_domain_verification_status(self, request: site_search_engine_service.FetchDomainVerificationStatusRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]) -> Tuple[site_search_engine_service.FetchDomainVerificationStatusRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for fetch_domain_verification_status
 
         Override in a subclass to manipulate the request or metadata
@@ -504,9 +422,7 @@ class SiteSearchEngineServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_fetch_domain_verification_status(
-        self, response: site_search_engine_service.FetchDomainVerificationStatusResponse
-    ) -> site_search_engine_service.FetchDomainVerificationStatusResponse:
+    def post_fetch_domain_verification_status(self, response: site_search_engine_service.FetchDomainVerificationStatusResponse) -> site_search_engine_service.FetchDomainVerificationStatusResponse:
         """Post-rpc interceptor for fetch_domain_verification_status
 
         DEPRECATED. Please use the `post_fetch_domain_verification_status_with_metadata`
@@ -519,14 +435,7 @@ class SiteSearchEngineServiceRestInterceptor:
         """
         return response
 
-    def post_fetch_domain_verification_status_with_metadata(
-        self,
-        response: site_search_engine_service.FetchDomainVerificationStatusResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        site_search_engine_service.FetchDomainVerificationStatusResponse,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+    def post_fetch_domain_verification_status_with_metadata(self, response: site_search_engine_service.FetchDomainVerificationStatusResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]) -> Tuple[site_search_engine_service.FetchDomainVerificationStatusResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for fetch_domain_verification_status
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -541,14 +450,7 @@ class SiteSearchEngineServiceRestInterceptor:
         """
         return response, metadata
 
-    def pre_get_site_search_engine(
-        self,
-        request: site_search_engine_service.GetSiteSearchEngineRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        site_search_engine_service.GetSiteSearchEngineRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+    def pre_get_site_search_engine(self, request: site_search_engine_service.GetSiteSearchEngineRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]) -> Tuple[site_search_engine_service.GetSiteSearchEngineRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_site_search_engine
 
         Override in a subclass to manipulate the request or metadata
@@ -556,9 +458,7 @@ class SiteSearchEngineServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_get_site_search_engine(
-        self, response: site_search_engine.SiteSearchEngine
-    ) -> site_search_engine.SiteSearchEngine:
+    def post_get_site_search_engine(self, response: site_search_engine.SiteSearchEngine) -> site_search_engine.SiteSearchEngine:
         """Post-rpc interceptor for get_site_search_engine
 
         DEPRECATED. Please use the `post_get_site_search_engine_with_metadata`
@@ -571,13 +471,7 @@ class SiteSearchEngineServiceRestInterceptor:
         """
         return response
 
-    def post_get_site_search_engine_with_metadata(
-        self,
-        response: site_search_engine.SiteSearchEngine,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        site_search_engine.SiteSearchEngine, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+    def post_get_site_search_engine_with_metadata(self, response: site_search_engine.SiteSearchEngine, metadata: Sequence[Tuple[str, Union[str, bytes]]]) -> Tuple[site_search_engine.SiteSearchEngine, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for get_site_search_engine
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -592,14 +486,7 @@ class SiteSearchEngineServiceRestInterceptor:
         """
         return response, metadata
 
-    def pre_get_target_site(
-        self,
-        request: site_search_engine_service.GetTargetSiteRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        site_search_engine_service.GetTargetSiteRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+    def pre_get_target_site(self, request: site_search_engine_service.GetTargetSiteRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]) -> Tuple[site_search_engine_service.GetTargetSiteRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_target_site
 
         Override in a subclass to manipulate the request or metadata
@@ -607,9 +494,7 @@ class SiteSearchEngineServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_get_target_site(
-        self, response: site_search_engine.TargetSite
-    ) -> site_search_engine.TargetSite:
+    def post_get_target_site(self, response: site_search_engine.TargetSite) -> site_search_engine.TargetSite:
         """Post-rpc interceptor for get_target_site
 
         DEPRECATED. Please use the `post_get_target_site_with_metadata`
@@ -622,11 +507,7 @@ class SiteSearchEngineServiceRestInterceptor:
         """
         return response
 
-    def post_get_target_site_with_metadata(
-        self,
-        response: site_search_engine.TargetSite,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[site_search_engine.TargetSite, Sequence[Tuple[str, Union[str, bytes]]]]:
+    def post_get_target_site_with_metadata(self, response: site_search_engine.TargetSite, metadata: Sequence[Tuple[str, Union[str, bytes]]]) -> Tuple[site_search_engine.TargetSite, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for get_target_site
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -641,14 +522,7 @@ class SiteSearchEngineServiceRestInterceptor:
         """
         return response, metadata
 
-    def pre_get_uri_pattern_document_data(
-        self,
-        request: site_search_engine_service.GetUriPatternDocumentDataRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        site_search_engine_service.GetUriPatternDocumentDataRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+    def pre_get_uri_pattern_document_data(self, request: site_search_engine_service.GetUriPatternDocumentDataRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]) -> Tuple[site_search_engine_service.GetUriPatternDocumentDataRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_uri_pattern_document_data
 
         Override in a subclass to manipulate the request or metadata
@@ -656,9 +530,7 @@ class SiteSearchEngineServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_get_uri_pattern_document_data(
-        self, response: site_search_engine_service.GetUriPatternDocumentDataResponse
-    ) -> site_search_engine_service.GetUriPatternDocumentDataResponse:
+    def post_get_uri_pattern_document_data(self, response: site_search_engine_service.GetUriPatternDocumentDataResponse) -> site_search_engine_service.GetUriPatternDocumentDataResponse:
         """Post-rpc interceptor for get_uri_pattern_document_data
 
         DEPRECATED. Please use the `post_get_uri_pattern_document_data_with_metadata`
@@ -671,14 +543,7 @@ class SiteSearchEngineServiceRestInterceptor:
         """
         return response
 
-    def post_get_uri_pattern_document_data_with_metadata(
-        self,
-        response: site_search_engine_service.GetUriPatternDocumentDataResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        site_search_engine_service.GetUriPatternDocumentDataResponse,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+    def post_get_uri_pattern_document_data_with_metadata(self, response: site_search_engine_service.GetUriPatternDocumentDataResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]) -> Tuple[site_search_engine_service.GetUriPatternDocumentDataResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for get_uri_pattern_document_data
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -693,14 +558,7 @@ class SiteSearchEngineServiceRestInterceptor:
         """
         return response, metadata
 
-    def pre_list_target_sites(
-        self,
-        request: site_search_engine_service.ListTargetSitesRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        site_search_engine_service.ListTargetSitesRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+    def pre_list_target_sites(self, request: site_search_engine_service.ListTargetSitesRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]) -> Tuple[site_search_engine_service.ListTargetSitesRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_target_sites
 
         Override in a subclass to manipulate the request or metadata
@@ -708,9 +566,7 @@ class SiteSearchEngineServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_list_target_sites(
-        self, response: site_search_engine_service.ListTargetSitesResponse
-    ) -> site_search_engine_service.ListTargetSitesResponse:
+    def post_list_target_sites(self, response: site_search_engine_service.ListTargetSitesResponse) -> site_search_engine_service.ListTargetSitesResponse:
         """Post-rpc interceptor for list_target_sites
 
         DEPRECATED. Please use the `post_list_target_sites_with_metadata`
@@ -723,14 +579,7 @@ class SiteSearchEngineServiceRestInterceptor:
         """
         return response
 
-    def post_list_target_sites_with_metadata(
-        self,
-        response: site_search_engine_service.ListTargetSitesResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        site_search_engine_service.ListTargetSitesResponse,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+    def post_list_target_sites_with_metadata(self, response: site_search_engine_service.ListTargetSitesResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]) -> Tuple[site_search_engine_service.ListTargetSitesResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for list_target_sites
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -745,14 +594,7 @@ class SiteSearchEngineServiceRestInterceptor:
         """
         return response, metadata
 
-    def pre_recrawl_uris(
-        self,
-        request: site_search_engine_service.RecrawlUrisRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        site_search_engine_service.RecrawlUrisRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+    def pre_recrawl_uris(self, request: site_search_engine_service.RecrawlUrisRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]) -> Tuple[site_search_engine_service.RecrawlUrisRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for recrawl_uris
 
         Override in a subclass to manipulate the request or metadata
@@ -760,9 +602,7 @@ class SiteSearchEngineServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_recrawl_uris(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_recrawl_uris(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for recrawl_uris
 
         DEPRECATED. Please use the `post_recrawl_uris_with_metadata`
@@ -775,11 +615,7 @@ class SiteSearchEngineServiceRestInterceptor:
         """
         return response
 
-    def post_recrawl_uris_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
+    def post_recrawl_uris_with_metadata(self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for recrawl_uris
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -794,14 +630,7 @@ class SiteSearchEngineServiceRestInterceptor:
         """
         return response, metadata
 
-    def pre_set_uri_pattern_document_data(
-        self,
-        request: site_search_engine_service.SetUriPatternDocumentDataRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        site_search_engine_service.SetUriPatternDocumentDataRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+    def pre_set_uri_pattern_document_data(self, request: site_search_engine_service.SetUriPatternDocumentDataRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]) -> Tuple[site_search_engine_service.SetUriPatternDocumentDataRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for set_uri_pattern_document_data
 
         Override in a subclass to manipulate the request or metadata
@@ -809,9 +638,7 @@ class SiteSearchEngineServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_set_uri_pattern_document_data(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_set_uri_pattern_document_data(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for set_uri_pattern_document_data
 
         DEPRECATED. Please use the `post_set_uri_pattern_document_data_with_metadata`
@@ -824,11 +651,7 @@ class SiteSearchEngineServiceRestInterceptor:
         """
         return response
 
-    def post_set_uri_pattern_document_data_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
+    def post_set_uri_pattern_document_data_with_metadata(self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for set_uri_pattern_document_data
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -843,14 +666,7 @@ class SiteSearchEngineServiceRestInterceptor:
         """
         return response, metadata
 
-    def pre_update_target_site(
-        self,
-        request: site_search_engine_service.UpdateTargetSiteRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        site_search_engine_service.UpdateTargetSiteRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+    def pre_update_target_site(self, request: site_search_engine_service.UpdateTargetSiteRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]) -> Tuple[site_search_engine_service.UpdateTargetSiteRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for update_target_site
 
         Override in a subclass to manipulate the request or metadata
@@ -858,9 +674,7 @@ class SiteSearchEngineServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_update_target_site(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_update_target_site(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for update_target_site
 
         DEPRECATED. Please use the `post_update_target_site_with_metadata`
@@ -873,11 +687,7 @@ class SiteSearchEngineServiceRestInterceptor:
         """
         return response
 
-    def post_update_target_site_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
+    def post_update_target_site_with_metadata(self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for update_target_site
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -893,12 +703,8 @@ class SiteSearchEngineServiceRestInterceptor:
         return response, metadata
 
     def pre_cancel_operation(
-        self,
-        request: operations_pb2.CancelOperationRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        operations_pb2.CancelOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: operations_pb2.CancelOperationRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[operations_pb2.CancelOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for cancel_operation
 
         Override in a subclass to manipulate the request or metadata
@@ -906,7 +712,9 @@ class SiteSearchEngineServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_cancel_operation(self, response: None) -> None:
+    def post_cancel_operation(
+        self, response: None
+    ) -> None:
         """Post-rpc interceptor for cancel_operation
 
         Override in a subclass to manipulate the response
@@ -916,12 +724,8 @@ class SiteSearchEngineServiceRestInterceptor:
         return response
 
     def pre_get_operation(
-        self,
-        request: operations_pb2.GetOperationRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        operations_pb2.GetOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: operations_pb2.GetOperationRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[operations_pb2.GetOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_operation
 
         Override in a subclass to manipulate the request or metadata
@@ -941,12 +745,8 @@ class SiteSearchEngineServiceRestInterceptor:
         return response
 
     def pre_list_operations(
-        self,
-        request: operations_pb2.ListOperationsRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        operations_pb2.ListOperationsRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: operations_pb2.ListOperationsRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[operations_pb2.ListOperationsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_operations
 
         Override in a subclass to manipulate the request or metadata
@@ -985,21 +785,20 @@ class SiteSearchEngineServiceRestTransport(_BaseSiteSearchEngineServiceRestTrans
     It sends JSON representations of protocol buffers over HTTP/1.1
     """
 
-    def __init__(
-        self,
-        *,
-        host: str = "discoveryengine.googleapis.com",
-        credentials: Optional[ga_credentials.Credentials] = None,
-        credentials_file: Optional[str] = None,
-        scopes: Optional[Sequence[str]] = None,
-        client_cert_source_for_mtls: Optional[Callable[[], Tuple[bytes, bytes]]] = None,
-        quota_project_id: Optional[str] = None,
-        client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
-        always_use_jwt_access: Optional[bool] = False,
-        url_scheme: str = "https",
-        interceptor: Optional[SiteSearchEngineServiceRestInterceptor] = None,
-        api_audience: Optional[str] = None,
-    ) -> None:
+    def __init__(self, *,
+            host: str = 'discoveryengine.googleapis.com',
+            credentials: Optional[ga_credentials.Credentials] = None,
+            credentials_file: Optional[str] = None,
+            scopes: Optional[Sequence[str]] = None,
+            client_cert_source_for_mtls: Optional[Callable[[
+                ], Tuple[bytes, bytes]]] = None,
+            quota_project_id: Optional[str] = None,
+            client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
+            always_use_jwt_access: Optional[bool] = False,
+            url_scheme: str = 'https',
+            interceptor: Optional[SiteSearchEngineServiceRestInterceptor] = None,
+            api_audience: Optional[str] = None,
+            ) -> None:
         """Instantiate the transport.
 
         Args:
@@ -1043,11 +842,10 @@ class SiteSearchEngineServiceRestTransport(_BaseSiteSearchEngineServiceRestTrans
             client_info=client_info,
             always_use_jwt_access=always_use_jwt_access,
             url_scheme=url_scheme,
-            api_audience=api_audience,
+            api_audience=api_audience
         )
         self._session = AuthorizedSession(
-            self._credentials, default_host=self.DEFAULT_HOST
-        )
+            self._credentials, default_host=self.DEFAULT_HOST)
         self._operations_client: Optional[operations_v1.AbstractOperationsClient] = None
         if client_cert_source_for_mtls:
             self._session.configure_mtls_channel(client_cert_source_for_mtls)
@@ -1064,172 +862,166 @@ class SiteSearchEngineServiceRestTransport(_BaseSiteSearchEngineServiceRestTrans
         # Only create a new client if we do not already have one.
         if self._operations_client is None:
             http_options: Dict[str, List[Dict[str, str]]] = {
-                "google.longrunning.Operations.CancelOperation": [
+                'google.longrunning.Operations.CancelOperation': [
                     {
-                        "method": "post",
-                        "uri": "/v1alpha/{name=projects/*/locations/*/collections/*/dataStores/*/branches/*/operations/*}:cancel",
-                        "body": "*",
+                        'method': 'post',
+                        'uri': '/v1alpha/{name=projects/*/locations/*/collections/*/dataStores/*/branches/*/operations/*}:cancel',
+                        'body': '*',
                     },
                     {
-                        "method": "post",
-                        "uri": "/v1alpha/{name=projects/*/locations/*/dataStores/*/branches/*/operations/*}:cancel",
-                        "body": "*",
-                    },
-                ],
-                "google.longrunning.Operations.GetOperation": [
-                    {
-                        "method": "get",
-                        "uri": "/v1alpha/{name=projects/*/locations/*/collections/*/dataConnector/operations/*}",
-                    },
-                    {
-                        "method": "get",
-                        "uri": "/v1alpha/{name=projects/*/locations/*/collections/*/dataStores/*/branches/*/operations/*}",
-                    },
-                    {
-                        "method": "get",
-                        "uri": "/v1alpha/{name=projects/*/locations/*/collections/*/dataStores/*/models/*/operations/*}",
-                    },
-                    {
-                        "method": "get",
-                        "uri": "/v1alpha/{name=projects/*/locations/*/collections/*/dataStores/*/operations/*}",
-                    },
-                    {
-                        "method": "get",
-                        "uri": "/v1alpha/{name=projects/*/locations/*/collections/*/dataStores/*/schemas/*/operations/*}",
-                    },
-                    {
-                        "method": "get",
-                        "uri": "/v1alpha/{name=projects/*/locations/*/collections/*/dataStores/*/siteSearchEngine/operations/*}",
-                    },
-                    {
-                        "method": "get",
-                        "uri": "/v1alpha/{name=projects/*/locations/*/collections/*/dataStores/*/siteSearchEngine/targetSites/operations/*}",
-                    },
-                    {
-                        "method": "get",
-                        "uri": "/v1alpha/{name=projects/*/locations/*/collections/*/engines/*/operations/*}",
-                    },
-                    {
-                        "method": "get",
-                        "uri": "/v1alpha/{name=projects/*/locations/*/collections/*/operations/*}",
-                    },
-                    {
-                        "method": "get",
-                        "uri": "/v1alpha/{name=projects/*/locations/*/dataStores/*/branches/*/operations/*}",
-                    },
-                    {
-                        "method": "get",
-                        "uri": "/v1alpha/{name=projects/*/locations/*/dataStores/*/models/*/operations/*}",
-                    },
-                    {
-                        "method": "get",
-                        "uri": "/v1alpha/{name=projects/*/locations/*/dataStores/*/operations/*}",
-                    },
-                    {
-                        "method": "get",
-                        "uri": "/v1alpha/{name=projects/*/locations/*/evaluations/*/operations/*}",
-                    },
-                    {
-                        "method": "get",
-                        "uri": "/v1alpha/{name=projects/*/locations/*/identity_mapping_stores/*/operations/*}",
-                    },
-                    {
-                        "method": "get",
-                        "uri": "/v1alpha/{name=projects/*/locations/*/operations/*}",
-                    },
-                    {
-                        "method": "get",
-                        "uri": "/v1alpha/{name=projects/*/locations/*/sampleQuerySets/*/operations/*}",
-                    },
-                    {
-                        "method": "get",
-                        "uri": "/v1alpha/{name=projects/*/operations/*}",
+                        'method': 'post',
+                        'uri': '/v1alpha/{name=projects/*/locations/*/dataStores/*/branches/*/operations/*}:cancel',
+                        'body': '*',
                     },
                 ],
-                "google.longrunning.Operations.ListOperations": [
+                'google.longrunning.Operations.GetOperation': [
                     {
-                        "method": "get",
-                        "uri": "/v1alpha/{name=projects/*/locations/*/collections/*/dataConnector}/operations",
+                        'method': 'get',
+                        'uri': '/v1alpha/{name=projects/*/locations/*/collections/*/dataConnector/operations/*}',
                     },
                     {
-                        "method": "get",
-                        "uri": "/v1alpha/{name=projects/*/locations/*/collections/*/dataStores/*/branches/*}/operations",
+                        'method': 'get',
+                        'uri': '/v1alpha/{name=projects/*/locations/*/collections/*/dataStores/*/branches/*/operations/*}',
                     },
                     {
-                        "method": "get",
-                        "uri": "/v1alpha/{name=projects/*/locations/*/collections/*/dataStores/*/models/*}/operations",
+                        'method': 'get',
+                        'uri': '/v1alpha/{name=projects/*/locations/*/collections/*/dataStores/*/models/*/operations/*}',
                     },
                     {
-                        "method": "get",
-                        "uri": "/v1alpha/{name=projects/*/locations/*/collections/*/dataStores/*/schemas/*}/operations",
+                        'method': 'get',
+                        'uri': '/v1alpha/{name=projects/*/locations/*/collections/*/dataStores/*/operations/*}',
                     },
                     {
-                        "method": "get",
-                        "uri": "/v1alpha/{name=projects/*/locations/*/collections/*/dataStores/*/siteSearchEngine/targetSites}/operations",
+                        'method': 'get',
+                        'uri': '/v1alpha/{name=projects/*/locations/*/collections/*/dataStores/*/schemas/*/operations/*}',
                     },
                     {
-                        "method": "get",
-                        "uri": "/v1alpha/{name=projects/*/locations/*/collections/*/dataStores/*/siteSearchEngine}/operations",
+                        'method': 'get',
+                        'uri': '/v1alpha/{name=projects/*/locations/*/collections/*/dataStores/*/siteSearchEngine/operations/*}',
                     },
                     {
-                        "method": "get",
-                        "uri": "/v1alpha/{name=projects/*/locations/*/collections/*/dataStores/*}/operations",
+                        'method': 'get',
+                        'uri': '/v1alpha/{name=projects/*/locations/*/collections/*/dataStores/*/siteSearchEngine/targetSites/operations/*}',
                     },
                     {
-                        "method": "get",
-                        "uri": "/v1alpha/{name=projects/*/locations/*/collections/*/engines/*}/operations",
+                        'method': 'get',
+                        'uri': '/v1alpha/{name=projects/*/locations/*/collections/*/engines/*/operations/*}',
                     },
                     {
-                        "method": "get",
-                        "uri": "/v1alpha/{name=projects/*/locations/*/collections/*}/operations",
+                        'method': 'get',
+                        'uri': '/v1alpha/{name=projects/*/locations/*/collections/*/operations/*}',
                     },
                     {
-                        "method": "get",
-                        "uri": "/v1alpha/{name=projects/*/locations/*/dataStores/*/branches/*}/operations",
+                        'method': 'get',
+                        'uri': '/v1alpha/{name=projects/*/locations/*/dataStores/*/branches/*/operations/*}',
                     },
                     {
-                        "method": "get",
-                        "uri": "/v1alpha/{name=projects/*/locations/*/dataStores/*/models/*}/operations",
+                        'method': 'get',
+                        'uri': '/v1alpha/{name=projects/*/locations/*/dataStores/*/models/*/operations/*}',
                     },
                     {
-                        "method": "get",
-                        "uri": "/v1alpha/{name=projects/*/locations/*/dataStores/*}/operations",
+                        'method': 'get',
+                        'uri': '/v1alpha/{name=projects/*/locations/*/dataStores/*/operations/*}',
                     },
                     {
-                        "method": "get",
-                        "uri": "/v1alpha/{name=projects/*/locations/*/identity_mapping_stores/*}/operations",
+                        'method': 'get',
+                        'uri': '/v1alpha/{name=projects/*/locations/*/evaluations/*/operations/*}',
                     },
                     {
-                        "method": "get",
-                        "uri": "/v1alpha/{name=projects/*/locations/*}/operations",
+                        'method': 'get',
+                        'uri': '/v1alpha/{name=projects/*/locations/*/identity_mapping_stores/*/operations/*}',
                     },
                     {
-                        "method": "get",
-                        "uri": "/v1alpha/{name=projects/*}/operations",
+                        'method': 'get',
+                        'uri': '/v1alpha/{name=projects/*/locations/*/operations/*}',
+                    },
+                    {
+                        'method': 'get',
+                        'uri': '/v1alpha/{name=projects/*/locations/*/sampleQuerySets/*/operations/*}',
+                    },
+                    {
+                        'method': 'get',
+                        'uri': '/v1alpha/{name=projects/*/operations/*}',
+                    },
+                ],
+                'google.longrunning.Operations.ListOperations': [
+                    {
+                        'method': 'get',
+                        'uri': '/v1alpha/{name=projects/*/locations/*/collections/*/dataConnector}/operations',
+                    },
+                    {
+                        'method': 'get',
+                        'uri': '/v1alpha/{name=projects/*/locations/*/collections/*/dataStores/*/branches/*}/operations',
+                    },
+                    {
+                        'method': 'get',
+                        'uri': '/v1alpha/{name=projects/*/locations/*/collections/*/dataStores/*/models/*}/operations',
+                    },
+                    {
+                        'method': 'get',
+                        'uri': '/v1alpha/{name=projects/*/locations/*/collections/*/dataStores/*/schemas/*}/operations',
+                    },
+                    {
+                        'method': 'get',
+                        'uri': '/v1alpha/{name=projects/*/locations/*/collections/*/dataStores/*/siteSearchEngine/targetSites}/operations',
+                    },
+                    {
+                        'method': 'get',
+                        'uri': '/v1alpha/{name=projects/*/locations/*/collections/*/dataStores/*/siteSearchEngine}/operations',
+                    },
+                    {
+                        'method': 'get',
+                        'uri': '/v1alpha/{name=projects/*/locations/*/collections/*/dataStores/*}/operations',
+                    },
+                    {
+                        'method': 'get',
+                        'uri': '/v1alpha/{name=projects/*/locations/*/collections/*/engines/*}/operations',
+                    },
+                    {
+                        'method': 'get',
+                        'uri': '/v1alpha/{name=projects/*/locations/*/collections/*}/operations',
+                    },
+                    {
+                        'method': 'get',
+                        'uri': '/v1alpha/{name=projects/*/locations/*/dataStores/*/branches/*}/operations',
+                    },
+                    {
+                        'method': 'get',
+                        'uri': '/v1alpha/{name=projects/*/locations/*/dataStores/*/models/*}/operations',
+                    },
+                    {
+                        'method': 'get',
+                        'uri': '/v1alpha/{name=projects/*/locations/*/dataStores/*}/operations',
+                    },
+                    {
+                        'method': 'get',
+                        'uri': '/v1alpha/{name=projects/*/locations/*/identity_mapping_stores/*}/operations',
+                    },
+                    {
+                        'method': 'get',
+                        'uri': '/v1alpha/{name=projects/*/locations/*}/operations',
+                    },
+                    {
+                        'method': 'get',
+                        'uri': '/v1alpha/{name=projects/*}/operations',
                     },
                 ],
             }
 
             rest_transport = operations_v1.OperationsRestTransport(
-                host=self._host,
-                # use the credentials which are saved
-                credentials=self._credentials,
-                scopes=self._scopes,
-                http_options=http_options,
-                path_prefix="v1alpha",
-            )
+                    host=self._host,
+                    # use the credentials which are saved
+                    credentials=self._credentials,
+                    scopes=self._scopes,
+                    http_options=http_options,
+                    path_prefix="v1alpha")
 
-            self._operations_client = operations_v1.AbstractOperationsClient(
-                transport=rest_transport
-            )
+            self._operations_client = operations_v1.AbstractOperationsClient(transport=rest_transport)
 
         # Return the client from cache.
         return self._operations_client
 
-    class _BatchCreateTargetSites(
-        _BaseSiteSearchEngineServiceRestTransport._BaseBatchCreateTargetSites,
-        SiteSearchEngineServiceRestStub,
-    ):
+    class _BatchCreateTargetSites(_BaseSiteSearchEngineServiceRestTransport._BaseBatchCreateTargetSites, SiteSearchEngineServiceRestStub):
         def __hash__(self):
             return hash("SiteSearchEngineServiceRestTransport.BatchCreateTargetSites")
 
@@ -1241,29 +1033,27 @@ class SiteSearchEngineServiceRestTransport(_BaseSiteSearchEngineServiceRestTrans
             session,
             timeout,
             transcoded_request,
-            body=None,
-        ):
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+            body=None):
+
+            uri = transcoded_request['uri']
+            method = transcoded_request['method']
             headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
+            headers['Content-Type'] = 'application/json'
             response = getattr(session, method)(
                 "{host}{uri}".format(host=host, uri=uri),
                 timeout=timeout,
                 headers=headers,
                 params=rest_helpers.flatten_query_params(query_params, strict=True),
                 data=body,
-            )
+                )
             return response
 
-        def __call__(
-            self,
-            request: site_search_engine_service.BatchCreateTargetSitesRequest,
-            *,
-            retry: OptionalRetry = gapic_v1.method.DEFAULT,
-            timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
-        ) -> operations_pb2.Operation:
+        def __call__(self,
+                request: site_search_engine_service.BatchCreateTargetSitesRequest, *,
+                retry: OptionalRetry=gapic_v1.method.DEFAULT,
+                timeout: Optional[float]=None,
+                metadata: Sequence[Tuple[str, Union[str, bytes]]]=(),
+                ) -> operations_pb2.Operation:
             r"""Call the batch create target sites method over HTTP.
 
             Args:
@@ -1287,46 +1077,32 @@ class SiteSearchEngineServiceRestTransport(_BaseSiteSearchEngineServiceRestTrans
 
             """
 
-            http_options = (
-                _BaseSiteSearchEngineServiceRestTransport._BaseBatchCreateTargetSites._get_http_options()
-            )
+            http_options = _BaseSiteSearchEngineServiceRestTransport._BaseBatchCreateTargetSites._get_http_options()
 
-            request, metadata = self._interceptor.pre_batch_create_target_sites(
-                request, metadata
-            )
-            transcoded_request = _BaseSiteSearchEngineServiceRestTransport._BaseBatchCreateTargetSites._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_batch_create_target_sites(request, metadata)
+            transcoded_request = _BaseSiteSearchEngineServiceRestTransport._BaseBatchCreateTargetSites._get_transcoded_request(http_options, request)
 
-            body = _BaseSiteSearchEngineServiceRestTransport._BaseBatchCreateTargetSites._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseSiteSearchEngineServiceRestTransport._BaseBatchCreateTargetSites._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseSiteSearchEngineServiceRestTransport._BaseBatchCreateTargetSites._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseSiteSearchEngineServiceRestTransport._BaseBatchCreateTargetSites._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
-                method = transcoded_request["method"]
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request['uri'])
+                method = transcoded_request['method']
                 try:
                     request_payload = json_format.MessageToJson(request)
                 except:
                     request_payload = None
                 http_request = {
-                    "payload": request_payload,
-                    "requestMethod": method,
-                    "requestUrl": request_url,
-                    "headers": dict(metadata),
+                  "payload": request_payload,
+                  "requestMethod": method,
+                  "requestUrl": request_url,
+                  "headers": dict(metadata),
                 }
                 _LOGGER.debug(
                     f"Sending request for google.cloud.discoveryengine_v1alpha.SiteSearchEngineServiceClient.BatchCreateTargetSites",
-                    extra={
+                    extra = {
                         "serviceName": "google.cloud.discoveryengine.v1alpha.SiteSearchEngineService",
                         "rpcName": "BatchCreateTargetSites",
                         "httpRequest": http_request,
@@ -1335,15 +1111,7 @@ class SiteSearchEngineServiceRestTransport(_BaseSiteSearchEngineServiceRestTrans
                 )
 
             # Send the request
-            response = SiteSearchEngineServiceRestTransport._BatchCreateTargetSites._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
-            )
+            response = SiteSearchEngineServiceRestTransport._BatchCreateTargetSites._get_response(self._host, metadata, query_params, self._session, timeout, transcoded_request, body)
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
             # subclass.
@@ -1356,24 +1124,20 @@ class SiteSearchEngineServiceRestTransport(_BaseSiteSearchEngineServiceRestTrans
 
             resp = self._interceptor.post_batch_create_target_sites(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_batch_create_target_sites_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_batch_create_target_sites_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
                     response_payload = None
                 http_response = {
-                    "payload": response_payload,
-                    "headers": dict(response.headers),
-                    "status": response.status_code,
+                "payload": response_payload,
+                "headers":  dict(response.headers),
+                "status": response.status_code,
                 }
                 _LOGGER.debug(
                     "Received response for google.cloud.discoveryengine_v1alpha.SiteSearchEngineServiceClient.batch_create_target_sites",
-                    extra={
+                    extra = {
                         "serviceName": "google.cloud.discoveryengine.v1alpha.SiteSearchEngineService",
                         "rpcName": "BatchCreateTargetSites",
                         "metadata": http_response["headers"],
@@ -1382,10 +1146,7 @@ class SiteSearchEngineServiceRestTransport(_BaseSiteSearchEngineServiceRestTrans
                 )
             return resp
 
-    class _BatchVerifyTargetSites(
-        _BaseSiteSearchEngineServiceRestTransport._BaseBatchVerifyTargetSites,
-        SiteSearchEngineServiceRestStub,
-    ):
+    class _BatchVerifyTargetSites(_BaseSiteSearchEngineServiceRestTransport._BaseBatchVerifyTargetSites, SiteSearchEngineServiceRestStub):
         def __hash__(self):
             return hash("SiteSearchEngineServiceRestTransport.BatchVerifyTargetSites")
 
@@ -1397,29 +1158,27 @@ class SiteSearchEngineServiceRestTransport(_BaseSiteSearchEngineServiceRestTrans
             session,
             timeout,
             transcoded_request,
-            body=None,
-        ):
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+            body=None):
+
+            uri = transcoded_request['uri']
+            method = transcoded_request['method']
             headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
+            headers['Content-Type'] = 'application/json'
             response = getattr(session, method)(
                 "{host}{uri}".format(host=host, uri=uri),
                 timeout=timeout,
                 headers=headers,
                 params=rest_helpers.flatten_query_params(query_params, strict=True),
                 data=body,
-            )
+                )
             return response
 
-        def __call__(
-            self,
-            request: site_search_engine_service.BatchVerifyTargetSitesRequest,
-            *,
-            retry: OptionalRetry = gapic_v1.method.DEFAULT,
-            timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
-        ) -> operations_pb2.Operation:
+        def __call__(self,
+                request: site_search_engine_service.BatchVerifyTargetSitesRequest, *,
+                retry: OptionalRetry=gapic_v1.method.DEFAULT,
+                timeout: Optional[float]=None,
+                metadata: Sequence[Tuple[str, Union[str, bytes]]]=(),
+                ) -> operations_pb2.Operation:
             r"""Call the batch verify target sites method over HTTP.
 
             Args:
@@ -1443,46 +1202,32 @@ class SiteSearchEngineServiceRestTransport(_BaseSiteSearchEngineServiceRestTrans
 
             """
 
-            http_options = (
-                _BaseSiteSearchEngineServiceRestTransport._BaseBatchVerifyTargetSites._get_http_options()
-            )
+            http_options = _BaseSiteSearchEngineServiceRestTransport._BaseBatchVerifyTargetSites._get_http_options()
 
-            request, metadata = self._interceptor.pre_batch_verify_target_sites(
-                request, metadata
-            )
-            transcoded_request = _BaseSiteSearchEngineServiceRestTransport._BaseBatchVerifyTargetSites._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_batch_verify_target_sites(request, metadata)
+            transcoded_request = _BaseSiteSearchEngineServiceRestTransport._BaseBatchVerifyTargetSites._get_transcoded_request(http_options, request)
 
-            body = _BaseSiteSearchEngineServiceRestTransport._BaseBatchVerifyTargetSites._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseSiteSearchEngineServiceRestTransport._BaseBatchVerifyTargetSites._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseSiteSearchEngineServiceRestTransport._BaseBatchVerifyTargetSites._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseSiteSearchEngineServiceRestTransport._BaseBatchVerifyTargetSites._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
-                method = transcoded_request["method"]
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request['uri'])
+                method = transcoded_request['method']
                 try:
                     request_payload = json_format.MessageToJson(request)
                 except:
                     request_payload = None
                 http_request = {
-                    "payload": request_payload,
-                    "requestMethod": method,
-                    "requestUrl": request_url,
-                    "headers": dict(metadata),
+                  "payload": request_payload,
+                  "requestMethod": method,
+                  "requestUrl": request_url,
+                  "headers": dict(metadata),
                 }
                 _LOGGER.debug(
                     f"Sending request for google.cloud.discoveryengine_v1alpha.SiteSearchEngineServiceClient.BatchVerifyTargetSites",
-                    extra={
+                    extra = {
                         "serviceName": "google.cloud.discoveryengine.v1alpha.SiteSearchEngineService",
                         "rpcName": "BatchVerifyTargetSites",
                         "httpRequest": http_request,
@@ -1491,15 +1236,7 @@ class SiteSearchEngineServiceRestTransport(_BaseSiteSearchEngineServiceRestTrans
                 )
 
             # Send the request
-            response = SiteSearchEngineServiceRestTransport._BatchVerifyTargetSites._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
-            )
+            response = SiteSearchEngineServiceRestTransport._BatchVerifyTargetSites._get_response(self._host, metadata, query_params, self._session, timeout, transcoded_request, body)
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
             # subclass.
@@ -1512,24 +1249,20 @@ class SiteSearchEngineServiceRestTransport(_BaseSiteSearchEngineServiceRestTrans
 
             resp = self._interceptor.post_batch_verify_target_sites(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_batch_verify_target_sites_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_batch_verify_target_sites_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
                     response_payload = None
                 http_response = {
-                    "payload": response_payload,
-                    "headers": dict(response.headers),
-                    "status": response.status_code,
+                "payload": response_payload,
+                "headers":  dict(response.headers),
+                "status": response.status_code,
                 }
                 _LOGGER.debug(
                     "Received response for google.cloud.discoveryengine_v1alpha.SiteSearchEngineServiceClient.batch_verify_target_sites",
-                    extra={
+                    extra = {
                         "serviceName": "google.cloud.discoveryengine.v1alpha.SiteSearchEngineService",
                         "rpcName": "BatchVerifyTargetSites",
                         "metadata": http_response["headers"],
@@ -1538,10 +1271,7 @@ class SiteSearchEngineServiceRestTransport(_BaseSiteSearchEngineServiceRestTrans
                 )
             return resp
 
-    class _CreateTargetSite(
-        _BaseSiteSearchEngineServiceRestTransport._BaseCreateTargetSite,
-        SiteSearchEngineServiceRestStub,
-    ):
+    class _CreateTargetSite(_BaseSiteSearchEngineServiceRestTransport._BaseCreateTargetSite, SiteSearchEngineServiceRestStub):
         def __hash__(self):
             return hash("SiteSearchEngineServiceRestTransport.CreateTargetSite")
 
@@ -1553,29 +1283,27 @@ class SiteSearchEngineServiceRestTransport(_BaseSiteSearchEngineServiceRestTrans
             session,
             timeout,
             transcoded_request,
-            body=None,
-        ):
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+            body=None):
+
+            uri = transcoded_request['uri']
+            method = transcoded_request['method']
             headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
+            headers['Content-Type'] = 'application/json'
             response = getattr(session, method)(
                 "{host}{uri}".format(host=host, uri=uri),
                 timeout=timeout,
                 headers=headers,
                 params=rest_helpers.flatten_query_params(query_params, strict=True),
                 data=body,
-            )
+                )
             return response
 
-        def __call__(
-            self,
-            request: site_search_engine_service.CreateTargetSiteRequest,
-            *,
-            retry: OptionalRetry = gapic_v1.method.DEFAULT,
-            timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
-        ) -> operations_pb2.Operation:
+        def __call__(self,
+                request: site_search_engine_service.CreateTargetSiteRequest, *,
+                retry: OptionalRetry=gapic_v1.method.DEFAULT,
+                timeout: Optional[float]=None,
+                metadata: Sequence[Tuple[str, Union[str, bytes]]]=(),
+                ) -> operations_pb2.Operation:
             r"""Call the create target site method over HTTP.
 
             Args:
@@ -1599,46 +1327,32 @@ class SiteSearchEngineServiceRestTransport(_BaseSiteSearchEngineServiceRestTrans
 
             """
 
-            http_options = (
-                _BaseSiteSearchEngineServiceRestTransport._BaseCreateTargetSite._get_http_options()
-            )
+            http_options = _BaseSiteSearchEngineServiceRestTransport._BaseCreateTargetSite._get_http_options()
 
-            request, metadata = self._interceptor.pre_create_target_site(
-                request, metadata
-            )
-            transcoded_request = _BaseSiteSearchEngineServiceRestTransport._BaseCreateTargetSite._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_create_target_site(request, metadata)
+            transcoded_request = _BaseSiteSearchEngineServiceRestTransport._BaseCreateTargetSite._get_transcoded_request(http_options, request)
 
-            body = _BaseSiteSearchEngineServiceRestTransport._BaseCreateTargetSite._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseSiteSearchEngineServiceRestTransport._BaseCreateTargetSite._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseSiteSearchEngineServiceRestTransport._BaseCreateTargetSite._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseSiteSearchEngineServiceRestTransport._BaseCreateTargetSite._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
-                method = transcoded_request["method"]
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request['uri'])
+                method = transcoded_request['method']
                 try:
                     request_payload = json_format.MessageToJson(request)
                 except:
                     request_payload = None
                 http_request = {
-                    "payload": request_payload,
-                    "requestMethod": method,
-                    "requestUrl": request_url,
-                    "headers": dict(metadata),
+                  "payload": request_payload,
+                  "requestMethod": method,
+                  "requestUrl": request_url,
+                  "headers": dict(metadata),
                 }
                 _LOGGER.debug(
                     f"Sending request for google.cloud.discoveryengine_v1alpha.SiteSearchEngineServiceClient.CreateTargetSite",
-                    extra={
+                    extra = {
                         "serviceName": "google.cloud.discoveryengine.v1alpha.SiteSearchEngineService",
                         "rpcName": "CreateTargetSite",
                         "httpRequest": http_request,
@@ -1647,17 +1361,7 @@ class SiteSearchEngineServiceRestTransport(_BaseSiteSearchEngineServiceRestTrans
                 )
 
             # Send the request
-            response = (
-                SiteSearchEngineServiceRestTransport._CreateTargetSite._get_response(
-                    self._host,
-                    metadata,
-                    query_params,
-                    self._session,
-                    timeout,
-                    transcoded_request,
-                    body,
-                )
-            )
+            response = SiteSearchEngineServiceRestTransport._CreateTargetSite._get_response(self._host, metadata, query_params, self._session, timeout, transcoded_request, body)
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
             # subclass.
@@ -1670,24 +1374,20 @@ class SiteSearchEngineServiceRestTransport(_BaseSiteSearchEngineServiceRestTrans
 
             resp = self._interceptor.post_create_target_site(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_create_target_site_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_create_target_site_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
                     response_payload = None
                 http_response = {
-                    "payload": response_payload,
-                    "headers": dict(response.headers),
-                    "status": response.status_code,
+                "payload": response_payload,
+                "headers":  dict(response.headers),
+                "status": response.status_code,
                 }
                 _LOGGER.debug(
                     "Received response for google.cloud.discoveryengine_v1alpha.SiteSearchEngineServiceClient.create_target_site",
-                    extra={
+                    extra = {
                         "serviceName": "google.cloud.discoveryengine.v1alpha.SiteSearchEngineService",
                         "rpcName": "CreateTargetSite",
                         "metadata": http_response["headers"],
@@ -1696,10 +1396,7 @@ class SiteSearchEngineServiceRestTransport(_BaseSiteSearchEngineServiceRestTrans
                 )
             return resp
 
-    class _DeleteTargetSite(
-        _BaseSiteSearchEngineServiceRestTransport._BaseDeleteTargetSite,
-        SiteSearchEngineServiceRestStub,
-    ):
+    class _DeleteTargetSite(_BaseSiteSearchEngineServiceRestTransport._BaseDeleteTargetSite, SiteSearchEngineServiceRestStub):
         def __hash__(self):
             return hash("SiteSearchEngineServiceRestTransport.DeleteTargetSite")
 
@@ -1711,28 +1408,26 @@ class SiteSearchEngineServiceRestTransport(_BaseSiteSearchEngineServiceRestTrans
             session,
             timeout,
             transcoded_request,
-            body=None,
-        ):
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+            body=None):
+
+            uri = transcoded_request['uri']
+            method = transcoded_request['method']
             headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
+            headers['Content-Type'] = 'application/json'
             response = getattr(session, method)(
                 "{host}{uri}".format(host=host, uri=uri),
                 timeout=timeout,
                 headers=headers,
                 params=rest_helpers.flatten_query_params(query_params, strict=True),
-            )
+                )
             return response
 
-        def __call__(
-            self,
-            request: site_search_engine_service.DeleteTargetSiteRequest,
-            *,
-            retry: OptionalRetry = gapic_v1.method.DEFAULT,
-            timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
-        ) -> operations_pb2.Operation:
+        def __call__(self,
+                request: site_search_engine_service.DeleteTargetSiteRequest, *,
+                retry: OptionalRetry=gapic_v1.method.DEFAULT,
+                timeout: Optional[float]=None,
+                metadata: Sequence[Tuple[str, Union[str, bytes]]]=(),
+                ) -> operations_pb2.Operation:
             r"""Call the delete target site method over HTTP.
 
             Args:
@@ -1756,42 +1451,30 @@ class SiteSearchEngineServiceRestTransport(_BaseSiteSearchEngineServiceRestTrans
 
             """
 
-            http_options = (
-                _BaseSiteSearchEngineServiceRestTransport._BaseDeleteTargetSite._get_http_options()
-            )
+            http_options = _BaseSiteSearchEngineServiceRestTransport._BaseDeleteTargetSite._get_http_options()
 
-            request, metadata = self._interceptor.pre_delete_target_site(
-                request, metadata
-            )
-            transcoded_request = _BaseSiteSearchEngineServiceRestTransport._BaseDeleteTargetSite._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_delete_target_site(request, metadata)
+            transcoded_request = _BaseSiteSearchEngineServiceRestTransport._BaseDeleteTargetSite._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseSiteSearchEngineServiceRestTransport._BaseDeleteTargetSite._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseSiteSearchEngineServiceRestTransport._BaseDeleteTargetSite._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
-                method = transcoded_request["method"]
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request['uri'])
+                method = transcoded_request['method']
                 try:
                     request_payload = json_format.MessageToJson(request)
                 except:
                     request_payload = None
                 http_request = {
-                    "payload": request_payload,
-                    "requestMethod": method,
-                    "requestUrl": request_url,
-                    "headers": dict(metadata),
+                  "payload": request_payload,
+                  "requestMethod": method,
+                  "requestUrl": request_url,
+                  "headers": dict(metadata),
                 }
                 _LOGGER.debug(
                     f"Sending request for google.cloud.discoveryengine_v1alpha.SiteSearchEngineServiceClient.DeleteTargetSite",
-                    extra={
+                    extra = {
                         "serviceName": "google.cloud.discoveryengine.v1alpha.SiteSearchEngineService",
                         "rpcName": "DeleteTargetSite",
                         "httpRequest": http_request,
@@ -1800,16 +1483,7 @@ class SiteSearchEngineServiceRestTransport(_BaseSiteSearchEngineServiceRestTrans
                 )
 
             # Send the request
-            response = (
-                SiteSearchEngineServiceRestTransport._DeleteTargetSite._get_response(
-                    self._host,
-                    metadata,
-                    query_params,
-                    self._session,
-                    timeout,
-                    transcoded_request,
-                )
-            )
+            response = SiteSearchEngineServiceRestTransport._DeleteTargetSite._get_response(self._host, metadata, query_params, self._session, timeout, transcoded_request)
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
             # subclass.
@@ -1822,24 +1496,20 @@ class SiteSearchEngineServiceRestTransport(_BaseSiteSearchEngineServiceRestTrans
 
             resp = self._interceptor.post_delete_target_site(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_delete_target_site_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_delete_target_site_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
                     response_payload = None
                 http_response = {
-                    "payload": response_payload,
-                    "headers": dict(response.headers),
-                    "status": response.status_code,
+                "payload": response_payload,
+                "headers":  dict(response.headers),
+                "status": response.status_code,
                 }
                 _LOGGER.debug(
                     "Received response for google.cloud.discoveryengine_v1alpha.SiteSearchEngineServiceClient.delete_target_site",
-                    extra={
+                    extra = {
                         "serviceName": "google.cloud.discoveryengine.v1alpha.SiteSearchEngineService",
                         "rpcName": "DeleteTargetSite",
                         "metadata": http_response["headers"],
@@ -1848,14 +1518,9 @@ class SiteSearchEngineServiceRestTransport(_BaseSiteSearchEngineServiceRestTrans
                 )
             return resp
 
-    class _DisableAdvancedSiteSearch(
-        _BaseSiteSearchEngineServiceRestTransport._BaseDisableAdvancedSiteSearch,
-        SiteSearchEngineServiceRestStub,
-    ):
+    class _DisableAdvancedSiteSearch(_BaseSiteSearchEngineServiceRestTransport._BaseDisableAdvancedSiteSearch, SiteSearchEngineServiceRestStub):
         def __hash__(self):
-            return hash(
-                "SiteSearchEngineServiceRestTransport.DisableAdvancedSiteSearch"
-            )
+            return hash("SiteSearchEngineServiceRestTransport.DisableAdvancedSiteSearch")
 
         @staticmethod
         def _get_response(
@@ -1865,93 +1530,77 @@ class SiteSearchEngineServiceRestTransport(_BaseSiteSearchEngineServiceRestTrans
             session,
             timeout,
             transcoded_request,
-            body=None,
-        ):
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+            body=None):
+
+            uri = transcoded_request['uri']
+            method = transcoded_request['method']
             headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
+            headers['Content-Type'] = 'application/json'
             response = getattr(session, method)(
                 "{host}{uri}".format(host=host, uri=uri),
                 timeout=timeout,
                 headers=headers,
                 params=rest_helpers.flatten_query_params(query_params, strict=True),
                 data=body,
-            )
+                )
             return response
 
-        def __call__(
-            self,
-            request: site_search_engine_service.DisableAdvancedSiteSearchRequest,
-            *,
-            retry: OptionalRetry = gapic_v1.method.DEFAULT,
-            timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
-        ) -> operations_pb2.Operation:
+        def __call__(self,
+                request: site_search_engine_service.DisableAdvancedSiteSearchRequest, *,
+                retry: OptionalRetry=gapic_v1.method.DEFAULT,
+                timeout: Optional[float]=None,
+                metadata: Sequence[Tuple[str, Union[str, bytes]]]=(),
+                ) -> operations_pb2.Operation:
             r"""Call the disable advanced site
-            search method over HTTP.
+        search method over HTTP.
 
-                Args:
-                    request (~.site_search_engine_service.DisableAdvancedSiteSearchRequest):
-                        The request object. Request message for
-                    [SiteSearchEngineService.DisableAdvancedSiteSearch][google.cloud.discoveryengine.v1alpha.SiteSearchEngineService.DisableAdvancedSiteSearch]
-                    method.
-                    retry (google.api_core.retry.Retry): Designation of what errors, if any,
-                        should be retried.
-                    timeout (float): The timeout for this request.
-                    metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
-                        sent along with the request as metadata. Normally, each value must be of type `str`,
-                        but for metadata keys ending with the suffix `-bin`, the corresponding values must
-                        be of type `bytes`.
+            Args:
+                request (~.site_search_engine_service.DisableAdvancedSiteSearchRequest):
+                    The request object. Request message for
+                [SiteSearchEngineService.DisableAdvancedSiteSearch][google.cloud.discoveryengine.v1alpha.SiteSearchEngineService.DisableAdvancedSiteSearch]
+                method.
+                retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                    should be retried.
+                timeout (float): The timeout for this request.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
-                Returns:
-                    ~.operations_pb2.Operation:
-                        This resource represents a
-                    long-running operation that is the
-                    result of a network API call.
+            Returns:
+                ~.operations_pb2.Operation:
+                    This resource represents a
+                long-running operation that is the
+                result of a network API call.
 
             """
 
-            http_options = (
-                _BaseSiteSearchEngineServiceRestTransport._BaseDisableAdvancedSiteSearch._get_http_options()
-            )
+            http_options = _BaseSiteSearchEngineServiceRestTransport._BaseDisableAdvancedSiteSearch._get_http_options()
 
-            request, metadata = self._interceptor.pre_disable_advanced_site_search(
-                request, metadata
-            )
-            transcoded_request = _BaseSiteSearchEngineServiceRestTransport._BaseDisableAdvancedSiteSearch._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_disable_advanced_site_search(request, metadata)
+            transcoded_request = _BaseSiteSearchEngineServiceRestTransport._BaseDisableAdvancedSiteSearch._get_transcoded_request(http_options, request)
 
-            body = _BaseSiteSearchEngineServiceRestTransport._BaseDisableAdvancedSiteSearch._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseSiteSearchEngineServiceRestTransport._BaseDisableAdvancedSiteSearch._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseSiteSearchEngineServiceRestTransport._BaseDisableAdvancedSiteSearch._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseSiteSearchEngineServiceRestTransport._BaseDisableAdvancedSiteSearch._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
-                method = transcoded_request["method"]
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request['uri'])
+                method = transcoded_request['method']
                 try:
                     request_payload = json_format.MessageToJson(request)
                 except:
                     request_payload = None
                 http_request = {
-                    "payload": request_payload,
-                    "requestMethod": method,
-                    "requestUrl": request_url,
-                    "headers": dict(metadata),
+                  "payload": request_payload,
+                  "requestMethod": method,
+                  "requestUrl": request_url,
+                  "headers": dict(metadata),
                 }
                 _LOGGER.debug(
                     f"Sending request for google.cloud.discoveryengine_v1alpha.SiteSearchEngineServiceClient.DisableAdvancedSiteSearch",
-                    extra={
+                    extra = {
                         "serviceName": "google.cloud.discoveryengine.v1alpha.SiteSearchEngineService",
                         "rpcName": "DisableAdvancedSiteSearch",
                         "httpRequest": http_request,
@@ -1960,15 +1609,7 @@ class SiteSearchEngineServiceRestTransport(_BaseSiteSearchEngineServiceRestTrans
                 )
 
             # Send the request
-            response = SiteSearchEngineServiceRestTransport._DisableAdvancedSiteSearch._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
-            )
+            response = SiteSearchEngineServiceRestTransport._DisableAdvancedSiteSearch._get_response(self._host, metadata, query_params, self._session, timeout, transcoded_request, body)
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
             # subclass.
@@ -1981,24 +1622,20 @@ class SiteSearchEngineServiceRestTransport(_BaseSiteSearchEngineServiceRestTrans
 
             resp = self._interceptor.post_disable_advanced_site_search(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_disable_advanced_site_search_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_disable_advanced_site_search_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
                     response_payload = None
                 http_response = {
-                    "payload": response_payload,
-                    "headers": dict(response.headers),
-                    "status": response.status_code,
+                "payload": response_payload,
+                "headers":  dict(response.headers),
+                "status": response.status_code,
                 }
                 _LOGGER.debug(
                     "Received response for google.cloud.discoveryengine_v1alpha.SiteSearchEngineServiceClient.disable_advanced_site_search",
-                    extra={
+                    extra = {
                         "serviceName": "google.cloud.discoveryengine.v1alpha.SiteSearchEngineService",
                         "rpcName": "DisableAdvancedSiteSearch",
                         "metadata": http_response["headers"],
@@ -2007,10 +1644,7 @@ class SiteSearchEngineServiceRestTransport(_BaseSiteSearchEngineServiceRestTrans
                 )
             return resp
 
-    class _EnableAdvancedSiteSearch(
-        _BaseSiteSearchEngineServiceRestTransport._BaseEnableAdvancedSiteSearch,
-        SiteSearchEngineServiceRestStub,
-    ):
+    class _EnableAdvancedSiteSearch(_BaseSiteSearchEngineServiceRestTransport._BaseEnableAdvancedSiteSearch, SiteSearchEngineServiceRestStub):
         def __hash__(self):
             return hash("SiteSearchEngineServiceRestTransport.EnableAdvancedSiteSearch")
 
@@ -2022,93 +1656,77 @@ class SiteSearchEngineServiceRestTransport(_BaseSiteSearchEngineServiceRestTrans
             session,
             timeout,
             transcoded_request,
-            body=None,
-        ):
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+            body=None):
+
+            uri = transcoded_request['uri']
+            method = transcoded_request['method']
             headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
+            headers['Content-Type'] = 'application/json'
             response = getattr(session, method)(
                 "{host}{uri}".format(host=host, uri=uri),
                 timeout=timeout,
                 headers=headers,
                 params=rest_helpers.flatten_query_params(query_params, strict=True),
                 data=body,
-            )
+                )
             return response
 
-        def __call__(
-            self,
-            request: site_search_engine_service.EnableAdvancedSiteSearchRequest,
-            *,
-            retry: OptionalRetry = gapic_v1.method.DEFAULT,
-            timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
-        ) -> operations_pb2.Operation:
+        def __call__(self,
+                request: site_search_engine_service.EnableAdvancedSiteSearchRequest, *,
+                retry: OptionalRetry=gapic_v1.method.DEFAULT,
+                timeout: Optional[float]=None,
+                metadata: Sequence[Tuple[str, Union[str, bytes]]]=(),
+                ) -> operations_pb2.Operation:
             r"""Call the enable advanced site
-            search method over HTTP.
+        search method over HTTP.
 
-                Args:
-                    request (~.site_search_engine_service.EnableAdvancedSiteSearchRequest):
-                        The request object. Request message for
-                    [SiteSearchEngineService.EnableAdvancedSiteSearch][google.cloud.discoveryengine.v1alpha.SiteSearchEngineService.EnableAdvancedSiteSearch]
-                    method.
-                    retry (google.api_core.retry.Retry): Designation of what errors, if any,
-                        should be retried.
-                    timeout (float): The timeout for this request.
-                    metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
-                        sent along with the request as metadata. Normally, each value must be of type `str`,
-                        but for metadata keys ending with the suffix `-bin`, the corresponding values must
-                        be of type `bytes`.
+            Args:
+                request (~.site_search_engine_service.EnableAdvancedSiteSearchRequest):
+                    The request object. Request message for
+                [SiteSearchEngineService.EnableAdvancedSiteSearch][google.cloud.discoveryengine.v1alpha.SiteSearchEngineService.EnableAdvancedSiteSearch]
+                method.
+                retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                    should be retried.
+                timeout (float): The timeout for this request.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
-                Returns:
-                    ~.operations_pb2.Operation:
-                        This resource represents a
-                    long-running operation that is the
-                    result of a network API call.
+            Returns:
+                ~.operations_pb2.Operation:
+                    This resource represents a
+                long-running operation that is the
+                result of a network API call.
 
             """
 
-            http_options = (
-                _BaseSiteSearchEngineServiceRestTransport._BaseEnableAdvancedSiteSearch._get_http_options()
-            )
+            http_options = _BaseSiteSearchEngineServiceRestTransport._BaseEnableAdvancedSiteSearch._get_http_options()
 
-            request, metadata = self._interceptor.pre_enable_advanced_site_search(
-                request, metadata
-            )
-            transcoded_request = _BaseSiteSearchEngineServiceRestTransport._BaseEnableAdvancedSiteSearch._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_enable_advanced_site_search(request, metadata)
+            transcoded_request = _BaseSiteSearchEngineServiceRestTransport._BaseEnableAdvancedSiteSearch._get_transcoded_request(http_options, request)
 
-            body = _BaseSiteSearchEngineServiceRestTransport._BaseEnableAdvancedSiteSearch._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseSiteSearchEngineServiceRestTransport._BaseEnableAdvancedSiteSearch._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseSiteSearchEngineServiceRestTransport._BaseEnableAdvancedSiteSearch._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseSiteSearchEngineServiceRestTransport._BaseEnableAdvancedSiteSearch._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
-                method = transcoded_request["method"]
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request['uri'])
+                method = transcoded_request['method']
                 try:
                     request_payload = json_format.MessageToJson(request)
                 except:
                     request_payload = None
                 http_request = {
-                    "payload": request_payload,
-                    "requestMethod": method,
-                    "requestUrl": request_url,
-                    "headers": dict(metadata),
+                  "payload": request_payload,
+                  "requestMethod": method,
+                  "requestUrl": request_url,
+                  "headers": dict(metadata),
                 }
                 _LOGGER.debug(
                     f"Sending request for google.cloud.discoveryengine_v1alpha.SiteSearchEngineServiceClient.EnableAdvancedSiteSearch",
-                    extra={
+                    extra = {
                         "serviceName": "google.cloud.discoveryengine.v1alpha.SiteSearchEngineService",
                         "rpcName": "EnableAdvancedSiteSearch",
                         "httpRequest": http_request,
@@ -2117,15 +1735,7 @@ class SiteSearchEngineServiceRestTransport(_BaseSiteSearchEngineServiceRestTrans
                 )
 
             # Send the request
-            response = SiteSearchEngineServiceRestTransport._EnableAdvancedSiteSearch._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
-            )
+            response = SiteSearchEngineServiceRestTransport._EnableAdvancedSiteSearch._get_response(self._host, metadata, query_params, self._session, timeout, transcoded_request, body)
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
             # subclass.
@@ -2138,24 +1748,20 @@ class SiteSearchEngineServiceRestTransport(_BaseSiteSearchEngineServiceRestTrans
 
             resp = self._interceptor.post_enable_advanced_site_search(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_enable_advanced_site_search_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_enable_advanced_site_search_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
                     response_payload = None
                 http_response = {
-                    "payload": response_payload,
-                    "headers": dict(response.headers),
-                    "status": response.status_code,
+                "payload": response_payload,
+                "headers":  dict(response.headers),
+                "status": response.status_code,
                 }
                 _LOGGER.debug(
                     "Received response for google.cloud.discoveryengine_v1alpha.SiteSearchEngineServiceClient.enable_advanced_site_search",
-                    extra={
+                    extra = {
                         "serviceName": "google.cloud.discoveryengine.v1alpha.SiteSearchEngineService",
                         "rpcName": "EnableAdvancedSiteSearch",
                         "metadata": http_response["headers"],
@@ -2164,14 +1770,9 @@ class SiteSearchEngineServiceRestTransport(_BaseSiteSearchEngineServiceRestTrans
                 )
             return resp
 
-    class _FetchDomainVerificationStatus(
-        _BaseSiteSearchEngineServiceRestTransport._BaseFetchDomainVerificationStatus,
-        SiteSearchEngineServiceRestStub,
-    ):
+    class _FetchDomainVerificationStatus(_BaseSiteSearchEngineServiceRestTransport._BaseFetchDomainVerificationStatus, SiteSearchEngineServiceRestStub):
         def __hash__(self):
-            return hash(
-                "SiteSearchEngineServiceRestTransport.FetchDomainVerificationStatus"
-            )
+            return hash("SiteSearchEngineServiceRestTransport.FetchDomainVerificationStatus")
 
         @staticmethod
         def _get_response(
@@ -2181,88 +1782,74 @@ class SiteSearchEngineServiceRestTransport(_BaseSiteSearchEngineServiceRestTrans
             session,
             timeout,
             transcoded_request,
-            body=None,
-        ):
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+            body=None):
+
+            uri = transcoded_request['uri']
+            method = transcoded_request['method']
             headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
+            headers['Content-Type'] = 'application/json'
             response = getattr(session, method)(
                 "{host}{uri}".format(host=host, uri=uri),
                 timeout=timeout,
                 headers=headers,
                 params=rest_helpers.flatten_query_params(query_params, strict=True),
-            )
+                )
             return response
 
-        def __call__(
-            self,
-            request: site_search_engine_service.FetchDomainVerificationStatusRequest,
-            *,
-            retry: OptionalRetry = gapic_v1.method.DEFAULT,
-            timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
-        ) -> site_search_engine_service.FetchDomainVerificationStatusResponse:
+        def __call__(self,
+                request: site_search_engine_service.FetchDomainVerificationStatusRequest, *,
+                retry: OptionalRetry=gapic_v1.method.DEFAULT,
+                timeout: Optional[float]=None,
+                metadata: Sequence[Tuple[str, Union[str, bytes]]]=(),
+                ) -> site_search_engine_service.FetchDomainVerificationStatusResponse:
             r"""Call the fetch domain verification
-            status method over HTTP.
+        status method over HTTP.
 
-                Args:
-                    request (~.site_search_engine_service.FetchDomainVerificationStatusRequest):
-                        The request object. Request message for
-                    [SiteSearchEngineService.FetchDomainVerificationStatus][google.cloud.discoveryengine.v1alpha.SiteSearchEngineService.FetchDomainVerificationStatus]
-                    method.
-                    retry (google.api_core.retry.Retry): Designation of what errors, if any,
-                        should be retried.
-                    timeout (float): The timeout for this request.
-                    metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
-                        sent along with the request as metadata. Normally, each value must be of type `str`,
-                        but for metadata keys ending with the suffix `-bin`, the corresponding values must
-                        be of type `bytes`.
+            Args:
+                request (~.site_search_engine_service.FetchDomainVerificationStatusRequest):
+                    The request object. Request message for
+                [SiteSearchEngineService.FetchDomainVerificationStatus][google.cloud.discoveryengine.v1alpha.SiteSearchEngineService.FetchDomainVerificationStatus]
+                method.
+                retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                    should be retried.
+                timeout (float): The timeout for this request.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
-                Returns:
-                    ~.site_search_engine_service.FetchDomainVerificationStatusResponse:
-                        Response message for
-                    [SiteSearchEngineService.FetchDomainVerificationStatus][google.cloud.discoveryengine.v1alpha.SiteSearchEngineService.FetchDomainVerificationStatus]
-                    method.
+            Returns:
+                ~.site_search_engine_service.FetchDomainVerificationStatusResponse:
+                    Response message for
+                [SiteSearchEngineService.FetchDomainVerificationStatus][google.cloud.discoveryengine.v1alpha.SiteSearchEngineService.FetchDomainVerificationStatus]
+                method.
 
             """
 
-            http_options = (
-                _BaseSiteSearchEngineServiceRestTransport._BaseFetchDomainVerificationStatus._get_http_options()
-            )
+            http_options = _BaseSiteSearchEngineServiceRestTransport._BaseFetchDomainVerificationStatus._get_http_options()
 
-            request, metadata = self._interceptor.pre_fetch_domain_verification_status(
-                request, metadata
-            )
-            transcoded_request = _BaseSiteSearchEngineServiceRestTransport._BaseFetchDomainVerificationStatus._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_fetch_domain_verification_status(request, metadata)
+            transcoded_request = _BaseSiteSearchEngineServiceRestTransport._BaseFetchDomainVerificationStatus._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseSiteSearchEngineServiceRestTransport._BaseFetchDomainVerificationStatus._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseSiteSearchEngineServiceRestTransport._BaseFetchDomainVerificationStatus._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
-                method = transcoded_request["method"]
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request['uri'])
+                method = transcoded_request['method']
                 try:
                     request_payload = type(request).to_json(request)
                 except:
                     request_payload = None
                 http_request = {
-                    "payload": request_payload,
-                    "requestMethod": method,
-                    "requestUrl": request_url,
-                    "headers": dict(metadata),
+                  "payload": request_payload,
+                  "requestMethod": method,
+                  "requestUrl": request_url,
+                  "headers": dict(metadata),
                 }
                 _LOGGER.debug(
                     f"Sending request for google.cloud.discoveryengine_v1alpha.SiteSearchEngineServiceClient.FetchDomainVerificationStatus",
-                    extra={
+                    extra = {
                         "serviceName": "google.cloud.discoveryengine.v1alpha.SiteSearchEngineService",
                         "rpcName": "FetchDomainVerificationStatus",
                         "httpRequest": http_request,
@@ -2271,14 +1858,7 @@ class SiteSearchEngineServiceRestTransport(_BaseSiteSearchEngineServiceRestTrans
                 )
 
             # Send the request
-            response = SiteSearchEngineServiceRestTransport._FetchDomainVerificationStatus._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-            )
+            response = SiteSearchEngineServiceRestTransport._FetchDomainVerificationStatus._get_response(self._host, metadata, query_params, self._session, timeout, transcoded_request)
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
             # subclass.
@@ -2287,39 +1867,26 @@ class SiteSearchEngineServiceRestTransport(_BaseSiteSearchEngineServiceRestTrans
 
             # Return the response
             resp = site_search_engine_service.FetchDomainVerificationStatusResponse()
-            pb_resp = (
-                site_search_engine_service.FetchDomainVerificationStatusResponse.pb(
-                    resp
-                )
-            )
+            pb_resp = site_search_engine_service.FetchDomainVerificationStatusResponse.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_fetch_domain_verification_status(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            (
-                resp,
-                _,
-            ) = self._interceptor.post_fetch_domain_verification_status_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_fetch_domain_verification_status_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = site_search_engine_service.FetchDomainVerificationStatusResponse.to_json(
-                        response
-                    )
+                    response_payload = site_search_engine_service.FetchDomainVerificationStatusResponse.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
-                    "payload": response_payload,
-                    "headers": dict(response.headers),
-                    "status": response.status_code,
+                "payload": response_payload,
+                "headers":  dict(response.headers),
+                "status": response.status_code,
                 }
                 _LOGGER.debug(
                     "Received response for google.cloud.discoveryengine_v1alpha.SiteSearchEngineServiceClient.fetch_domain_verification_status",
-                    extra={
+                    extra = {
                         "serviceName": "google.cloud.discoveryengine.v1alpha.SiteSearchEngineService",
                         "rpcName": "FetchDomainVerificationStatus",
                         "metadata": http_response["headers"],
@@ -2328,10 +1895,7 @@ class SiteSearchEngineServiceRestTransport(_BaseSiteSearchEngineServiceRestTrans
                 )
             return resp
 
-    class _GetSiteSearchEngine(
-        _BaseSiteSearchEngineServiceRestTransport._BaseGetSiteSearchEngine,
-        SiteSearchEngineServiceRestStub,
-    ):
+    class _GetSiteSearchEngine(_BaseSiteSearchEngineServiceRestTransport._BaseGetSiteSearchEngine, SiteSearchEngineServiceRestStub):
         def __hash__(self):
             return hash("SiteSearchEngineServiceRestTransport.GetSiteSearchEngine")
 
@@ -2343,28 +1907,26 @@ class SiteSearchEngineServiceRestTransport(_BaseSiteSearchEngineServiceRestTrans
             session,
             timeout,
             transcoded_request,
-            body=None,
-        ):
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+            body=None):
+
+            uri = transcoded_request['uri']
+            method = transcoded_request['method']
             headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
+            headers['Content-Type'] = 'application/json'
             response = getattr(session, method)(
                 "{host}{uri}".format(host=host, uri=uri),
                 timeout=timeout,
                 headers=headers,
                 params=rest_helpers.flatten_query_params(query_params, strict=True),
-            )
+                )
             return response
 
-        def __call__(
-            self,
-            request: site_search_engine_service.GetSiteSearchEngineRequest,
-            *,
-            retry: OptionalRetry = gapic_v1.method.DEFAULT,
-            timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
-        ) -> site_search_engine.SiteSearchEngine:
+        def __call__(self,
+                request: site_search_engine_service.GetSiteSearchEngineRequest, *,
+                retry: OptionalRetry=gapic_v1.method.DEFAULT,
+                timeout: Optional[float]=None,
+                metadata: Sequence[Tuple[str, Union[str, bytes]]]=(),
+                ) -> site_search_engine.SiteSearchEngine:
             r"""Call the get site search engine method over HTTP.
 
             Args:
@@ -2389,42 +1951,30 @@ class SiteSearchEngineServiceRestTransport(_BaseSiteSearchEngineServiceRestTrans
 
             """
 
-            http_options = (
-                _BaseSiteSearchEngineServiceRestTransport._BaseGetSiteSearchEngine._get_http_options()
-            )
+            http_options = _BaseSiteSearchEngineServiceRestTransport._BaseGetSiteSearchEngine._get_http_options()
 
-            request, metadata = self._interceptor.pre_get_site_search_engine(
-                request, metadata
-            )
-            transcoded_request = _BaseSiteSearchEngineServiceRestTransport._BaseGetSiteSearchEngine._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_get_site_search_engine(request, metadata)
+            transcoded_request = _BaseSiteSearchEngineServiceRestTransport._BaseGetSiteSearchEngine._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseSiteSearchEngineServiceRestTransport._BaseGetSiteSearchEngine._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseSiteSearchEngineServiceRestTransport._BaseGetSiteSearchEngine._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
-                method = transcoded_request["method"]
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request['uri'])
+                method = transcoded_request['method']
                 try:
                     request_payload = type(request).to_json(request)
                 except:
                     request_payload = None
                 http_request = {
-                    "payload": request_payload,
-                    "requestMethod": method,
-                    "requestUrl": request_url,
-                    "headers": dict(metadata),
+                  "payload": request_payload,
+                  "requestMethod": method,
+                  "requestUrl": request_url,
+                  "headers": dict(metadata),
                 }
                 _LOGGER.debug(
                     f"Sending request for google.cloud.discoveryengine_v1alpha.SiteSearchEngineServiceClient.GetSiteSearchEngine",
-                    extra={
+                    extra = {
                         "serviceName": "google.cloud.discoveryengine.v1alpha.SiteSearchEngineService",
                         "rpcName": "GetSiteSearchEngine",
                         "httpRequest": http_request,
@@ -2433,16 +1983,7 @@ class SiteSearchEngineServiceRestTransport(_BaseSiteSearchEngineServiceRestTrans
                 )
 
             # Send the request
-            response = (
-                SiteSearchEngineServiceRestTransport._GetSiteSearchEngine._get_response(
-                    self._host,
-                    metadata,
-                    query_params,
-                    self._session,
-                    timeout,
-                    transcoded_request,
-                )
-            )
+            response = SiteSearchEngineServiceRestTransport._GetSiteSearchEngine._get_response(self._host, metadata, query_params, self._session, timeout, transcoded_request)
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
             # subclass.
@@ -2457,26 +1998,20 @@ class SiteSearchEngineServiceRestTransport(_BaseSiteSearchEngineServiceRestTrans
 
             resp = self._interceptor.post_get_site_search_engine(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_get_site_search_engine_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_get_site_search_engine_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = site_search_engine.SiteSearchEngine.to_json(
-                        response
-                    )
+                    response_payload = site_search_engine.SiteSearchEngine.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
-                    "payload": response_payload,
-                    "headers": dict(response.headers),
-                    "status": response.status_code,
+                "payload": response_payload,
+                "headers":  dict(response.headers),
+                "status": response.status_code,
                 }
                 _LOGGER.debug(
                     "Received response for google.cloud.discoveryengine_v1alpha.SiteSearchEngineServiceClient.get_site_search_engine",
-                    extra={
+                    extra = {
                         "serviceName": "google.cloud.discoveryengine.v1alpha.SiteSearchEngineService",
                         "rpcName": "GetSiteSearchEngine",
                         "metadata": http_response["headers"],
@@ -2485,10 +2020,7 @@ class SiteSearchEngineServiceRestTransport(_BaseSiteSearchEngineServiceRestTrans
                 )
             return resp
 
-    class _GetTargetSite(
-        _BaseSiteSearchEngineServiceRestTransport._BaseGetTargetSite,
-        SiteSearchEngineServiceRestStub,
-    ):
+    class _GetTargetSite(_BaseSiteSearchEngineServiceRestTransport._BaseGetTargetSite, SiteSearchEngineServiceRestStub):
         def __hash__(self):
             return hash("SiteSearchEngineServiceRestTransport.GetTargetSite")
 
@@ -2500,28 +2032,26 @@ class SiteSearchEngineServiceRestTransport(_BaseSiteSearchEngineServiceRestTrans
             session,
             timeout,
             transcoded_request,
-            body=None,
-        ):
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+            body=None):
+
+            uri = transcoded_request['uri']
+            method = transcoded_request['method']
             headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
+            headers['Content-Type'] = 'application/json'
             response = getattr(session, method)(
                 "{host}{uri}".format(host=host, uri=uri),
                 timeout=timeout,
                 headers=headers,
                 params=rest_helpers.flatten_query_params(query_params, strict=True),
-            )
+                )
             return response
 
-        def __call__(
-            self,
-            request: site_search_engine_service.GetTargetSiteRequest,
-            *,
-            retry: OptionalRetry = gapic_v1.method.DEFAULT,
-            timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
-        ) -> site_search_engine.TargetSite:
+        def __call__(self,
+                request: site_search_engine_service.GetTargetSiteRequest, *,
+                retry: OptionalRetry=gapic_v1.method.DEFAULT,
+                timeout: Optional[float]=None,
+                metadata: Sequence[Tuple[str, Union[str, bytes]]]=(),
+                ) -> site_search_engine.TargetSite:
             r"""Call the get target site method over HTTP.
 
             Args:
@@ -2544,40 +2074,30 @@ class SiteSearchEngineServiceRestTransport(_BaseSiteSearchEngineServiceRestTrans
 
             """
 
-            http_options = (
-                _BaseSiteSearchEngineServiceRestTransport._BaseGetTargetSite._get_http_options()
-            )
+            http_options = _BaseSiteSearchEngineServiceRestTransport._BaseGetTargetSite._get_http_options()
 
             request, metadata = self._interceptor.pre_get_target_site(request, metadata)
-            transcoded_request = _BaseSiteSearchEngineServiceRestTransport._BaseGetTargetSite._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseSiteSearchEngineServiceRestTransport._BaseGetTargetSite._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseSiteSearchEngineServiceRestTransport._BaseGetTargetSite._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseSiteSearchEngineServiceRestTransport._BaseGetTargetSite._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
-                method = transcoded_request["method"]
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request['uri'])
+                method = transcoded_request['method']
                 try:
                     request_payload = type(request).to_json(request)
                 except:
                     request_payload = None
                 http_request = {
-                    "payload": request_payload,
-                    "requestMethod": method,
-                    "requestUrl": request_url,
-                    "headers": dict(metadata),
+                  "payload": request_payload,
+                  "requestMethod": method,
+                  "requestUrl": request_url,
+                  "headers": dict(metadata),
                 }
                 _LOGGER.debug(
                     f"Sending request for google.cloud.discoveryengine_v1alpha.SiteSearchEngineServiceClient.GetTargetSite",
-                    extra={
+                    extra = {
                         "serviceName": "google.cloud.discoveryengine.v1alpha.SiteSearchEngineService",
                         "rpcName": "GetTargetSite",
                         "httpRequest": http_request,
@@ -2586,16 +2106,7 @@ class SiteSearchEngineServiceRestTransport(_BaseSiteSearchEngineServiceRestTrans
                 )
 
             # Send the request
-            response = (
-                SiteSearchEngineServiceRestTransport._GetTargetSite._get_response(
-                    self._host,
-                    metadata,
-                    query_params,
-                    self._session,
-                    timeout,
-                    transcoded_request,
-                )
-            )
+            response = SiteSearchEngineServiceRestTransport._GetTargetSite._get_response(self._host, metadata, query_params, self._session, timeout, transcoded_request)
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
             # subclass.
@@ -2610,24 +2121,20 @@ class SiteSearchEngineServiceRestTransport(_BaseSiteSearchEngineServiceRestTrans
 
             resp = self._interceptor.post_get_target_site(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_get_target_site_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_get_target_site_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = site_search_engine.TargetSite.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
-                    "payload": response_payload,
-                    "headers": dict(response.headers),
-                    "status": response.status_code,
+                "payload": response_payload,
+                "headers":  dict(response.headers),
+                "status": response.status_code,
                 }
                 _LOGGER.debug(
                     "Received response for google.cloud.discoveryengine_v1alpha.SiteSearchEngineServiceClient.get_target_site",
-                    extra={
+                    extra = {
                         "serviceName": "google.cloud.discoveryengine.v1alpha.SiteSearchEngineService",
                         "rpcName": "GetTargetSite",
                         "metadata": http_response["headers"],
@@ -2636,14 +2143,9 @@ class SiteSearchEngineServiceRestTransport(_BaseSiteSearchEngineServiceRestTrans
                 )
             return resp
 
-    class _GetUriPatternDocumentData(
-        _BaseSiteSearchEngineServiceRestTransport._BaseGetUriPatternDocumentData,
-        SiteSearchEngineServiceRestStub,
-    ):
+    class _GetUriPatternDocumentData(_BaseSiteSearchEngineServiceRestTransport._BaseGetUriPatternDocumentData, SiteSearchEngineServiceRestStub):
         def __hash__(self):
-            return hash(
-                "SiteSearchEngineServiceRestTransport.GetUriPatternDocumentData"
-            )
+            return hash("SiteSearchEngineServiceRestTransport.GetUriPatternDocumentData")
 
         @staticmethod
         def _get_response(
@@ -2653,88 +2155,74 @@ class SiteSearchEngineServiceRestTransport(_BaseSiteSearchEngineServiceRestTrans
             session,
             timeout,
             transcoded_request,
-            body=None,
-        ):
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+            body=None):
+
+            uri = transcoded_request['uri']
+            method = transcoded_request['method']
             headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
+            headers['Content-Type'] = 'application/json'
             response = getattr(session, method)(
                 "{host}{uri}".format(host=host, uri=uri),
                 timeout=timeout,
                 headers=headers,
                 params=rest_helpers.flatten_query_params(query_params, strict=True),
-            )
+                )
             return response
 
-        def __call__(
-            self,
-            request: site_search_engine_service.GetUriPatternDocumentDataRequest,
-            *,
-            retry: OptionalRetry = gapic_v1.method.DEFAULT,
-            timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
-        ) -> site_search_engine_service.GetUriPatternDocumentDataResponse:
+        def __call__(self,
+                request: site_search_engine_service.GetUriPatternDocumentDataRequest, *,
+                retry: OptionalRetry=gapic_v1.method.DEFAULT,
+                timeout: Optional[float]=None,
+                metadata: Sequence[Tuple[str, Union[str, bytes]]]=(),
+                ) -> site_search_engine_service.GetUriPatternDocumentDataResponse:
             r"""Call the get uri pattern document
-            data method over HTTP.
+        data method over HTTP.
 
-                Args:
-                    request (~.site_search_engine_service.GetUriPatternDocumentDataRequest):
-                        The request object. Request message for
-                    [SiteSearchEngineService.GetUriPatternDocumentData][google.cloud.discoveryengine.v1alpha.SiteSearchEngineService.GetUriPatternDocumentData]
-                    method.
-                    retry (google.api_core.retry.Retry): Designation of what errors, if any,
-                        should be retried.
-                    timeout (float): The timeout for this request.
-                    metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
-                        sent along with the request as metadata. Normally, each value must be of type `str`,
-                        but for metadata keys ending with the suffix `-bin`, the corresponding values must
-                        be of type `bytes`.
+            Args:
+                request (~.site_search_engine_service.GetUriPatternDocumentDataRequest):
+                    The request object. Request message for
+                [SiteSearchEngineService.GetUriPatternDocumentData][google.cloud.discoveryengine.v1alpha.SiteSearchEngineService.GetUriPatternDocumentData]
+                method.
+                retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                    should be retried.
+                timeout (float): The timeout for this request.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
-                Returns:
-                    ~.site_search_engine_service.GetUriPatternDocumentDataResponse:
-                        Response message for
-                    [SiteSearchEngineService.GetUriPatternDocumentData][google.cloud.discoveryengine.v1alpha.SiteSearchEngineService.GetUriPatternDocumentData]
-                    method.
+            Returns:
+                ~.site_search_engine_service.GetUriPatternDocumentDataResponse:
+                    Response message for
+                [SiteSearchEngineService.GetUriPatternDocumentData][google.cloud.discoveryengine.v1alpha.SiteSearchEngineService.GetUriPatternDocumentData]
+                method.
 
             """
 
-            http_options = (
-                _BaseSiteSearchEngineServiceRestTransport._BaseGetUriPatternDocumentData._get_http_options()
-            )
+            http_options = _BaseSiteSearchEngineServiceRestTransport._BaseGetUriPatternDocumentData._get_http_options()
 
-            request, metadata = self._interceptor.pre_get_uri_pattern_document_data(
-                request, metadata
-            )
-            transcoded_request = _BaseSiteSearchEngineServiceRestTransport._BaseGetUriPatternDocumentData._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_get_uri_pattern_document_data(request, metadata)
+            transcoded_request = _BaseSiteSearchEngineServiceRestTransport._BaseGetUriPatternDocumentData._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseSiteSearchEngineServiceRestTransport._BaseGetUriPatternDocumentData._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseSiteSearchEngineServiceRestTransport._BaseGetUriPatternDocumentData._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
-                method = transcoded_request["method"]
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request['uri'])
+                method = transcoded_request['method']
                 try:
                     request_payload = type(request).to_json(request)
                 except:
                     request_payload = None
                 http_request = {
-                    "payload": request_payload,
-                    "requestMethod": method,
-                    "requestUrl": request_url,
-                    "headers": dict(metadata),
+                  "payload": request_payload,
+                  "requestMethod": method,
+                  "requestUrl": request_url,
+                  "headers": dict(metadata),
                 }
                 _LOGGER.debug(
                     f"Sending request for google.cloud.discoveryengine_v1alpha.SiteSearchEngineServiceClient.GetUriPatternDocumentData",
-                    extra={
+                    extra = {
                         "serviceName": "google.cloud.discoveryengine.v1alpha.SiteSearchEngineService",
                         "rpcName": "GetUriPatternDocumentData",
                         "httpRequest": http_request,
@@ -2743,14 +2231,7 @@ class SiteSearchEngineServiceRestTransport(_BaseSiteSearchEngineServiceRestTrans
                 )
 
             # Send the request
-            response = SiteSearchEngineServiceRestTransport._GetUriPatternDocumentData._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-            )
+            response = SiteSearchEngineServiceRestTransport._GetUriPatternDocumentData._get_response(self._host, metadata, query_params, self._session, timeout, transcoded_request)
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
             # subclass.
@@ -2759,37 +2240,26 @@ class SiteSearchEngineServiceRestTransport(_BaseSiteSearchEngineServiceRestTrans
 
             # Return the response
             resp = site_search_engine_service.GetUriPatternDocumentDataResponse()
-            pb_resp = site_search_engine_service.GetUriPatternDocumentDataResponse.pb(
-                resp
-            )
+            pb_resp = site_search_engine_service.GetUriPatternDocumentDataResponse.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_get_uri_pattern_document_data(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            (
-                resp,
-                _,
-            ) = self._interceptor.post_get_uri_pattern_document_data_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_get_uri_pattern_document_data_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = site_search_engine_service.GetUriPatternDocumentDataResponse.to_json(
-                        response
-                    )
+                    response_payload = site_search_engine_service.GetUriPatternDocumentDataResponse.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
-                    "payload": response_payload,
-                    "headers": dict(response.headers),
-                    "status": response.status_code,
+                "payload": response_payload,
+                "headers":  dict(response.headers),
+                "status": response.status_code,
                 }
                 _LOGGER.debug(
                     "Received response for google.cloud.discoveryengine_v1alpha.SiteSearchEngineServiceClient.get_uri_pattern_document_data",
-                    extra={
+                    extra = {
                         "serviceName": "google.cloud.discoveryengine.v1alpha.SiteSearchEngineService",
                         "rpcName": "GetUriPatternDocumentData",
                         "metadata": http_response["headers"],
@@ -2798,10 +2268,7 @@ class SiteSearchEngineServiceRestTransport(_BaseSiteSearchEngineServiceRestTrans
                 )
             return resp
 
-    class _ListTargetSites(
-        _BaseSiteSearchEngineServiceRestTransport._BaseListTargetSites,
-        SiteSearchEngineServiceRestStub,
-    ):
+    class _ListTargetSites(_BaseSiteSearchEngineServiceRestTransport._BaseListTargetSites, SiteSearchEngineServiceRestStub):
         def __hash__(self):
             return hash("SiteSearchEngineServiceRestTransport.ListTargetSites")
 
@@ -2813,28 +2280,26 @@ class SiteSearchEngineServiceRestTransport(_BaseSiteSearchEngineServiceRestTrans
             session,
             timeout,
             transcoded_request,
-            body=None,
-        ):
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+            body=None):
+
+            uri = transcoded_request['uri']
+            method = transcoded_request['method']
             headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
+            headers['Content-Type'] = 'application/json'
             response = getattr(session, method)(
                 "{host}{uri}".format(host=host, uri=uri),
                 timeout=timeout,
                 headers=headers,
                 params=rest_helpers.flatten_query_params(query_params, strict=True),
-            )
+                )
             return response
 
-        def __call__(
-            self,
-            request: site_search_engine_service.ListTargetSitesRequest,
-            *,
-            retry: OptionalRetry = gapic_v1.method.DEFAULT,
-            timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
-        ) -> site_search_engine_service.ListTargetSitesResponse:
+        def __call__(self,
+                request: site_search_engine_service.ListTargetSitesRequest, *,
+                retry: OptionalRetry=gapic_v1.method.DEFAULT,
+                timeout: Optional[float]=None,
+                metadata: Sequence[Tuple[str, Union[str, bytes]]]=(),
+                ) -> site_search_engine_service.ListTargetSitesResponse:
             r"""Call the list target sites method over HTTP.
 
             Args:
@@ -2858,42 +2323,30 @@ class SiteSearchEngineServiceRestTransport(_BaseSiteSearchEngineServiceRestTrans
 
             """
 
-            http_options = (
-                _BaseSiteSearchEngineServiceRestTransport._BaseListTargetSites._get_http_options()
-            )
+            http_options = _BaseSiteSearchEngineServiceRestTransport._BaseListTargetSites._get_http_options()
 
-            request, metadata = self._interceptor.pre_list_target_sites(
-                request, metadata
-            )
-            transcoded_request = _BaseSiteSearchEngineServiceRestTransport._BaseListTargetSites._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_list_target_sites(request, metadata)
+            transcoded_request = _BaseSiteSearchEngineServiceRestTransport._BaseListTargetSites._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseSiteSearchEngineServiceRestTransport._BaseListTargetSites._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseSiteSearchEngineServiceRestTransport._BaseListTargetSites._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
-                method = transcoded_request["method"]
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request['uri'])
+                method = transcoded_request['method']
                 try:
                     request_payload = type(request).to_json(request)
                 except:
                     request_payload = None
                 http_request = {
-                    "payload": request_payload,
-                    "requestMethod": method,
-                    "requestUrl": request_url,
-                    "headers": dict(metadata),
+                  "payload": request_payload,
+                  "requestMethod": method,
+                  "requestUrl": request_url,
+                  "headers": dict(metadata),
                 }
                 _LOGGER.debug(
                     f"Sending request for google.cloud.discoveryengine_v1alpha.SiteSearchEngineServiceClient.ListTargetSites",
-                    extra={
+                    extra = {
                         "serviceName": "google.cloud.discoveryengine.v1alpha.SiteSearchEngineService",
                         "rpcName": "ListTargetSites",
                         "httpRequest": http_request,
@@ -2902,16 +2355,7 @@ class SiteSearchEngineServiceRestTransport(_BaseSiteSearchEngineServiceRestTrans
                 )
 
             # Send the request
-            response = (
-                SiteSearchEngineServiceRestTransport._ListTargetSites._get_response(
-                    self._host,
-                    metadata,
-                    query_params,
-                    self._session,
-                    timeout,
-                    transcoded_request,
-                )
-            )
+            response = SiteSearchEngineServiceRestTransport._ListTargetSites._get_response(self._host, metadata, query_params, self._session, timeout, transcoded_request)
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
             # subclass.
@@ -2926,28 +2370,20 @@ class SiteSearchEngineServiceRestTransport(_BaseSiteSearchEngineServiceRestTrans
 
             resp = self._interceptor.post_list_target_sites(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_list_target_sites_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_list_target_sites_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = (
-                        site_search_engine_service.ListTargetSitesResponse.to_json(
-                            response
-                        )
-                    )
+                    response_payload = site_search_engine_service.ListTargetSitesResponse.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
-                    "payload": response_payload,
-                    "headers": dict(response.headers),
-                    "status": response.status_code,
+                "payload": response_payload,
+                "headers":  dict(response.headers),
+                "status": response.status_code,
                 }
                 _LOGGER.debug(
                     "Received response for google.cloud.discoveryengine_v1alpha.SiteSearchEngineServiceClient.list_target_sites",
-                    extra={
+                    extra = {
                         "serviceName": "google.cloud.discoveryengine.v1alpha.SiteSearchEngineService",
                         "rpcName": "ListTargetSites",
                         "metadata": http_response["headers"],
@@ -2956,10 +2392,7 @@ class SiteSearchEngineServiceRestTransport(_BaseSiteSearchEngineServiceRestTrans
                 )
             return resp
 
-    class _RecrawlUris(
-        _BaseSiteSearchEngineServiceRestTransport._BaseRecrawlUris,
-        SiteSearchEngineServiceRestStub,
-    ):
+    class _RecrawlUris(_BaseSiteSearchEngineServiceRestTransport._BaseRecrawlUris, SiteSearchEngineServiceRestStub):
         def __hash__(self):
             return hash("SiteSearchEngineServiceRestTransport.RecrawlUris")
 
@@ -2971,29 +2404,27 @@ class SiteSearchEngineServiceRestTransport(_BaseSiteSearchEngineServiceRestTrans
             session,
             timeout,
             transcoded_request,
-            body=None,
-        ):
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+            body=None):
+
+            uri = transcoded_request['uri']
+            method = transcoded_request['method']
             headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
+            headers['Content-Type'] = 'application/json'
             response = getattr(session, method)(
                 "{host}{uri}".format(host=host, uri=uri),
                 timeout=timeout,
                 headers=headers,
                 params=rest_helpers.flatten_query_params(query_params, strict=True),
                 data=body,
-            )
+                )
             return response
 
-        def __call__(
-            self,
-            request: site_search_engine_service.RecrawlUrisRequest,
-            *,
-            retry: OptionalRetry = gapic_v1.method.DEFAULT,
-            timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
-        ) -> operations_pb2.Operation:
+        def __call__(self,
+                request: site_search_engine_service.RecrawlUrisRequest, *,
+                retry: OptionalRetry=gapic_v1.method.DEFAULT,
+                timeout: Optional[float]=None,
+                metadata: Sequence[Tuple[str, Union[str, bytes]]]=(),
+                ) -> operations_pb2.Operation:
             r"""Call the recrawl uris method over HTTP.
 
             Args:
@@ -3017,44 +2448,32 @@ class SiteSearchEngineServiceRestTransport(_BaseSiteSearchEngineServiceRestTrans
 
             """
 
-            http_options = (
-                _BaseSiteSearchEngineServiceRestTransport._BaseRecrawlUris._get_http_options()
-            )
+            http_options = _BaseSiteSearchEngineServiceRestTransport._BaseRecrawlUris._get_http_options()
 
             request, metadata = self._interceptor.pre_recrawl_uris(request, metadata)
-            transcoded_request = _BaseSiteSearchEngineServiceRestTransport._BaseRecrawlUris._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseSiteSearchEngineServiceRestTransport._BaseRecrawlUris._get_transcoded_request(http_options, request)
 
-            body = _BaseSiteSearchEngineServiceRestTransport._BaseRecrawlUris._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseSiteSearchEngineServiceRestTransport._BaseRecrawlUris._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseSiteSearchEngineServiceRestTransport._BaseRecrawlUris._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseSiteSearchEngineServiceRestTransport._BaseRecrawlUris._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
-                method = transcoded_request["method"]
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request['uri'])
+                method = transcoded_request['method']
                 try:
                     request_payload = json_format.MessageToJson(request)
                 except:
                     request_payload = None
                 http_request = {
-                    "payload": request_payload,
-                    "requestMethod": method,
-                    "requestUrl": request_url,
-                    "headers": dict(metadata),
+                  "payload": request_payload,
+                  "requestMethod": method,
+                  "requestUrl": request_url,
+                  "headers": dict(metadata),
                 }
                 _LOGGER.debug(
                     f"Sending request for google.cloud.discoveryengine_v1alpha.SiteSearchEngineServiceClient.RecrawlUris",
-                    extra={
+                    extra = {
                         "serviceName": "google.cloud.discoveryengine.v1alpha.SiteSearchEngineService",
                         "rpcName": "RecrawlUris",
                         "httpRequest": http_request,
@@ -3063,15 +2482,7 @@ class SiteSearchEngineServiceRestTransport(_BaseSiteSearchEngineServiceRestTrans
                 )
 
             # Send the request
-            response = SiteSearchEngineServiceRestTransport._RecrawlUris._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
-            )
+            response = SiteSearchEngineServiceRestTransport._RecrawlUris._get_response(self._host, metadata, query_params, self._session, timeout, transcoded_request, body)
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
             # subclass.
@@ -3084,24 +2495,20 @@ class SiteSearchEngineServiceRestTransport(_BaseSiteSearchEngineServiceRestTrans
 
             resp = self._interceptor.post_recrawl_uris(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_recrawl_uris_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_recrawl_uris_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
                     response_payload = None
                 http_response = {
-                    "payload": response_payload,
-                    "headers": dict(response.headers),
-                    "status": response.status_code,
+                "payload": response_payload,
+                "headers":  dict(response.headers),
+                "status": response.status_code,
                 }
                 _LOGGER.debug(
                     "Received response for google.cloud.discoveryengine_v1alpha.SiteSearchEngineServiceClient.recrawl_uris",
-                    extra={
+                    extra = {
                         "serviceName": "google.cloud.discoveryengine.v1alpha.SiteSearchEngineService",
                         "rpcName": "RecrawlUris",
                         "metadata": http_response["headers"],
@@ -3110,14 +2517,9 @@ class SiteSearchEngineServiceRestTransport(_BaseSiteSearchEngineServiceRestTrans
                 )
             return resp
 
-    class _SetUriPatternDocumentData(
-        _BaseSiteSearchEngineServiceRestTransport._BaseSetUriPatternDocumentData,
-        SiteSearchEngineServiceRestStub,
-    ):
+    class _SetUriPatternDocumentData(_BaseSiteSearchEngineServiceRestTransport._BaseSetUriPatternDocumentData, SiteSearchEngineServiceRestStub):
         def __hash__(self):
-            return hash(
-                "SiteSearchEngineServiceRestTransport.SetUriPatternDocumentData"
-            )
+            return hash("SiteSearchEngineServiceRestTransport.SetUriPatternDocumentData")
 
         @staticmethod
         def _get_response(
@@ -3127,93 +2529,77 @@ class SiteSearchEngineServiceRestTransport(_BaseSiteSearchEngineServiceRestTrans
             session,
             timeout,
             transcoded_request,
-            body=None,
-        ):
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+            body=None):
+
+            uri = transcoded_request['uri']
+            method = transcoded_request['method']
             headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
+            headers['Content-Type'] = 'application/json'
             response = getattr(session, method)(
                 "{host}{uri}".format(host=host, uri=uri),
                 timeout=timeout,
                 headers=headers,
                 params=rest_helpers.flatten_query_params(query_params, strict=True),
                 data=body,
-            )
+                )
             return response
 
-        def __call__(
-            self,
-            request: site_search_engine_service.SetUriPatternDocumentDataRequest,
-            *,
-            retry: OptionalRetry = gapic_v1.method.DEFAULT,
-            timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
-        ) -> operations_pb2.Operation:
+        def __call__(self,
+                request: site_search_engine_service.SetUriPatternDocumentDataRequest, *,
+                retry: OptionalRetry=gapic_v1.method.DEFAULT,
+                timeout: Optional[float]=None,
+                metadata: Sequence[Tuple[str, Union[str, bytes]]]=(),
+                ) -> operations_pb2.Operation:
             r"""Call the set uri pattern document
-            data method over HTTP.
+        data method over HTTP.
 
-                Args:
-                    request (~.site_search_engine_service.SetUriPatternDocumentDataRequest):
-                        The request object. Request message for
-                    [SiteSearchEngineService.SetUriPatternDocumentData][google.cloud.discoveryengine.v1alpha.SiteSearchEngineService.SetUriPatternDocumentData]
-                    method.
-                    retry (google.api_core.retry.Retry): Designation of what errors, if any,
-                        should be retried.
-                    timeout (float): The timeout for this request.
-                    metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
-                        sent along with the request as metadata. Normally, each value must be of type `str`,
-                        but for metadata keys ending with the suffix `-bin`, the corresponding values must
-                        be of type `bytes`.
+            Args:
+                request (~.site_search_engine_service.SetUriPatternDocumentDataRequest):
+                    The request object. Request message for
+                [SiteSearchEngineService.SetUriPatternDocumentData][google.cloud.discoveryengine.v1alpha.SiteSearchEngineService.SetUriPatternDocumentData]
+                method.
+                retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                    should be retried.
+                timeout (float): The timeout for this request.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
-                Returns:
-                    ~.operations_pb2.Operation:
-                        This resource represents a
-                    long-running operation that is the
-                    result of a network API call.
+            Returns:
+                ~.operations_pb2.Operation:
+                    This resource represents a
+                long-running operation that is the
+                result of a network API call.
 
             """
 
-            http_options = (
-                _BaseSiteSearchEngineServiceRestTransport._BaseSetUriPatternDocumentData._get_http_options()
-            )
+            http_options = _BaseSiteSearchEngineServiceRestTransport._BaseSetUriPatternDocumentData._get_http_options()
 
-            request, metadata = self._interceptor.pre_set_uri_pattern_document_data(
-                request, metadata
-            )
-            transcoded_request = _BaseSiteSearchEngineServiceRestTransport._BaseSetUriPatternDocumentData._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_set_uri_pattern_document_data(request, metadata)
+            transcoded_request = _BaseSiteSearchEngineServiceRestTransport._BaseSetUriPatternDocumentData._get_transcoded_request(http_options, request)
 
-            body = _BaseSiteSearchEngineServiceRestTransport._BaseSetUriPatternDocumentData._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseSiteSearchEngineServiceRestTransport._BaseSetUriPatternDocumentData._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseSiteSearchEngineServiceRestTransport._BaseSetUriPatternDocumentData._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseSiteSearchEngineServiceRestTransport._BaseSetUriPatternDocumentData._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
-                method = transcoded_request["method"]
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request['uri'])
+                method = transcoded_request['method']
                 try:
                     request_payload = json_format.MessageToJson(request)
                 except:
                     request_payload = None
                 http_request = {
-                    "payload": request_payload,
-                    "requestMethod": method,
-                    "requestUrl": request_url,
-                    "headers": dict(metadata),
+                  "payload": request_payload,
+                  "requestMethod": method,
+                  "requestUrl": request_url,
+                  "headers": dict(metadata),
                 }
                 _LOGGER.debug(
                     f"Sending request for google.cloud.discoveryengine_v1alpha.SiteSearchEngineServiceClient.SetUriPatternDocumentData",
-                    extra={
+                    extra = {
                         "serviceName": "google.cloud.discoveryengine.v1alpha.SiteSearchEngineService",
                         "rpcName": "SetUriPatternDocumentData",
                         "httpRequest": http_request,
@@ -3222,15 +2608,7 @@ class SiteSearchEngineServiceRestTransport(_BaseSiteSearchEngineServiceRestTrans
                 )
 
             # Send the request
-            response = SiteSearchEngineServiceRestTransport._SetUriPatternDocumentData._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
-            )
+            response = SiteSearchEngineServiceRestTransport._SetUriPatternDocumentData._get_response(self._host, metadata, query_params, self._session, timeout, transcoded_request, body)
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
             # subclass.
@@ -3243,27 +2621,20 @@ class SiteSearchEngineServiceRestTransport(_BaseSiteSearchEngineServiceRestTrans
 
             resp = self._interceptor.post_set_uri_pattern_document_data(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            (
-                resp,
-                _,
-            ) = self._interceptor.post_set_uri_pattern_document_data_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_set_uri_pattern_document_data_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
                     response_payload = None
                 http_response = {
-                    "payload": response_payload,
-                    "headers": dict(response.headers),
-                    "status": response.status_code,
+                "payload": response_payload,
+                "headers":  dict(response.headers),
+                "status": response.status_code,
                 }
                 _LOGGER.debug(
                     "Received response for google.cloud.discoveryengine_v1alpha.SiteSearchEngineServiceClient.set_uri_pattern_document_data",
-                    extra={
+                    extra = {
                         "serviceName": "google.cloud.discoveryengine.v1alpha.SiteSearchEngineService",
                         "rpcName": "SetUriPatternDocumentData",
                         "metadata": http_response["headers"],
@@ -3272,10 +2643,7 @@ class SiteSearchEngineServiceRestTransport(_BaseSiteSearchEngineServiceRestTrans
                 )
             return resp
 
-    class _UpdateTargetSite(
-        _BaseSiteSearchEngineServiceRestTransport._BaseUpdateTargetSite,
-        SiteSearchEngineServiceRestStub,
-    ):
+    class _UpdateTargetSite(_BaseSiteSearchEngineServiceRestTransport._BaseUpdateTargetSite, SiteSearchEngineServiceRestStub):
         def __hash__(self):
             return hash("SiteSearchEngineServiceRestTransport.UpdateTargetSite")
 
@@ -3287,29 +2655,27 @@ class SiteSearchEngineServiceRestTransport(_BaseSiteSearchEngineServiceRestTrans
             session,
             timeout,
             transcoded_request,
-            body=None,
-        ):
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+            body=None):
+
+            uri = transcoded_request['uri']
+            method = transcoded_request['method']
             headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
+            headers['Content-Type'] = 'application/json'
             response = getattr(session, method)(
                 "{host}{uri}".format(host=host, uri=uri),
                 timeout=timeout,
                 headers=headers,
                 params=rest_helpers.flatten_query_params(query_params, strict=True),
                 data=body,
-            )
+                )
             return response
 
-        def __call__(
-            self,
-            request: site_search_engine_service.UpdateTargetSiteRequest,
-            *,
-            retry: OptionalRetry = gapic_v1.method.DEFAULT,
-            timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
-        ) -> operations_pb2.Operation:
+        def __call__(self,
+                request: site_search_engine_service.UpdateTargetSiteRequest, *,
+                retry: OptionalRetry=gapic_v1.method.DEFAULT,
+                timeout: Optional[float]=None,
+                metadata: Sequence[Tuple[str, Union[str, bytes]]]=(),
+                ) -> operations_pb2.Operation:
             r"""Call the update target site method over HTTP.
 
             Args:
@@ -3333,46 +2699,32 @@ class SiteSearchEngineServiceRestTransport(_BaseSiteSearchEngineServiceRestTrans
 
             """
 
-            http_options = (
-                _BaseSiteSearchEngineServiceRestTransport._BaseUpdateTargetSite._get_http_options()
-            )
+            http_options = _BaseSiteSearchEngineServiceRestTransport._BaseUpdateTargetSite._get_http_options()
 
-            request, metadata = self._interceptor.pre_update_target_site(
-                request, metadata
-            )
-            transcoded_request = _BaseSiteSearchEngineServiceRestTransport._BaseUpdateTargetSite._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_update_target_site(request, metadata)
+            transcoded_request = _BaseSiteSearchEngineServiceRestTransport._BaseUpdateTargetSite._get_transcoded_request(http_options, request)
 
-            body = _BaseSiteSearchEngineServiceRestTransport._BaseUpdateTargetSite._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseSiteSearchEngineServiceRestTransport._BaseUpdateTargetSite._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseSiteSearchEngineServiceRestTransport._BaseUpdateTargetSite._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseSiteSearchEngineServiceRestTransport._BaseUpdateTargetSite._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
-                method = transcoded_request["method"]
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request['uri'])
+                method = transcoded_request['method']
                 try:
                     request_payload = json_format.MessageToJson(request)
                 except:
                     request_payload = None
                 http_request = {
-                    "payload": request_payload,
-                    "requestMethod": method,
-                    "requestUrl": request_url,
-                    "headers": dict(metadata),
+                  "payload": request_payload,
+                  "requestMethod": method,
+                  "requestUrl": request_url,
+                  "headers": dict(metadata),
                 }
                 _LOGGER.debug(
                     f"Sending request for google.cloud.discoveryengine_v1alpha.SiteSearchEngineServiceClient.UpdateTargetSite",
-                    extra={
+                    extra = {
                         "serviceName": "google.cloud.discoveryengine.v1alpha.SiteSearchEngineService",
                         "rpcName": "UpdateTargetSite",
                         "httpRequest": http_request,
@@ -3381,17 +2733,7 @@ class SiteSearchEngineServiceRestTransport(_BaseSiteSearchEngineServiceRestTrans
                 )
 
             # Send the request
-            response = (
-                SiteSearchEngineServiceRestTransport._UpdateTargetSite._get_response(
-                    self._host,
-                    metadata,
-                    query_params,
-                    self._session,
-                    timeout,
-                    transcoded_request,
-                    body,
-                )
-            )
+            response = SiteSearchEngineServiceRestTransport._UpdateTargetSite._get_response(self._host, metadata, query_params, self._session, timeout, transcoded_request, body)
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
             # subclass.
@@ -3404,24 +2746,20 @@ class SiteSearchEngineServiceRestTransport(_BaseSiteSearchEngineServiceRestTrans
 
             resp = self._interceptor.post_update_target_site(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_update_target_site_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_update_target_site_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
                     response_payload = None
                 http_response = {
-                    "payload": response_payload,
-                    "headers": dict(response.headers),
-                    "status": response.status_code,
+                "payload": response_payload,
+                "headers":  dict(response.headers),
+                "status": response.status_code,
                 }
                 _LOGGER.debug(
                     "Received response for google.cloud.discoveryengine_v1alpha.SiteSearchEngineServiceClient.update_target_site",
-                    extra={
+                    extra = {
                         "serviceName": "google.cloud.discoveryengine.v1alpha.SiteSearchEngineService",
                         "rpcName": "UpdateTargetSite",
                         "metadata": http_response["headers"],
@@ -3431,162 +2769,122 @@ class SiteSearchEngineServiceRestTransport(_BaseSiteSearchEngineServiceRestTrans
             return resp
 
     @property
-    def batch_create_target_sites(
-        self,
-    ) -> Callable[
-        [site_search_engine_service.BatchCreateTargetSitesRequest],
-        operations_pb2.Operation,
-    ]:
+    def batch_create_target_sites(self) -> Callable[
+            [site_search_engine_service.BatchCreateTargetSitesRequest],
+            operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return self._BatchCreateTargetSites(self._session, self._host, self._interceptor)  # type: ignore
+        return self._BatchCreateTargetSites(self._session, self._host, self._interceptor) # type: ignore
 
     @property
-    def batch_verify_target_sites(
-        self,
-    ) -> Callable[
-        [site_search_engine_service.BatchVerifyTargetSitesRequest],
-        operations_pb2.Operation,
-    ]:
+    def batch_verify_target_sites(self) -> Callable[
+            [site_search_engine_service.BatchVerifyTargetSitesRequest],
+            operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return self._BatchVerifyTargetSites(self._session, self._host, self._interceptor)  # type: ignore
+        return self._BatchVerifyTargetSites(self._session, self._host, self._interceptor) # type: ignore
 
     @property
-    def create_target_site(
-        self,
-    ) -> Callable[
-        [site_search_engine_service.CreateTargetSiteRequest], operations_pb2.Operation
-    ]:
+    def create_target_site(self) -> Callable[
+            [site_search_engine_service.CreateTargetSiteRequest],
+            operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return self._CreateTargetSite(self._session, self._host, self._interceptor)  # type: ignore
+        return self._CreateTargetSite(self._session, self._host, self._interceptor) # type: ignore
 
     @property
-    def delete_target_site(
-        self,
-    ) -> Callable[
-        [site_search_engine_service.DeleteTargetSiteRequest], operations_pb2.Operation
-    ]:
+    def delete_target_site(self) -> Callable[
+            [site_search_engine_service.DeleteTargetSiteRequest],
+            operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return self._DeleteTargetSite(self._session, self._host, self._interceptor)  # type: ignore
+        return self._DeleteTargetSite(self._session, self._host, self._interceptor) # type: ignore
 
     @property
-    def disable_advanced_site_search(
-        self,
-    ) -> Callable[
-        [site_search_engine_service.DisableAdvancedSiteSearchRequest],
-        operations_pb2.Operation,
-    ]:
+    def disable_advanced_site_search(self) -> Callable[
+            [site_search_engine_service.DisableAdvancedSiteSearchRequest],
+            operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return self._DisableAdvancedSiteSearch(self._session, self._host, self._interceptor)  # type: ignore
+        return self._DisableAdvancedSiteSearch(self._session, self._host, self._interceptor) # type: ignore
 
     @property
-    def enable_advanced_site_search(
-        self,
-    ) -> Callable[
-        [site_search_engine_service.EnableAdvancedSiteSearchRequest],
-        operations_pb2.Operation,
-    ]:
+    def enable_advanced_site_search(self) -> Callable[
+            [site_search_engine_service.EnableAdvancedSiteSearchRequest],
+            operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return self._EnableAdvancedSiteSearch(self._session, self._host, self._interceptor)  # type: ignore
+        return self._EnableAdvancedSiteSearch(self._session, self._host, self._interceptor) # type: ignore
 
     @property
-    def fetch_domain_verification_status(
-        self,
-    ) -> Callable[
-        [site_search_engine_service.FetchDomainVerificationStatusRequest],
-        site_search_engine_service.FetchDomainVerificationStatusResponse,
-    ]:
+    def fetch_domain_verification_status(self) -> Callable[
+            [site_search_engine_service.FetchDomainVerificationStatusRequest],
+            site_search_engine_service.FetchDomainVerificationStatusResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return self._FetchDomainVerificationStatus(self._session, self._host, self._interceptor)  # type: ignore
+        return self._FetchDomainVerificationStatus(self._session, self._host, self._interceptor) # type: ignore
 
     @property
-    def get_site_search_engine(
-        self,
-    ) -> Callable[
-        [site_search_engine_service.GetSiteSearchEngineRequest],
-        site_search_engine.SiteSearchEngine,
-    ]:
+    def get_site_search_engine(self) -> Callable[
+            [site_search_engine_service.GetSiteSearchEngineRequest],
+            site_search_engine.SiteSearchEngine]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return self._GetSiteSearchEngine(self._session, self._host, self._interceptor)  # type: ignore
+        return self._GetSiteSearchEngine(self._session, self._host, self._interceptor) # type: ignore
 
     @property
-    def get_target_site(
-        self,
-    ) -> Callable[
-        [site_search_engine_service.GetTargetSiteRequest], site_search_engine.TargetSite
-    ]:
+    def get_target_site(self) -> Callable[
+            [site_search_engine_service.GetTargetSiteRequest],
+            site_search_engine.TargetSite]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return self._GetTargetSite(self._session, self._host, self._interceptor)  # type: ignore
+        return self._GetTargetSite(self._session, self._host, self._interceptor) # type: ignore
 
     @property
-    def get_uri_pattern_document_data(
-        self,
-    ) -> Callable[
-        [site_search_engine_service.GetUriPatternDocumentDataRequest],
-        site_search_engine_service.GetUriPatternDocumentDataResponse,
-    ]:
+    def get_uri_pattern_document_data(self) -> Callable[
+            [site_search_engine_service.GetUriPatternDocumentDataRequest],
+            site_search_engine_service.GetUriPatternDocumentDataResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return self._GetUriPatternDocumentData(self._session, self._host, self._interceptor)  # type: ignore
+        return self._GetUriPatternDocumentData(self._session, self._host, self._interceptor) # type: ignore
 
     @property
-    def list_target_sites(
-        self,
-    ) -> Callable[
-        [site_search_engine_service.ListTargetSitesRequest],
-        site_search_engine_service.ListTargetSitesResponse,
-    ]:
+    def list_target_sites(self) -> Callable[
+            [site_search_engine_service.ListTargetSitesRequest],
+            site_search_engine_service.ListTargetSitesResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return self._ListTargetSites(self._session, self._host, self._interceptor)  # type: ignore
+        return self._ListTargetSites(self._session, self._host, self._interceptor) # type: ignore
 
     @property
-    def recrawl_uris(
-        self,
-    ) -> Callable[
-        [site_search_engine_service.RecrawlUrisRequest], operations_pb2.Operation
-    ]:
+    def recrawl_uris(self) -> Callable[
+            [site_search_engine_service.RecrawlUrisRequest],
+            operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return self._RecrawlUris(self._session, self._host, self._interceptor)  # type: ignore
+        return self._RecrawlUris(self._session, self._host, self._interceptor) # type: ignore
 
     @property
-    def set_uri_pattern_document_data(
-        self,
-    ) -> Callable[
-        [site_search_engine_service.SetUriPatternDocumentDataRequest],
-        operations_pb2.Operation,
-    ]:
+    def set_uri_pattern_document_data(self) -> Callable[
+            [site_search_engine_service.SetUriPatternDocumentDataRequest],
+            operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return self._SetUriPatternDocumentData(self._session, self._host, self._interceptor)  # type: ignore
+        return self._SetUriPatternDocumentData(self._session, self._host, self._interceptor) # type: ignore
 
     @property
-    def update_target_site(
-        self,
-    ) -> Callable[
-        [site_search_engine_service.UpdateTargetSiteRequest], operations_pb2.Operation
-    ]:
+    def update_target_site(self) -> Callable[
+            [site_search_engine_service.UpdateTargetSiteRequest],
+            operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return self._UpdateTargetSite(self._session, self._host, self._interceptor)  # type: ignore
+        return self._UpdateTargetSite(self._session, self._host, self._interceptor) # type: ignore
 
     @property
     def cancel_operation(self):
-        return self._CancelOperation(self._session, self._host, self._interceptor)  # type: ignore
+        return self._CancelOperation(self._session, self._host, self._interceptor) # type: ignore
 
-    class _CancelOperation(
-        _BaseSiteSearchEngineServiceRestTransport._BaseCancelOperation,
-        SiteSearchEngineServiceRestStub,
-    ):
+    class _CancelOperation(_BaseSiteSearchEngineServiceRestTransport._BaseCancelOperation, SiteSearchEngineServiceRestStub):
         def __hash__(self):
             return hash("SiteSearchEngineServiceRestTransport.CancelOperation")
 
@@ -3598,29 +2896,28 @@ class SiteSearchEngineServiceRestTransport(_BaseSiteSearchEngineServiceRestTrans
             session,
             timeout,
             transcoded_request,
-            body=None,
-        ):
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+            body=None):
+
+            uri = transcoded_request['uri']
+            method = transcoded_request['method']
             headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
+            headers['Content-Type'] = 'application/json'
             response = getattr(session, method)(
                 "{host}{uri}".format(host=host, uri=uri),
                 timeout=timeout,
                 headers=headers,
                 params=rest_helpers.flatten_query_params(query_params, strict=True),
                 data=body,
-            )
+                )
             return response
 
-        def __call__(
-            self,
-            request: operations_pb2.CancelOperationRequest,
-            *,
-            retry: OptionalRetry = gapic_v1.method.DEFAULT,
-            timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
-        ) -> None:
+        def __call__(self,
+            request: operations_pb2.CancelOperationRequest, *,
+            retry: OptionalRetry=gapic_v1.method.DEFAULT,
+            timeout: Optional[float]=None,
+            metadata: Sequence[Tuple[str, Union[str, bytes]]]=(),
+            ) -> None:
+
             r"""Call the cancel operation method over HTTP.
 
             Args:
@@ -3635,46 +2932,32 @@ class SiteSearchEngineServiceRestTransport(_BaseSiteSearchEngineServiceRestTrans
                     be of type `bytes`.
             """
 
-            http_options = (
-                _BaseSiteSearchEngineServiceRestTransport._BaseCancelOperation._get_http_options()
-            )
+            http_options = _BaseSiteSearchEngineServiceRestTransport._BaseCancelOperation._get_http_options()
 
-            request, metadata = self._interceptor.pre_cancel_operation(
-                request, metadata
-            )
-            transcoded_request = _BaseSiteSearchEngineServiceRestTransport._BaseCancelOperation._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_cancel_operation(request, metadata)
+            transcoded_request = _BaseSiteSearchEngineServiceRestTransport._BaseCancelOperation._get_transcoded_request(http_options, request)
 
-            body = _BaseSiteSearchEngineServiceRestTransport._BaseCancelOperation._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseSiteSearchEngineServiceRestTransport._BaseCancelOperation._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseSiteSearchEngineServiceRestTransport._BaseCancelOperation._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseSiteSearchEngineServiceRestTransport._BaseCancelOperation._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
-                method = transcoded_request["method"]
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request['uri'])
+                method = transcoded_request['method']
                 try:
                     request_payload = json_format.MessageToJson(request)
                 except:
                     request_payload = None
                 http_request = {
-                    "payload": request_payload,
-                    "requestMethod": method,
-                    "requestUrl": request_url,
-                    "headers": dict(metadata),
+                  "payload": request_payload,
+                  "requestMethod": method,
+                  "requestUrl": request_url,
+                  "headers": dict(metadata),
                 }
                 _LOGGER.debug(
                     f"Sending request for google.cloud.discoveryengine_v1alpha.SiteSearchEngineServiceClient.CancelOperation",
-                    extra={
+                    extra = {
                         "serviceName": "google.cloud.discoveryengine.v1alpha.SiteSearchEngineService",
                         "rpcName": "CancelOperation",
                         "httpRequest": http_request,
@@ -3683,17 +2966,7 @@ class SiteSearchEngineServiceRestTransport(_BaseSiteSearchEngineServiceRestTrans
                 )
 
             # Send the request
-            response = (
-                SiteSearchEngineServiceRestTransport._CancelOperation._get_response(
-                    self._host,
-                    metadata,
-                    query_params,
-                    self._session,
-                    timeout,
-                    transcoded_request,
-                    body,
-                )
-            )
+            response = SiteSearchEngineServiceRestTransport._CancelOperation._get_response(self._host, metadata, query_params, self._session, timeout, transcoded_request, body)
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
             # subclass.
@@ -3704,12 +2977,9 @@ class SiteSearchEngineServiceRestTransport(_BaseSiteSearchEngineServiceRestTrans
 
     @property
     def get_operation(self):
-        return self._GetOperation(self._session, self._host, self._interceptor)  # type: ignore
+        return self._GetOperation(self._session, self._host, self._interceptor) # type: ignore
 
-    class _GetOperation(
-        _BaseSiteSearchEngineServiceRestTransport._BaseGetOperation,
-        SiteSearchEngineServiceRestStub,
-    ):
+    class _GetOperation(_BaseSiteSearchEngineServiceRestTransport._BaseGetOperation, SiteSearchEngineServiceRestStub):
         def __hash__(self):
             return hash("SiteSearchEngineServiceRestTransport.GetOperation")
 
@@ -3721,28 +2991,27 @@ class SiteSearchEngineServiceRestTransport(_BaseSiteSearchEngineServiceRestTrans
             session,
             timeout,
             transcoded_request,
-            body=None,
-        ):
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+            body=None):
+
+            uri = transcoded_request['uri']
+            method = transcoded_request['method']
             headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
+            headers['Content-Type'] = 'application/json'
             response = getattr(session, method)(
                 "{host}{uri}".format(host=host, uri=uri),
                 timeout=timeout,
                 headers=headers,
                 params=rest_helpers.flatten_query_params(query_params, strict=True),
-            )
+                )
             return response
 
-        def __call__(
-            self,
-            request: operations_pb2.GetOperationRequest,
-            *,
-            retry: OptionalRetry = gapic_v1.method.DEFAULT,
-            timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
-        ) -> operations_pb2.Operation:
+        def __call__(self,
+            request: operations_pb2.GetOperationRequest, *,
+            retry: OptionalRetry=gapic_v1.method.DEFAULT,
+            timeout: Optional[float]=None,
+            metadata: Sequence[Tuple[str, Union[str, bytes]]]=(),
+            ) -> operations_pb2.Operation:
+
             r"""Call the get operation method over HTTP.
 
             Args:
@@ -3760,40 +3029,30 @@ class SiteSearchEngineServiceRestTransport(_BaseSiteSearchEngineServiceRestTrans
                 operations_pb2.Operation: Response from GetOperation method.
             """
 
-            http_options = (
-                _BaseSiteSearchEngineServiceRestTransport._BaseGetOperation._get_http_options()
-            )
+            http_options = _BaseSiteSearchEngineServiceRestTransport._BaseGetOperation._get_http_options()
 
             request, metadata = self._interceptor.pre_get_operation(request, metadata)
-            transcoded_request = _BaseSiteSearchEngineServiceRestTransport._BaseGetOperation._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseSiteSearchEngineServiceRestTransport._BaseGetOperation._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseSiteSearchEngineServiceRestTransport._BaseGetOperation._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseSiteSearchEngineServiceRestTransport._BaseGetOperation._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
-                method = transcoded_request["method"]
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request['uri'])
+                method = transcoded_request['method']
                 try:
                     request_payload = json_format.MessageToJson(request)
                 except:
                     request_payload = None
                 http_request = {
-                    "payload": request_payload,
-                    "requestMethod": method,
-                    "requestUrl": request_url,
-                    "headers": dict(metadata),
+                  "payload": request_payload,
+                  "requestMethod": method,
+                  "requestUrl": request_url,
+                  "headers": dict(metadata),
                 }
                 _LOGGER.debug(
                     f"Sending request for google.cloud.discoveryengine_v1alpha.SiteSearchEngineServiceClient.GetOperation",
-                    extra={
+                    extra = {
                         "serviceName": "google.cloud.discoveryengine.v1alpha.SiteSearchEngineService",
                         "rpcName": "GetOperation",
                         "httpRequest": http_request,
@@ -3802,14 +3061,7 @@ class SiteSearchEngineServiceRestTransport(_BaseSiteSearchEngineServiceRestTrans
                 )
 
             # Send the request
-            response = SiteSearchEngineServiceRestTransport._GetOperation._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-            )
+            response = SiteSearchEngineServiceRestTransport._GetOperation._get_response(self._host, metadata, query_params, self._session, timeout, transcoded_request)
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
             # subclass.
@@ -3820,21 +3072,19 @@ class SiteSearchEngineServiceRestTransport(_BaseSiteSearchEngineServiceRestTrans
             resp = operations_pb2.Operation()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_get_operation(resp)
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
-                    "headers": dict(response.headers),
+                    "headers":  dict(response.headers),
                     "status": response.status_code,
                 }
                 _LOGGER.debug(
                     "Received response for google.cloud.discoveryengine_v1alpha.SiteSearchEngineServiceAsyncClient.GetOperation",
-                    extra={
+                    extra = {
                         "serviceName": "google.cloud.discoveryengine.v1alpha.SiteSearchEngineService",
                         "rpcName": "GetOperation",
                         "httpResponse": http_response,
@@ -3845,12 +3095,9 @@ class SiteSearchEngineServiceRestTransport(_BaseSiteSearchEngineServiceRestTrans
 
     @property
     def list_operations(self):
-        return self._ListOperations(self._session, self._host, self._interceptor)  # type: ignore
+        return self._ListOperations(self._session, self._host, self._interceptor) # type: ignore
 
-    class _ListOperations(
-        _BaseSiteSearchEngineServiceRestTransport._BaseListOperations,
-        SiteSearchEngineServiceRestStub,
-    ):
+    class _ListOperations(_BaseSiteSearchEngineServiceRestTransport._BaseListOperations, SiteSearchEngineServiceRestStub):
         def __hash__(self):
             return hash("SiteSearchEngineServiceRestTransport.ListOperations")
 
@@ -3862,28 +3109,27 @@ class SiteSearchEngineServiceRestTransport(_BaseSiteSearchEngineServiceRestTrans
             session,
             timeout,
             transcoded_request,
-            body=None,
-        ):
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+            body=None):
+
+            uri = transcoded_request['uri']
+            method = transcoded_request['method']
             headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
+            headers['Content-Type'] = 'application/json'
             response = getattr(session, method)(
                 "{host}{uri}".format(host=host, uri=uri),
                 timeout=timeout,
                 headers=headers,
                 params=rest_helpers.flatten_query_params(query_params, strict=True),
-            )
+                )
             return response
 
-        def __call__(
-            self,
-            request: operations_pb2.ListOperationsRequest,
-            *,
-            retry: OptionalRetry = gapic_v1.method.DEFAULT,
-            timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
-        ) -> operations_pb2.ListOperationsResponse:
+        def __call__(self,
+            request: operations_pb2.ListOperationsRequest, *,
+            retry: OptionalRetry=gapic_v1.method.DEFAULT,
+            timeout: Optional[float]=None,
+            metadata: Sequence[Tuple[str, Union[str, bytes]]]=(),
+            ) -> operations_pb2.ListOperationsResponse:
+
             r"""Call the list operations method over HTTP.
 
             Args:
@@ -3901,40 +3147,30 @@ class SiteSearchEngineServiceRestTransport(_BaseSiteSearchEngineServiceRestTrans
                 operations_pb2.ListOperationsResponse: Response from ListOperations method.
             """
 
-            http_options = (
-                _BaseSiteSearchEngineServiceRestTransport._BaseListOperations._get_http_options()
-            )
+            http_options = _BaseSiteSearchEngineServiceRestTransport._BaseListOperations._get_http_options()
 
             request, metadata = self._interceptor.pre_list_operations(request, metadata)
-            transcoded_request = _BaseSiteSearchEngineServiceRestTransport._BaseListOperations._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseSiteSearchEngineServiceRestTransport._BaseListOperations._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseSiteSearchEngineServiceRestTransport._BaseListOperations._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseSiteSearchEngineServiceRestTransport._BaseListOperations._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
-                method = transcoded_request["method"]
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request['uri'])
+                method = transcoded_request['method']
                 try:
                     request_payload = json_format.MessageToJson(request)
                 except:
                     request_payload = None
                 http_request = {
-                    "payload": request_payload,
-                    "requestMethod": method,
-                    "requestUrl": request_url,
-                    "headers": dict(metadata),
+                  "payload": request_payload,
+                  "requestMethod": method,
+                  "requestUrl": request_url,
+                  "headers": dict(metadata),
                 }
                 _LOGGER.debug(
                     f"Sending request for google.cloud.discoveryengine_v1alpha.SiteSearchEngineServiceClient.ListOperations",
-                    extra={
+                    extra = {
                         "serviceName": "google.cloud.discoveryengine.v1alpha.SiteSearchEngineService",
                         "rpcName": "ListOperations",
                         "httpRequest": http_request,
@@ -3943,16 +3179,7 @@ class SiteSearchEngineServiceRestTransport(_BaseSiteSearchEngineServiceRestTrans
                 )
 
             # Send the request
-            response = (
-                SiteSearchEngineServiceRestTransport._ListOperations._get_response(
-                    self._host,
-                    metadata,
-                    query_params,
-                    self._session,
-                    timeout,
-                    transcoded_request,
-                )
-            )
+            response = SiteSearchEngineServiceRestTransport._ListOperations._get_response(self._host, metadata, query_params, self._session, timeout, transcoded_request)
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
             # subclass.
@@ -3963,21 +3190,19 @@ class SiteSearchEngineServiceRestTransport(_BaseSiteSearchEngineServiceRestTrans
             resp = operations_pb2.ListOperationsResponse()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_list_operations(resp)
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
-                    "headers": dict(response.headers),
+                    "headers":  dict(response.headers),
                     "status": response.status_code,
                 }
                 _LOGGER.debug(
                     "Received response for google.cloud.discoveryengine_v1alpha.SiteSearchEngineServiceAsyncClient.ListOperations",
-                    extra={
+                    extra = {
                         "serviceName": "google.cloud.discoveryengine.v1alpha.SiteSearchEngineService",
                         "rpcName": "ListOperations",
                         "httpResponse": http_response,
@@ -3994,4 +3219,6 @@ class SiteSearchEngineServiceRestTransport(_BaseSiteSearchEngineServiceRestTrans
         self._session.close()
 
 
-__all__ = ("SiteSearchEngineServiceRestTransport",)
+__all__=(
+    'SiteSearchEngineServiceRestTransport',
+)

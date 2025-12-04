@@ -13,33 +13,38 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-import dataclasses
-import json  # type: ignore
 import logging
+import json  # type: ignore
+
+from google.auth.transport.requests import AuthorizedSession  # type: ignore
+from google.auth import credentials as ga_credentials  # type: ignore
+from google.api_core import exceptions as core_exceptions
+from google.api_core import retry as retries
+from google.api_core import rest_helpers
+from google.api_core import rest_streaming
+from google.api_core import gapic_v1
+import google.protobuf
+
+from google.protobuf import json_format
+from google.api_core import operations_v1
+from google.cloud.location import locations_pb2 # type: ignore
+
+from requests import __version__ as requests_version
+import dataclasses
 from typing import Any, Callable, Dict, List, Optional, Sequence, Tuple, Union
 import warnings
 
+
 from google.api import httpbody_pb2  # type: ignore
-from google.api_core import gapic_v1, operations_v1, rest_helpers, rest_streaming
-from google.api_core import exceptions as core_exceptions
-from google.api_core import retry as retries
-from google.auth import credentials as ga_credentials  # type: ignore
-from google.auth.transport.requests import AuthorizedSession  # type: ignore
-from google.cloud.location import locations_pb2  # type: ignore
+from google.cloud.discoveryengine_v1.types import import_config
+from google.cloud.discoveryengine_v1.types import purge_config
+from google.cloud.discoveryengine_v1.types import user_event
+from google.cloud.discoveryengine_v1.types import user_event_service
 from google.longrunning import operations_pb2  # type: ignore
-import google.protobuf
-from google.protobuf import json_format
-from requests import __version__ as requests_version
 
-from google.cloud.discoveryengine_v1.types import (
-    import_config,
-    purge_config,
-    user_event,
-    user_event_service,
-)
 
-from .base import DEFAULT_CLIENT_INFO as BASE_DEFAULT_CLIENT_INFO
 from .rest_base import _BaseUserEventServiceRestTransport
+from .base import DEFAULT_CLIENT_INFO as BASE_DEFAULT_CLIENT_INFO
 
 try:
     OptionalRetry = Union[retries.Retry, gapic_v1.method._MethodDefault, None]
@@ -48,7 +53,6 @@ except AttributeError:  # pragma: NO COVER
 
 try:
     from google.api_core import client_logging  # type: ignore
-
     CLIENT_LOGGING_SUPPORTED = True  # pragma: NO COVER
 except ImportError:  # pragma: NO COVER
     CLIENT_LOGGING_SUPPORTED = False
@@ -117,15 +121,7 @@ class UserEventServiceRestInterceptor:
 
 
     """
-
-    def pre_collect_user_event(
-        self,
-        request: user_event_service.CollectUserEventRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        user_event_service.CollectUserEventRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+    def pre_collect_user_event(self, request: user_event_service.CollectUserEventRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]) -> Tuple[user_event_service.CollectUserEventRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for collect_user_event
 
         Override in a subclass to manipulate the request or metadata
@@ -133,9 +129,7 @@ class UserEventServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_collect_user_event(
-        self, response: httpbody_pb2.HttpBody
-    ) -> httpbody_pb2.HttpBody:
+    def post_collect_user_event(self, response: httpbody_pb2.HttpBody) -> httpbody_pb2.HttpBody:
         """Post-rpc interceptor for collect_user_event
 
         DEPRECATED. Please use the `post_collect_user_event_with_metadata`
@@ -148,11 +142,7 @@ class UserEventServiceRestInterceptor:
         """
         return response
 
-    def post_collect_user_event_with_metadata(
-        self,
-        response: httpbody_pb2.HttpBody,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[httpbody_pb2.HttpBody, Sequence[Tuple[str, Union[str, bytes]]]]:
+    def post_collect_user_event_with_metadata(self, response: httpbody_pb2.HttpBody, metadata: Sequence[Tuple[str, Union[str, bytes]]]) -> Tuple[httpbody_pb2.HttpBody, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for collect_user_event
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -167,13 +157,7 @@ class UserEventServiceRestInterceptor:
         """
         return response, metadata
 
-    def pre_import_user_events(
-        self,
-        request: import_config.ImportUserEventsRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        import_config.ImportUserEventsRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+    def pre_import_user_events(self, request: import_config.ImportUserEventsRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]) -> Tuple[import_config.ImportUserEventsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for import_user_events
 
         Override in a subclass to manipulate the request or metadata
@@ -181,9 +165,7 @@ class UserEventServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_import_user_events(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_import_user_events(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for import_user_events
 
         DEPRECATED. Please use the `post_import_user_events_with_metadata`
@@ -196,11 +178,7 @@ class UserEventServiceRestInterceptor:
         """
         return response
 
-    def post_import_user_events_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
+    def post_import_user_events_with_metadata(self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for import_user_events
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -215,13 +193,7 @@ class UserEventServiceRestInterceptor:
         """
         return response, metadata
 
-    def pre_purge_user_events(
-        self,
-        request: purge_config.PurgeUserEventsRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        purge_config.PurgeUserEventsRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+    def pre_purge_user_events(self, request: purge_config.PurgeUserEventsRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]) -> Tuple[purge_config.PurgeUserEventsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for purge_user_events
 
         Override in a subclass to manipulate the request or metadata
@@ -229,9 +201,7 @@ class UserEventServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_purge_user_events(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_purge_user_events(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for purge_user_events
 
         DEPRECATED. Please use the `post_purge_user_events_with_metadata`
@@ -244,11 +214,7 @@ class UserEventServiceRestInterceptor:
         """
         return response
 
-    def post_purge_user_events_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
+    def post_purge_user_events_with_metadata(self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for purge_user_events
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -263,14 +229,7 @@ class UserEventServiceRestInterceptor:
         """
         return response, metadata
 
-    def pre_write_user_event(
-        self,
-        request: user_event_service.WriteUserEventRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        user_event_service.WriteUserEventRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+    def pre_write_user_event(self, request: user_event_service.WriteUserEventRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]) -> Tuple[user_event_service.WriteUserEventRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for write_user_event
 
         Override in a subclass to manipulate the request or metadata
@@ -278,9 +237,7 @@ class UserEventServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_write_user_event(
-        self, response: user_event.UserEvent
-    ) -> user_event.UserEvent:
+    def post_write_user_event(self, response: user_event.UserEvent) -> user_event.UserEvent:
         """Post-rpc interceptor for write_user_event
 
         DEPRECATED. Please use the `post_write_user_event_with_metadata`
@@ -293,11 +250,7 @@ class UserEventServiceRestInterceptor:
         """
         return response
 
-    def post_write_user_event_with_metadata(
-        self,
-        response: user_event.UserEvent,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[user_event.UserEvent, Sequence[Tuple[str, Union[str, bytes]]]]:
+    def post_write_user_event_with_metadata(self, response: user_event.UserEvent, metadata: Sequence[Tuple[str, Union[str, bytes]]]) -> Tuple[user_event.UserEvent, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for write_user_event
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -313,12 +266,8 @@ class UserEventServiceRestInterceptor:
         return response, metadata
 
     def pre_cancel_operation(
-        self,
-        request: operations_pb2.CancelOperationRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        operations_pb2.CancelOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: operations_pb2.CancelOperationRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[operations_pb2.CancelOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for cancel_operation
 
         Override in a subclass to manipulate the request or metadata
@@ -326,7 +275,9 @@ class UserEventServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_cancel_operation(self, response: None) -> None:
+    def post_cancel_operation(
+        self, response: None
+    ) -> None:
         """Post-rpc interceptor for cancel_operation
 
         Override in a subclass to manipulate the response
@@ -336,12 +287,8 @@ class UserEventServiceRestInterceptor:
         return response
 
     def pre_get_operation(
-        self,
-        request: operations_pb2.GetOperationRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        operations_pb2.GetOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: operations_pb2.GetOperationRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[operations_pb2.GetOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_operation
 
         Override in a subclass to manipulate the request or metadata
@@ -361,12 +308,8 @@ class UserEventServiceRestInterceptor:
         return response
 
     def pre_list_operations(
-        self,
-        request: operations_pb2.ListOperationsRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        operations_pb2.ListOperationsRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: operations_pb2.ListOperationsRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[operations_pb2.ListOperationsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_operations
 
         Override in a subclass to manipulate the request or metadata
@@ -406,21 +349,20 @@ class UserEventServiceRestTransport(_BaseUserEventServiceRestTransport):
     It sends JSON representations of protocol buffers over HTTP/1.1
     """
 
-    def __init__(
-        self,
-        *,
-        host: str = "discoveryengine.googleapis.com",
-        credentials: Optional[ga_credentials.Credentials] = None,
-        credentials_file: Optional[str] = None,
-        scopes: Optional[Sequence[str]] = None,
-        client_cert_source_for_mtls: Optional[Callable[[], Tuple[bytes, bytes]]] = None,
-        quota_project_id: Optional[str] = None,
-        client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
-        always_use_jwt_access: Optional[bool] = False,
-        url_scheme: str = "https",
-        interceptor: Optional[UserEventServiceRestInterceptor] = None,
-        api_audience: Optional[str] = None,
-    ) -> None:
+    def __init__(self, *,
+            host: str = 'discoveryengine.googleapis.com',
+            credentials: Optional[ga_credentials.Credentials] = None,
+            credentials_file: Optional[str] = None,
+            scopes: Optional[Sequence[str]] = None,
+            client_cert_source_for_mtls: Optional[Callable[[
+                ], Tuple[bytes, bytes]]] = None,
+            quota_project_id: Optional[str] = None,
+            client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
+            always_use_jwt_access: Optional[bool] = False,
+            url_scheme: str = 'https',
+            interceptor: Optional[UserEventServiceRestInterceptor] = None,
+            api_audience: Optional[str] = None,
+            ) -> None:
         """Instantiate the transport.
 
         Args:
@@ -464,11 +406,10 @@ class UserEventServiceRestTransport(_BaseUserEventServiceRestTransport):
             client_info=client_info,
             always_use_jwt_access=always_use_jwt_access,
             url_scheme=url_scheme,
-            api_audience=api_audience,
+            api_audience=api_audience
         )
         self._session = AuthorizedSession(
-            self._credentials, default_host=self.DEFAULT_HOST
-        )
+            self._credentials, default_host=self.DEFAULT_HOST)
         self._operations_client: Optional[operations_v1.AbstractOperationsClient] = None
         if client_cert_source_for_mtls:
             self._session.configure_mtls_channel(client_cert_source_for_mtls)
@@ -485,182 +426,176 @@ class UserEventServiceRestTransport(_BaseUserEventServiceRestTransport):
         # Only create a new client if we do not already have one.
         if self._operations_client is None:
             http_options: Dict[str, List[Dict[str, str]]] = {
-                "google.longrunning.Operations.CancelOperation": [
+                'google.longrunning.Operations.CancelOperation': [
                     {
-                        "method": "post",
-                        "uri": "/v1/{name=projects/*/operations/*}:cancel",
-                        "body": "*",
+                        'method': 'post',
+                        'uri': '/v1/{name=projects/*/operations/*}:cancel',
+                        'body': '*',
                     },
                     {
-                        "method": "post",
-                        "uri": "/v1/{name=projects/*/locations/*/collections/*/dataStores/*/branches/*/operations/*}:cancel",
-                        "body": "*",
+                        'method': 'post',
+                        'uri': '/v1/{name=projects/*/locations/*/collections/*/dataStores/*/branches/*/operations/*}:cancel',
+                        'body': '*',
                     },
                     {
-                        "method": "post",
-                        "uri": "/v1/{name=projects/*/locations/*/collections/*/engines/*/operations/*}:cancel",
-                        "body": "*",
+                        'method': 'post',
+                        'uri': '/v1/{name=projects/*/locations/*/collections/*/engines/*/operations/*}:cancel',
+                        'body': '*',
                     },
                     {
-                        "method": "post",
-                        "uri": "/v1/{name=projects/*/locations/*/dataStores/*/branches/*/operations/*}:cancel",
-                        "body": "*",
-                    },
-                ],
-                "google.longrunning.Operations.GetOperation": [
-                    {
-                        "method": "get",
-                        "uri": "/v1/{name=projects/*/operations/*}",
-                    },
-                    {
-                        "method": "get",
-                        "uri": "/v1/{name=projects/*/locations/*/collections/*/dataConnector/operations/*}",
-                    },
-                    {
-                        "method": "get",
-                        "uri": "/v1/{name=projects/*/locations/*/collections/*/dataStores/*/branches/*/operations/*}",
-                    },
-                    {
-                        "method": "get",
-                        "uri": "/v1/{name=projects/*/locations/*/collections/*/dataStores/*/models/*/operations/*}",
-                    },
-                    {
-                        "method": "get",
-                        "uri": "/v1/{name=projects/*/locations/*/collections/*/dataStores/*/operations/*}",
-                    },
-                    {
-                        "method": "get",
-                        "uri": "/v1/{name=projects/*/locations/*/collections/*/dataStores/*/schemas/*/operations/*}",
-                    },
-                    {
-                        "method": "get",
-                        "uri": "/v1/{name=projects/*/locations/*/collections/*/dataStores/*/siteSearchEngine/operations/*}",
-                    },
-                    {
-                        "method": "get",
-                        "uri": "/v1/{name=projects/*/locations/*/collections/*/dataStores/*/siteSearchEngine/targetSites/operations/*}",
-                    },
-                    {
-                        "method": "get",
-                        "uri": "/v1/{name=projects/*/locations/*/collections/*/engines/*/operations/*}",
-                    },
-                    {
-                        "method": "get",
-                        "uri": "/v1/{name=projects/*/locations/*/collections/*/operations/*}",
-                    },
-                    {
-                        "method": "get",
-                        "uri": "/v1/{name=projects/*/locations/*/dataStores/*/branches/*/operations/*}",
-                    },
-                    {
-                        "method": "get",
-                        "uri": "/v1/{name=projects/*/locations/*/dataStores/*/models/*/operations/*}",
-                    },
-                    {
-                        "method": "get",
-                        "uri": "/v1/{name=projects/*/locations/*/dataStores/*/operations/*}",
-                    },
-                    {
-                        "method": "get",
-                        "uri": "/v1/{name=projects/*/locations/*/identityMappingStores/*/operations/*}",
-                    },
-                    {
-                        "method": "get",
-                        "uri": "/v1/{name=projects/*/locations/*/operations/*}",
-                    },
-                    {
-                        "method": "get",
-                        "uri": "/v1/{name=projects/*/operations/*}",
+                        'method': 'post',
+                        'uri': '/v1/{name=projects/*/locations/*/dataStores/*/branches/*/operations/*}:cancel',
+                        'body': '*',
                     },
                 ],
-                "google.longrunning.Operations.ListOperations": [
+                'google.longrunning.Operations.GetOperation': [
                     {
-                        "method": "get",
-                        "uri": "/v1/{name=projects/*}/operations",
+                        'method': 'get',
+                        'uri': '/v1/{name=projects/*/operations/*}',
                     },
                     {
-                        "method": "get",
-                        "uri": "/v1/{name=projects/*/locations/*/collections/*/dataConnector}/operations",
+                        'method': 'get',
+                        'uri': '/v1/{name=projects/*/locations/*/collections/*/dataConnector/operations/*}',
                     },
                     {
-                        "method": "get",
-                        "uri": "/v1/{name=projects/*/locations/*/collections/*/dataStores/*/branches/*}/operations",
+                        'method': 'get',
+                        'uri': '/v1/{name=projects/*/locations/*/collections/*/dataStores/*/branches/*/operations/*}',
                     },
                     {
-                        "method": "get",
-                        "uri": "/v1/{name=projects/*/locations/*/collections/*/dataStores/*/models/*}/operations",
+                        'method': 'get',
+                        'uri': '/v1/{name=projects/*/locations/*/collections/*/dataStores/*/models/*/operations/*}',
                     },
                     {
-                        "method": "get",
-                        "uri": "/v1/{name=projects/*/locations/*/collections/*/dataStores/*/schemas/*}/operations",
+                        'method': 'get',
+                        'uri': '/v1/{name=projects/*/locations/*/collections/*/dataStores/*/operations/*}',
                     },
                     {
-                        "method": "get",
-                        "uri": "/v1/{name=projects/*/locations/*/collections/*/dataStores/*/siteSearchEngine/targetSites}/operations",
+                        'method': 'get',
+                        'uri': '/v1/{name=projects/*/locations/*/collections/*/dataStores/*/schemas/*/operations/*}',
                     },
                     {
-                        "method": "get",
-                        "uri": "/v1/{name=projects/*/locations/*/collections/*/dataStores/*/siteSearchEngine}/operations",
+                        'method': 'get',
+                        'uri': '/v1/{name=projects/*/locations/*/collections/*/dataStores/*/siteSearchEngine/operations/*}',
                     },
                     {
-                        "method": "get",
-                        "uri": "/v1/{name=projects/*/locations/*/collections/*/dataStores/*}/operations",
+                        'method': 'get',
+                        'uri': '/v1/{name=projects/*/locations/*/collections/*/dataStores/*/siteSearchEngine/targetSites/operations/*}',
                     },
                     {
-                        "method": "get",
-                        "uri": "/v1/{name=projects/*/locations/*/collections/*/engines/*}/operations",
+                        'method': 'get',
+                        'uri': '/v1/{name=projects/*/locations/*/collections/*/engines/*/operations/*}',
                     },
                     {
-                        "method": "get",
-                        "uri": "/v1/{name=projects/*/locations/*/collections/*}/operations",
+                        'method': 'get',
+                        'uri': '/v1/{name=projects/*/locations/*/collections/*/operations/*}',
                     },
                     {
-                        "method": "get",
-                        "uri": "/v1/{name=projects/*/locations/*/dataStores/*/branches/*}/operations",
+                        'method': 'get',
+                        'uri': '/v1/{name=projects/*/locations/*/dataStores/*/branches/*/operations/*}',
                     },
                     {
-                        "method": "get",
-                        "uri": "/v1/{name=projects/*/locations/*/dataStores/*/models/*}/operations",
+                        'method': 'get',
+                        'uri': '/v1/{name=projects/*/locations/*/dataStores/*/models/*/operations/*}',
                     },
                     {
-                        "method": "get",
-                        "uri": "/v1/{name=projects/*/locations/*/dataStores/*}/operations",
+                        'method': 'get',
+                        'uri': '/v1/{name=projects/*/locations/*/dataStores/*/operations/*}',
                     },
                     {
-                        "method": "get",
-                        "uri": "/v1/{name=projects/*/locations/*/identityMappingStores/*}/operations",
+                        'method': 'get',
+                        'uri': '/v1/{name=projects/*/locations/*/identityMappingStores/*/operations/*}',
                     },
                     {
-                        "method": "get",
-                        "uri": "/v1/{name=projects/*/locations/*}/operations",
+                        'method': 'get',
+                        'uri': '/v1/{name=projects/*/locations/*/operations/*}',
                     },
                     {
-                        "method": "get",
-                        "uri": "/v1/{name=projects/*}/operations",
+                        'method': 'get',
+                        'uri': '/v1/{name=projects/*/operations/*}',
+                    },
+                ],
+                'google.longrunning.Operations.ListOperations': [
+                    {
+                        'method': 'get',
+                        'uri': '/v1/{name=projects/*}/operations',
+                    },
+                    {
+                        'method': 'get',
+                        'uri': '/v1/{name=projects/*/locations/*/collections/*/dataConnector}/operations',
+                    },
+                    {
+                        'method': 'get',
+                        'uri': '/v1/{name=projects/*/locations/*/collections/*/dataStores/*/branches/*}/operations',
+                    },
+                    {
+                        'method': 'get',
+                        'uri': '/v1/{name=projects/*/locations/*/collections/*/dataStores/*/models/*}/operations',
+                    },
+                    {
+                        'method': 'get',
+                        'uri': '/v1/{name=projects/*/locations/*/collections/*/dataStores/*/schemas/*}/operations',
+                    },
+                    {
+                        'method': 'get',
+                        'uri': '/v1/{name=projects/*/locations/*/collections/*/dataStores/*/siteSearchEngine/targetSites}/operations',
+                    },
+                    {
+                        'method': 'get',
+                        'uri': '/v1/{name=projects/*/locations/*/collections/*/dataStores/*/siteSearchEngine}/operations',
+                    },
+                    {
+                        'method': 'get',
+                        'uri': '/v1/{name=projects/*/locations/*/collections/*/dataStores/*}/operations',
+                    },
+                    {
+                        'method': 'get',
+                        'uri': '/v1/{name=projects/*/locations/*/collections/*/engines/*}/operations',
+                    },
+                    {
+                        'method': 'get',
+                        'uri': '/v1/{name=projects/*/locations/*/collections/*}/operations',
+                    },
+                    {
+                        'method': 'get',
+                        'uri': '/v1/{name=projects/*/locations/*/dataStores/*/branches/*}/operations',
+                    },
+                    {
+                        'method': 'get',
+                        'uri': '/v1/{name=projects/*/locations/*/dataStores/*/models/*}/operations',
+                    },
+                    {
+                        'method': 'get',
+                        'uri': '/v1/{name=projects/*/locations/*/dataStores/*}/operations',
+                    },
+                    {
+                        'method': 'get',
+                        'uri': '/v1/{name=projects/*/locations/*/identityMappingStores/*}/operations',
+                    },
+                    {
+                        'method': 'get',
+                        'uri': '/v1/{name=projects/*/locations/*}/operations',
+                    },
+                    {
+                        'method': 'get',
+                        'uri': '/v1/{name=projects/*}/operations',
                     },
                 ],
             }
 
             rest_transport = operations_v1.OperationsRestTransport(
-                host=self._host,
-                # use the credentials which are saved
-                credentials=self._credentials,
-                scopes=self._scopes,
-                http_options=http_options,
-                path_prefix="v1",
-            )
+                    host=self._host,
+                    # use the credentials which are saved
+                    credentials=self._credentials,
+                    scopes=self._scopes,
+                    http_options=http_options,
+                    path_prefix="v1")
 
-            self._operations_client = operations_v1.AbstractOperationsClient(
-                transport=rest_transport
-            )
+            self._operations_client = operations_v1.AbstractOperationsClient(transport=rest_transport)
 
         # Return the client from cache.
         return self._operations_client
 
-    class _CollectUserEvent(
-        _BaseUserEventServiceRestTransport._BaseCollectUserEvent,
-        UserEventServiceRestStub,
-    ):
+    class _CollectUserEvent(_BaseUserEventServiceRestTransport._BaseCollectUserEvent, UserEventServiceRestStub):
         def __hash__(self):
             return hash("UserEventServiceRestTransport.CollectUserEvent")
 
@@ -672,28 +607,26 @@ class UserEventServiceRestTransport(_BaseUserEventServiceRestTransport):
             session,
             timeout,
             transcoded_request,
-            body=None,
-        ):
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+            body=None):
+
+            uri = transcoded_request['uri']
+            method = transcoded_request['method']
             headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
+            headers['Content-Type'] = 'application/json'
             response = getattr(session, method)(
                 "{host}{uri}".format(host=host, uri=uri),
                 timeout=timeout,
                 headers=headers,
                 params=rest_helpers.flatten_query_params(query_params, strict=True),
-            )
+                )
             return response
 
-        def __call__(
-            self,
-            request: user_event_service.CollectUserEventRequest,
-            *,
-            retry: OptionalRetry = gapic_v1.method.DEFAULT,
-            timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
-        ) -> httpbody_pb2.HttpBody:
+        def __call__(self,
+                request: user_event_service.CollectUserEventRequest, *,
+                retry: OptionalRetry=gapic_v1.method.DEFAULT,
+                timeout: Optional[float]=None,
+                metadata: Sequence[Tuple[str, Union[str, bytes]]]=(),
+                ) -> httpbody_pb2.HttpBody:
             r"""Call the collect user event method over HTTP.
 
             Args:
@@ -762,42 +695,30 @@ class UserEventServiceRestTransport(_BaseUserEventServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseUserEventServiceRestTransport._BaseCollectUserEvent._get_http_options()
-            )
+            http_options = _BaseUserEventServiceRestTransport._BaseCollectUserEvent._get_http_options()
 
-            request, metadata = self._interceptor.pre_collect_user_event(
-                request, metadata
-            )
-            transcoded_request = _BaseUserEventServiceRestTransport._BaseCollectUserEvent._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_collect_user_event(request, metadata)
+            transcoded_request = _BaseUserEventServiceRestTransport._BaseCollectUserEvent._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseUserEventServiceRestTransport._BaseCollectUserEvent._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseUserEventServiceRestTransport._BaseCollectUserEvent._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
-                method = transcoded_request["method"]
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request['uri'])
+                method = transcoded_request['method']
                 try:
                     request_payload = json_format.MessageToJson(request)
                 except:
                     request_payload = None
                 http_request = {
-                    "payload": request_payload,
-                    "requestMethod": method,
-                    "requestUrl": request_url,
-                    "headers": dict(metadata),
+                  "payload": request_payload,
+                  "requestMethod": method,
+                  "requestUrl": request_url,
+                  "headers": dict(metadata),
                 }
                 _LOGGER.debug(
                     f"Sending request for google.cloud.discoveryengine_v1.UserEventServiceClient.CollectUserEvent",
-                    extra={
+                    extra = {
                         "serviceName": "google.cloud.discoveryengine.v1.UserEventService",
                         "rpcName": "CollectUserEvent",
                         "httpRequest": http_request,
@@ -806,14 +727,7 @@ class UserEventServiceRestTransport(_BaseUserEventServiceRestTransport):
                 )
 
             # Send the request
-            response = UserEventServiceRestTransport._CollectUserEvent._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-            )
+            response = UserEventServiceRestTransport._CollectUserEvent._get_response(self._host, metadata, query_params, self._session, timeout, transcoded_request)
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
             # subclass.
@@ -828,24 +742,20 @@ class UserEventServiceRestTransport(_BaseUserEventServiceRestTransport):
 
             resp = self._interceptor.post_collect_user_event(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_collect_user_event_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_collect_user_event_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
                     response_payload = None
                 http_response = {
-                    "payload": response_payload,
-                    "headers": dict(response.headers),
-                    "status": response.status_code,
+                "payload": response_payload,
+                "headers":  dict(response.headers),
+                "status": response.status_code,
                 }
                 _LOGGER.debug(
                     "Received response for google.cloud.discoveryengine_v1.UserEventServiceClient.collect_user_event",
-                    extra={
+                    extra = {
                         "serviceName": "google.cloud.discoveryengine.v1.UserEventService",
                         "rpcName": "CollectUserEvent",
                         "metadata": http_response["headers"],
@@ -854,10 +764,7 @@ class UserEventServiceRestTransport(_BaseUserEventServiceRestTransport):
                 )
             return resp
 
-    class _ImportUserEvents(
-        _BaseUserEventServiceRestTransport._BaseImportUserEvents,
-        UserEventServiceRestStub,
-    ):
+    class _ImportUserEvents(_BaseUserEventServiceRestTransport._BaseImportUserEvents, UserEventServiceRestStub):
         def __hash__(self):
             return hash("UserEventServiceRestTransport.ImportUserEvents")
 
@@ -869,29 +776,27 @@ class UserEventServiceRestTransport(_BaseUserEventServiceRestTransport):
             session,
             timeout,
             transcoded_request,
-            body=None,
-        ):
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+            body=None):
+
+            uri = transcoded_request['uri']
+            method = transcoded_request['method']
             headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
+            headers['Content-Type'] = 'application/json'
             response = getattr(session, method)(
                 "{host}{uri}".format(host=host, uri=uri),
                 timeout=timeout,
                 headers=headers,
                 params=rest_helpers.flatten_query_params(query_params, strict=True),
                 data=body,
-            )
+                )
             return response
 
-        def __call__(
-            self,
-            request: import_config.ImportUserEventsRequest,
-            *,
-            retry: OptionalRetry = gapic_v1.method.DEFAULT,
-            timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
-        ) -> operations_pb2.Operation:
+        def __call__(self,
+                request: import_config.ImportUserEventsRequest, *,
+                retry: OptionalRetry=gapic_v1.method.DEFAULT,
+                timeout: Optional[float]=None,
+                metadata: Sequence[Tuple[str, Union[str, bytes]]]=(),
+                ) -> operations_pb2.Operation:
             r"""Call the import user events method over HTTP.
 
             Args:
@@ -914,46 +819,32 @@ class UserEventServiceRestTransport(_BaseUserEventServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseUserEventServiceRestTransport._BaseImportUserEvents._get_http_options()
-            )
+            http_options = _BaseUserEventServiceRestTransport._BaseImportUserEvents._get_http_options()
 
-            request, metadata = self._interceptor.pre_import_user_events(
-                request, metadata
-            )
-            transcoded_request = _BaseUserEventServiceRestTransport._BaseImportUserEvents._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_import_user_events(request, metadata)
+            transcoded_request = _BaseUserEventServiceRestTransport._BaseImportUserEvents._get_transcoded_request(http_options, request)
 
-            body = _BaseUserEventServiceRestTransport._BaseImportUserEvents._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseUserEventServiceRestTransport._BaseImportUserEvents._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseUserEventServiceRestTransport._BaseImportUserEvents._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseUserEventServiceRestTransport._BaseImportUserEvents._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
-                method = transcoded_request["method"]
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request['uri'])
+                method = transcoded_request['method']
                 try:
                     request_payload = json_format.MessageToJson(request)
                 except:
                     request_payload = None
                 http_request = {
-                    "payload": request_payload,
-                    "requestMethod": method,
-                    "requestUrl": request_url,
-                    "headers": dict(metadata),
+                  "payload": request_payload,
+                  "requestMethod": method,
+                  "requestUrl": request_url,
+                  "headers": dict(metadata),
                 }
                 _LOGGER.debug(
                     f"Sending request for google.cloud.discoveryengine_v1.UserEventServiceClient.ImportUserEvents",
-                    extra={
+                    extra = {
                         "serviceName": "google.cloud.discoveryengine.v1.UserEventService",
                         "rpcName": "ImportUserEvents",
                         "httpRequest": http_request,
@@ -962,15 +853,7 @@ class UserEventServiceRestTransport(_BaseUserEventServiceRestTransport):
                 )
 
             # Send the request
-            response = UserEventServiceRestTransport._ImportUserEvents._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
-            )
+            response = UserEventServiceRestTransport._ImportUserEvents._get_response(self._host, metadata, query_params, self._session, timeout, transcoded_request, body)
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
             # subclass.
@@ -983,24 +866,20 @@ class UserEventServiceRestTransport(_BaseUserEventServiceRestTransport):
 
             resp = self._interceptor.post_import_user_events(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_import_user_events_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_import_user_events_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
                     response_payload = None
                 http_response = {
-                    "payload": response_payload,
-                    "headers": dict(response.headers),
-                    "status": response.status_code,
+                "payload": response_payload,
+                "headers":  dict(response.headers),
+                "status": response.status_code,
                 }
                 _LOGGER.debug(
                     "Received response for google.cloud.discoveryengine_v1.UserEventServiceClient.import_user_events",
-                    extra={
+                    extra = {
                         "serviceName": "google.cloud.discoveryengine.v1.UserEventService",
                         "rpcName": "ImportUserEvents",
                         "metadata": http_response["headers"],
@@ -1009,10 +888,7 @@ class UserEventServiceRestTransport(_BaseUserEventServiceRestTransport):
                 )
             return resp
 
-    class _PurgeUserEvents(
-        _BaseUserEventServiceRestTransport._BasePurgeUserEvents,
-        UserEventServiceRestStub,
-    ):
+    class _PurgeUserEvents(_BaseUserEventServiceRestTransport._BasePurgeUserEvents, UserEventServiceRestStub):
         def __hash__(self):
             return hash("UserEventServiceRestTransport.PurgeUserEvents")
 
@@ -1024,29 +900,27 @@ class UserEventServiceRestTransport(_BaseUserEventServiceRestTransport):
             session,
             timeout,
             transcoded_request,
-            body=None,
-        ):
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+            body=None):
+
+            uri = transcoded_request['uri']
+            method = transcoded_request['method']
             headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
+            headers['Content-Type'] = 'application/json'
             response = getattr(session, method)(
                 "{host}{uri}".format(host=host, uri=uri),
                 timeout=timeout,
                 headers=headers,
                 params=rest_helpers.flatten_query_params(query_params, strict=True),
                 data=body,
-            )
+                )
             return response
 
-        def __call__(
-            self,
-            request: purge_config.PurgeUserEventsRequest,
-            *,
-            retry: OptionalRetry = gapic_v1.method.DEFAULT,
-            timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
-        ) -> operations_pb2.Operation:
+        def __call__(self,
+                request: purge_config.PurgeUserEventsRequest, *,
+                retry: OptionalRetry=gapic_v1.method.DEFAULT,
+                timeout: Optional[float]=None,
+                metadata: Sequence[Tuple[str, Union[str, bytes]]]=(),
+                ) -> operations_pb2.Operation:
             r"""Call the purge user events method over HTTP.
 
             Args:
@@ -1069,46 +943,32 @@ class UserEventServiceRestTransport(_BaseUserEventServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseUserEventServiceRestTransport._BasePurgeUserEvents._get_http_options()
-            )
+            http_options = _BaseUserEventServiceRestTransport._BasePurgeUserEvents._get_http_options()
 
-            request, metadata = self._interceptor.pre_purge_user_events(
-                request, metadata
-            )
-            transcoded_request = _BaseUserEventServiceRestTransport._BasePurgeUserEvents._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_purge_user_events(request, metadata)
+            transcoded_request = _BaseUserEventServiceRestTransport._BasePurgeUserEvents._get_transcoded_request(http_options, request)
 
-            body = _BaseUserEventServiceRestTransport._BasePurgeUserEvents._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseUserEventServiceRestTransport._BasePurgeUserEvents._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseUserEventServiceRestTransport._BasePurgeUserEvents._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseUserEventServiceRestTransport._BasePurgeUserEvents._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
-                method = transcoded_request["method"]
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request['uri'])
+                method = transcoded_request['method']
                 try:
                     request_payload = json_format.MessageToJson(request)
                 except:
                     request_payload = None
                 http_request = {
-                    "payload": request_payload,
-                    "requestMethod": method,
-                    "requestUrl": request_url,
-                    "headers": dict(metadata),
+                  "payload": request_payload,
+                  "requestMethod": method,
+                  "requestUrl": request_url,
+                  "headers": dict(metadata),
                 }
                 _LOGGER.debug(
                     f"Sending request for google.cloud.discoveryengine_v1.UserEventServiceClient.PurgeUserEvents",
-                    extra={
+                    extra = {
                         "serviceName": "google.cloud.discoveryengine.v1.UserEventService",
                         "rpcName": "PurgeUserEvents",
                         "httpRequest": http_request,
@@ -1117,15 +977,7 @@ class UserEventServiceRestTransport(_BaseUserEventServiceRestTransport):
                 )
 
             # Send the request
-            response = UserEventServiceRestTransport._PurgeUserEvents._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
-            )
+            response = UserEventServiceRestTransport._PurgeUserEvents._get_response(self._host, metadata, query_params, self._session, timeout, transcoded_request, body)
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
             # subclass.
@@ -1138,24 +990,20 @@ class UserEventServiceRestTransport(_BaseUserEventServiceRestTransport):
 
             resp = self._interceptor.post_purge_user_events(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_purge_user_events_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_purge_user_events_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
                     response_payload = None
                 http_response = {
-                    "payload": response_payload,
-                    "headers": dict(response.headers),
-                    "status": response.status_code,
+                "payload": response_payload,
+                "headers":  dict(response.headers),
+                "status": response.status_code,
                 }
                 _LOGGER.debug(
                     "Received response for google.cloud.discoveryengine_v1.UserEventServiceClient.purge_user_events",
-                    extra={
+                    extra = {
                         "serviceName": "google.cloud.discoveryengine.v1.UserEventService",
                         "rpcName": "PurgeUserEvents",
                         "metadata": http_response["headers"],
@@ -1164,9 +1012,7 @@ class UserEventServiceRestTransport(_BaseUserEventServiceRestTransport):
                 )
             return resp
 
-    class _WriteUserEvent(
-        _BaseUserEventServiceRestTransport._BaseWriteUserEvent, UserEventServiceRestStub
-    ):
+    class _WriteUserEvent(_BaseUserEventServiceRestTransport._BaseWriteUserEvent, UserEventServiceRestStub):
         def __hash__(self):
             return hash("UserEventServiceRestTransport.WriteUserEvent")
 
@@ -1178,29 +1024,27 @@ class UserEventServiceRestTransport(_BaseUserEventServiceRestTransport):
             session,
             timeout,
             transcoded_request,
-            body=None,
-        ):
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+            body=None):
+
+            uri = transcoded_request['uri']
+            method = transcoded_request['method']
             headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
+            headers['Content-Type'] = 'application/json'
             response = getattr(session, method)(
                 "{host}{uri}".format(host=host, uri=uri),
                 timeout=timeout,
                 headers=headers,
                 params=rest_helpers.flatten_query_params(query_params, strict=True),
                 data=body,
-            )
+                )
             return response
 
-        def __call__(
-            self,
-            request: user_event_service.WriteUserEventRequest,
-            *,
-            retry: OptionalRetry = gapic_v1.method.DEFAULT,
-            timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
-        ) -> user_event.UserEvent:
+        def __call__(self,
+                request: user_event_service.WriteUserEventRequest, *,
+                retry: OptionalRetry=gapic_v1.method.DEFAULT,
+                timeout: Optional[float]=None,
+                metadata: Sequence[Tuple[str, Union[str, bytes]]]=(),
+                ) -> user_event.UserEvent:
             r"""Call the write user event method over HTTP.
 
             Args:
@@ -1224,46 +1068,32 @@ class UserEventServiceRestTransport(_BaseUserEventServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseUserEventServiceRestTransport._BaseWriteUserEvent._get_http_options()
-            )
+            http_options = _BaseUserEventServiceRestTransport._BaseWriteUserEvent._get_http_options()
 
-            request, metadata = self._interceptor.pre_write_user_event(
-                request, metadata
-            )
-            transcoded_request = _BaseUserEventServiceRestTransport._BaseWriteUserEvent._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_write_user_event(request, metadata)
+            transcoded_request = _BaseUserEventServiceRestTransport._BaseWriteUserEvent._get_transcoded_request(http_options, request)
 
-            body = _BaseUserEventServiceRestTransport._BaseWriteUserEvent._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseUserEventServiceRestTransport._BaseWriteUserEvent._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseUserEventServiceRestTransport._BaseWriteUserEvent._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseUserEventServiceRestTransport._BaseWriteUserEvent._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
-                method = transcoded_request["method"]
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request['uri'])
+                method = transcoded_request['method']
                 try:
                     request_payload = type(request).to_json(request)
                 except:
                     request_payload = None
                 http_request = {
-                    "payload": request_payload,
-                    "requestMethod": method,
-                    "requestUrl": request_url,
-                    "headers": dict(metadata),
+                  "payload": request_payload,
+                  "requestMethod": method,
+                  "requestUrl": request_url,
+                  "headers": dict(metadata),
                 }
                 _LOGGER.debug(
                     f"Sending request for google.cloud.discoveryengine_v1.UserEventServiceClient.WriteUserEvent",
-                    extra={
+                    extra = {
                         "serviceName": "google.cloud.discoveryengine.v1.UserEventService",
                         "rpcName": "WriteUserEvent",
                         "httpRequest": http_request,
@@ -1272,15 +1102,7 @@ class UserEventServiceRestTransport(_BaseUserEventServiceRestTransport):
                 )
 
             # Send the request
-            response = UserEventServiceRestTransport._WriteUserEvent._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
-            )
+            response = UserEventServiceRestTransport._WriteUserEvent._get_response(self._host, metadata, query_params, self._session, timeout, transcoded_request, body)
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
             # subclass.
@@ -1295,24 +1117,20 @@ class UserEventServiceRestTransport(_BaseUserEventServiceRestTransport):
 
             resp = self._interceptor.post_write_user_event(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_write_user_event_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_write_user_event_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = user_event.UserEvent.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
-                    "payload": response_payload,
-                    "headers": dict(response.headers),
-                    "status": response.status_code,
+                "payload": response_payload,
+                "headers":  dict(response.headers),
+                "status": response.status_code,
                 }
                 _LOGGER.debug(
                     "Received response for google.cloud.discoveryengine_v1.UserEventServiceClient.write_user_event",
-                    extra={
+                    extra = {
                         "serviceName": "google.cloud.discoveryengine.v1.UserEventService",
                         "rpcName": "WriteUserEvent",
                         "metadata": http_response["headers"],
@@ -1322,45 +1140,42 @@ class UserEventServiceRestTransport(_BaseUserEventServiceRestTransport):
             return resp
 
     @property
-    def collect_user_event(
-        self,
-    ) -> Callable[[user_event_service.CollectUserEventRequest], httpbody_pb2.HttpBody]:
+    def collect_user_event(self) -> Callable[
+            [user_event_service.CollectUserEventRequest],
+            httpbody_pb2.HttpBody]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return self._CollectUserEvent(self._session, self._host, self._interceptor)  # type: ignore
+        return self._CollectUserEvent(self._session, self._host, self._interceptor) # type: ignore
 
     @property
-    def import_user_events(
-        self,
-    ) -> Callable[[import_config.ImportUserEventsRequest], operations_pb2.Operation]:
+    def import_user_events(self) -> Callable[
+            [import_config.ImportUserEventsRequest],
+            operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return self._ImportUserEvents(self._session, self._host, self._interceptor)  # type: ignore
+        return self._ImportUserEvents(self._session, self._host, self._interceptor) # type: ignore
 
     @property
-    def purge_user_events(
-        self,
-    ) -> Callable[[purge_config.PurgeUserEventsRequest], operations_pb2.Operation]:
+    def purge_user_events(self) -> Callable[
+            [purge_config.PurgeUserEventsRequest],
+            operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return self._PurgeUserEvents(self._session, self._host, self._interceptor)  # type: ignore
+        return self._PurgeUserEvents(self._session, self._host, self._interceptor) # type: ignore
 
     @property
-    def write_user_event(
-        self,
-    ) -> Callable[[user_event_service.WriteUserEventRequest], user_event.UserEvent]:
+    def write_user_event(self) -> Callable[
+            [user_event_service.WriteUserEventRequest],
+            user_event.UserEvent]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return self._WriteUserEvent(self._session, self._host, self._interceptor)  # type: ignore
+        return self._WriteUserEvent(self._session, self._host, self._interceptor) # type: ignore
 
     @property
     def cancel_operation(self):
-        return self._CancelOperation(self._session, self._host, self._interceptor)  # type: ignore
+        return self._CancelOperation(self._session, self._host, self._interceptor) # type: ignore
 
-    class _CancelOperation(
-        _BaseUserEventServiceRestTransport._BaseCancelOperation,
-        UserEventServiceRestStub,
-    ):
+    class _CancelOperation(_BaseUserEventServiceRestTransport._BaseCancelOperation, UserEventServiceRestStub):
         def __hash__(self):
             return hash("UserEventServiceRestTransport.CancelOperation")
 
@@ -1372,29 +1187,28 @@ class UserEventServiceRestTransport(_BaseUserEventServiceRestTransport):
             session,
             timeout,
             transcoded_request,
-            body=None,
-        ):
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+            body=None):
+
+            uri = transcoded_request['uri']
+            method = transcoded_request['method']
             headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
+            headers['Content-Type'] = 'application/json'
             response = getattr(session, method)(
                 "{host}{uri}".format(host=host, uri=uri),
                 timeout=timeout,
                 headers=headers,
                 params=rest_helpers.flatten_query_params(query_params, strict=True),
                 data=body,
-            )
+                )
             return response
 
-        def __call__(
-            self,
-            request: operations_pb2.CancelOperationRequest,
-            *,
-            retry: OptionalRetry = gapic_v1.method.DEFAULT,
-            timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
-        ) -> None:
+        def __call__(self,
+            request: operations_pb2.CancelOperationRequest, *,
+            retry: OptionalRetry=gapic_v1.method.DEFAULT,
+            timeout: Optional[float]=None,
+            metadata: Sequence[Tuple[str, Union[str, bytes]]]=(),
+            ) -> None:
+
             r"""Call the cancel operation method over HTTP.
 
             Args:
@@ -1409,46 +1223,32 @@ class UserEventServiceRestTransport(_BaseUserEventServiceRestTransport):
                     be of type `bytes`.
             """
 
-            http_options = (
-                _BaseUserEventServiceRestTransport._BaseCancelOperation._get_http_options()
-            )
+            http_options = _BaseUserEventServiceRestTransport._BaseCancelOperation._get_http_options()
 
-            request, metadata = self._interceptor.pre_cancel_operation(
-                request, metadata
-            )
-            transcoded_request = _BaseUserEventServiceRestTransport._BaseCancelOperation._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_cancel_operation(request, metadata)
+            transcoded_request = _BaseUserEventServiceRestTransport._BaseCancelOperation._get_transcoded_request(http_options, request)
 
-            body = _BaseUserEventServiceRestTransport._BaseCancelOperation._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseUserEventServiceRestTransport._BaseCancelOperation._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseUserEventServiceRestTransport._BaseCancelOperation._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseUserEventServiceRestTransport._BaseCancelOperation._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
-                method = transcoded_request["method"]
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request['uri'])
+                method = transcoded_request['method']
                 try:
                     request_payload = json_format.MessageToJson(request)
                 except:
                     request_payload = None
                 http_request = {
-                    "payload": request_payload,
-                    "requestMethod": method,
-                    "requestUrl": request_url,
-                    "headers": dict(metadata),
+                  "payload": request_payload,
+                  "requestMethod": method,
+                  "requestUrl": request_url,
+                  "headers": dict(metadata),
                 }
                 _LOGGER.debug(
                     f"Sending request for google.cloud.discoveryengine_v1.UserEventServiceClient.CancelOperation",
-                    extra={
+                    extra = {
                         "serviceName": "google.cloud.discoveryengine.v1.UserEventService",
                         "rpcName": "CancelOperation",
                         "httpRequest": http_request,
@@ -1457,15 +1257,7 @@ class UserEventServiceRestTransport(_BaseUserEventServiceRestTransport):
                 )
 
             # Send the request
-            response = UserEventServiceRestTransport._CancelOperation._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
-            )
+            response = UserEventServiceRestTransport._CancelOperation._get_response(self._host, metadata, query_params, self._session, timeout, transcoded_request, body)
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
             # subclass.
@@ -1476,11 +1268,9 @@ class UserEventServiceRestTransport(_BaseUserEventServiceRestTransport):
 
     @property
     def get_operation(self):
-        return self._GetOperation(self._session, self._host, self._interceptor)  # type: ignore
+        return self._GetOperation(self._session, self._host, self._interceptor) # type: ignore
 
-    class _GetOperation(
-        _BaseUserEventServiceRestTransport._BaseGetOperation, UserEventServiceRestStub
-    ):
+    class _GetOperation(_BaseUserEventServiceRestTransport._BaseGetOperation, UserEventServiceRestStub):
         def __hash__(self):
             return hash("UserEventServiceRestTransport.GetOperation")
 
@@ -1492,28 +1282,27 @@ class UserEventServiceRestTransport(_BaseUserEventServiceRestTransport):
             session,
             timeout,
             transcoded_request,
-            body=None,
-        ):
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+            body=None):
+
+            uri = transcoded_request['uri']
+            method = transcoded_request['method']
             headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
+            headers['Content-Type'] = 'application/json'
             response = getattr(session, method)(
                 "{host}{uri}".format(host=host, uri=uri),
                 timeout=timeout,
                 headers=headers,
                 params=rest_helpers.flatten_query_params(query_params, strict=True),
-            )
+                )
             return response
 
-        def __call__(
-            self,
-            request: operations_pb2.GetOperationRequest,
-            *,
-            retry: OptionalRetry = gapic_v1.method.DEFAULT,
-            timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
-        ) -> operations_pb2.Operation:
+        def __call__(self,
+            request: operations_pb2.GetOperationRequest, *,
+            retry: OptionalRetry=gapic_v1.method.DEFAULT,
+            timeout: Optional[float]=None,
+            metadata: Sequence[Tuple[str, Union[str, bytes]]]=(),
+            ) -> operations_pb2.Operation:
+
             r"""Call the get operation method over HTTP.
 
             Args:
@@ -1531,40 +1320,30 @@ class UserEventServiceRestTransport(_BaseUserEventServiceRestTransport):
                 operations_pb2.Operation: Response from GetOperation method.
             """
 
-            http_options = (
-                _BaseUserEventServiceRestTransport._BaseGetOperation._get_http_options()
-            )
+            http_options = _BaseUserEventServiceRestTransport._BaseGetOperation._get_http_options()
 
             request, metadata = self._interceptor.pre_get_operation(request, metadata)
-            transcoded_request = _BaseUserEventServiceRestTransport._BaseGetOperation._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseUserEventServiceRestTransport._BaseGetOperation._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseUserEventServiceRestTransport._BaseGetOperation._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseUserEventServiceRestTransport._BaseGetOperation._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
-                method = transcoded_request["method"]
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request['uri'])
+                method = transcoded_request['method']
                 try:
                     request_payload = json_format.MessageToJson(request)
                 except:
                     request_payload = None
                 http_request = {
-                    "payload": request_payload,
-                    "requestMethod": method,
-                    "requestUrl": request_url,
-                    "headers": dict(metadata),
+                  "payload": request_payload,
+                  "requestMethod": method,
+                  "requestUrl": request_url,
+                  "headers": dict(metadata),
                 }
                 _LOGGER.debug(
                     f"Sending request for google.cloud.discoveryengine_v1.UserEventServiceClient.GetOperation",
-                    extra={
+                    extra = {
                         "serviceName": "google.cloud.discoveryengine.v1.UserEventService",
                         "rpcName": "GetOperation",
                         "httpRequest": http_request,
@@ -1573,14 +1352,7 @@ class UserEventServiceRestTransport(_BaseUserEventServiceRestTransport):
                 )
 
             # Send the request
-            response = UserEventServiceRestTransport._GetOperation._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-            )
+            response = UserEventServiceRestTransport._GetOperation._get_response(self._host, metadata, query_params, self._session, timeout, transcoded_request)
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
             # subclass.
@@ -1591,21 +1363,19 @@ class UserEventServiceRestTransport(_BaseUserEventServiceRestTransport):
             resp = operations_pb2.Operation()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_get_operation(resp)
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
-                    "headers": dict(response.headers),
+                    "headers":  dict(response.headers),
                     "status": response.status_code,
                 }
                 _LOGGER.debug(
                     "Received response for google.cloud.discoveryengine_v1.UserEventServiceAsyncClient.GetOperation",
-                    extra={
+                    extra = {
                         "serviceName": "google.cloud.discoveryengine.v1.UserEventService",
                         "rpcName": "GetOperation",
                         "httpResponse": http_response,
@@ -1616,11 +1386,9 @@ class UserEventServiceRestTransport(_BaseUserEventServiceRestTransport):
 
     @property
     def list_operations(self):
-        return self._ListOperations(self._session, self._host, self._interceptor)  # type: ignore
+        return self._ListOperations(self._session, self._host, self._interceptor) # type: ignore
 
-    class _ListOperations(
-        _BaseUserEventServiceRestTransport._BaseListOperations, UserEventServiceRestStub
-    ):
+    class _ListOperations(_BaseUserEventServiceRestTransport._BaseListOperations, UserEventServiceRestStub):
         def __hash__(self):
             return hash("UserEventServiceRestTransport.ListOperations")
 
@@ -1632,28 +1400,27 @@ class UserEventServiceRestTransport(_BaseUserEventServiceRestTransport):
             session,
             timeout,
             transcoded_request,
-            body=None,
-        ):
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+            body=None):
+
+            uri = transcoded_request['uri']
+            method = transcoded_request['method']
             headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
+            headers['Content-Type'] = 'application/json'
             response = getattr(session, method)(
                 "{host}{uri}".format(host=host, uri=uri),
                 timeout=timeout,
                 headers=headers,
                 params=rest_helpers.flatten_query_params(query_params, strict=True),
-            )
+                )
             return response
 
-        def __call__(
-            self,
-            request: operations_pb2.ListOperationsRequest,
-            *,
-            retry: OptionalRetry = gapic_v1.method.DEFAULT,
-            timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
-        ) -> operations_pb2.ListOperationsResponse:
+        def __call__(self,
+            request: operations_pb2.ListOperationsRequest, *,
+            retry: OptionalRetry=gapic_v1.method.DEFAULT,
+            timeout: Optional[float]=None,
+            metadata: Sequence[Tuple[str, Union[str, bytes]]]=(),
+            ) -> operations_pb2.ListOperationsResponse:
+
             r"""Call the list operations method over HTTP.
 
             Args:
@@ -1671,40 +1438,30 @@ class UserEventServiceRestTransport(_BaseUserEventServiceRestTransport):
                 operations_pb2.ListOperationsResponse: Response from ListOperations method.
             """
 
-            http_options = (
-                _BaseUserEventServiceRestTransport._BaseListOperations._get_http_options()
-            )
+            http_options = _BaseUserEventServiceRestTransport._BaseListOperations._get_http_options()
 
             request, metadata = self._interceptor.pre_list_operations(request, metadata)
-            transcoded_request = _BaseUserEventServiceRestTransport._BaseListOperations._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseUserEventServiceRestTransport._BaseListOperations._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseUserEventServiceRestTransport._BaseListOperations._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseUserEventServiceRestTransport._BaseListOperations._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
-                method = transcoded_request["method"]
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request['uri'])
+                method = transcoded_request['method']
                 try:
                     request_payload = json_format.MessageToJson(request)
                 except:
                     request_payload = None
                 http_request = {
-                    "payload": request_payload,
-                    "requestMethod": method,
-                    "requestUrl": request_url,
-                    "headers": dict(metadata),
+                  "payload": request_payload,
+                  "requestMethod": method,
+                  "requestUrl": request_url,
+                  "headers": dict(metadata),
                 }
                 _LOGGER.debug(
                     f"Sending request for google.cloud.discoveryengine_v1.UserEventServiceClient.ListOperations",
-                    extra={
+                    extra = {
                         "serviceName": "google.cloud.discoveryengine.v1.UserEventService",
                         "rpcName": "ListOperations",
                         "httpRequest": http_request,
@@ -1713,14 +1470,7 @@ class UserEventServiceRestTransport(_BaseUserEventServiceRestTransport):
                 )
 
             # Send the request
-            response = UserEventServiceRestTransport._ListOperations._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-            )
+            response = UserEventServiceRestTransport._ListOperations._get_response(self._host, metadata, query_params, self._session, timeout, transcoded_request)
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
             # subclass.
@@ -1731,21 +1481,19 @@ class UserEventServiceRestTransport(_BaseUserEventServiceRestTransport):
             resp = operations_pb2.ListOperationsResponse()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_list_operations(resp)
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
-                    "headers": dict(response.headers),
+                    "headers":  dict(response.headers),
                     "status": response.status_code,
                 }
                 _LOGGER.debug(
                     "Received response for google.cloud.discoveryengine_v1.UserEventServiceAsyncClient.ListOperations",
-                    extra={
+                    extra = {
                         "serviceName": "google.cloud.discoveryengine.v1.UserEventService",
                         "rpcName": "ListOperations",
                         "httpResponse": http_response,
@@ -1762,4 +1510,6 @@ class UserEventServiceRestTransport(_BaseUserEventServiceRestTransport):
         self._session.close()
 
 
-__all__ = ("UserEventServiceRestTransport",)
+__all__=(
+    'UserEventServiceRestTransport',
+)

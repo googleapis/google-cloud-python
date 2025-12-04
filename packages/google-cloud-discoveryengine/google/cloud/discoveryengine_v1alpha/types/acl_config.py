@@ -21,10 +21,11 @@ import proto  # type: ignore
 
 from google.cloud.discoveryengine_v1alpha.types import common
 
+
 __protobuf__ = proto.module(
-    package="google.cloud.discoveryengine.v1alpha",
+    package='google.cloud.discoveryengine.v1alpha',
     manifest={
-        "AclConfig",
+        'AclConfig',
     },
 )
 

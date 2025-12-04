@@ -17,13 +17,15 @@ from __future__ import annotations
 
 from typing import MutableMapping, MutableSequence
 
-from google.protobuf import struct_pb2  # type: ignore
 import proto  # type: ignore
 
+from google.protobuf import struct_pb2  # type: ignore
+
+
 __protobuf__ = proto.module(
-    package="google.cloud.discoveryengine.v1beta",
+    package='google.cloud.discoveryengine.v1beta',
     manifest={
-        "Chunk",
+        'Chunk',
     },
 )
 
@@ -137,15 +139,15 @@ class Chunk(proto.Message):
                 API.
         """
 
-        previous_chunks: MutableSequence["Chunk"] = proto.RepeatedField(
+        previous_chunks: MutableSequence['Chunk'] = proto.RepeatedField(
             proto.MESSAGE,
             number=1,
-            message="Chunk",
+            message='Chunk',
         )
-        next_chunks: MutableSequence["Chunk"] = proto.RepeatedField(
+        next_chunks: MutableSequence['Chunk'] = proto.RepeatedField(
             proto.MESSAGE,
             number=2,
-            message="Chunk",
+            message='Chunk',
         )
 
     name: str = proto.Field(

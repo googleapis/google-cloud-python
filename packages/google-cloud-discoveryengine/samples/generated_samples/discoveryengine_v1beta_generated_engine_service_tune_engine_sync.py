@@ -53,5 +53,4 @@ def sample_tune_engine():
     # Handle the response
     print(response)
 
-
 # [END discoveryengine_v1beta_generated_EngineService_TuneEngine_sync]

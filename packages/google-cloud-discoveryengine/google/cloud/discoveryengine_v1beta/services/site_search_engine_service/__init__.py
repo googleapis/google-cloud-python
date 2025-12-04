@@ -13,10 +13,10 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-from .async_client import SiteSearchEngineServiceAsyncClient
 from .client import SiteSearchEngineServiceClient
+from .async_client import SiteSearchEngineServiceAsyncClient
 
 __all__ = (
-    "SiteSearchEngineServiceClient",
-    "SiteSearchEngineServiceAsyncClient",
+    'SiteSearchEngineServiceClient',
+    'SiteSearchEngineServiceAsyncClient',
 )

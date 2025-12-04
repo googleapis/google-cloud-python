@@ -25,9 +25,9 @@
 # All configuration values have a default; values that are commented out
 # serve to show the default.
 
+import sys
 import os
 import shlex
-import sys
 
 # If extensions (or modules to document with autodoc) are in another directory,
 # add these directories to sys.path here. If the directory is relative to the
@@ -81,9 +81,9 @@ source_suffix = [".rst", ".md"]
 root_doc = "index"
 
 # General information about the project.
-project = "google-cloud-discoveryengine"
-copyright = "2025, Google, LLC"
-author = "Google APIs"
+project = u"google-cloud-discoveryengine"
+copyright = u"2025, Google, LLC"
+author = u"Google APIs"
 
 # The version info for the project you're documenting, acts as replacement for
 # |version| and |release|, also used in various other places throughout the
@@ -283,7 +283,7 @@ latex_documents = [
     (
         root_doc,
         "google-cloud-discoveryengine.tex",
-        "google-cloud-discoveryengine Documentation",
+        u"google-cloud-discoveryengine Documentation",
         author,
         "manual",
     )

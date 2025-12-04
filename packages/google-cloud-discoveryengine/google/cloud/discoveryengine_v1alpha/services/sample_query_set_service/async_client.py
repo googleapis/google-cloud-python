@@ -13,64 +13,46 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-from collections import OrderedDict
 import logging as std_logging
+from collections import OrderedDict
 import re
-from typing import (
-    Callable,
-    Dict,
-    Mapping,
-    MutableMapping,
-    MutableSequence,
-    Optional,
-    Sequence,
-    Tuple,
-    Type,
-    Union,
-)
+from typing import Dict, Callable, Mapping, MutableMapping, MutableSequence, Optional, Sequence, Tuple, Type, Union
 
+from google.cloud.discoveryengine_v1alpha import gapic_version as package_version
+
+from google.api_core.client_options import ClientOptions
 from google.api_core import exceptions as core_exceptions
 from google.api_core import gapic_v1
 from google.api_core import retry_async as retries
-from google.api_core.client_options import ClientOptions
-from google.auth import credentials as ga_credentials  # type: ignore
-from google.oauth2 import service_account  # type: ignore
+from google.auth import credentials as ga_credentials   # type: ignore
+from google.oauth2 import service_account              # type: ignore
 import google.protobuf
 
-from google.cloud.discoveryengine_v1alpha import gapic_version as package_version
 
 try:
     OptionalRetry = Union[retries.AsyncRetry, gapic_v1.method._MethodDefault, None]
 except AttributeError:  # pragma: NO COVER
     OptionalRetry = Union[retries.AsyncRetry, object, None]  # type: ignore
 
-from google.cloud.location import locations_pb2  # type: ignore
-from google.longrunning import operations_pb2  # type: ignore
+from google.cloud.discoveryengine_v1alpha.services.sample_query_set_service import pagers
+from google.cloud.discoveryengine_v1alpha.types import sample_query_set
+from google.cloud.discoveryengine_v1alpha.types import sample_query_set as gcd_sample_query_set
+from google.cloud.discoveryengine_v1alpha.types import sample_query_set_service
+from google.cloud.location import locations_pb2 # type: ignore
+from google.longrunning import operations_pb2 # type: ignore
 from google.protobuf import field_mask_pb2  # type: ignore
 from google.protobuf import timestamp_pb2  # type: ignore
-
-from google.cloud.discoveryengine_v1alpha.services.sample_query_set_service import (
-    pagers,
-)
-from google.cloud.discoveryengine_v1alpha.types import (
-    sample_query_set as gcd_sample_query_set,
-)
-from google.cloud.discoveryengine_v1alpha.types import sample_query_set
-from google.cloud.discoveryengine_v1alpha.types import sample_query_set_service
-
-from .client import SampleQuerySetServiceClient
-from .transports.base import DEFAULT_CLIENT_INFO, SampleQuerySetServiceTransport
+from .transports.base import SampleQuerySetServiceTransport, DEFAULT_CLIENT_INFO
 from .transports.grpc_asyncio import SampleQuerySetServiceGrpcAsyncIOTransport
+from .client import SampleQuerySetServiceClient
 
 try:
     from google.api_core import client_logging  # type: ignore
-
     CLIENT_LOGGING_SUPPORTED = True  # pragma: NO COVER
 except ImportError:  # pragma: NO COVER
     CLIENT_LOGGING_SUPPORTED = False
 
 _LOGGER = std_logging.getLogger(__name__)
-
 
 class SampleQuerySetServiceAsyncClient:
     """Service for managing
@@ -88,38 +70,18 @@ class SampleQuerySetServiceAsyncClient:
 
     location_path = staticmethod(SampleQuerySetServiceClient.location_path)
     parse_location_path = staticmethod(SampleQuerySetServiceClient.parse_location_path)
-    sample_query_set_path = staticmethod(
-        SampleQuerySetServiceClient.sample_query_set_path
-    )
-    parse_sample_query_set_path = staticmethod(
-        SampleQuerySetServiceClient.parse_sample_query_set_path
-    )
-    common_billing_account_path = staticmethod(
-        SampleQuerySetServiceClient.common_billing_account_path
-    )
-    parse_common_billing_account_path = staticmethod(
-        SampleQuerySetServiceClient.parse_common_billing_account_path
-    )
+    sample_query_set_path = staticmethod(SampleQuerySetServiceClient.sample_query_set_path)
+    parse_sample_query_set_path = staticmethod(SampleQuerySetServiceClient.parse_sample_query_set_path)
+    common_billing_account_path = staticmethod(SampleQuerySetServiceClient.common_billing_account_path)
+    parse_common_billing_account_path = staticmethod(SampleQuerySetServiceClient.parse_common_billing_account_path)
     common_folder_path = staticmethod(SampleQuerySetServiceClient.common_folder_path)
-    parse_common_folder_path = staticmethod(
-        SampleQuerySetServiceClient.parse_common_folder_path
-    )
-    common_organization_path = staticmethod(
-        SampleQuerySetServiceClient.common_organization_path
-    )
-    parse_common_organization_path = staticmethod(
-        SampleQuerySetServiceClient.parse_common_organization_path
-    )
+    parse_common_folder_path = staticmethod(SampleQuerySetServiceClient.parse_common_folder_path)
+    common_organization_path = staticmethod(SampleQuerySetServiceClient.common_organization_path)
+    parse_common_organization_path = staticmethod(SampleQuerySetServiceClient.parse_common_organization_path)
     common_project_path = staticmethod(SampleQuerySetServiceClient.common_project_path)
-    parse_common_project_path = staticmethod(
-        SampleQuerySetServiceClient.parse_common_project_path
-    )
-    common_location_path = staticmethod(
-        SampleQuerySetServiceClient.common_location_path
-    )
-    parse_common_location_path = staticmethod(
-        SampleQuerySetServiceClient.parse_common_location_path
-    )
+    parse_common_project_path = staticmethod(SampleQuerySetServiceClient.parse_common_project_path)
+    common_location_path = staticmethod(SampleQuerySetServiceClient.common_location_path)
+    parse_common_location_path = staticmethod(SampleQuerySetServiceClient.parse_common_location_path)
 
     @classmethod
     def from_service_account_info(cls, info: dict, *args, **kwargs):
@@ -155,9 +117,7 @@ class SampleQuerySetServiceAsyncClient:
     from_service_account_json = from_service_account_file
 
     @classmethod
-    def get_mtls_endpoint_and_cert_source(
-        cls, client_options: Optional[ClientOptions] = None
-    ):
+    def get_mtls_endpoint_and_cert_source(cls, client_options: Optional[ClientOptions] = None):
         """Return the API endpoint and client cert source for mutual TLS.
 
         The client cert source is determined in the following order:
@@ -220,20 +180,12 @@ class SampleQuerySetServiceAsyncClient:
 
     get_transport_class = SampleQuerySetServiceClient.get_transport_class
 
-    def __init__(
-        self,
-        *,
-        credentials: Optional[ga_credentials.Credentials] = None,
-        transport: Optional[
-            Union[
-                str,
-                SampleQuerySetServiceTransport,
-                Callable[..., SampleQuerySetServiceTransport],
-            ]
-        ] = "grpc_asyncio",
-        client_options: Optional[ClientOptions] = None,
-        client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
-    ) -> None:
+    def __init__(self, *,
+            credentials: Optional[ga_credentials.Credentials] = None,
+            transport: Optional[Union[str, SampleQuerySetServiceTransport, Callable[..., SampleQuerySetServiceTransport]]] = "grpc_asyncio",
+            client_options: Optional[ClientOptions] = None,
+            client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
+            ) -> None:
         """Instantiates the sample query set service async client.
 
         Args:
@@ -288,41 +240,31 @@ class SampleQuerySetServiceAsyncClient:
             transport=transport,
             client_options=client_options,
             client_info=client_info,
+
         )
 
-        if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-            std_logging.DEBUG
-        ):  # pragma: NO COVER
+        if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(std_logging.DEBUG):  # pragma: NO COVER
             _LOGGER.debug(
                 "Created client `google.cloud.discoveryengine_v1alpha.SampleQuerySetServiceAsyncClient`.",
-                extra={
+                extra = {
                     "serviceName": "google.cloud.discoveryengine.v1alpha.SampleQuerySetService",
-                    "universeDomain": getattr(
-                        self._client._transport._credentials, "universe_domain", ""
-                    ),
+                    "universeDomain": getattr(self._client._transport._credentials, "universe_domain", ""),
                     "credentialsType": f"{type(self._client._transport._credentials).__module__}.{type(self._client._transport._credentials).__qualname__}",
-                    "credentialsInfo": getattr(
-                        self.transport._credentials, "get_cred_info", lambda: None
-                    )(),
-                }
-                if hasattr(self._client._transport, "_credentials")
-                else {
+                    "credentialsInfo": getattr(self.transport._credentials, "get_cred_info", lambda: None)(),
+                } if hasattr(self._client._transport, "_credentials") else {
                     "serviceName": "google.cloud.discoveryengine.v1alpha.SampleQuerySetService",
                     "credentialsType": None,
-                },
+                }
             )
 
-    async def get_sample_query_set(
-        self,
-        request: Optional[
-            Union[sample_query_set_service.GetSampleQuerySetRequest, dict]
-        ] = None,
-        *,
-        name: Optional[str] = None,
-        retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
-    ) -> sample_query_set.SampleQuerySet:
+    async def get_sample_query_set(self,
+            request: Optional[Union[sample_query_set_service.GetSampleQuerySetRequest, dict]] = None,
+            *,
+            name: Optional[str] = None,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+            ) -> sample_query_set.SampleQuerySet:
         r"""Gets a
         [SampleQuerySet][google.cloud.discoveryengine.v1alpha.SampleQuerySet].
 
@@ -395,14 +337,10 @@ class SampleQuerySetServiceAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [name]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of "
+                             "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -416,14 +354,14 @@ class SampleQuerySetServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.get_sample_query_set
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.get_sample_query_set]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
         metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
+            gapic_v1.routing_header.to_grpc_metadata((
+                ("name", request.name),
+            )),
         )
 
         # Validate the universe domain.
@@ -440,17 +378,14 @@ class SampleQuerySetServiceAsyncClient:
         # Done; return the response.
         return response
 
-    async def list_sample_query_sets(
-        self,
-        request: Optional[
-            Union[sample_query_set_service.ListSampleQuerySetsRequest, dict]
-        ] = None,
-        *,
-        parent: Optional[str] = None,
-        retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
-    ) -> pagers.ListSampleQuerySetsAsyncPager:
+    async def list_sample_query_sets(self,
+            request: Optional[Union[sample_query_set_service.ListSampleQuerySetsRequest, dict]] = None,
+            *,
+            parent: Optional[str] = None,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+            ) -> pagers.ListSampleQuerySetsAsyncPager:
         r"""Gets a list of
         [SampleQuerySet][google.cloud.discoveryengine.v1alpha.SampleQuerySet]s.
 
@@ -521,14 +456,10 @@ class SampleQuerySetServiceAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [parent]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of "
+                             "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -542,14 +473,14 @@ class SampleQuerySetServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.list_sample_query_sets
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.list_sample_query_sets]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
         metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
+            gapic_v1.routing_header.to_grpc_metadata((
+                ("parent", request.parent),
+            )),
         )
 
         # Validate the universe domain.
@@ -577,19 +508,16 @@ class SampleQuerySetServiceAsyncClient:
         # Done; return the response.
         return response
 
-    async def create_sample_query_set(
-        self,
-        request: Optional[
-            Union[sample_query_set_service.CreateSampleQuerySetRequest, dict]
-        ] = None,
-        *,
-        parent: Optional[str] = None,
-        sample_query_set: Optional[gcd_sample_query_set.SampleQuerySet] = None,
-        sample_query_set_id: Optional[str] = None,
-        retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
-    ) -> gcd_sample_query_set.SampleQuerySet:
+    async def create_sample_query_set(self,
+            request: Optional[Union[sample_query_set_service.CreateSampleQuerySetRequest, dict]] = None,
+            *,
+            parent: Optional[str] = None,
+            sample_query_set: Optional[gcd_sample_query_set.SampleQuerySet] = None,
+            sample_query_set_id: Optional[str] = None,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+            ) -> gcd_sample_query_set.SampleQuerySet:
         r"""Creates a
         [SampleQuerySet][google.cloud.discoveryengine.v1alpha.SampleQuerySet]
 
@@ -689,20 +617,14 @@ class SampleQuerySetServiceAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [parent, sample_query_set, sample_query_set_id]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of "
+                             "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
-        if not isinstance(
-            request, sample_query_set_service.CreateSampleQuerySetRequest
-        ):
+        if not isinstance(request, sample_query_set_service.CreateSampleQuerySetRequest):
             request = sample_query_set_service.CreateSampleQuerySetRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
@@ -716,14 +638,14 @@ class SampleQuerySetServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.create_sample_query_set
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.create_sample_query_set]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
         metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
+            gapic_v1.routing_header.to_grpc_metadata((
+                ("parent", request.parent),
+            )),
         )
 
         # Validate the universe domain.
@@ -740,18 +662,15 @@ class SampleQuerySetServiceAsyncClient:
         # Done; return the response.
         return response
 
-    async def update_sample_query_set(
-        self,
-        request: Optional[
-            Union[sample_query_set_service.UpdateSampleQuerySetRequest, dict]
-        ] = None,
-        *,
-        sample_query_set: Optional[gcd_sample_query_set.SampleQuerySet] = None,
-        update_mask: Optional[field_mask_pb2.FieldMask] = None,
-        retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
-    ) -> gcd_sample_query_set.SampleQuerySet:
+    async def update_sample_query_set(self,
+            request: Optional[Union[sample_query_set_service.UpdateSampleQuerySetRequest, dict]] = None,
+            *,
+            sample_query_set: Optional[gcd_sample_query_set.SampleQuerySet] = None,
+            update_mask: Optional[field_mask_pb2.FieldMask] = None,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+            ) -> gcd_sample_query_set.SampleQuerySet:
         r"""Updates a
         [SampleQuerySet][google.cloud.discoveryengine.v1alpha.SampleQuerySet].
 
@@ -834,20 +753,14 @@ class SampleQuerySetServiceAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [sample_query_set, update_mask]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of "
+                             "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
-        if not isinstance(
-            request, sample_query_set_service.UpdateSampleQuerySetRequest
-        ):
+        if not isinstance(request, sample_query_set_service.UpdateSampleQuerySetRequest):
             request = sample_query_set_service.UpdateSampleQuerySetRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
@@ -859,16 +772,14 @@ class SampleQuerySetServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.update_sample_query_set
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.update_sample_query_set]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
         metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata(
-                (("sample_query_set.name", request.sample_query_set.name),)
-            ),
+            gapic_v1.routing_header.to_grpc_metadata((
+                ("sample_query_set.name", request.sample_query_set.name),
+            )),
         )
 
         # Validate the universe domain.
@@ -885,17 +796,14 @@ class SampleQuerySetServiceAsyncClient:
         # Done; return the response.
         return response
 
-    async def delete_sample_query_set(
-        self,
-        request: Optional[
-            Union[sample_query_set_service.DeleteSampleQuerySetRequest, dict]
-        ] = None,
-        *,
-        name: Optional[str] = None,
-        retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
-    ) -> None:
+    async def delete_sample_query_set(self,
+            request: Optional[Union[sample_query_set_service.DeleteSampleQuerySetRequest, dict]] = None,
+            *,
+            name: Optional[str] = None,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+            ) -> None:
         r"""Deletes a
         [SampleQuerySet][google.cloud.discoveryengine.v1alpha.SampleQuerySet].
 
@@ -958,20 +866,14 @@ class SampleQuerySetServiceAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [name]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of "
+                             "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
-        if not isinstance(
-            request, sample_query_set_service.DeleteSampleQuerySetRequest
-        ):
+        if not isinstance(request, sample_query_set_service.DeleteSampleQuerySetRequest):
             request = sample_query_set_service.DeleteSampleQuerySetRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
@@ -981,14 +883,14 @@ class SampleQuerySetServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.delete_sample_query_set
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.delete_sample_query_set]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
         metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
+            gapic_v1.routing_header.to_grpc_metadata((
+                ("name", request.name),
+            )),
         )
 
         # Validate the universe domain.
@@ -1040,7 +942,8 @@ class SampleQuerySetServiceAsyncClient:
         # Certain fields should be provided within the metadata header;
         # add these here.
         metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
+            gapic_v1.routing_header.to_grpc_metadata(
+                (("name", request.name),)),
         )
 
         # Validate the universe domain.
@@ -1048,11 +951,7 @@ class SampleQuerySetServiceAsyncClient:
 
         # Send the request.
         response = await rpc(
-            request,
-            retry=retry,
-            timeout=timeout,
-            metadata=metadata,
-        )
+            request, retry=retry, timeout=timeout, metadata=metadata,)
 
         # Done; return the response.
         return response
@@ -1095,7 +994,8 @@ class SampleQuerySetServiceAsyncClient:
         # Certain fields should be provided within the metadata header;
         # add these here.
         metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
+            gapic_v1.routing_header.to_grpc_metadata(
+                (("name", request.name),)),
         )
 
         # Validate the universe domain.
@@ -1103,11 +1003,7 @@ class SampleQuerySetServiceAsyncClient:
 
         # Send the request.
         response = await rpc(
-            request,
-            retry=retry,
-            timeout=timeout,
-            metadata=metadata,
-        )
+            request, retry=retry, timeout=timeout, metadata=metadata,)
 
         # Done; return the response.
         return response
@@ -1153,19 +1049,15 @@ class SampleQuerySetServiceAsyncClient:
         # Certain fields should be provided within the metadata header;
         # add these here.
         metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
+            gapic_v1.routing_header.to_grpc_metadata(
+                (("name", request.name),)),
         )
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
 
         # Send the request.
-        await rpc(
-            request,
-            retry=retry,
-            timeout=timeout,
-            metadata=metadata,
-        )
+        await rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
 
     async def __aenter__(self) -> "SampleQuerySetServiceAsyncClient":
         return self
@@ -1173,13 +1065,12 @@ class SampleQuerySetServiceAsyncClient:
     async def __aexit__(self, exc_type, exc, tb):
         await self.transport.close()
 
+DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(gapic_version=package_version.__version__)
 
-DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
-    gapic_version=package_version.__version__
-)
-
-if hasattr(DEFAULT_CLIENT_INFO, "protobuf_runtime_version"):  # pragma: NO COVER
+if hasattr(DEFAULT_CLIENT_INFO, "protobuf_runtime_version"):   # pragma: NO COVER
     DEFAULT_CLIENT_INFO.protobuf_runtime_version = google.protobuf.__version__
 
 
-__all__ = ("SampleQuerySetServiceAsyncClient",)
+__all__ = (
+    "SampleQuerySetServiceAsyncClient",
+)

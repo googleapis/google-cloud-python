@@ -17,19 +17,20 @@ from __future__ import annotations
 
 from typing import MutableMapping, MutableSequence
 
-from google.protobuf import timestamp_pb2  # type: ignore
 import proto  # type: ignore
 
 from google.cloud.discoveryengine_v1beta.types import common
 from google.cloud.discoveryengine_v1beta.types import document as gcd_document
+from google.protobuf import timestamp_pb2  # type: ignore
+
 
 __protobuf__ = proto.module(
-    package="google.cloud.discoveryengine.v1beta",
+    package='google.cloud.discoveryengine.v1beta',
     manifest={
-        "CompleteQueryRequest",
-        "CompleteQueryResponse",
-        "AdvancedCompleteQueryRequest",
-        "AdvancedCompleteQueryResponse",
+        'CompleteQueryRequest',
+        'CompleteQueryResponse',
+        'AdvancedCompleteQueryRequest',
+        'AdvancedCompleteQueryResponse',
     },
 )
 
@@ -52,24 +53,24 @@ class CompleteQueryRequest(proto.Message):
             model specified in the Configuration > Autocomplete section
             of the Cloud console. Currently supported values:
 
-            - ``document`` - Using suggestions generated from
-              user-imported documents.
-            - ``search-history`` - Using suggestions generated from the
-              past history of
-              [SearchService.Search][google.cloud.discoveryengine.v1beta.SearchService.Search]
-              API calls. Do not use it when there is no traffic for
-              Search API.
-            - ``user-event`` - Using suggestions generated from
-              user-imported search events.
-            - ``document-completable`` - Using suggestions taken
-              directly from user-imported document fields marked as
-              completable.
+            -  ``document`` - Using suggestions generated from
+               user-imported documents.
+            -  ``search-history`` - Using suggestions generated from the
+               past history of
+               [SearchService.Search][google.cloud.discoveryengine.v1beta.SearchService.Search]
+               API calls. Do not use it when there is no traffic for
+               Search API.
+            -  ``user-event`` - Using suggestions generated from
+               user-imported search events.
+            -  ``document-completable`` - Using suggestions taken
+               directly from user-imported document fields marked as
+               completable.
 
             Default values:
 
-            - ``document`` is the default model for regular dataStores.
-            - ``search-history`` is the default model for site search
-              dataStores.
+            -  ``document`` is the default model for regular dataStores.
+            -  ``search-history`` is the default model for site search
+               dataStores.
         user_pseudo_id (str):
             A unique identifier for tracking visitors. For example, this
             could be implemented with an HTTP cookie, which should be
@@ -199,24 +200,24 @@ class AdvancedCompleteQueryRequest(proto.Message):
             model specified in the Configuration > Autocomplete section
             of the Cloud console. Currently supported values:
 
-            - ``document`` - Using suggestions generated from
-              user-imported documents.
-            - ``search-history`` - Using suggestions generated from the
-              past history of
-              [SearchService.Search][google.cloud.discoveryengine.v1beta.SearchService.Search]
-              API calls. Do not use it when there is no traffic for
-              Search API.
-            - ``user-event`` - Using suggestions generated from
-              user-imported search events.
-            - ``document-completable`` - Using suggestions taken
-              directly from user-imported document fields marked as
-              completable.
+            -  ``document`` - Using suggestions generated from
+               user-imported documents.
+            -  ``search-history`` - Using suggestions generated from the
+               past history of
+               [SearchService.Search][google.cloud.discoveryengine.v1beta.SearchService.Search]
+               API calls. Do not use it when there is no traffic for
+               Search API.
+            -  ``user-event`` - Using suggestions generated from
+               user-imported search events.
+            -  ``document-completable`` - Using suggestions taken
+               directly from user-imported document fields marked as
+               completable.
 
             Default values:
 
-            - ``document`` is the default model for regular dataStores.
-            - ``search-history`` is the default model for site search
-              dataStores.
+            -  ``document`` is the default model for regular dataStores.
+            -  ``search-history`` is the default model for site search
+               dataStores.
         user_pseudo_id (str):
             A unique identifier for tracking visitors. For example, this
             could be implemented with an HTTP cookie, which should be
@@ -257,7 +258,6 @@ class AdvancedCompleteQueryRequest(proto.Message):
             returned. Only one suggestion type is supported
             at the moment.
     """
-
     class SuggestionType(proto.Enum):
         r"""Suggestion type to return.
 
@@ -312,8 +312,8 @@ class AdvancedCompleteQueryRequest(proto.Message):
 
                     Example:
 
-                    - To boost suggestions in languages ``en`` or ``fr``:
-                      ``(lang_code: ANY("en", "fr"))``
+                    -  To boost suggestions in languages ``en`` or ``fr``:
+                       ``(lang_code: ANY("en", "fr"))``
                 boost (float):
                     Strength of the boost, which should be in [-1, 1]. Negative
                     boost means demotion. Default is 0.0.
@@ -339,12 +339,10 @@ class AdvancedCompleteQueryRequest(proto.Message):
                 number=2,
             )
 
-        condition_boost_specs: MutableSequence[
-            "AdvancedCompleteQueryRequest.BoostSpec.ConditionBoostSpec"
-        ] = proto.RepeatedField(
+        condition_boost_specs: MutableSequence['AdvancedCompleteQueryRequest.BoostSpec.ConditionBoostSpec'] = proto.RepeatedField(
             proto.MESSAGE,
             number=1,
-            message="AdvancedCompleteQueryRequest.BoostSpec.ConditionBoostSpec",
+            message='AdvancedCompleteQueryRequest.BoostSpec.ConditionBoostSpec',
         )
 
     completion_config: str = proto.Field(
@@ -460,7 +458,6 @@ class AdvancedCompleteQueryResponse(proto.Message):
                 The name of the dataStore that this
                 suggestion belongs to.
         """
-
         class PersonType(proto.Enum):
             r"""The type of the person based on the source.
 
@@ -480,12 +477,10 @@ class AdvancedCompleteQueryResponse(proto.Message):
             proto.STRING,
             number=1,
         )
-        person_type: "AdvancedCompleteQueryResponse.PersonSuggestion.PersonType" = (
-            proto.Field(
-                proto.ENUM,
-                number=2,
-                enum="AdvancedCompleteQueryResponse.PersonSuggestion.PersonType",
-            )
+        person_type: 'AdvancedCompleteQueryResponse.PersonSuggestion.PersonType' = proto.Field(
+            proto.ENUM,
+            number=2,
+            enum='AdvancedCompleteQueryResponse.PersonSuggestion.PersonType',
         )
         document: gcd_document.Document = proto.Field(
             proto.MESSAGE,
@@ -512,7 +507,6 @@ class AdvancedCompleteQueryResponse(proto.Message):
                 The name of the dataStore that this
                 suggestion belongs to.
         """
-
         class ContentType(proto.Enum):
             r"""The type of the content returned for content suggestions.
 
@@ -533,12 +527,10 @@ class AdvancedCompleteQueryResponse(proto.Message):
             proto.STRING,
             number=1,
         )
-        content_type: "AdvancedCompleteQueryResponse.ContentSuggestion.ContentType" = (
-            proto.Field(
-                proto.ENUM,
-                number=2,
-                enum="AdvancedCompleteQueryResponse.ContentSuggestion.ContentType",
-            )
+        content_type: 'AdvancedCompleteQueryResponse.ContentSuggestion.ContentType' = proto.Field(
+            proto.ENUM,
+            number=2,
+            enum='AdvancedCompleteQueryResponse.ContentSuggestion.ContentType',
         )
         document: gcd_document.Document = proto.Field(
             proto.MESSAGE,
@@ -589,9 +581,7 @@ class AdvancedCompleteQueryResponse(proto.Message):
         number=4,
         message=ContentSuggestion,
     )
-    recent_search_suggestions: MutableSequence[
-        RecentSearchSuggestion
-    ] = proto.RepeatedField(
+    recent_search_suggestions: MutableSequence[RecentSearchSuggestion] = proto.RepeatedField(
         proto.MESSAGE,
         number=5,
         message=RecentSearchSuggestion,

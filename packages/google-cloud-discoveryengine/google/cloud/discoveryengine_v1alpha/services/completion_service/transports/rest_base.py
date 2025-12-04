@@ -14,21 +14,21 @@
 # limitations under the License.
 #
 import json  # type: ignore
+from google.api_core import path_template
+from google.api_core import gapic_v1
+
+from google.protobuf import json_format
+from google.cloud.location import locations_pb2 # type: ignore
+from .base import CompletionServiceTransport, DEFAULT_CLIENT_INFO
+
 import re
 from typing import Any, Callable, Dict, List, Optional, Sequence, Tuple, Union
 
-from google.api_core import gapic_v1, path_template
-from google.cloud.location import locations_pb2  # type: ignore
+
+from google.cloud.discoveryengine_v1alpha.types import completion_service
+from google.cloud.discoveryengine_v1alpha.types import import_config
+from google.cloud.discoveryengine_v1alpha.types import purge_config
 from google.longrunning import operations_pb2  # type: ignore
-from google.protobuf import json_format
-
-from google.cloud.discoveryengine_v1alpha.types import (
-    completion_service,
-    import_config,
-    purge_config,
-)
-
-from .base import DEFAULT_CLIENT_INFO, CompletionServiceTransport
 
 
 class _BaseCompletionServiceRestTransport(CompletionServiceTransport):
@@ -44,16 +44,14 @@ class _BaseCompletionServiceRestTransport(CompletionServiceTransport):
     It sends JSON representations of protocol buffers over HTTP/1.1
     """
 
-    def __init__(
-        self,
-        *,
-        host: str = "discoveryengine.googleapis.com",
-        credentials: Optional[Any] = None,
-        client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
-        always_use_jwt_access: Optional[bool] = False,
-        url_scheme: str = "https",
-        api_audience: Optional[str] = None,
-    ) -> None:
+    def __init__(self, *,
+            host: str = 'discoveryengine.googleapis.com',
+            credentials: Optional[Any] = None,
+            client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
+            always_use_jwt_access: Optional[bool] = False,
+            url_scheme: str = 'https',
+            api_audience: Optional[str] = None,
+            ) -> None:
         """Instantiate the transport.
         Args:
             host (Optional[str]):
@@ -77,9 +75,7 @@ class _BaseCompletionServiceRestTransport(CompletionServiceTransport):
         # Run the base constructor
         maybe_url_match = re.match("^(?P<scheme>http(?:s)?://)?(?P<host>.*)$", host)
         if maybe_url_match is None:
-            raise ValueError(
-                f"Unexpected hostname structure: {host}"
-            )  # pragma: NO COVER
+            raise ValueError(f"Unexpected hostname structure: {host}")  # pragma: NO COVER
 
         url_match_items = maybe_url_match.groupdict()
 
@@ -90,36 +86,30 @@ class _BaseCompletionServiceRestTransport(CompletionServiceTransport):
             credentials=credentials,
             client_info=client_info,
             always_use_jwt_access=always_use_jwt_access,
-            api_audience=api_audience,
+            api_audience=api_audience
         )
 
     class _BaseCompleteQuery:
         def __hash__(self):  # pragma: NO COVER
             return NotImplementedError("__hash__ must be implemented.")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {
-            "query": "",
-        }
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] =  {
+            "query" : "",        }
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "get",
-                    "uri": "/v1alpha/{data_store=projects/*/locations/*/dataStores/*}:completeQuery",
-                },
-                {
-                    "method": "get",
-                    "uri": "/v1alpha/{data_store=projects/*/locations/*/collections/*/dataStores/*}:completeQuery",
-                },
+            http_options: List[Dict[str, str]] = [{
+                'method': 'get',
+                'uri': '/v1alpha/{data_store=projects/*/locations/*/dataStores/*}:completeQuery',
+            },
+        {
+                'method': 'get',
+                'uri': '/v1alpha/{data_store=projects/*/locations/*/collections/*/dataStores/*}:completeQuery',
+            },
             ]
             return http_options
 
@@ -131,17 +121,11 @@ class _BaseCompletionServiceRestTransport(CompletionServiceTransport):
 
         @staticmethod
         def _get_query_params_json(transcoded_request):
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
-            )
-            query_params.update(
-                _BaseCompletionServiceRestTransport._BaseCompleteQuery._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params = json.loads(json_format.MessageToJson(
+                transcoded_request['query_params'],
+                use_integers_for_enums=True,
+            ))
+            query_params.update(_BaseCompletionServiceRestTransport._BaseCompleteQuery._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -150,29 +134,25 @@ class _BaseCompletionServiceRestTransport(CompletionServiceTransport):
         def __hash__(self):  # pragma: NO COVER
             return NotImplementedError("__hash__ must be implemented.")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] =  {
+        }
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "post",
-                    "uri": "/v1alpha/{parent=projects/*/locations/*/collections/*/dataStores/*}/completionSuggestions:import",
-                    "body": "*",
-                },
-                {
-                    "method": "post",
-                    "uri": "/v1alpha/{parent=projects/*/locations/*/dataStores/*}/completionSuggestions:import",
-                    "body": "*",
-                },
+            http_options: List[Dict[str, str]] = [{
+                'method': 'post',
+                'uri': '/v1alpha/{parent=projects/*/locations/*/collections/*/dataStores/*}/completionSuggestions:import',
+                'body': '*',
+            },
+        {
+                'method': 'post',
+                'uri': '/v1alpha/{parent=projects/*/locations/*/dataStores/*}/completionSuggestions:import',
+                'body': '*',
+            },
             ]
             return http_options
 
@@ -187,23 +167,17 @@ class _BaseCompletionServiceRestTransport(CompletionServiceTransport):
             # Jsonify the request body
 
             body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
+                transcoded_request['body'],
+                use_integers_for_enums=True
             )
             return body
-
         @staticmethod
         def _get_query_params_json(transcoded_request):
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
-            )
-            query_params.update(
-                _BaseCompletionServiceRestTransport._BaseImportCompletionSuggestions._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params = json.loads(json_format.MessageToJson(
+                transcoded_request['query_params'],
+                use_integers_for_enums=True,
+            ))
+            query_params.update(_BaseCompletionServiceRestTransport._BaseImportCompletionSuggestions._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -212,37 +186,31 @@ class _BaseCompletionServiceRestTransport(CompletionServiceTransport):
         def __hash__(self):  # pragma: NO COVER
             return NotImplementedError("__hash__ must be implemented.")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] =  {
+        }
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "post",
-                    "uri": "/v1alpha/{parent=projects/*/locations/*/collections/*/dataStores/*}/suggestionDenyListEntries:import",
-                    "body": "*",
-                },
-                {
-                    "method": "post",
-                    "uri": "/v1alpha/{parent=projects/*/locations/*/dataStores/*}/suggestionDenyListEntries:import",
-                    "body": "*",
-                },
+            http_options: List[Dict[str, str]] = [{
+                'method': 'post',
+                'uri': '/v1alpha/{parent=projects/*/locations/*/collections/*/dataStores/*}/suggestionDenyListEntries:import',
+                'body': '*',
+            },
+        {
+                'method': 'post',
+                'uri': '/v1alpha/{parent=projects/*/locations/*/dataStores/*}/suggestionDenyListEntries:import',
+                'body': '*',
+            },
             ]
             return http_options
 
         @staticmethod
         def _get_transcoded_request(http_options, request):
-            pb_request = import_config.ImportSuggestionDenyListEntriesRequest.pb(
-                request
-            )
+            pb_request = import_config.ImportSuggestionDenyListEntriesRequest.pb(request)
             transcoded_request = path_template.transcode(http_options, pb_request)
             return transcoded_request
 
@@ -251,23 +219,17 @@ class _BaseCompletionServiceRestTransport(CompletionServiceTransport):
             # Jsonify the request body
 
             body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
+                transcoded_request['body'],
+                use_integers_for_enums=True
             )
             return body
-
         @staticmethod
         def _get_query_params_json(transcoded_request):
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
-            )
-            query_params.update(
-                _BaseCompletionServiceRestTransport._BaseImportSuggestionDenyListEntries._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params = json.loads(json_format.MessageToJson(
+                transcoded_request['query_params'],
+                use_integers_for_enums=True,
+            ))
+            query_params.update(_BaseCompletionServiceRestTransport._BaseImportSuggestionDenyListEntries._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -276,29 +238,25 @@ class _BaseCompletionServiceRestTransport(CompletionServiceTransport):
         def __hash__(self):  # pragma: NO COVER
             return NotImplementedError("__hash__ must be implemented.")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] =  {
+        }
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "post",
-                    "uri": "/v1alpha/{parent=projects/*/locations/*/collections/*/dataStores/*}/completionSuggestions:purge",
-                    "body": "*",
-                },
-                {
-                    "method": "post",
-                    "uri": "/v1alpha/{parent=projects/*/locations/*/dataStores/*}/completionSuggestions:purge",
-                    "body": "*",
-                },
+            http_options: List[Dict[str, str]] = [{
+                'method': 'post',
+                'uri': '/v1alpha/{parent=projects/*/locations/*/collections/*/dataStores/*}/completionSuggestions:purge',
+                'body': '*',
+            },
+        {
+                'method': 'post',
+                'uri': '/v1alpha/{parent=projects/*/locations/*/dataStores/*}/completionSuggestions:purge',
+                'body': '*',
+            },
             ]
             return http_options
 
@@ -313,23 +271,17 @@ class _BaseCompletionServiceRestTransport(CompletionServiceTransport):
             # Jsonify the request body
 
             body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
+                transcoded_request['body'],
+                use_integers_for_enums=True
             )
             return body
-
         @staticmethod
         def _get_query_params_json(transcoded_request):
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
-            )
-            query_params.update(
-                _BaseCompletionServiceRestTransport._BasePurgeCompletionSuggestions._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params = json.loads(json_format.MessageToJson(
+                transcoded_request['query_params'],
+                use_integers_for_enums=True,
+            ))
+            query_params.update(_BaseCompletionServiceRestTransport._BasePurgeCompletionSuggestions._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -338,29 +290,25 @@ class _BaseCompletionServiceRestTransport(CompletionServiceTransport):
         def __hash__(self):  # pragma: NO COVER
             return NotImplementedError("__hash__ must be implemented.")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] =  {
+        }
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "post",
-                    "uri": "/v1alpha/{parent=projects/*/locations/*/collections/*/dataStores/*}/suggestionDenyListEntries:purge",
-                    "body": "*",
-                },
-                {
-                    "method": "post",
-                    "uri": "/v1alpha/{parent=projects/*/locations/*/dataStores/**}/suggestionDenyListEntries:purge",
-                    "body": "*",
-                },
+            http_options: List[Dict[str, str]] = [{
+                'method': 'post',
+                'uri': '/v1alpha/{parent=projects/*/locations/*/collections/*/dataStores/*}/suggestionDenyListEntries:purge',
+                'body': '*',
+            },
+        {
+                'method': 'post',
+                'uri': '/v1alpha/{parent=projects/*/locations/*/dataStores/**}/suggestionDenyListEntries:purge',
+                'body': '*',
+            },
             ]
             return http_options
 
@@ -375,23 +323,17 @@ class _BaseCompletionServiceRestTransport(CompletionServiceTransport):
             # Jsonify the request body
 
             body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
+                transcoded_request['body'],
+                use_integers_for_enums=True
             )
             return body
-
         @staticmethod
         def _get_query_params_json(transcoded_request):
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
-            )
-            query_params.update(
-                _BaseCompletionServiceRestTransport._BasePurgeSuggestionDenyListEntries._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params = json.loads(json_format.MessageToJson(
+                transcoded_request['query_params'],
+                use_integers_for_enums=True,
+            ))
+            query_params.update(_BaseCompletionServiceRestTransport._BasePurgeSuggestionDenyListEntries._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -402,34 +344,33 @@ class _BaseCompletionServiceRestTransport(CompletionServiceTransport):
 
         @staticmethod
         def _get_http_options():
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "post",
-                    "uri": "/v1alpha/{name=projects/*/locations/*/collections/*/dataStores/*/branches/*/operations/*}:cancel",
-                    "body": "*",
-                },
-                {
-                    "method": "post",
-                    "uri": "/v1alpha/{name=projects/*/locations/*/dataStores/*/branches/*/operations/*}:cancel",
-                    "body": "*",
-                },
+            http_options: List[Dict[str, str]] = [{
+                'method': 'post',
+                'uri': '/v1alpha/{name=projects/*/locations/*/collections/*/dataStores/*/branches/*/operations/*}:cancel',
+                'body': '*',
+            },
+        {
+                'method': 'post',
+                'uri': '/v1alpha/{name=projects/*/locations/*/dataStores/*/branches/*/operations/*}:cancel',
+                'body': '*',
+            },
             ]
             return http_options
 
         @staticmethod
         def _get_transcoded_request(http_options, request):
             request_kwargs = json_format.MessageToDict(request)
-            transcoded_request = path_template.transcode(http_options, **request_kwargs)
+            transcoded_request = path_template.transcode(
+                http_options, **request_kwargs)
             return transcoded_request
 
         @staticmethod
         def _get_request_body_json(transcoded_request):
-            body = json.dumps(transcoded_request["body"])
+            body = json.dumps(transcoded_request['body'])
             return body
-
         @staticmethod
         def _get_query_params_json(transcoded_request):
-            query_params = json.loads(json.dumps(transcoded_request["query_params"]))
+            query_params = json.loads(json.dumps(transcoded_request['query_params']))
             return query_params
 
     class _BaseGetOperation:
@@ -438,87 +379,87 @@ class _BaseCompletionServiceRestTransport(CompletionServiceTransport):
 
         @staticmethod
         def _get_http_options():
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "get",
-                    "uri": "/v1alpha/{name=projects/*/locations/*/collections/*/dataConnector/operations/*}",
-                },
-                {
-                    "method": "get",
-                    "uri": "/v1alpha/{name=projects/*/locations/*/collections/*/dataStores/*/branches/*/operations/*}",
-                },
-                {
-                    "method": "get",
-                    "uri": "/v1alpha/{name=projects/*/locations/*/collections/*/dataStores/*/models/*/operations/*}",
-                },
-                {
-                    "method": "get",
-                    "uri": "/v1alpha/{name=projects/*/locations/*/collections/*/dataStores/*/operations/*}",
-                },
-                {
-                    "method": "get",
-                    "uri": "/v1alpha/{name=projects/*/locations/*/collections/*/dataStores/*/schemas/*/operations/*}",
-                },
-                {
-                    "method": "get",
-                    "uri": "/v1alpha/{name=projects/*/locations/*/collections/*/dataStores/*/siteSearchEngine/operations/*}",
-                },
-                {
-                    "method": "get",
-                    "uri": "/v1alpha/{name=projects/*/locations/*/collections/*/dataStores/*/siteSearchEngine/targetSites/operations/*}",
-                },
-                {
-                    "method": "get",
-                    "uri": "/v1alpha/{name=projects/*/locations/*/collections/*/engines/*/operations/*}",
-                },
-                {
-                    "method": "get",
-                    "uri": "/v1alpha/{name=projects/*/locations/*/collections/*/operations/*}",
-                },
-                {
-                    "method": "get",
-                    "uri": "/v1alpha/{name=projects/*/locations/*/dataStores/*/branches/*/operations/*}",
-                },
-                {
-                    "method": "get",
-                    "uri": "/v1alpha/{name=projects/*/locations/*/dataStores/*/models/*/operations/*}",
-                },
-                {
-                    "method": "get",
-                    "uri": "/v1alpha/{name=projects/*/locations/*/dataStores/*/operations/*}",
-                },
-                {
-                    "method": "get",
-                    "uri": "/v1alpha/{name=projects/*/locations/*/evaluations/*/operations/*}",
-                },
-                {
-                    "method": "get",
-                    "uri": "/v1alpha/{name=projects/*/locations/*/identity_mapping_stores/*/operations/*}",
-                },
-                {
-                    "method": "get",
-                    "uri": "/v1alpha/{name=projects/*/locations/*/operations/*}",
-                },
-                {
-                    "method": "get",
-                    "uri": "/v1alpha/{name=projects/*/locations/*/sampleQuerySets/*/operations/*}",
-                },
-                {
-                    "method": "get",
-                    "uri": "/v1alpha/{name=projects/*/operations/*}",
-                },
+            http_options: List[Dict[str, str]] = [{
+                'method': 'get',
+                'uri': '/v1alpha/{name=projects/*/locations/*/collections/*/dataConnector/operations/*}',
+            },
+        {
+                'method': 'get',
+                'uri': '/v1alpha/{name=projects/*/locations/*/collections/*/dataStores/*/branches/*/operations/*}',
+            },
+        {
+                'method': 'get',
+                'uri': '/v1alpha/{name=projects/*/locations/*/collections/*/dataStores/*/models/*/operations/*}',
+            },
+        {
+                'method': 'get',
+                'uri': '/v1alpha/{name=projects/*/locations/*/collections/*/dataStores/*/operations/*}',
+            },
+        {
+                'method': 'get',
+                'uri': '/v1alpha/{name=projects/*/locations/*/collections/*/dataStores/*/schemas/*/operations/*}',
+            },
+        {
+                'method': 'get',
+                'uri': '/v1alpha/{name=projects/*/locations/*/collections/*/dataStores/*/siteSearchEngine/operations/*}',
+            },
+        {
+                'method': 'get',
+                'uri': '/v1alpha/{name=projects/*/locations/*/collections/*/dataStores/*/siteSearchEngine/targetSites/operations/*}',
+            },
+        {
+                'method': 'get',
+                'uri': '/v1alpha/{name=projects/*/locations/*/collections/*/engines/*/operations/*}',
+            },
+        {
+                'method': 'get',
+                'uri': '/v1alpha/{name=projects/*/locations/*/collections/*/operations/*}',
+            },
+        {
+                'method': 'get',
+                'uri': '/v1alpha/{name=projects/*/locations/*/dataStores/*/branches/*/operations/*}',
+            },
+        {
+                'method': 'get',
+                'uri': '/v1alpha/{name=projects/*/locations/*/dataStores/*/models/*/operations/*}',
+            },
+        {
+                'method': 'get',
+                'uri': '/v1alpha/{name=projects/*/locations/*/dataStores/*/operations/*}',
+            },
+        {
+                'method': 'get',
+                'uri': '/v1alpha/{name=projects/*/locations/*/evaluations/*/operations/*}',
+            },
+        {
+                'method': 'get',
+                'uri': '/v1alpha/{name=projects/*/locations/*/identity_mapping_stores/*/operations/*}',
+            },
+        {
+                'method': 'get',
+                'uri': '/v1alpha/{name=projects/*/locations/*/operations/*}',
+            },
+        {
+                'method': 'get',
+                'uri': '/v1alpha/{name=projects/*/locations/*/sampleQuerySets/*/operations/*}',
+            },
+        {
+                'method': 'get',
+                'uri': '/v1alpha/{name=projects/*/operations/*}',
+            },
             ]
             return http_options
 
         @staticmethod
         def _get_transcoded_request(http_options, request):
             request_kwargs = json_format.MessageToDict(request)
-            transcoded_request = path_template.transcode(http_options, **request_kwargs)
+            transcoded_request = path_template.transcode(
+                http_options, **request_kwargs)
             return transcoded_request
 
         @staticmethod
         def _get_query_params_json(transcoded_request):
-            query_params = json.loads(json.dumps(transcoded_request["query_params"]))
+            query_params = json.loads(json.dumps(transcoded_request['query_params']))
             return query_params
 
     class _BaseListOperations:
@@ -527,80 +468,82 @@ class _BaseCompletionServiceRestTransport(CompletionServiceTransport):
 
         @staticmethod
         def _get_http_options():
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "get",
-                    "uri": "/v1alpha/{name=projects/*/locations/*/collections/*/dataConnector}/operations",
-                },
-                {
-                    "method": "get",
-                    "uri": "/v1alpha/{name=projects/*/locations/*/collections/*/dataStores/*/branches/*}/operations",
-                },
-                {
-                    "method": "get",
-                    "uri": "/v1alpha/{name=projects/*/locations/*/collections/*/dataStores/*/models/*}/operations",
-                },
-                {
-                    "method": "get",
-                    "uri": "/v1alpha/{name=projects/*/locations/*/collections/*/dataStores/*/schemas/*}/operations",
-                },
-                {
-                    "method": "get",
-                    "uri": "/v1alpha/{name=projects/*/locations/*/collections/*/dataStores/*/siteSearchEngine/targetSites}/operations",
-                },
-                {
-                    "method": "get",
-                    "uri": "/v1alpha/{name=projects/*/locations/*/collections/*/dataStores/*/siteSearchEngine}/operations",
-                },
-                {
-                    "method": "get",
-                    "uri": "/v1alpha/{name=projects/*/locations/*/collections/*/dataStores/*}/operations",
-                },
-                {
-                    "method": "get",
-                    "uri": "/v1alpha/{name=projects/*/locations/*/collections/*/engines/*}/operations",
-                },
-                {
-                    "method": "get",
-                    "uri": "/v1alpha/{name=projects/*/locations/*/collections/*}/operations",
-                },
-                {
-                    "method": "get",
-                    "uri": "/v1alpha/{name=projects/*/locations/*/dataStores/*/branches/*}/operations",
-                },
-                {
-                    "method": "get",
-                    "uri": "/v1alpha/{name=projects/*/locations/*/dataStores/*/models/*}/operations",
-                },
-                {
-                    "method": "get",
-                    "uri": "/v1alpha/{name=projects/*/locations/*/dataStores/*}/operations",
-                },
-                {
-                    "method": "get",
-                    "uri": "/v1alpha/{name=projects/*/locations/*/identity_mapping_stores/*}/operations",
-                },
-                {
-                    "method": "get",
-                    "uri": "/v1alpha/{name=projects/*/locations/*}/operations",
-                },
-                {
-                    "method": "get",
-                    "uri": "/v1alpha/{name=projects/*}/operations",
-                },
+            http_options: List[Dict[str, str]] = [{
+                'method': 'get',
+                'uri': '/v1alpha/{name=projects/*/locations/*/collections/*/dataConnector}/operations',
+            },
+        {
+                'method': 'get',
+                'uri': '/v1alpha/{name=projects/*/locations/*/collections/*/dataStores/*/branches/*}/operations',
+            },
+        {
+                'method': 'get',
+                'uri': '/v1alpha/{name=projects/*/locations/*/collections/*/dataStores/*/models/*}/operations',
+            },
+        {
+                'method': 'get',
+                'uri': '/v1alpha/{name=projects/*/locations/*/collections/*/dataStores/*/schemas/*}/operations',
+            },
+        {
+                'method': 'get',
+                'uri': '/v1alpha/{name=projects/*/locations/*/collections/*/dataStores/*/siteSearchEngine/targetSites}/operations',
+            },
+        {
+                'method': 'get',
+                'uri': '/v1alpha/{name=projects/*/locations/*/collections/*/dataStores/*/siteSearchEngine}/operations',
+            },
+        {
+                'method': 'get',
+                'uri': '/v1alpha/{name=projects/*/locations/*/collections/*/dataStores/*}/operations',
+            },
+        {
+                'method': 'get',
+                'uri': '/v1alpha/{name=projects/*/locations/*/collections/*/engines/*}/operations',
+            },
+        {
+                'method': 'get',
+                'uri': '/v1alpha/{name=projects/*/locations/*/collections/*}/operations',
+            },
+        {
+                'method': 'get',
+                'uri': '/v1alpha/{name=projects/*/locations/*/dataStores/*/branches/*}/operations',
+            },
+        {
+                'method': 'get',
+                'uri': '/v1alpha/{name=projects/*/locations/*/dataStores/*/models/*}/operations',
+            },
+        {
+                'method': 'get',
+                'uri': '/v1alpha/{name=projects/*/locations/*/dataStores/*}/operations',
+            },
+        {
+                'method': 'get',
+                'uri': '/v1alpha/{name=projects/*/locations/*/identity_mapping_stores/*}/operations',
+            },
+        {
+                'method': 'get',
+                'uri': '/v1alpha/{name=projects/*/locations/*}/operations',
+            },
+        {
+                'method': 'get',
+                'uri': '/v1alpha/{name=projects/*}/operations',
+            },
             ]
             return http_options
 
         @staticmethod
         def _get_transcoded_request(http_options, request):
             request_kwargs = json_format.MessageToDict(request)
-            transcoded_request = path_template.transcode(http_options, **request_kwargs)
+            transcoded_request = path_template.transcode(
+                http_options, **request_kwargs)
             return transcoded_request
 
         @staticmethod
         def _get_query_params_json(transcoded_request):
-            query_params = json.loads(json.dumps(transcoded_request["query_params"]))
+            query_params = json.loads(json.dumps(transcoded_request['query_params']))
             return query_params
 
 
-__all__ = ("_BaseCompletionServiceRestTransport",)
+__all__=(
+    '_BaseCompletionServiceRestTransport',
+)

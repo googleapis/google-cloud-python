@@ -21,15 +21,16 @@ import proto  # type: ignore
 
 from google.cloud.discoveryengine_v1.types import grounding
 
+
 __protobuf__ = proto.module(
-    package="google.cloud.discoveryengine.v1",
+    package='google.cloud.discoveryengine.v1',
     manifest={
-        "GroundedGenerationContent",
-        "GenerateGroundedContentRequest",
-        "GenerateGroundedContentResponse",
-        "CheckGroundingSpec",
-        "CheckGroundingRequest",
-        "CheckGroundingResponse",
+        'GroundedGenerationContent',
+        'GenerateGroundedContentRequest',
+        'GenerateGroundedContentResponse',
+        'CheckGroundingSpec',
+        'CheckGroundingRequest',
+        'CheckGroundingResponse',
     },
 )
 
@@ -64,7 +65,7 @@ class GroundedGenerationContent(proto.Message):
         text: str = proto.Field(
             proto.STRING,
             number=1,
-            oneof="data",
+            oneof='data',
         )
 
     role: str = proto.Field(
@@ -108,20 +109,20 @@ class GenerateGroundedContentRequest(proto.Message):
             The user labels applied to a resource must meet the
             following requirements:
 
-            - Each resource can have multiple labels, up to a maximum of
-              64.
-            - Each label must be a key-value pair.
-            - Keys have a minimum length of 1 character and a maximum
-              length of 63 characters and cannot be empty. Values can be
-              empty and have a maximum length of 63 characters.
-            - Keys and values can contain only lowercase letters,
-              numeric characters, underscores, and dashes. All
-              characters must use UTF-8 encoding, and international
-              characters are allowed.
-            - The key portion of a label must be unique. However, you
-              can use the same key with multiple resources.
-            - Keys must start with a lowercase letter or international
-              character.
+            -  Each resource can have multiple labels, up to a maximum
+               of 64.
+            -  Each label must be a key-value pair.
+            -  Keys have a minimum length of 1 character and a maximum
+               length of 63 characters and cannot be empty. Values can
+               be empty and have a maximum length of 63 characters.
+            -  Keys and values can contain only lowercase letters,
+               numeric characters, underscores, and dashes. All
+               characters must use UTF-8 encoding, and international
+               characters are allowed.
+            -  The key portion of a label must be unique. However, you
+               can use the same key with multiple resources.
+            -  Keys must start with a lowercase letter or international
+               character.
 
             See `Google Cloud
             Document <https://cloud.google.com/resource-manager/docs/creating-managing-labels#requirements>`__
@@ -246,7 +247,6 @@ class GenerateGroundedContentRequest(proto.Message):
 
                     This field is a member of `oneof`_ ``_threshold``.
             """
-
             class Version(proto.Enum):
                 r"""The version of the predictor to be used in dynamic retrieval.
 
@@ -261,10 +261,10 @@ class GenerateGroundedContentRequest(proto.Message):
                 VERSION_UNSPECIFIED = 0
                 V1_INDEPENDENT = 1
 
-            version: "GenerateGroundedContentRequest.DynamicRetrievalConfiguration.DynamicRetrievalPredictor.Version" = proto.Field(
+            version: 'GenerateGroundedContentRequest.DynamicRetrievalConfiguration.DynamicRetrievalPredictor.Version' = proto.Field(
                 proto.ENUM,
                 number=1,
-                enum="GenerateGroundedContentRequest.DynamicRetrievalConfiguration.DynamicRetrievalPredictor.Version",
+                enum='GenerateGroundedContentRequest.DynamicRetrievalConfiguration.DynamicRetrievalPredictor.Version',
             )
             threshold: float = proto.Field(
                 proto.FLOAT,
@@ -272,10 +272,10 @@ class GenerateGroundedContentRequest(proto.Message):
                 optional=True,
             )
 
-        predictor: "GenerateGroundedContentRequest.DynamicRetrievalConfiguration.DynamicRetrievalPredictor" = proto.Field(
+        predictor: 'GenerateGroundedContentRequest.DynamicRetrievalConfiguration.DynamicRetrievalPredictor' = proto.Field(
             proto.MESSAGE,
             number=1,
-            message="GenerateGroundedContentRequest.DynamicRetrievalConfiguration.DynamicRetrievalPredictor",
+            message='GenerateGroundedContentRequest.DynamicRetrievalConfiguration.DynamicRetrievalPredictor',
         )
 
     class GroundingSource(proto.Message):
@@ -325,9 +325,7 @@ class GenerateGroundedContentRequest(proto.Message):
                     author of the content).
             """
 
-            grounding_facts: MutableSequence[
-                grounding.GroundingFact
-            ] = proto.RepeatedField(
+            grounding_facts: MutableSequence[grounding.GroundingFact] = proto.RepeatedField(
                 proto.MESSAGE,
                 number=1,
                 message=grounding.GroundingFact,
@@ -388,10 +386,10 @@ class GenerateGroundedContentRequest(proto.Message):
                     configuration for the given source.
             """
 
-            dynamic_retrieval_config: "GenerateGroundedContentRequest.DynamicRetrievalConfiguration" = proto.Field(
+            dynamic_retrieval_config: 'GenerateGroundedContentRequest.DynamicRetrievalConfiguration' = proto.Field(
                 proto.MESSAGE,
                 number=2,
-                message="GenerateGroundedContentRequest.DynamicRetrievalConfiguration",
+                message='GenerateGroundedContentRequest.DynamicRetrievalConfiguration',
             )
 
         class EnterpriseWebRetrievalSource(proto.Message):
@@ -400,33 +398,29 @@ class GenerateGroundedContentRequest(proto.Message):
 
             """
 
-        inline_source: "GenerateGroundedContentRequest.GroundingSource.InlineSource" = (
-            proto.Field(
-                proto.MESSAGE,
-                number=1,
-                oneof="source",
-                message="GenerateGroundedContentRequest.GroundingSource.InlineSource",
-            )
+        inline_source: 'GenerateGroundedContentRequest.GroundingSource.InlineSource' = proto.Field(
+            proto.MESSAGE,
+            number=1,
+            oneof='source',
+            message='GenerateGroundedContentRequest.GroundingSource.InlineSource',
         )
-        search_source: "GenerateGroundedContentRequest.GroundingSource.SearchSource" = (
-            proto.Field(
-                proto.MESSAGE,
-                number=2,
-                oneof="source",
-                message="GenerateGroundedContentRequest.GroundingSource.SearchSource",
-            )
+        search_source: 'GenerateGroundedContentRequest.GroundingSource.SearchSource' = proto.Field(
+            proto.MESSAGE,
+            number=2,
+            oneof='source',
+            message='GenerateGroundedContentRequest.GroundingSource.SearchSource',
         )
-        google_search_source: "GenerateGroundedContentRequest.GroundingSource.GoogleSearchSource" = proto.Field(
+        google_search_source: 'GenerateGroundedContentRequest.GroundingSource.GoogleSearchSource' = proto.Field(
             proto.MESSAGE,
             number=3,
-            oneof="source",
-            message="GenerateGroundedContentRequest.GroundingSource.GoogleSearchSource",
+            oneof='source',
+            message='GenerateGroundedContentRequest.GroundingSource.GoogleSearchSource',
         )
-        enterprise_web_retrieval_source: "GenerateGroundedContentRequest.GroundingSource.EnterpriseWebRetrievalSource" = proto.Field(
+        enterprise_web_retrieval_source: 'GenerateGroundedContentRequest.GroundingSource.EnterpriseWebRetrievalSource' = proto.Field(
             proto.MESSAGE,
             number=8,
-            oneof="source",
-            message="GenerateGroundedContentRequest.GroundingSource.EnterpriseWebRetrievalSource",
+            oneof='source',
+            message='GenerateGroundedContentRequest.GroundingSource.EnterpriseWebRetrievalSource',
         )
 
     class GroundingSpec(proto.Message):
@@ -437,27 +431,25 @@ class GenerateGroundedContentRequest(proto.Message):
                 Grounding sources.
         """
 
-        grounding_sources: MutableSequence[
-            "GenerateGroundedContentRequest.GroundingSource"
-        ] = proto.RepeatedField(
+        grounding_sources: MutableSequence['GenerateGroundedContentRequest.GroundingSource'] = proto.RepeatedField(
             proto.MESSAGE,
             number=1,
-            message="GenerateGroundedContentRequest.GroundingSource",
+            message='GenerateGroundedContentRequest.GroundingSource',
         )
 
     location: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    system_instruction: "GroundedGenerationContent" = proto.Field(
+    system_instruction: 'GroundedGenerationContent' = proto.Field(
         proto.MESSAGE,
         number=5,
-        message="GroundedGenerationContent",
+        message='GroundedGenerationContent',
     )
-    contents: MutableSequence["GroundedGenerationContent"] = proto.RepeatedField(
+    contents: MutableSequence['GroundedGenerationContent'] = proto.RepeatedField(
         proto.MESSAGE,
         number=2,
-        message="GroundedGenerationContent",
+        message='GroundedGenerationContent',
     )
     generation_spec: GenerationSpec = proto.Field(
         proto.MESSAGE,
@@ -542,7 +534,6 @@ class GenerateGroundedContentResponse(proto.Message):
                     dynamic_retrieval_metadata (google.cloud.discoveryengine_v1.types.GenerateGroundedContentResponse.Candidate.GroundingMetadata.DynamicRetrievalMetadata):
                         Metadata for dynamic retrieval.
                 """
-
                 class Source(proto.Enum):
                     r"""Describes the source to which the metadata is associated to.
 
@@ -564,15 +555,15 @@ class GenerateGroundedContentResponse(proto.Message):
                     INLINE_CONTENT = 2
                     GOOGLE_MAPS = 4
 
-                source: "GenerateGroundedContentResponse.Candidate.GroundingMetadata.RetrievalMetadata.Source" = proto.Field(
+                source: 'GenerateGroundedContentResponse.Candidate.GroundingMetadata.RetrievalMetadata.Source' = proto.Field(
                     proto.ENUM,
                     number=1,
-                    enum="GenerateGroundedContentResponse.Candidate.GroundingMetadata.RetrievalMetadata.Source",
+                    enum='GenerateGroundedContentResponse.Candidate.GroundingMetadata.RetrievalMetadata.Source',
                 )
-                dynamic_retrieval_metadata: "GenerateGroundedContentResponse.Candidate.GroundingMetadata.DynamicRetrievalMetadata" = proto.Field(
+                dynamic_retrieval_metadata: 'GenerateGroundedContentResponse.Candidate.GroundingMetadata.DynamicRetrievalMetadata' = proto.Field(
                     proto.MESSAGE,
                     number=2,
-                    message="GenerateGroundedContentResponse.Candidate.GroundingMetadata.DynamicRetrievalMetadata",
+                    message='GenerateGroundedContentResponse.Candidate.GroundingMetadata.DynamicRetrievalMetadata',
                 )
 
             class DynamicRetrievalMetadata(proto.Message):
@@ -583,10 +574,10 @@ class GenerateGroundedContentResponse(proto.Message):
                         Metadata for the dynamic retrieval predictor.
                 """
 
-                predictor_metadata: "GenerateGroundedContentResponse.Candidate.GroundingMetadata.DynamicRetrievalPredictorMetadata" = proto.Field(
+                predictor_metadata: 'GenerateGroundedContentResponse.Candidate.GroundingMetadata.DynamicRetrievalPredictorMetadata' = proto.Field(
                     proto.MESSAGE,
                     number=1,
-                    message="GenerateGroundedContentResponse.Candidate.GroundingMetadata.DynamicRetrievalPredictorMetadata",
+                    message='GenerateGroundedContentResponse.Candidate.GroundingMetadata.DynamicRetrievalPredictorMetadata',
                 )
 
             class DynamicRetrievalPredictorMetadata(proto.Message):
@@ -608,7 +599,6 @@ class GenerateGroundedContentResponse(proto.Message):
 
                         This field is a member of `oneof`_ ``_prediction``.
                 """
-
                 class Version(proto.Enum):
                     r"""The version of the predictor which was used in dynamic
                     retrieval.
@@ -623,10 +613,10 @@ class GenerateGroundedContentResponse(proto.Message):
                     VERSION_UNSPECIFIED = 0
                     V1_INDEPENDENT = 1
 
-                version: "GenerateGroundedContentResponse.Candidate.GroundingMetadata.DynamicRetrievalPredictorMetadata.Version" = proto.Field(
+                version: 'GenerateGroundedContentResponse.Candidate.GroundingMetadata.DynamicRetrievalPredictorMetadata.Version' = proto.Field(
                     proto.ENUM,
                     number=1,
-                    enum="GenerateGroundedContentResponse.Candidate.GroundingMetadata.DynamicRetrievalPredictorMetadata.Version",
+                    enum='GenerateGroundedContentResponse.Candidate.GroundingMetadata.DynamicRetrievalPredictorMetadata.Version',
                 )
                 prediction: float = proto.Field(
                     proto.FLOAT,
@@ -748,28 +738,26 @@ class GenerateGroundedContentResponse(proto.Message):
                         number=3,
                     )
 
-                image: "GenerateGroundedContentResponse.Candidate.GroundingMetadata.ImageMetadata.Image" = proto.Field(
+                image: 'GenerateGroundedContentResponse.Candidate.GroundingMetadata.ImageMetadata.Image' = proto.Field(
                     proto.MESSAGE,
                     number=1,
-                    message="GenerateGroundedContentResponse.Candidate.GroundingMetadata.ImageMetadata.Image",
+                    message='GenerateGroundedContentResponse.Candidate.GroundingMetadata.ImageMetadata.Image',
                 )
-                thumbnail: "GenerateGroundedContentResponse.Candidate.GroundingMetadata.ImageMetadata.Image" = proto.Field(
+                thumbnail: 'GenerateGroundedContentResponse.Candidate.GroundingMetadata.ImageMetadata.Image' = proto.Field(
                     proto.MESSAGE,
                     number=2,
-                    message="GenerateGroundedContentResponse.Candidate.GroundingMetadata.ImageMetadata.Image",
+                    message='GenerateGroundedContentResponse.Candidate.GroundingMetadata.ImageMetadata.Image',
                 )
-                source: "GenerateGroundedContentResponse.Candidate.GroundingMetadata.ImageMetadata.WebsiteInfo" = proto.Field(
+                source: 'GenerateGroundedContentResponse.Candidate.GroundingMetadata.ImageMetadata.WebsiteInfo' = proto.Field(
                     proto.MESSAGE,
                     number=3,
-                    message="GenerateGroundedContentResponse.Candidate.GroundingMetadata.ImageMetadata.WebsiteInfo",
+                    message='GenerateGroundedContentResponse.Candidate.GroundingMetadata.ImageMetadata.WebsiteInfo',
                 )
 
-            retrieval_metadata: MutableSequence[
-                "GenerateGroundedContentResponse.Candidate.GroundingMetadata.RetrievalMetadata"
-            ] = proto.RepeatedField(
+            retrieval_metadata: MutableSequence['GenerateGroundedContentResponse.Candidate.GroundingMetadata.RetrievalMetadata'] = proto.RepeatedField(
                 proto.MESSAGE,
                 number=5,
-                message="GenerateGroundedContentResponse.Candidate.GroundingMetadata.RetrievalMetadata",
+                message='GenerateGroundedContentResponse.Candidate.GroundingMetadata.RetrievalMetadata',
             )
             support_chunks: MutableSequence[grounding.FactChunk] = proto.RepeatedField(
                 proto.MESSAGE,
@@ -780,44 +768,40 @@ class GenerateGroundedContentResponse(proto.Message):
                 proto.STRING,
                 number=3,
             )
-            search_entry_point: "GenerateGroundedContentResponse.Candidate.GroundingMetadata.SearchEntryPoint" = proto.Field(
+            search_entry_point: 'GenerateGroundedContentResponse.Candidate.GroundingMetadata.SearchEntryPoint' = proto.Field(
                 proto.MESSAGE,
                 number=4,
-                message="GenerateGroundedContentResponse.Candidate.GroundingMetadata.SearchEntryPoint",
+                message='GenerateGroundedContentResponse.Candidate.GroundingMetadata.SearchEntryPoint',
             )
-            grounding_support: MutableSequence[
-                "GenerateGroundedContentResponse.Candidate.GroundingMetadata.GroundingSupport"
-            ] = proto.RepeatedField(
+            grounding_support: MutableSequence['GenerateGroundedContentResponse.Candidate.GroundingMetadata.GroundingSupport'] = proto.RepeatedField(
                 proto.MESSAGE,
                 number=2,
-                message="GenerateGroundedContentResponse.Candidate.GroundingMetadata.GroundingSupport",
+                message='GenerateGroundedContentResponse.Candidate.GroundingMetadata.GroundingSupport',
             )
-            images: MutableSequence[
-                "GenerateGroundedContentResponse.Candidate.GroundingMetadata.ImageMetadata"
-            ] = proto.RepeatedField(
+            images: MutableSequence['GenerateGroundedContentResponse.Candidate.GroundingMetadata.ImageMetadata'] = proto.RepeatedField(
                 proto.MESSAGE,
                 number=9,
-                message="GenerateGroundedContentResponse.Candidate.GroundingMetadata.ImageMetadata",
+                message='GenerateGroundedContentResponse.Candidate.GroundingMetadata.ImageMetadata',
             )
 
         index: int = proto.Field(
             proto.INT32,
             number=1,
         )
-        content: "GroundedGenerationContent" = proto.Field(
+        content: 'GroundedGenerationContent' = proto.Field(
             proto.MESSAGE,
             number=2,
-            message="GroundedGenerationContent",
+            message='GroundedGenerationContent',
         )
         grounding_score: float = proto.Field(
             proto.FLOAT,
             number=3,
             optional=True,
         )
-        grounding_metadata: "GenerateGroundedContentResponse.Candidate.GroundingMetadata" = proto.Field(
+        grounding_metadata: 'GenerateGroundedContentResponse.Candidate.GroundingMetadata' = proto.Field(
             proto.MESSAGE,
             number=4,
-            message="GenerateGroundedContentResponse.Candidate.GroundingMetadata",
+            message='GenerateGroundedContentResponse.Candidate.GroundingMetadata',
         )
 
     candidates: MutableSequence[Candidate] = proto.RepeatedField(
@@ -882,20 +866,20 @@ class CheckGroundingRequest(proto.Message):
             The user labels applied to a resource must meet the
             following requirements:
 
-            - Each resource can have multiple labels, up to a maximum of
-              64.
-            - Each label must be a key-value pair.
-            - Keys have a minimum length of 1 character and a maximum
-              length of 63 characters and cannot be empty. Values can be
-              empty and have a maximum length of 63 characters.
-            - Keys and values can contain only lowercase letters,
-              numeric characters, underscores, and dashes. All
-              characters must use UTF-8 encoding, and international
-              characters are allowed.
-            - The key portion of a label must be unique. However, you
-              can use the same key with multiple resources.
-            - Keys must start with a lowercase letter or international
-              character.
+            -  Each resource can have multiple labels, up to a maximum
+               of 64.
+            -  Each label must be a key-value pair.
+            -  Keys have a minimum length of 1 character and a maximum
+               length of 63 characters and cannot be empty. Values can
+               be empty and have a maximum length of 63 characters.
+            -  Keys and values can contain only lowercase letters,
+               numeric characters, underscores, and dashes. All
+               characters must use UTF-8 encoding, and international
+               characters are allowed.
+            -  The key portion of a label must be unique. However, you
+               can use the same key with multiple resources.
+            -  Keys must start with a lowercase letter or international
+               character.
 
             See `Google Cloud
             Document <https://cloud.google.com/resource-manager/docs/creating-managing-labels#requirements>`__
@@ -915,10 +899,10 @@ class CheckGroundingRequest(proto.Message):
         number=3,
         message=grounding.GroundingFact,
     )
-    grounding_spec: "CheckGroundingSpec" = proto.Field(
+    grounding_spec: 'CheckGroundingSpec' = proto.Field(
         proto.MESSAGE,
         number=4,
-        message="CheckGroundingSpec",
+        message='CheckGroundingSpec',
     )
     user_labels: MutableMapping[str, str] = proto.MapField(
         proto.STRING,

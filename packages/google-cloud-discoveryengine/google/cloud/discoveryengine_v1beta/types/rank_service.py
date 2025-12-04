@@ -19,12 +19,13 @@ from typing import MutableMapping, MutableSequence
 
 import proto  # type: ignore
 
+
 __protobuf__ = proto.module(
-    package="google.cloud.discoveryengine.v1beta",
+    package='google.cloud.discoveryengine.v1beta',
     manifest={
-        "RankingRecord",
-        "RankRequest",
-        "RankResponse",
+        'RankingRecord',
+        'RankRequest',
+        'RankResponse',
     },
 )
 
@@ -85,8 +86,8 @@ class RankRequest(proto.Message):
         model (str):
             The identifier of the model to use. It is one of:
 
-            - ``semantic-ranker-512@latest``: Semantic ranking model
-              with maxiumn input token size 512.
+            -  ``semantic-ranker-512@latest``: Semantic ranking model
+               with maxiumn input token size 512.
 
             It is set to ``semantic-ranker-512@latest`` by default if
             unspecified.
@@ -107,20 +108,20 @@ class RankRequest(proto.Message):
             The user labels applied to a resource must meet the
             following requirements:
 
-            - Each resource can have multiple labels, up to a maximum of
-              64.
-            - Each label must be a key-value pair.
-            - Keys have a minimum length of 1 character and a maximum
-              length of 63 characters and cannot be empty. Values can be
-              empty and have a maximum length of 63 characters.
-            - Keys and values can contain only lowercase letters,
-              numeric characters, underscores, and dashes. All
-              characters must use UTF-8 encoding, and international
-              characters are allowed.
-            - The key portion of a label must be unique. However, you
-              can use the same key with multiple resources.
-            - Keys must start with a lowercase letter or international
-              character.
+            -  Each resource can have multiple labels, up to a maximum
+               of 64.
+            -  Each label must be a key-value pair.
+            -  Keys have a minimum length of 1 character and a maximum
+               length of 63 characters and cannot be empty. Values can
+               be empty and have a maximum length of 63 characters.
+            -  Keys and values can contain only lowercase letters,
+               numeric characters, underscores, and dashes. All
+               characters must use UTF-8 encoding, and international
+               characters are allowed.
+            -  The key portion of a label must be unique. However, you
+               can use the same key with multiple resources.
+            -  Keys must start with a lowercase letter or international
+               character.
 
             See `Google Cloud
             Document <https://cloud.google.com/resource-manager/docs/creating-managing-labels#requirements>`__
@@ -143,10 +144,10 @@ class RankRequest(proto.Message):
         proto.STRING,
         number=4,
     )
-    records: MutableSequence["RankingRecord"] = proto.RepeatedField(
+    records: MutableSequence['RankingRecord'] = proto.RepeatedField(
         proto.MESSAGE,
         number=5,
-        message="RankingRecord",
+        message='RankingRecord',
     )
     ignore_record_details_in_response: bool = proto.Field(
         proto.BOOL,
@@ -169,10 +170,10 @@ class RankResponse(proto.Message):
             A list of records sorted by descending score.
     """
 
-    records: MutableSequence["RankingRecord"] = proto.RepeatedField(
+    records: MutableSequence['RankingRecord'] = proto.RepeatedField(
         proto.MESSAGE,
         number=5,
-        message="RankingRecord",
+        message='RankingRecord',
     )
 
 

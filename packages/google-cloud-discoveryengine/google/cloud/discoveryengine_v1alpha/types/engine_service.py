@@ -17,28 +17,29 @@ from __future__ import annotations
 
 from typing import MutableMapping, MutableSequence
 
-from google.protobuf import field_mask_pb2  # type: ignore
-from google.protobuf import timestamp_pb2  # type: ignore
 import proto  # type: ignore
 
 from google.cloud.discoveryengine_v1alpha.types import engine as gcd_engine
+from google.protobuf import field_mask_pb2  # type: ignore
+from google.protobuf import timestamp_pb2  # type: ignore
+
 
 __protobuf__ = proto.module(
-    package="google.cloud.discoveryengine.v1alpha",
+    package='google.cloud.discoveryengine.v1alpha',
     manifest={
-        "CreateEngineRequest",
-        "CreateEngineMetadata",
-        "DeleteEngineRequest",
-        "DeleteEngineMetadata",
-        "GetEngineRequest",
-        "ListEnginesRequest",
-        "ListEnginesResponse",
-        "UpdateEngineRequest",
-        "PauseEngineRequest",
-        "ResumeEngineRequest",
-        "TuneEngineRequest",
-        "TuneEngineMetadata",
-        "TuneEngineResponse",
+        'CreateEngineRequest',
+        'CreateEngineMetadata',
+        'DeleteEngineRequest',
+        'DeleteEngineMetadata',
+        'GetEngineRequest',
+        'ListEnginesRequest',
+        'ListEnginesResponse',
+        'UpdateEngineRequest',
+        'PauseEngineRequest',
+        'ResumeEngineRequest',
+        'TuneEngineRequest',
+        'TuneEngineMetadata',
+        'TuneEngineResponse',
     },
 )
 
@@ -348,7 +349,8 @@ class TuneEngineMetadata(proto.Message):
 
 
 class TuneEngineResponse(proto.Message):
-    r"""Response associated with a tune operation."""
+    r"""Response associated with a tune operation.
+    """
 
 
 __all__ = tuple(sorted(__protobuf__.manifest))

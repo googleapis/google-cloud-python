@@ -17,39 +17,42 @@ from __future__ import annotations
 
 from typing import MutableMapping, MutableSequence
 
+import proto  # type: ignore
+
+from google.cloud.discoveryengine_v1.types import completion
+from google.cloud.discoveryengine_v1.types import document
+from google.cloud.discoveryengine_v1.types import user_event
 from google.protobuf import field_mask_pb2  # type: ignore
 from google.protobuf import timestamp_pb2  # type: ignore
 from google.rpc import status_pb2  # type: ignore
 from google.type import date_pb2  # type: ignore
-import proto  # type: ignore
 
-from google.cloud.discoveryengine_v1.types import completion, document, user_event
 
 __protobuf__ = proto.module(
-    package="google.cloud.discoveryengine.v1",
+    package='google.cloud.discoveryengine.v1',
     manifest={
-        "GcsSource",
-        "BigQuerySource",
-        "SpannerSource",
-        "BigtableOptions",
-        "BigtableSource",
-        "FhirStoreSource",
-        "CloudSqlSource",
-        "AlloyDbSource",
-        "FirestoreSource",
-        "ImportErrorConfig",
-        "ImportUserEventsRequest",
-        "ImportUserEventsResponse",
-        "ImportUserEventsMetadata",
-        "ImportDocumentsMetadata",
-        "ImportDocumentsRequest",
-        "ImportDocumentsResponse",
-        "ImportSuggestionDenyListEntriesRequest",
-        "ImportSuggestionDenyListEntriesResponse",
-        "ImportSuggestionDenyListEntriesMetadata",
-        "ImportCompletionSuggestionsRequest",
-        "ImportCompletionSuggestionsResponse",
-        "ImportCompletionSuggestionsMetadata",
+        'GcsSource',
+        'BigQuerySource',
+        'SpannerSource',
+        'BigtableOptions',
+        'BigtableSource',
+        'FhirStoreSource',
+        'CloudSqlSource',
+        'AlloyDbSource',
+        'FirestoreSource',
+        'ImportErrorConfig',
+        'ImportUserEventsRequest',
+        'ImportUserEventsResponse',
+        'ImportUserEventsMetadata',
+        'ImportDocumentsMetadata',
+        'ImportDocumentsRequest',
+        'ImportDocumentsResponse',
+        'ImportSuggestionDenyListEntriesRequest',
+        'ImportSuggestionDenyListEntriesResponse',
+        'ImportSuggestionDenyListEntriesMetadata',
+        'ImportCompletionSuggestionsRequest',
+        'ImportCompletionSuggestionsResponse',
+        'ImportCompletionSuggestionsMetadata',
     },
 )
 
@@ -73,30 +76,30 @@ class GcsSource(proto.Message):
 
             Supported values for document imports:
 
-            - ``document`` (default): One JSON
-              [Document][google.cloud.discoveryengine.v1.Document] per
-              line. Each document must have a valid
-              [Document.id][google.cloud.discoveryengine.v1.Document.id].
-            - ``content``: Unstructured data (e.g. PDF, HTML). Each file
-              matched by ``input_uris`` becomes a document, with the ID
-              set to the first 128 bits of SHA256(URI) encoded as a hex
-              string.
-            - ``custom``: One custom data JSON per row in arbitrary
-              format that conforms to the defined
-              [Schema][google.cloud.discoveryengine.v1.Schema] of the
-              data store. This can only be used by the GENERIC Data
-              Store vertical.
-            - ``csv``: A CSV file with header conforming to the defined
-              [Schema][google.cloud.discoveryengine.v1.Schema] of the
-              data store. Each entry after the header is imported as a
-              Document. This can only be used by the GENERIC Data Store
-              vertical.
+            -  ``document`` (default): One JSON
+               [Document][google.cloud.discoveryengine.v1.Document] per
+               line. Each document must have a valid
+               [Document.id][google.cloud.discoveryengine.v1.Document.id].
+            -  ``content``: Unstructured data (e.g. PDF, HTML). Each
+               file matched by ``input_uris`` becomes a document, with
+               the ID set to the first 128 bits of SHA256(URI) encoded
+               as a hex string.
+            -  ``custom``: One custom data JSON per row in arbitrary
+               format that conforms to the defined
+               [Schema][google.cloud.discoveryengine.v1.Schema] of the
+               data store. This can only be used by the GENERIC Data
+               Store vertical.
+            -  ``csv``: A CSV file with header conforming to the defined
+               [Schema][google.cloud.discoveryengine.v1.Schema] of the
+               data store. Each entry after the header is imported as a
+               Document. This can only be used by the GENERIC Data Store
+               vertical.
 
             Supported values for user event imports:
 
-            - ``user_event`` (default): One JSON
-              [UserEvent][google.cloud.discoveryengine.v1.UserEvent] per
-              line.
+            -  ``user_event`` (default): One JSON
+               [UserEvent][google.cloud.discoveryengine.v1.UserEvent]
+               per line.
     """
 
     input_uris: MutableSequence[str] = proto.RepeatedField(
@@ -143,31 +146,31 @@ class BigQuerySource(proto.Message):
 
             Supported values for user event imports:
 
-            - ``user_event`` (default): One
-              [UserEvent][google.cloud.discoveryengine.v1.UserEvent] per
-              row.
+            -  ``user_event`` (default): One
+               [UserEvent][google.cloud.discoveryengine.v1.UserEvent]
+               per row.
 
             Supported values for document imports:
 
-            - ``document`` (default): One
-              [Document][google.cloud.discoveryengine.v1.Document]
-              format per row. Each document must have a valid
-              [Document.id][google.cloud.discoveryengine.v1.Document.id]
-              and one of
-              [Document.json_data][google.cloud.discoveryengine.v1.Document.json_data]
-              or
-              [Document.struct_data][google.cloud.discoveryengine.v1.Document.struct_data].
-            - ``custom``: One custom data per row in arbitrary format
-              that conforms to the defined
-              [Schema][google.cloud.discoveryengine.v1.Schema] of the
-              data store. This can only be used by the GENERIC Data
-              Store vertical.
+            -  ``document`` (default): One
+               [Document][google.cloud.discoveryengine.v1.Document]
+               format per row. Each document must have a valid
+               [Document.id][google.cloud.discoveryengine.v1.Document.id]
+               and one of
+               [Document.json_data][google.cloud.discoveryengine.v1.Document.json_data]
+               or
+               [Document.struct_data][google.cloud.discoveryengine.v1.Document.struct_data].
+            -  ``custom``: One custom data per row in arbitrary format
+               that conforms to the defined
+               [Schema][google.cloud.discoveryengine.v1.Schema] of the
+               data store. This can only be used by the GENERIC Data
+               Store vertical.
     """
 
     partition_date: date_pb2.Date = proto.Field(
         proto.MESSAGE,
         number=5,
-        oneof="partition",
+        oneof='partition',
         message=date_pb2.Date,
     )
     project_id: str = proto.Field(
@@ -253,7 +256,6 @@ class BigtableOptions(proto.Message):
             for the given column family. If a family is not
             present in this map it will be ignored.
     """
-
     class Type(proto.Enum):
         r"""The type of values in a Bigtable column or column family. The values
         are expected to be encoded using `HBase
@@ -317,11 +319,11 @@ class BigtableOptions(proto.Message):
                 The encoding mode of the values when the type is not STRING.
                 Acceptable encoding values are:
 
-                - ``TEXT``: indicates values are alphanumeric text strings.
-                - ``BINARY``: indicates values are encoded using
-                  ``HBase Bytes.toBytes`` family of functions. This can be
-                  overridden for a specific column by listing that column in
-                  ``columns`` and specifying an encoding for it.
+                -  ``TEXT``: indicates values are alphanumeric text strings.
+                -  ``BINARY``: indicates values are encoded using
+                   ``HBase Bytes.toBytes`` family of functions. This can be
+                   overridden for a specific column by listing that column
+                   in ``columns`` and specifying an encoding for it.
             type_ (google.cloud.discoveryengine_v1.types.BigtableOptions.Type):
                 The type of values in this column family. The values are
                 expected to be encoded using ``HBase Bytes.toBytes``
@@ -336,22 +338,20 @@ class BigtableOptions(proto.Message):
             proto.STRING,
             number=1,
         )
-        encoding: "BigtableOptions.Encoding" = proto.Field(
+        encoding: 'BigtableOptions.Encoding' = proto.Field(
             proto.ENUM,
             number=2,
-            enum="BigtableOptions.Encoding",
+            enum='BigtableOptions.Encoding',
         )
-        type_: "BigtableOptions.Type" = proto.Field(
+        type_: 'BigtableOptions.Type' = proto.Field(
             proto.ENUM,
             number=3,
-            enum="BigtableOptions.Type",
+            enum='BigtableOptions.Type',
         )
-        columns: MutableSequence[
-            "BigtableOptions.BigtableColumn"
-        ] = proto.RepeatedField(
+        columns: MutableSequence['BigtableOptions.BigtableColumn'] = proto.RepeatedField(
             proto.MESSAGE,
             number=4,
-            message="BigtableOptions.BigtableColumn",
+            message='BigtableOptions.BigtableColumn',
         )
 
     class BigtableColumn(proto.Message):
@@ -373,11 +373,11 @@ class BigtableOptions(proto.Message):
                 The encoding mode of the values when the type is not
                 ``STRING``. Acceptable encoding values are:
 
-                - ``TEXT``: indicates values are alphanumeric text strings.
-                - ``BINARY``: indicates values are encoded using
-                  ``HBase Bytes.toBytes`` family of functions. This can be
-                  overridden for a specific column by listing that column in
-                  ``columns`` and specifying an encoding for it.
+                -  ``TEXT``: indicates values are alphanumeric text strings.
+                -  ``BINARY``: indicates values are encoded using
+                   ``HBase Bytes.toBytes`` family of functions. This can be
+                   overridden for a specific column by listing that column
+                   in ``columns`` and specifying an encoding for it.
             type_ (google.cloud.discoveryengine_v1.types.BigtableOptions.Type):
                 The type of values in this column family. The values are
                 expected to be encoded using ``HBase Bytes.toBytes``
@@ -392,15 +392,15 @@ class BigtableOptions(proto.Message):
             proto.STRING,
             number=2,
         )
-        encoding: "BigtableOptions.Encoding" = proto.Field(
+        encoding: 'BigtableOptions.Encoding' = proto.Field(
             proto.ENUM,
             number=3,
-            enum="BigtableOptions.Encoding",
+            enum='BigtableOptions.Encoding',
         )
-        type_: "BigtableOptions.Type" = proto.Field(
+        type_: 'BigtableOptions.Type' = proto.Field(
             proto.ENUM,
             number=4,
-            enum="BigtableOptions.Type",
+            enum='BigtableOptions.Type',
         )
 
     key_field_name: str = proto.Field(
@@ -449,10 +449,10 @@ class BigtableSource(proto.Message):
         proto.STRING,
         number=3,
     )
-    bigtable_options: "BigtableOptions" = proto.Field(
+    bigtable_options: 'BigtableOptions' = proto.Field(
         proto.MESSAGE,
         number=4,
-        message="BigtableOptions",
+        message='BigtableOptions',
     )
 
 
@@ -689,7 +689,7 @@ class ImportErrorConfig(proto.Message):
     gcs_prefix: str = proto.Field(
         proto.STRING,
         number=1,
-        oneof="destination",
+        oneof='destination',
     )
 
 
@@ -745,29 +745,29 @@ class ImportUserEventsRequest(proto.Message):
     inline_source: InlineSource = proto.Field(
         proto.MESSAGE,
         number=2,
-        oneof="source",
+        oneof='source',
         message=InlineSource,
     )
-    gcs_source: "GcsSource" = proto.Field(
+    gcs_source: 'GcsSource' = proto.Field(
         proto.MESSAGE,
         number=3,
-        oneof="source",
-        message="GcsSource",
+        oneof='source',
+        message='GcsSource',
     )
-    bigquery_source: "BigQuerySource" = proto.Field(
+    bigquery_source: 'BigQuerySource' = proto.Field(
         proto.MESSAGE,
         number=4,
-        oneof="source",
-        message="BigQuerySource",
+        oneof='source',
+        message='BigQuerySource',
     )
     parent: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    error_config: "ImportErrorConfig" = proto.Field(
+    error_config: 'ImportErrorConfig' = proto.Field(
         proto.MESSAGE,
         number=5,
-        message="ImportErrorConfig",
+        message='ImportErrorConfig',
     )
 
 
@@ -798,10 +798,10 @@ class ImportUserEventsResponse(proto.Message):
         number=1,
         message=status_pb2.Status,
     )
-    error_config: "ImportErrorConfig" = proto.Field(
+    error_config: 'ImportErrorConfig' = proto.Field(
         proto.MESSAGE,
         number=2,
-        message="ImportErrorConfig",
+        message='ImportErrorConfig',
     )
     joined_events_count: int = proto.Field(
         proto.INT64,
@@ -979,18 +979,18 @@ class ImportDocumentsRequest(proto.Message):
 
             Supported data sources:
 
-            - [GcsSource][google.cloud.discoveryengine.v1.GcsSource].
-              [GcsSource.data_schema][google.cloud.discoveryengine.v1.GcsSource.data_schema]
-              must be ``custom`` or ``csv``. Otherwise, an
-              INVALID_ARGUMENT error is thrown.
-            - [BigQuerySource][google.cloud.discoveryengine.v1.BigQuerySource].
-              [BigQuerySource.data_schema][google.cloud.discoveryengine.v1.BigQuerySource.data_schema]
-              must be ``custom`` or ``csv``. Otherwise, an
-              INVALID_ARGUMENT error is thrown.
-            - [SpannerSource][google.cloud.discoveryengine.v1.SpannerSource].
-            - [CloudSqlSource][google.cloud.discoveryengine.v1.CloudSqlSource].
-            - [FirestoreSource][google.cloud.discoveryengine.v1.FirestoreSource].
-            - [BigtableSource][google.cloud.discoveryengine.v1.BigtableSource].
+            -  [GcsSource][google.cloud.discoveryengine.v1.GcsSource].
+               [GcsSource.data_schema][google.cloud.discoveryengine.v1.GcsSource.data_schema]
+               must be ``custom`` or ``csv``. Otherwise, an
+               INVALID_ARGUMENT error is thrown.
+            -  [BigQuerySource][google.cloud.discoveryengine.v1.BigQuerySource].
+               [BigQuerySource.data_schema][google.cloud.discoveryengine.v1.BigQuerySource.data_schema]
+               must be ``custom`` or ``csv``. Otherwise, an
+               INVALID_ARGUMENT error is thrown.
+            -  [SpannerSource][google.cloud.discoveryengine.v1.SpannerSource].
+            -  [CloudSqlSource][google.cloud.discoveryengine.v1.CloudSqlSource].
+            -  [FirestoreSource][google.cloud.discoveryengine.v1.FirestoreSource].
+            -  [BigtableSource][google.cloud.discoveryengine.v1.BigtableSource].
         id_field (str):
             The field indicates the ID field or column to be used as
             unique IDs of the documents.
@@ -1019,18 +1019,18 @@ class ImportDocumentsRequest(proto.Message):
 
             Supported data sources:
 
-            - [GcsSource][google.cloud.discoveryengine.v1.GcsSource].
-              [GcsSource.data_schema][google.cloud.discoveryengine.v1.GcsSource.data_schema]
-              must be ``custom`` or ``csv``. Otherwise, an
-              INVALID_ARGUMENT error is thrown.
-            - [BigQuerySource][google.cloud.discoveryengine.v1.BigQuerySource].
-              [BigQuerySource.data_schema][google.cloud.discoveryengine.v1.BigQuerySource.data_schema]
-              must be ``custom`` or ``csv``. Otherwise, an
-              INVALID_ARGUMENT error is thrown.
-            - [SpannerSource][google.cloud.discoveryengine.v1.SpannerSource].
-            - [CloudSqlSource][google.cloud.discoveryengine.v1.CloudSqlSource].
-            - [FirestoreSource][google.cloud.discoveryengine.v1.FirestoreSource].
-            - [BigtableSource][google.cloud.discoveryengine.v1.BigtableSource].
+            -  [GcsSource][google.cloud.discoveryengine.v1.GcsSource].
+               [GcsSource.data_schema][google.cloud.discoveryengine.v1.GcsSource.data_schema]
+               must be ``custom`` or ``csv``. Otherwise, an
+               INVALID_ARGUMENT error is thrown.
+            -  [BigQuerySource][google.cloud.discoveryengine.v1.BigQuerySource].
+               [BigQuerySource.data_schema][google.cloud.discoveryengine.v1.BigQuerySource.data_schema]
+               must be ``custom`` or ``csv``. Otherwise, an
+               INVALID_ARGUMENT error is thrown.
+            -  [SpannerSource][google.cloud.discoveryengine.v1.SpannerSource].
+            -  [CloudSqlSource][google.cloud.discoveryengine.v1.CloudSqlSource].
+            -  [FirestoreSource][google.cloud.discoveryengine.v1.FirestoreSource].
+            -  [BigtableSource][google.cloud.discoveryengine.v1.BigtableSource].
         force_refresh_content (bool):
             Optional. Whether to force refresh the unstructured content
             of the documents.
@@ -1039,7 +1039,6 @@ class ImportDocumentsRequest(proto.Message):
             be refreshed regardless of the update status of the
             referencing content.
     """
-
     class ReconciliationMode(proto.Enum):
         r"""Indicates how imported documents are reconciled with the
         existing documents created or imported before.
@@ -1081,65 +1080,65 @@ class ImportDocumentsRequest(proto.Message):
     inline_source: InlineSource = proto.Field(
         proto.MESSAGE,
         number=2,
-        oneof="source",
+        oneof='source',
         message=InlineSource,
     )
-    gcs_source: "GcsSource" = proto.Field(
+    gcs_source: 'GcsSource' = proto.Field(
         proto.MESSAGE,
         number=3,
-        oneof="source",
-        message="GcsSource",
+        oneof='source',
+        message='GcsSource',
     )
-    bigquery_source: "BigQuerySource" = proto.Field(
+    bigquery_source: 'BigQuerySource' = proto.Field(
         proto.MESSAGE,
         number=4,
-        oneof="source",
-        message="BigQuerySource",
+        oneof='source',
+        message='BigQuerySource',
     )
-    fhir_store_source: "FhirStoreSource" = proto.Field(
+    fhir_store_source: 'FhirStoreSource' = proto.Field(
         proto.MESSAGE,
         number=10,
-        oneof="source",
-        message="FhirStoreSource",
+        oneof='source',
+        message='FhirStoreSource',
     )
-    spanner_source: "SpannerSource" = proto.Field(
+    spanner_source: 'SpannerSource' = proto.Field(
         proto.MESSAGE,
         number=11,
-        oneof="source",
-        message="SpannerSource",
+        oneof='source',
+        message='SpannerSource',
     )
-    cloud_sql_source: "CloudSqlSource" = proto.Field(
+    cloud_sql_source: 'CloudSqlSource' = proto.Field(
         proto.MESSAGE,
         number=12,
-        oneof="source",
-        message="CloudSqlSource",
+        oneof='source',
+        message='CloudSqlSource',
     )
-    firestore_source: "FirestoreSource" = proto.Field(
+    firestore_source: 'FirestoreSource' = proto.Field(
         proto.MESSAGE,
         number=13,
-        oneof="source",
-        message="FirestoreSource",
+        oneof='source',
+        message='FirestoreSource',
     )
-    alloy_db_source: "AlloyDbSource" = proto.Field(
+    alloy_db_source: 'AlloyDbSource' = proto.Field(
         proto.MESSAGE,
         number=14,
-        oneof="source",
-        message="AlloyDbSource",
+        oneof='source',
+        message='AlloyDbSource',
     )
-    bigtable_source: "BigtableSource" = proto.Field(
+    bigtable_source: 'BigtableSource' = proto.Field(
         proto.MESSAGE,
         number=15,
-        oneof="source",
-        message="BigtableSource",
+        oneof='source',
+        message='BigtableSource',
     )
     parent: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    error_config: "ImportErrorConfig" = proto.Field(
+    error_config: 'ImportErrorConfig' = proto.Field(
         proto.MESSAGE,
         number=5,
-        message="ImportErrorConfig",
+        message='ImportErrorConfig',
     )
     reconciliation_mode: ReconciliationMode = proto.Field(
         proto.ENUM,
@@ -1186,10 +1185,10 @@ class ImportDocumentsResponse(proto.Message):
         number=1,
         message=status_pb2.Status,
     )
-    error_config: "ImportErrorConfig" = proto.Field(
+    error_config: 'ImportErrorConfig' = proto.Field(
         proto.MESSAGE,
         number=2,
-        message="ImportErrorConfig",
+        message='ImportErrorConfig',
     )
 
 
@@ -1218,8 +1217,8 @@ class ImportSuggestionDenyListEntriesRequest(proto.Message):
             import. Supported values ``gcs_source.schema`` for
             autocomplete suggestion deny list entry imports:
 
-            - ``suggestion_deny_list`` (default): One JSON
-              [SuggestionDenyListEntry] per line.
+            -  ``suggestion_deny_list`` (default): One JSON
+               [SuggestionDenyListEntry] per line.
 
             This field is a member of `oneof`_ ``source``.
         parent (str):
@@ -1237,9 +1236,7 @@ class ImportSuggestionDenyListEntriesRequest(proto.Message):
                 import. Max of 1000 items.
         """
 
-        entries: MutableSequence[
-            completion.SuggestionDenyListEntry
-        ] = proto.RepeatedField(
+        entries: MutableSequence[completion.SuggestionDenyListEntry] = proto.RepeatedField(
             proto.MESSAGE,
             number=1,
             message=completion.SuggestionDenyListEntry,
@@ -1248,14 +1245,14 @@ class ImportSuggestionDenyListEntriesRequest(proto.Message):
     inline_source: InlineSource = proto.Field(
         proto.MESSAGE,
         number=2,
-        oneof="source",
+        oneof='source',
         message=InlineSource,
     )
-    gcs_source: "GcsSource" = proto.Field(
+    gcs_source: 'GcsSource' = proto.Field(
         proto.MESSAGE,
         number=3,
-        oneof="source",
-        message="GcsSource",
+        oneof='source',
+        message='GcsSource',
     )
     parent: str = proto.Field(
         proto.STRING,
@@ -1365,9 +1362,7 @@ class ImportCompletionSuggestionsRequest(proto.Message):
                 import. Max of 1000 items.
         """
 
-        suggestions: MutableSequence[
-            completion.CompletionSuggestion
-        ] = proto.RepeatedField(
+        suggestions: MutableSequence[completion.CompletionSuggestion] = proto.RepeatedField(
             proto.MESSAGE,
             number=1,
             message=completion.CompletionSuggestion,
@@ -1376,29 +1371,29 @@ class ImportCompletionSuggestionsRequest(proto.Message):
     inline_source: InlineSource = proto.Field(
         proto.MESSAGE,
         number=2,
-        oneof="source",
+        oneof='source',
         message=InlineSource,
     )
-    gcs_source: "GcsSource" = proto.Field(
+    gcs_source: 'GcsSource' = proto.Field(
         proto.MESSAGE,
         number=3,
-        oneof="source",
-        message="GcsSource",
+        oneof='source',
+        message='GcsSource',
     )
-    bigquery_source: "BigQuerySource" = proto.Field(
+    bigquery_source: 'BigQuerySource' = proto.Field(
         proto.MESSAGE,
         number=4,
-        oneof="source",
-        message="BigQuerySource",
+        oneof='source',
+        message='BigQuerySource',
     )
     parent: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    error_config: "ImportErrorConfig" = proto.Field(
+    error_config: 'ImportErrorConfig' = proto.Field(
         proto.MESSAGE,
         number=5,
-        message="ImportErrorConfig",
+        message='ImportErrorConfig',
     )
 
 
@@ -1423,10 +1418,10 @@ class ImportCompletionSuggestionsResponse(proto.Message):
         number=1,
         message=status_pb2.Status,
     )
-    error_config: "ImportErrorConfig" = proto.Field(
+    error_config: 'ImportErrorConfig' = proto.Field(
         proto.MESSAGE,
         number=2,
-        message="ImportErrorConfig",
+        message='ImportErrorConfig',
     )
 
 

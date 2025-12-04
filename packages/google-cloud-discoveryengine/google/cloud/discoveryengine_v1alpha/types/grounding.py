@@ -19,11 +19,12 @@ from typing import MutableMapping, MutableSequence
 
 import proto  # type: ignore
 
+
 __protobuf__ = proto.module(
-    package="google.cloud.discoveryengine.v1alpha",
+    package='google.cloud.discoveryengine.v1alpha',
     manifest={
-        "GroundingFact",
-        "FactChunk",
+        'GroundingFact',
+        'FactChunk',
     },
 )
 

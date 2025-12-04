@@ -17,21 +17,20 @@ from __future__ import annotations
 
 from typing import MutableMapping, MutableSequence
 
-from google.protobuf import timestamp_pb2  # type: ignore
 import proto  # type: ignore
 
-from google.cloud.discoveryengine_v1alpha.types import (
-    document_processing_config as gcd_document_processing_config,
-)
 from google.cloud.discoveryengine_v1alpha.types import common
+from google.cloud.discoveryengine_v1alpha.types import document_processing_config as gcd_document_processing_config
 from google.cloud.discoveryengine_v1alpha.types import schema
+from google.protobuf import timestamp_pb2  # type: ignore
+
 
 __protobuf__ = proto.module(
-    package="google.cloud.discoveryengine.v1alpha",
+    package='google.cloud.discoveryengine.v1alpha',
     manifest={
-        "DataStore",
-        "LanguageInfo",
-        "WorkspaceConfig",
+        'DataStore',
+        'LanguageInfo',
+        'WorkspaceConfig',
     },
 )
 
@@ -61,10 +60,11 @@ class DataStore(proto.Message):
             solutions for each
             [industry_vertical][google.cloud.discoveryengine.v1alpha.DataStore.industry_vertical]:
 
-            - ``MEDIA``: ``SOLUTION_TYPE_RECOMMENDATION`` and
-              ``SOLUTION_TYPE_SEARCH``.
-            - ``SITE_SEARCH``: ``SOLUTION_TYPE_SEARCH`` is automatically
-              enrolled. Other solutions cannot be enrolled.
+            -  ``MEDIA``: ``SOLUTION_TYPE_RECOMMENDATION`` and
+               ``SOLUTION_TYPE_SEARCH``.
+            -  ``SITE_SEARCH``: ``SOLUTION_TYPE_SEARCH`` is
+               automatically enrolled. Other solutions cannot be
+               enrolled.
         default_schema_id (str):
             Output only. The id of the default
             [Schema][google.cloud.discoveryengine.v1alpha.Schema]
@@ -128,7 +128,6 @@ class DataStore(proto.Message):
             on schema. Learn more from `this
             doc <https://cloud.google.com/generative-ai-app-builder/docs/provide-schema>`__.
     """
-
     class ContentConfig(proto.Enum):
         r"""Content config of the data store.
 
@@ -187,10 +186,10 @@ class DataStore(proto.Message):
         number=4,
         message=timestamp_pb2.Timestamp,
     )
-    language_info: "LanguageInfo" = proto.Field(
+    language_info: 'LanguageInfo' = proto.Field(
         proto.MESSAGE,
         number=14,
-        message="LanguageInfo",
+        message='LanguageInfo',
     )
     idp_config: common.IdpConfig = proto.Field(
         proto.MESSAGE,
@@ -201,10 +200,10 @@ class DataStore(proto.Message):
         proto.BOOL,
         number=24,
     )
-    workspace_config: "WorkspaceConfig" = proto.Field(
+    workspace_config: 'WorkspaceConfig' = proto.Field(
         proto.MESSAGE,
         number=25,
-        message="WorkspaceConfig",
+        message='WorkspaceConfig',
     )
     document_processing_config: gcd_document_processing_config.DocumentProcessingConfig = proto.Field(
         proto.MESSAGE,
@@ -266,7 +265,6 @@ class WorkspaceConfig(proto.Message):
         dasher_customer_id (str):
             Obfuscated Dasher customer ID.
     """
-
     class Type(proto.Enum):
         r"""Specifies the type of Workspace App supported by this
         DataStore

@@ -19,11 +19,12 @@ from typing import MutableMapping, MutableSequence
 
 import proto  # type: ignore
 
+
 __protobuf__ = proto.module(
-    package="google.cloud.discoveryengine.v1",
+    package='google.cloud.discoveryengine.v1',
     manifest={
-        "SuggestionDenyListEntry",
-        "CompletionSuggestion",
+        'SuggestionDenyListEntry',
+        'CompletionSuggestion',
     },
 )
 
@@ -41,7 +42,6 @@ class SuggestionDenyListEntry(proto.Message):
             this phrase. Whether to block the exact phrase,
             or block any suggestions containing this phrase.
     """
-
     class MatchOperator(proto.Enum):
         r"""Operator for matching with the generated suggestions.
 
@@ -111,12 +111,12 @@ class CompletionSuggestion(proto.Message):
     global_score: float = proto.Field(
         proto.DOUBLE,
         number=2,
-        oneof="ranking_info",
+        oneof='ranking_info',
     )
     frequency: int = proto.Field(
         proto.INT64,
         number=3,
-        oneof="ranking_info",
+        oneof='ranking_info',
     )
     suggestion: str = proto.Field(
         proto.STRING,

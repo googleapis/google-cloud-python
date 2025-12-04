@@ -56,5 +56,4 @@ async def sample_update_target_site():
     # Handle the response
     print(response)
 
-
 # [END discoveryengine_v1alpha_generated_SiteSearchEngineService_UpdateTargetSite_async]

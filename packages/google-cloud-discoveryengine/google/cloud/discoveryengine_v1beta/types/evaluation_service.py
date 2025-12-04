@@ -22,16 +22,17 @@ import proto  # type: ignore
 from google.cloud.discoveryengine_v1beta.types import evaluation as gcd_evaluation
 from google.cloud.discoveryengine_v1beta.types import sample_query as gcd_sample_query
 
+
 __protobuf__ = proto.module(
-    package="google.cloud.discoveryengine.v1beta",
+    package='google.cloud.discoveryengine.v1beta',
     manifest={
-        "GetEvaluationRequest",
-        "ListEvaluationsRequest",
-        "ListEvaluationsResponse",
-        "CreateEvaluationRequest",
-        "CreateEvaluationMetadata",
-        "ListEvaluationResultsRequest",
-        "ListEvaluationResultsResponse",
+        'GetEvaluationRequest',
+        'ListEvaluationsRequest',
+        'ListEvaluationsResponse',
+        'CreateEvaluationRequest',
+        'CreateEvaluationMetadata',
+        'ListEvaluationResultsRequest',
+        'ListEvaluationResultsResponse',
     },
 )
 

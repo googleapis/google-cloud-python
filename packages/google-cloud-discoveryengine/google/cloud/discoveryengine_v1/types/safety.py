@@ -19,11 +19,12 @@ from typing import MutableMapping, MutableSequence
 
 import proto  # type: ignore
 
+
 __protobuf__ = proto.module(
-    package="google.cloud.discoveryengine.v1",
+    package='google.cloud.discoveryengine.v1',
     manifest={
-        "HarmCategory",
-        "SafetyRating",
+        'HarmCategory',
+        'SafetyRating',
     },
 )
 
@@ -74,7 +75,6 @@ class SafetyRating(proto.Message):
             Output only. Indicates whether the content
             was filtered out because of this rating.
     """
-
     class HarmProbability(proto.Enum):
         r"""Harm probability levels in the content.
 
@@ -117,10 +117,10 @@ class SafetyRating(proto.Message):
         HARM_SEVERITY_MEDIUM = 3
         HARM_SEVERITY_HIGH = 4
 
-    category: "HarmCategory" = proto.Field(
+    category: 'HarmCategory' = proto.Field(
         proto.ENUM,
         number=1,
-        enum="HarmCategory",
+        enum='HarmCategory',
     )
     probability: HarmProbability = proto.Field(
         proto.ENUM,

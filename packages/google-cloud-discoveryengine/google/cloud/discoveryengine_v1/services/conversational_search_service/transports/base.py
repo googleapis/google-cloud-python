@@ -16,29 +16,28 @@
 import abc
 from typing import Awaitable, Callable, Dict, Optional, Sequence, Union
 
+from google.cloud.discoveryengine_v1 import gapic_version as package_version
+
+import google.auth  # type: ignore
 import google.api_core
 from google.api_core import exceptions as core_exceptions
 from google.api_core import gapic_v1
 from google.api_core import retry as retries
-import google.auth  # type: ignore
 from google.auth import credentials as ga_credentials  # type: ignore
-from google.cloud.location import locations_pb2  # type: ignore
-from google.longrunning import operations_pb2  # type: ignore
-from google.oauth2 import service_account  # type: ignore
+from google.oauth2 import service_account # type: ignore
 import google.protobuf
-from google.protobuf import empty_pb2  # type: ignore
 
-from google.cloud.discoveryengine_v1 import gapic_version as package_version
-from google.cloud.discoveryengine_v1.types import conversation as gcd_conversation
 from google.cloud.discoveryengine_v1.types import answer
 from google.cloud.discoveryengine_v1.types import conversation
+from google.cloud.discoveryengine_v1.types import conversation as gcd_conversation
 from google.cloud.discoveryengine_v1.types import conversational_search_service
 from google.cloud.discoveryengine_v1.types import session
 from google.cloud.discoveryengine_v1.types import session as gcd_session
+from google.cloud.location import locations_pb2 # type: ignore
+from google.longrunning import operations_pb2 # type: ignore
+from google.protobuf import empty_pb2  # type: ignore
 
-DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
-    gapic_version=package_version.__version__
-)
+DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(gapic_version=package_version.__version__)
 
 if hasattr(DEFAULT_CLIENT_INFO, "protobuf_runtime_version"):  # pragma: NO COVER
     DEFAULT_CLIENT_INFO.protobuf_runtime_version = google.protobuf.__version__
@@ -47,23 +46,24 @@ if hasattr(DEFAULT_CLIENT_INFO, "protobuf_runtime_version"):  # pragma: NO COVER
 class ConversationalSearchServiceTransport(abc.ABC):
     """Abstract transport class for ConversationalSearchService."""
 
-    AUTH_SCOPES = ("https://www.googleapis.com/auth/cloud-platform",)
+    AUTH_SCOPES = (
+        'https://www.googleapis.com/auth/cloud-platform',
+    )
 
-    DEFAULT_HOST: str = "discoveryengine.googleapis.com"
+    DEFAULT_HOST: str = 'discoveryengine.googleapis.com'
 
     def __init__(
-        self,
-        *,
-        host: str = DEFAULT_HOST,
-        credentials: Optional[ga_credentials.Credentials] = None,
-        credentials_file: Optional[str] = None,
-        scopes: Optional[Sequence[str]] = None,
-        quota_project_id: Optional[str] = None,
-        client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
-        always_use_jwt_access: Optional[bool] = False,
-        api_audience: Optional[str] = None,
-        **kwargs,
-    ) -> None:
+            self, *,
+            host: str = DEFAULT_HOST,
+            credentials: Optional[ga_credentials.Credentials] = None,
+            credentials_file: Optional[str] = None,
+            scopes: Optional[Sequence[str]] = None,
+            quota_project_id: Optional[str] = None,
+            client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
+            always_use_jwt_access: Optional[bool] = False,
+            api_audience: Optional[str] = None,
+            **kwargs,
+            ) -> None:
         """Instantiate the transport.
 
         Args:
@@ -100,38 +100,30 @@ class ConversationalSearchServiceTransport(abc.ABC):
         # If no credentials are provided, then determine the appropriate
         # defaults.
         if credentials and credentials_file:
-            raise core_exceptions.DuplicateCredentialArgs(
-                "'credentials_file' and 'credentials' are mutually exclusive"
-            )
+            raise core_exceptions.DuplicateCredentialArgs("'credentials_file' and 'credentials' are mutually exclusive")
 
         if credentials_file is not None:
             credentials, _ = google.auth.load_credentials_from_file(
-                credentials_file, **scopes_kwargs, quota_project_id=quota_project_id
-            )
+                                credentials_file,
+                                **scopes_kwargs,
+                                quota_project_id=quota_project_id
+                            )
         elif credentials is None and not self._ignore_credentials:
-            credentials, _ = google.auth.default(
-                **scopes_kwargs, quota_project_id=quota_project_id
-            )
+            credentials, _ = google.auth.default(**scopes_kwargs, quota_project_id=quota_project_id)
             # Don't apply audience if the credentials file passed from user.
             if hasattr(credentials, "with_gdch_audience"):
-                credentials = credentials.with_gdch_audience(
-                    api_audience if api_audience else host
-                )
+                credentials = credentials.with_gdch_audience(api_audience if api_audience else host)
 
         # If the credentials are service account credentials, then always try to use self signed JWT.
-        if (
-            always_use_jwt_access
-            and isinstance(credentials, service_account.Credentials)
-            and hasattr(service_account.Credentials, "with_always_use_jwt_access")
-        ):
+        if always_use_jwt_access and isinstance(credentials, service_account.Credentials) and hasattr(service_account.Credentials, "with_always_use_jwt_access"):
             credentials = credentials.with_always_use_jwt_access(True)
 
         # Save the credentials.
         self._credentials = credentials
 
         # Save the hostname. Default to port 443 (HTTPS) if none is specified.
-        if ":" not in host:
-            host += ":443"
+        if ':' not in host:
+            host += ':443'
         self._host = host
 
     @property
@@ -226,156 +218,141 @@ class ConversationalSearchServiceTransport(abc.ABC):
                 default_timeout=None,
                 client_info=client_info,
             ),
-        }
+         }
 
     def close(self):
         """Closes resources associated with the transport.
 
-        .. warning::
-             Only call this method if the transport is NOT shared
-             with other clients - this may cause errors in other clients!
+       .. warning::
+            Only call this method if the transport is NOT shared
+            with other clients - this may cause errors in other clients!
         """
         raise NotImplementedError()
 
     @property
-    def converse_conversation(
-        self,
-    ) -> Callable[
-        [conversational_search_service.ConverseConversationRequest],
-        Union[
-            conversational_search_service.ConverseConversationResponse,
-            Awaitable[conversational_search_service.ConverseConversationResponse],
-        ],
-    ]:
+    def converse_conversation(self) -> Callable[
+            [conversational_search_service.ConverseConversationRequest],
+            Union[
+                conversational_search_service.ConverseConversationResponse,
+                Awaitable[conversational_search_service.ConverseConversationResponse]
+            ]]:
         raise NotImplementedError()
 
     @property
-    def create_conversation(
-        self,
-    ) -> Callable[
-        [conversational_search_service.CreateConversationRequest],
-        Union[gcd_conversation.Conversation, Awaitable[gcd_conversation.Conversation]],
-    ]:
+    def create_conversation(self) -> Callable[
+            [conversational_search_service.CreateConversationRequest],
+            Union[
+                gcd_conversation.Conversation,
+                Awaitable[gcd_conversation.Conversation]
+            ]]:
         raise NotImplementedError()
 
     @property
-    def delete_conversation(
-        self,
-    ) -> Callable[
-        [conversational_search_service.DeleteConversationRequest],
-        Union[empty_pb2.Empty, Awaitable[empty_pb2.Empty]],
-    ]:
+    def delete_conversation(self) -> Callable[
+            [conversational_search_service.DeleteConversationRequest],
+            Union[
+                empty_pb2.Empty,
+                Awaitable[empty_pb2.Empty]
+            ]]:
         raise NotImplementedError()
 
     @property
-    def update_conversation(
-        self,
-    ) -> Callable[
-        [conversational_search_service.UpdateConversationRequest],
-        Union[gcd_conversation.Conversation, Awaitable[gcd_conversation.Conversation]],
-    ]:
+    def update_conversation(self) -> Callable[
+            [conversational_search_service.UpdateConversationRequest],
+            Union[
+                gcd_conversation.Conversation,
+                Awaitable[gcd_conversation.Conversation]
+            ]]:
         raise NotImplementedError()
 
     @property
-    def get_conversation(
-        self,
-    ) -> Callable[
-        [conversational_search_service.GetConversationRequest],
-        Union[conversation.Conversation, Awaitable[conversation.Conversation]],
-    ]:
+    def get_conversation(self) -> Callable[
+            [conversational_search_service.GetConversationRequest],
+            Union[
+                conversation.Conversation,
+                Awaitable[conversation.Conversation]
+            ]]:
         raise NotImplementedError()
 
     @property
-    def list_conversations(
-        self,
-    ) -> Callable[
-        [conversational_search_service.ListConversationsRequest],
-        Union[
-            conversational_search_service.ListConversationsResponse,
-            Awaitable[conversational_search_service.ListConversationsResponse],
-        ],
-    ]:
+    def list_conversations(self) -> Callable[
+            [conversational_search_service.ListConversationsRequest],
+            Union[
+                conversational_search_service.ListConversationsResponse,
+                Awaitable[conversational_search_service.ListConversationsResponse]
+            ]]:
         raise NotImplementedError()
 
     @property
-    def answer_query(
-        self,
-    ) -> Callable[
-        [conversational_search_service.AnswerQueryRequest],
-        Union[
-            conversational_search_service.AnswerQueryResponse,
-            Awaitable[conversational_search_service.AnswerQueryResponse],
-        ],
-    ]:
+    def answer_query(self) -> Callable[
+            [conversational_search_service.AnswerQueryRequest],
+            Union[
+                conversational_search_service.AnswerQueryResponse,
+                Awaitable[conversational_search_service.AnswerQueryResponse]
+            ]]:
         raise NotImplementedError()
 
     @property
-    def stream_answer_query(
-        self,
-    ) -> Callable[
-        [conversational_search_service.AnswerQueryRequest],
-        Union[
-            conversational_search_service.AnswerQueryResponse,
-            Awaitable[conversational_search_service.AnswerQueryResponse],
-        ],
-    ]:
+    def stream_answer_query(self) -> Callable[
+            [conversational_search_service.AnswerQueryRequest],
+            Union[
+                conversational_search_service.AnswerQueryResponse,
+                Awaitable[conversational_search_service.AnswerQueryResponse]
+            ]]:
         raise NotImplementedError()
 
     @property
-    def get_answer(
-        self,
-    ) -> Callable[
-        [conversational_search_service.GetAnswerRequest],
-        Union[answer.Answer, Awaitable[answer.Answer]],
-    ]:
+    def get_answer(self) -> Callable[
+            [conversational_search_service.GetAnswerRequest],
+            Union[
+                answer.Answer,
+                Awaitable[answer.Answer]
+            ]]:
         raise NotImplementedError()
 
     @property
-    def create_session(
-        self,
-    ) -> Callable[
-        [conversational_search_service.CreateSessionRequest],
-        Union[gcd_session.Session, Awaitable[gcd_session.Session]],
-    ]:
+    def create_session(self) -> Callable[
+            [conversational_search_service.CreateSessionRequest],
+            Union[
+                gcd_session.Session,
+                Awaitable[gcd_session.Session]
+            ]]:
         raise NotImplementedError()
 
     @property
-    def delete_session(
-        self,
-    ) -> Callable[
-        [conversational_search_service.DeleteSessionRequest],
-        Union[empty_pb2.Empty, Awaitable[empty_pb2.Empty]],
-    ]:
+    def delete_session(self) -> Callable[
+            [conversational_search_service.DeleteSessionRequest],
+            Union[
+                empty_pb2.Empty,
+                Awaitable[empty_pb2.Empty]
+            ]]:
         raise NotImplementedError()
 
     @property
-    def update_session(
-        self,
-    ) -> Callable[
-        [conversational_search_service.UpdateSessionRequest],
-        Union[gcd_session.Session, Awaitable[gcd_session.Session]],
-    ]:
+    def update_session(self) -> Callable[
+            [conversational_search_service.UpdateSessionRequest],
+            Union[
+                gcd_session.Session,
+                Awaitable[gcd_session.Session]
+            ]]:
         raise NotImplementedError()
 
     @property
-    def get_session(
-        self,
-    ) -> Callable[
-        [conversational_search_service.GetSessionRequest],
-        Union[session.Session, Awaitable[session.Session]],
-    ]:
+    def get_session(self) -> Callable[
+            [conversational_search_service.GetSessionRequest],
+            Union[
+                session.Session,
+                Awaitable[session.Session]
+            ]]:
         raise NotImplementedError()
 
     @property
-    def list_sessions(
-        self,
-    ) -> Callable[
-        [conversational_search_service.ListSessionsRequest],
-        Union[
-            conversational_search_service.ListSessionsResponse,
-            Awaitable[conversational_search_service.ListSessionsResponse],
-        ],
-    ]:
+    def list_sessions(self) -> Callable[
+            [conversational_search_service.ListSessionsRequest],
+            Union[
+                conversational_search_service.ListSessionsResponse,
+                Awaitable[conversational_search_service.ListSessionsResponse]
+            ]]:
         raise NotImplementedError()
 
     @property
@@ -383,10 +360,7 @@ class ConversationalSearchServiceTransport(abc.ABC):
         self,
     ) -> Callable[
         [operations_pb2.ListOperationsRequest],
-        Union[
-            operations_pb2.ListOperationsResponse,
-            Awaitable[operations_pb2.ListOperationsResponse],
-        ],
+        Union[operations_pb2.ListOperationsResponse, Awaitable[operations_pb2.ListOperationsResponse]],
     ]:
         raise NotImplementedError()
 
@@ -402,7 +376,10 @@ class ConversationalSearchServiceTransport(abc.ABC):
     @property
     def cancel_operation(
         self,
-    ) -> Callable[[operations_pb2.CancelOperationRequest], None,]:
+    ) -> Callable[
+        [operations_pb2.CancelOperationRequest],
+        None,
+    ]:
         raise NotImplementedError()
 
     @property
@@ -410,4 +387,6 @@ class ConversationalSearchServiceTransport(abc.ABC):
         raise NotImplementedError()
 
 
-__all__ = ("ConversationalSearchServiceTransport",)
+__all__ = (
+    'ConversationalSearchServiceTransport',
+)

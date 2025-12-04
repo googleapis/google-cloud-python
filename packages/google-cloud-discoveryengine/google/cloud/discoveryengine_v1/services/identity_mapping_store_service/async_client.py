@@ -13,31 +13,21 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-from collections import OrderedDict
 import logging as std_logging
+from collections import OrderedDict
 import re
-from typing import (
-    Callable,
-    Dict,
-    Mapping,
-    MutableMapping,
-    MutableSequence,
-    Optional,
-    Sequence,
-    Tuple,
-    Type,
-    Union,
-)
+from typing import Dict, Callable, Mapping, MutableMapping, MutableSequence, Optional, Sequence, Tuple, Type, Union
 
+from google.cloud.discoveryengine_v1 import gapic_version as package_version
+
+from google.api_core.client_options import ClientOptions
 from google.api_core import exceptions as core_exceptions
 from google.api_core import gapic_v1
 from google.api_core import retry_async as retries
-from google.api_core.client_options import ClientOptions
-from google.auth import credentials as ga_credentials  # type: ignore
-from google.oauth2 import service_account  # type: ignore
+from google.auth import credentials as ga_credentials   # type: ignore
+from google.oauth2 import service_account              # type: ignore
 import google.protobuf
 
-from google.cloud.discoveryengine_v1 import gapic_version as package_version
 
 try:
     OptionalRetry = Union[retries.AsyncRetry, gapic_v1.method._MethodDefault, None]
@@ -46,33 +36,25 @@ except AttributeError:  # pragma: NO COVER
 
 from google.api_core import operation  # type: ignore
 from google.api_core import operation_async  # type: ignore
-from google.cloud.location import locations_pb2  # type: ignore
-from google.longrunning import operations_pb2  # type: ignore
-from google.protobuf import empty_pb2  # type: ignore
-
-from google.cloud.discoveryengine_v1.services.identity_mapping_store_service import (
-    pagers,
-)
-from google.cloud.discoveryengine_v1.types import (
-    identity_mapping_store as gcd_identity_mapping_store,
-)
-from google.cloud.discoveryengine_v1.types import identity_mapping_store_service
+from google.cloud.discoveryengine_v1.services.identity_mapping_store_service import pagers
 from google.cloud.discoveryengine_v1.types import cmek_config_service
 from google.cloud.discoveryengine_v1.types import identity_mapping_store
-
-from .client import IdentityMappingStoreServiceClient
-from .transports.base import DEFAULT_CLIENT_INFO, IdentityMappingStoreServiceTransport
+from google.cloud.discoveryengine_v1.types import identity_mapping_store as gcd_identity_mapping_store
+from google.cloud.discoveryengine_v1.types import identity_mapping_store_service
+from google.cloud.location import locations_pb2 # type: ignore
+from google.longrunning import operations_pb2 # type: ignore
+from google.protobuf import empty_pb2  # type: ignore
+from .transports.base import IdentityMappingStoreServiceTransport, DEFAULT_CLIENT_INFO
 from .transports.grpc_asyncio import IdentityMappingStoreServiceGrpcAsyncIOTransport
+from .client import IdentityMappingStoreServiceClient
 
 try:
     from google.api_core import client_logging  # type: ignore
-
     CLIENT_LOGGING_SUPPORTED = True  # pragma: NO COVER
 except ImportError:  # pragma: NO COVER
     CLIENT_LOGGING_SUPPORTED = False
 
 _LOGGER = std_logging.getLogger(__name__)
-
 
 class IdentityMappingStoreServiceAsyncClient:
     """Service for managing Identity Mapping Stores."""
@@ -83,65 +65,29 @@ class IdentityMappingStoreServiceAsyncClient:
     # Note: DEFAULT_ENDPOINT is deprecated. Use _DEFAULT_ENDPOINT_TEMPLATE instead.
     DEFAULT_ENDPOINT = IdentityMappingStoreServiceClient.DEFAULT_ENDPOINT
     DEFAULT_MTLS_ENDPOINT = IdentityMappingStoreServiceClient.DEFAULT_MTLS_ENDPOINT
-    _DEFAULT_ENDPOINT_TEMPLATE = (
-        IdentityMappingStoreServiceClient._DEFAULT_ENDPOINT_TEMPLATE
-    )
+    _DEFAULT_ENDPOINT_TEMPLATE = IdentityMappingStoreServiceClient._DEFAULT_ENDPOINT_TEMPLATE
     _DEFAULT_UNIVERSE = IdentityMappingStoreServiceClient._DEFAULT_UNIVERSE
 
     cmek_config_path = staticmethod(IdentityMappingStoreServiceClient.cmek_config_path)
-    parse_cmek_config_path = staticmethod(
-        IdentityMappingStoreServiceClient.parse_cmek_config_path
-    )
+    parse_cmek_config_path = staticmethod(IdentityMappingStoreServiceClient.parse_cmek_config_path)
     crypto_keys_path = staticmethod(IdentityMappingStoreServiceClient.crypto_keys_path)
-    parse_crypto_keys_path = staticmethod(
-        IdentityMappingStoreServiceClient.parse_crypto_keys_path
-    )
-    crypto_key_versions_path = staticmethod(
-        IdentityMappingStoreServiceClient.crypto_key_versions_path
-    )
-    parse_crypto_key_versions_path = staticmethod(
-        IdentityMappingStoreServiceClient.parse_crypto_key_versions_path
-    )
-    identity_mapping_store_path = staticmethod(
-        IdentityMappingStoreServiceClient.identity_mapping_store_path
-    )
-    parse_identity_mapping_store_path = staticmethod(
-        IdentityMappingStoreServiceClient.parse_identity_mapping_store_path
-    )
+    parse_crypto_keys_path = staticmethod(IdentityMappingStoreServiceClient.parse_crypto_keys_path)
+    crypto_key_versions_path = staticmethod(IdentityMappingStoreServiceClient.crypto_key_versions_path)
+    parse_crypto_key_versions_path = staticmethod(IdentityMappingStoreServiceClient.parse_crypto_key_versions_path)
+    identity_mapping_store_path = staticmethod(IdentityMappingStoreServiceClient.identity_mapping_store_path)
+    parse_identity_mapping_store_path = staticmethod(IdentityMappingStoreServiceClient.parse_identity_mapping_store_path)
     location_path = staticmethod(IdentityMappingStoreServiceClient.location_path)
-    parse_location_path = staticmethod(
-        IdentityMappingStoreServiceClient.parse_location_path
-    )
-    common_billing_account_path = staticmethod(
-        IdentityMappingStoreServiceClient.common_billing_account_path
-    )
-    parse_common_billing_account_path = staticmethod(
-        IdentityMappingStoreServiceClient.parse_common_billing_account_path
-    )
-    common_folder_path = staticmethod(
-        IdentityMappingStoreServiceClient.common_folder_path
-    )
-    parse_common_folder_path = staticmethod(
-        IdentityMappingStoreServiceClient.parse_common_folder_path
-    )
-    common_organization_path = staticmethod(
-        IdentityMappingStoreServiceClient.common_organization_path
-    )
-    parse_common_organization_path = staticmethod(
-        IdentityMappingStoreServiceClient.parse_common_organization_path
-    )
-    common_project_path = staticmethod(
-        IdentityMappingStoreServiceClient.common_project_path
-    )
-    parse_common_project_path = staticmethod(
-        IdentityMappingStoreServiceClient.parse_common_project_path
-    )
-    common_location_path = staticmethod(
-        IdentityMappingStoreServiceClient.common_location_path
-    )
-    parse_common_location_path = staticmethod(
-        IdentityMappingStoreServiceClient.parse_common_location_path
-    )
+    parse_location_path = staticmethod(IdentityMappingStoreServiceClient.parse_location_path)
+    common_billing_account_path = staticmethod(IdentityMappingStoreServiceClient.common_billing_account_path)
+    parse_common_billing_account_path = staticmethod(IdentityMappingStoreServiceClient.parse_common_billing_account_path)
+    common_folder_path = staticmethod(IdentityMappingStoreServiceClient.common_folder_path)
+    parse_common_folder_path = staticmethod(IdentityMappingStoreServiceClient.parse_common_folder_path)
+    common_organization_path = staticmethod(IdentityMappingStoreServiceClient.common_organization_path)
+    parse_common_organization_path = staticmethod(IdentityMappingStoreServiceClient.parse_common_organization_path)
+    common_project_path = staticmethod(IdentityMappingStoreServiceClient.common_project_path)
+    parse_common_project_path = staticmethod(IdentityMappingStoreServiceClient.parse_common_project_path)
+    common_location_path = staticmethod(IdentityMappingStoreServiceClient.common_location_path)
+    parse_common_location_path = staticmethod(IdentityMappingStoreServiceClient.parse_common_location_path)
 
     @classmethod
     def from_service_account_info(cls, info: dict, *args, **kwargs):
@@ -177,9 +123,7 @@ class IdentityMappingStoreServiceAsyncClient:
     from_service_account_json = from_service_account_file
 
     @classmethod
-    def get_mtls_endpoint_and_cert_source(
-        cls, client_options: Optional[ClientOptions] = None
-    ):
+    def get_mtls_endpoint_and_cert_source(cls, client_options: Optional[ClientOptions] = None):
         """Return the API endpoint and client cert source for mutual TLS.
 
         The client cert source is determined in the following order:
@@ -242,20 +186,12 @@ class IdentityMappingStoreServiceAsyncClient:
 
     get_transport_class = IdentityMappingStoreServiceClient.get_transport_class
 
-    def __init__(
-        self,
-        *,
-        credentials: Optional[ga_credentials.Credentials] = None,
-        transport: Optional[
-            Union[
-                str,
-                IdentityMappingStoreServiceTransport,
-                Callable[..., IdentityMappingStoreServiceTransport],
-            ]
-        ] = "grpc_asyncio",
-        client_options: Optional[ClientOptions] = None,
-        client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
-    ) -> None:
+    def __init__(self, *,
+            credentials: Optional[ga_credentials.Credentials] = None,
+            transport: Optional[Union[str, IdentityMappingStoreServiceTransport, Callable[..., IdentityMappingStoreServiceTransport]]] = "grpc_asyncio",
+            client_options: Optional[ClientOptions] = None,
+            client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
+            ) -> None:
         """Instantiates the identity mapping store service async client.
 
         Args:
@@ -310,47 +246,33 @@ class IdentityMappingStoreServiceAsyncClient:
             transport=transport,
             client_options=client_options,
             client_info=client_info,
+
         )
 
-        if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-            std_logging.DEBUG
-        ):  # pragma: NO COVER
+        if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(std_logging.DEBUG):  # pragma: NO COVER
             _LOGGER.debug(
                 "Created client `google.cloud.discoveryengine_v1.IdentityMappingStoreServiceAsyncClient`.",
-                extra={
+                extra = {
                     "serviceName": "google.cloud.discoveryengine.v1.IdentityMappingStoreService",
-                    "universeDomain": getattr(
-                        self._client._transport._credentials, "universe_domain", ""
-                    ),
+                    "universeDomain": getattr(self._client._transport._credentials, "universe_domain", ""),
                     "credentialsType": f"{type(self._client._transport._credentials).__module__}.{type(self._client._transport._credentials).__qualname__}",
-                    "credentialsInfo": getattr(
-                        self.transport._credentials, "get_cred_info", lambda: None
-                    )(),
-                }
-                if hasattr(self._client._transport, "_credentials")
-                else {
+                    "credentialsInfo": getattr(self.transport._credentials, "get_cred_info", lambda: None)(),
+                } if hasattr(self._client._transport, "_credentials") else {
                     "serviceName": "google.cloud.discoveryengine.v1.IdentityMappingStoreService",
                     "credentialsType": None,
-                },
+                }
             )
 
-    async def create_identity_mapping_store(
-        self,
-        request: Optional[
-            Union[
-                identity_mapping_store_service.CreateIdentityMappingStoreRequest, dict
-            ]
-        ] = None,
-        *,
-        parent: Optional[str] = None,
-        identity_mapping_store: Optional[
-            gcd_identity_mapping_store.IdentityMappingStore
-        ] = None,
-        identity_mapping_store_id: Optional[str] = None,
-        retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
-    ) -> gcd_identity_mapping_store.IdentityMappingStore:
+    async def create_identity_mapping_store(self,
+            request: Optional[Union[identity_mapping_store_service.CreateIdentityMappingStoreRequest, dict]] = None,
+            *,
+            parent: Optional[str] = None,
+            identity_mapping_store: Optional[gcd_identity_mapping_store.IdentityMappingStore] = None,
+            identity_mapping_store_id: Optional[str] = None,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+            ) -> gcd_identity_mapping_store.IdentityMappingStore:
         r"""Creates a new Identity Mapping Store.
 
         .. code-block:: python
@@ -428,23 +350,15 @@ class IdentityMappingStoreServiceAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [parent, identity_mapping_store, identity_mapping_store_id]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of "
+                             "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
-        if not isinstance(
-            request, identity_mapping_store_service.CreateIdentityMappingStoreRequest
-        ):
-            request = identity_mapping_store_service.CreateIdentityMappingStoreRequest(
-                request
-            )
+        if not isinstance(request, identity_mapping_store_service.CreateIdentityMappingStoreRequest):
+            request = identity_mapping_store_service.CreateIdentityMappingStoreRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -457,14 +371,14 @@ class IdentityMappingStoreServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.create_identity_mapping_store
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.create_identity_mapping_store]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
         metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
+            gapic_v1.routing_header.to_grpc_metadata((
+                ("parent", request.parent),
+            )),
         )
 
         # Validate the universe domain.
@@ -481,17 +395,14 @@ class IdentityMappingStoreServiceAsyncClient:
         # Done; return the response.
         return response
 
-    async def get_identity_mapping_store(
-        self,
-        request: Optional[
-            Union[identity_mapping_store_service.GetIdentityMappingStoreRequest, dict]
-        ] = None,
-        *,
-        name: Optional[str] = None,
-        retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
-    ) -> identity_mapping_store.IdentityMappingStore:
+    async def get_identity_mapping_store(self,
+            request: Optional[Union[identity_mapping_store_service.GetIdentityMappingStoreRequest, dict]] = None,
+            *,
+            name: Optional[str] = None,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+            ) -> identity_mapping_store.IdentityMappingStore:
         r"""Gets the Identity Mapping Store.
 
         .. code-block:: python
@@ -550,23 +461,15 @@ class IdentityMappingStoreServiceAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [name]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of "
+                             "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
-        if not isinstance(
-            request, identity_mapping_store_service.GetIdentityMappingStoreRequest
-        ):
-            request = identity_mapping_store_service.GetIdentityMappingStoreRequest(
-                request
-            )
+        if not isinstance(request, identity_mapping_store_service.GetIdentityMappingStoreRequest):
+            request = identity_mapping_store_service.GetIdentityMappingStoreRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -575,14 +478,14 @@ class IdentityMappingStoreServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.get_identity_mapping_store
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.get_identity_mapping_store]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
         metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
+            gapic_v1.routing_header.to_grpc_metadata((
+                ("name", request.name),
+            )),
         )
 
         # Validate the universe domain.
@@ -599,19 +502,14 @@ class IdentityMappingStoreServiceAsyncClient:
         # Done; return the response.
         return response
 
-    async def delete_identity_mapping_store(
-        self,
-        request: Optional[
-            Union[
-                identity_mapping_store_service.DeleteIdentityMappingStoreRequest, dict
-            ]
-        ] = None,
-        *,
-        name: Optional[str] = None,
-        retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
-    ) -> operation_async.AsyncOperation:
+    async def delete_identity_mapping_store(self,
+            request: Optional[Union[identity_mapping_store_service.DeleteIdentityMappingStoreRequest, dict]] = None,
+            *,
+            name: Optional[str] = None,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+            ) -> operation_async.AsyncOperation:
         r"""Deletes the Identity Mapping Store.
 
         .. code-block:: python
@@ -684,23 +582,15 @@ class IdentityMappingStoreServiceAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [name]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of "
+                             "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
-        if not isinstance(
-            request, identity_mapping_store_service.DeleteIdentityMappingStoreRequest
-        ):
-            request = identity_mapping_store_service.DeleteIdentityMappingStoreRequest(
-                request
-            )
+        if not isinstance(request, identity_mapping_store_service.DeleteIdentityMappingStoreRequest):
+            request = identity_mapping_store_service.DeleteIdentityMappingStoreRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -709,14 +599,14 @@ class IdentityMappingStoreServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.delete_identity_mapping_store
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.delete_identity_mapping_store]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
         metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
+            gapic_v1.routing_header.to_grpc_metadata((
+                ("name", request.name),
+            )),
         )
 
         # Validate the universe domain.
@@ -741,16 +631,13 @@ class IdentityMappingStoreServiceAsyncClient:
         # Done; return the response.
         return response
 
-    async def import_identity_mappings(
-        self,
-        request: Optional[
-            Union[identity_mapping_store_service.ImportIdentityMappingsRequest, dict]
-        ] = None,
-        *,
-        retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
-    ) -> operation_async.AsyncOperation:
+    async def import_identity_mappings(self,
+            request: Optional[Union[identity_mapping_store_service.ImportIdentityMappingsRequest, dict]] = None,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+            ) -> operation_async.AsyncOperation:
         r"""Imports a list of Identity Mapping Entries to an
         Identity Mapping Store.
 
@@ -807,25 +694,19 @@ class IdentityMappingStoreServiceAsyncClient:
         # Create or coerce a protobuf request object.
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
-        if not isinstance(
-            request, identity_mapping_store_service.ImportIdentityMappingsRequest
-        ):
-            request = identity_mapping_store_service.ImportIdentityMappingsRequest(
-                request
-            )
+        if not isinstance(request, identity_mapping_store_service.ImportIdentityMappingsRequest):
+            request = identity_mapping_store_service.ImportIdentityMappingsRequest(request)
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.import_identity_mappings
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.import_identity_mappings]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
         metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata(
-                (("identity_mapping_store", request.identity_mapping_store),)
-            ),
+            gapic_v1.routing_header.to_grpc_metadata((
+                ("identity_mapping_store", request.identity_mapping_store),
+            )),
         )
 
         # Validate the universe domain.
@@ -850,16 +731,13 @@ class IdentityMappingStoreServiceAsyncClient:
         # Done; return the response.
         return response
 
-    async def purge_identity_mappings(
-        self,
-        request: Optional[
-            Union[identity_mapping_store_service.PurgeIdentityMappingsRequest, dict]
-        ] = None,
-        *,
-        retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
-    ) -> operation_async.AsyncOperation:
+    async def purge_identity_mappings(self,
+            request: Optional[Union[identity_mapping_store_service.PurgeIdentityMappingsRequest, dict]] = None,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+            ) -> operation_async.AsyncOperation:
         r"""Purges specified or all Identity Mapping Entries from
         an Identity Mapping Store.
 
@@ -924,25 +802,19 @@ class IdentityMappingStoreServiceAsyncClient:
         # Create or coerce a protobuf request object.
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
-        if not isinstance(
-            request, identity_mapping_store_service.PurgeIdentityMappingsRequest
-        ):
-            request = identity_mapping_store_service.PurgeIdentityMappingsRequest(
-                request
-            )
+        if not isinstance(request, identity_mapping_store_service.PurgeIdentityMappingsRequest):
+            request = identity_mapping_store_service.PurgeIdentityMappingsRequest(request)
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.purge_identity_mappings
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.purge_identity_mappings]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
         metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata(
-                (("identity_mapping_store", request.identity_mapping_store),)
-            ),
+            gapic_v1.routing_header.to_grpc_metadata((
+                ("identity_mapping_store", request.identity_mapping_store),
+            )),
         )
 
         # Validate the universe domain.
@@ -967,16 +839,13 @@ class IdentityMappingStoreServiceAsyncClient:
         # Done; return the response.
         return response
 
-    async def list_identity_mappings(
-        self,
-        request: Optional[
-            Union[identity_mapping_store_service.ListIdentityMappingsRequest, dict]
-        ] = None,
-        *,
-        retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
-    ) -> pagers.ListIdentityMappingsAsyncPager:
+    async def list_identity_mappings(self,
+            request: Optional[Union[identity_mapping_store_service.ListIdentityMappingsRequest, dict]] = None,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+            ) -> pagers.ListIdentityMappingsAsyncPager:
         r"""Lists Identity Mappings in an Identity Mapping Store.
 
         .. code-block:: python
@@ -1030,25 +899,19 @@ class IdentityMappingStoreServiceAsyncClient:
         # Create or coerce a protobuf request object.
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
-        if not isinstance(
-            request, identity_mapping_store_service.ListIdentityMappingsRequest
-        ):
-            request = identity_mapping_store_service.ListIdentityMappingsRequest(
-                request
-            )
+        if not isinstance(request, identity_mapping_store_service.ListIdentityMappingsRequest):
+            request = identity_mapping_store_service.ListIdentityMappingsRequest(request)
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.list_identity_mappings
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.list_identity_mappings]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
         metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata(
-                (("identity_mapping_store", request.identity_mapping_store),)
-            ),
+            gapic_v1.routing_header.to_grpc_metadata((
+                ("identity_mapping_store", request.identity_mapping_store),
+            )),
         )
 
         # Validate the universe domain.
@@ -1076,17 +939,14 @@ class IdentityMappingStoreServiceAsyncClient:
         # Done; return the response.
         return response
 
-    async def list_identity_mapping_stores(
-        self,
-        request: Optional[
-            Union[identity_mapping_store_service.ListIdentityMappingStoresRequest, dict]
-        ] = None,
-        *,
-        parent: Optional[str] = None,
-        retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
-    ) -> pagers.ListIdentityMappingStoresAsyncPager:
+    async def list_identity_mapping_stores(self,
+            request: Optional[Union[identity_mapping_store_service.ListIdentityMappingStoresRequest, dict]] = None,
+            *,
+            parent: Optional[str] = None,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+            ) -> pagers.ListIdentityMappingStoresAsyncPager:
         r"""Lists all Identity Mapping Stores.
 
         .. code-block:: python
@@ -1149,23 +1009,15 @@ class IdentityMappingStoreServiceAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [parent]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of "
+                             "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
-        if not isinstance(
-            request, identity_mapping_store_service.ListIdentityMappingStoresRequest
-        ):
-            request = identity_mapping_store_service.ListIdentityMappingStoresRequest(
-                request
-            )
+        if not isinstance(request, identity_mapping_store_service.ListIdentityMappingStoresRequest):
+            request = identity_mapping_store_service.ListIdentityMappingStoresRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -1174,14 +1026,14 @@ class IdentityMappingStoreServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.list_identity_mapping_stores
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.list_identity_mapping_stores]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
         metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
+            gapic_v1.routing_header.to_grpc_metadata((
+                ("parent", request.parent),
+            )),
         )
 
         # Validate the universe domain.
@@ -1247,7 +1099,8 @@ class IdentityMappingStoreServiceAsyncClient:
         # Certain fields should be provided within the metadata header;
         # add these here.
         metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
+            gapic_v1.routing_header.to_grpc_metadata(
+                (("name", request.name),)),
         )
 
         # Validate the universe domain.
@@ -1255,11 +1108,7 @@ class IdentityMappingStoreServiceAsyncClient:
 
         # Send the request.
         response = await rpc(
-            request,
-            retry=retry,
-            timeout=timeout,
-            metadata=metadata,
-        )
+            request, retry=retry, timeout=timeout, metadata=metadata,)
 
         # Done; return the response.
         return response
@@ -1302,7 +1151,8 @@ class IdentityMappingStoreServiceAsyncClient:
         # Certain fields should be provided within the metadata header;
         # add these here.
         metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
+            gapic_v1.routing_header.to_grpc_metadata(
+                (("name", request.name),)),
         )
 
         # Validate the universe domain.
@@ -1310,11 +1160,7 @@ class IdentityMappingStoreServiceAsyncClient:
 
         # Send the request.
         response = await rpc(
-            request,
-            retry=retry,
-            timeout=timeout,
-            metadata=metadata,
-        )
+            request, retry=retry, timeout=timeout, metadata=metadata,)
 
         # Done; return the response.
         return response
@@ -1360,19 +1206,15 @@ class IdentityMappingStoreServiceAsyncClient:
         # Certain fields should be provided within the metadata header;
         # add these here.
         metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
+            gapic_v1.routing_header.to_grpc_metadata(
+                (("name", request.name),)),
         )
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
 
         # Send the request.
-        await rpc(
-            request,
-            retry=retry,
-            timeout=timeout,
-            metadata=metadata,
-        )
+        await rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
 
     async def __aenter__(self) -> "IdentityMappingStoreServiceAsyncClient":
         return self
@@ -1380,13 +1222,12 @@ class IdentityMappingStoreServiceAsyncClient:
     async def __aexit__(self, exc_type, exc, tb):
         await self.transport.close()
 
+DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(gapic_version=package_version.__version__)
 
-DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
-    gapic_version=package_version.__version__
-)
-
-if hasattr(DEFAULT_CLIENT_INFO, "protobuf_runtime_version"):  # pragma: NO COVER
+if hasattr(DEFAULT_CLIENT_INFO, "protobuf_runtime_version"):   # pragma: NO COVER
     DEFAULT_CLIENT_INFO.protobuf_runtime_version = google.protobuf.__version__
 
 
-__all__ = ("IdentityMappingStoreServiceAsyncClient",)
+__all__ = (
+    "IdentityMappingStoreServiceAsyncClient",
+)

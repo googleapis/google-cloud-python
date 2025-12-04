@@ -19,10 +19,11 @@ from typing import MutableMapping, MutableSequence
 
 import proto  # type: ignore
 
+
 __protobuf__ = proto.module(
-    package="google.cloud.discoveryengine.v1",
+    package='google.cloud.discoveryengine.v1',
     manifest={
-        "DocumentProcessingConfig",
+        'DocumentProcessingConfig',
     },
 )
 
@@ -53,19 +54,19 @@ class DocumentProcessingConfig(proto.Message):
             Map from file type to override the default parsing
             configuration based on the file type. Supported keys:
 
-            - ``pdf``: Override parsing config for PDF files, either
-              digital parsing, ocr parsing or layout parsing is
-              supported.
-            - ``html``: Override parsing config for HTML files, only
-              digital parsing and layout parsing are supported.
-            - ``docx``: Override parsing config for DOCX files, only
-              digital parsing and layout parsing are supported.
-            - ``pptx``: Override parsing config for PPTX files, only
-              digital parsing and layout parsing are supported.
-            - ``xlsm``: Override parsing config for XLSM files, only
-              digital parsing and layout parsing are supported.
-            - ``xlsx``: Override parsing config for XLSX files, only
-              digital parsing and layout parsing are supported.
+            -  ``pdf``: Override parsing config for PDF files, either
+               digital parsing, ocr parsing or layout parsing is
+               supported.
+            -  ``html``: Override parsing config for HTML files, only
+               digital parsing and layout parsing are supported.
+            -  ``docx``: Override parsing config for DOCX files, only
+               digital parsing and layout parsing are supported.
+            -  ``pptx``: Override parsing config for PPTX files, only
+               digital parsing and layout parsing are supported.
+            -  ``xlsm``: Override parsing config for XLSM files, only
+               digital parsing and layout parsing are supported.
+            -  ``xlsx``: Override parsing config for XLSX files, only
+               digital parsing and layout parsing are supported.
     """
 
     class ChunkingConfig(proto.Message):
@@ -106,11 +107,11 @@ class DocumentProcessingConfig(proto.Message):
                 number=2,
             )
 
-        layout_based_chunking_config: "DocumentProcessingConfig.ChunkingConfig.LayoutBasedChunkingConfig" = proto.Field(
+        layout_based_chunking_config: 'DocumentProcessingConfig.ChunkingConfig.LayoutBasedChunkingConfig' = proto.Field(
             proto.MESSAGE,
             number=1,
-            oneof="chunk_mode",
-            message="DocumentProcessingConfig.ChunkingConfig.LayoutBasedChunkingConfig",
+            oneof='chunk_mode',
+            message='DocumentProcessingConfig.ChunkingConfig.LayoutBasedChunkingConfig',
         )
 
     class ParsingConfig(proto.Message):
@@ -141,7 +142,8 @@ class DocumentProcessingConfig(proto.Message):
         """
 
         class DigitalParsingConfig(proto.Message):
-            r"""The digital parsing configurations for documents."""
+            r"""The digital parsing configurations for documents.
+            """
 
         class OcrParsingConfig(proto.Message):
             r"""The OCR parsing configurations for documents.
@@ -179,7 +181,7 @@ class DocumentProcessingConfig(proto.Message):
                     Optional. Contains the required structure types to extract
                     from the document. Supported values:
 
-                    - ``shareholder-structure``
+                    -  ``shareholder-structure``
                 exclude_html_elements (MutableSequence[str]):
                     Optional. List of HTML elements to exclude
                     from the parsed content.
@@ -216,23 +218,23 @@ class DocumentProcessingConfig(proto.Message):
                 number=12,
             )
 
-        digital_parsing_config: "DocumentProcessingConfig.ParsingConfig.DigitalParsingConfig" = proto.Field(
+        digital_parsing_config: 'DocumentProcessingConfig.ParsingConfig.DigitalParsingConfig' = proto.Field(
             proto.MESSAGE,
             number=1,
-            oneof="type_dedicated_config",
-            message="DocumentProcessingConfig.ParsingConfig.DigitalParsingConfig",
+            oneof='type_dedicated_config',
+            message='DocumentProcessingConfig.ParsingConfig.DigitalParsingConfig',
         )
-        ocr_parsing_config: "DocumentProcessingConfig.ParsingConfig.OcrParsingConfig" = proto.Field(
+        ocr_parsing_config: 'DocumentProcessingConfig.ParsingConfig.OcrParsingConfig' = proto.Field(
             proto.MESSAGE,
             number=2,
-            oneof="type_dedicated_config",
-            message="DocumentProcessingConfig.ParsingConfig.OcrParsingConfig",
+            oneof='type_dedicated_config',
+            message='DocumentProcessingConfig.ParsingConfig.OcrParsingConfig',
         )
-        layout_parsing_config: "DocumentProcessingConfig.ParsingConfig.LayoutParsingConfig" = proto.Field(
+        layout_parsing_config: 'DocumentProcessingConfig.ParsingConfig.LayoutParsingConfig' = proto.Field(
             proto.MESSAGE,
             number=3,
-            oneof="type_dedicated_config",
-            message="DocumentProcessingConfig.ParsingConfig.LayoutParsingConfig",
+            oneof='type_dedicated_config',
+            message='DocumentProcessingConfig.ParsingConfig.LayoutParsingConfig',
         )
 
     name: str = proto.Field(

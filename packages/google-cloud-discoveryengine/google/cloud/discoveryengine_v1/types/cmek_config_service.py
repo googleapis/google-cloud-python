@@ -17,21 +17,23 @@ from __future__ import annotations
 
 from typing import MutableMapping, MutableSequence
 
-from google.protobuf import timestamp_pb2  # type: ignore
 import proto  # type: ignore
 
+from google.protobuf import timestamp_pb2  # type: ignore
+
+
 __protobuf__ = proto.module(
-    package="google.cloud.discoveryengine.v1",
+    package='google.cloud.discoveryengine.v1',
     manifest={
-        "UpdateCmekConfigRequest",
-        "GetCmekConfigRequest",
-        "SingleRegionKey",
-        "CmekConfig",
-        "UpdateCmekConfigMetadata",
-        "ListCmekConfigsRequest",
-        "ListCmekConfigsResponse",
-        "DeleteCmekConfigRequest",
-        "DeleteCmekConfigMetadata",
+        'UpdateCmekConfigRequest',
+        'GetCmekConfigRequest',
+        'SingleRegionKey',
+        'CmekConfig',
+        'UpdateCmekConfigMetadata',
+        'ListCmekConfigsRequest',
+        'ListCmekConfigsResponse',
+        'DeleteCmekConfigRequest',
+        'DeleteCmekConfigMetadata',
     },
 )
 
@@ -49,10 +51,10 @@ class UpdateCmekConfigRequest(proto.Message):
             specified.
     """
 
-    config: "CmekConfig" = proto.Field(
+    config: 'CmekConfig' = proto.Field(
         proto.MESSAGE,
         number=1,
-        message="CmekConfig",
+        message='CmekConfig',
     )
     set_default: bool = proto.Field(
         proto.BOOL,
@@ -129,7 +131,6 @@ class CmekConfig(proto.Message):
             Output only. Whether the NotebookLM Corpus is
             ready to be used.
     """
-
     class State(proto.Enum):
         r"""States of the CmekConfig.
 
@@ -209,10 +210,10 @@ class CmekConfig(proto.Message):
         proto.INT64,
         number=5,
     )
-    single_region_keys: MutableSequence["SingleRegionKey"] = proto.RepeatedField(
+    single_region_keys: MutableSequence['SingleRegionKey'] = proto.RepeatedField(
         proto.MESSAGE,
         number=7,
-        message="SingleRegionKey",
+        message='SingleRegionKey',
     )
     notebooklm_state: NotebookLMState = proto.Field(
         proto.ENUM,
@@ -280,10 +281,10 @@ class ListCmekConfigsResponse(proto.Message):
             [CmekConfig][google.cloud.discoveryengine.v1.CmekConfig]s.
     """
 
-    cmek_configs: MutableSequence["CmekConfig"] = proto.RepeatedField(
+    cmek_configs: MutableSequence['CmekConfig'] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
-        message="CmekConfig",
+        message='CmekConfig',
     )
 
 

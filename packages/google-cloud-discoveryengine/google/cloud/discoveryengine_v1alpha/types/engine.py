@@ -17,15 +17,16 @@ from __future__ import annotations
 
 from typing import MutableMapping, MutableSequence
 
-from google.protobuf import timestamp_pb2  # type: ignore
 import proto  # type: ignore
 
 from google.cloud.discoveryengine_v1alpha.types import common
+from google.protobuf import timestamp_pb2  # type: ignore
+
 
 __protobuf__ = proto.module(
-    package="google.cloud.discoveryengine.v1alpha",
+    package='google.cloud.discoveryengine.v1alpha',
     manifest={
-        "Engine",
+        'Engine',
     },
 )
 
@@ -173,7 +174,8 @@ class Engine(proto.Message):
         )
 
     class SimilarDocumentsEngineConfig(proto.Message):
-        r"""Additional config specs for a ``similar-items`` engine."""
+        r"""Additional config specs for a ``similar-items`` engine.
+        """
 
     class MediaRecommendationEngineConfig(proto.Message):
         r"""Additional config specs for a Media Recommendation engine.
@@ -226,7 +228,6 @@ class Engine(proto.Message):
                 The default value for ``UpdateEngine`` method is to keep the
                 state the same as before.
         """
-
         class TrainingState(proto.Enum):
             r"""The training state of the engine.
 
@@ -271,17 +272,15 @@ class Engine(proto.Message):
             proto.STRING,
             number=2,
         )
-        optimization_objective_config: "Engine.MediaRecommendationEngineConfig.OptimizationObjectiveConfig" = proto.Field(
+        optimization_objective_config: 'Engine.MediaRecommendationEngineConfig.OptimizationObjectiveConfig' = proto.Field(
             proto.MESSAGE,
             number=3,
-            message="Engine.MediaRecommendationEngineConfig.OptimizationObjectiveConfig",
+            message='Engine.MediaRecommendationEngineConfig.OptimizationObjectiveConfig',
         )
-        training_state: "Engine.MediaRecommendationEngineConfig.TrainingState" = (
-            proto.Field(
-                proto.ENUM,
-                number=4,
-                enum="Engine.MediaRecommendationEngineConfig.TrainingState",
-            )
+        training_state: 'Engine.MediaRecommendationEngineConfig.TrainingState' = proto.Field(
+            proto.ENUM,
+            number=4,
+            enum='Engine.MediaRecommendationEngineConfig.TrainingState',
         )
 
     class ChatEngineConfig(proto.Message):
@@ -369,12 +368,10 @@ class Engine(proto.Message):
                 number=4,
             )
 
-        agent_creation_config: "Engine.ChatEngineConfig.AgentCreationConfig" = (
-            proto.Field(
-                proto.MESSAGE,
-                number=1,
-                message="Engine.ChatEngineConfig.AgentCreationConfig",
-            )
+        agent_creation_config: 'Engine.ChatEngineConfig.AgentCreationConfig' = proto.Field(
+            proto.MESSAGE,
+            number=1,
+            message='Engine.ChatEngineConfig.AgentCreationConfig',
         )
         dialogflow_agent_to_link: str = proto.Field(
             proto.STRING,
@@ -428,7 +425,6 @@ class Engine(proto.Message):
                 the engine resource format. If no tuning has
                 happened for this engine, the string is empty.
         """
-
         class ServingState(proto.Enum):
             r"""The serving state of the recommendation engine.
 
@@ -467,15 +463,15 @@ class Engine(proto.Message):
             DATA_OK = 1
             DATA_ERROR = 2
 
-        serving_state: "Engine.RecommendationMetadata.ServingState" = proto.Field(
+        serving_state: 'Engine.RecommendationMetadata.ServingState' = proto.Field(
             proto.ENUM,
             number=1,
-            enum="Engine.RecommendationMetadata.ServingState",
+            enum='Engine.RecommendationMetadata.ServingState',
         )
-        data_state: "Engine.RecommendationMetadata.DataState" = proto.Field(
+        data_state: 'Engine.RecommendationMetadata.DataState' = proto.Field(
             proto.ENUM,
             number=2,
-            enum="Engine.RecommendationMetadata.DataState",
+            enum='Engine.RecommendationMetadata.DataState',
         )
         last_tune_time: timestamp_pb2.Timestamp = proto.Field(
             proto.MESSAGE,
@@ -508,37 +504,37 @@ class Engine(proto.Message):
     similar_documents_config: SimilarDocumentsEngineConfig = proto.Field(
         proto.MESSAGE,
         number=9,
-        oneof="engine_config",
+        oneof='engine_config',
         message=SimilarDocumentsEngineConfig,
     )
     chat_engine_config: ChatEngineConfig = proto.Field(
         proto.MESSAGE,
         number=11,
-        oneof="engine_config",
+        oneof='engine_config',
         message=ChatEngineConfig,
     )
     search_engine_config: SearchEngineConfig = proto.Field(
         proto.MESSAGE,
         number=13,
-        oneof="engine_config",
+        oneof='engine_config',
         message=SearchEngineConfig,
     )
     media_recommendation_engine_config: MediaRecommendationEngineConfig = proto.Field(
         proto.MESSAGE,
         number=14,
-        oneof="engine_config",
+        oneof='engine_config',
         message=MediaRecommendationEngineConfig,
     )
     recommendation_metadata: RecommendationMetadata = proto.Field(
         proto.MESSAGE,
         number=10,
-        oneof="engine_metadata",
+        oneof='engine_metadata',
         message=RecommendationMetadata,
     )
     chat_engine_metadata: ChatEngineMetadata = proto.Field(
         proto.MESSAGE,
         number=12,
-        oneof="engine_metadata",
+        oneof='engine_metadata',
         message=ChatEngineMetadata,
     )
     name: str = proto.Field(

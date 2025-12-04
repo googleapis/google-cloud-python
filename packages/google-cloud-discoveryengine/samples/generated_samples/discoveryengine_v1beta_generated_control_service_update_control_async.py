@@ -56,5 +56,4 @@ async def sample_update_control():
     # Handle the response
     print(response)
 
-
 # [END discoveryengine_v1beta_generated_ControlService_UpdateControl_async]

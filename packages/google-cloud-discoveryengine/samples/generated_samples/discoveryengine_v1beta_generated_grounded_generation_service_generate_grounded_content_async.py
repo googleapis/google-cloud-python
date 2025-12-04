@@ -49,5 +49,4 @@ async def sample_generate_grounded_content():
     # Handle the response
     print(response)
 
-
 # [END discoveryengine_v1beta_generated_GroundedGenerationService_GenerateGroundedContent_async]
