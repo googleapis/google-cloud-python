@@ -1021,6 +1021,7 @@ class TestMutationsBatcher:
                     core_exceptions.DeadlineExceeded,
                     core_exceptions.ServiceUnavailable,
                     core_exceptions.Aborted,
+                    core_exceptions.Cancelled,
                 ],
             ),
             (

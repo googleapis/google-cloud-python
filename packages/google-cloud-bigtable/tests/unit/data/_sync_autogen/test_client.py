@@ -1063,6 +1063,7 @@ class TestTable:
                     core_exceptions.DeadlineExceeded,
                     core_exceptions.ServiceUnavailable,
                     core_exceptions.Aborted,
+                    core_exceptions.Cancelled,
                 ],
             ),
             (
@@ -1507,7 +1508,6 @@ class TestReadRows:
     @pytest.mark.parametrize(
         "exc_type",
         [
-            core_exceptions.Cancelled,
             core_exceptions.PreconditionFailed,
             core_exceptions.NotFound,
             core_exceptions.PermissionDenied,

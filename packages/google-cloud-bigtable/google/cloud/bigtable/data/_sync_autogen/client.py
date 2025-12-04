@@ -49,6 +49,7 @@ from google.api_core import retry as retries
 from google.api_core.exceptions import DeadlineExceeded
 from google.api_core.exceptions import ServiceUnavailable
 from google.api_core.exceptions import Aborted
+from google.api_core.exceptions import Cancelled
 from google.protobuf.message import Message
 from google.protobuf.internal.enum_type_wrapper import EnumTypeWrapper
 import google.auth.credentials
@@ -729,6 +730,7 @@ class _DataApiTarget(abc.ABC):
             DeadlineExceeded,
             ServiceUnavailable,
             Aborted,
+            Cancelled,
         ),
         default_mutate_rows_retryable_errors: Sequence[type[Exception]] = (
             DeadlineExceeded,
