@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-cloud-batch/#history
 
+## [0.19.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-batch-v0.18.0...google-cloud-batch-v0.19.0) (2025-12-04)
+
+
+### Features
+
+* added new provisioning models ([c958ebdfe9351d3d4e80d388a6e95804b515d030](https://github.com/googleapis/google-cloud-python/commit/c958ebdfe9351d3d4e80d388a6e95804b515d030))
+
 ## [0.18.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-batch-v0.17.37...google-cloud-batch-v0.18.0) (2025-10-16)
 
 

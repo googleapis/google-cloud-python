@@ -4,6 +4,14 @@
 
 [1]: https://pypi.org/project/google-cloud-eventarc/#history
 
+## [1.18.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-eventarc-v1.17.0...google-cloud-eventarc-v1.18.0) (2025-12-04)
+
+
+### Features
+
+* add wide-scope Eventarc GoogleApiSource flags ([d4e6a4ab7b428e821a59b053c689343b5f5511f9](https://github.com/googleapis/google-cloud-python/commit/d4e6a4ab7b428e821a59b053c689343b5f5511f9))
+* add Eventarc Trigger RetryPolicy ([d4e6a4ab7b428e821a59b053c689343b5f5511f9](https://github.com/googleapis/google-cloud-python/commit/d4e6a4ab7b428e821a59b053c689343b5f5511f9))
+
 ## [1.17.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-eventarc-v1.16.0...google-cloud-eventarc-v1.17.0) (2025-10-16)
 
 

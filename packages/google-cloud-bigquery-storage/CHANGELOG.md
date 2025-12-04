@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-cloud-bigquery-storage/#history
 
+## [2.35.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-bigquery-storage-v2.34.0...google-cloud-bigquery-storage-v2.35.0) (2025-12-04)
+
+
+### Features
+
+* Support picosecond timestamp precision in BigQuery Storage API ([5093802d78c400170a06f4198d52b350fab636fa](https://github.com/googleapis/google-cloud-python/commit/5093802d78c400170a06f4198d52b350fab636fa))
+
 ## [2.34.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-bigquery-storage-v2.33.1...google-cloud-bigquery-storage-v2.34.0) (2025-10-28)
 
 

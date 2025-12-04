@@ -4,6 +4,14 @@
 
 [1]: https://pypi.org/project/google-cloud-dialogflow-cx/#history
 
+## [2.1.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-dialogflow-cx-v2.0.0...google-cloud-dialogflow-cx-v2.1.0) (2025-12-04)
+
+
+### Features
+
+* Service Account Auth in Tools and Webhooks ([03e69912a61695deefca6ffaae1add8119f026e4](https://github.com/googleapis/google-cloud-python/commit/03e69912a61695deefca6ffaae1add8119f026e4))
+* add support for defining custom actions in code. See https://cloud.google.com/dialogflow/cx/docs/concept/playbook/code-block for more information ([03e69912a61695deefca6ffaae1add8119f026e4](https://github.com/googleapis/google-cloud-python/commit/03e69912a61695deefca6ffaae1add8119f026e4))
+
 ## [2.0.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-dialogflow-cx-v1.43.0...google-cloud-dialogflow-cx-v2.0.0) (2025-10-14)
 
 
