@@ -22,6 +22,7 @@ from google.cloud.spanner_v1 import DirectedReadOptions, DefaultTransactionOptio
 from tests._builders import build_scoped_credentials
 
 
+@mock.patch.dict(os.environ, {"SPANNER_DISABLE_BUILTIN_METRICS": "true"})
 class TestClient(unittest.TestCase):
     PROJECT = "PROJECT"
     PATH = "projects/%s" % (PROJECT,)
@@ -161,8 +162,7 @@ class TestClient(unittest.TestCase):
         creds = build_scoped_credentials()
         self._constructor_test_helper(expected_scopes, creds, client_info=client_info)
 
-    # Disable metrics to avoid google.auth.default calls from Metric Exporter
-    @mock.patch.dict(os.environ, {"SPANNER_ENABLE_BUILTIN_METRICS": ""})
+    # Metrics are disabled by default for tests in this class
     def test_constructor_implicit_credentials(self):
         from google.cloud.spanner_v1 import client as MUT
 
@@ -255,8 +255,8 @@ class TestClient(unittest.TestCase):
             expected_scopes, creds, directed_read_options=self.DIRECTED_READ_OPTIONS
         )
 
-    @mock.patch.dict(os.environ, {"SPANNER_ENABLE_BUILTIN_METRICS": "true"})
     @mock.patch("google.cloud.spanner_v1.client.SpannerMetricsTracerFactory")
+    @mock.patch.dict(os.environ, {"SPANNER_DISABLE_BUILTIN_METRICS": "false"})
     def test_constructor_w_metrics_initialization_error(
         self, mock_spanner_metrics_factory
     ):

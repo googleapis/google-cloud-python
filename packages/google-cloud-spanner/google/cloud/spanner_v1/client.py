@@ -52,7 +52,6 @@ from google.cloud.spanner_v1._helpers import _merge_query_options
 from google.cloud.spanner_v1._helpers import _metadata_with_prefix
 from google.cloud.spanner_v1.instance import Instance
 from google.cloud.spanner_v1.metrics.constants import (
-    ENABLE_SPANNER_METRICS_ENV_VAR,
     METRIC_EXPORT_INTERVAL_MS,
 )
 from google.cloud.spanner_v1.metrics.spanner_metrics_tracer_factory import (
@@ -75,7 +74,7 @@ from google.cloud.spanner_v1._helpers import AtomicCounter
 
 _CLIENT_INFO = client_info.ClientInfo(client_library_version=__version__)
 EMULATOR_ENV_VAR = "SPANNER_EMULATOR_HOST"
-ENABLE_BUILTIN_METRICS_ENV_VAR = "SPANNER_ENABLE_BUILTIN_METRICS"
+SPANNER_DISABLE_BUILTIN_METRICS_ENV_VAR = "SPANNER_DISABLE_BUILTIN_METRICS"
 _EMULATOR_HOST_HTTP_SCHEME = (
     "%s contains a http scheme. When used with a scheme it may cause gRPC's "
     "DNS resolver to endlessly attempt to resolve. %s is intended to be used "
@@ -102,7 +101,7 @@ log = logging.getLogger(__name__)
 
 
 def _get_spanner_enable_builtin_metrics():
-    return os.getenv(ENABLE_SPANNER_METRICS_ENV_VAR) == "true"
+    return os.getenv(SPANNER_DISABLE_BUILTIN_METRICS_ENV_VAR) != "true"
 
 
 class Client(ClientWithProject):
