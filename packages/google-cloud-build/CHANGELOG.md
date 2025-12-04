@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-cloud-build/#history
 
+## [3.34.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-build-v3.33.0...google-cloud-build-v3.34.0) (2025-12-04)
+
+
+### Features
+
+* Update GCB with latest proto changes ([2da5c2afe0241e6dcb33aa9a0e5032012bf63df4](https://github.com/googleapis/google-cloud-python/commit/2da5c2afe0241e6dcb33aa9a0e5032012bf63df4))
+
 ## [3.33.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-build-v3.32.0...google-cloud-build-v3.33.0) (2025-10-16)
 
 

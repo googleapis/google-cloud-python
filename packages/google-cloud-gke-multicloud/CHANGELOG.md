@@ -4,6 +4,21 @@
 
 [1]: https://pypi.org/project/google-cloud-gke-multicloud/#history
 
+## [0.7.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-gke-multicloud-v0.6.22...google-cloud-gke-multicloud-v0.7.0) (2025-12-04)
+
+
+### Documentation
+
+* A comment for field `tags` in message `.google.cloud.gkemulticloud.v1.AttachedCluster` is changed ([2da5c2afe0241e6dcb33aa9a0e5032012bf63df4](https://github.com/googleapis/google-cloud-python/commit/2da5c2afe0241e6dcb33aa9a0e5032012bf63df4))
+* A comment for field `throughput` in message `.google.cloud.gkemulticloud.v1.AwsVolumeTemplate` is changed ([2da5c2afe0241e6dcb33aa9a0e5032012bf63df4](https://github.com/googleapis/google-cloud-python/commit/2da5c2afe0241e6dcb33aa9a0e5032012bf63df4))
+* A comment for field `requested_cancellation` in message `.google.cloud.gkemulticloud.v1.OperationMetadata` is changed ([2da5c2afe0241e6dcb33aa9a0e5032012bf63df4](https://github.com/googleapis/google-cloud-python/commit/2da5c2afe0241e6dcb33aa9a0e5032012bf63df4))
+
+
+### Features
+
+* added custom tolerations and labels support for Attached Clusters ([2da5c2afe0241e6dcb33aa9a0e5032012bf63df4](https://github.com/googleapis/google-cloud-python/commit/2da5c2afe0241e6dcb33aa9a0e5032012bf63df4))
+* mark GKE-on-AWS and GKE-on-Azure protos as being deprecated to discourage any new usage as these services turn down ([2da5c2afe0241e6dcb33aa9a0e5032012bf63df4](https://github.com/googleapis/google-cloud-python/commit/2da5c2afe0241e6dcb33aa9a0e5032012bf63df4))
+
 ## [0.6.22](https://github.com/googleapis/google-cloud-python/compare/google-cloud-gke-multicloud-v0.6.21...google-cloud-gke-multicloud-v0.6.22) (2025-10-14)
 
 

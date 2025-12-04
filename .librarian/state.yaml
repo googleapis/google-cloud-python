@@ -18,7 +18,7 @@ libraries:
       - packages/google-ads-admanager/
     tag_format: '{id}-v{version}'
   - id: google-ads-datamanager
-    version: 0.1.0
+    version: 0.2.0
     last_generated_commit: c2db528a3e4d12b95666c719ee0db30a3d4c78ad
     apis:
       - path: google/ads/datamanager/v1
@@ -472,7 +472,7 @@ libraries:
       - packages/google-cloud-apphub/
     tag_format: '{id}-v{version}'
   - id: google-cloud-artifact-registry
-    version: 1.17.0
+    version: 1.18.0
     last_generated_commit: 535d161c24965e9ed1a0b27032cc1c8b4beab818
     apis:
       - path: google/devtools/artifactregistry/v1
@@ -572,7 +572,7 @@ libraries:
       - packages/google-cloud-automl/
     tag_format: '{id}-v{version}'
   - id: google-cloud-backupdr
-    version: 0.4.0
+    version: 0.5.0
     last_generated_commit: a17b84add8318f780fcc8a027815d5fee644b9f7
     apis:
       - path: google/cloud/backupdr/v1
@@ -606,7 +606,7 @@ libraries:
       - packages/google-cloud-bare-metal-solution/
     tag_format: '{id}-v{version}'
   - id: google-cloud-batch
-    version: 0.18.0
+    version: 0.19.0
     last_generated_commit: a17b84add8318f780fcc8a027815d5fee644b9f7
     apis:
       - path: google/cloud/batch/v1alpha
@@ -891,7 +891,7 @@ libraries:
       - packages/google-cloud-bigquery-reservation/
     tag_format: '{id}-v{version}'
   - id: google-cloud-bigquery-storage
-    version: 2.34.0
+    version: 2.35.0
     last_generated_commit: bd94e0b8c4975af0a66dc1f846c63c77dbc0064e
     apis:
       - path: google/cloud/bigquery/storage/v1beta2
@@ -989,7 +989,7 @@ libraries:
       - packages/google-cloud-binary-authorization/
     tag_format: '{id}-v{version}'
   - id: google-cloud-build
-    version: 3.33.0
+    version: 3.34.0
     last_generated_commit: 535d161c24965e9ed1a0b27032cc1c8b4beab818
     apis:
       - path: google/devtools/cloudbuild/v1
@@ -1042,7 +1042,7 @@ libraries:
       - packages/google-cloud-certificate-manager/
     tag_format: '{id}-v{version}'
   - id: google-cloud-channel
-    version: 1.24.0
+    version: 1.25.0
     last_generated_commit: 535d161c24965e9ed1a0b27032cc1c8b4beab818
     apis:
       - path: google/cloud/channel/v1
@@ -1343,7 +1343,7 @@ libraries:
       - packages/google-cloud-data-qna/
     tag_format: '{id}-v{version}'
   - id: google-cloud-databasecenter
-    version: 0.0.0
+    version: 0.1.0
     last_generated_commit: 9a665b700840373e253db5af289d7df2a4fb41b9
     apis:
       - path: google/cloud/databasecenter/v1beta
@@ -1575,7 +1575,7 @@ libraries:
       - packages/google-cloud-devicestreaming/
     tag_format: '{id}-v{version}'
   - id: google-cloud-dialogflow
-    version: 2.43.0
+    version: 2.44.0
     last_generated_commit: c2db528a3e4d12b95666c719ee0db30a3d4c78ad
     apis:
       - path: google/cloud/dialogflow/v2beta1
@@ -1594,7 +1594,7 @@ libraries:
       - packages/google-cloud-dialogflow/
     tag_format: '{id}-v{version}'
   - id: google-cloud-dialogflow-cx
-    version: 2.0.0
+    version: 2.1.0
     last_generated_commit: c2db528a3e4d12b95666c719ee0db30a3d4c78ad
     apis:
       - path: google/cloud/dialogflow/cx/v3
@@ -1774,7 +1774,7 @@ libraries:
       - packages/google-cloud-essential-contacts/
     tag_format: '{id}-v{version}'
   - id: google-cloud-eventarc
-    version: 1.17.0
+    version: 1.18.0
     last_generated_commit: c9ff4f1cd26f1fe63e6d1c11a198366b70ebdb84
     apis:
       - path: google/cloud/eventarc/v1
@@ -1956,7 +1956,7 @@ libraries:
       - packages/google-cloud-gke-hub
     tag_format: '{id}-v{version}'
   - id: google-cloud-gke-multicloud
-    version: 0.6.22
+    version: 0.7.0
     last_generated_commit: 535d161c24965e9ed1a0b27032cc1c8b4beab818
     apis:
       - path: google/cloud/gkemulticloud/v1
@@ -2443,7 +2443,7 @@ libraries:
       - packages/google-cloud-monitoring-metrics-scopes/
     tag_format: '{id}-v{version}'
   - id: google-cloud-netapp
-    version: 0.4.0
+    version: 0.5.0
     last_generated_commit: c9ff4f1cd26f1fe63e6d1c11a198366b70ebdb84
     apis:
       - path: google/cloud/netapp/v1
@@ -2496,7 +2496,7 @@ libraries:
       - packages/google-cloud-network-management/
     tag_format: '{id}-v{version}'
   - id: google-cloud-network-security
-    version: 0.9.21
+    version: 0.10.0
     last_generated_commit: 535d161c24965e9ed1a0b27032cc1c8b4beab818
     apis:
       - path: google/cloud/networksecurity/v1alpha1
@@ -2668,7 +2668,7 @@ libraries:
       - packages/google-cloud-os-login
     tag_format: '{id}-v{version}'
   - id: google-cloud-parallelstore
-    version: 0.3.0
+    version: 0.4.0
     last_generated_commit: 535d161c24965e9ed1a0b27032cc1c8b4beab818
     apis:
       - path: google/cloud/parallelstore/v1
@@ -3657,7 +3657,7 @@ libraries:
       - packages/google-cloud-visionai/
     tag_format: '{id}-v{version}'
   - id: google-cloud-vm-migration
-    version: 1.13.0
+    version: 1.14.0
     last_generated_commit: a17b84add8318f780fcc8a027815d5fee644b9f7
     apis:
       - path: google/cloud/vmmigration/v1
@@ -3979,7 +3979,7 @@ libraries:
       - packages/google-shopping-css/
     tag_format: '{id}-v{version}'
   - id: google-shopping-merchant-accounts
-    version: 1.1.0
+    version: 1.2.0
     last_generated_commit: 535d161c24965e9ed1a0b27032cc1c8b4beab818
     apis:
       - path: google/shopping/merchant/accounts/v1
@@ -4186,7 +4186,7 @@ libraries:
       - packages/google-shopping-merchant-promotions/
     tag_format: '{id}-v{version}'
   - id: google-shopping-merchant-quota
-    version: 1.1.0
+    version: 1.2.0
     last_generated_commit: c2db528a3e4d12b95666c719ee0db30a3d4c78ad
     apis:
       - path: google/shopping/merchant/quota/v1beta
