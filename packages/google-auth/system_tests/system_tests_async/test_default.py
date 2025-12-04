@@ -16,8 +16,11 @@ import os
 import pytest
 
 from google.auth import _default_async
+from google.auth.exceptions import RefreshError
 
-EXPECT_PROJECT_ID = os.environ.get("EXPECT_PROJECT_ID")
+EXPECT_PROJECT_ID = os.getenv("EXPECT_PROJECT_ID")
+CREDENTIALS = os.getenv("GOOGLE_APPLICATION_CREDENTIALS", "")
+
 
 @pytest.mark.asyncio
 async def test_application_default_credentials(verify_refresh):
@@ -26,4 +29,10 @@ async def test_application_default_credentials(verify_refresh):
     if EXPECT_PROJECT_ID is not None:
         assert project_id is not None
 
-    await verify_refresh(credentials)
+    try:
+        await verify_refresh(credentials)
+    except RefreshError as e:
+        # allow expired credentials for explicit_authorized_user tests
+        # TODO: https://github.com/googleapis/google-auth-library-python/issues/1882
+        if not CREDENTIALS.endswith("authorized_user.json") or "Token has been expired or revoked" not in str(e):
+            raise
