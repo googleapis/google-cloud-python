@@ -47,6 +47,20 @@ _PASSPHRASE_REGEX = re.compile(
     b"-----BEGIN PASSPHRASE-----(.+)-----END PASSPHRASE-----", re.DOTALL
 )
 
+# Temporary patch to accomodate incorrect cert config in Cloud Run prod environment.
+_WELL_KNOWN_CLOUD_RUN_CERT_PATH = (
+    "/var/run/secrets/workload-spiffe-credentials/certificates.pem"
+)
+_WELL_KNOWN_CLOUD_RUN_KEY_PATH = (
+    "/var/run/secrets/workload-spiffe-credentials/private_key.pem"
+)
+_INCORRECT_CLOUD_RUN_CERT_PATH = (
+    "/var/lib/volumes/certificate/workload-certificates/certificates.pem"
+)
+_INCORRECT_CLOUD_RUN_KEY_PATH = (
+    "/var/lib/volumes/certificate/workload-certificates/private_key.pem"
+)
+
 
 def _check_config_path(config_path):
     """Checks for config file path. If it exists, returns the absolute path with user expansion;
@@ -182,6 +196,25 @@ def _get_workload_cert_and_key_paths(config_path):
             )
         )
     key_path = workload["key_path"]
+
+    # == BEGIN Temporary Cloud Run PATCH ==
+    # See https://github.com/googleapis/google-auth-library-python/issues/1881
+    if (cert_path == _INCORRECT_CLOUD_RUN_CERT_PATH) and (
+        key_path == _INCORRECT_CLOUD_RUN_KEY_PATH
+    ):
+        if not path.exists(cert_path) and not path.exists(key_path):
+            _LOGGER.debug(
+                "Applying Cloud Run certificate path patch. "
+                "Configured paths not found: %s, %s. "
+                "Using well-known paths: %s, %s",
+                cert_path,
+                key_path,
+                _WELL_KNOWN_CLOUD_RUN_CERT_PATH,
+                _WELL_KNOWN_CLOUD_RUN_KEY_PATH,
+            )
+            cert_path = _WELL_KNOWN_CLOUD_RUN_CERT_PATH
+            key_path = _WELL_KNOWN_CLOUD_RUN_KEY_PATH
+    # == END Temporary Cloud Run PATCH ==
 
     return cert_path, key_path
 

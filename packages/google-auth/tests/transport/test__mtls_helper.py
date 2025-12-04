@@ -335,6 +335,93 @@ class TestGetClientSslCredentials(object):
         assert passphrase is None
 
     @mock.patch(
+        "google.auth.transport._mtls_helper._read_cert_and_key_files", autospec=True
+    )
+    @mock.patch(
+        "google.auth.transport._mtls_helper._get_cert_config_path", autospec=True
+    )
+    @mock.patch("google.auth.transport._mtls_helper._load_json_file", autospec=True)
+    @mock.patch("google.auth.transport._mtls_helper._check_config_path", autospec=True)
+    def test_success_with_certificate_config_cloud_run_patch(
+        self,
+        mock_check_config_path,
+        mock_load_json_file,
+        mock_get_cert_config_path,
+        mock_read_cert_and_key_files,
+    ):
+        cert_config_path = "/path/to/config"
+        mock_check_config_path.return_value = cert_config_path
+        mock_load_json_file.return_value = {
+            "cert_configs": {
+                "workload": {
+                    "cert_path": _mtls_helper._INCORRECT_CLOUD_RUN_CERT_PATH,
+                    "key_path": _mtls_helper._INCORRECT_CLOUD_RUN_KEY_PATH,
+                }
+            }
+        }
+        mock_get_cert_config_path.return_value = cert_config_path
+        mock_read_cert_and_key_files.return_value = (
+            pytest.public_cert_bytes,
+            pytest.private_key_bytes,
+        )
+
+        has_cert, cert, key, passphrase = _mtls_helper.get_client_ssl_credentials()
+        assert has_cert
+        assert cert == pytest.public_cert_bytes
+        assert key == pytest.private_key_bytes
+        assert passphrase is None
+
+        mock_read_cert_and_key_files.assert_called_once_with(
+            _mtls_helper._WELL_KNOWN_CLOUD_RUN_CERT_PATH,
+            _mtls_helper._WELL_KNOWN_CLOUD_RUN_KEY_PATH,
+        )
+
+    @mock.patch("os.path.exists", autospec=True)
+    @mock.patch(
+        "google.auth.transport._mtls_helper._read_cert_and_key_files", autospec=True
+    )
+    @mock.patch(
+        "google.auth.transport._mtls_helper._get_cert_config_path", autospec=True
+    )
+    @mock.patch("google.auth.transport._mtls_helper._load_json_file", autospec=True)
+    @mock.patch("google.auth.transport._mtls_helper._check_config_path", autospec=True)
+    def test_success_with_certificate_config_cloud_run_patch_skipped_if_cert_exists(
+        self,
+        mock_check_config_path,
+        mock_load_json_file,
+        mock_get_cert_config_path,
+        mock_read_cert_and_key_files,
+        mock_os_path_exists,
+    ):
+        cert_config_path = "/path/to/config"
+        mock_check_config_path.return_value = cert_config_path
+        mock_os_path_exists.return_value = True
+        mock_load_json_file.return_value = {
+            "cert_configs": {
+                "workload": {
+                    "cert_path": _mtls_helper._INCORRECT_CLOUD_RUN_CERT_PATH,
+                    "key_path": _mtls_helper._INCORRECT_CLOUD_RUN_KEY_PATH,
+                }
+            }
+        }
+        mock_get_cert_config_path.return_value = cert_config_path
+        mock_read_cert_and_key_files.return_value = (
+            pytest.public_cert_bytes,
+            pytest.private_key_bytes,
+        )
+
+        has_cert, cert, key, passphrase = _mtls_helper.get_client_ssl_credentials()
+        assert has_cert
+        assert cert == pytest.public_cert_bytes
+        assert key == pytest.private_key_bytes
+        assert passphrase is None
+
+        mock_read_cert_and_key_files.assert_called_once_with(
+            _mtls_helper._INCORRECT_CLOUD_RUN_CERT_PATH,
+            _mtls_helper._INCORRECT_CLOUD_RUN_KEY_PATH,
+        )
+
+    @mock.patch(
         "google.auth.transport._mtls_helper._get_workload_cert_and_key", autospec=True
     )
     @mock.patch("google.auth.transport._mtls_helper._check_config_path", autospec=True)
