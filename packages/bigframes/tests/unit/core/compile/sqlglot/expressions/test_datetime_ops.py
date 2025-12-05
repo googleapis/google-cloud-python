@@ -57,6 +57,22 @@ def test_dayofyear(scalar_types_df: bpd.DataFrame, snapshot):
     snapshot.assert_match(sql, "out.sql")
 
 
+def test_datetime_to_integer_label(scalar_types_df: bpd.DataFrame, snapshot):
+    col_names = ["datetime_col", "timestamp_col"]
+    bf_df = scalar_types_df[col_names]
+    ops_map = {
+        "fixed_freq": ops.DatetimeToIntegerLabelOp(
+            freq=pd.tseries.offsets.Day(), origin="start", closed="left"  # type: ignore
+        ).as_expr("datetime_col", "timestamp_col"),
+        "non_fixed_freq_weekly": ops.DatetimeToIntegerLabelOp(
+            freq=pd.tseries.offsets.Week(weekday=6), origin="start", closed="left"  # type: ignore
+        ).as_expr("datetime_col", "timestamp_col"),
+    }
+
+    sql = utils._apply_ops_to_sql(bf_df, list(ops_map.values()), list(ops_map.keys()))
+    snapshot.assert_match(sql, "out.sql")
+
+
 def test_floor_dt(scalar_types_df: bpd.DataFrame, snapshot):
     col_names = ["datetime_col", "timestamp_col", "date_col"]
     bf_df = scalar_types_df[col_names]
