@@ -26,11 +26,17 @@ import nox
 BLACK_VERSION = "black[jupyter]==23.7.0"
 ISORT_VERSION = "isort==5.11.0"
 
+FORMAT_PATHS = ["docs", "google", "tests", "setup.py"]
 LINT_PATHS = ["docs", "google", "tests", "noxfile.py", "setup.py"]
+
+# We're most interested in ensuring that code is formatted properly
+# and less concerned about the line length.
+LINT_LINE_LENGTH = 150
 
 # Add samples to the list of directories to format if the directory exists.
 if os.path.isdir("samples"):
     LINT_PATHS.append("samples")
+    FORMAT_PATHS.append("samples")
 
 ALL_PYTHON = [
     "3.7",
@@ -155,6 +161,7 @@ def lint(session):
         "black",
         "--check",
         *LINT_PATHS,
+        f"--line-length={LINT_LINE_LENGTH}",
     )
 
     session.run("flake8", "google", "tests")
@@ -166,7 +173,8 @@ def blacken(session):
     session.install(BLACK_VERSION)
     session.run(
         "black",
-        *LINT_PATHS,
+        *FORMAT_PATHS,
+        f"--line-length={LINT_LINE_LENGTH}",
     )
 
 
@@ -182,11 +190,12 @@ def format(session):
     session.run(
         "isort",
         "--fss",
-        *LINT_PATHS,
+        *FORMAT_PATHS,
     )
     session.run(
         "black",
-        *LINT_PATHS,
+        *FORMAT_PATHS,
+        f"--line-length={LINT_LINE_LENGTH}",
     )
 
 
@@ -203,8 +212,7 @@ def install_unittest_dependencies(session, *constraints):
 
     if UNIT_TEST_EXTERNAL_DEPENDENCIES:
         warnings.warn(
-            "'unit_test_external_dependencies' is deprecated. Instead, please "
-            "use 'unit_test_dependencies' or 'unit_test_local_dependencies'.",
+            "'unit_test_external_dependencies' is deprecated. Instead, please use 'unit_test_dependencies' or 'unit_test_local_dependencies'.",
             DeprecationWarning,
         )
         session.install(*UNIT_TEST_EXTERNAL_DEPENDENCIES, *constraints)
@@ -235,12 +243,15 @@ def unit(session, protobuf_implementation):
 
     # TODO(https://github.com/googleapis/gapic-generator-python/issues/2388):
     # Remove this check once support for Protobuf 3.x is dropped.
-    if protobuf_implementation == "cpp" and session.python in ("3.11", "3.12", "3.13", "3.14"):
+    if protobuf_implementation == "cpp" and session.python in (
+        "3.11",
+        "3.12",
+        "3.13",
+        "3.14",
+    ):
         session.skip("cpp implementation is not supported in python 3.11+")
 
-    constraints_path = str(
-        CURRENT_DIRECTORY / "testing" / f"constraints-{session.python}.txt"
-    )
+    constraints_path = str(CURRENT_DIRECTORY / "testing" / f"constraints-{session.python}.txt")
     install_unittest_dependencies(session, "-c", constraints_path)
 
     # TODO(https://github.com/googleapis/gapic-generator-python/issues/2388):
@@ -298,9 +309,7 @@ def install_systemtest_dependencies(session, *constraints):
 @nox.session(python=SYSTEM_TEST_PYTHON_VERSIONS)
 def system(session):
     """Run the system test suite."""
-    constraints_path = str(
-        CURRENT_DIRECTORY / "testing" / f"constraints-{session.python}.txt"
-    )
+    constraints_path = str(CURRENT_DIRECTORY / "testing" / f"constraints-{session.python}.txt")
     system_test_path = os.path.join("tests", "system.py")
     system_test_folder_path = os.path.join("tests", "system")
 
@@ -377,8 +386,10 @@ def docs(session):
         "-W",  # warnings as errors
         "-T",  # show full traceback on exception
         "-N",  # no colors
-        "-b",  "html",  # builder
-        "-d",  os.path.join("docs", "_build", "doctrees", ""),  # cache directory
+        "-b",  # builder
+        "html",
+        "-d",  # cache directory
+        os.path.join("docs", "_build", "doctrees", ""),
         # paths to build:
         os.path.join("docs", ""),
         os.path.join("docs", "_build", "html", ""),
@@ -446,7 +457,12 @@ def prerelease_deps(session, protobuf_implementation):
 
     # TODO(https://github.com/googleapis/gapic-generator-python/issues/2388):
     # Remove this check once support for Protobuf 3.x is dropped.
-    if protobuf_implementation == "cpp" and session.python in ("3.11", "3.12", "3.13", "3.14"):
+    if protobuf_implementation == "cpp" and session.python in (
+        "3.11",
+        "3.12",
+        "3.13",
+        "3.14",
+    ):
         session.skip("cpp implementation is not supported in python 3.11+")
 
     # Install all dependencies
@@ -457,11 +473,7 @@ def prerelease_deps(session, protobuf_implementation):
     session.install(*unit_deps_all)
 
     # Install dependencies for the system test environment
-    system_deps_all = (
-        SYSTEM_TEST_STANDARD_DEPENDENCIES
-        + SYSTEM_TEST_EXTERNAL_DEPENDENCIES
-        + SYSTEM_TEST_EXTRAS
-    )
+    system_deps_all = SYSTEM_TEST_STANDARD_DEPENDENCIES + SYSTEM_TEST_EXTERNAL_DEPENDENCIES + SYSTEM_TEST_EXTRAS
     session.install(*system_deps_all)
 
     # Because we test minimum dependency versions on the minimum Python
@@ -473,13 +485,8 @@ def prerelease_deps(session, protobuf_implementation):
     ) as constraints_file:
         constraints_text = constraints_file.read()
 
-    # Ignore leading whitespace and comment lines.
-    constraints_deps = [
-        match.group(1)
-        for match in re.finditer(
-            r"^\s*(\S+)(?===\S+)", constraints_text, flags=re.MULTILINE
-        )
-    ]
+    # Ignore leading spaces and comment lines.
+    constraints_deps = [match.group(1) for match in re.finditer(r"^\s*(\S+)(?===\S+)", constraints_text, flags=re.MULTILINE)]
 
     # Install dependencies specified in `testing/constraints-X.txt`.
     session.install(*constraints_deps)
@@ -550,11 +557,7 @@ def core_deps_from_source(session, protobuf_implementation):
     session.install(*unit_deps_all)
 
     # Install dependencies for the system test environment
-    system_deps_all = (
-        SYSTEM_TEST_STANDARD_DEPENDENCIES
-        + SYSTEM_TEST_EXTERNAL_DEPENDENCIES
-        + SYSTEM_TEST_EXTRAS
-    )
+    system_deps_all = SYSTEM_TEST_STANDARD_DEPENDENCIES + SYSTEM_TEST_EXTERNAL_DEPENDENCIES + SYSTEM_TEST_EXTRAS
     session.install(*system_deps_all)
 
     # Because we test minimum dependency versions on the minimum Python
@@ -566,13 +569,8 @@ def core_deps_from_source(session, protobuf_implementation):
     ) as constraints_file:
         constraints_text = constraints_file.read()
 
-    # Ignore leading whitespace and comment lines.
-    constraints_deps = [
-        match.group(1)
-        for match in re.finditer(
-            r"^\s*(\S+)(?===\S+)", constraints_text, flags=re.MULTILINE
-        )
-    ]
+    # Ignore leading spaces and comment lines.
+    constraints_deps = [match.group(1) for match in re.finditer(r"^\s*(\S+)(?===\S+)", constraints_text, flags=re.MULTILINE)]
 
     # Install dependencies specified in `testing/constraints-X.txt`.
     session.install(*constraints_deps)
