@@ -2225,6 +2225,24 @@ libraries:
     remove_regex:
       - packages/google-cloud-lustre/
     tag_format: '{id}-v{version}'
+  - id: google-cloud-maintenance
+    version: 0.0.0
+    last_generated_commit: 534adc56f58b36a6a3e4b5b1cb7f9ee25a8e8a25
+    apis:
+      - path: google/cloud/maintenance/api/v1
+        service_config: maintenance_v1.yaml
+    source_roots:
+      - packages/google-cloud-maintenance
+    preserve_regex:
+      - packages/google-cloud-maintenance/CHANGELOG.md
+      - docs/CHANGELOG.md
+      - samples/README.txt
+      - scripts/client-post-processing
+      - samples/snippets/README.rst
+      - tests/system
+    remove_regex:
+      - packages/google-cloud-maintenance
+    tag_format: '{id}-v{version}'
   - id: google-cloud-maintenance-api
     version: 0.2.0
     last_generated_commit: 3322511885371d2b2253f209ccc3aa60d4100cfd
