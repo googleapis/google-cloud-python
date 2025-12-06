@@ -1,0 +1,2 @@
+pytest
+google-cloud-testutils==1.6.4
