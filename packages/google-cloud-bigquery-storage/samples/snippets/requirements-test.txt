@@ -1,4 +1,4 @@
 google-cloud-testutils==1.7.0
 pytest===7.4.3; python_version == '3.7'
 pytest===8.3.5; python_version == '3.8'
-pytest==9.0.1; python_version >= '3.9'
+pytest==9.0.2; python_version >= '3.9'
