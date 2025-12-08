@@ -24,7 +24,7 @@ dependencies = [
     "setuptools",
     "db-dtypes >=1.0.4,<2.0.0",
     "numpy >=1.18.1",
-    "pandas >=1.1.4",
+    "pandas >=1.1.4, <3.0.0",
     "pyarrow >=4.0.0",
     "pydata-google-auth >=1.5.0",
     "psutil >=5.9.8",
