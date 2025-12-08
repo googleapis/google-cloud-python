@@ -111,10 +111,6 @@ def _virtual_hosted_style_base_url(url, bucket, trailing_slash=False):
     return base_url
 
 
-def _use_client_cert():
-    return os.getenv("GOOGLE_API_USE_CLIENT_CERTIFICATE") == "true"
-
-
 def _get_environ_project():
     return os.getenv(
         environment_vars.PROJECT,

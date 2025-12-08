@@ -20,11 +20,12 @@ import collections
 import datetime
 import functools
 import json
+import os
 import warnings
 import google.api_core.client_options
 
 from google.auth.credentials import AnonymousCredentials
-
+from google.auth.transport import mtls
 from google.api_core import page_iterator
 from google.cloud._helpers import _LocalStack
 from google.cloud.client import ClientWithProject
@@ -35,7 +36,6 @@ from google.cloud.storage._helpers import _bucket_bound_hostname_url
 from google.cloud.storage._helpers import _get_api_endpoint_override
 from google.cloud.storage._helpers import _get_environ_project
 from google.cloud.storage._helpers import _get_storage_emulator_override
-from google.cloud.storage._helpers import _use_client_cert
 from google.cloud.storage._helpers import _virtual_hosted_style_base_url
 from google.cloud.storage._helpers import _DEFAULT_UNIVERSE_DOMAIN
 from google.cloud.storage._helpers import _DEFAULT_SCHEME
@@ -218,7 +218,15 @@ class Client(ClientWithProject):
             # The final decision of whether to use mTLS takes place in
             # google-auth-library-python. We peek at the environment variable
             # here only to issue an exception in case of a conflict.
-            if _use_client_cert():
+            use_client_cert = False
+            if hasattr(mtls, "should_use_client_cert"):
+                use_client_cert = mtls.should_use_client_cert()
+            else:
+                use_client_cert = (
+                    os.getenv("GOOGLE_API_USE_CLIENT_CERTIFICATE") == "true"
+                )
+
+            if use_client_cert:
                 raise ValueError(
                     'The "GOOGLE_API_USE_CLIENT_CERTIFICATE" env variable is '
                     'set to "true" and a non-default universe domain is '
