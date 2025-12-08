@@ -14,12 +14,19 @@
 
 from __future__ import annotations
 
+import warnings
+
 import numpy as np
 import pandas as pd
 import pyarrow as pa
 import pytest
 
 import bigframes._config
+
+# Make sure SettingWithCopyWarning is ignored if it exists.
+# It was removed in pandas 3.0.
+if hasattr(pd.errors, "SettingWithCopyWarning"):
+    warnings.simplefilter("ignore", pd.errors.SettingWithCopyWarning)
 
 
 @pytest.fixture(scope="session")
