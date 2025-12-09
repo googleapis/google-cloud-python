@@ -737,7 +737,7 @@ def test_join_repr(scalars_dfs):
     assert actual == expected
 
 
-def test_mimebundle_html_repr_w_all_rows(scalars_dfs, session):
+def test_repr_html_w_all_rows(scalars_dfs, session):
     scalars_df, _ = scalars_dfs
     # get a pandas df of the expected format
     df, _ = scalars_df._block.to_pandas()
@@ -745,8 +745,7 @@ def test_mimebundle_html_repr_w_all_rows(scalars_dfs, session):
     pandas_df.index.name = scalars_df.index.name
 
     # When there are 10 or fewer rows, the outputs should be identical except for the extra note.
-    bundle = scalars_df.head(10)._repr_mimebundle_()
-    actual = bundle["text/html"]
+    actual = scalars_df.head(10)._repr_html_()
 
     with display_options.pandas_repr(bigframes.options.display):
         pandas_repr = pandas_df.head(10)._repr_html_()

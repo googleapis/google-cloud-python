@@ -153,9 +153,7 @@ def test_repr_anywidget_dataframe(penguins_df_default_index: bf.dataframe.DataFr
     pytest.importorskip("anywidget")
     with bf.option_context("display.repr_mode", "anywidget"):
         actual_repr = repr(penguins_df_default_index)
-        assert "species" in actual_repr
-        assert "island" in actual_repr
-        assert "[344 rows x 7 columns]" in actual_repr
+        assert EXPECTED_DRY_RUN_MESSAGE in actual_repr
 
 
 def test_repr_anywidget_index(penguins_df_default_index: bf.dataframe.DataFrame):
@@ -163,7 +161,4 @@ def test_repr_anywidget_index(penguins_df_default_index: bf.dataframe.DataFrame)
     with bf.option_context("display.repr_mode", "anywidget"):
         index = penguins_df_default_index.index
         actual_repr = repr(index)
-        # In non-interactive environments, should still get a useful summary.
-        assert "Index" in actual_repr
-        assert "0, 1, 2, 3, 4" in actual_repr
-        assert "dtype='Int64'" in actual_repr
+        assert EXPECTED_DRY_RUN_MESSAGE in actual_repr

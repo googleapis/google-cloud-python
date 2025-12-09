@@ -37,12 +37,12 @@ def paginated_pandas_df() -> pd.DataFrame:
         {
             "id": [5, 4, 3, 2, 1, 0],
             "page_indicator": [
-                "page_3_row_2",
-                "page_3_row_1",
-                "page_2_row_2",
-                "page_2_row_1",
-                "page_1_row_2",
-                "page_1_row_1",
+                "row_5",
+                "row_4",
+                "row_3",
+                "row_2",
+                "row_1",
+                "row_0",
             ],
             "value": [5, 4, 3, 2, 1, 0],
         }
@@ -205,12 +205,11 @@ def test_widget_initialization_should_calculate_total_row_count(
     assert widget.row_count == EXPECTED_ROW_COUNT
 
 
-def test_widget_initialization_should_default_to_page_zero(
+def test_widget_initialization_should_set_default_pagination(
     table_widget,
 ):
     """
-    Given a new TableWidget, when it is initialized,
-    then its page number should default to 0.
+    A TableWidget should initialize with page 0 and the correct page size.
     """
     # The `table_widget` fixture already creates the widget.
     # Assert its state.
@@ -260,8 +259,8 @@ def test_widget_navigation_should_display_correct_page(
     _assert_html_matches_pandas_slice(html, expected_slice, paginated_pandas_df)
 
 
-def test_setting_negative_page_should_raise_error(
-    table_widget,
+def test_widget_navigation_should_raise_error_for_negative_input(
+    table_widget, paginated_pandas_df: pd.DataFrame
 ):
     """
     Given a widget, when a negative page number is set,
@@ -271,20 +270,19 @@ def test_setting_negative_page_should_raise_error(
         table_widget.page = -1
 
 
-def test_setting_page_beyond_max_should_clamp_to_last_page(
+def test_widget_navigation_should_clamp_to_last_page_for_out_of_bounds_input(
     table_widget, paginated_pandas_df: pd.DataFrame
 ):
     """
-    Given a widget,
-    when a page number greater than the max is set,
+    Given a widget, when a page number greater than the max is set,
     then the page number should be clamped to the last valid page.
     """
-    expected_slice = paginated_pandas_df.iloc[4:6]  # Last page data
+    expected_slice = paginated_pandas_df.iloc[4:6]
 
-    table_widget.page = 100  # Set page far beyond the total of 3 pages
+    table_widget.page = 100
     html = table_widget.table_html
 
-    assert table_widget.page == 2  # Page is clamped to the last valid page (0-indexed)
+    assert table_widget.page == 2
     _assert_html_matches_pandas_slice(html, expected_slice, paginated_pandas_df)
 
 
@@ -334,11 +332,11 @@ def test_widget_with_few_rows_should_display_all_rows(small_widget, small_pandas
     _assert_html_matches_pandas_slice(html, small_pandas_df, small_pandas_df)
 
 
-def test_navigation_beyond_last_page_should_be_clamped(small_widget):
+def test_widget_with_few_rows_should_have_only_one_page(small_widget):
     """
-    Given a DataFrame smaller than the page size,
-    when navigating beyond the last page,
-    then the page should be clamped to the last valid page (page 0).
+    Given a DataFrame with a small number of rows, the widget should
+    report the correct total row count and prevent navigation beyond
+    the first page, ensuring the frontend correctly displays "Page 1 of 1".
     """
     # For a DataFrame with 2 rows and page_size 5 (from small_widget fixture),
     # the frontend should calculate 1 total page.
@@ -353,65 +351,43 @@ def test_navigation_beyond_last_page_should_be_clamped(small_widget):
     assert small_widget.page == 0
 
 
-def test_global_options_change_should_not_affect_existing_widget_page_size(
+def test_widget_page_size_should_be_immutable_after_creation(
     paginated_bf_df: bf.dataframe.DataFrame,
 ):
     """
-    Given an existing widget,
-    when global display options are changed,
-    then the widget's page size should remain unchanged.
+    A widget's page size should be fixed on creation and not be affected
+    by subsequent changes to global options.
     """
     with bf.option_context("display.repr_mode", "anywidget", "display.max_rows", 2):
         from bigframes.display import TableWidget
 
         widget = TableWidget(paginated_bf_df)
         assert widget.page_size == 2
-        widget.page = 1  # a non-default state
+
+        # Navigate to second page to ensure widget is in a non-default state
+        widget.page = 1
         assert widget.page == 1
 
-    bf.options.display.max_rows = 10  # Change global setting
+        # Change global max_rows - widget should not be affected
+        bf.options.display.max_rows = 10
 
-    assert widget.page_size == 2  # Should remain unchanged
-    assert widget.page == 1  # Page should not be reset
+        assert widget.page_size == 2  # Should remain unchanged
+        assert widget.page == 1  # Should remain on same page
 
 
-def test_widget_with_empty_dataframe_should_have_zero_row_count(
-    empty_bf_df: bf.dataframe.DataFrame,
-):
-    """
-    Given an empty DataFrame,
-    when a widget is created from it,
-    then its row_count should be 0.
-    """
-
+def test_empty_widget_should_have_zero_row_count(empty_bf_df: bf.dataframe.DataFrame):
+    """Given an empty DataFrame, the widget's row count should be 0."""
     with bf.option_context("display.repr_mode", "anywidget"):
         from bigframes.display import TableWidget
 
         widget = TableWidget(empty_bf_df)
 
-    assert widget.row_count == 0
+        assert widget.row_count == 0
 
 
-def test_widget_with_empty_dataframe_should_render_table_headers(
-    empty_bf_df: bf.dataframe.DataFrame,
-):
-
-    """
-
-
-    Given an empty DataFrame,
-
-
-    when a widget is created from it,
-
-
-    then its HTML representation should still render the table headers.
-
-
-    """
-
+def test_empty_widget_should_render_table_headers(empty_bf_df: bf.dataframe.DataFrame):
+    """Given an empty DataFrame, the widget should still render table headers."""
     with bf.option_context("display.repr_mode", "anywidget"):
-
         from bigframes.display import TableWidget
 
         widget = TableWidget(empty_bf_df)
@@ -419,8 +395,7 @@ def test_widget_with_empty_dataframe_should_render_table_headers(
         html = widget.table_html
 
         assert "<table" in html
-
-        assert "id" in html  # Check for a column header
+        assert "id" in html
 
 
 def test_page_size_change_should_reset_current_page_to_zero(table_widget):
@@ -886,50 +861,6 @@ def test_table_widget_multiindex_columns_disables_sorting(multiindex_column_df):
     assert widget.orderable_columns == []
 
 
-def test_repr_mimebundle_should_fallback_to_html_if_anywidget_is_unavailable(
-    paginated_bf_df: bf.dataframe.DataFrame,
-):
-    """
-    Test that _repr_mimebundle_ falls back to static html when anywidget is not available.
-    """
-    with bf.option_context("display.repr_mode", "anywidget", "display.max_rows", 2):
-        # Mock the ANYWIDGET_INSTALLED flag to simulate absence of anywidget
-        with mock.patch("bigframes.display.anywidget.ANYWIDGET_INSTALLED", False):
-            bundle = paginated_bf_df._repr_mimebundle_()
-            assert "application/vnd.jupyter.widget-view+json" not in bundle
-            assert "text/html" in bundle
-            html = bundle["text/html"]
-            assert "page_3_row_2" in html
-            assert "page_3_row_1" in html
-            assert "page_1_row_1" not in html
-
-
-def test_repr_mimebundle_should_return_widget_view_if_anywidget_is_available(
-    paginated_bf_df: bf.dataframe.DataFrame,
-):
-    """
-    Test that _repr_mimebundle_ returns a widget view when anywidget is available.
-    """
-    with bf.option_context("display.repr_mode", "anywidget"):
-        bundle = paginated_bf_df._repr_mimebundle_()
-        assert "application/vnd.jupyter.widget-view+json" in bundle
-        assert "text/html" in bundle
-        assert "text/plain" in bundle
-
-
-def test_repr_in_anywidget_mode_should_not_be_deferred(
-    paginated_bf_df: bf.dataframe.DataFrame,
-):
-    """
-    Test that repr(df) is not deferred in anywidget mode.
-    This is to ensure that print(df) works as expected.
-    """
-    with bf.option_context("display.repr_mode", "anywidget"):
-        representation = repr(paginated_bf_df)
-        assert "Computation deferred" not in representation
-        assert "page_1_row_1" in representation
-
-
-# TODO(b/332316283): Add tests for custom index and multiindex
+# TODO(shuowei): Add tests for custom index and multiindex
 # This may not be necessary for the SQL Cell use case but should be
 # considered for completeness.

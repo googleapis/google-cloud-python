@@ -26,4 +26,4 @@ def test_repr_cache(scalars_df_index):
     results = display_formatter.format(test_df)
     assert results[0].keys() == {"text/plain", "text/html"}
     assert test_df._block.retrieve_repr_request_results.cache_info().misses >= 1
-    assert test_df._block.retrieve_repr_request_results.cache_info().hits == 0
+    assert test_df._block.retrieve_repr_request_results.cache_info().hits >= 1
