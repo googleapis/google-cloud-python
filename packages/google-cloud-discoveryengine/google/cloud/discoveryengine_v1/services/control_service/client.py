@@ -784,10 +784,11 @@ class ControlServiceClient(metaclass=ControlServiceClientMeta):
     ) -> gcd_control.Control:
         r"""Creates a Control.
 
-        By default 1000 controls are allowed for a data store. A request
-        can be submitted to adjust this limit. If the
-        [Control][google.cloud.discoveryengine.v1.Control] to create
-        already exists, an ALREADY_EXISTS error is returned.
+        By default 1000 controls are allowed for a data store. A
+        request can be submitted to adjust this limit. If the
+        [Control][google.cloud.discoveryengine.v1.Control] to
+        create already exists, an ALREADY_EXISTS error is
+        returned.
 
         .. code-block:: python
 
@@ -828,8 +829,8 @@ class ControlServiceClient(metaclass=ControlServiceClientMeta):
             request (Union[google.cloud.discoveryengine_v1.types.CreateControlRequest, dict]):
                 The request object. Request for CreateControl method.
             parent (str):
-                Required. Full resource name of parent data store.
-                Format:
+                Required. Full resource name of parent
+                data store. Format:
                 ``projects/{project}/locations/{location}/collections/{collection_id}/dataStores/{data_store_id}``
                 or
                 ``projects/{project}/locations/{location}/collections/{collection_id}/engines/{engine_id}``.
@@ -843,12 +844,13 @@ class ControlServiceClient(metaclass=ControlServiceClientMeta):
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
             control_id (str):
-                Required. The ID to use for the Control, which will
-                become the final component of the Control's resource
-                name.
+                Required. The ID to use for the Control,
+                which will become the final component of
+                the Control's resource name.
 
-                This value must be within 1-63 characters. Valid
-                characters are /[a-z][0-9]-\_/.
+                This value must be within 1-63
+                characters. Valid characters are
+                /[a-z][0-9]-_/.
 
                 This corresponds to the ``control_id`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -863,11 +865,12 @@ class ControlServiceClient(metaclass=ControlServiceClientMeta):
 
         Returns:
             google.cloud.discoveryengine_v1.types.Control:
-                Defines a conditioned behavior to employ during serving.
-                   Must be attached to a
-                   [ServingConfig][google.cloud.discoveryengine.v1.ServingConfig]
-                   to be considered at serving time. Permitted actions
-                   dependent on SolutionType.
+                Defines a conditioned behavior to employ
+                during serving. Must be attached to a
+                [ServingConfig][google.cloud.discoveryengine.v1.ServingConfig]
+                to be considered at serving time.
+                Permitted actions dependent on
+                ``SolutionType``.
 
         """
         # Create or coerce a protobuf request object.
@@ -931,7 +934,8 @@ class ControlServiceClient(metaclass=ControlServiceClientMeta):
     ) -> None:
         r"""Deletes a Control.
 
-        If the [Control][google.cloud.discoveryengine.v1.Control] to
+        If the
+        [Control][google.cloud.discoveryengine.v1.Control] to
         delete does not exist, a NOT_FOUND error is returned.
 
         .. code-block:: python
@@ -961,8 +965,8 @@ class ControlServiceClient(metaclass=ControlServiceClientMeta):
             request (Union[google.cloud.discoveryengine_v1.types.DeleteControlRequest, dict]):
                 The request object. Request for DeleteControl method.
             name (str):
-                Required. The resource name of the Control to delete.
-                Format:
+                Required. The resource name of the
+                Control to delete. Format:
                 ``projects/{project}/locations/{location}/collections/{collection_id}/dataStores/{data_store_id}/controls/{control_id}``
 
                 This corresponds to the ``name`` field
@@ -1031,10 +1035,10 @@ class ControlServiceClient(metaclass=ControlServiceClientMeta):
     ) -> gcd_control.Control:
         r"""Updates a Control.
 
-        [Control][google.cloud.discoveryengine.v1.Control] action type
-        cannot be changed. If the
-        [Control][google.cloud.discoveryengine.v1.Control] to update
-        does not exist, a NOT_FOUND error is returned.
+        [Control][google.cloud.discoveryengine.v1.Control]
+        action type cannot be changed. If the
+        [Control][google.cloud.discoveryengine.v1.Control] to
+        update does not exist, a NOT_FOUND error is returned.
 
         .. code-block:: python
 
@@ -1078,14 +1082,19 @@ class ControlServiceClient(metaclass=ControlServiceClientMeta):
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
             update_mask (google.protobuf.field_mask_pb2.FieldMask):
-                Optional. Indicates which fields in the provided
-                [Control][google.cloud.discoveryengine.v1.Control] to
-                update. The following are NOT supported:
+                Optional. Indicates which fields in the
+                provided
+                [Control][google.cloud.discoveryengine.v1.Control]
+                to update. The following are NOT
+                supported:
 
-                - [Control.name][google.cloud.discoveryengine.v1.Control.name]
-                - [Control.solution_type][google.cloud.discoveryengine.v1.Control.solution_type]
+                -
+                  [Control.name][google.cloud.discoveryengine.v1.Control.name]
+                  *
+                  [Control.solution_type][google.cloud.discoveryengine.v1.Control.solution_type]
 
-                If not set or empty, all supported fields are updated.
+                If not set or empty, all supported
+                fields are updated.
 
                 This corresponds to the ``update_mask`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -1100,11 +1109,12 @@ class ControlServiceClient(metaclass=ControlServiceClientMeta):
 
         Returns:
             google.cloud.discoveryengine_v1.types.Control:
-                Defines a conditioned behavior to employ during serving.
-                   Must be attached to a
-                   [ServingConfig][google.cloud.discoveryengine.v1.ServingConfig]
-                   to be considered at serving time. Permitted actions
-                   dependent on SolutionType.
+                Defines a conditioned behavior to employ
+                during serving. Must be attached to a
+                [ServingConfig][google.cloud.discoveryengine.v1.ServingConfig]
+                to be considered at serving time.
+                Permitted actions dependent on
+                ``SolutionType``.
 
         """
         # Create or coerce a protobuf request object.
@@ -1198,8 +1208,8 @@ class ControlServiceClient(metaclass=ControlServiceClientMeta):
             request (Union[google.cloud.discoveryengine_v1.types.GetControlRequest, dict]):
                 The request object. Request for GetControl method.
             name (str):
-                Required. The resource name of the Control to get.
-                Format:
+                Required. The resource name of the
+                Control to get. Format:
                 ``projects/{project}/locations/{location}/collections/{collection_id}/dataStores/{data_store_id}/controls/{control_id}``
 
                 This corresponds to the ``name`` field
@@ -1215,11 +1225,12 @@ class ControlServiceClient(metaclass=ControlServiceClientMeta):
 
         Returns:
             google.cloud.discoveryengine_v1.types.Control:
-                Defines a conditioned behavior to employ during serving.
-                   Must be attached to a
-                   [ServingConfig][google.cloud.discoveryengine.v1.ServingConfig]
-                   to be considered at serving time. Permitted actions
-                   dependent on SolutionType.
+                Defines a conditioned behavior to employ
+                during serving. Must be attached to a
+                [ServingConfig][google.cloud.discoveryengine.v1.ServingConfig]
+                to be considered at serving time.
+                Permitted actions dependent on
+                ``SolutionType``.
 
         """
         # Create or coerce a protobuf request object.
@@ -1311,7 +1322,8 @@ class ControlServiceClient(metaclass=ControlServiceClientMeta):
             request (Union[google.cloud.discoveryengine_v1.types.ListControlsRequest, dict]):
                 The request object. Request for ListControls method.
             parent (str):
-                Required. The data store resource name. Format:
+                Required. The data store resource name.
+                Format:
                 ``projects/{project}/locations/{location}/collections/{collection_id}/dataStores/{data_store_id}``
                 or
                 ``projects/{project}/locations/{location}/collections/{collection_id}/engines/{engine_id}``.

@@ -332,12 +332,12 @@ class DataStoreServiceAsyncClient:
     ) -> operation_async.AsyncOperation:
         r"""Creates a
         [DataStore][google.cloud.discoveryengine.v1beta.DataStore].
-
         DataStore is for storing
-        [Documents][google.cloud.discoveryengine.v1beta.Document]. To
-        serve these documents for Search, or Recommendation use case, an
-        [Engine][google.cloud.discoveryengine.v1beta.Engine] needs to be
-        created separately.
+        [Documents][google.cloud.discoveryengine.v1beta.Document].
+        To serve these documents for Search, or Recommendation
+        use case, an
+        [Engine][google.cloud.discoveryengine.v1beta.Engine]
+        needs to be created separately.
 
         .. code-block:: python
 
@@ -380,7 +380,8 @@ class DataStoreServiceAsyncClient:
                 [DataStoreService.CreateDataStore][google.cloud.discoveryengine.v1beta.DataStoreService.CreateDataStore]
                 method.
             parent (:class:`str`):
-                Required. The parent resource name, such as
+                Required. The parent resource name, such
+                as
                 ``projects/{project}/locations/{location}/collections/{collection}``.
 
                 This corresponds to the ``parent`` field
@@ -397,14 +398,16 @@ class DataStoreServiceAsyncClient:
             data_store_id (:class:`str`):
                 Required. The ID to use for the
                 [DataStore][google.cloud.discoveryengine.v1beta.DataStore],
-                which will become the final component of the
+                which will become the final component of
+                the
                 [DataStore][google.cloud.discoveryengine.v1beta.DataStore]'s
                 resource name.
 
-                This field must conform to
-                `RFC-1034 <https://tools.ietf.org/html/rfc1034>`__
-                standard with a length limit of 63 characters.
-                Otherwise, an INVALID_ARGUMENT error is returned.
+                This field must conform to `RFC-1034
+                <https://tools.ietf.org/html/rfc1034>`__
+                standard with a length limit of 63
+                characters. Otherwise, an
+                INVALID_ARGUMENT error is returned.
 
                 This corresponds to the ``data_store_id`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -419,12 +422,13 @@ class DataStoreServiceAsyncClient:
 
         Returns:
             google.api_core.operation_async.AsyncOperation:
-                An object representing a long-running operation.
-
-                The result type for the operation will be
-                :class:`google.cloud.discoveryengine_v1beta.types.DataStore`
-                DataStore captures global settings and configs at the
-                DataStore level.
+                An object representing a long-running
+                operation.
+                The result type for the operation will
+                be
+                :class:``google.cloud.discoveryengine_v1beta.types.DataStore``
+                DataStore captures global settings and
+                configs at the DataStore level.
 
         """
         # Create or coerce a protobuf request object.
@@ -537,14 +541,16 @@ class DataStoreServiceAsyncClient:
                 such as
                 ``projects/{project}/locations/{location}/collections/{collection_id}/dataStores/{data_store_id}``.
 
-                If the caller does not have permission to access the
+                If the caller does not have permission
+                to access the
                 [DataStore][google.cloud.discoveryengine.v1beta.DataStore],
-                regardless of whether or not it exists, a
-                PERMISSION_DENIED error is returned.
+                regardless of whether or not it exists,
+                a PERMISSION_DENIED error is returned.
 
                 If the requested
                 [DataStore][google.cloud.discoveryengine.v1beta.DataStore]
-                does not exist, a NOT_FOUND error is returned.
+                does not exist, a NOT_FOUND error is
+                returned.
 
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -658,14 +664,16 @@ class DataStoreServiceAsyncClient:
                 [DataStoreService.ListDataStores][google.cloud.discoveryengine.v1beta.DataStoreService.ListDataStores]
                 method.
             parent (:class:`str`):
-                Required. The parent branch resource name, such as
+                Required. The parent branch resource
+                name, such as
                 ``projects/{project}/locations/{location}/collections/{collection_id}``.
 
-                If the caller does not have permission to list
+                If the caller does not have permission
+                to list
                 [DataStore][google.cloud.discoveryengine.v1beta.DataStore]s
-                under this location, regardless of whether or not this
-                data store exists, a PERMISSION_DENIED error is
-                returned.
+                under this location, regardless of
+                whether or not this data store exists, a
+                PERMISSION_DENIED error is returned.
 
                 This corresponds to the ``parent`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -681,11 +689,12 @@ class DataStoreServiceAsyncClient:
         Returns:
             google.cloud.discoveryengine_v1beta.services.data_store_service.pagers.ListDataStoresAsyncPager:
                 Response message for
-                   [DataStoreService.ListDataStores][google.cloud.discoveryengine.v1beta.DataStoreService.ListDataStores]
-                   method.
+                [DataStoreService.ListDataStores][google.cloud.discoveryengine.v1beta.DataStoreService.ListDataStores]
+                method.
 
-                Iterating over this object will yield results and
-                resolve additional pages automatically.
+                Iterating over this object will yield
+                results and resolve additional pages
+                automatically.
 
         """
         # Create or coerce a protobuf request object.
@@ -803,14 +812,16 @@ class DataStoreServiceAsyncClient:
                 such as
                 ``projects/{project}/locations/{location}/collections/{collection_id}/dataStores/{data_store_id}``.
 
-                If the caller does not have permission to delete the
+                If the caller does not have permission
+                to delete the
                 [DataStore][google.cloud.discoveryengine.v1beta.DataStore],
-                regardless of whether or not it exists, a
-                PERMISSION_DENIED error is returned.
+                regardless of whether or not it exists,
+                a PERMISSION_DENIED error is returned.
 
                 If the
                 [DataStore][google.cloud.discoveryengine.v1beta.DataStore]
-                to delete does not exist, a NOT_FOUND error is returned.
+                to delete does not exist, a NOT_FOUND
+                error is returned.
 
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -825,18 +836,21 @@ class DataStoreServiceAsyncClient:
 
         Returns:
             google.api_core.operation_async.AsyncOperation:
-                An object representing a long-running operation.
+                An object representing a long-running
+                operation.
+                The result type for the operation will
+                be
+                :class:``google.protobuf.empty_pb2.Empty``
+                A generic empty message that you can
+                re-use to avoid defining duplicated
+                empty messages in your APIs. A typical
+                example is to use it as the request or
+                the response type of an API method. For
+                instance:
 
-                The result type for the operation will be :class:`google.protobuf.empty_pb2.Empty` A generic empty message that you can re-use to avoid defining duplicated
-                   empty messages in your APIs. A typical example is to
-                   use it as the request or the response type of an API
-                   method. For instance:
-
-                      service Foo {
-                         rpc Bar(google.protobuf.Empty) returns
-                         (google.protobuf.Empty);
-
-                      }
+                    service Foo {
+                      rpc Bar(google.protobuf.Empty)
+                returns (google.protobuf.Empty);     }
 
         """
         # Create or coerce a protobuf request object.
@@ -950,14 +964,16 @@ class DataStoreServiceAsyncClient:
                 [DataStore][google.cloud.discoveryengine.v1beta.DataStore]
                 to update.
 
-                If the caller does not have permission to update the
+                If the caller does not have permission
+                to update the
                 [DataStore][google.cloud.discoveryengine.v1beta.DataStore],
-                regardless of whether or not it exists, a
-                PERMISSION_DENIED error is returned.
+                regardless of whether or not it exists,
+                a PERMISSION_DENIED error is returned.
 
                 If the
                 [DataStore][google.cloud.discoveryengine.v1beta.DataStore]
-                to update does not exist, a NOT_FOUND error is returned.
+                to update does not exist, a NOT_FOUND
+                error is returned.
 
                 This corresponds to the ``data_store`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -967,8 +983,9 @@ class DataStoreServiceAsyncClient:
                 [DataStore][google.cloud.discoveryengine.v1beta.DataStore]
                 to update.
 
-                If an unsupported or unknown field is provided, an
-                INVALID_ARGUMENT error is returned.
+                If an unsupported or unknown field is
+                provided, an INVALID_ARGUMENT error is
+                returned.
 
                 This corresponds to the ``update_mask`` field
                 on the ``request`` instance; if ``request`` is provided, this

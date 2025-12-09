@@ -938,14 +938,14 @@ class ConversationalSearchServiceClient(
                 [ConversationalSearchService.ConverseConversation][google.cloud.discoveryengine.v1alpha.ConversationalSearchService.ConverseConversation]
                 method.
             name (str):
-                Required. The resource name of the Conversation to get.
-                Format:
+                Required. The resource name of the
+                Conversation to get. Format:
                 ``projects/{project_number}/locations/{location_id}/collections/{collection}/dataStores/{data_store_id}/conversations/{conversation_id}``.
                 Use
                 ``projects/{project_number}/locations/{location_id}/collections/{collection}/dataStores/{data_store_id}/conversations/-``
-                to activate auto session mode, which automatically
-                creates a new conversation inside a ConverseConversation
-                session.
+                to activate auto session mode, which
+                automatically creates a new conversation
+                inside a ConverseConversation session.
 
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -966,8 +966,8 @@ class ConversationalSearchServiceClient(
         Returns:
             google.cloud.discoveryengine_v1alpha.types.ConverseConversationResponse:
                 Response message for
-                   [ConversationalSearchService.ConverseConversation][google.cloud.discoveryengine.v1alpha.ConversationalSearchService.ConverseConversation]
-                   method.
+                [ConversationalSearchService.ConverseConversation][google.cloud.discoveryengine.v1alpha.ConversationalSearchService.ConverseConversation]
+                method.
 
         """
         # Create or coerce a protobuf request object.
@@ -1036,7 +1036,8 @@ class ConversationalSearchServiceClient(
 
         If the
         [Conversation][google.cloud.discoveryengine.v1alpha.Conversation]
-        to create already exists, an ALREADY_EXISTS error is returned.
+        to create already exists, an ALREADY_EXISTS error is
+        returned.
 
         .. code-block:: python
 
@@ -1069,8 +1070,8 @@ class ConversationalSearchServiceClient(
                 The request object. Request for CreateConversation
                 method.
             parent (str):
-                Required. Full resource name of parent data store.
-                Format:
+                Required. Full resource name of parent
+                data store. Format:
                 ``projects/{project_number}/locations/{location_id}/collections/{collection}/dataStores/{data_store_id}``
 
                 This corresponds to the ``parent`` field
@@ -1190,8 +1191,8 @@ class ConversationalSearchServiceClient(
                 The request object. Request for DeleteConversation
                 method.
             name (str):
-                Required. The resource name of the Conversation to
-                delete. Format:
+                Required. The resource name of the
+                Conversation to delete. Format:
                 ``projects/{project_number}/locations/{location_id}/collections/{collection}/dataStores/{data_store_id}/conversations/{conversation_id}``
 
                 This corresponds to the ``name`` field
@@ -1306,11 +1307,14 @@ class ConversationalSearchServiceClient(
             update_mask (google.protobuf.field_mask_pb2.FieldMask):
                 Indicates which fields in the provided
                 [Conversation][google.cloud.discoveryengine.v1alpha.Conversation]
-                to update. The following are NOT supported:
+                to update. The following are NOT
+                supported:
 
-                - [Conversation.name][google.cloud.discoveryengine.v1alpha.Conversation.name]
+                -
+                  [Conversation.name][google.cloud.discoveryengine.v1alpha.Conversation.name]
 
-                If not set or empty, all supported fields are updated.
+                If not set or empty, all supported
+                fields are updated.
 
                 This corresponds to the ``update_mask`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -1424,8 +1428,8 @@ class ConversationalSearchServiceClient(
             request (Union[google.cloud.discoveryengine_v1alpha.types.GetConversationRequest, dict]):
                 The request object. Request for GetConversation method.
             name (str):
-                Required. The resource name of the Conversation to get.
-                Format:
+                Required. The resource name of the
+                Conversation to get. Format:
                 ``projects/{project_number}/locations/{location_id}/collections/{collection}/dataStores/{data_store_id}/conversations/{conversation_id}``
 
                 This corresponds to the ``name`` field
@@ -1538,7 +1542,8 @@ class ConversationalSearchServiceClient(
             request (Union[google.cloud.discoveryengine_v1alpha.types.ListConversationsRequest, dict]):
                 The request object. Request for ListConversations method.
             parent (str):
-                Required. The data store resource name. Format:
+                Required. The data store resource name.
+                Format:
                 ``projects/{project_number}/locations/{location_id}/collections/{collection}/dataStores/{data_store_id}``
 
                 This corresponds to the ``parent`` field
@@ -1678,8 +1683,8 @@ class ConversationalSearchServiceClient(
         Returns:
             google.cloud.discoveryengine_v1alpha.types.AnswerQueryResponse:
                 Response message for
-                   [ConversationalSearchService.AnswerQuery][google.cloud.discoveryengine.v1alpha.ConversationalSearchService.AnswerQuery]
-                   method.
+                [ConversationalSearchService.AnswerQuery][google.cloud.discoveryengine.v1alpha.ConversationalSearchService.AnswerQuery]
+                method.
 
         """
         # Create or coerce a protobuf request object.
@@ -1757,8 +1762,8 @@ class ConversationalSearchServiceClient(
             request (Union[google.cloud.discoveryengine_v1alpha.types.GetAnswerRequest, dict]):
                 The request object. Request for GetAnswer method.
             name (str):
-                Required. The resource name of the Answer to get.
-                Format:
+                Required. The resource name of the
+                Answer to get. Format:
                 ``projects/{project_number}/locations/{location_id}/collections/{collection}/engines/{engine_id}/sessions/{session_id}/answers/{answer_id}``
 
                 This corresponds to the ``name`` field
@@ -1836,8 +1841,10 @@ class ConversationalSearchServiceClient(
     ) -> gcd_session.Session:
         r"""Creates a Session.
 
-        If the [Session][google.cloud.discoveryengine.v1alpha.Session]
-        to create already exists, an ALREADY_EXISTS error is returned.
+        If the
+        [Session][google.cloud.discoveryengine.v1alpha.Session]
+        to create already exists, an ALREADY_EXISTS error is
+        returned.
 
         .. code-block:: python
 
@@ -1869,8 +1876,8 @@ class ConversationalSearchServiceClient(
             request (Union[google.cloud.discoveryengine_v1alpha.types.CreateSessionRequest, dict]):
                 The request object. Request for CreateSession method.
             parent (str):
-                Required. Full resource name of parent data store.
-                Format:
+                Required. Full resource name of parent
+                data store. Format:
                 ``projects/{project}/locations/{location}/collections/{collection}/dataStores/{data_store_id}``
 
                 This corresponds to the ``parent`` field
@@ -1954,7 +1961,8 @@ class ConversationalSearchServiceClient(
     ) -> None:
         r"""Deletes a Session.
 
-        If the [Session][google.cloud.discoveryengine.v1alpha.Session]
+        If the
+        [Session][google.cloud.discoveryengine.v1alpha.Session]
         to delete does not exist, a NOT_FOUND error is returned.
 
         .. code-block:: python
@@ -1984,8 +1992,8 @@ class ConversationalSearchServiceClient(
             request (Union[google.cloud.discoveryengine_v1alpha.types.DeleteSessionRequest, dict]):
                 The request object. Request for DeleteSession method.
             name (str):
-                Required. The resource name of the Session to delete.
-                Format:
+                Required. The resource name of the
+                Session to delete. Format:
                 ``projects/{project}/locations/{location}/collections/{collection}/dataStores/{data_store_id}/sessions/{session_id}``
 
                 This corresponds to the ``name`` field
@@ -2056,10 +2064,10 @@ class ConversationalSearchServiceClient(
     ) -> gcd_session.Session:
         r"""Updates a Session.
 
-        [Session][google.cloud.discoveryengine.v1alpha.Session] action
-        type cannot be changed. If the
-        [Session][google.cloud.discoveryengine.v1alpha.Session] to
-        update does not exist, a NOT_FOUND error is returned.
+        [Session][google.cloud.discoveryengine.v1alpha.Session]
+        action type cannot be changed. If the
+        [Session][google.cloud.discoveryengine.v1alpha.Session]
+        to update does not exist, a NOT_FOUND error is returned.
 
         .. code-block:: python
 
@@ -2097,11 +2105,14 @@ class ConversationalSearchServiceClient(
             update_mask (google.protobuf.field_mask_pb2.FieldMask):
                 Indicates which fields in the provided
                 [Session][google.cloud.discoveryengine.v1alpha.Session]
-                to update. The following are NOT supported:
+                to update. The following are NOT
+                supported:
 
-                - [Session.name][google.cloud.discoveryengine.v1alpha.Session.name]
+                -
+                  [Session.name][google.cloud.discoveryengine.v1alpha.Session.name]
 
-                If not set or empty, all supported fields are updated.
+                If not set or empty, all supported
+                fields are updated.
 
                 This corresponds to the ``update_mask`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -2211,8 +2222,8 @@ class ConversationalSearchServiceClient(
             request (Union[google.cloud.discoveryengine_v1alpha.types.GetSessionRequest, dict]):
                 The request object. Request for GetSession method.
             name (str):
-                Required. The resource name of the Session to get.
-                Format:
+                Required. The resource name of the
+                Session to get. Format:
                 ``projects/{project}/locations/{location}/collections/{collection}/dataStores/{data_store_id}/sessions/{session_id}``
 
                 This corresponds to the ``name`` field
@@ -2321,7 +2332,8 @@ class ConversationalSearchServiceClient(
             request (Union[google.cloud.discoveryengine_v1alpha.types.ListSessionsRequest, dict]):
                 The request object. Request for ListSessions method.
             parent (str):
-                Required. The data store resource name. Format:
+                Required. The data store resource name.
+                Format:
                 ``projects/{project}/locations/{location}/collections/{collection}/dataStores/{data_store_id}``
 
                 This corresponds to the ``parent`` field

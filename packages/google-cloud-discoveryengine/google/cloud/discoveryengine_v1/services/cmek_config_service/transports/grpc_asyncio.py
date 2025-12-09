@@ -421,8 +421,8 @@ class CmekConfigServiceGrpcAsyncIOTransport(CmekConfigServiceTransport):
         r"""Return a callable for the list cmek configs method over gRPC.
 
         Lists all the
-        [CmekConfig][google.cloud.discoveryengine.v1.CmekConfig]s with
-        the project.
+        [CmekConfig][google.cloud.discoveryengine.v1.CmekConfig]s
+        with the project.
 
         Returns:
             Callable[[~.ListCmekConfigsRequest],

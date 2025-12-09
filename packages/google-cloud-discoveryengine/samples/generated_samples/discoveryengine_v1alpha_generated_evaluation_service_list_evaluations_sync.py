@@ -50,5 +50,4 @@ def sample_list_evaluations():
     for response in page_result:
         print(response)
 
-
 # [END discoveryengine_v1alpha_generated_EvaluationService_ListEvaluations_sync]

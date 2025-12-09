@@ -347,7 +347,8 @@ class ServingConfigServiceGrpcAsyncIOTransport(ServingConfigServiceTransport):
 
         Updates a ServingConfig.
 
-        Returns a NOT_FOUND error if the ServingConfig does not exist.
+        Returns a NOT_FOUND error if the ServingConfig does not
+        exist.
 
         Returns:
             Callable[[~.UpdateServingConfigRequest],

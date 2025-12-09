@@ -408,9 +408,8 @@ class EvaluationServiceGrpcTransport(EvaluationServiceTransport):
 
         Creates a
         [Evaluation][google.cloud.discoveryengine.v1alpha.Evaluation].
-
-        Upon creation, the evaluation will be automatically triggered
-        and begin execution.
+        Upon creation, the evaluation will be automatically
+        triggered and begin execution.
 
         Returns:
             Callable[[~.CreateEvaluationRequest],

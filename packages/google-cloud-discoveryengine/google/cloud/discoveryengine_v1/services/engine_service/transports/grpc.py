@@ -349,7 +349,8 @@ class EngineServiceGrpcTransport(EngineServiceTransport):
     ) -> Callable[[engine_service.CreateEngineRequest], operations_pb2.Operation]:
         r"""Return a callable for the create engine method over gRPC.
 
-        Creates a [Engine][google.cloud.discoveryengine.v1.Engine].
+        Creates a
+        [Engine][google.cloud.discoveryengine.v1.Engine].
 
         Returns:
             Callable[[~.CreateEngineRequest],
@@ -375,7 +376,8 @@ class EngineServiceGrpcTransport(EngineServiceTransport):
     ) -> Callable[[engine_service.DeleteEngineRequest], operations_pb2.Operation]:
         r"""Return a callable for the delete engine method over gRPC.
 
-        Deletes a [Engine][google.cloud.discoveryengine.v1.Engine].
+        Deletes a
+        [Engine][google.cloud.discoveryengine.v1.Engine].
 
         Returns:
             Callable[[~.DeleteEngineRequest],
@@ -401,7 +403,8 @@ class EngineServiceGrpcTransport(EngineServiceTransport):
     ) -> Callable[[engine_service.UpdateEngineRequest], gcd_engine.Engine]:
         r"""Return a callable for the update engine method over gRPC.
 
-        Updates an [Engine][google.cloud.discoveryengine.v1.Engine]
+        Updates an
+        [Engine][google.cloud.discoveryengine.v1.Engine]
 
         Returns:
             Callable[[~.UpdateEngineRequest],
@@ -453,7 +456,8 @@ class EngineServiceGrpcTransport(EngineServiceTransport):
     ]:
         r"""Return a callable for the list engines method over gRPC.
 
-        Lists all the [Engine][google.cloud.discoveryengine.v1.Engine]s
+        Lists all the
+        [Engine][google.cloud.discoveryengine.v1.Engine]s
         associated with the project.
 
         Returns:

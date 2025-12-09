@@ -48,10 +48,11 @@ class GetEvaluationRequest(proto.Message):
             such as
             ``projects/{project}/locations/{location}/evaluations/{evaluation}``.
 
-            If the caller does not have permission to access the
+            If the caller does not have permission to access
+            the
             [Evaluation][google.cloud.discoveryengine.v1alpha.Evaluation],
-            regardless of whether or not it exists, a PERMISSION_DENIED
-            error is returned.
+            regardless of whether or not it exists, a
+            PERMISSION_DENIED error is returned.
 
             If the requested
             [Evaluation][google.cloud.discoveryengine.v1alpha.Evaluation]
@@ -71,33 +72,38 @@ class ListEvaluationsRequest(proto.Message):
 
     Attributes:
         parent (str):
-            Required. The parent location resource name, such as
+            Required. The parent location resource name,
+            such as
             ``projects/{project}/locations/{location}``.
 
             If the caller does not have permission to list
             [Evaluation][google.cloud.discoveryengine.v1alpha.Evaluation]s
-            under this location, regardless of whether or not this
-            location exists, a ``PERMISSION_DENIED`` error is returned.
+            under this location, regardless of whether or
+            not this location exists, a
+            ``PERMISSION_DENIED`` error is returned.
         page_size (int):
             Maximum number of
             [Evaluation][google.cloud.discoveryengine.v1alpha.Evaluation]s
-            to return. If unspecified, defaults to 100. The maximum
-            allowed value is 1000. Values above 1000 will be coerced to
-            1000.
+            to return. If unspecified, defaults to 100. The
+            maximum allowed value is 1000. Values above 1000
+            will be coerced to 1000.
 
-            If this field is negative, an ``INVALID_ARGUMENT`` error is
-            returned.
+            If this field is negative, an
+            ``INVALID_ARGUMENT`` error is returned.
         page_token (str):
             A page token
             [ListEvaluationsResponse.next_page_token][google.cloud.discoveryengine.v1alpha.ListEvaluationsResponse.next_page_token],
             received from a previous
             [EvaluationService.ListEvaluations][google.cloud.discoveryengine.v1alpha.EvaluationService.ListEvaluations]
-            call. Provide this to retrieve the subsequent page.
+            call. Provide this to retrieve the subsequent
+            page.
 
-            When paginating, all other parameters provided to
+            When paginating, all other parameters provided
+            to
             [EvaluationService.ListEvaluations][google.cloud.discoveryengine.v1alpha.EvaluationService.ListEvaluations]
-            must match the call that provided the page token. Otherwise,
-            an ``INVALID_ARGUMENT`` error is returned.
+            must match the call that provided the page
+            token. Otherwise, an ``INVALID_ARGUMENT`` error
+            is returned.
     """
 
     parent: str = proto.Field(
@@ -126,8 +132,8 @@ class ListEvaluationsResponse(proto.Message):
         next_page_token (str):
             A token that can be sent as
             [ListEvaluationsRequest.page_token][google.cloud.discoveryengine.v1alpha.ListEvaluationsRequest.page_token]
-            to retrieve the next page. If this field is omitted, there
-            are no subsequent pages.
+            to retrieve the next page. If this field is
+            omitted, there are no subsequent pages.
     """
 
     @property
@@ -190,27 +196,32 @@ class ListEvaluationResultsRequest(proto.Message):
             ``projects/{project}/locations/{location}/evaluations/{evaluation}``.
 
             If the caller does not have permission to list
-            [EvaluationResult][] under this evaluation, regardless of
-            whether or not this evaluation set exists, a
-            ``PERMISSION_DENIED`` error is returned.
-        page_size (int):
-            Maximum number of [EvaluationResult][] to return. If
-            unspecified, defaults to 100. The maximum allowed value is
-            1000. Values above 1000 will be coerced to 1000.
-
-            If this field is negative, an ``INVALID_ARGUMENT`` error is
+            [EvaluationResult][] under this evaluation,
+            regardless of whether or not this evaluation set
+            exists, a ``PERMISSION_DENIED`` error is
             returned.
+        page_size (int):
+            Maximum number of [EvaluationResult][] to
+            return. If unspecified, defaults to 100. The
+            maximum allowed value is 1000. Values above 1000
+            will be coerced to 1000.
+
+            If this field is negative, an
+            ``INVALID_ARGUMENT`` error is returned.
         page_token (str):
             A page token
             [ListEvaluationResultsResponse.next_page_token][google.cloud.discoveryengine.v1alpha.ListEvaluationResultsResponse.next_page_token],
             received from a previous
             [EvaluationService.ListEvaluationResults][google.cloud.discoveryengine.v1alpha.EvaluationService.ListEvaluationResults]
-            call. Provide this to retrieve the subsequent page.
+            call. Provide this to retrieve the subsequent
+            page.
 
-            When paginating, all other parameters provided to
+            When paginating, all other parameters provided
+            to
             [EvaluationService.ListEvaluationResults][google.cloud.discoveryengine.v1alpha.EvaluationService.ListEvaluationResults]
-            must match the call that provided the page token. Otherwise,
-            an ``INVALID_ARGUMENT`` error is returned.
+            must match the call that provided the page
+            token. Otherwise, an ``INVALID_ARGUMENT`` error
+            is returned.
     """
 
     evaluation: str = proto.Field(
@@ -239,8 +250,8 @@ class ListEvaluationResultsResponse(proto.Message):
         next_page_token (str):
             A token that can be sent as
             [ListEvaluationResultsRequest.page_token][google.cloud.discoveryengine.v1alpha.ListEvaluationResultsRequest.page_token]
-            to retrieve the next page. If this field is omitted, there
-            are no subsequent pages.
+            to retrieve the next page. If this field is
+            omitted, there are no subsequent pages.
     """
 
     class EvaluationResult(proto.Message):
@@ -253,8 +264,8 @@ class ListEvaluationResultsResponse(proto.Message):
                 [SampleQuery][google.cloud.discoveryengine.v1alpha.SampleQuery]
                 that was evaluated.
             quality_metrics (google.cloud.discoveryengine_v1alpha.types.QualityMetrics):
-                Output only. The metrics produced by the evaluation, for a
-                given
+                Output only. The metrics produced by the
+                evaluation, for a given
                 [SampleQuery][google.cloud.discoveryengine.v1alpha.SampleQuery].
         """
 

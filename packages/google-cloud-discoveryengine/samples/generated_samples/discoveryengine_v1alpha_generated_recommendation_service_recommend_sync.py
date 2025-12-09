@@ -54,5 +54,4 @@ def sample_recommend():
     # Handle the response
     print(response)
 
-
 # [END discoveryengine_v1alpha_generated_RecommendationService_Recommend_sync]

@@ -39,8 +39,8 @@ class SampleQuerySet(proto.Message):
             in the format of
             ``projects/{project}/locations/{location}/sampleQuerySets/{sample_query_set}``.
 
-            This field must be a UTF-8 encoded string with a length
-            limit of 1024 characters.
+            This field must be a UTF-8 encoded string with a
+            length limit of 1024 characters.
         display_name (str):
             Required. The sample query set display name.
 

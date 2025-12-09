@@ -380,8 +380,9 @@ class ConversationalSearchServiceGrpcAsyncIOTransport(
         Creates a Conversation.
 
         If the
-        [Conversation][google.cloud.discoveryengine.v1.Conversation] to
-        create already exists, an ALREADY_EXISTS error is returned.
+        [Conversation][google.cloud.discoveryengine.v1.Conversation]
+        to create already exists, an ALREADY_EXISTS error is
+        returned.
 
         Returns:
             Callable[[~.CreateConversationRequest],
@@ -413,8 +414,8 @@ class ConversationalSearchServiceGrpcAsyncIOTransport(
         Deletes a Conversation.
 
         If the
-        [Conversation][google.cloud.discoveryengine.v1.Conversation] to
-        delete does not exist, a NOT_FOUND error is returned.
+        [Conversation][google.cloud.discoveryengine.v1.Conversation]
+        to delete does not exist, a NOT_FOUND error is returned.
 
         Returns:
             Callable[[~.DeleteConversationRequest],
@@ -447,8 +448,8 @@ class ConversationalSearchServiceGrpcAsyncIOTransport(
 
         [Conversation][google.cloud.discoveryengine.v1.Conversation]
         action type cannot be changed. If the
-        [Conversation][google.cloud.discoveryengine.v1.Conversation] to
-        update does not exist, a NOT_FOUND error is returned.
+        [Conversation][google.cloud.discoveryengine.v1.Conversation]
+        to update does not exist, a NOT_FOUND error is returned.
 
         Returns:
             Callable[[~.UpdateConversationRequest],
@@ -630,8 +631,10 @@ class ConversationalSearchServiceGrpcAsyncIOTransport(
 
         Creates a Session.
 
-        If the [Session][google.cloud.discoveryengine.v1.Session] to
-        create already exists, an ALREADY_EXISTS error is returned.
+        If the
+        [Session][google.cloud.discoveryengine.v1.Session] to
+        create already exists, an ALREADY_EXISTS error is
+        returned.
 
         Returns:
             Callable[[~.CreateSessionRequest],
@@ -661,7 +664,8 @@ class ConversationalSearchServiceGrpcAsyncIOTransport(
 
         Deletes a Session.
 
-        If the [Session][google.cloud.discoveryengine.v1.Session] to
+        If the
+        [Session][google.cloud.discoveryengine.v1.Session] to
         delete does not exist, a NOT_FOUND error is returned.
 
         Returns:
@@ -693,10 +697,10 @@ class ConversationalSearchServiceGrpcAsyncIOTransport(
 
         Updates a Session.
 
-        [Session][google.cloud.discoveryengine.v1.Session] action type
-        cannot be changed. If the
-        [Session][google.cloud.discoveryengine.v1.Session] to update
-        does not exist, a NOT_FOUND error is returned.
+        [Session][google.cloud.discoveryengine.v1.Session]
+        action type cannot be changed. If the
+        [Session][google.cloud.discoveryengine.v1.Session] to
+        update does not exist, a NOT_FOUND error is returned.
 
         Returns:
             Callable[[~.UpdateSessionRequest],

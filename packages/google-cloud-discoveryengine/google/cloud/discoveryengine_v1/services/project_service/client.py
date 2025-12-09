@@ -718,13 +718,14 @@ class ProjectServiceClient(metaclass=ProjectServiceClientMeta):
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> operation.Operation:
-        r"""Provisions the project resource. During the process, related
-        systems will get prepared and initialized.
+        r"""Provisions the project resource. During the
+        process, related systems will get prepared and
+        initialized.
 
         Caller must read the `Terms for data
-        use <https://cloud.google.com/retail/data-use-terms>`__, and
-        optionally specify in request to provide consent to that service
-        terms.
+        use <https://cloud.google.com/retail/data-use-terms>`__,
+        and optionally specify in request to provide consent to
+        that service terms.
 
         .. code-block:: python
 
@@ -765,8 +766,9 @@ class ProjectServiceClient(metaclass=ProjectServiceClientMeta):
                 method.
             name (str):
                 Required. Full resource name of a
-                [Project][google.cloud.discoveryengine.v1.Project], such
-                as ``projects/{project_id_or_number}``.
+                [Project][google.cloud.discoveryengine.v1.Project],
+                such as
+                ``projects/{project_id_or_number}``.
 
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -781,12 +783,13 @@ class ProjectServiceClient(metaclass=ProjectServiceClientMeta):
 
         Returns:
             google.api_core.operation.Operation:
-                An object representing a long-running operation.
-
-                The result type for the operation will be
-                :class:`google.cloud.discoveryengine_v1.types.Project`
-                Metadata and configurations for a Google Cloud project
-                in the service.
+                An object representing a long-running
+                operation.
+                The result type for the operation will
+                be
+                :class:``google.cloud.discoveryengine_v1.types.Project``
+                Metadata and configurations for a Google
+                Cloud project in the service.
 
         """
         # Create or coerce a protobuf request object.

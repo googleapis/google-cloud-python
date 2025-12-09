@@ -120,8 +120,8 @@ class DocumentServiceGrpcTransport(DocumentServiceTransport):
     """gRPC backend transport for DocumentService.
 
     Service for ingesting
-    [Document][google.cloud.discoveryengine.v1beta.Document] information
-    of the customer's website.
+    [Document][google.cloud.discoveryengine.v1beta.Document]
+    information of the customer's website.
 
     This class defines the same methods as the primary client, so the
     primary client can load the underlying transport implementation
@@ -355,7 +355,8 @@ class DocumentServiceGrpcTransport(DocumentServiceTransport):
     ) -> Callable[[document_service.GetDocumentRequest], document.Document]:
         r"""Return a callable for the get document method over gRPC.
 
-        Gets a [Document][google.cloud.discoveryengine.v1beta.Document].
+        Gets a
+        [Document][google.cloud.discoveryengine.v1beta.Document].
 
         Returns:
             Callable[[~.GetDocumentRequest],
@@ -493,12 +494,12 @@ class DocumentServiceGrpcTransport(DocumentServiceTransport):
 
         Bulk import of multiple
         [Document][google.cloud.discoveryengine.v1beta.Document]s.
-        Request processing may be synchronous. Non-existing items are
-        created.
+        Request processing may be synchronous. Non-existing
+        items are created.
 
         Note: It is possible for a subset of the
-        [Document][google.cloud.discoveryengine.v1beta.Document]s to be
-        successfully updated.
+        [Document][google.cloud.discoveryengine.v1beta.Document]s
+        to be successfully updated.
 
         Returns:
             Callable[[~.ImportDocumentsRequest],
@@ -525,22 +526,22 @@ class DocumentServiceGrpcTransport(DocumentServiceTransport):
         r"""Return a callable for the purge documents method over gRPC.
 
         Permanently deletes all selected
-        [Document][google.cloud.discoveryengine.v1beta.Document]s in a
-        branch.
+        [Document][google.cloud.discoveryengine.v1beta.Document]s
+        in a branch.
 
         This process is asynchronous. Depending on the number of
-        [Document][google.cloud.discoveryengine.v1beta.Document]s to be
-        deleted, this operation can take hours to complete. Before the
-        delete operation completes, some
-        [Document][google.cloud.discoveryengine.v1beta.Document]s might
-        still be returned by
+        [Document][google.cloud.discoveryengine.v1beta.Document]s
+        to be deleted, this operation can take hours to
+        complete. Before the delete operation completes, some
+        [Document][google.cloud.discoveryengine.v1beta.Document]s
+        might still be returned by
         [DocumentService.GetDocument][google.cloud.discoveryengine.v1beta.DocumentService.GetDocument]
         or
         [DocumentService.ListDocuments][google.cloud.discoveryengine.v1beta.DocumentService.ListDocuments].
 
         To get a list of the
-        [Document][google.cloud.discoveryengine.v1beta.Document]s to be
-        deleted, set
+        [Document][google.cloud.discoveryengine.v1beta.Document]s
+        to be deleted, set
         [PurgeDocumentsRequest.force][google.cloud.discoveryengine.v1beta.PurgeDocumentsRequest.force]
         to false.
 

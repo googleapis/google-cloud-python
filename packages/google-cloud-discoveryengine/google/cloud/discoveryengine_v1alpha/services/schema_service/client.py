@@ -752,7 +752,8 @@ class SchemaServiceClient(metaclass=SchemaServiceClientMeta):
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> schema.Schema:
-        r"""Gets a [Schema][google.cloud.discoveryengine.v1alpha.Schema].
+        r"""Gets a
+        [Schema][google.cloud.discoveryengine.v1alpha.Schema].
 
         .. code-block:: python
 
@@ -786,8 +787,8 @@ class SchemaServiceClient(metaclass=SchemaServiceClientMeta):
                 [SchemaService.GetSchema][google.cloud.discoveryengine.v1alpha.SchemaService.GetSchema]
                 method.
             name (str):
-                Required. The full resource name of the schema, in the
-                format of
+                Required. The full resource name of the
+                schema, in the format of
                 ``projects/{project}/locations/{location}/collections/{collection}/dataStores/{data_store}/schemas/{schema}``.
 
                 This corresponds to the ``name`` field
@@ -898,8 +899,8 @@ class SchemaServiceClient(metaclass=SchemaServiceClientMeta):
                 [SchemaService.ListSchemas][google.cloud.discoveryengine.v1alpha.SchemaService.ListSchemas]
                 method.
             parent (str):
-                Required. The parent data store resource name, in the
-                format of
+                Required. The parent data store resource
+                name, in the format of
                 ``projects/{project}/locations/{location}/collections/{collection}/dataStores/{data_store}``.
 
                 This corresponds to the ``parent`` field
@@ -916,11 +917,12 @@ class SchemaServiceClient(metaclass=SchemaServiceClientMeta):
         Returns:
             google.cloud.discoveryengine_v1alpha.services.schema_service.pagers.ListSchemasPager:
                 Response message for
-                   [SchemaService.ListSchemas][google.cloud.discoveryengine.v1alpha.SchemaService.ListSchemas]
-                   method.
+                [SchemaService.ListSchemas][google.cloud.discoveryengine.v1alpha.SchemaService.ListSchemas]
+                method.
 
-                Iterating over this object will yield results and
-                resolve additional pages automatically.
+                Iterating over this object will yield
+                results and resolve additional pages
+                automatically.
 
         """
         # Create or coerce a protobuf request object.
@@ -991,7 +993,8 @@ class SchemaServiceClient(metaclass=SchemaServiceClientMeta):
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> operation.Operation:
-        r"""Creates a [Schema][google.cloud.discoveryengine.v1alpha.Schema].
+        r"""Creates a
+        [Schema][google.cloud.discoveryengine.v1alpha.Schema].
 
         .. code-block:: python
 
@@ -1030,8 +1033,8 @@ class SchemaServiceClient(metaclass=SchemaServiceClientMeta):
                 [SchemaService.CreateSchema][google.cloud.discoveryengine.v1alpha.SchemaService.CreateSchema]
                 method.
             parent (str):
-                Required. The parent data store resource name, in the
-                format of
+                Required. The parent data store resource
+                name, in the format of
                 ``projects/{project}/locations/{location}/collections/{collection}/dataStores/{data_store}``.
 
                 This corresponds to the ``parent`` field
@@ -1039,8 +1042,8 @@ class SchemaServiceClient(metaclass=SchemaServiceClientMeta):
                 should not be set.
             schema (google.cloud.discoveryengine_v1alpha.types.Schema):
                 Required. The
-                [Schema][google.cloud.discoveryengine.v1alpha.Schema] to
-                create.
+                [Schema][google.cloud.discoveryengine.v1alpha.Schema]
+                to create.
 
                 This corresponds to the ``schema`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -1052,8 +1055,10 @@ class SchemaServiceClient(metaclass=SchemaServiceClientMeta):
                 [Schema.name][google.cloud.discoveryengine.v1alpha.Schema.name].
 
                 This field should conform to
-                `RFC-1034 <https://tools.ietf.org/html/rfc1034>`__
-                standard with a length limit of 63 characters.
+                `RFC-1034
+                <https://tools.ietf.org/html/rfc1034>`__
+                standard with a length limit of 63
+                characters.
 
                 This corresponds to the ``schema_id`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -1068,12 +1073,13 @@ class SchemaServiceClient(metaclass=SchemaServiceClientMeta):
 
         Returns:
             google.api_core.operation.Operation:
-                An object representing a long-running operation.
-
-                The result type for the operation will be
-                :class:`google.cloud.discoveryengine_v1alpha.types.Schema`
-                Defines the structure and layout of a type of document
-                data.
+                An object representing a long-running
+                operation.
+                The result type for the operation will
+                be
+                :class:``google.cloud.discoveryengine_v1alpha.types.Schema``
+                Defines the structure and layout of a
+                type of document data.
 
         """
         # Create or coerce a protobuf request object.
@@ -1142,7 +1148,8 @@ class SchemaServiceClient(metaclass=SchemaServiceClientMeta):
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> operation.Operation:
-        r"""Updates a [Schema][google.cloud.discoveryengine.v1alpha.Schema].
+        r"""Updates a
+        [Schema][google.cloud.discoveryengine.v1alpha.Schema].
 
         .. code-block:: python
 
@@ -1188,12 +1195,13 @@ class SchemaServiceClient(metaclass=SchemaServiceClientMeta):
 
         Returns:
             google.api_core.operation.Operation:
-                An object representing a long-running operation.
-
-                The result type for the operation will be
-                :class:`google.cloud.discoveryengine_v1alpha.types.Schema`
-                Defines the structure and layout of a type of document
-                data.
+                An object representing a long-running
+                operation.
+                The result type for the operation will
+                be
+                :class:``google.cloud.discoveryengine_v1alpha.types.Schema``
+                Defines the structure and layout of a
+                type of document data.
 
         """
         # Create or coerce a protobuf request object.
@@ -1245,7 +1253,8 @@ class SchemaServiceClient(metaclass=SchemaServiceClientMeta):
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> operation.Operation:
-        r"""Deletes a [Schema][google.cloud.discoveryengine.v1alpha.Schema].
+        r"""Deletes a
+        [Schema][google.cloud.discoveryengine.v1alpha.Schema].
 
         .. code-block:: python
 
@@ -1283,8 +1292,8 @@ class SchemaServiceClient(metaclass=SchemaServiceClientMeta):
                 [SchemaService.DeleteSchema][google.cloud.discoveryengine.v1alpha.SchemaService.DeleteSchema]
                 method.
             name (str):
-                Required. The full resource name of the schema, in the
-                format of
+                Required. The full resource name of the
+                schema, in the format of
                 ``projects/{project}/locations/{location}/collections/{collection}/dataStores/{data_store}/schemas/{schema}``.
 
                 This corresponds to the ``name`` field
@@ -1300,18 +1309,21 @@ class SchemaServiceClient(metaclass=SchemaServiceClientMeta):
 
         Returns:
             google.api_core.operation.Operation:
-                An object representing a long-running operation.
+                An object representing a long-running
+                operation.
+                The result type for the operation will
+                be
+                :class:``google.protobuf.empty_pb2.Empty``
+                A generic empty message that you can
+                re-use to avoid defining duplicated
+                empty messages in your APIs. A typical
+                example is to use it as the request or
+                the response type of an API method. For
+                instance:
 
-                The result type for the operation will be :class:`google.protobuf.empty_pb2.Empty` A generic empty message that you can re-use to avoid defining duplicated
-                   empty messages in your APIs. A typical example is to
-                   use it as the request or the response type of an API
-                   method. For instance:
-
-                      service Foo {
-                         rpc Bar(google.protobuf.Empty) returns
-                         (google.protobuf.Empty);
-
-                      }
+                    service Foo {
+                      rpc Bar(google.protobuf.Empty)
+                returns (google.protobuf.Empty);     }
 
         """
         # Create or coerce a protobuf request object.

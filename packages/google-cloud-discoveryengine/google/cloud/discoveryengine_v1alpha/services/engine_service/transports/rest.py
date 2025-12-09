@@ -603,7 +603,8 @@ class EngineServiceRestTransport(_BaseEngineServiceRestTransport):
     """REST backend synchronous transport for EngineService.
 
     Service for managing
-    [Engine][google.cloud.discoveryengine.v1alpha.Engine] configuration.
+    [Engine][google.cloud.discoveryengine.v1alpha.Engine]
+    configuration.
 
     This class defines the same methods as the primary client, so the
     primary client can load the underlying transport implementation
@@ -1206,8 +1207,8 @@ class EngineServiceRestTransport(_BaseEngineServiceRestTransport):
 
             Returns:
                 ~.engine.Engine:
-                    Metadata that describes the training and serving
-                parameters of an
+                    Metadata that describes the training and
+                serving parameters of an
                 [Engine][google.cloud.discoveryengine.v1alpha.Engine].
 
             """
@@ -1512,8 +1513,8 @@ class EngineServiceRestTransport(_BaseEngineServiceRestTransport):
 
             Returns:
                 ~.engine.Engine:
-                    Metadata that describes the training and serving
-                parameters of an
+                    Metadata that describes the training and
+                serving parameters of an
                 [Engine][google.cloud.discoveryengine.v1alpha.Engine].
 
             """
@@ -1670,8 +1671,8 @@ class EngineServiceRestTransport(_BaseEngineServiceRestTransport):
 
             Returns:
                 ~.engine.Engine:
-                    Metadata that describes the training and serving
-                parameters of an
+                    Metadata that describes the training and
+                serving parameters of an
                 [Engine][google.cloud.discoveryengine.v1alpha.Engine].
 
             """
@@ -1985,8 +1986,8 @@ class EngineServiceRestTransport(_BaseEngineServiceRestTransport):
 
             Returns:
                 ~.gcd_engine.Engine:
-                    Metadata that describes the training and serving
-                parameters of an
+                    Metadata that describes the training and
+                serving parameters of an
                 [Engine][google.cloud.discoveryengine.v1alpha.Engine].
 
             """

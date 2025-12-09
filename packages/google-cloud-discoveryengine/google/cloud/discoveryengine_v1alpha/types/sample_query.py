@@ -39,12 +39,12 @@ class SampleQuery(proto.Message):
 
             This field is a member of `oneof`_ ``content``.
         name (str):
-            Identifier. The full resource name of the sample query, in
-            the format of
+            Identifier. The full resource name of the sample
+            query, in the format of
             ``projects/{project}/locations/{location}/sampleQuerySets/{sample_query_set}/sampleQueries/{sample_query}``.
 
-            This field must be a UTF-8 encoded string with a length
-            limit of 1024 characters.
+            This field must be a UTF-8 encoded string with a
+            length limit of 1024 characters.
         create_time (google.protobuf.timestamp_pb2.Timestamp):
             Output only. Timestamp the
             [SampleQuery][google.cloud.discoveryengine.v1alpha.SampleQuery]
@@ -71,10 +71,11 @@ class SampleQuery(proto.Message):
                 uri (str):
                     Expected uri of the target.
 
-                    This field must be a UTF-8 encoded string with a length
-                    limit of 2048 characters.
+                    This field must be a UTF-8 encoded string with a
+                    length limit of 2048 characters.
 
-                    Example of valid uris: ``https://example.com/abc``,
+                    Example of valid uris:
+                    ``https://example.com/abc``,
                     ``gcs://example/example.pdf``.
                 page_numbers (MutableSequence[int]):
                     Expected page numbers of the target.

@@ -47,10 +47,11 @@ class GetSampleQueryRequest(proto.Message):
             such as
             ``projects/{project}/locations/{location}/sampleQuerySets/{sample_query_set}/sampleQueries/{sample_query}``.
 
-            If the caller does not have permission to access the
+            If the caller does not have permission to access
+            the
             [SampleQuery][google.cloud.discoveryengine.v1alpha.SampleQuery],
-            regardless of whether or not it exists, a PERMISSION_DENIED
-            error is returned.
+            regardless of whether or not it exists, a
+            PERMISSION_DENIED error is returned.
 
             If the requested
             [SampleQuery][google.cloud.discoveryengine.v1alpha.SampleQuery]
@@ -70,34 +71,38 @@ class ListSampleQueriesRequest(proto.Message):
 
     Attributes:
         parent (str):
-            Required. The parent sample query set resource name, such as
+            Required. The parent sample query set resource
+            name, such as
             ``projects/{project}/locations/{location}/sampleQuerySets/{sampleQuerySet}``.
 
             If the caller does not have permission to list
             [SampleQuery][google.cloud.discoveryengine.v1alpha.SampleQuery]s
-            under this sample query set, regardless of whether or not
-            this sample query set exists, a ``PERMISSION_DENIED`` error
-            is returned.
+            under this sample query set, regardless of
+            whether or not this sample query set exists, a
+            ``PERMISSION_DENIED`` error is returned.
         page_size (int):
             Maximum number of
             [SampleQuery][google.cloud.discoveryengine.v1alpha.SampleQuery]s
-            to return. If unspecified, defaults to 100. The maximum
-            allowed value is 1000. Values above 1000 will be coerced to
-            1000.
+            to return. If unspecified, defaults to 100. The
+            maximum allowed value is 1000. Values above 1000
+            will be coerced to 1000.
 
-            If this field is negative, an ``INVALID_ARGUMENT`` error is
-            returned.
+            If this field is negative, an
+            ``INVALID_ARGUMENT`` error is returned.
         page_token (str):
             A page token
             [ListSampleQueriesResponse.next_page_token][google.cloud.discoveryengine.v1alpha.ListSampleQueriesResponse.next_page_token],
             received from a previous
             [SampleQueryService.ListSampleQueries][google.cloud.discoveryengine.v1alpha.SampleQueryService.ListSampleQueries]
-            call. Provide this to retrieve the subsequent page.
+            call. Provide this to retrieve the subsequent
+            page.
 
-            When paginating, all other parameters provided to
+            When paginating, all other parameters provided
+            to
             [SampleQueryService.ListSampleQueries][google.cloud.discoveryengine.v1alpha.SampleQueryService.ListSampleQueries]
-            must match the call that provided the page token. Otherwise,
-            an ``INVALID_ARGUMENT`` error is returned.
+            must match the call that provided the page
+            token. Otherwise, an ``INVALID_ARGUMENT`` error
+            is returned.
     """
 
     parent: str = proto.Field(
@@ -126,8 +131,8 @@ class ListSampleQueriesResponse(proto.Message):
         next_page_token (str):
             A token that can be sent as
             [ListSampleQueriesRequest.page_token][google.cloud.discoveryengine.v1alpha.ListSampleQueriesRequest.page_token]
-            to retrieve the next page. If this field is omitted, there
-            are no subsequent pages.
+            to retrieve the next page. If this field is
+            omitted, there are no subsequent pages.
     """
 
     @property
@@ -164,7 +169,8 @@ class CreateSampleQueryRequest(proto.Message):
             which will become the final component of the
             [SampleQuery.name][google.cloud.discoveryengine.v1alpha.SampleQuery.name].
 
-            If the caller does not have permission to create the
+            If the caller does not have permission to create
+            the
             [SampleQuery][google.cloud.discoveryengine.v1alpha.SampleQuery],
             regardless of whether or not it exists, a
             ``PERMISSION_DENIED`` error is returned.
@@ -173,12 +179,14 @@ class CreateSampleQueryRequest(proto.Message):
             [SampleQuery][google.cloud.discoveryengine.v1alpha.SampleQuery]s
             with the same
             [parent][google.cloud.discoveryengine.v1alpha.CreateSampleQueryRequest.parent].
-            Otherwise, an ``ALREADY_EXISTS`` error is returned.
+            Otherwise, an ``ALREADY_EXISTS`` error is
+            returned.
 
-            This field must conform to
-            `RFC-1034 <https://tools.ietf.org/html/rfc1034>`__ standard
-            with a length limit of 63 characters. Otherwise, an
-            ``INVALID_ARGUMENT`` error is returned.
+            This field must conform to `RFC-1034
+            <https://tools.ietf.org/html/rfc1034>`__
+            standard with a length limit of 63 characters.
+            Otherwise, an ``INVALID_ARGUMENT`` error is
+            returned.
     """
 
     parent: str = proto.Field(
@@ -205,14 +213,16 @@ class UpdateSampleQueryRequest(proto.Message):
         sample_query (google.cloud.discoveryengine_v1alpha.types.SampleQuery):
             Required. The simple query to update.
 
-            If the caller does not have permission to update the
+            If the caller does not have permission to update
+            the
             [SampleQuery][google.cloud.discoveryengine.v1alpha.SampleQuery],
             regardless of whether or not it exists, a
             ``PERMISSION_DENIED`` error is returned.
 
             If the
             [SampleQuery][google.cloud.discoveryengine.v1alpha.SampleQuery]
-            to update does not exist a ``NOT_FOUND`` error is returned.
+            to update does not exist a ``NOT_FOUND`` error
+            is returned.
         update_mask (google.protobuf.field_mask_pb2.FieldMask):
             Indicates which fields in the provided
             imported 'simple query' to update. If not set,
@@ -243,14 +253,16 @@ class DeleteSampleQueryRequest(proto.Message):
             such as
             ``projects/{project}/locations/{location}/sampleQuerySets/{sample_query_set}/sampleQueries/{sample_query}``.
 
-            If the caller does not have permission to delete the
+            If the caller does not have permission to delete
+            the
             [SampleQuery][google.cloud.discoveryengine.v1alpha.SampleQuery],
             regardless of whether or not it exists, a
             ``PERMISSION_DENIED`` error is returned.
 
             If the
             [SampleQuery][google.cloud.discoveryengine.v1alpha.SampleQuery]
-            to delete does not exist, a ``NOT_FOUND`` error is returned.
+            to delete does not exist, a ``NOT_FOUND`` error
+            is returned.
     """
 
     name: str = proto.Field(

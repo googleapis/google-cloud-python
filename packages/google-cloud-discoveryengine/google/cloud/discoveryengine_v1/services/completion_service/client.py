@@ -777,8 +777,8 @@ class CompletionServiceClient(metaclass=CompletionServiceClientMeta):
         Returns:
             google.cloud.discoveryengine_v1.types.CompleteQueryResponse:
                 Response message for
-                   [CompletionService.CompleteQuery][google.cloud.discoveryengine.v1.CompletionService.CompleteQuery]
-                   method.
+                [CompletionService.CompleteQuery][google.cloud.discoveryengine.v1.CompletionService.CompleteQuery]
+                method.
 
         """
         # Create or coerce a protobuf request object.
@@ -877,11 +877,14 @@ class CompletionServiceClient(metaclass=CompletionServiceClientMeta):
 
         Returns:
             google.api_core.operation.Operation:
-                An object representing a long-running operation.
-
-                The result type for the operation will be :class:`google.cloud.discoveryengine_v1.types.ImportSuggestionDenyListEntriesResponse` Response message for
-                   [CompletionService.ImportSuggestionDenyListEntries][google.cloud.discoveryengine.v1.CompletionService.ImportSuggestionDenyListEntries]
-                   method.
+                An object representing a long-running
+                operation.
+                The result type for the operation will
+                be
+                :class:``google.cloud.discoveryengine_v1.types.ImportSuggestionDenyListEntriesResponse``
+                Response message for
+                [CompletionService.ImportSuggestionDenyListEntries][google.cloud.discoveryengine.v1.CompletionService.ImportSuggestionDenyListEntries]
+                method.
 
         """
         # Create or coerce a protobuf request object.
@@ -985,11 +988,14 @@ class CompletionServiceClient(metaclass=CompletionServiceClientMeta):
 
         Returns:
             google.api_core.operation.Operation:
-                An object representing a long-running operation.
-
-                The result type for the operation will be :class:`google.cloud.discoveryengine_v1.types.PurgeSuggestionDenyListEntriesResponse` Response message for
-                   [CompletionService.PurgeSuggestionDenyListEntries][google.cloud.discoveryengine.v1.CompletionService.PurgeSuggestionDenyListEntries]
-                   method.
+                An object representing a long-running
+                operation.
+                The result type for the operation will
+                be
+                :class:``google.cloud.discoveryengine_v1.types.PurgeSuggestionDenyListEntriesResponse``
+                Response message for
+                [CompletionService.PurgeSuggestionDenyListEntries][google.cloud.discoveryengine.v1.CompletionService.PurgeSuggestionDenyListEntries]
+                method.
 
         """
         # Create or coerce a protobuf request object.
@@ -1096,14 +1102,17 @@ class CompletionServiceClient(metaclass=CompletionServiceClientMeta):
 
         Returns:
             google.api_core.operation.Operation:
-                An object representing a long-running operation.
-
-                The result type for the operation will be :class:`google.cloud.discoveryengine_v1.types.ImportCompletionSuggestionsResponse` Response of the
-                   [CompletionService.ImportCompletionSuggestions][google.cloud.discoveryengine.v1.CompletionService.ImportCompletionSuggestions]
-                   method. If the long running operation is done, this
-                   message is returned by the
-                   google.longrunning.Operations.response field if the
-                   operation is successful.
+                An object representing a long-running
+                operation.
+                The result type for the operation will
+                be
+                :class:``google.cloud.discoveryengine_v1.types.ImportCompletionSuggestionsResponse``
+                Response of the
+                [CompletionService.ImportCompletionSuggestions][google.cloud.discoveryengine.v1.CompletionService.ImportCompletionSuggestions]
+                method. If the long running operation is
+                done, this message is returned by the
+                google.longrunning.Operations.response
+                field if the operation is successful.
 
         """
         # Create or coerce a protobuf request object.
@@ -1205,11 +1214,14 @@ class CompletionServiceClient(metaclass=CompletionServiceClientMeta):
 
         Returns:
             google.api_core.operation.Operation:
-                An object representing a long-running operation.
-
-                The result type for the operation will be :class:`google.cloud.discoveryengine_v1.types.PurgeCompletionSuggestionsResponse` Response message for
-                   [CompletionService.PurgeCompletionSuggestions][google.cloud.discoveryengine.v1.CompletionService.PurgeCompletionSuggestions]
-                   method.
+                An object representing a long-running
+                operation.
+                The result type for the operation will
+                be
+                :class:``google.cloud.discoveryengine_v1.types.PurgeCompletionSuggestionsResponse``
+                Response message for
+                [CompletionService.PurgeCompletionSuggestions][google.cloud.discoveryengine.v1.CompletionService.PurgeCompletionSuggestions]
+                method.
 
         """
         # Create or coerce a protobuf request object.

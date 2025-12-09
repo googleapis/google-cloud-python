@@ -340,8 +340,8 @@ class RankServiceAsyncClient:
         Returns:
             google.cloud.discoveryengine_v1.types.RankResponse:
                 Response message for
-                   [RankService.Rank][google.cloud.discoveryengine.v1.RankService.Rank]
-                   method.
+                [RankService.Rank][google.cloud.discoveryengine.v1.RankService.Rank]
+                method.
 
         """
         # Create or coerce a protobuf request object.

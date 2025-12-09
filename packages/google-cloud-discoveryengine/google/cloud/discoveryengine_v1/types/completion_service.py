@@ -35,41 +35,45 @@ class CompleteQueryRequest(proto.Message):
 
     Attributes:
         data_store (str):
-            Required. The parent data store resource name for which the
-            completion is performed, such as
+            Required. The parent data store resource name
+            for which the completion is performed, such as
             ``projects/*/locations/global/collections/default_collection/dataStores/default_data_store``.
         query (str):
             Required. The typeahead input used to fetch
             suggestions. Maximum length is 128 characters.
         query_model (str):
-            Specifies the autocomplete data model. This overrides any
-            model specified in the Configuration > Autocomplete section
-            of the Cloud console. Currently supported values:
+            Specifies the autocomplete data model. This
+            overrides any model specified in the
+            Configuration > Autocomplete section of the
+            Cloud console. Currently supported values:
 
-            - ``document`` - Using suggestions generated from
-              user-imported documents.
-            - ``search-history`` - Using suggestions generated from the
-              past history of
+            - ``document`` - Using suggestions generated
+              from user-imported documents. *
+              ``search-history`` - Using suggestions
+              generated from the past history of
               [SearchService.Search][google.cloud.discoveryengine.v1.SearchService.Search]
-              API calls. Do not use it when there is no traffic for
-              Search API.
-            - ``user-event`` - Using suggestions generated from
-              user-imported search events.
-            - ``document-completable`` - Using suggestions taken
-              directly from user-imported document fields marked as
-              completable.
+              API calls. Do not use it when there is no
+              traffic for Search API.
+
+            - ``user-event`` - Using suggestions generated
+              from user-imported search events.
+
+            - ``document-completable`` - Using suggestions
+              taken directly from user-imported document
+              fields marked as completable.
 
             Default values:
 
-            - ``document`` is the default model for regular dataStores.
-            - ``search-history`` is the default model for site search
-              dataStores.
+            - ``document`` is the default model for regular
+              dataStores. * ``search-history`` is the
+              default model for site search dataStores.
         user_pseudo_id (str):
-            A unique identifier for tracking visitors. For example, this
-            could be implemented with an HTTP cookie, which should be
-            able to uniquely identify a visitor on a single device. This
-            unique identifier should not change if the visitor logs in
-            or out of the website.
+            A unique identifier for tracking visitors. For
+            example, this could be implemented with an HTTP
+            cookie, which should be able to uniquely
+            identify a visitor on a single device. This
+            unique identifier should not change if the
+            visitor logs in or out of the website.
 
             This field should NOT have a fixed value such as
             ``unknown_visitor``.
@@ -79,9 +83,9 @@ class CompleteQueryRequest(proto.Message):
             and
             [SearchRequest.user_pseudo_id][google.cloud.discoveryengine.v1.SearchRequest.user_pseudo_id].
 
-            The field must be a UTF-8 encoded string with a length limit
-            of 128 characters. Otherwise, an ``INVALID_ARGUMENT`` error
-            is returned.
+            The field must be a UTF-8 encoded string with a
+            length limit of 128 characters. Otherwise, an
+            ``INVALID_ARGUMENT`` error is returned.
         include_tail_suggestions (bool):
             Indicates if tail suggestions should be
             returned if there are no suggestions that match
@@ -124,11 +128,12 @@ class CompleteQueryResponse(proto.Message):
             result list is ordered and the first result is a
             top suggestion.
         tail_match_triggered (bool):
-            True if the returned suggestions are all tail suggestions.
-
-            For tail matching to be triggered, include_tail_suggestions
-            in the request must be true and there must be no suggestions
-            that match the full query.
+            True if the returned suggestions are all tail
+            suggestions.
+            For tail matching to be triggered,
+            include_tail_suggestions in the request must be
+            true and there must be no suggestions that match
+            the full query.
     """
 
     class QuerySuggestion(proto.Message):

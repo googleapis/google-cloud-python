@@ -760,8 +760,8 @@ class RankServiceClient(metaclass=RankServiceClientMeta):
         Returns:
             google.cloud.discoveryengine_v1alpha.types.RankResponse:
                 Response message for
-                   [RankService.Rank][google.cloud.discoveryengine.v1alpha.RankService.Rank]
-                   method.
+                [RankService.Rank][google.cloud.discoveryengine.v1alpha.RankService.Rank]
+                method.
 
         """
         # Create or coerce a protobuf request object.

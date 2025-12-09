@@ -54,19 +54,20 @@ class CreateEngineRequest(proto.Message):
             ``projects/{project}/locations/{location}/collections/{collection}``.
         engine (google.cloud.discoveryengine_v1beta.types.Engine):
             Required. The
-            [Engine][google.cloud.discoveryengine.v1beta.Engine] to
-            create.
+            [Engine][google.cloud.discoveryengine.v1beta.Engine]
+            to create.
         engine_id (str):
             Required. The ID to use for the
-            [Engine][google.cloud.discoveryengine.v1beta.Engine], which
-            will become the final component of the
+            [Engine][google.cloud.discoveryengine.v1beta.Engine],
+            which will become the final component of the
             [Engine][google.cloud.discoveryengine.v1beta.Engine]'s
             resource name.
 
-            This field must conform to
-            `RFC-1034 <https://tools.ietf.org/html/rfc1034>`__ standard
-            with a length limit of 63 characters. Otherwise, an
-            INVALID_ARGUMENT error is returned.
+            This field must conform to `RFC-1034
+            <https://tools.ietf.org/html/rfc1034>`__
+            standard with a length limit of 63 characters.
+            Otherwise, an INVALID_ARGUMENT error is
+            returned.
     """
 
     parent: str = proto.Field(
@@ -118,17 +119,20 @@ class DeleteEngineRequest(proto.Message):
     Attributes:
         name (str):
             Required. Full resource name of
-            [Engine][google.cloud.discoveryengine.v1beta.Engine], such
-            as
+            [Engine][google.cloud.discoveryengine.v1beta.Engine],
+            such as
             ``projects/{project}/locations/{location}/collections/{collection_id}/engines/{engine_id}``.
 
-            If the caller does not have permission to delete the
+            If the caller does not have permission to delete
+            the
             [Engine][google.cloud.discoveryengine.v1beta.Engine],
-            regardless of whether or not it exists, a PERMISSION_DENIED
-            error is returned.
+            regardless of whether or not it exists, a
+            PERMISSION_DENIED error is returned.
 
-            If the [Engine][google.cloud.discoveryengine.v1beta.Engine]
-            to delete does not exist, a NOT_FOUND error is returned.
+            If the
+            [Engine][google.cloud.discoveryengine.v1beta.Engine]
+            to delete does not exist, a NOT_FOUND error is
+            returned.
     """
 
     name: str = proto.Field(
@@ -171,8 +175,8 @@ class GetEngineRequest(proto.Message):
     Attributes:
         name (str):
             Required. Full resource name of
-            [Engine][google.cloud.discoveryengine.v1beta.Engine], such
-            as
+            [Engine][google.cloud.discoveryengine.v1beta.Engine],
+            such as
             ``projects/{project}/locations/{location}/collections/{collection_id}/engines/{engine_id}``.
     """
 
@@ -254,23 +258,26 @@ class UpdateEngineRequest(proto.Message):
     Attributes:
         engine (google.cloud.discoveryengine_v1beta.types.Engine):
             Required. The
-            [Engine][google.cloud.discoveryengine.v1beta.Engine] to
-            update.
+            [Engine][google.cloud.discoveryengine.v1beta.Engine]
+            to update.
 
-            If the caller does not have permission to update the
+            If the caller does not have permission to update
+            the
             [Engine][google.cloud.discoveryengine.v1beta.Engine],
-            regardless of whether or not it exists, a PERMISSION_DENIED
-            error is returned.
+            regardless of whether or not it exists, a
+            PERMISSION_DENIED error is returned.
 
-            If the [Engine][google.cloud.discoveryengine.v1beta.Engine]
-            to update does not exist, a NOT_FOUND error is returned.
+            If the
+            [Engine][google.cloud.discoveryengine.v1beta.Engine]
+            to update does not exist, a NOT_FOUND error is
+            returned.
         update_mask (google.protobuf.field_mask_pb2.FieldMask):
             Indicates which fields in the provided
-            [Engine][google.cloud.discoveryengine.v1beta.Engine] to
-            update.
+            [Engine][google.cloud.discoveryengine.v1beta.Engine]
+            to update.
 
-            If an unsupported or unknown field is provided, an
-            INVALID_ARGUMENT error is returned.
+            If an unsupported or unknown field is provided,
+            an INVALID_ARGUMENT error is returned.
     """
 
     engine: gcd_engine.Engine = proto.Field(
@@ -290,7 +297,9 @@ class PauseEngineRequest(proto.Message):
 
     Attributes:
         name (str):
-            Required. The name of the engine to pause. Format:
+            Required. The name of the engine to pause.
+            Format:
+
             ``projects/{project}/locations/{location}/collections/{collection_id}/engines/{engine_id}``
     """
 
@@ -305,7 +314,9 @@ class ResumeEngineRequest(proto.Message):
 
     Attributes:
         name (str):
-            Required. The name of the engine to resume. Format:
+            Required. The name of the engine to resume.
+            Format:
+
             ``projects/{project}/locations/{location}/collections/{collection_id}/engines/{engine_id}``
     """
 
@@ -321,7 +332,9 @@ class TuneEngineRequest(proto.Message):
 
     Attributes:
         name (str):
-            Required. The resource name of the engine to tune. Format:
+            Required. The resource name of the engine to
+            tune. Format:
+
             ``projects/{project}/locations/{location}/collections/{collection_id}/engines/{engine_id}``
     """
 
@@ -336,8 +349,9 @@ class TuneEngineMetadata(proto.Message):
 
     Attributes:
         engine (str):
-            Required. The resource name of the engine that this tune
-            applies to. Format:
+            Required. The resource name of the engine that
+            this tune applies to. Format:
+
             ``projects/{project}/locations/{location}/collections/{collection_id}/engines/{engine_id}``
     """
 

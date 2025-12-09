@@ -358,18 +358,20 @@ class SearchServiceGrpcTransport(SearchServiceTransport):
         Performs a search. Similar to the
         [SearchService.Search][google.cloud.discoveryengine.v1beta.SearchService.Search]
         method, but a lite version that allows API key for
-        authentication, where OAuth and IAM checks are not required.
+        authentication, where OAuth and IAM checks are not
+        required.
 
-        Only public website search is supported by this method. If data
-        stores and engines not associated with public website search are
-        specified, a ``FAILED_PRECONDITION`` error is returned.
+        Only public website search is supported by this method.
+        If data stores and engines not associated with public
+        website search are specified, a ``FAILED_PRECONDITION``
+        error is returned.
 
-        This method can be used for easy onboarding without having to
-        implement an authentication backend. However, it is strongly
-        recommended to use
+        This method can be used for easy onboarding without
+        having to implement an authentication backend. However,
+        it is strongly recommended to use
         [SearchService.Search][google.cloud.discoveryengine.v1beta.SearchService.Search]
-        instead with required OAuth and IAM checks to provide better
-        data security.
+        instead with required OAuth and IAM checks to provide
+        better data security.
 
         Returns:
             Callable[[~.SearchRequest],

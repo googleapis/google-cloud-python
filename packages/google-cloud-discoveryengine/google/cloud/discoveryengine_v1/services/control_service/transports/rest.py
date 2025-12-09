@@ -537,11 +537,12 @@ class ControlServiceRestTransport(_BaseControlServiceRestTransport):
 
             Returns:
                 ~.gcd_control.Control:
-                    Defines a conditioned behavior to employ during serving.
-                Must be attached to a
+                    Defines a conditioned behavior to employ
+                during serving. Must be attached to a
                 [ServingConfig][google.cloud.discoveryengine.v1.ServingConfig]
-                to be considered at serving time. Permitted actions
-                dependent on ``SolutionType``.
+                to be considered at serving time.
+                Permitted actions dependent on
+                ``SolutionType``.
 
             """
 
@@ -797,11 +798,12 @@ class ControlServiceRestTransport(_BaseControlServiceRestTransport):
 
             Returns:
                 ~.control.Control:
-                    Defines a conditioned behavior to employ during serving.
-                Must be attached to a
+                    Defines a conditioned behavior to employ
+                during serving. Must be attached to a
                 [ServingConfig][google.cloud.discoveryengine.v1.ServingConfig]
-                to be considered at serving time. Permitted actions
-                dependent on ``SolutionType``.
+                to be considered at serving time.
+                Permitted actions dependent on
+                ``SolutionType``.
 
             """
 
@@ -1095,11 +1097,12 @@ class ControlServiceRestTransport(_BaseControlServiceRestTransport):
 
             Returns:
                 ~.gcd_control.Control:
-                    Defines a conditioned behavior to employ during serving.
-                Must be attached to a
+                    Defines a conditioned behavior to employ
+                during serving. Must be attached to a
                 [ServingConfig][google.cloud.discoveryengine.v1.ServingConfig]
-                to be considered at serving time. Permitted actions
-                dependent on ``SolutionType``.
+                to be considered at serving time.
+                Permitted actions dependent on
+                ``SolutionType``.
 
             """
 

@@ -875,8 +875,8 @@ class AssistantServiceClient(metaclass=AssistantServiceClientMeta):
         Returns:
             Iterable[google.cloud.discoveryengine_v1.types.StreamAssistResponse]:
                 Response for the
-                   [AssistantService.StreamAssist][google.cloud.discoveryengine.v1.AssistantService.StreamAssist]
-                   method.
+                [AssistantService.StreamAssist][google.cloud.discoveryengine.v1.AssistantService.StreamAssist]
+                method.
 
         """
         # Create or coerce a protobuf request object.

@@ -54,9 +54,10 @@ class Condition(proto.Message):
             value (str):
                 The specific query value to match against
 
-                Must be lowercase, must be UTF-8. Can have at most 3 space
-                separated terms if full_match is true. Cannot be an empty
-                string. Maximum length of 5000 characters.
+                Must be lowercase, must be UTF-8.
+                Can have at most 3 space separated terms if
+                full_match is true. Cannot be an empty string.
+                Maximum length of 5000 characters.
             full_match (bool):
                 Whether the search query needs to exactly
                 match the query term.
@@ -110,8 +111,8 @@ class Condition(proto.Message):
 
 
 class Control(proto.Message):
-    r"""Defines a conditioned behavior to employ during serving. Must be
-    attached to a
+    r"""Defines a conditioned behavior to employ during serving.
+    Must be attached to a
     [ServingConfig][google.cloud.discoveryengine.v1alpha.ServingConfig]
     to be considered at serving time. Permitted actions dependent on
     ``SolutionType``.
@@ -154,19 +155,20 @@ class Control(proto.Message):
         associated_serving_config_ids (MutableSequence[str]):
             Output only. List of all
             [ServingConfig][google.cloud.discoveryengine.v1alpha.ServingConfig]
-            IDs this control is attached to. May take up to 10 minutes
-            to update after changes.
+            IDs this control is attached to. May take up to
+            10 minutes to update after changes.
         solution_type (google.cloud.discoveryengine_v1alpha.types.SolutionType):
             Required. Immutable. What solution the
             control belongs to.
             Must be compatible with vertical of resource.
             Otherwise an INVALID ARGUMENT error is thrown.
         use_cases (MutableSequence[google.cloud.discoveryengine_v1alpha.types.SearchUseCase]):
-            Specifies the use case for the control. Affects what
-            condition fields can be set. Only applies to
+            Specifies the use case for the control.
+            Affects what condition fields can be set.
+            Only applies to
             [SOLUTION_TYPE_SEARCH][google.cloud.discoveryengine.v1alpha.SolutionType.SOLUTION_TYPE_SEARCH].
-            Currently only allow one use case per control. Must be set
-            when solution_type is
+            Currently only allow one use case per control.
+            Must be set when solution_type is
             [SolutionType.SOLUTION_TYPE_SEARCH][google.cloud.discoveryengine.v1alpha.SolutionType.SOLUTION_TYPE_SEARCH].
         conditions (MutableSequence[google.cloud.discoveryengine_v1alpha.types.Condition]):
             Determines when the associated action will
@@ -182,8 +184,9 @@ class Control(proto.Message):
 
         Attributes:
             boost (float):
-                Required. Strength of the boost, which should be in [-1, 1].
-                Negative boost means demotion. Default is 0.0 (No-op).
+                Required. Strength of the boost, which should be
+                in [-1, 1]. Negative boost means demotion.
+                Default is 0.0 (No-op).
             filter (str):
                 Required. Specifies which products to apply
                 the boost to.
@@ -194,8 +197,9 @@ class Control(proto.Message):
                 Maximum length is 5000 characters.
                 Otherwise an INVALID ARGUMENT error is thrown.
             data_store (str):
-                Required. Specifies which data store's documents can be
-                boosted by this control. Full data store name e.g.
+                Required. Specifies which data store's documents
+                can be boosted by this control. Full data store
+                name e.g.
                 projects/123/locations/global/collections/default_collection/dataStores/default_data_store
         """
 
@@ -227,8 +231,9 @@ class Control(proto.Message):
                 Maximum length is 5000 characters. Otherwise an
                 INVALID ARGUMENT error is thrown.
             data_store (str):
-                Required. Specifies which data store's documents can be
-                filtered by this control. Full data store name e.g.
+                Required. Specifies which data store's documents
+                can be filtered by this control. Full data store
+                name e.g.
                 projects/123/locations/global/collections/default_collection/dataStores/default_data_store
         """
 

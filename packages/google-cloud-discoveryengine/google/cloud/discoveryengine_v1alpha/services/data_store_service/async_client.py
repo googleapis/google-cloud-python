@@ -333,12 +333,12 @@ class DataStoreServiceAsyncClient:
     ) -> operation_async.AsyncOperation:
         r"""Creates a
         [DataStore][google.cloud.discoveryengine.v1alpha.DataStore].
-
         DataStore is for storing
-        [Documents][google.cloud.discoveryengine.v1alpha.Document]. To
-        serve these documents for Search, or Recommendation use case, an
-        [Engine][google.cloud.discoveryengine.v1alpha.Engine] needs to
-        be created separately.
+        [Documents][google.cloud.discoveryengine.v1alpha.Document].
+        To serve these documents for Search, or Recommendation
+        use case, an
+        [Engine][google.cloud.discoveryengine.v1alpha.Engine]
+        needs to be created separately.
 
         .. code-block:: python
 
@@ -381,7 +381,8 @@ class DataStoreServiceAsyncClient:
                 [DataStoreService.CreateDataStore][google.cloud.discoveryengine.v1alpha.DataStoreService.CreateDataStore]
                 method.
             parent (:class:`str`):
-                Required. The parent resource name, such as
+                Required. The parent resource name, such
+                as
                 ``projects/{project}/locations/{location}/collections/{collection}``.
 
                 This corresponds to the ``parent`` field
@@ -398,14 +399,16 @@ class DataStoreServiceAsyncClient:
             data_store_id (:class:`str`):
                 Required. The ID to use for the
                 [DataStore][google.cloud.discoveryengine.v1alpha.DataStore],
-                which will become the final component of the
+                which will become the final component of
+                the
                 [DataStore][google.cloud.discoveryengine.v1alpha.DataStore]'s
                 resource name.
 
-                This field must conform to
-                `RFC-1034 <https://tools.ietf.org/html/rfc1034>`__
-                standard with a length limit of 63 characters.
-                Otherwise, an INVALID_ARGUMENT error is returned.
+                This field must conform to `RFC-1034
+                <https://tools.ietf.org/html/rfc1034>`__
+                standard with a length limit of 63
+                characters. Otherwise, an
+                INVALID_ARGUMENT error is returned.
 
                 This corresponds to the ``data_store_id`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -420,12 +423,13 @@ class DataStoreServiceAsyncClient:
 
         Returns:
             google.api_core.operation_async.AsyncOperation:
-                An object representing a long-running operation.
-
-                The result type for the operation will be
-                :class:`google.cloud.discoveryengine_v1alpha.types.DataStore`
-                DataStore captures global settings and configs at the
-                DataStore level.
+                An object representing a long-running
+                operation.
+                The result type for the operation will
+                be
+                :class:``google.cloud.discoveryengine_v1alpha.types.DataStore``
+                DataStore captures global settings and
+                configs at the DataStore level.
 
         """
         # Create or coerce a protobuf request object.
@@ -538,14 +542,16 @@ class DataStoreServiceAsyncClient:
                 such as
                 ``projects/{project}/locations/{location}/collections/{collection_id}/dataStores/{data_store_id}``.
 
-                If the caller does not have permission to access the
+                If the caller does not have permission
+                to access the
                 [DataStore][google.cloud.discoveryengine.v1alpha.DataStore],
-                regardless of whether or not it exists, a
-                PERMISSION_DENIED error is returned.
+                regardless of whether or not it exists,
+                a PERMISSION_DENIED error is returned.
 
                 If the requested
                 [DataStore][google.cloud.discoveryengine.v1alpha.DataStore]
-                does not exist, a NOT_FOUND error is returned.
+                does not exist, a NOT_FOUND error is
+                returned.
 
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -659,14 +665,16 @@ class DataStoreServiceAsyncClient:
                 [DataStoreService.ListDataStores][google.cloud.discoveryengine.v1alpha.DataStoreService.ListDataStores]
                 method.
             parent (:class:`str`):
-                Required. The parent branch resource name, such as
+                Required. The parent branch resource
+                name, such as
                 ``projects/{project}/locations/{location}/collections/{collection_id}``.
 
-                If the caller does not have permission to list
+                If the caller does not have permission
+                to list
                 [DataStore][google.cloud.discoveryengine.v1alpha.DataStore]s
-                under this location, regardless of whether or not this
-                data store exists, a PERMISSION_DENIED error is
-                returned.
+                under this location, regardless of
+                whether or not this data store exists, a
+                PERMISSION_DENIED error is returned.
 
                 This corresponds to the ``parent`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -682,11 +690,12 @@ class DataStoreServiceAsyncClient:
         Returns:
             google.cloud.discoveryengine_v1alpha.services.data_store_service.pagers.ListDataStoresAsyncPager:
                 Response message for
-                   [DataStoreService.ListDataStores][google.cloud.discoveryengine.v1alpha.DataStoreService.ListDataStores]
-                   method.
+                [DataStoreService.ListDataStores][google.cloud.discoveryengine.v1alpha.DataStoreService.ListDataStores]
+                method.
 
-                Iterating over this object will yield results and
-                resolve additional pages automatically.
+                Iterating over this object will yield
+                results and resolve additional pages
+                automatically.
 
         """
         # Create or coerce a protobuf request object.
@@ -804,14 +813,16 @@ class DataStoreServiceAsyncClient:
                 such as
                 ``projects/{project}/locations/{location}/collections/{collection_id}/dataStores/{data_store_id}``.
 
-                If the caller does not have permission to delete the
+                If the caller does not have permission
+                to delete the
                 [DataStore][google.cloud.discoveryengine.v1alpha.DataStore],
-                regardless of whether or not it exists, a
-                PERMISSION_DENIED error is returned.
+                regardless of whether or not it exists,
+                a PERMISSION_DENIED error is returned.
 
                 If the
                 [DataStore][google.cloud.discoveryengine.v1alpha.DataStore]
-                to delete does not exist, a NOT_FOUND error is returned.
+                to delete does not exist, a NOT_FOUND
+                error is returned.
 
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -826,18 +837,21 @@ class DataStoreServiceAsyncClient:
 
         Returns:
             google.api_core.operation_async.AsyncOperation:
-                An object representing a long-running operation.
+                An object representing a long-running
+                operation.
+                The result type for the operation will
+                be
+                :class:``google.protobuf.empty_pb2.Empty``
+                A generic empty message that you can
+                re-use to avoid defining duplicated
+                empty messages in your APIs. A typical
+                example is to use it as the request or
+                the response type of an API method. For
+                instance:
 
-                The result type for the operation will be :class:`google.protobuf.empty_pb2.Empty` A generic empty message that you can re-use to avoid defining duplicated
-                   empty messages in your APIs. A typical example is to
-                   use it as the request or the response type of an API
-                   method. For instance:
-
-                      service Foo {
-                         rpc Bar(google.protobuf.Empty) returns
-                         (google.protobuf.Empty);
-
-                      }
+                    service Foo {
+                      rpc Bar(google.protobuf.Empty)
+                returns (google.protobuf.Empty);     }
 
         """
         # Create or coerce a protobuf request object.
@@ -951,14 +965,16 @@ class DataStoreServiceAsyncClient:
                 [DataStore][google.cloud.discoveryengine.v1alpha.DataStore]
                 to update.
 
-                If the caller does not have permission to update the
+                If the caller does not have permission
+                to update the
                 [DataStore][google.cloud.discoveryengine.v1alpha.DataStore],
-                regardless of whether or not it exists, a
-                PERMISSION_DENIED error is returned.
+                regardless of whether or not it exists,
+                a PERMISSION_DENIED error is returned.
 
                 If the
                 [DataStore][google.cloud.discoveryengine.v1alpha.DataStore]
-                to update does not exist, a NOT_FOUND error is returned.
+                to update does not exist, a NOT_FOUND
+                error is returned.
 
                 This corresponds to the ``data_store`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -968,8 +984,9 @@ class DataStoreServiceAsyncClient:
                 [DataStore][google.cloud.discoveryengine.v1alpha.DataStore]
                 to update.
 
-                If an unsupported or unknown field is provided, an
-                INVALID_ARGUMENT error is returned.
+                If an unsupported or unknown field is
+                provided, an INVALID_ARGUMENT error is
+                returned.
 
                 This corresponds to the ``update_mask`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -1087,8 +1104,8 @@ class DataStoreServiceAsyncClient:
                 [DataStoreService.GetDocumentProcessingConfig][google.cloud.discoveryengine.v1alpha.DataStoreService.GetDocumentProcessingConfig]
                 method.
             name (:class:`str`):
-                Required. Full DocumentProcessingConfig resource name.
-                Format:
+                Required. Full DocumentProcessingConfig
+                resource name. Format:
                 ``projects/{project_number}/locations/{location_id}/collections/{collection_id}/dataStores/{data_store_id}/documentProcessingConfig``
 
                 This corresponds to the ``name`` field
@@ -1105,13 +1122,13 @@ class DataStoreServiceAsyncClient:
         Returns:
             google.cloud.discoveryengine_v1alpha.types.DocumentProcessingConfig:
                 A singleton resource of
-                   [DataStore][google.cloud.discoveryengine.v1alpha.DataStore].
-                   It's empty when
-                   [DataStore][google.cloud.discoveryengine.v1alpha.DataStore]
-                   is created, which defaults to digital parser. The
-                   first call to
-                   [DataStoreService.UpdateDocumentProcessingConfig][google.cloud.discoveryengine.v1alpha.DataStoreService.UpdateDocumentProcessingConfig]
-                   method will initialize the config.
+                [DataStore][google.cloud.discoveryengine.v1alpha.DataStore].
+                It's empty when
+                [DataStore][google.cloud.discoveryengine.v1alpha.DataStore]
+                is created, which defaults to digital
+                parser. The first call to
+                [DataStoreService.UpdateDocumentProcessingConfig][google.cloud.discoveryengine.v1alpha.DataStoreService.UpdateDocumentProcessingConfig]
+                method will initialize the config.
 
         """
         # Create or coerce a protobuf request object.
@@ -1185,8 +1202,8 @@ class DataStoreServiceAsyncClient:
         is a singleon resource of
         [DataStore][google.cloud.discoveryengine.v1alpha.DataStore].
         It's empty when
-        [DataStore][google.cloud.discoveryengine.v1alpha.DataStore] is
-        created. The first call to this method will set up
+        [DataStore][google.cloud.discoveryengine.v1alpha.DataStore]
+        is created. The first call to this method will set up
         [DocumentProcessingConfig][google.cloud.discoveryengine.v1alpha.DocumentProcessingConfig].
 
         .. code-block:: python
@@ -1224,13 +1241,16 @@ class DataStoreServiceAsyncClient:
                 [DocumentProcessingConfig][google.cloud.discoveryengine.v1alpha.DocumentProcessingConfig]
                 to update.
 
-                If the caller does not have permission to update the
+                If the caller does not have permission
+                to update the
                 [DocumentProcessingConfig][google.cloud.discoveryengine.v1alpha.DocumentProcessingConfig],
-                then a PERMISSION_DENIED error is returned.
+                then a PERMISSION_DENIED error is
+                returned.
 
                 If the
                 [DocumentProcessingConfig][google.cloud.discoveryengine.v1alpha.DocumentProcessingConfig]
-                to update does not exist, a NOT_FOUND error is returned.
+                to update does not exist, a NOT_FOUND
+                error is returned.
 
                 This corresponds to the ``document_processing_config`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -1238,11 +1258,14 @@ class DataStoreServiceAsyncClient:
             update_mask (:class:`google.protobuf.field_mask_pb2.FieldMask`):
                 Indicates which fields in the provided
                 [DocumentProcessingConfig][google.cloud.discoveryengine.v1alpha.DocumentProcessingConfig]
-                to update. The following are the only supported fields:
+                to update. The following are the only
+                supported fields:
 
-                - [DocumentProcessingConfig.ocr_config][google.cloud.discoveryengine.v1alpha.DocumentProcessingConfig.ocr_config]
+                -
+                  [DocumentProcessingConfig.ocr_config][google.cloud.discoveryengine.v1alpha.DocumentProcessingConfig.ocr_config]
 
-                If not set, all supported fields are updated.
+                If not set, all supported fields are
+                updated.
 
                 This corresponds to the ``update_mask`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -1258,13 +1281,13 @@ class DataStoreServiceAsyncClient:
         Returns:
             google.cloud.discoveryengine_v1alpha.types.DocumentProcessingConfig:
                 A singleton resource of
-                   [DataStore][google.cloud.discoveryengine.v1alpha.DataStore].
-                   It's empty when
-                   [DataStore][google.cloud.discoveryengine.v1alpha.DataStore]
-                   is created, which defaults to digital parser. The
-                   first call to
-                   [DataStoreService.UpdateDocumentProcessingConfig][google.cloud.discoveryengine.v1alpha.DataStoreService.UpdateDocumentProcessingConfig]
-                   method will initialize the config.
+                [DataStore][google.cloud.discoveryengine.v1alpha.DataStore].
+                It's empty when
+                [DataStore][google.cloud.discoveryengine.v1alpha.DataStore]
+                is created, which defaults to digital
+                parser. The first call to
+                [DataStoreService.UpdateDocumentProcessingConfig][google.cloud.discoveryengine.v1alpha.DataStoreService.UpdateDocumentProcessingConfig]
+                method will initialize the config.
 
         """
         # Create or coerce a protobuf request object.

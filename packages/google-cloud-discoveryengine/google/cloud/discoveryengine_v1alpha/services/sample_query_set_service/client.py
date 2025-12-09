@@ -798,14 +798,16 @@ class SampleQuerySetServiceClient(metaclass=SampleQuerySetServiceClientMeta):
                 such as
                 ``projects/{project}/locations/{location}/sampleQuerySets/{sample_query_set}``.
 
-                If the caller does not have permission to access the
+                If the caller does not have permission
+                to access the
                 [SampleQuerySet][google.cloud.discoveryengine.v1alpha.SampleQuerySet],
-                regardless of whether or not it exists, a
-                PERMISSION_DENIED error is returned.
+                regardless of whether or not it exists,
+                a PERMISSION_DENIED error is returned.
 
                 If the requested
                 [SampleQuerySet][google.cloud.discoveryengine.v1alpha.SampleQuerySet]
-                does not exist, a NOT_FOUND error is returned.
+                does not exist, a NOT_FOUND error is
+                returned.
 
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -919,14 +921,16 @@ class SampleQuerySetServiceClient(metaclass=SampleQuerySetServiceClientMeta):
                 [SampleQuerySetService.ListSampleQuerySets][google.cloud.discoveryengine.v1alpha.SampleQuerySetService.ListSampleQuerySets]
                 method.
             parent (str):
-                Required. The parent location resource name, such as
+                Required. The parent location resource
+                name, such as
                 ``projects/{project}/locations/{location}``.
 
-                If the caller does not have permission to list
+                If the caller does not have permission
+                to list
                 [SampleQuerySet][google.cloud.discoveryengine.v1alpha.SampleQuerySet]s
-                under this location, regardless of whether or not this
-                location exists, a ``PERMISSION_DENIED`` error is
-                returned.
+                under this location, regardless of
+                whether or not this location exists, a
+                ``PERMISSION_DENIED`` error is returned.
 
                 This corresponds to the ``parent`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -942,11 +946,12 @@ class SampleQuerySetServiceClient(metaclass=SampleQuerySetServiceClientMeta):
         Returns:
             google.cloud.discoveryengine_v1alpha.services.sample_query_set_service.pagers.ListSampleQuerySetsPager:
                 Response message for
-                   [SampleQuerySetService.ListSampleQuerySets][google.cloud.discoveryengine.v1alpha.SampleQuerySetService.ListSampleQuerySets]
-                   method.
+                [SampleQuerySetService.ListSampleQuerySets][google.cloud.discoveryengine.v1alpha.SampleQuerySetService.ListSampleQuerySets]
+                method.
 
-                Iterating over this object will yield results and
-                resolve additional pages automatically.
+                Iterating over this object will yield
+                results and resolve additional pages
+                automatically.
 
         """
         # Create or coerce a protobuf request object.
@@ -1059,7 +1064,8 @@ class SampleQuerySetServiceClient(metaclass=SampleQuerySetServiceClientMeta):
                 [SampleQuerySetService.CreateSampleQuerySet][google.cloud.discoveryengine.v1alpha.SampleQuerySetService.CreateSampleQuerySet]
                 method.
             parent (str):
-                Required. The parent resource name, such as
+                Required. The parent resource name, such
+                as
                 ``projects/{project}/locations/{location}``.
 
                 This corresponds to the ``parent`` field
@@ -1076,24 +1082,29 @@ class SampleQuerySetServiceClient(metaclass=SampleQuerySetServiceClientMeta):
             sample_query_set_id (str):
                 Required. The ID to use for the
                 [SampleQuerySet][google.cloud.discoveryengine.v1alpha.SampleQuerySet],
-                which will become the final component of the
+                which will become the final component of
+                the
                 [SampleQuerySet.name][google.cloud.discoveryengine.v1alpha.SampleQuerySet.name].
 
-                If the caller does not have permission to create the
+                If the caller does not have permission
+                to create the
                 [SampleQuerySet][google.cloud.discoveryengine.v1alpha.SampleQuerySet],
-                regardless of whether or not it exists, a
-                ``PERMISSION_DENIED`` error is returned.
+                regardless of whether or not it exists,
+                a ``PERMISSION_DENIED`` error is
+                returned.
 
                 This field must be unique among all
                 [SampleQuerySet][google.cloud.discoveryengine.v1alpha.SampleQuerySet]s
                 with the same
                 [parent][google.cloud.discoveryengine.v1alpha.CreateSampleQuerySetRequest.parent].
-                Otherwise, an ``ALREADY_EXISTS`` error is returned.
+                Otherwise, an ``ALREADY_EXISTS`` error
+                is returned.
 
-                This field must conform to
-                `RFC-1034 <https://tools.ietf.org/html/rfc1034>`__
-                standard with a length limit of 63 characters.
-                Otherwise, an ``INVALID_ARGUMENT`` error is returned.
+                This field must conform to `RFC-1034
+                <https://tools.ietf.org/html/rfc1034>`__
+                standard with a length limit of 63
+                characters. Otherwise, an
+                ``INVALID_ARGUMENT`` error is returned.
 
                 This corresponds to the ``sample_query_set_id`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -1216,17 +1227,19 @@ class SampleQuerySetServiceClient(metaclass=SampleQuerySetServiceClientMeta):
                 [SampleQuerySetService.UpdateSampleQuerySet][google.cloud.discoveryengine.v1alpha.SampleQuerySetService.UpdateSampleQuerySet]
                 method.
             sample_query_set (google.cloud.discoveryengine_v1alpha.types.SampleQuerySet):
-                Required. The sample query set to update.
-
-                If the caller does not have permission to update the
+                Required. The sample query set to
+                update.
+                If the caller does not have permission
+                to update the
                 [SampleQuerySet][google.cloud.discoveryengine.v1alpha.SampleQuerySet],
-                regardless of whether or not it exists, a
-                ``PERMISSION_DENIED`` error is returned.
+                regardless of whether or not it exists,
+                a ``PERMISSION_DENIED`` error is
+                returned.
 
                 If the
                 [SampleQuerySet][google.cloud.discoveryengine.v1alpha.SampleQuerySet]
-                to update does not exist a ``NOT_FOUND`` error is
-                returned.
+                to update does not exist a ``NOT_FOUND``
+                error is returned.
 
                 This corresponds to the ``sample_query_set`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -1356,15 +1369,17 @@ class SampleQuerySetServiceClient(metaclass=SampleQuerySetServiceClientMeta):
                 such as
                 ``projects/{project}/locations/{location}/sampleQuerySets/{sample_query_set}``.
 
-                If the caller does not have permission to delete the
+                If the caller does not have permission
+                to delete the
                 [SampleQuerySet][google.cloud.discoveryengine.v1alpha.SampleQuerySet],
-                regardless of whether or not it exists, a
-                ``PERMISSION_DENIED`` error is returned.
+                regardless of whether or not it exists,
+                a ``PERMISSION_DENIED`` error is
+                returned.
 
                 If the
                 [SampleQuerySet][google.cloud.discoveryengine.v1alpha.SampleQuerySet]
-                to delete does not exist, a ``NOT_FOUND`` error is
-                returned.
+                to delete does not exist, a
+                ``NOT_FOUND`` error is returned.
 
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this

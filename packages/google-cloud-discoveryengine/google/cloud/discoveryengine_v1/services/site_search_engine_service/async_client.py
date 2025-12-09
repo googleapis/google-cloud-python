@@ -368,9 +368,10 @@ class SiteSearchEngineServiceAsyncClient:
                 such as
                 ``projects/{project}/locations/{location}/collections/{collection}/dataStores/{data_store}/siteSearchEngine``.
 
-                If the caller does not have permission to access the
-                [SiteSearchEngine], regardless of whether or not it
-                exists, a PERMISSION_DENIED error is returned.
+                If the caller does not have permission
+                to access the [SiteSearchEngine],
+                regardless of whether or not it exists,
+                a PERMISSION_DENIED error is returned.
 
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -523,10 +524,11 @@ class SiteSearchEngineServiceAsyncClient:
 
         Returns:
             google.api_core.operation_async.AsyncOperation:
-                An object representing a long-running operation.
-
-                The result type for the operation will be
-                :class:`google.cloud.discoveryengine_v1.types.TargetSite`
+                An object representing a long-running
+                operation.
+                The result type for the operation will
+                be
+                :class:``google.cloud.discoveryengine_v1.types.TargetSite``
                 A target site for the SiteSearchEngine.
 
         """
@@ -599,7 +601,8 @@ class SiteSearchEngineServiceAsyncClient:
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> operation_async.AsyncOperation:
-        r"""Creates [TargetSite][google.cloud.discoveryengine.v1.TargetSite]
+        r"""Creates
+        [TargetSite][google.cloud.discoveryengine.v1.TargetSite]
         in a batch.
 
         .. code-block:: python
@@ -652,11 +655,14 @@ class SiteSearchEngineServiceAsyncClient:
 
         Returns:
             google.api_core.operation_async.AsyncOperation:
-                An object representing a long-running operation.
-
-                The result type for the operation will be :class:`google.cloud.discoveryengine_v1.types.BatchCreateTargetSitesResponse` Response message for
-                   [SiteSearchEngineService.BatchCreateTargetSites][google.cloud.discoveryengine.v1.SiteSearchEngineService.BatchCreateTargetSites]
-                   method.
+                An object representing a long-running
+                operation.
+                The result type for the operation will
+                be
+                :class:``google.cloud.discoveryengine_v1.types.BatchCreateTargetSitesResponse``
+                Response message for
+                [SiteSearchEngineService.BatchCreateTargetSites][google.cloud.discoveryengine.v1.SiteSearchEngineService.BatchCreateTargetSites]
+                method.
 
         """
         # Create or coerce a protobuf request object.
@@ -712,7 +718,8 @@ class SiteSearchEngineServiceAsyncClient:
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> site_search_engine.TargetSite:
-        r"""Gets a [TargetSite][google.cloud.discoveryengine.v1.TargetSite].
+        r"""Gets a
+        [TargetSite][google.cloud.discoveryengine.v1.TargetSite].
 
         .. code-block:: python
 
@@ -751,14 +758,16 @@ class SiteSearchEngineServiceAsyncClient:
                 such as
                 ``projects/{project}/locations/{location}/collections/{collection}/dataStores/{data_store}/siteSearchEngine/targetSites/{target_site}``.
 
-                If the caller does not have permission to access the
+                If the caller does not have permission
+                to access the
                 [TargetSite][google.cloud.discoveryengine.v1.TargetSite],
-                regardless of whether or not it exists, a
-                PERMISSION_DENIED error is returned.
+                regardless of whether or not it exists,
+                a PERMISSION_DENIED error is returned.
 
                 If the requested
                 [TargetSite][google.cloud.discoveryengine.v1.TargetSite]
-                does not exist, a NOT_FOUND error is returned.
+                does not exist, a NOT_FOUND error is
+                returned.
 
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -879,15 +888,17 @@ class SiteSearchEngineServiceAsyncClient:
                 [SiteSearchEngineService.UpdateTargetSite][google.cloud.discoveryengine.v1.SiteSearchEngineService.UpdateTargetSite]
                 method.
             target_site (:class:`google.cloud.discoveryengine_v1.types.TargetSite`):
-                Required. The target site to update. If the caller does
-                not have permission to update the
+                Required. The target site to update.
+                If the caller does not have permission
+                to update the
                 [TargetSite][google.cloud.discoveryengine.v1.TargetSite],
-                regardless of whether or not it exists, a
-                PERMISSION_DENIED error is returned.
+                regardless of whether or not it exists,
+                a PERMISSION_DENIED error is returned.
 
                 If the
                 [TargetSite][google.cloud.discoveryengine.v1.TargetSite]
-                to update does not exist, a NOT_FOUND error is returned.
+                to update does not exist, a NOT_FOUND
+                error is returned.
 
                 This corresponds to the ``target_site`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -902,10 +913,11 @@ class SiteSearchEngineServiceAsyncClient:
 
         Returns:
             google.api_core.operation_async.AsyncOperation:
-                An object representing a long-running operation.
-
-                The result type for the operation will be
-                :class:`google.cloud.discoveryengine_v1.types.TargetSite`
+                An object representing a long-running
+                operation.
+                The result type for the operation will
+                be
+                :class:``google.cloud.discoveryengine_v1.types.TargetSite``
                 A target site for the SiteSearchEngine.
 
         """
@@ -1023,14 +1035,16 @@ class SiteSearchEngineServiceAsyncClient:
                 such as
                 ``projects/{project}/locations/{location}/collections/{collection}/dataStores/{data_store}/siteSearchEngine/targetSites/{target_site}``.
 
-                If the caller does not have permission to access the
+                If the caller does not have permission
+                to access the
                 [TargetSite][google.cloud.discoveryengine.v1.TargetSite],
-                regardless of whether or not it exists, a
-                PERMISSION_DENIED error is returned.
+                regardless of whether or not it exists,
+                a PERMISSION_DENIED error is returned.
 
                 If the requested
                 [TargetSite][google.cloud.discoveryengine.v1.TargetSite]
-                does not exist, a NOT_FOUND error is returned.
+                does not exist, a NOT_FOUND error is
+                returned.
 
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -1045,18 +1059,21 @@ class SiteSearchEngineServiceAsyncClient:
 
         Returns:
             google.api_core.operation_async.AsyncOperation:
-                An object representing a long-running operation.
+                An object representing a long-running
+                operation.
+                The result type for the operation will
+                be
+                :class:``google.protobuf.empty_pb2.Empty``
+                A generic empty message that you can
+                re-use to avoid defining duplicated
+                empty messages in your APIs. A typical
+                example is to use it as the request or
+                the response type of an API method. For
+                instance:
 
-                The result type for the operation will be :class:`google.protobuf.empty_pb2.Empty` A generic empty message that you can re-use to avoid defining duplicated
-                   empty messages in your APIs. A typical example is to
-                   use it as the request or the response type of an API
-                   method. For instance:
-
-                      service Foo {
-                         rpc Bar(google.protobuf.Empty) returns
-                         (google.protobuf.Empty);
-
-                      }
+                    service Foo {
+                      rpc Bar(google.protobuf.Empty)
+                returns (google.protobuf.Empty);     }
 
         """
         # Create or coerce a protobuf request object.
@@ -1163,14 +1180,16 @@ class SiteSearchEngineServiceAsyncClient:
                 [SiteSearchEngineService.ListTargetSites][google.cloud.discoveryengine.v1.SiteSearchEngineService.ListTargetSites]
                 method.
             parent (:class:`str`):
-                Required. The parent site search engine resource name,
-                such as
+                Required. The parent site search engine
+                resource name, such as
                 ``projects/{project}/locations/{location}/collections/{collection}/dataStores/{data_store}/siteSearchEngine``.
 
-                If the caller does not have permission to list
+                If the caller does not have permission
+                to list
                 [TargetSite][google.cloud.discoveryengine.v1.TargetSite]s
-                under this site search engine, regardless of whether or
-                not this branch exists, a PERMISSION_DENIED error is
+                under this site search engine,
+                regardless of whether or not this branch
+                exists, a PERMISSION_DENIED error is
                 returned.
 
                 This corresponds to the ``parent`` field
@@ -1187,11 +1206,12 @@ class SiteSearchEngineServiceAsyncClient:
         Returns:
             google.cloud.discoveryengine_v1.services.site_search_engine_service.pagers.ListTargetSitesAsyncPager:
                 Response message for
-                   [SiteSearchEngineService.ListTargetSites][google.cloud.discoveryengine.v1.SiteSearchEngineService.ListTargetSites]
-                   method.
+                [SiteSearchEngineService.ListTargetSites][google.cloud.discoveryengine.v1.SiteSearchEngineService.ListTargetSites]
+                method.
 
-                Iterating over this object will yield results and
-                resolve additional pages automatically.
+                Iterating over this object will yield
+                results and resolve additional pages
+                automatically.
 
         """
         # Create or coerce a protobuf request object.
@@ -1266,7 +1286,8 @@ class SiteSearchEngineServiceAsyncClient:
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> operation_async.AsyncOperation:
-        r"""Creates a [Sitemap][google.cloud.discoveryengine.v1.Sitemap].
+        r"""Creates a
+        [Sitemap][google.cloud.discoveryengine.v1.Sitemap].
 
         .. code-block:: python
 
@@ -1318,8 +1339,8 @@ class SiteSearchEngineServiceAsyncClient:
                 should not be set.
             sitemap (:class:`google.cloud.discoveryengine_v1.types.Sitemap`):
                 Required. The
-                [Sitemap][google.cloud.discoveryengine.v1.Sitemap] to
-                create.
+                [Sitemap][google.cloud.discoveryengine.v1.Sitemap]
+                to create.
 
                 This corresponds to the ``sitemap`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -1334,11 +1355,12 @@ class SiteSearchEngineServiceAsyncClient:
 
         Returns:
             google.api_core.operation_async.AsyncOperation:
-                An object representing a long-running operation.
-
-                The result type for the operation will be
-                :class:`google.cloud.discoveryengine_v1.types.Sitemap` A
-                sitemap for the SiteSearchEngine.
+                An object representing a long-running
+                operation.
+                The result type for the operation will
+                be
+                :class:``google.cloud.discoveryengine_v1.types.Sitemap``
+                A sitemap for the SiteSearchEngine.
 
         """
         # Create or coerce a protobuf request object.
@@ -1411,7 +1433,8 @@ class SiteSearchEngineServiceAsyncClient:
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> operation_async.AsyncOperation:
-        r"""Deletes a [Sitemap][google.cloud.discoveryengine.v1.Sitemap].
+        r"""Deletes a
+        [Sitemap][google.cloud.discoveryengine.v1.Sitemap].
 
         .. code-block:: python
 
@@ -1450,18 +1473,20 @@ class SiteSearchEngineServiceAsyncClient:
                 method.
             name (:class:`str`):
                 Required. Full resource name of
-                [Sitemap][google.cloud.discoveryengine.v1.Sitemap], such
-                as
+                [Sitemap][google.cloud.discoveryengine.v1.Sitemap],
+                such as
                 ``projects/{project}/locations/{location}/collections/{collection}/dataStores/{data_store}/siteSearchEngine/sitemaps/{sitemap}``.
 
-                If the caller does not have permission to access the
+                If the caller does not have permission
+                to access the
                 [Sitemap][google.cloud.discoveryengine.v1.Sitemap],
-                regardless of whether or not it exists, a
-                PERMISSION_DENIED error is returned.
+                regardless of whether or not it exists,
+                a PERMISSION_DENIED error is returned.
 
                 If the requested
-                [Sitemap][google.cloud.discoveryengine.v1.Sitemap] does
-                not exist, a NOT_FOUND error is returned.
+                [Sitemap][google.cloud.discoveryengine.v1.Sitemap]
+                does not exist, a NOT_FOUND error is
+                returned.
 
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -1476,18 +1501,21 @@ class SiteSearchEngineServiceAsyncClient:
 
         Returns:
             google.api_core.operation_async.AsyncOperation:
-                An object representing a long-running operation.
+                An object representing a long-running
+                operation.
+                The result type for the operation will
+                be
+                :class:``google.protobuf.empty_pb2.Empty``
+                A generic empty message that you can
+                re-use to avoid defining duplicated
+                empty messages in your APIs. A typical
+                example is to use it as the request or
+                the response type of an API method. For
+                instance:
 
-                The result type for the operation will be :class:`google.protobuf.empty_pb2.Empty` A generic empty message that you can re-use to avoid defining duplicated
-                   empty messages in your APIs. A typical example is to
-                   use it as the request or the response type of an API
-                   method. For instance:
-
-                      service Foo {
-                         rpc Bar(google.protobuf.Empty) returns
-                         (google.protobuf.Empty);
-
-                      }
+                    service Foo {
+                      rpc Bar(google.protobuf.Empty)
+                returns (google.protobuf.Empty);     }
 
         """
         # Create or coerce a protobuf request object.
@@ -1558,7 +1586,8 @@ class SiteSearchEngineServiceAsyncClient:
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> site_search_engine_service.FetchSitemapsResponse:
-        r"""Fetch [Sitemap][google.cloud.discoveryengine.v1.Sitemap]s in a
+        r"""Fetch
+        [Sitemap][google.cloud.discoveryengine.v1.Sitemap]s in a
         [DataStore][google.cloud.discoveryengine.v1.DataStore].
 
         .. code-block:: python
@@ -1612,8 +1641,8 @@ class SiteSearchEngineServiceAsyncClient:
         Returns:
             google.cloud.discoveryengine_v1.types.FetchSitemapsResponse:
                 Response message for
-                   [SiteSearchEngineService.FetchSitemaps][google.cloud.discoveryengine.v1.SiteSearchEngineService.FetchSitemaps]
-                   method.
+                [SiteSearchEngineService.FetchSitemaps][google.cloud.discoveryengine.v1.SiteSearchEngineService.FetchSitemaps]
+                method.
 
         """
         # Create or coerce a protobuf request object.
@@ -1723,11 +1752,14 @@ class SiteSearchEngineServiceAsyncClient:
 
         Returns:
             google.api_core.operation_async.AsyncOperation:
-                An object representing a long-running operation.
-
-                The result type for the operation will be :class:`google.cloud.discoveryengine_v1.types.EnableAdvancedSiteSearchResponse` Response message for
-                   [SiteSearchEngineService.EnableAdvancedSiteSearch][google.cloud.discoveryengine.v1.SiteSearchEngineService.EnableAdvancedSiteSearch]
-                   method.
+                An object representing a long-running
+                operation.
+                The result type for the operation will
+                be
+                :class:``google.cloud.discoveryengine_v1.types.EnableAdvancedSiteSearchResponse``
+                Response message for
+                [SiteSearchEngineService.EnableAdvancedSiteSearch][google.cloud.discoveryengine.v1.SiteSearchEngineService.EnableAdvancedSiteSearch]
+                method.
 
         """
         # Create or coerce a protobuf request object.
@@ -1834,11 +1866,14 @@ class SiteSearchEngineServiceAsyncClient:
 
         Returns:
             google.api_core.operation_async.AsyncOperation:
-                An object representing a long-running operation.
-
-                The result type for the operation will be :class:`google.cloud.discoveryengine_v1.types.DisableAdvancedSiteSearchResponse` Response message for
-                   [SiteSearchEngineService.DisableAdvancedSiteSearch][google.cloud.discoveryengine.v1.SiteSearchEngineService.DisableAdvancedSiteSearch]
-                   method.
+                An object representing a long-running
+                operation.
+                The result type for the operation will
+                be
+                :class:``google.cloud.discoveryengine_v1.types.DisableAdvancedSiteSearchResponse``
+                Response message for
+                [SiteSearchEngineService.DisableAdvancedSiteSearch][google.cloud.discoveryengine.v1.SiteSearchEngineService.DisableAdvancedSiteSearch]
+                method.
 
         """
         # Create or coerce a protobuf request object.
@@ -1945,11 +1980,14 @@ class SiteSearchEngineServiceAsyncClient:
 
         Returns:
             google.api_core.operation_async.AsyncOperation:
-                An object representing a long-running operation.
-
-                The result type for the operation will be :class:`google.cloud.discoveryengine_v1.types.RecrawlUrisResponse` Response message for
-                   [SiteSearchEngineService.RecrawlUris][google.cloud.discoveryengine.v1.SiteSearchEngineService.RecrawlUris]
-                   method.
+                An object representing a long-running
+                operation.
+                The result type for the operation will
+                be
+                :class:``google.cloud.discoveryengine_v1.types.RecrawlUrisResponse``
+                Response message for
+                [SiteSearchEngineService.RecrawlUris][google.cloud.discoveryengine.v1.SiteSearchEngineService.RecrawlUris]
+                method.
 
         """
         # Create or coerce a protobuf request object.
@@ -2053,11 +2091,14 @@ class SiteSearchEngineServiceAsyncClient:
 
         Returns:
             google.api_core.operation_async.AsyncOperation:
-                An object representing a long-running operation.
-
-                The result type for the operation will be :class:`google.cloud.discoveryengine_v1.types.BatchVerifyTargetSitesResponse` Response message for
-                   [SiteSearchEngineService.BatchVerifyTargetSites][google.cloud.discoveryengine.v1.SiteSearchEngineService.BatchVerifyTargetSites]
-                   method.
+                An object representing a long-running
+                operation.
+                The result type for the operation will
+                be
+                :class:``google.cloud.discoveryengine_v1.types.BatchVerifyTargetSitesResponse``
+                Response message for
+                [SiteSearchEngineService.BatchVerifyTargetSites][google.cloud.discoveryengine.v1.SiteSearchEngineService.BatchVerifyTargetSites]
+                method.
 
         """
         # Create or coerce a protobuf request object.
@@ -2112,9 +2153,10 @@ class SiteSearchEngineServiceAsyncClient:
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> pagers.FetchDomainVerificationStatusAsyncPager:
-        r"""Returns list of target sites with its domain verification
-        status. This method can only be called under data store with
-        BASIC_SITE_SEARCH state at the moment.
+        r"""Returns list of target sites with its domain
+        verification status. This method can only be called
+        under data store with BASIC_SITE_SEARCH state at the
+        moment.
 
         .. code-block:: python
 
@@ -2159,11 +2201,12 @@ class SiteSearchEngineServiceAsyncClient:
         Returns:
             google.cloud.discoveryengine_v1.services.site_search_engine_service.pagers.FetchDomainVerificationStatusAsyncPager:
                 Response message for
-                   [SiteSearchEngineService.FetchDomainVerificationStatus][google.cloud.discoveryengine.v1.SiteSearchEngineService.FetchDomainVerificationStatus]
-                   method.
+                [SiteSearchEngineService.FetchDomainVerificationStatus][google.cloud.discoveryengine.v1.SiteSearchEngineService.FetchDomainVerificationStatus]
+                method.
 
-                Iterating over this object will yield results and
-                resolve additional pages automatically.
+                Iterating over this object will yield
+                results and resolve additional pages
+                automatically.
 
         """
         # Create or coerce a protobuf request object.

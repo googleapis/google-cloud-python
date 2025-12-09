@@ -57,5 +57,4 @@ def sample_import_sample_queries():
     # Handle the response
     print(response)
 
-
 # [END discoveryengine_v1alpha_generated_SampleQueryService_ImportSampleQueries_sync]

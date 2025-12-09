@@ -49,5 +49,4 @@ def sample_list_custom_models():
     # Handle the response
     print(response)
 
-
 # [END discoveryengine_v1beta_generated_SearchTuningService_ListCustomModels_sync]

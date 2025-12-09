@@ -773,13 +773,17 @@ class EstimateBillingServiceClient(metaclass=EstimateBillingServiceClientMeta):
 
         Returns:
             google.api_core.operation.Operation:
-                An object representing a long-running operation.
-
-                The result type for the operation will be :class:`google.cloud.discoveryengine_v1alpha.types.EstimateDataSizeResponse` Response of the EstimateDataSize request. If the long running
-                   operation was successful, then this message is
-                   returned by the
-                   google.longrunning.Operations.response field if the
-                   operation was successful.
+                An object representing a long-running
+                operation.
+                The result type for the operation will
+                be
+                :class:``google.cloud.discoveryengine_v1alpha.types.EstimateDataSizeResponse``
+                Response of the EstimateDataSize
+                request. If the long running operation
+                was successful, then this message is
+                returned by the
+                google.longrunning.Operations.response
+                field if the operation was successful.
 
         """
         # Create or coerce a protobuf request object.

@@ -46,7 +46,8 @@ class UpdateServingConfigRequest(proto.Message):
             [ServingConfig][google.cloud.discoveryengine.v1beta.ServingConfig]
             to update. The following are NOT supported:
 
-            - [ServingConfig.name][google.cloud.discoveryengine.v1beta.ServingConfig.name]
+            -
+              [ServingConfig.name][google.cloud.discoveryengine.v1beta.ServingConfig.name]
 
             If not set, all supported fields are updated.
     """
@@ -68,8 +69,8 @@ class GetServingConfigRequest(proto.Message):
 
     Attributes:
         name (str):
-            Required. The resource name of the ServingConfig to get.
-            Format:
+            Required. The resource name of the ServingConfig
+            to get. Format:
             ``projects/{project}/locations/{location}/collections/{collection}/engines/{engine}/servingConfigs/{serving_config_id}``
     """
 
@@ -84,7 +85,8 @@ class ListServingConfigsRequest(proto.Message):
 
     Attributes:
         parent (str):
-            Required. Full resource name of the parent resource. Format:
+            Required. Full resource name of the parent
+            resource. Format:
             ``projects/{project}/locations/{location}/collections/{collection}/engines/{engine}``
         page_size (int):
             Optional. Maximum number of results to
@@ -93,8 +95,8 @@ class ListServingConfigsRequest(proto.Message):
             results are returned.
         page_token (str):
             Optional. A page token, received from a previous
-            ``ListServingConfigs`` call. Provide this to retrieve the
-            subsequent page.
+            ``ListServingConfigs`` call. Provide this to
+            retrieve the subsequent page.
     """
 
     parent: str = proto.Field(

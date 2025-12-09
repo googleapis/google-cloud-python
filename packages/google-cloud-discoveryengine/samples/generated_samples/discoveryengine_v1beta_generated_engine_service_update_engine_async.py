@@ -53,5 +53,4 @@ async def sample_update_engine():
     # Handle the response
     print(response)
 
-
 # [END discoveryengine_v1beta_generated_EngineService_UpdateEngine_async]

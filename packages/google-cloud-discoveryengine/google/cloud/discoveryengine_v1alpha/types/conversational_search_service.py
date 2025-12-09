@@ -57,19 +57,22 @@ class ConverseConversationRequest(proto.Message):
 
     Attributes:
         name (str):
-            Required. The resource name of the Conversation to get.
-            Format:
+            Required. The resource name of the Conversation
+            to get. Format:
             ``projects/{project_number}/locations/{location_id}/collections/{collection}/dataStores/{data_store_id}/conversations/{conversation_id}``.
             Use
             ``projects/{project_number}/locations/{location_id}/collections/{collection}/dataStores/{data_store_id}/conversations/-``
-            to activate auto session mode, which automatically creates a
-            new conversation inside a ConverseConversation session.
+            to activate auto session mode, which
+            automatically creates a new conversation inside
+            a ConverseConversation session.
         query (google.cloud.discoveryengine_v1alpha.types.TextInput):
             Required. Current user input.
         serving_config (str):
-            The resource name of the Serving Config to use. Format:
+            The resource name of the Serving Config to use.
+            Format:
             ``projects/{project_number}/locations/{location_id}/collections/{collection}/dataStores/{data_store_id}/servingConfigs/{serving_config_id}``
-            If this is not set, the default serving config will be used.
+            If this is not set, the default serving config
+            will be used.
         conversation (google.cloud.discoveryengine_v1alpha.types.Conversation):
             The conversation to be used by auto session
             only. The name field will be ignored as we
@@ -78,55 +81,67 @@ class ConverseConversationRequest(proto.Message):
         safe_search (bool):
             Whether to turn on safe search.
         user_labels (MutableMapping[str, str]):
-            The user labels applied to a resource must meet the
-            following requirements:
+            The user labels applied to a resource must meet
+            the following requirements:
+            * Each resource can have multiple labels, up to
+            a maximum of 64.
 
-            - Each resource can have multiple labels, up to a maximum of
-              64.
             - Each label must be a key-value pair.
-            - Keys have a minimum length of 1 character and a maximum
-              length of 63 characters and cannot be empty. Values can be
-              empty and have a maximum length of 63 characters.
-            - Keys and values can contain only lowercase letters,
-              numeric characters, underscores, and dashes. All
-              characters must use UTF-8 encoding, and international
-              characters are allowed.
-            - The key portion of a label must be unique. However, you
-              can use the same key with multiple resources.
-            - Keys must start with a lowercase letter or international
-              character.
+            * Keys have a minimum length of 1 character and
+            a maximum length of 63   characters and cannot
+            be empty. Values can be empty and have a maximum
+            length of 63 characters.
+
+            - Keys and values can contain only lowercase
+              letters, numeric characters,   underscores,
+              and dashes. All characters must use UTF-8
+              encoding, and   international characters are
+              allowed.
+
+            - The key portion of a label must be unique.
+              However, you can use the same   key with
+              multiple resources.
+
+            - Keys must start with a lowercase letter or
+              international character.
 
             See `Google Cloud
-            Document <https://cloud.google.com/resource-manager/docs/creating-managing-labels#requirements>`__
+            Document
+            <https://cloud.google.com/resource-manager/docs/creating-managing-labels#requirements>`__
             for more details.
         summary_spec (google.cloud.discoveryengine_v1alpha.types.SearchRequest.ContentSearchSpec.SummarySpec):
             A specification for configuring the summary
             returned in the response.
         filter (str):
-            The filter syntax consists of an expression language for
-            constructing a predicate from one or more fields of the
-            documents being filtered. Filter expression is
-            case-sensitive. This will be used to filter search results
-            which may affect the summary response.
+            The filter syntax consists of an expression
+            language for constructing a predicate from one
+            or more fields of the documents being filtered.
+            Filter expression is case-sensitive. This will
+            be used to filter search results which may
+            affect the summary response.
 
-            If this field is unrecognizable, an ``INVALID_ARGUMENT`` is
-            returned.
+            If this field is unrecognizable, an
+            ``INVALID_ARGUMENT``  is returned.
 
-            Filtering in Vertex AI Search is done by mapping the LHS
-            filter key to a key property defined in the Vertex AI Search
-            backend -- this mapping is defined by the customer in their
-            schema. For example a media customer might have a field
-            'name' in their schema. In this case the filter would look
-            like this: filter --> name:'ANY("king kong")'
+            Filtering in Vertex AI Search is done by mapping
+            the LHS filter key to a key property defined in
+            the Vertex AI Search backend -- this mapping is
+            defined by the customer in their schema. For
+            example a media customer might have a field
+            'name' in their schema. In this case the filter
+            would look like this: filter --> name:'ANY("king
+            kong")'
 
-            For more information about filtering including syntax and
-            filter operators, see
-            `Filter <https://cloud.google.com/generative-ai-app-builder/docs/filter-search-metadata>`__
+            For more information about filtering including
+            syntax and filter operators, see
+            `Filter
+            <https://cloud.google.com/generative-ai-app-builder/docs/filter-search-metadata>`__
         boost_spec (google.cloud.discoveryengine_v1alpha.types.SearchRequest.BoostSpec):
-            Boost specification to boost certain documents in search
-            results which may affect the converse response. For more
-            information on boosting, see
-            `Boosting <https://cloud.google.com/retail/docs/boosting#boost>`__
+            Boost specification to boost certain documents
+            in search results which may affect the converse
+            response. For more information on boosting, see
+            `Boosting
+            <https://cloud.google.com/retail/docs/boosting#boost>`__
     """
 
     name: str = proto.Field(
@@ -218,7 +233,8 @@ class CreateConversationRequest(proto.Message):
 
     Attributes:
         parent (str):
-            Required. Full resource name of parent data store. Format:
+            Required. Full resource name of parent data
+            store. Format:
             ``projects/{project_number}/locations/{location_id}/collections/{collection}/dataStores/{data_store_id}``
         conversation (google.cloud.discoveryengine_v1alpha.types.Conversation):
             Required. The conversation to create.
@@ -246,9 +262,11 @@ class UpdateConversationRequest(proto.Message):
             [Conversation][google.cloud.discoveryengine.v1alpha.Conversation]
             to update. The following are NOT supported:
 
-            - [Conversation.name][google.cloud.discoveryengine.v1alpha.Conversation.name]
+            -
+              [Conversation.name][google.cloud.discoveryengine.v1alpha.Conversation.name]
 
-            If not set or empty, all supported fields are updated.
+            If not set or empty, all supported fields are
+            updated.
     """
 
     conversation: gcd_conversation.Conversation = proto.Field(
@@ -268,8 +286,8 @@ class DeleteConversationRequest(proto.Message):
 
     Attributes:
         name (str):
-            Required. The resource name of the Conversation to delete.
-            Format:
+            Required. The resource name of the Conversation
+            to delete. Format:
             ``projects/{project_number}/locations/{location_id}/collections/{collection}/dataStores/{data_store_id}/conversations/{conversation_id}``
     """
 
@@ -284,8 +302,8 @@ class GetConversationRequest(proto.Message):
 
     Attributes:
         name (str):
-            Required. The resource name of the Conversation to get.
-            Format:
+            Required. The resource name of the Conversation
+            to get. Format:
             ``projects/{project_number}/locations/{location_id}/collections/{collection}/dataStores/{data_store_id}/conversations/{conversation_id}``
     """
 
@@ -307,23 +325,30 @@ class ListConversationsRequest(proto.Message):
             unspecified, defaults to 50. Max allowed value
             is 1000.
         page_token (str):
-            A page token, received from a previous ``ListConversations``
-            call. Provide this to retrieve the subsequent page.
+            A page token, received from a previous
+            ``ListConversations`` call. Provide this to
+            retrieve the subsequent page.
         filter (str):
-            A filter to apply on the list results. The supported
-            features are: user_pseudo_id, state.
+            A filter to apply on the list results. The
+            supported features are: user_pseudo_id, state.
 
-            Example: "user_pseudo_id = some_id".
+            Example:
+
+            "user_pseudo_id = some_id".
         order_by (str):
-            A comma-separated list of fields to order by, sorted in
-            ascending order. Use "desc" after a field name for
-            descending. Supported fields:
+            A comma-separated list of fields to order by,
+            sorted in ascending order. Use "desc" after a
+            field name for descending. Supported fields:
 
             - ``update_time``
-            - ``create_time``
+              * ``create_time``
+
             - ``conversation_name``
 
-            Example: "update_time desc" "create_time".
+            Example:
+
+            "update_time desc"
+            "create_time".
     """
 
     parent: str = proto.Field(
@@ -381,24 +406,25 @@ class AnswerQueryRequest(proto.Message):
 
     Attributes:
         serving_config (str):
-            Required. The resource name of the Search serving config,
-            such as
+            Required. The resource name of the Search
+            serving config, such as
             ``projects/*/locations/global/collections/default_collection/engines/*/servingConfigs/default_serving_config``,
             or
             ``projects/*/locations/global/collections/default_collection/dataStores/*/servingConfigs/default_serving_config``.
-            This field is used to identify the serving configuration
-            name, set of models used to make the search.
+            This field is used to identify the serving
+            configuration name, set of models used to make
+            the search.
         query (google.cloud.discoveryengine_v1alpha.types.Query):
             Required. Current user query.
         session (str):
             The session resource name. Not required.
 
-            When session field is not set, the API is in sessionless
-            mode.
+            When session field is not set, the API is in
+            sessionless mode.
 
-            We support auto session mode: users can use the wildcard
-            symbol ``-`` as session ID. A new ID will be automatically
-            generated and assigned.
+            We support auto session mode: users can use the
+            wildcard symbol ``-`` as session ID.  A new ID
+            will be automatically generated and assigned.
         safety_spec (google.cloud.discoveryengine_v1alpha.types.AnswerQueryRequest.SafetySpec):
             Model specification.
         related_questions_spec (google.cloud.discoveryengine_v1alpha.types.AnswerQueryRequest.RelatedQuestionsSpec):
@@ -413,47 +439,56 @@ class AnswerQueryRequest(proto.Message):
             Asynchronous mode control.
 
             If enabled, the response will be returned with
-            answer/session resource name without final answer. The API
-            users need to do the polling to get the latest status of
-            answer/session by calling
+            answer/session resource name without final
+            answer. The API users need to do the polling to
+            get the latest status of answer/session by
+            calling
             [ConversationalSearchService.GetAnswer][google.cloud.discoveryengine.v1alpha.ConversationalSearchService.GetAnswer]
             or
             [ConversationalSearchService.GetSession][google.cloud.discoveryengine.v1alpha.ConversationalSearchService.GetSession]
             method.
         user_pseudo_id (str):
-            A unique identifier for tracking visitors. For example, this
-            could be implemented with an HTTP cookie, which should be
-            able to uniquely identify a visitor on a single device. This
-            unique identifier should not change if the visitor logs in
-            or out of the website.
+            A unique identifier for tracking visitors. For
+            example, this could be implemented with an HTTP
+            cookie, which should be able to uniquely
+            identify a visitor on a single device. This
+            unique identifier should not change if the
+            visitor logs in or out of the website.
 
             This field should NOT have a fixed value such as
             ``unknown_visitor``.
 
-            The field must be a UTF-8 encoded string with a length limit
-            of 128 characters. Otherwise, an ``INVALID_ARGUMENT`` error
-            is returned.
+            The field must be a UTF-8 encoded string with a
+            length limit of 128 characters. Otherwise, an
+            ``INVALID_ARGUMENT``  error is returned.
         user_labels (MutableMapping[str, str]):
-            The user labels applied to a resource must meet the
-            following requirements:
+            The user labels applied to a resource must meet
+            the following requirements:
+            * Each resource can have multiple labels, up to
+            a maximum of 64.
 
-            - Each resource can have multiple labels, up to a maximum of
-              64.
             - Each label must be a key-value pair.
-            - Keys have a minimum length of 1 character and a maximum
-              length of 63 characters and cannot be empty. Values can be
-              empty and have a maximum length of 63 characters.
-            - Keys and values can contain only lowercase letters,
-              numeric characters, underscores, and dashes. All
-              characters must use UTF-8 encoding, and international
-              characters are allowed.
-            - The key portion of a label must be unique. However, you
-              can use the same key with multiple resources.
-            - Keys must start with a lowercase letter or international
-              character.
+            * Keys have a minimum length of 1 character and
+            a maximum length of 63   characters and cannot
+            be empty. Values can be empty and have a maximum
+            length of 63 characters.
+
+            - Keys and values can contain only lowercase
+              letters, numeric characters,   underscores,
+              and dashes. All characters must use UTF-8
+              encoding, and   international characters are
+              allowed.
+
+            - The key portion of a label must be unique.
+              However, you can use the same   key with
+              multiple resources.
+
+            - Keys must start with a lowercase letter or
+              international character.
 
             See `Google Cloud
-            Document <https://cloud.google.com/resource-manager/docs/creating-managing-labels#requirements>`__
+            Document
+            <https://cloud.google.com/resource-manager/docs/creating-managing-labels#requirements>`__
             for more details.
     """
 
@@ -495,42 +530,47 @@ class AnswerQueryRequest(proto.Message):
             prompt_spec (google.cloud.discoveryengine_v1alpha.types.AnswerQueryRequest.AnswerGenerationSpec.PromptSpec):
                 Answer generation prompt specification.
             include_citations (bool):
-                Specifies whether to include citation metadata in the
-                answer. The default value is ``false``.
+                Specifies whether to include citation metadata
+                in the answer. The default value is ``false``.
             answer_language_code (str):
-                Language code for Answer. Use language tags defined by
-                `BCP47 <https://www.rfc-editor.org/rfc/bcp/bcp47.txt>`__.
+                Language code for Answer. Use language tags
+                defined by `BCP47
+                <https://www.rfc-editor.org/rfc/bcp/bcp47.txt>`__.
                 Note: This is an experimental feature.
             ignore_adversarial_query (bool):
-                Specifies whether to filter out adversarial queries. The
-                default value is ``false``.
+                Specifies whether to filter out adversarial
+                queries. The default value is ``false``.
 
-                Google employs search-query classification to detect
-                adversarial queries. No answer is returned if the search
-                query is classified as an adversarial query. For example, a
-                user might ask a question regarding negative comments about
-                the company or submit a query designed to generate unsafe,
-                policy-violating output. If this field is set to ``true``,
-                we skip generating answers for adversarial queries and
-                return fallback messages instead.
+                Google employs search-query classification to
+                detect adversarial queries. No answer is
+                returned if the search query is classified as an
+                adversarial query. For example, a user might ask
+                a question regarding negative comments about the
+                company or submit a query designed to generate
+                unsafe, policy-violating output. If this field
+                is set to ``true``, we skip generating answers
+                for adversarial queries and return fallback
+                messages instead.
             ignore_non_answer_seeking_query (bool):
-                Specifies whether to filter out queries that are not
-                answer-seeking. The default value is ``false``.
+                Specifies whether to filter out queries that are
+                not answer-seeking. The default value is
+                ``false``.
 
-                Google employs search-query classification to detect
-                answer-seeking queries. No answer is returned if the search
-                query is classified as a non-answer seeking query. If this
-                field is set to ``true``, we skip generating answers for
-                non-answer seeking queries and return fallback messages
-                instead.
+                Google employs search-query classification to
+                detect answer-seeking queries. No answer is
+                returned if the search query is classified as a
+                non-answer seeking query. If this field is set
+                to ``true``, we skip generating answers for
+                non-answer seeking queries and return fallback
+                messages instead.
             ignore_low_relevant_content (bool):
-                Specifies whether to filter out queries that have low
-                relevance.
-
-                If this field is set to ``false``, all search results are
-                used regardless of relevance to generate answers. If set to
-                ``true`` or unset, the behavior will be determined
-                automatically by the service.
+                Specifies whether to filter out queries that
+                have low relevance.
+                If this field is set to ``false``, all search
+                results are used regardless of relevance to
+                generate answers. If set to ``true`` or unset,
+                the behavior will be determined automatically by
+                the service.
 
                 This field is a member of `oneof`_ ``_ignore_low_relevant_content``.
         """
@@ -624,45 +664,52 @@ class AnswerQueryRequest(proto.Message):
                     Number of search results to return.
                     The default value is 10.
                 filter (str):
-                    The filter syntax consists of an expression language for
-                    constructing a predicate from one or more fields of the
-                    documents being filtered. Filter expression is
-                    case-sensitive. This will be used to filter search results
-                    which may affect the Answer response.
+                    The filter syntax consists of an expression
+                    language for constructing a predicate from one
+                    or more fields of the documents being filtered.
+                    Filter expression is case-sensitive. This will
+                    be used to filter search results which may
+                    affect the Answer response.
 
-                    If this field is unrecognizable, an ``INVALID_ARGUMENT`` is
-                    returned.
+                    If this field is unrecognizable, an
+                    ``INVALID_ARGUMENT``  is returned.
 
-                    Filtering in Vertex AI Search is done by mapping the LHS
-                    filter key to a key property defined in the Vertex AI Search
-                    backend -- this mapping is defined by the customer in their
-                    schema. For example a media customers might have a field
-                    'name' in their schema. In this case the filter would look
-                    like this: filter --> name:'ANY("king kong")'
+                    Filtering in Vertex AI Search is done by mapping
+                    the LHS filter key to a key property defined in
+                    the Vertex AI Search backend -- this mapping is
+                    defined by the customer in their schema. For
+                    example a media customers might have a field
+                    'name' in their schema. In this case the filter
+                    would look like this: filter --> name:'ANY("king
+                    kong")'
 
-                    For more information about filtering including syntax and
-                    filter operators, see
-                    `Filter <https://cloud.google.com/generative-ai-app-builder/docs/filter-search-metadata>`__
+                    For more information about filtering including
+                    syntax and filter operators, see
+                    `Filter
+                    <https://cloud.google.com/generative-ai-app-builder/docs/filter-search-metadata>`__
                 boost_spec (google.cloud.discoveryengine_v1alpha.types.SearchRequest.BoostSpec):
-                    Boost specification to boost certain documents in search
-                    results which may affect the answer query response. For more
-                    information on boosting, see
-                    `Boosting <https://cloud.google.com/retail/docs/boosting#boost>`__
+                    Boost specification to boost certain documents
+                    in search results which may affect the answer
+                    query response. For more information on
+                    boosting, see `Boosting
+                    <https://cloud.google.com/retail/docs/boosting#boost>`__
                 order_by (str):
-                    The order in which documents are returned. Documents can be
-                    ordered by a field in an
+                    The order in which documents are returned.
+                    Documents can be ordered by a field in an
                     [Document][google.cloud.discoveryengine.v1alpha.Document]
-                    object. Leave it unset if ordered by relevance. ``order_by``
-                    expression is case-sensitive. For more information on
-                    ordering, see
-                    `Ordering <https://cloud.google.com/retail/docs/filter-and-order#order>`__
+                    object. Leave it unset if ordered by relevance.
+                    ``order_by`` expression is case-sensitive. For
+                    more information on ordering, see `Ordering
+                    <https://cloud.google.com/retail/docs/filter-and-order#order>`__
 
-                    If this field is unrecognizable, an ``INVALID_ARGUMENT`` is
-                    returned.
+                    If this field is unrecognizable, an
+                    ``INVALID_ARGUMENT`` is returned.
                 search_result_mode (google.cloud.discoveryengine_v1alpha.types.SearchRequest.ContentSearchSpec.SearchResultMode):
-                    Specifies the search result mode. If unspecified, the search
-                    result mode defaults to ``DOCUMENTS``. See `parse and chunk
-                    documents <https://cloud.google.com/generative-ai-app-builder/docs/parse-chunk-documents>`__
+                    Specifies the search result mode. If
+                    unspecified, the search result mode defaults to
+                    ``DOCUMENTS``. See `parse and chunk
+                    documents
+                    <https://cloud.google.com/generative-ai-app-builder/docs/parse-chunk-documents>`__
                 custom_fine_tuning_spec (google.cloud.discoveryengine_v1alpha.types.CustomFineTuningSpec):
                     Custom fine tuning configs.
                 data_store_specs (MutableSequence[google.cloud.discoveryengine_v1alpha.types.SearchRequest.DataStoreSpec]):
@@ -777,7 +824,8 @@ class AnswerQueryRequest(proto.Message):
 
                     class ExtractiveSegment(proto.Message):
                         r"""Extractive segment.
-                        `Guide <https://cloud.google.com/generative-ai-app-builder/docs/snippets#extractive-segments>`__
+                        `Guide
+                        <https://cloud.google.com/generative-ai-app-builder/docs/snippets#extractive-segments>`__
 
                         Attributes:
                             page_identifier (str):
@@ -797,7 +845,8 @@ class AnswerQueryRequest(proto.Message):
 
                     class ExtractiveAnswer(proto.Message):
                         r"""Extractive answer.
-                        `Guide <https://cloud.google.com/generative-ai-app-builder/docs/snippets#get-answers>`__
+                        `Guide
+                        <https://cloud.google.com/generative-ai-app-builder/docs/snippets#get-answers>`__
 
                         Attributes:
                             page_identifier (str):
@@ -1041,7 +1090,8 @@ class AnswerQueryResponse(proto.Message):
 
     Attributes:
         answer (google.cloud.discoveryengine_v1alpha.types.Answer):
-            Answer resource object. If
+            Answer resource object.
+            If
             [AnswerQueryRequest.QueryUnderstandingSpec.QueryRephraserSpec.max_rephrase_steps][google.cloud.discoveryengine.v1alpha.AnswerQueryRequest.QueryUnderstandingSpec.QueryRephraserSpec.max_rephrase_steps]
             is greater than 1, use
             [Answer.name][google.cloud.discoveryengine.v1alpha.Answer.name]
@@ -1049,8 +1099,9 @@ class AnswerQueryResponse(proto.Message):
             [ConversationalSearchService.GetAnswer][google.cloud.discoveryengine.v1alpha.ConversationalSearchService.GetAnswer]
             API.
         session (google.cloud.discoveryengine_v1alpha.types.Session):
-            Session resource object. It will be only available when
-            session field is set and valid in the
+            Session resource object.
+            It will be only available when session field is
+            set and valid in the
             [AnswerQueryRequest][google.cloud.discoveryengine.v1alpha.AnswerQueryRequest]
             request.
         answer_query_token (str):
@@ -1078,7 +1129,8 @@ class GetAnswerRequest(proto.Message):
 
     Attributes:
         name (str):
-            Required. The resource name of the Answer to get. Format:
+            Required. The resource name of the Answer to
+            get. Format:
             ``projects/{project_number}/locations/{location_id}/collections/{collection}/engines/{engine_id}/sessions/{session_id}/answers/{answer_id}``
     """
 
@@ -1093,7 +1145,8 @@ class CreateSessionRequest(proto.Message):
 
     Attributes:
         parent (str):
-            Required. Full resource name of parent data store. Format:
+            Required. Full resource name of parent data
+            store. Format:
             ``projects/{project}/locations/{location}/collections/{collection}/dataStores/{data_store_id}``
         session (google.cloud.discoveryengine_v1alpha.types.Session):
             Required. The session to create.
@@ -1118,12 +1171,14 @@ class UpdateSessionRequest(proto.Message):
             Required. The Session to update.
         update_mask (google.protobuf.field_mask_pb2.FieldMask):
             Indicates which fields in the provided
-            [Session][google.cloud.discoveryengine.v1alpha.Session] to
-            update. The following are NOT supported:
+            [Session][google.cloud.discoveryengine.v1alpha.Session]
+            to update. The following are NOT supported:
 
-            - [Session.name][google.cloud.discoveryengine.v1alpha.Session.name]
+            -
+              [Session.name][google.cloud.discoveryengine.v1alpha.Session.name]
 
-            If not set or empty, all supported fields are updated.
+            If not set or empty, all supported fields are
+            updated.
     """
 
     session: gcd_session.Session = proto.Field(
@@ -1143,8 +1198,8 @@ class DeleteSessionRequest(proto.Message):
 
     Attributes:
         name (str):
-            Required. The resource name of the Session to delete.
-            Format:
+            Required. The resource name of the Session to
+            delete. Format:
             ``projects/{project}/locations/{location}/collections/{collection}/dataStores/{data_store_id}/sessions/{session_id}``
     """
 
@@ -1159,7 +1214,8 @@ class GetSessionRequest(proto.Message):
 
     Attributes:
         name (str):
-            Required. The resource name of the Session to get. Format:
+            Required. The resource name of the Session to
+            get. Format:
             ``projects/{project}/locations/{location}/collections/{collection}/dataStores/{data_store_id}/sessions/{session_id}``
         include_answer_details (bool):
             Optional. If set to true, the full session
@@ -1188,40 +1244,51 @@ class ListSessionsRequest(proto.Message):
             unspecified, defaults to 50. Max allowed value
             is 1000.
         page_token (str):
-            A page token, received from a previous ``ListSessions``
-            call. Provide this to retrieve the subsequent page.
+            A page token, received from a previous
+            ``ListSessions`` call. Provide this to retrieve
+            the subsequent page.
         filter (str):
-            A comma-separated list of fields to filter by, in EBNF
-            grammar. The supported fields are:
+            A comma-separated list of fields to filter by,
+            in EBNF grammar. The supported fields are:
 
             - ``user_pseudo_id``
-            - ``state``
+            * ``state``
+
             - ``display_name``
-            - ``starred``
-            - ``is_pinned``
-            - ``labels``
-            - ``create_time``
-            - ``update_time``
+            * ``starred``
 
-            Examples: "user_pseudo_id = some_id" "display_name =
-            "some_name"" "starred = true" "is_pinned=true AND (NOT
-            labels:hidden)" "create_time > "1970-01-01T12:00:00Z"".
+            - ``is_pinned``
+            * ``labels``
+
+            - ``create_time``
+            * ``update_time``
+
+            Examples:
+
+            "user_pseudo_id = some_id"
+            "display_name = \"some_name\""
+            "starred = true"
+            "is_pinned=true AND (NOT labels:hidden)"
+            "create_time > \"1970-01-01T12:00:00Z\"".
         order_by (str):
-            A comma-separated list of fields to order by, sorted in
-            ascending order. Use "desc" after a field name for
-            descending. Supported fields:
+            A comma-separated list of fields to order by,
+            sorted in ascending order. Use "desc" after a
+            field name for descending. Supported fields:
 
             - ``update_time``
-            - ``create_time``
+              * ``create_time``
+
             - ``session_name``
-            - ``is_pinned``
+              * ``is_pinned``
 
             Example:
 
             - "update_time desc"
-            - "create_time"
-            - "is_pinned desc,update_time desc": list sessions by
-              is_pinned first, then by update_time.
+            * "create_time"
+
+            - "is_pinned desc,update_time desc": list
+              sessions by is_pinned first, then    by
+              update_time.
     """
 
     parent: str = proto.Field(

@@ -1056,8 +1056,8 @@ class EngineServiceRestTransport(_BaseEngineServiceRestTransport):
 
             Returns:
                 ~.engine.Engine:
-                    Metadata that describes the training and serving
-                parameters of an
+                    Metadata that describes the training and
+                serving parameters of an
                 [Engine][google.cloud.discoveryengine.v1.Engine].
 
             """
@@ -1363,8 +1363,8 @@ class EngineServiceRestTransport(_BaseEngineServiceRestTransport):
 
             Returns:
                 ~.gcd_engine.Engine:
-                    Metadata that describes the training and serving
-                parameters of an
+                    Metadata that describes the training and
+                serving parameters of an
                 [Engine][google.cloud.discoveryengine.v1.Engine].
 
             """

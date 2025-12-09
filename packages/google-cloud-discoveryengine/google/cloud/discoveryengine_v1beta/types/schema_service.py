@@ -45,8 +45,8 @@ class GetSchemaRequest(proto.Message):
 
     Attributes:
         name (str):
-            Required. The full resource name of the schema, in the
-            format of
+            Required. The full resource name of the schema,
+            in the format of
             ``projects/{project}/locations/{location}/collections/{collection}/dataStores/{data_store}/schemas/{schema}``.
     """
 
@@ -63,28 +63,32 @@ class ListSchemasRequest(proto.Message):
 
     Attributes:
         parent (str):
-            Required. The parent data store resource name, in the format
-            of
+            Required. The parent data store resource name,
+            in the format of
             ``projects/{project}/locations/{location}/collections/{collection}/dataStores/{data_store}``.
         page_size (int):
             The maximum number of
-            [Schema][google.cloud.discoveryengine.v1beta.Schema]s to
-            return. The service may return fewer than this value.
+            [Schema][google.cloud.discoveryengine.v1beta.Schema]s
+            to return. The service may return fewer than
+            this value.
 
             If unspecified, at most 100
-            [Schema][google.cloud.discoveryengine.v1beta.Schema]s are
-            returned.
+            [Schema][google.cloud.discoveryengine.v1beta.Schema]s
+            are returned.
 
-            The maximum value is 1000; values above 1000 are set to
-            1000.
+            The maximum value is 1000; values above 1000 are
+            set to 1000.
         page_token (str):
             A page token, received from a previous
             [SchemaService.ListSchemas][google.cloud.discoveryengine.v1beta.SchemaService.ListSchemas]
-            call. Provide this to retrieve the subsequent page.
+            call. Provide this to retrieve the subsequent
+            page.
 
-            When paginating, all other parameters provided to
+            When paginating, all other parameters provided
+            to
             [SchemaService.ListSchemas][google.cloud.discoveryengine.v1beta.SchemaService.ListSchemas]
-            must match the call that provided the page token.
+            must match the call that provided the page
+            token.
     """
 
     parent: str = proto.Field(
@@ -108,12 +112,13 @@ class ListSchemasResponse(proto.Message):
 
     Attributes:
         schemas (MutableSequence[google.cloud.discoveryengine_v1beta.types.Schema]):
-            The [Schema][google.cloud.discoveryengine.v1beta.Schema]s.
+            The
+            [Schema][google.cloud.discoveryengine.v1beta.Schema]s.
         next_page_token (str):
             A token that can be sent as
             [ListSchemasRequest.page_token][google.cloud.discoveryengine.v1beta.ListSchemasRequest.page_token]
-            to retrieve the next page. If this field is omitted, there
-            are no subsequent pages.
+            to retrieve the next page. If this field is
+            omitted, there are no subsequent pages.
     """
 
     @property
@@ -138,22 +143,23 @@ class CreateSchemaRequest(proto.Message):
 
     Attributes:
         parent (str):
-            Required. The parent data store resource name, in the format
-            of
+            Required. The parent data store resource name,
+            in the format of
             ``projects/{project}/locations/{location}/collections/{collection}/dataStores/{data_store}``.
         schema (google.cloud.discoveryengine_v1beta.types.Schema):
             Required. The
-            [Schema][google.cloud.discoveryengine.v1beta.Schema] to
-            create.
+            [Schema][google.cloud.discoveryengine.v1beta.Schema]
+            to create.
         schema_id (str):
             Required. The ID to use for the
-            [Schema][google.cloud.discoveryengine.v1beta.Schema], which
-            becomes the final component of the
+            [Schema][google.cloud.discoveryengine.v1beta.Schema],
+            which becomes the final component of the
             [Schema.name][google.cloud.discoveryengine.v1beta.Schema.name].
 
             This field should conform to
-            `RFC-1034 <https://tools.ietf.org/html/rfc1034>`__ standard
-            with a length limit of 63 characters.
+            `RFC-1034
+            <https://tools.ietf.org/html/rfc1034>`__
+            standard with a length limit of 63 characters.
     """
 
     parent: str = proto.Field(
@@ -179,14 +185,15 @@ class UpdateSchemaRequest(proto.Message):
     Attributes:
         schema (google.cloud.discoveryengine_v1beta.types.Schema):
             Required. The
-            [Schema][google.cloud.discoveryengine.v1beta.Schema] to
-            update.
+            [Schema][google.cloud.discoveryengine.v1beta.Schema]
+            to update.
         allow_missing (bool):
             If set to true, and the
-            [Schema][google.cloud.discoveryengine.v1beta.Schema] is not
-            found, a new
-            [Schema][google.cloud.discoveryengine.v1beta.Schema] is
-            created. In this situation, ``update_mask`` is ignored.
+            [Schema][google.cloud.discoveryengine.v1beta.Schema]
+            is not found, a new
+            [Schema][google.cloud.discoveryengine.v1beta.Schema]
+            is created. In this situation, ``update_mask``
+            is ignored.
     """
 
     schema: gcd_schema.Schema = proto.Field(
@@ -207,8 +214,8 @@ class DeleteSchemaRequest(proto.Message):
 
     Attributes:
         name (str):
-            Required. The full resource name of the schema, in the
-            format of
+            Required. The full resource name of the schema,
+            in the format of
             ``projects/{project}/locations/{location}/collections/{collection}/dataStores/{data_store}/schemas/{schema}``.
     """
 

@@ -336,8 +336,10 @@ class SessionServiceGrpcTransport(SessionServiceTransport):
 
         Creates a Session.
 
-        If the [Session][google.cloud.discoveryengine.v1beta.Session] to
-        create already exists, an ALREADY_EXISTS error is returned.
+        If the
+        [Session][google.cloud.discoveryengine.v1beta.Session]
+        to create already exists, an ALREADY_EXISTS error is
+        returned.
 
         Returns:
             Callable[[~.CreateSessionRequest],
@@ -367,8 +369,9 @@ class SessionServiceGrpcTransport(SessionServiceTransport):
 
         Deletes a Session.
 
-        If the [Session][google.cloud.discoveryengine.v1beta.Session] to
-        delete does not exist, a NOT_FOUND error is returned.
+        If the
+        [Session][google.cloud.discoveryengine.v1beta.Session]
+        to delete does not exist, a NOT_FOUND error is returned.
 
         Returns:
             Callable[[~.DeleteSessionRequest],
@@ -398,10 +401,10 @@ class SessionServiceGrpcTransport(SessionServiceTransport):
 
         Updates a Session.
 
-        [Session][google.cloud.discoveryengine.v1beta.Session] action
-        type cannot be changed. If the
-        [Session][google.cloud.discoveryengine.v1beta.Session] to update
-        does not exist, a NOT_FOUND error is returned.
+        [Session][google.cloud.discoveryengine.v1beta.Session]
+        action type cannot be changed. If the
+        [Session][google.cloud.discoveryengine.v1beta.Session]
+        to update does not exist, a NOT_FOUND error is returned.
 
         Returns:
             Callable[[~.UpdateSessionRequest],

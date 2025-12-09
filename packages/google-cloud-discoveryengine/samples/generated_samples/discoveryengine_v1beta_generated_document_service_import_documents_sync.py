@@ -53,5 +53,4 @@ def sample_import_documents():
     # Handle the response
     print(response)
 
-
 # [END discoveryengine_v1beta_generated_DocumentService_ImportDocuments_sync]

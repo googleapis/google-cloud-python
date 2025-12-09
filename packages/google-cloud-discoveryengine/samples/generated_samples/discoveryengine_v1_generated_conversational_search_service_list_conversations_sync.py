@@ -50,5 +50,4 @@ def sample_list_conversations():
     for response in page_result:
         print(response)
 
-
 # [END discoveryengine_v1_generated_ConversationalSearchService_ListConversations_sync]

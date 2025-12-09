@@ -70,10 +70,11 @@ class GetCmekConfigRequest(proto.Message):
             such as ``projects/*/locations/*/cmekConfig`` or
             ``projects/*/locations/*/cmekConfigs/*``.
 
-            If the caller does not have permission to access the
+            If the caller does not have permission to access
+            the
             [CmekConfig][google.cloud.discoveryengine.v1.CmekConfig],
-            regardless of whether or not it exists, a PERMISSION_DENIED
-            error is returned.
+            regardless of whether or not it exists, a
+            PERMISSION_DENIED error is returned.
     """
 
     name: str = proto.Field(
@@ -87,8 +88,8 @@ class SingleRegionKey(proto.Message):
 
     Attributes:
         kms_key (str):
-            Required. Single-regional kms key resource name which will
-            be used to encrypt resources
+            Required. Single-regional kms key resource name
+            which will be used to encrypt resources
             ``projects/{project}/locations/{location}/keyRings/{keyRing}/cryptoKeys/{keyId}``.
     """
 
@@ -105,15 +106,17 @@ class CmekConfig(proto.Message):
     Attributes:
         name (str):
             Required. The name of the CmekConfig of the form
-            ``projects/{project}/locations/{location}/cmekConfig`` or
+            ``projects/{project}/locations/{location}/cmekConfig``
+            or
             ``projects/{project}/locations/{location}/cmekConfigs/{cmek_config}``.
         kms_key (str):
-            KMS key resource name which will be used to encrypt
-            resources
+            KMS key resource name which will be used to
+            encrypt resources
             ``projects/{project}/locations/{location}/keyRings/{keyRing}/cryptoKeys/{keyId}``.
         kms_key_version (str):
-            KMS key version resource name which will be used to encrypt
-            resources ``<kms_key>/cryptoKeyVersions/{keyVersion}``.
+            KMS key version resource name which will be used
+            to encrypt resources
+            ``<kms_key>/cryptoKeyVersions/{keyVersion}``.
         state (google.cloud.discoveryengine_v1.types.CmekConfig.State):
             Output only. The states of the CmekConfig.
         is_default (bool):
@@ -254,13 +257,15 @@ class ListCmekConfigsRequest(proto.Message):
 
     Attributes:
         parent (str):
-            Required. The parent location resource name, such as
+            Required. The parent location resource name,
+            such as
             ``projects/{project}/locations/{location}``.
 
             If the caller does not have permission to list
             [CmekConfig][google.cloud.discoveryengine.v1.CmekConfig]s
-            under this location, regardless of whether or not a
-            CmekConfig exists, a PERMISSION_DENIED error is returned.
+            under this location, regardless of whether or
+            not a CmekConfig exists, a PERMISSION_DENIED
+            error is returned.
     """
 
     parent: str = proto.Field(
@@ -295,8 +300,8 @@ class DeleteCmekConfigRequest(proto.Message):
     Attributes:
         name (str):
             Required. The resource name of the
-            [CmekConfig][google.cloud.discoveryengine.v1.CmekConfig] to
-            delete, such as
+            [CmekConfig][google.cloud.discoveryengine.v1.CmekConfig]
+            to delete, such as
             ``projects/{project}/locations/{location}/cmekConfigs/{cmek_config}``.
     """
 

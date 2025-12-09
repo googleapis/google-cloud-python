@@ -802,14 +802,16 @@ class SampleQueryServiceClient(metaclass=SampleQueryServiceClientMeta):
                 such as
                 ``projects/{project}/locations/{location}/sampleQuerySets/{sample_query_set}/sampleQueries/{sample_query}``.
 
-                If the caller does not have permission to access the
+                If the caller does not have permission
+                to access the
                 [SampleQuery][google.cloud.discoveryengine.v1beta.SampleQuery],
-                regardless of whether or not it exists, a
-                PERMISSION_DENIED error is returned.
+                regardless of whether or not it exists,
+                a PERMISSION_DENIED error is returned.
 
                 If the requested
                 [SampleQuery][google.cloud.discoveryengine.v1beta.SampleQuery]
-                does not exist, a NOT_FOUND error is returned.
+                does not exist, a NOT_FOUND error is
+                returned.
 
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -921,15 +923,17 @@ class SampleQueryServiceClient(metaclass=SampleQueryServiceClientMeta):
                 [SampleQueryService.ListSampleQueries][google.cloud.discoveryengine.v1beta.SampleQueryService.ListSampleQueries]
                 method.
             parent (str):
-                Required. The parent sample query set resource name,
-                such as
+                Required. The parent sample query set
+                resource name, such as
                 ``projects/{project}/locations/{location}/sampleQuerySets/{sampleQuerySet}``.
 
-                If the caller does not have permission to list
+                If the caller does not have permission
+                to list
                 [SampleQuery][google.cloud.discoveryengine.v1beta.SampleQuery]s
-                under this sample query set, regardless of whether or
-                not this sample query set exists, a
-                ``PERMISSION_DENIED`` error is returned.
+                under this sample query set, regardless
+                of whether or not this sample query set
+                exists, a ``PERMISSION_DENIED`` error is
+                returned.
 
                 This corresponds to the ``parent`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -945,11 +949,12 @@ class SampleQueryServiceClient(metaclass=SampleQueryServiceClientMeta):
         Returns:
             google.cloud.discoveryengine_v1beta.services.sample_query_service.pagers.ListSampleQueriesPager:
                 Response message for
-                   [SampleQueryService.ListSampleQueries][google.cloud.discoveryengine.v1beta.SampleQueryService.ListSampleQueries]
-                   method.
+                [SampleQueryService.ListSampleQueries][google.cloud.discoveryengine.v1beta.SampleQueryService.ListSampleQueries]
+                method.
 
-                Iterating over this object will yield results and
-                resolve additional pages automatically.
+                Iterating over this object will yield
+                results and resolve additional pages
+                automatically.
 
         """
         # Create or coerce a protobuf request object.
@@ -1062,7 +1067,8 @@ class SampleQueryServiceClient(metaclass=SampleQueryServiceClientMeta):
                 [SampleQueryService.CreateSampleQuery][google.cloud.discoveryengine.v1beta.SampleQueryService.CreateSampleQuery]
                 method.
             parent (str):
-                Required. The parent resource name, such as
+                Required. The parent resource name, such
+                as
                 ``projects/{project}/locations/{location}/sampleQuerySets/{sampleQuerySet}``.
 
                 This corresponds to the ``parent`` field
@@ -1079,24 +1085,29 @@ class SampleQueryServiceClient(metaclass=SampleQueryServiceClientMeta):
             sample_query_id (str):
                 Required. The ID to use for the
                 [SampleQuery][google.cloud.discoveryengine.v1beta.SampleQuery],
-                which will become the final component of the
+                which will become the final component of
+                the
                 [SampleQuery.name][google.cloud.discoveryengine.v1beta.SampleQuery.name].
 
-                If the caller does not have permission to create the
+                If the caller does not have permission
+                to create the
                 [SampleQuery][google.cloud.discoveryengine.v1beta.SampleQuery],
-                regardless of whether or not it exists, a
-                ``PERMISSION_DENIED`` error is returned.
+                regardless of whether or not it exists,
+                a ``PERMISSION_DENIED`` error is
+                returned.
 
                 This field must be unique among all
                 [SampleQuery][google.cloud.discoveryengine.v1beta.SampleQuery]s
                 with the same
                 [parent][google.cloud.discoveryengine.v1beta.CreateSampleQueryRequest.parent].
-                Otherwise, an ``ALREADY_EXISTS`` error is returned.
+                Otherwise, an ``ALREADY_EXISTS`` error
+                is returned.
 
-                This field must conform to
-                `RFC-1034 <https://tools.ietf.org/html/rfc1034>`__
-                standard with a length limit of 63 characters.
-                Otherwise, an ``INVALID_ARGUMENT`` error is returned.
+                This field must conform to `RFC-1034
+                <https://tools.ietf.org/html/rfc1034>`__
+                standard with a length limit of 63
+                characters. Otherwise, an
+                ``INVALID_ARGUMENT`` error is returned.
 
                 This corresponds to the ``sample_query_id`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -1217,15 +1228,17 @@ class SampleQueryServiceClient(metaclass=SampleQueryServiceClientMeta):
             sample_query (google.cloud.discoveryengine_v1beta.types.SampleQuery):
                 Required. The simple query to update.
 
-                If the caller does not have permission to update the
+                If the caller does not have permission
+                to update the
                 [SampleQuery][google.cloud.discoveryengine.v1beta.SampleQuery],
-                regardless of whether or not it exists, a
-                ``PERMISSION_DENIED`` error is returned.
+                regardless of whether or not it exists,
+                a ``PERMISSION_DENIED`` error is
+                returned.
 
                 If the
                 [SampleQuery][google.cloud.discoveryengine.v1beta.SampleQuery]
-                to update does not exist a ``NOT_FOUND`` error is
-                returned.
+                to update does not exist a ``NOT_FOUND``
+                error is returned.
 
                 This corresponds to the ``sample_query`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -1351,15 +1364,17 @@ class SampleQueryServiceClient(metaclass=SampleQueryServiceClientMeta):
                 such as
                 ``projects/{project}/locations/{location}/sampleQuerySets/{sample_query_set}/sampleQueries/{sample_query}``.
 
-                If the caller does not have permission to delete the
+                If the caller does not have permission
+                to delete the
                 [SampleQuery][google.cloud.discoveryengine.v1beta.SampleQuery],
-                regardless of whether or not it exists, a
-                ``PERMISSION_DENIED`` error is returned.
+                regardless of whether or not it exists,
+                a ``PERMISSION_DENIED`` error is
+                returned.
 
                 If the
                 [SampleQuery][google.cloud.discoveryengine.v1beta.SampleQuery]
-                to delete does not exist, a ``NOT_FOUND`` error is
-                returned.
+                to delete does not exist, a
+                ``NOT_FOUND`` error is returned.
 
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -1480,14 +1495,17 @@ class SampleQueryServiceClient(metaclass=SampleQueryServiceClientMeta):
 
         Returns:
             google.api_core.operation.Operation:
-                An object representing a long-running operation.
-
-                The result type for the operation will be :class:`google.cloud.discoveryengine_v1beta.types.ImportSampleQueriesResponse` Response of the
-                   [SampleQueryService.ImportSampleQueries][google.cloud.discoveryengine.v1beta.SampleQueryService.ImportSampleQueries]
-                   method. If the long running operation is done, this
-                   message is returned by the
-                   google.longrunning.Operations.response field if the
-                   operation is successful.
+                An object representing a long-running
+                operation.
+                The result type for the operation will
+                be
+                :class:``google.cloud.discoveryengine_v1beta.types.ImportSampleQueriesResponse``
+                Response of the
+                [SampleQueryService.ImportSampleQueries][google.cloud.discoveryengine.v1beta.SampleQueryService.ImportSampleQueries]
+                method. If the long running operation is
+                done, this message is returned by the
+                google.longrunning.Operations.response
+                field if the operation is successful.
 
         """
         # Create or coerce a protobuf request object.

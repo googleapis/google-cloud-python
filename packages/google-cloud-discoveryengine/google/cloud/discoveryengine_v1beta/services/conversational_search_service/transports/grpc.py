@@ -371,7 +371,8 @@ class ConversationalSearchServiceGrpcTransport(ConversationalSearchServiceTransp
 
         If the
         [Conversation][google.cloud.discoveryengine.v1beta.Conversation]
-        to create already exists, an ALREADY_EXISTS error is returned.
+        to create already exists, an ALREADY_EXISTS error is
+        returned.
 
         Returns:
             Callable[[~.CreateConversationRequest],
@@ -581,8 +582,10 @@ class ConversationalSearchServiceGrpcTransport(ConversationalSearchServiceTransp
 
         Creates a Session.
 
-        If the [Session][google.cloud.discoveryengine.v1beta.Session] to
-        create already exists, an ALREADY_EXISTS error is returned.
+        If the
+        [Session][google.cloud.discoveryengine.v1beta.Session]
+        to create already exists, an ALREADY_EXISTS error is
+        returned.
 
         Returns:
             Callable[[~.CreateSessionRequest],
@@ -612,8 +615,9 @@ class ConversationalSearchServiceGrpcTransport(ConversationalSearchServiceTransp
 
         Deletes a Session.
 
-        If the [Session][google.cloud.discoveryengine.v1beta.Session] to
-        delete does not exist, a NOT_FOUND error is returned.
+        If the
+        [Session][google.cloud.discoveryengine.v1beta.Session]
+        to delete does not exist, a NOT_FOUND error is returned.
 
         Returns:
             Callable[[~.DeleteSessionRequest],
@@ -643,10 +647,10 @@ class ConversationalSearchServiceGrpcTransport(ConversationalSearchServiceTransp
 
         Updates a Session.
 
-        [Session][google.cloud.discoveryengine.v1beta.Session] action
-        type cannot be changed. If the
-        [Session][google.cloud.discoveryengine.v1beta.Session] to update
-        does not exist, a NOT_FOUND error is returned.
+        [Session][google.cloud.discoveryengine.v1beta.Session]
+        action type cannot be changed. If the
+        [Session][google.cloud.discoveryengine.v1beta.Session]
+        to update does not exist, a NOT_FOUND error is returned.
 
         Returns:
             Callable[[~.UpdateSessionRequest],

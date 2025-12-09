@@ -67,8 +67,8 @@ _LOGGER = std_logging.getLogger(__name__)
 
 class ChunkServiceAsyncClient:
     """Service for displaying processed
-    [Chunk][google.cloud.discoveryengine.v1alpha.Chunk] information of
-    the customer's unstructured data.
+    [Chunk][google.cloud.discoveryengine.v1alpha.Chunk] information
+    of the customer's unstructured data.
     """
 
     _client: ChunkServiceClient
@@ -341,14 +341,17 @@ class ChunkServiceAsyncClient:
                 such as
                 ``projects/{project}/locations/{location}/collections/{collection}/dataStores/{data_store}/branches/{branch}/documents/{document}/chunks/{chunk}``.
 
-                If the caller does not have permission to access the
+                If the caller does not have permission
+                to access the
                 [Chunk][google.cloud.discoveryengine.v1alpha.Chunk],
-                regardless of whether or not it exists, a
-                ``PERMISSION_DENIED`` error is returned.
+                regardless of whether or not it exists,
+                a ``PERMISSION_DENIED`` error is
+                returned.
 
                 If the requested
-                [Chunk][google.cloud.discoveryengine.v1alpha.Chunk] does
-                not exist, a ``NOT_FOUND`` error is returned.
+                [Chunk][google.cloud.discoveryengine.v1alpha.Chunk]
+                does not exist, a ``NOT_FOUND`` error is
+                returned.
 
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -462,14 +465,16 @@ class ChunkServiceAsyncClient:
                 [ChunkService.ListChunks][google.cloud.discoveryengine.v1alpha.ChunkService.ListChunks]
                 method.
             parent (:class:`str`):
-                Required. The parent document resource name, such as
+                Required. The parent document resource
+                name, such as
                 ``projects/{project}/locations/{location}/collections/{collection}/dataStores/{data_store}/branches/{branch}/documents/{document}``.
 
-                If the caller does not have permission to list
+                If the caller does not have permission
+                to list
                 [Chunk][google.cloud.discoveryengine.v1alpha.Chunk]s
-                under this document, regardless of whether or not this
-                document exists, a ``PERMISSION_DENIED`` error is
-                returned.
+                under this document, regardless of
+                whether or not this document exists, a
+                ``PERMISSION_DENIED`` error is returned.
 
                 This corresponds to the ``parent`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -485,11 +490,12 @@ class ChunkServiceAsyncClient:
         Returns:
             google.cloud.discoveryengine_v1alpha.services.chunk_service.pagers.ListChunksAsyncPager:
                 Response message for
-                   [ChunkService.ListChunks][google.cloud.discoveryengine.v1alpha.ChunkService.ListChunks]
-                   method.
+                [ChunkService.ListChunks][google.cloud.discoveryengine.v1alpha.ChunkService.ListChunks]
+                method.
 
-                Iterating over this object will yield results and
-                resolve additional pages automatically.
+                Iterating over this object will yield
+                results and resolve additional pages
+                automatically.
 
         """
         # Create or coerce a protobuf request object.

@@ -830,14 +830,17 @@ class DocumentServiceClient(metaclass=DocumentServiceClientMeta):
                 such as
                 ``projects/{project}/locations/{location}/collections/{collection}/dataStores/{data_store}/branches/{branch}/documents/{document}``.
 
-                If the caller does not have permission to access the
+                If the caller does not have permission
+                to access the
                 [Document][google.cloud.discoveryengine.v1alpha.Document],
-                regardless of whether or not it exists, a
-                ``PERMISSION_DENIED`` error is returned.
+                regardless of whether or not it exists,
+                a ``PERMISSION_DENIED`` error is
+                returned.
 
                 If the requested
                 [Document][google.cloud.discoveryengine.v1alpha.Document]
-                does not exist, a ``NOT_FOUND`` error is returned.
+                does not exist, a ``NOT_FOUND`` error is
+                returned.
 
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -948,16 +951,19 @@ class DocumentServiceClient(metaclass=DocumentServiceClientMeta):
                 [DocumentService.ListDocuments][google.cloud.discoveryengine.v1alpha.DocumentService.ListDocuments]
                 method.
             parent (str):
-                Required. The parent branch resource name, such as
+                Required. The parent branch resource
+                name, such as
                 ``projects/{project}/locations/{location}/collections/{collection}/dataStores/{data_store}/branches/{branch}``.
-                Use ``default_branch`` as the branch ID, to list
-                documents under the default branch.
+                Use ``default_branch`` as the branch ID,
+                to list documents under the default
+                branch.
 
-                If the caller does not have permission to list
+                If the caller does not have permission
+                to list
                 [Document][google.cloud.discoveryengine.v1alpha.Document]s
-                under this branch, regardless of whether or not this
-                branch exists, a ``PERMISSION_DENIED`` error is
-                returned.
+                under this branch, regardless of whether
+                or not this branch exists, a
+                ``PERMISSION_DENIED`` error is returned.
 
                 This corresponds to the ``parent`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -973,11 +979,12 @@ class DocumentServiceClient(metaclass=DocumentServiceClientMeta):
         Returns:
             google.cloud.discoveryengine_v1alpha.services.document_service.pagers.ListDocumentsPager:
                 Response message for
-                   [DocumentService.ListDocuments][google.cloud.discoveryengine.v1alpha.DocumentService.ListDocuments]
-                   method.
+                [DocumentService.ListDocuments][google.cloud.discoveryengine.v1alpha.DocumentService.ListDocuments]
+                method.
 
-                Iterating over this object will yield results and
-                resolve additional pages automatically.
+                Iterating over this object will yield
+                results and resolve additional pages
+                automatically.
 
         """
         # Create or coerce a protobuf request object.
@@ -1084,7 +1091,8 @@ class DocumentServiceClient(metaclass=DocumentServiceClientMeta):
                 [DocumentService.CreateDocument][google.cloud.discoveryengine.v1alpha.DocumentService.CreateDocument]
                 method.
             parent (str):
-                Required. The parent resource name, such as
+                Required. The parent resource name, such
+                as
                 ``projects/{project}/locations/{location}/collections/{collection}/dataStores/{data_store}/branches/{branch}``.
 
                 This corresponds to the ``parent`` field
@@ -1104,21 +1112,25 @@ class DocumentServiceClient(metaclass=DocumentServiceClientMeta):
                 which becomes the final component of the
                 [Document.name][google.cloud.discoveryengine.v1alpha.Document.name].
 
-                If the caller does not have permission to create the
+                If the caller does not have permission
+                to create the
                 [Document][google.cloud.discoveryengine.v1alpha.Document],
-                regardless of whether or not it exists, a
-                ``PERMISSION_DENIED`` error is returned.
+                regardless of whether or not it exists,
+                a ``PERMISSION_DENIED`` error is
+                returned.
 
                 This field must be unique among all
                 [Document][google.cloud.discoveryengine.v1alpha.Document]s
                 with the same
                 [parent][google.cloud.discoveryengine.v1alpha.CreateDocumentRequest.parent].
-                Otherwise, an ``ALREADY_EXISTS`` error is returned.
+                Otherwise, an ``ALREADY_EXISTS`` error
+                is returned.
 
-                This field must conform to
-                `RFC-1034 <https://tools.ietf.org/html/rfc1034>`__
-                standard with a length limit of 63 characters.
-                Otherwise, an ``INVALID_ARGUMENT`` error is returned.
+                This field must conform to `RFC-1034
+                <https://tools.ietf.org/html/rfc1034>`__
+                standard with a length limit of 63
+                characters. Otherwise, an
+                ``INVALID_ARGUMENT`` error is returned.
 
                 This corresponds to the ``document_id`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -1234,16 +1246,19 @@ class DocumentServiceClient(metaclass=DocumentServiceClientMeta):
             document (google.cloud.discoveryengine_v1alpha.types.Document):
                 Required. The document to update/create.
 
-                If the caller does not have permission to update the
+                If the caller does not have permission
+                to update the
                 [Document][google.cloud.discoveryengine.v1alpha.Document],
-                regardless of whether or not it exists, a
-                ``PERMISSION_DENIED`` error is returned.
+                regardless of whether or not it exists,
+                a ``PERMISSION_DENIED`` error is
+                returned.
 
                 If the
                 [Document][google.cloud.discoveryengine.v1alpha.Document]
                 to update does not exist and
                 [allow_missing][google.cloud.discoveryengine.v1alpha.UpdateDocumentRequest.allow_missing]
-                is not set, a ``NOT_FOUND`` error is returned.
+                is not set, a ``NOT_FOUND`` error is
+                returned.
 
                 This corresponds to the ``document`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -1368,15 +1383,17 @@ class DocumentServiceClient(metaclass=DocumentServiceClientMeta):
                 such as
                 ``projects/{project}/locations/{location}/collections/{collection}/dataStores/{data_store}/branches/{branch}/documents/{document}``.
 
-                If the caller does not have permission to delete the
+                If the caller does not have permission
+                to delete the
                 [Document][google.cloud.discoveryengine.v1alpha.Document],
-                regardless of whether or not it exists, a
-                ``PERMISSION_DENIED`` error is returned.
+                regardless of whether or not it exists,
+                a ``PERMISSION_DENIED`` error is
+                returned.
 
                 If the
                 [Document][google.cloud.discoveryengine.v1alpha.Document]
-                to delete does not exist, a ``NOT_FOUND`` error is
-                returned.
+                to delete does not exist, a
+                ``NOT_FOUND`` error is returned.
 
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -1442,12 +1459,12 @@ class DocumentServiceClient(metaclass=DocumentServiceClientMeta):
     ) -> operation.Operation:
         r"""Bulk import of multiple
         [Document][google.cloud.discoveryengine.v1alpha.Document]s.
-        Request processing may be synchronous. Non-existing items are
-        created.
+        Request processing may be synchronous. Non-existing
+        items are created.
 
         Note: It is possible for a subset of the
-        [Document][google.cloud.discoveryengine.v1alpha.Document]s to be
-        successfully updated.
+        [Document][google.cloud.discoveryengine.v1alpha.Document]s
+        to be successfully updated.
 
         .. code-block:: python
 
@@ -1492,14 +1509,17 @@ class DocumentServiceClient(metaclass=DocumentServiceClientMeta):
 
         Returns:
             google.api_core.operation.Operation:
-                An object representing a long-running operation.
-
-                The result type for the operation will be :class:`google.cloud.discoveryengine_v1alpha.types.ImportDocumentsResponse` Response of the
-                   [ImportDocumentsRequest][google.cloud.discoveryengine.v1alpha.ImportDocumentsRequest].
-                   If the long running operation is done, then this
-                   message is returned by the
-                   google.longrunning.Operations.response field if the
-                   operation was successful.
+                An object representing a long-running
+                operation.
+                The result type for the operation will
+                be
+                :class:``google.cloud.discoveryengine_v1alpha.types.ImportDocumentsResponse``
+                Response of the
+                [ImportDocumentsRequest][google.cloud.discoveryengine.v1alpha.ImportDocumentsRequest].
+                If the long running operation is done,
+                then this message is returned by the
+                google.longrunning.Operations.response
+                field if the operation was successful.
 
         """
         # Create or coerce a protobuf request object.
@@ -1549,22 +1569,22 @@ class DocumentServiceClient(metaclass=DocumentServiceClientMeta):
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> operation.Operation:
         r"""Permanently deletes all selected
-        [Document][google.cloud.discoveryengine.v1alpha.Document]s in a
-        branch.
+        [Document][google.cloud.discoveryengine.v1alpha.Document]s
+        in a branch.
 
         This process is asynchronous. Depending on the number of
-        [Document][google.cloud.discoveryengine.v1alpha.Document]s to be
-        deleted, this operation can take hours to complete. Before the
-        delete operation completes, some
-        [Document][google.cloud.discoveryengine.v1alpha.Document]s might
-        still be returned by
+        [Document][google.cloud.discoveryengine.v1alpha.Document]s
+        to be deleted, this operation can take hours to
+        complete. Before the delete operation completes, some
+        [Document][google.cloud.discoveryengine.v1alpha.Document]s
+        might still be returned by
         [DocumentService.GetDocument][google.cloud.discoveryengine.v1alpha.DocumentService.GetDocument]
         or
         [DocumentService.ListDocuments][google.cloud.discoveryengine.v1alpha.DocumentService.ListDocuments].
 
         To get a list of the
-        [Document][google.cloud.discoveryengine.v1alpha.Document]s to be
-        deleted, set
+        [Document][google.cloud.discoveryengine.v1alpha.Document]s
+        to be deleted, set
         [PurgeDocumentsRequest.force][google.cloud.discoveryengine.v1alpha.PurgeDocumentsRequest.force]
         to false.
 
@@ -1618,13 +1638,18 @@ class DocumentServiceClient(metaclass=DocumentServiceClientMeta):
 
         Returns:
             google.api_core.operation.Operation:
-                An object representing a long-running operation.
-
-                The result type for the operation will be :class:`google.cloud.discoveryengine_v1alpha.types.PurgeDocumentsResponse` Response message for
-                   [DocumentService.PurgeDocuments][google.cloud.discoveryengine.v1alpha.DocumentService.PurgeDocuments]
-                   method. If the long running operation is successfully
-                   done, then this message is returned by the
-                   google.longrunning.Operations.response field.
+                An object representing a long-running
+                operation.
+                The result type for the operation will
+                be
+                :class:``google.cloud.discoveryengine_v1alpha.types.PurgeDocumentsResponse``
+                Response message for
+                [DocumentService.PurgeDocuments][google.cloud.discoveryengine.v1alpha.DocumentService.PurgeDocuments]
+                method. If the long running operation is
+                successfully done, then this message is
+                returned by the
+                google.longrunning.Operations.response
+                field.
 
         """
         # Create or coerce a protobuf request object.
@@ -1717,14 +1742,17 @@ class DocumentServiceClient(metaclass=DocumentServiceClientMeta):
                 such as
                 ``projects/{project}/locations/{location}/collections/{collection}/dataStores/{data_store}/branches/{branch}/documents/{document}``.
 
-                If the caller does not have permission to access the
+                If the caller does not have permission
+                to access the
                 [Document][google.cloud.discoveryengine.v1alpha.Document],
-                regardless of whether or not it exists, a
-                ``PERMISSION_DENIED`` error is returned.
+                regardless of whether or not it exists,
+                a ``PERMISSION_DENIED`` error is
+                returned.
 
                 If the requested
                 [Document][google.cloud.discoveryengine.v1alpha.Document]
-                does not exist, a ``NOT_FOUND`` error is returned.
+                does not exist, a ``NOT_FOUND`` error is
+                returned.
 
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -1837,7 +1865,8 @@ class DocumentServiceClient(metaclass=DocumentServiceClientMeta):
                 [DocumentService.BatchGetDocumentsMetadata][google.cloud.discoveryengine.v1alpha.DocumentService.BatchGetDocumentsMetadata]
                 method.
             parent (str):
-                Required. The parent branch resource name, such as
+                Required. The parent branch resource
+                name, such as
                 ``projects/{project}/locations/{location}/collections/{collection}/dataStores/{data_store}/branches/{branch}``.
 
                 This corresponds to the ``parent`` field
@@ -1854,8 +1883,8 @@ class DocumentServiceClient(metaclass=DocumentServiceClientMeta):
         Returns:
             google.cloud.discoveryengine_v1alpha.types.BatchGetDocumentsMetadataResponse:
                 Response message for
-                   [DocumentService.BatchGetDocumentsMetadata][google.cloud.discoveryengine.v1alpha.DocumentService.BatchGetDocumentsMetadata]
-                   method.
+                [DocumentService.BatchGetDocumentsMetadata][google.cloud.discoveryengine.v1alpha.DocumentService.BatchGetDocumentsMetadata]
+                method.
 
         """
         # Create or coerce a protobuf request object.

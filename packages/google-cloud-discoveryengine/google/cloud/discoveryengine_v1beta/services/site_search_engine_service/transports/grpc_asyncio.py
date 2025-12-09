@@ -421,8 +421,8 @@ class SiteSearchEngineServiceGrpcAsyncIOTransport(SiteSearchEngineServiceTranspo
         r"""Return a callable for the batch create target sites method over gRPC.
 
         Creates
-        [TargetSite][google.cloud.discoveryengine.v1beta.TargetSite] in
-        a batch.
+        [TargetSite][google.cloud.discoveryengine.v1beta.TargetSite]
+        in a batch.
 
         Returns:
             Callable[[~.BatchCreateTargetSitesRequest],
@@ -631,8 +631,10 @@ class SiteSearchEngineServiceGrpcAsyncIOTransport(SiteSearchEngineServiceTranspo
     ]:
         r"""Return a callable for the fetch sitemaps method over gRPC.
 
-        Fetch [Sitemap][google.cloud.discoveryengine.v1beta.Sitemap]s in
-        a [DataStore][google.cloud.discoveryengine.v1beta.DataStore].
+        Fetch
+        [Sitemap][google.cloud.discoveryengine.v1beta.Sitemap]s
+        in a
+        [DataStore][google.cloud.discoveryengine.v1beta.DataStore].
 
         Returns:
             Callable[[~.FetchSitemapsRequest],
@@ -786,9 +788,10 @@ class SiteSearchEngineServiceGrpcAsyncIOTransport(SiteSearchEngineServiceTranspo
         r"""Return a callable for the fetch domain verification
         status method over gRPC.
 
-        Returns list of target sites with its domain verification
-        status. This method can only be called under data store with
-        BASIC_SITE_SEARCH state at the moment.
+        Returns list of target sites with its domain
+        verification status. This method can only be called
+        under data store with BASIC_SITE_SEARCH state at the
+        moment.
 
         Returns:
             Callable[[~.FetchDomainVerificationStatusRequest],

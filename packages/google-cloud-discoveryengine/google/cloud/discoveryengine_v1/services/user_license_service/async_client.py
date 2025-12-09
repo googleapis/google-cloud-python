@@ -345,8 +345,8 @@ class UserLicenseServiceAsyncClient:
                 The request object. Request message for
                 [UserLicenseService.ListUserLicenses][google.cloud.discoveryengine.v1.UserLicenseService.ListUserLicenses].
             parent (:class:`str`):
-                Required. The parent [UserStore][] resource name,
-                format:
+                Required. The parent [UserStore][]
+                resource name, format:
                 ``projects/{project}/locations/{location}/userStores/{user_store_id}``.
 
                 This corresponds to the ``parent`` field
@@ -363,10 +363,11 @@ class UserLicenseServiceAsyncClient:
         Returns:
             google.cloud.discoveryengine_v1.services.user_license_service.pagers.ListUserLicensesAsyncPager:
                 Response message for
-                   [UserLicenseService.ListUserLicenses][google.cloud.discoveryengine.v1.UserLicenseService.ListUserLicenses].
+                [UserLicenseService.ListUserLicenses][google.cloud.discoveryengine.v1.UserLicenseService.ListUserLicenses].
 
-                Iterating over this object will yield results and
-                resolve additional pages automatically.
+                Iterating over this object will yield
+                results and resolve additional pages
+                automatically.
 
         """
         # Create or coerce a protobuf request object.
@@ -492,11 +493,14 @@ class UserLicenseServiceAsyncClient:
 
         Returns:
             google.api_core.operation_async.AsyncOperation:
-                An object representing a long-running operation.
-
-                The result type for the operation will be :class:`google.cloud.discoveryengine_v1.types.BatchUpdateUserLicensesResponse` Response message for
-                   [UserLicenseService.BatchUpdateUserLicenses][google.cloud.discoveryengine.v1.UserLicenseService.BatchUpdateUserLicenses]
-                   method.
+                An object representing a long-running
+                operation.
+                The result type for the operation will
+                be
+                :class:``google.cloud.discoveryengine_v1.types.BatchUpdateUserLicensesResponse``
+                Response message for
+                [UserLicenseService.BatchUpdateUserLicenses][google.cloud.discoveryengine.v1.UserLicenseService.BatchUpdateUserLicenses]
+                method.
 
         """
         # Create or coerce a protobuf request object.

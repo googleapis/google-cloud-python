@@ -49,10 +49,11 @@ class GetSampleQuerySetRequest(proto.Message):
             such as
             ``projects/{project}/locations/{location}/sampleQuerySets/{sample_query_set}``.
 
-            If the caller does not have permission to access the
+            If the caller does not have permission to access
+            the
             [SampleQuerySet][google.cloud.discoveryengine.v1beta.SampleQuerySet],
-            regardless of whether or not it exists, a PERMISSION_DENIED
-            error is returned.
+            regardless of whether or not it exists, a
+            PERMISSION_DENIED error is returned.
 
             If the requested
             [SampleQuerySet][google.cloud.discoveryengine.v1beta.SampleQuerySet]
@@ -72,33 +73,38 @@ class ListSampleQuerySetsRequest(proto.Message):
 
     Attributes:
         parent (str):
-            Required. The parent location resource name, such as
+            Required. The parent location resource name,
+            such as
             ``projects/{project}/locations/{location}``.
 
             If the caller does not have permission to list
             [SampleQuerySet][google.cloud.discoveryengine.v1beta.SampleQuerySet]s
-            under this location, regardless of whether or not this
-            location exists, a ``PERMISSION_DENIED`` error is returned.
+            under this location, regardless of whether or
+            not this location exists, a
+            ``PERMISSION_DENIED`` error is returned.
         page_size (int):
             Maximum number of
             [SampleQuerySet][google.cloud.discoveryengine.v1beta.SampleQuerySet]s
-            to return. If unspecified, defaults to 100. The maximum
-            allowed value is 1000. Values above 1000 will be coerced to
-            1000.
+            to return. If unspecified, defaults to 100. The
+            maximum allowed value is 1000. Values above 1000
+            will be coerced to 1000.
 
-            If this field is negative, an ``INVALID_ARGUMENT`` error is
-            returned.
+            If this field is negative, an
+            ``INVALID_ARGUMENT`` error is returned.
         page_token (str):
             A page token
             [ListSampleQuerySetsResponse.next_page_token][google.cloud.discoveryengine.v1beta.ListSampleQuerySetsResponse.next_page_token],
             received from a previous
             [SampleQuerySetService.ListSampleQuerySets][google.cloud.discoveryengine.v1beta.SampleQuerySetService.ListSampleQuerySets]
-            call. Provide this to retrieve the subsequent page.
+            call. Provide this to retrieve the subsequent
+            page.
 
-            When paginating, all other parameters provided to
+            When paginating, all other parameters provided
+            to
             [SampleQuerySetService.ListSampleQuerySets][google.cloud.discoveryengine.v1beta.SampleQuerySetService.ListSampleQuerySets]
-            must match the call that provided the page token. Otherwise,
-            an ``INVALID_ARGUMENT`` error is returned.
+            must match the call that provided the page
+            token. Otherwise, an ``INVALID_ARGUMENT`` error
+            is returned.
     """
 
     parent: str = proto.Field(
@@ -127,8 +133,8 @@ class ListSampleQuerySetsResponse(proto.Message):
         next_page_token (str):
             A token that can be sent as
             [ListSampleQuerySetsRequest.page_token][google.cloud.discoveryengine.v1beta.ListSampleQuerySetsRequest.page_token]
-            to retrieve the next page. If this field is omitted, there
-            are no subsequent pages.
+            to retrieve the next page. If this field is
+            omitted, there are no subsequent pages.
     """
 
     @property
@@ -167,7 +173,8 @@ class CreateSampleQuerySetRequest(proto.Message):
             which will become the final component of the
             [SampleQuerySet.name][google.cloud.discoveryengine.v1beta.SampleQuerySet.name].
 
-            If the caller does not have permission to create the
+            If the caller does not have permission to create
+            the
             [SampleQuerySet][google.cloud.discoveryengine.v1beta.SampleQuerySet],
             regardless of whether or not it exists, a
             ``PERMISSION_DENIED`` error is returned.
@@ -176,12 +183,14 @@ class CreateSampleQuerySetRequest(proto.Message):
             [SampleQuerySet][google.cloud.discoveryengine.v1beta.SampleQuerySet]s
             with the same
             [parent][google.cloud.discoveryengine.v1beta.CreateSampleQuerySetRequest.parent].
-            Otherwise, an ``ALREADY_EXISTS`` error is returned.
+            Otherwise, an ``ALREADY_EXISTS`` error is
+            returned.
 
-            This field must conform to
-            `RFC-1034 <https://tools.ietf.org/html/rfc1034>`__ standard
-            with a length limit of 63 characters. Otherwise, an
-            ``INVALID_ARGUMENT`` error is returned.
+            This field must conform to `RFC-1034
+            <https://tools.ietf.org/html/rfc1034>`__
+            standard with a length limit of 63 characters.
+            Otherwise, an ``INVALID_ARGUMENT`` error is
+            returned.
     """
 
     parent: str = proto.Field(
@@ -208,14 +217,16 @@ class UpdateSampleQuerySetRequest(proto.Message):
         sample_query_set (google.cloud.discoveryengine_v1beta.types.SampleQuerySet):
             Required. The sample query set to update.
 
-            If the caller does not have permission to update the
+            If the caller does not have permission to update
+            the
             [SampleQuerySet][google.cloud.discoveryengine.v1beta.SampleQuerySet],
             regardless of whether or not it exists, a
             ``PERMISSION_DENIED`` error is returned.
 
             If the
             [SampleQuerySet][google.cloud.discoveryengine.v1beta.SampleQuerySet]
-            to update does not exist a ``NOT_FOUND`` error is returned.
+            to update does not exist a ``NOT_FOUND`` error
+            is returned.
         update_mask (google.protobuf.field_mask_pb2.FieldMask):
             Indicates which fields in the provided
             imported 'sample query set' to update. If not
@@ -246,14 +257,16 @@ class DeleteSampleQuerySetRequest(proto.Message):
             such as
             ``projects/{project}/locations/{location}/sampleQuerySets/{sample_query_set}``.
 
-            If the caller does not have permission to delete the
+            If the caller does not have permission to delete
+            the
             [SampleQuerySet][google.cloud.discoveryengine.v1beta.SampleQuerySet],
             regardless of whether or not it exists, a
             ``PERMISSION_DENIED`` error is returned.
 
             If the
             [SampleQuerySet][google.cloud.discoveryengine.v1beta.SampleQuerySet]
-            to delete does not exist, a ``NOT_FOUND`` error is returned.
+            to delete does not exist, a ``NOT_FOUND`` error
+            is returned.
     """
 
     name: str = proto.Field(

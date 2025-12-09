@@ -890,11 +890,12 @@ class SearchServiceClient(metaclass=SearchServiceClientMeta):
         Returns:
             google.cloud.discoveryengine_v1beta.services.search_service.pagers.SearchPager:
                 Response message for
-                   [SearchService.Search][google.cloud.discoveryengine.v1beta.SearchService.Search]
-                   method.
+                [SearchService.Search][google.cloud.discoveryengine.v1beta.SearchService.Search]
+                method.
 
-                Iterating over this object will yield results and
-                resolve additional pages automatically.
+                Iterating over this object will yield
+                results and resolve additional pages
+                automatically.
 
         """
         # Create or coerce a protobuf request object.
@@ -951,18 +952,20 @@ class SearchServiceClient(metaclass=SearchServiceClientMeta):
         r"""Performs a search. Similar to the
         [SearchService.Search][google.cloud.discoveryengine.v1beta.SearchService.Search]
         method, but a lite version that allows API key for
-        authentication, where OAuth and IAM checks are not required.
+        authentication, where OAuth and IAM checks are not
+        required.
 
-        Only public website search is supported by this method. If data
-        stores and engines not associated with public website search are
-        specified, a ``FAILED_PRECONDITION`` error is returned.
+        Only public website search is supported by this method.
+        If data stores and engines not associated with public
+        website search are specified, a ``FAILED_PRECONDITION``
+        error is returned.
 
-        This method can be used for easy onboarding without having to
-        implement an authentication backend. However, it is strongly
-        recommended to use
+        This method can be used for easy onboarding without
+        having to implement an authentication backend. However,
+        it is strongly recommended to use
         [SearchService.Search][google.cloud.discoveryengine.v1beta.SearchService.Search]
-        instead with required OAuth and IAM checks to provide better
-        data security.
+        instead with required OAuth and IAM checks to provide
+        better data security.
 
         .. code-block:: python
 
@@ -1007,11 +1010,12 @@ class SearchServiceClient(metaclass=SearchServiceClientMeta):
         Returns:
             google.cloud.discoveryengine_v1beta.services.search_service.pagers.SearchLitePager:
                 Response message for
-                   [SearchService.Search][google.cloud.discoveryengine.v1beta.SearchService.Search]
-                   method.
+                [SearchService.Search][google.cloud.discoveryengine.v1beta.SearchService.Search]
+                method.
 
-                Iterating over this object will yield results and
-                resolve additional pages automatically.
+                Iterating over this object will yield
+                results and resolve additional pages
+                automatically.
 
         """
         # Create or coerce a protobuf request object.

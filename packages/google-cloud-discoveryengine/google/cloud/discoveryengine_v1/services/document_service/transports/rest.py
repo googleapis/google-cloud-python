@@ -586,8 +586,8 @@ class DocumentServiceRestTransport(_BaseDocumentServiceRestTransport):
     """REST backend synchronous transport for DocumentService.
 
     Service for ingesting
-    [Document][google.cloud.discoveryengine.v1.Document] information of
-    the customer's website.
+    [Document][google.cloud.discoveryengine.v1.Document] information
+    of the customer's website.
 
     This class defines the same methods as the primary client, so the
     primary client can load the underlying transport implementation

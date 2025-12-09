@@ -50,5 +50,4 @@ def sample_fetch_domain_verification_status():
     for response in page_result:
         print(response)
 
-
 # [END discoveryengine_v1_generated_SiteSearchEngineService_FetchDomainVerificationStatus_sync]

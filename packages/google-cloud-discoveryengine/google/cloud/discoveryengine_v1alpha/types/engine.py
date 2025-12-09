@@ -31,8 +31,8 @@ __protobuf__ = proto.module(
 
 
 class Engine(proto.Message):
-    r"""Metadata that describes the training and serving parameters of an
-    [Engine][google.cloud.discoveryengine.v1alpha.Engine].
+    r"""Metadata that describes the training and serving parameters of
+    an [Engine][google.cloud.discoveryengine.v1alpha.Engine].
 
     This message has `oneof`_ fields (mutually exclusive fields).
     For each oneof, at most one member field can be set at the same time.
@@ -43,26 +43,29 @@ class Engine(proto.Message):
 
     Attributes:
         similar_documents_config (google.cloud.discoveryengine_v1alpha.types.Engine.SimilarDocumentsEngineConfig):
-            Additional config specs for a ``similar-items`` engine.
+            Additional config specs for a ``similar-items``
+            engine.
 
             This field is a member of `oneof`_ ``engine_config``.
         chat_engine_config (google.cloud.discoveryengine_v1alpha.types.Engine.ChatEngineConfig):
-            Configurations for the Chat Engine. Only applicable if
+            Configurations for the Chat Engine. Only
+            applicable if
             [solution_type][google.cloud.discoveryengine.v1alpha.Engine.solution_type]
             is
             [SOLUTION_TYPE_CHAT][google.cloud.discoveryengine.v1alpha.SolutionType.SOLUTION_TYPE_CHAT].
 
             This field is a member of `oneof`_ ``engine_config``.
         search_engine_config (google.cloud.discoveryengine_v1alpha.types.Engine.SearchEngineConfig):
-            Configurations for the Search Engine. Only applicable if
+            Configurations for the Search Engine. Only
+            applicable if
             [solution_type][google.cloud.discoveryengine.v1alpha.Engine.solution_type]
             is
             [SOLUTION_TYPE_SEARCH][google.cloud.discoveryengine.v1alpha.SolutionType.SOLUTION_TYPE_SEARCH].
 
             This field is a member of `oneof`_ ``engine_config``.
         media_recommendation_engine_config (google.cloud.discoveryengine_v1alpha.types.Engine.MediaRecommendationEngineConfig):
-            Configurations for the Media Engine. Only applicable on the
-            data stores with
+            Configurations for the Media Engine. Only
+            applicable on the data stores with
             [solution_type][google.cloud.discoveryengine.v1alpha.Engine.solution_type]
             [SOLUTION_TYPE_RECOMMENDATION][google.cloud.discoveryengine.v1alpha.SolutionType.SOLUTION_TYPE_RECOMMENDATION]
             and
@@ -71,32 +74,33 @@ class Engine(proto.Message):
 
             This field is a member of `oneof`_ ``engine_config``.
         recommendation_metadata (google.cloud.discoveryengine_v1alpha.types.Engine.RecommendationMetadata):
-            Output only. Additional information of a recommendation
-            engine. Only applicable if
+            Output only. Additional information of a
+            recommendation engine. Only applicable if
             [solution_type][google.cloud.discoveryengine.v1alpha.Engine.solution_type]
             is
             [SOLUTION_TYPE_RECOMMENDATION][google.cloud.discoveryengine.v1alpha.SolutionType.SOLUTION_TYPE_RECOMMENDATION].
 
             This field is a member of `oneof`_ ``engine_metadata``.
         chat_engine_metadata (google.cloud.discoveryengine_v1alpha.types.Engine.ChatEngineMetadata):
-            Output only. Additional information of the Chat Engine. Only
-            applicable if
+            Output only. Additional information of the Chat
+            Engine. Only applicable if
             [solution_type][google.cloud.discoveryengine.v1alpha.Engine.solution_type]
             is
             [SOLUTION_TYPE_CHAT][google.cloud.discoveryengine.v1alpha.SolutionType.SOLUTION_TYPE_CHAT].
 
             This field is a member of `oneof`_ ``engine_metadata``.
         name (str):
-            Immutable. The fully qualified resource name of the engine.
-
-            This field must be a UTF-8 encoded string with a length
-            limit of 1024 characters.
+            Immutable. The fully qualified resource name of
+            the engine.
+            This field must be a UTF-8 encoded string with a
+            length limit of 1024 characters.
 
             Format:
+
             ``projects/{project_number}/locations/{location}/collections/{collection}/engines/{engine}``
-            engine should be 1-63 characters, and valid characters are
-            /[a-z0-9][a-z0-9-\_]*/. Otherwise, an INVALID_ARGUMENT error
-            is returned.
+            engine should be 1-63 characters, and valid
+            characters are /[a-z0-9][a-z0-9-_]*/. Otherwise,
+            an INVALID_ARGUMENT error is returned.
         display_name (str):
             Required. The display name of the engine.
             Should be human readable. UTF-8 encoded string
@@ -114,8 +118,8 @@ class Engine(proto.Message):
             [SOLUTION_TYPE_SEARCH][google.cloud.discoveryengine.v1alpha.SolutionType.SOLUTION_TYPE_SEARCH]
             and
             [SOLUTION_TYPE_RECOMMENDATION][google.cloud.discoveryengine.v1alpha.SolutionType.SOLUTION_TYPE_RECOMMENDATION]
-            type of engines, they can only associate with at most one
-            data store.
+            type of engines, they can only associate with at
+            most one data store.
 
             If
             [solution_type][google.cloud.discoveryengine.v1alpha.Engine.solution_type]
@@ -129,16 +133,18 @@ class Engine(proto.Message):
 
             Note that when used in
             [CreateEngineRequest][google.cloud.discoveryengine.v1alpha.CreateEngineRequest],
-            one DataStore id must be provided as the system will use it
-            for necessary initializations.
+            one DataStore id must be provided as the system
+            will use it for necessary initializations.
         solution_type (google.cloud.discoveryengine_v1alpha.types.SolutionType):
             Required. The solutions of the engine.
         industry_vertical (google.cloud.discoveryengine_v1alpha.types.IndustryVertical):
-            The industry vertical that the engine registers. The
-            restriction of the Engine industry vertical is based on
+            The industry vertical that the engine registers.
+            The restriction of the Engine industry vertical
+            is based on
             [DataStore][google.cloud.discoveryengine.v1alpha.DataStore]:
-            If unspecified, default to ``GENERIC``. Vertical on Engine
-            has to match vertical of the DataStore linked to the engine.
+            If unspecified, default to ``GENERIC``. Vertical
+            on Engine has to match vertical of the DataStore
+            linked to the engine.
         common_config (google.cloud.discoveryengine_v1alpha.types.Engine.CommonConfig):
             Common config spec that specifies the
             metadata of the engine.
@@ -151,8 +157,9 @@ class Engine(proto.Message):
             search_tier (google.cloud.discoveryengine_v1alpha.types.SearchTier):
                 The search feature tier of this engine.
 
-                Different tiers might have different pricing. To learn more,
-                check the pricing documentation.
+                Different tiers might have different
+                pricing. To learn more, check the pricing
+                documentation.
 
                 Defaults to
                 [SearchTier.SEARCH_TIER_STANDARD][google.cloud.discoveryengine.v1alpha.SearchTier.SEARCH_TIER_STANDARD]
@@ -180,14 +187,15 @@ class Engine(proto.Message):
 
         Attributes:
             type_ (str):
-                Required. The type of engine. e.g., ``recommended-for-you``.
-
+                Required. The type of engine. e.g.,
+                ``recommended-for-you``.
                 This field together with
                 [optimization_objective][Engine.optimization_objective]
-                describe engine metadata to use to control engine training
-                and serving.
+                describe engine metadata to use to control
+                engine training and serving.
 
-                Currently supported values: ``recommended-for-you``,
+                Currently supported values:
+                ``recommended-for-you``,
                 ``others-you-may-like``, ``more-like-this``,
                 ``most-popular-items``.
             optimization_objective (str):
@@ -195,36 +203,42 @@ class Engine(proto.Message):
 
                 This field together with
                 [optimization_objective][google.cloud.discoveryengine.v1alpha.Engine.MediaRecommendationEngineConfig.type]
-                describe engine metadata to use to control engine training
-                and serving.
+                describe engine metadata to use to control
+                engine training and serving.
 
-                Currently supported values: ``ctr``, ``cvr``.
+                Currently supported
+                values: ``ctr``, ``cvr``.
 
-                If not specified, we choose default based on engine type.
-                Default depends on type of recommendation:
+                 If not specified, we choose default based on
+                engine type. Default depends on type of
+                recommendation:
 
                 ``recommended-for-you`` => ``ctr``
 
                 ``others-you-may-like`` => ``ctr``
             optimization_objective_config (google.cloud.discoveryengine_v1alpha.types.Engine.MediaRecommendationEngineConfig.OptimizationObjectiveConfig):
                 Name and value of the custom threshold for cvr
-                optimization_objective. For target_field ``watch-time``,
-                target_field_value must be an integer value indicating the
-                media progress time in seconds between (0, 86400] (excludes
-                0, includes 86400) (e.g., 90). For target_field
-                ``watch-percentage``, the target_field_value must be a valid
-                float value between (0, 1.0] (excludes 0, includes 1.0)
+                optimization_objective. For target_field
+                ``watch-time``, target_field_value must be an
+                integer value indicating the media progress time
+                in seconds between (0, 86400] (excludes 0,
+                includes 86400) (e.g., 90).
+                For target_field ``watch-percentage``, the
+                target_field_value must be a valid float value
+                between (0, 1.0] (excludes 0, includes 1.0)
                 (e.g., 0.5).
             training_state (google.cloud.discoveryengine_v1alpha.types.Engine.MediaRecommendationEngineConfig.TrainingState):
-                The training state that the engine is in (e.g. ``TRAINING``
-                or ``PAUSED``).
+                The training state that the engine is in (e.g.
+                ``TRAINING`` or ``PAUSED``).
 
-                Since part of the cost of running the service is frequency
-                of training - this can be used to determine when to train
-                engine in order to control cost. If not specified: the
-                default value for ``CreateEngine`` method is ``TRAINING``.
-                The default value for ``UpdateEngine`` method is to keep the
-                state the same as before.
+                Since part of the cost of running the service is
+                frequency of training - this can be used to
+                determine when to train engine in order to
+                control cost. If not specified: the default
+                value for ``CreateEngine`` method is
+                ``TRAINING``. The default value for
+                ``UpdateEngine`` method is to keep the state the
+                same as before.
         """
 
         class TrainingState(proto.Enum):
@@ -247,8 +261,9 @@ class Engine(proto.Message):
 
             Attributes:
                 target_field (str):
-                    Required. The name of the field to target. Currently
-                    supported values: ``watch-percentage``, ``watch-time``.
+                    Required. The name of the field to target.
+                    Currently supported values:
+                    ``watch-percentage``, ``watch-time``.
                 target_field_value_float (float):
                     Required. The threshold to be applied to the
                     target (e.g., 0.5).
@@ -289,41 +304,44 @@ class Engine(proto.Message):
 
         Attributes:
             agent_creation_config (google.cloud.discoveryengine_v1alpha.types.Engine.ChatEngineConfig.AgentCreationConfig):
-                The configurationt generate the Dialogflow agent that is
-                associated to this Engine.
+                The configurationt generate the Dialogflow agent
+                that is associated to this Engine.
 
-                Note that these configurations are one-time consumed by and
-                passed to Dialogflow service. It means they cannot be
-                retrieved using
+                Note that these configurations are one-time
+                consumed by and passed to Dialogflow service. It
+                means they cannot be retrieved using
                 [EngineService.GetEngine][google.cloud.discoveryengine.v1alpha.EngineService.GetEngine]
                 or
                 [EngineService.ListEngines][google.cloud.discoveryengine.v1alpha.EngineService.ListEngines]
                 API after engine creation.
             dialogflow_agent_to_link (str):
-                The resource name of an exist Dialogflow agent to link to
-                this Chat Engine. Customers can either provide
-                ``agent_creation_config`` to create agent or provide an
-                agent name that links the agent with the Chat engine.
+                The resource name of an exist Dialogflow agent
+                to link to this Chat Engine. Customers can
+                either provide ``agent_creation_config`` to
+                create agent or provide an agent name that links
+                the agent with the Chat engine.
 
-                Format:
-                ``projects/<Project ID>/locations/<Location ID>/agents/<Agent ID>``.
+                Format: ``projects/<Project
+                ID>/locations/<Location ID>/agents/<Agent ID>``.
 
-                Note that the ``dialogflow_agent_to_link`` are one-time
-                consumed by and passed to Dialogflow service. It means they
-                cannot be retrieved using
+                Note that the ``dialogflow_agent_to_link`` are
+                one-time consumed by and passed to Dialogflow
+                service. It means they cannot be retrieved using
                 [EngineService.GetEngine][google.cloud.discoveryengine.v1alpha.EngineService.GetEngine]
                 or
                 [EngineService.ListEngines][google.cloud.discoveryengine.v1alpha.EngineService.ListEngines]
                 API after engine creation. Use
                 [ChatEngineMetadata.dialogflow_agent][google.cloud.discoveryengine.v1alpha.Engine.ChatEngineMetadata.dialogflow_agent]
-                for actual agent association after Engine is created.
+                for actual agent association after Engine is
+                created.
         """
 
         class AgentCreationConfig(proto.Message):
             r"""Configurations for generating a Dialogflow agent.
 
-            Note that these configurations are one-time consumed by and passed
-            to Dialogflow service. It means they cannot be retrieved using
+            Note that these configurations are one-time consumed by and
+            passed to Dialogflow service. It means they cannot be retrieved
+            using
             [EngineService.GetEngine][google.cloud.discoveryengine.v1alpha.EngineService.GetEngine]
             or
             [EngineService.ListEngines][google.cloud.discoveryengine.v1alpha.EngineService.ListEngines]
@@ -336,13 +354,16 @@ class Engine(proto.Message):
                     knowledge connector LLM prompt and for knowledge
                     search.
                 default_language_code (str):
-                    Required. The default language of the agent as a language
-                    tag. See `Language
-                    Support <https://cloud.google.com/dialogflow/docs/reference/language>`__
-                    for a list of the currently supported language codes.
+                    Required. The default language of the agent as a
+                    language tag. See `Language
+                    Support
+                    <https://cloud.google.com/dialogflow/docs/reference/language>`__
+                    for a list of the currently supported language
+                    codes.
                 time_zone (str):
-                    Required. The time zone of the agent from the `time zone
-                    database <https://www.iana.org/time-zones>`__, e.g.,
+                    Required. The time zone of the agent from the
+                    `time zone database
+                    <https://www.iana.org/time-zones>`__, e.g.,
                     America/New_York, Europe/Paris.
                 location (str):
                     Agent location for Agent creation, supported
@@ -401,17 +422,19 @@ class Engine(proto.Message):
 
         Attributes:
             serving_state (google.cloud.discoveryengine_v1alpha.types.Engine.RecommendationMetadata.ServingState):
-                Output only. The serving state of the engine: ``ACTIVE``,
-                ``NOT_ACTIVE``.
+                Output only. The serving state of the engine:
+                ``ACTIVE``, ``NOT_ACTIVE``.
             data_state (google.cloud.discoveryengine_v1alpha.types.Engine.RecommendationMetadata.DataState):
-                Output only. The state of data requirements for this engine:
-                ``DATA_OK`` and ``DATA_ERROR``.
+                Output only. The state of data requirements for
+                this engine: ``DATA_OK`` and ``DATA_ERROR``.
 
-                Engine cannot be trained if the data is in ``DATA_ERROR``
-                state. Engine can have ``DATA_ERROR`` state even if serving
-                state is ``ACTIVE``: engines were trained successfully
-                before, but cannot be refreshed because the underlying
-                engine no longer has sufficient data for training.
+                Engine cannot be trained if the data is in
+                ``DATA_ERROR`` state. Engine can have
+                ``DATA_ERROR`` state even if serving state is
+                ``ACTIVE``: engines were trained successfully
+                before, but cannot be refreshed because the
+                underlying engine no longer has sufficient data
+                for training.
             last_tune_time (google.protobuf.timestamp_pb2.Timestamp):
                 Output only. The timestamp when the latest
                 successful tune finished. Only applicable on
@@ -493,11 +516,11 @@ class Engine(proto.Message):
 
         Attributes:
             dialogflow_agent (str):
-                The resource name of a Dialogflow agent, that this Chat
-                Engine refers to.
+                The resource name of a Dialogflow agent, that
+                this Chat Engine refers to.
 
-                Format:
-                ``projects/<Project ID>/locations/<Location ID>/agents/<Agent ID>``.
+                Format: ``projects/<Project
+                ID>/locations/<Location ID>/agents/<Agent ID>``.
         """
 
         dialogflow_agent: str = proto.Field(

@@ -63,23 +63,28 @@ class CreateDataStoreRequest(proto.Message):
             [DataStore][google.cloud.discoveryengine.v1alpha.DataStore]'s
             resource name.
 
-            This field must conform to
-            `RFC-1034 <https://tools.ietf.org/html/rfc1034>`__ standard
-            with a length limit of 63 characters. Otherwise, an
-            INVALID_ARGUMENT error is returned.
+            This field must conform to `RFC-1034
+            <https://tools.ietf.org/html/rfc1034>`__
+            standard with a length limit of 63 characters.
+            Otherwise, an INVALID_ARGUMENT error is
+            returned.
         create_advanced_site_search (bool):
-            A boolean flag indicating whether user want to directly
-            create an advanced data store for site search. If the data
-            store is not configured as site search (GENERIC vertical and
-            PUBLIC_WEBSITE content_config), this flag will be ignored.
+            A boolean flag indicating whether user want to
+            directly create an advanced data store for site
+            search. If the data store is not configured as
+            site
+            search (GENERIC vertical and PUBLIC_WEBSITE
+            content_config), this flag will be ignored.
         skip_default_schema_creation (bool):
-            A boolean flag indicating whether to skip the default schema
-            creation for the data store. Only enable this flag if you
-            are certain that the default schema is incompatible with
-            your use case.
+            A boolean flag indicating whether to skip the
+            default schema creation for the data store. Only
+            enable this flag if you are certain that the
+            default schema is incompatible with your use
+            case.
 
-            If set to true, you must manually create a schema for the
-            data store before any documents can be ingested.
+            If set to true, you must manually create a
+            schema for the data store before any documents
+            can be ingested.
 
             This flag cannot be specified if
             ``data_store.starting_schema`` is specified.
@@ -120,10 +125,11 @@ class GetDataStoreRequest(proto.Message):
             such as
             ``projects/{project}/locations/{location}/collections/{collection_id}/dataStores/{data_store_id}``.
 
-            If the caller does not have permission to access the
+            If the caller does not have permission to access
+            the
             [DataStore][google.cloud.discoveryengine.v1alpha.DataStore],
-            regardless of whether or not it exists, a PERMISSION_DENIED
-            error is returned.
+            regardless of whether or not it exists, a
+            PERMISSION_DENIED error is returned.
 
             If the requested
             [DataStore][google.cloud.discoveryengine.v1alpha.DataStore]
@@ -169,34 +175,42 @@ class ListDataStoresRequest(proto.Message):
 
     Attributes:
         parent (str):
-            Required. The parent branch resource name, such as
+            Required. The parent branch resource name, such
+            as
             ``projects/{project}/locations/{location}/collections/{collection_id}``.
 
             If the caller does not have permission to list
             [DataStore][google.cloud.discoveryengine.v1alpha.DataStore]s
-            under this location, regardless of whether or not this data
-            store exists, a PERMISSION_DENIED error is returned.
+            under this location, regardless of whether or
+            not this data store exists, a PERMISSION_DENIED
+            error is returned.
         page_size (int):
             Maximum number of
             [DataStore][google.cloud.discoveryengine.v1alpha.DataStore]s
-            to return. If unspecified, defaults to 10. The maximum
-            allowed value is 50. Values above 50 will be coerced to 50.
+            to return. If unspecified, defaults to 10. The
+            maximum allowed value is 50. Values above 50
+            will be coerced to 50.
 
-            If this field is negative, an INVALID_ARGUMENT is returned.
+            If this field is negative, an INVALID_ARGUMENT
+            is returned.
         page_token (str):
             A page token
             [ListDataStoresResponse.next_page_token][google.cloud.discoveryengine.v1alpha.ListDataStoresResponse.next_page_token],
             received from a previous
             [DataStoreService.ListDataStores][google.cloud.discoveryengine.v1alpha.DataStoreService.ListDataStores]
-            call. Provide this to retrieve the subsequent page.
+            call. Provide this to retrieve the subsequent
+            page.
 
-            When paginating, all other parameters provided to
+            When paginating, all other parameters provided
+            to
             [DataStoreService.ListDataStores][google.cloud.discoveryengine.v1alpha.DataStoreService.ListDataStores]
-            must match the call that provided the page token. Otherwise,
-            an INVALID_ARGUMENT error is returned.
+            must match the call that provided the page
+            token. Otherwise, an INVALID_ARGUMENT error is
+            returned.
         filter (str):
-            Filter by solution type . For example:
-            ``filter = 'solution_type:SOLUTION_TYPE_SEARCH'``
+            Filter by solution type .
+            For example: ``filter =
+            'solution_type:SOLUTION_TYPE_SEARCH'``
     """
 
     parent: str = proto.Field(
@@ -229,8 +243,8 @@ class ListDataStoresResponse(proto.Message):
         next_page_token (str):
             A token that can be sent as
             [ListDataStoresRequest.page_token][google.cloud.discoveryengine.v1alpha.ListDataStoresRequest.page_token]
-            to retrieve the next page. If this field is omitted, there
-            are no subsequent pages.
+            to retrieve the next page. If this field is
+            omitted, there are no subsequent pages.
     """
 
     @property
@@ -260,14 +274,16 @@ class DeleteDataStoreRequest(proto.Message):
             such as
             ``projects/{project}/locations/{location}/collections/{collection_id}/dataStores/{data_store_id}``.
 
-            If the caller does not have permission to delete the
+            If the caller does not have permission to delete
+            the
             [DataStore][google.cloud.discoveryengine.v1alpha.DataStore],
-            regardless of whether or not it exists, a PERMISSION_DENIED
-            error is returned.
+            regardless of whether or not it exists, a
+            PERMISSION_DENIED error is returned.
 
             If the
             [DataStore][google.cloud.discoveryengine.v1alpha.DataStore]
-            to delete does not exist, a NOT_FOUND error is returned.
+            to delete does not exist, a NOT_FOUND error is
+            returned.
     """
 
     name: str = proto.Field(
@@ -287,21 +303,23 @@ class UpdateDataStoreRequest(proto.Message):
             [DataStore][google.cloud.discoveryengine.v1alpha.DataStore]
             to update.
 
-            If the caller does not have permission to update the
+            If the caller does not have permission to update
+            the
             [DataStore][google.cloud.discoveryengine.v1alpha.DataStore],
-            regardless of whether or not it exists, a PERMISSION_DENIED
-            error is returned.
+            regardless of whether or not it exists, a
+            PERMISSION_DENIED error is returned.
 
             If the
             [DataStore][google.cloud.discoveryengine.v1alpha.DataStore]
-            to update does not exist, a NOT_FOUND error is returned.
+            to update does not exist, a NOT_FOUND error is
+            returned.
         update_mask (google.protobuf.field_mask_pb2.FieldMask):
             Indicates which fields in the provided
             [DataStore][google.cloud.discoveryengine.v1alpha.DataStore]
             to update.
 
-            If an unsupported or unknown field is provided, an
-            INVALID_ARGUMENT error is returned.
+            If an unsupported or unknown field is provided,
+            an INVALID_ARGUMENT error is returned.
     """
 
     data_store: gcd_data_store.DataStore = proto.Field(
@@ -349,8 +367,8 @@ class GetDocumentProcessingConfigRequest(proto.Message):
 
     Attributes:
         name (str):
-            Required. Full DocumentProcessingConfig resource name.
-            Format:
+            Required. Full DocumentProcessingConfig resource
+            name. Format:
             ``projects/{project_number}/locations/{location_id}/collections/{collection_id}/dataStores/{data_store_id}/documentProcessingConfig``
     """
 
@@ -371,19 +389,23 @@ class UpdateDocumentProcessingConfigRequest(proto.Message):
             [DocumentProcessingConfig][google.cloud.discoveryengine.v1alpha.DocumentProcessingConfig]
             to update.
 
-            If the caller does not have permission to update the
+            If the caller does not have permission to update
+            the
             [DocumentProcessingConfig][google.cloud.discoveryengine.v1alpha.DocumentProcessingConfig],
             then a PERMISSION_DENIED error is returned.
 
             If the
             [DocumentProcessingConfig][google.cloud.discoveryengine.v1alpha.DocumentProcessingConfig]
-            to update does not exist, a NOT_FOUND error is returned.
+            to update does not exist, a NOT_FOUND error is
+            returned.
         update_mask (google.protobuf.field_mask_pb2.FieldMask):
             Indicates which fields in the provided
             [DocumentProcessingConfig][google.cloud.discoveryengine.v1alpha.DocumentProcessingConfig]
-            to update. The following are the only supported fields:
+            to update. The following are the only supported
+            fields:
 
-            - [DocumentProcessingConfig.ocr_config][google.cloud.discoveryengine.v1alpha.DocumentProcessingConfig.ocr_config]
+            -
+              [DocumentProcessingConfig.ocr_config][google.cloud.discoveryengine.v1alpha.DocumentProcessingConfig.ocr_config]
 
             If not set, all supported fields are updated.
     """

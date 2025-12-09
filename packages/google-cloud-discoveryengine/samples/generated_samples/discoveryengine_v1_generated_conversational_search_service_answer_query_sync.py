@@ -53,5 +53,4 @@ def sample_answer_query():
     # Handle the response
     print(response)
 
-
 # [END discoveryengine_v1_generated_ConversationalSearchService_AnswerQuery_sync]

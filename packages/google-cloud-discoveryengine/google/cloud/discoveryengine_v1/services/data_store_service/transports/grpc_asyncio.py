@@ -362,12 +362,12 @@ class DataStoreServiceGrpcAsyncIOTransport(DataStoreServiceTransport):
 
         Creates a
         [DataStore][google.cloud.discoveryengine.v1.DataStore].
-
         DataStore is for storing
-        [Documents][google.cloud.discoveryengine.v1.Document]. To serve
-        these documents for Search, or Recommendation use case, an
-        [Engine][google.cloud.discoveryengine.v1.Engine] needs to be
-        created separately.
+        [Documents][google.cloud.discoveryengine.v1.Document].
+        To serve these documents for Search, or Recommendation
+        use case, an
+        [Engine][google.cloud.discoveryengine.v1.Engine] needs
+        to be created separately.
 
         Returns:
             Callable[[~.CreateDataStoreRequest],
@@ -395,7 +395,8 @@ class DataStoreServiceGrpcAsyncIOTransport(DataStoreServiceTransport):
     ]:
         r"""Return a callable for the get data store method over gRPC.
 
-        Gets a [DataStore][google.cloud.discoveryengine.v1.DataStore].
+        Gets a
+        [DataStore][google.cloud.discoveryengine.v1.DataStore].
 
         Returns:
             Callable[[~.GetDataStoreRequest],
@@ -483,7 +484,8 @@ class DataStoreServiceGrpcAsyncIOTransport(DataStoreServiceTransport):
     ]:
         r"""Return a callable for the update data store method over gRPC.
 
-        Updates a [DataStore][google.cloud.discoveryengine.v1.DataStore]
+        Updates a
+        [DataStore][google.cloud.discoveryengine.v1.DataStore]
 
         Returns:
             Callable[[~.UpdateDataStoreRequest],

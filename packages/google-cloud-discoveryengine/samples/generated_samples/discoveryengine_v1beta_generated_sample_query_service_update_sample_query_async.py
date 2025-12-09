@@ -52,5 +52,4 @@ async def sample_update_sample_query():
     # Handle the response
     print(response)
 
-
 # [END discoveryengine_v1beta_generated_SampleQueryService_UpdateSampleQuery_async]

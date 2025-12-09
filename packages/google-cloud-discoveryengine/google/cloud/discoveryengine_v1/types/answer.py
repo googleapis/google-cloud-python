@@ -45,8 +45,8 @@ class Answer(proto.Message):
         answer_text (str):
             The textual answer.
         grounding_score (float):
-            A score in the range of [0, 1] describing how grounded the
-            answer is by the reference chunks.
+            A score in the range of [0, 1] describing how
+            grounded the answer is by the reference chunks.
 
             This field is a member of `oneof`_ ``_grounding_score``.
         citations (MutableSequence[google.cloud.discoveryengine_v1.types.Answer.Citation]):
@@ -233,17 +233,20 @@ class Answer(proto.Message):
             end_index (int):
                 Required. End of the claim, exclusive.
             grounding_score (float):
-                A score in the range of [0, 1] describing how grounded is a
-                specific claim by the references. Higher value means that
-                the claim is better supported by the reference chunks.
+                A score in the range of [0, 1] describing how
+                grounded is a specific claim by the references.
+                Higher value means that the claim is better
+                supported by the reference chunks.
 
                 This field is a member of `oneof`_ ``_grounding_score``.
             grounding_check_required (bool):
-                Indicates that this claim required grounding check. When the
-                system decided this claim didn't require
-                attribution/grounding check, this field is set to false. In
-                that case, no grounding check was done for the claim and
-                therefore ``grounding_score``, ``sources`` is not returned.
+                Indicates that this claim required grounding
+                check. When the system decided this claim didn't
+                require attribution/grounding check, this field
+                is set to false. In that case, no grounding
+                check was done for the claim and therefore
+                ``grounding_score``, ``sources`` is not
+                returned.
 
                 This field is a member of `oneof`_ ``_grounding_check_required``.
             sources (MutableSequence[google.cloud.discoveryengine_v1.types.Answer.CitationSource]):
@@ -597,11 +600,11 @@ class Answer(proto.Message):
                         title (str):
                             Title.
                         snippet_info (MutableSequence[google.cloud.discoveryengine_v1.types.Answer.Step.Action.Observation.SearchResult.SnippetInfo]):
-                            If citation_type is DOCUMENT_LEVEL_CITATION, populate
-                            document level snippets.
+                            If citation_type is DOCUMENT_LEVEL_CITATION,
+                            populate document level snippets.
                         chunk_info (MutableSequence[google.cloud.discoveryengine_v1.types.Answer.Step.Action.Observation.SearchResult.ChunkInfo]):
-                            If citation_type is CHUNK_LEVEL_CITATION and chunk mode is
-                            on, populate chunk info.
+                            If citation_type is CHUNK_LEVEL_CITATION and
+                            chunk mode is on, populate chunk info.
                         struct_data (google.protobuf.struct_pb2.Struct):
                             Data representation.
                             The structured JSON data for the document.

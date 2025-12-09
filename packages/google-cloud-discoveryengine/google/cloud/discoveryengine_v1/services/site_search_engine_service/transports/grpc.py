@@ -411,7 +411,8 @@ class SiteSearchEngineServiceGrpcTransport(SiteSearchEngineServiceTransport):
     ]:
         r"""Return a callable for the batch create target sites method over gRPC.
 
-        Creates [TargetSite][google.cloud.discoveryengine.v1.TargetSite]
+        Creates
+        [TargetSite][google.cloud.discoveryengine.v1.TargetSite]
         in a batch.
 
         Returns:
@@ -440,7 +441,8 @@ class SiteSearchEngineServiceGrpcTransport(SiteSearchEngineServiceTransport):
     ]:
         r"""Return a callable for the get target site method over gRPC.
 
-        Gets a [TargetSite][google.cloud.discoveryengine.v1.TargetSite].
+        Gets a
+        [TargetSite][google.cloud.discoveryengine.v1.TargetSite].
 
         Returns:
             Callable[[~.GetTargetSiteRequest],
@@ -556,7 +558,8 @@ class SiteSearchEngineServiceGrpcTransport(SiteSearchEngineServiceTransport):
     ]:
         r"""Return a callable for the create sitemap method over gRPC.
 
-        Creates a [Sitemap][google.cloud.discoveryengine.v1.Sitemap].
+        Creates a
+        [Sitemap][google.cloud.discoveryengine.v1.Sitemap].
 
         Returns:
             Callable[[~.CreateSitemapRequest],
@@ -584,7 +587,8 @@ class SiteSearchEngineServiceGrpcTransport(SiteSearchEngineServiceTransport):
     ]:
         r"""Return a callable for the delete sitemap method over gRPC.
 
-        Deletes a [Sitemap][google.cloud.discoveryengine.v1.Sitemap].
+        Deletes a
+        [Sitemap][google.cloud.discoveryengine.v1.Sitemap].
 
         Returns:
             Callable[[~.DeleteSitemapRequest],
@@ -613,7 +617,8 @@ class SiteSearchEngineServiceGrpcTransport(SiteSearchEngineServiceTransport):
     ]:
         r"""Return a callable for the fetch sitemaps method over gRPC.
 
-        Fetch [Sitemap][google.cloud.discoveryengine.v1.Sitemap]s in a
+        Fetch
+        [Sitemap][google.cloud.discoveryengine.v1.Sitemap]s in a
         [DataStore][google.cloud.discoveryengine.v1.DataStore].
 
         Returns:
@@ -767,9 +772,10 @@ class SiteSearchEngineServiceGrpcTransport(SiteSearchEngineServiceTransport):
         r"""Return a callable for the fetch domain verification
         status method over gRPC.
 
-        Returns list of target sites with its domain verification
-        status. This method can only be called under data store with
-        BASIC_SITE_SEARCH state at the moment.
+        Returns list of target sites with its domain
+        verification status. This method can only be called
+        under data store with BASIC_SITE_SEARCH state at the
+        moment.
 
         Returns:
             Callable[[~.FetchDomainVerificationStatusRequest],

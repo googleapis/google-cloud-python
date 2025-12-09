@@ -76,9 +76,10 @@ class GetSiteSearchEngineRequest(proto.Message):
             such as
             ``projects/{project}/locations/{location}/collections/{collection}/dataStores/{data_store}/siteSearchEngine``.
 
-            If the caller does not have permission to access the
-            [SiteSearchEngine], regardless of whether or not it exists,
-            a PERMISSION_DENIED error is returned.
+            If the caller does not have permission to access
+            the [SiteSearchEngine], regardless of whether or
+            not it exists, a PERMISSION_DENIED error is
+            returned.
     """
 
     name: str = proto.Field(
@@ -148,11 +149,12 @@ class BatchCreateTargetSitesRequest(proto.Message):
 
     Attributes:
         parent (str):
-            Required. The parent resource shared by all TargetSites
-            being created.
+            Required. The parent resource shared by all
+            TargetSites being created.
             ``projects/{project}/locations/{location}/collections/{collection}/dataStores/{data_store}/siteSearchEngine``.
-            The parent field in the CreateBookRequest messages must
-            either be empty or match this field.
+            The parent field in the CreateBookRequest
+            messages must either be empty or match this
+            field.
         requests (MutableSequence[google.cloud.discoveryengine_v1beta.types.CreateTargetSiteRequest]):
             Required. The request message specifying the
             resources to create. A maximum of 20 TargetSites
@@ -182,10 +184,11 @@ class GetTargetSiteRequest(proto.Message):
             such as
             ``projects/{project}/locations/{location}/collections/{collection}/dataStores/{data_store}/siteSearchEngine/targetSites/{target_site}``.
 
-            If the caller does not have permission to access the
+            If the caller does not have permission to access
+            the
             [TargetSite][google.cloud.discoveryengine.v1beta.TargetSite],
-            regardless of whether or not it exists, a PERMISSION_DENIED
-            error is returned.
+            regardless of whether or not it exists, a
+            PERMISSION_DENIED error is returned.
 
             If the requested
             [TargetSite][google.cloud.discoveryengine.v1beta.TargetSite]
@@ -205,15 +208,17 @@ class UpdateTargetSiteRequest(proto.Message):
 
     Attributes:
         target_site (google.cloud.discoveryengine_v1beta.types.TargetSite):
-            Required. The target site to update. If the caller does not
-            have permission to update the
+            Required. The target site to update.
+            If the caller does not have permission to update
+            the
             [TargetSite][google.cloud.discoveryengine.v1beta.TargetSite],
-            regardless of whether or not it exists, a PERMISSION_DENIED
-            error is returned.
+            regardless of whether or not it exists, a
+            PERMISSION_DENIED error is returned.
 
             If the
             [TargetSite][google.cloud.discoveryengine.v1beta.TargetSite]
-            to update does not exist, a NOT_FOUND error is returned.
+            to update does not exist, a NOT_FOUND error is
+            returned.
     """
 
     target_site: gcd_site_search_engine.TargetSite = proto.Field(
@@ -261,10 +266,11 @@ class DeleteTargetSiteRequest(proto.Message):
             such as
             ``projects/{project}/locations/{location}/collections/{collection}/dataStores/{data_store}/siteSearchEngine/targetSites/{target_site}``.
 
-            If the caller does not have permission to access the
+            If the caller does not have permission to access
+            the
             [TargetSite][google.cloud.discoveryengine.v1beta.TargetSite],
-            regardless of whether or not it exists, a PERMISSION_DENIED
-            error is returned.
+            regardless of whether or not it exists, a
+            PERMISSION_DENIED error is returned.
 
             If the requested
             [TargetSite][google.cloud.discoveryengine.v1beta.TargetSite]
@@ -310,29 +316,32 @@ class ListTargetSitesRequest(proto.Message):
 
     Attributes:
         parent (str):
-            Required. The parent site search engine resource name, such
-            as
+            Required. The parent site search engine resource
+            name, such as
             ``projects/{project}/locations/{location}/collections/{collection}/dataStores/{data_store}/siteSearchEngine``.
 
             If the caller does not have permission to list
             [TargetSite][google.cloud.discoveryengine.v1beta.TargetSite]s
-            under this site search engine, regardless of whether or not
-            this branch exists, a PERMISSION_DENIED error is returned.
+            under this site search engine, regardless of
+            whether or not this branch exists, a
+            PERMISSION_DENIED error is returned.
         page_size (int):
-            Requested page size. Server may return fewer items than
-            requested. If unspecified, server will pick an appropriate
-            default. The maximum value is 1000; values above 1000 will
-            be coerced to 1000.
+            Requested page size. Server may return fewer
+            items than requested. If unspecified, server
+            will pick an appropriate default. The maximum
+            value is 1000; values above 1000 will be coerced
+            to 1000.
 
-            If this field is negative, an INVALID_ARGUMENT error is
-            returned.
+            If this field is negative, an INVALID_ARGUMENT
+            error is returned.
         page_token (str):
-            A page token, received from a previous ``ListTargetSites``
-            call. Provide this to retrieve the subsequent page.
+            A page token, received from a previous
+            ``ListTargetSites`` call. Provide this to
+            retrieve the subsequent page.
 
-            When paginating, all other parameters provided to
-            ``ListTargetSites`` must match the call that provided the
-            page token.
+            When paginating, all other parameters provided
+            to ``ListTargetSites`` must match the call that
+            provided the page token.
     """
 
     parent: str = proto.Field(
@@ -358,9 +367,9 @@ class ListTargetSitesResponse(proto.Message):
         target_sites (MutableSequence[google.cloud.discoveryengine_v1beta.types.TargetSite]):
             List of TargetSites.
         next_page_token (str):
-            A token that can be sent as ``page_token`` to retrieve the
-            next page. If this field is omitted, there are no subsequent
-            pages.
+            A token that can be sent as ``page_token`` to
+            retrieve the next page. If this field is
+            omitted, there are no subsequent pages.
         total_size (int):
             The total number of items matching the
             request. This will always be populated in the
@@ -446,8 +455,8 @@ class CreateSitemapRequest(proto.Message):
             ``projects/*/locations/*/collections/*/dataStores/*/siteSearchEngine``.
         sitemap (google.cloud.discoveryengine_v1beta.types.Sitemap):
             Required. The
-            [Sitemap][google.cloud.discoveryengine.v1beta.Sitemap] to
-            create.
+            [Sitemap][google.cloud.discoveryengine.v1beta.Sitemap]
+            to create.
     """
 
     parent: str = proto.Field(
@@ -469,18 +478,19 @@ class DeleteSitemapRequest(proto.Message):
     Attributes:
         name (str):
             Required. Full resource name of
-            [Sitemap][google.cloud.discoveryengine.v1beta.Sitemap], such
-            as
+            [Sitemap][google.cloud.discoveryengine.v1beta.Sitemap],
+            such as
             ``projects/{project}/locations/{location}/collections/{collection}/dataStores/{data_store}/siteSearchEngine/sitemaps/{sitemap}``.
 
-            If the caller does not have permission to access the
+            If the caller does not have permission to access
+            the
             [Sitemap][google.cloud.discoveryengine.v1beta.Sitemap],
-            regardless of whether or not it exists, a PERMISSION_DENIED
-            error is returned.
+            regardless of whether or not it exists, a
+            PERMISSION_DENIED error is returned.
 
             If the requested
-            [Sitemap][google.cloud.discoveryengine.v1beta.Sitemap] does
-            not exist, a NOT_FOUND error is returned.
+            [Sitemap][google.cloud.discoveryengine.v1beta.Sitemap]
+            does not exist, a NOT_FOUND error is returned.
     """
 
     name: str = proto.Field(
@@ -502,10 +512,10 @@ class FetchSitemapsRequest(proto.Message):
             ``projects/*/locations/*/collections/*/dataStores/*/siteSearchEngine``.
         matcher (google.cloud.discoveryengine_v1beta.types.FetchSitemapsRequest.Matcher):
             Optional. If specified, fetches the matching
-            [Sitemap][google.cloud.discoveryengine.v1beta.Sitemap]s. If
-            not specified, fetches all
-            [Sitemap][google.cloud.discoveryengine.v1beta.Sitemap]s in
-            the
+            [Sitemap][google.cloud.discoveryengine.v1beta.Sitemap]s.
+            If not specified, fetches all
+            [Sitemap][google.cloud.discoveryengine.v1beta.Sitemap]s
+            in the
             [DataStore][google.cloud.discoveryengine.v1beta.DataStore].
     """
 
@@ -516,7 +526,8 @@ class FetchSitemapsRequest(proto.Message):
 
         Attributes:
             uris (MutableSequence[str]):
-                The [Sitemap][google.cloud.discoveryengine.v1beta.Sitemap]
+                The
+                [Sitemap][google.cloud.discoveryengine.v1beta.Sitemap]
                 uris.
         """
 
@@ -527,8 +538,8 @@ class FetchSitemapsRequest(proto.Message):
 
     class Matcher(proto.Message):
         r"""Matcher for the
-        [Sitemap][google.cloud.discoveryengine.v1beta.Sitemap]s. Currently
-        only supports uris matcher.
+        [Sitemap][google.cloud.discoveryengine.v1beta.Sitemap]s.
+        Currently only supports uris matcher.
 
 
         .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
@@ -623,12 +634,14 @@ class FetchSitemapsResponse(proto.Message):
     """
 
     class SitemapMetadata(proto.Message):
-        r"""Contains a [Sitemap][google.cloud.discoveryengine.v1beta.Sitemap]
-        and its metadata.
+        r"""Contains a
+        [Sitemap][google.cloud.discoveryengine.v1beta.Sitemap] and its
+        metadata.
 
         Attributes:
             sitemap (google.cloud.discoveryengine_v1beta.types.Sitemap):
-                The [Sitemap][google.cloud.discoveryengine.v1beta.Sitemap].
+                The
+                [Sitemap][google.cloud.discoveryengine.v1beta.Sitemap].
         """
 
         sitemap: gcd_site_search_engine.Sitemap = proto.Field(
@@ -762,14 +775,15 @@ class RecrawlUrisRequest(proto.Message):
             such as
             ``projects/*/locations/*/collections/*/dataStores/*/siteSearchEngine``.
         uris (MutableSequence[str]):
-            Required. List of URIs to crawl. At most 10K URIs are
-            supported, otherwise an INVALID_ARGUMENT error is thrown.
-            Each URI should match at least one
+            Required. List of URIs to crawl. At most 10K
+            URIs are supported, otherwise an
+            INVALID_ARGUMENT error is thrown. Each URI
+            should match at least one
             [TargetSite][google.cloud.discoveryengine.v1beta.TargetSite]
             in ``site_search_engine``.
         site_credential (str):
-            Optional. Full resource name of the [SiteCredential][], such
-            as
+            Optional. Full resource name of the
+            [SiteCredential][], such as
             ``projects/*/locations/*/collections/*/dataStores/*/siteSearchEngine/siteCredentials/*``.
             Only set to crawl private URIs.
     """
@@ -795,7 +809,8 @@ class RecrawlUrisResponse(proto.Message):
 
     Attributes:
         failure_samples (MutableSequence[google.cloud.discoveryengine_v1beta.types.RecrawlUrisResponse.FailureInfo]):
-            Details for a sample of up to 10 ``failed_uris``.
+            Details for a sample of up to 10
+            ``failed_uris``.
         failed_uris (MutableSequence[str]):
             URIs that were not crawled before the LRO
             terminated.
@@ -905,8 +920,8 @@ class RecrawlUrisMetadata(proto.Message):
             Total number of URIs that don't match any
             TargetSites.
         valid_uris_count (int):
-            Total number of unique URIs in the request that are not in
-            invalid_uris.
+            Total number of unique URIs in the request that
+            are not in invalid_uris.
         success_count (int):
             Total number of URIs that have been crawled
             so far.
@@ -969,8 +984,8 @@ class BatchVerifyTargetSitesRequest(proto.Message):
 
     Attributes:
         parent (str):
-            Required. The parent resource shared by all TargetSites
-            being verified.
+            Required. The parent resource shared by all
+            TargetSites being verified.
             ``projects/{project}/locations/{location}/collections/{collection}/dataStores/{data_store}/siteSearchEngine``.
     """
 
@@ -1021,25 +1036,27 @@ class FetchDomainVerificationStatusRequest(proto.Message):
 
     Attributes:
         site_search_engine (str):
-            Required. The site search engine resource under which we
-            fetch all the domain verification status.
+            Required. The site search engine resource under
+            which we fetch all the domain verification
+            status.
             ``projects/{project}/locations/{location}/collections/{collection}/dataStores/{data_store}/siteSearchEngine``.
         page_size (int):
-            Requested page size. Server may return fewer items than
-            requested. If unspecified, server will pick an appropriate
-            default. The maximum value is 1000; values above 1000 will
-            be coerced to 1000.
+            Requested page size. Server may return fewer
+            items than requested. If unspecified, server
+            will pick an appropriate default. The maximum
+            value is 1000; values above 1000 will be coerced
+            to 1000.
 
-            If this field is negative, an INVALID_ARGUMENT error is
-            returned.
+            If this field is negative, an INVALID_ARGUMENT
+            error is returned.
         page_token (str):
             A page token, received from a previous
-            ``FetchDomainVerificationStatus`` call. Provide this to
-            retrieve the subsequent page.
+            ``FetchDomainVerificationStatus`` call. Provide
+            this to retrieve the subsequent page.
 
-            When paginating, all other parameters provided to
-            ``FetchDomainVerificationStatus`` must match the call that
-            provided the page token.
+            When paginating, all other parameters provided
+            to ``FetchDomainVerificationStatus`` must match
+            the call that provided the page token.
     """
 
     site_search_engine: str = proto.Field(
@@ -1066,9 +1083,9 @@ class FetchDomainVerificationStatusResponse(proto.Message):
             List of TargetSites containing the site
             verification status.
         next_page_token (str):
-            A token that can be sent as ``page_token`` to retrieve the
-            next page. If this field is omitted, there are no subsequent
-            pages.
+            A token that can be sent as ``page_token`` to
+            retrieve the next page. If this field is
+            omitted, there are no subsequent pages.
         total_size (int):
             The total number of items matching the
             request. This will always be populated in the

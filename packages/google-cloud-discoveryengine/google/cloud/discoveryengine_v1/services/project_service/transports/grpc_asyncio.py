@@ -357,13 +357,14 @@ class ProjectServiceGrpcAsyncIOTransport(ProjectServiceTransport):
     ]:
         r"""Return a callable for the provision project method over gRPC.
 
-        Provisions the project resource. During the process, related
-        systems will get prepared and initialized.
+        Provisions the project resource. During the
+        process, related systems will get prepared and
+        initialized.
 
         Caller must read the `Terms for data
-        use <https://cloud.google.com/retail/data-use-terms>`__, and
-        optionally specify in request to provide consent to that service
-        terms.
+        use <https://cloud.google.com/retail/data-use-terms>`__,
+        and optionally specify in request to provide consent to
+        that service terms.
 
         Returns:
             Callable[[~.ProvisionProjectRequest],

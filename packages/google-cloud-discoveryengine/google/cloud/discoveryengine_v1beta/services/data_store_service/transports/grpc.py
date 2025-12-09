@@ -354,12 +354,12 @@ class DataStoreServiceGrpcTransport(DataStoreServiceTransport):
 
         Creates a
         [DataStore][google.cloud.discoveryengine.v1beta.DataStore].
-
         DataStore is for storing
-        [Documents][google.cloud.discoveryengine.v1beta.Document]. To
-        serve these documents for Search, or Recommendation use case, an
-        [Engine][google.cloud.discoveryengine.v1beta.Engine] needs to be
-        created separately.
+        [Documents][google.cloud.discoveryengine.v1beta.Document].
+        To serve these documents for Search, or Recommendation
+        use case, an
+        [Engine][google.cloud.discoveryengine.v1beta.Engine]
+        needs to be created separately.
 
         Returns:
             Callable[[~.CreateDataStoreRequest],

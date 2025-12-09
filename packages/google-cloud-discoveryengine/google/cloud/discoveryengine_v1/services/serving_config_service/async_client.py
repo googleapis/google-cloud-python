@@ -315,7 +315,8 @@ class ServingConfigServiceAsyncClient:
     ) -> gcd_serving_config.ServingConfig:
         r"""Updates a ServingConfig.
 
-        Returns a NOT_FOUND error if the ServingConfig does not exist.
+        Returns a NOT_FOUND error if the ServingConfig does not
+        exist.
 
         .. code-block:: python
 
@@ -362,11 +363,14 @@ class ServingConfigServiceAsyncClient:
             update_mask (:class:`google.protobuf.field_mask_pb2.FieldMask`):
                 Indicates which fields in the provided
                 [ServingConfig][google.cloud.discoveryengine.v1.ServingConfig]
-                to update. The following are NOT supported:
+                to update. The following are NOT
+                supported:
 
-                - [ServingConfig.name][google.cloud.discoveryengine.v1.ServingConfig.name]
+                -
+                  [ServingConfig.name][google.cloud.discoveryengine.v1.ServingConfig.name]
 
-                If not set, all supported fields are updated.
+                If not set, all supported fields are
+                updated.
 
                 This corresponds to the ``update_mask`` field
                 on the ``request`` instance; if ``request`` is provided, this

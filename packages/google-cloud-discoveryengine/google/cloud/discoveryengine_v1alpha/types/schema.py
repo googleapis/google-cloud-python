@@ -49,12 +49,12 @@ class Schema(proto.Message):
 
             This field is a member of `oneof`_ ``schema``.
         name (str):
-            Immutable. The full resource name of the schema, in the
-            format of
+            Immutable. The full resource name of the schema,
+            in the format of
             ``projects/{project}/locations/{location}/collections/{collection}/dataStores/{data_store}/schemas/{schema}``.
 
-            This field must be a UTF-8 encoded string with a length
-            limit of 1024 characters.
+            This field must be a UTF-8 encoded string with a
+            length limit of 1024 characters.
         field_configs (MutableSequence[google.cloud.discoveryengine_v1alpha.types.FieldConfig]):
             Output only. Configurations for fields of the
             schema.
@@ -88,8 +88,9 @@ class FieldConfig(proto.Message):
 
     Attributes:
         field_path (str):
-            Required. Field path of the schema field. For example:
-            ``title``, ``description``, ``release_info.release_year``.
+            Required. Field path of the schema field.
+            For example: ``title``, ``description``,
+            ``release_info.release_year``.
         field_type (google.cloud.discoveryengine_v1alpha.types.FieldConfig.FieldType):
             Output only. Raw type of the field.
         indexable_option (google.cloud.discoveryengine_v1alpha.types.FieldConfig.IndexableOption):
@@ -97,46 +98,52 @@ class FieldConfig(proto.Message):
             [indexable_option][google.cloud.discoveryengine.v1alpha.FieldConfig.indexable_option]
             is
             [INDEXABLE_ENABLED][google.cloud.discoveryengine.v1alpha.FieldConfig.IndexableOption.INDEXABLE_ENABLED],
-            field values are indexed so that it can be filtered or
-            faceted in
+            field values are indexed so that it can be
+            filtered or faceted in
             [SearchService.Search][google.cloud.discoveryengine.v1alpha.SearchService.Search].
 
             If
             [indexable_option][google.cloud.discoveryengine.v1alpha.FieldConfig.indexable_option]
             is unset, the server behavior defaults to
             [INDEXABLE_DISABLED][google.cloud.discoveryengine.v1alpha.FieldConfig.IndexableOption.INDEXABLE_DISABLED]
-            for fields that support setting indexable options. For those
-            fields that do not support setting indexable options, such
-            as ``object`` and ``boolean`` and key properties, the server
+            for fields that support setting indexable
+            options. For those fields that do not support
+            setting indexable options, such as ``object``
+            and ``boolean`` and key properties, the server
             will skip
             [indexable_option][google.cloud.discoveryengine.v1alpha.FieldConfig.indexable_option]
             setting, and setting
             [indexable_option][google.cloud.discoveryengine.v1alpha.FieldConfig.indexable_option]
-            for those fields will throw ``INVALID_ARGUMENT`` error.
+            for those fields will throw ``INVALID_ARGUMENT``
+            error.
         dynamic_facetable_option (google.cloud.discoveryengine_v1alpha.types.FieldConfig.DynamicFacetableOption):
             If
             [dynamic_facetable_option][google.cloud.discoveryengine.v1alpha.FieldConfig.dynamic_facetable_option]
             is
             [DYNAMIC_FACETABLE_ENABLED][google.cloud.discoveryengine.v1alpha.FieldConfig.DynamicFacetableOption.DYNAMIC_FACETABLE_ENABLED],
-            field values are available for dynamic facet. Could only be
+            field values are available for dynamic facet.
+            Could only be
             [DYNAMIC_FACETABLE_DISABLED][google.cloud.discoveryengine.v1alpha.FieldConfig.DynamicFacetableOption.DYNAMIC_FACETABLE_DISABLED]
             if
             [FieldConfig.indexable_option][google.cloud.discoveryengine.v1alpha.FieldConfig.indexable_option]
             is
             [INDEXABLE_DISABLED][google.cloud.discoveryengine.v1alpha.FieldConfig.IndexableOption.INDEXABLE_DISABLED].
-            Otherwise, an ``INVALID_ARGUMENT`` error will be returned.
+            Otherwise, an ``INVALID_ARGUMENT`` error will be
+            returned.
 
             If
             [dynamic_facetable_option][google.cloud.discoveryengine.v1alpha.FieldConfig.dynamic_facetable_option]
             is unset, the server behavior defaults to
             [DYNAMIC_FACETABLE_DISABLED][google.cloud.discoveryengine.v1alpha.FieldConfig.DynamicFacetableOption.DYNAMIC_FACETABLE_DISABLED]
-            for fields that support setting dynamic facetable options.
-            For those fields that do not support setting dynamic
-            facetable options, such as ``object`` and ``boolean``, the
-            server will skip dynamic facetable option setting, and
+            for fields that support setting dynamic
+            facetable options. For those fields that do not
+            support setting dynamic facetable options, such
+            as ``object`` and ``boolean``, the server will
+            skip dynamic facetable option setting, and
             setting
             [dynamic_facetable_option][google.cloud.discoveryengine.v1alpha.FieldConfig.dynamic_facetable_option]
-            for those fields will throw ``INVALID_ARGUMENT`` error.
+            for those fields will throw ``INVALID_ARGUMENT``
+            error.
         searchable_option (google.cloud.discoveryengine_v1alpha.types.FieldConfig.SearchableOption):
             If
             [searchable_option][google.cloud.discoveryengine.v1alpha.FieldConfig.searchable_option]
@@ -147,25 +154,27 @@ class FieldConfig(proto.Message):
 
             If
             [SEARCHABLE_ENABLED][google.cloud.discoveryengine.v1alpha.FieldConfig.SearchableOption.SEARCHABLE_ENABLED]
-            but field type is numerical, field values will not be
-            searchable by text queries in
+            but field type is numerical, field values will
+            not be searchable by text queries in
             [SearchService.Search][google.cloud.discoveryengine.v1alpha.SearchService.Search],
-            as there are no text values associated to numerical fields.
+            as there are no text values associated to
+            numerical fields.
 
             If
             [searchable_option][google.cloud.discoveryengine.v1alpha.FieldConfig.searchable_option]
             is unset, the server behavior defaults to
             [SEARCHABLE_DISABLED][google.cloud.discoveryengine.v1alpha.FieldConfig.SearchableOption.SEARCHABLE_DISABLED]
-            for fields that support setting searchable options. Only
-            ``string`` fields that have no key property mapping support
-            setting
+            for fields that support setting searchable
+            options. Only ``string`` fields that have no key
+            property mapping support setting
             [searchable_option][google.cloud.discoveryengine.v1alpha.FieldConfig.searchable_option].
 
-            For those fields that do not support setting searchable
-            options, the server will skip searchable option setting, and
-            setting
+            For those fields that do not support setting
+            searchable options, the server will skip
+            searchable option setting, and setting
             [searchable_option][google.cloud.discoveryengine.v1alpha.FieldConfig.searchable_option]
-            for those fields will throw ``INVALID_ARGUMENT`` error.
+            for those fields will throw ``INVALID_ARGUMENT``
+            error.
         retrievable_option (google.cloud.discoveryengine_v1alpha.types.FieldConfig.RetrievableOption):
             If
             [retrievable_option][google.cloud.discoveryengine.v1alpha.FieldConfig.retrievable_option]
@@ -177,43 +186,48 @@ class FieldConfig(proto.Message):
             [retrievable_option][google.cloud.discoveryengine.v1alpha.FieldConfig.retrievable_option]
             is unset, the server behavior defaults to
             [RETRIEVABLE_DISABLED][google.cloud.discoveryengine.v1alpha.FieldConfig.RetrievableOption.RETRIEVABLE_DISABLED]
-            for fields that support setting retrievable options. For
-            those fields that do not support setting retrievable
-            options, such as ``object`` and ``boolean``, the server will
-            skip retrievable option setting, and setting
+            for fields that support setting retrievable
+            options. For those fields that do not support
+            setting retrievable options, such as ``object``
+            and ``boolean``, the server will skip
+            retrievable option setting, and setting
             [retrievable_option][google.cloud.discoveryengine.v1alpha.FieldConfig.retrievable_option]
-            for those fields will throw ``INVALID_ARGUMENT`` error.
+            for those fields will throw ``INVALID_ARGUMENT``
+            error.
         completable_option (google.cloud.discoveryengine_v1alpha.types.FieldConfig.CompletableOption):
             If
             [completable_option][google.cloud.discoveryengine.v1alpha.FieldConfig.completable_option]
             is
             [COMPLETABLE_ENABLED][google.cloud.discoveryengine.v1alpha.FieldConfig.CompletableOption.COMPLETABLE_ENABLED],
-            field values are directly used and returned as suggestions
-            for Autocomplete in
+            field values are directly used and returned as
+            suggestions for Autocomplete in
             [CompletionService.CompleteQuery][google.cloud.discoveryengine.v1alpha.CompletionService.CompleteQuery].
 
             If
             [completable_option][google.cloud.discoveryengine.v1alpha.FieldConfig.completable_option]
             is unset, the server behavior defaults to
             [COMPLETABLE_DISABLED][google.cloud.discoveryengine.v1alpha.FieldConfig.CompletableOption.COMPLETABLE_DISABLED]
-            for fields that support setting completable options, which
-            are just ``string`` fields. For those fields that do not
-            support setting completable options, the server will skip
+            for fields that support setting completable
+            options, which are just ``string`` fields. For
+            those fields that do not support setting
+            completable options, the server will skip
             completable option setting, and setting
             [completable_option][google.cloud.discoveryengine.v1alpha.FieldConfig.completable_option]
-            for those fields will throw ``INVALID_ARGUMENT`` error.
+            for those fields will throw ``INVALID_ARGUMENT``
+            error.
         recs_filterable_option (google.cloud.discoveryengine_v1alpha.types.FieldConfig.FilterableOption):
             If
             [recs_filterable_option][google.cloud.discoveryengine.v1alpha.FieldConfig.recs_filterable_option]
             is
             [FILTERABLE_ENABLED][google.cloud.discoveryengine.v1alpha.FieldConfig.FilterableOption.FILTERABLE_ENABLED],
-            field values are filterable by filter expression in
+            field values are filterable by filter expression
+            in
             [RecommendationService.Recommend][google.cloud.discoveryengine.v1alpha.RecommendationService.Recommend].
 
             If
             [FILTERABLE_ENABLED][google.cloud.discoveryengine.v1alpha.FieldConfig.FilterableOption.FILTERABLE_ENABLED]
-            but the field type is numerical, field values are not
-            filterable by text queries in
+            but the field type is numerical, field values
+            are not filterable by text queries in
             [RecommendationService.Recommend][google.cloud.discoveryengine.v1alpha.RecommendationService.Recommend].
             Only textual fields are supported.
 
@@ -221,46 +235,55 @@ class FieldConfig(proto.Message):
             [recs_filterable_option][google.cloud.discoveryengine.v1alpha.FieldConfig.recs_filterable_option]
             is unset, the default setting is
             [FILTERABLE_DISABLED][google.cloud.discoveryengine.v1alpha.FieldConfig.FilterableOption.FILTERABLE_DISABLED]
-            for fields that support setting filterable options.
+            for fields that support setting filterable
+            options.
 
-            When a field set to [FILTERABLE_DISABLED] is filtered, a
-            warning is generated and an empty result is returned.
+            When a field set to [FILTERABLE_DISABLED] is
+            filtered, a warning is generated and an empty
+            result is returned.
         key_property_type (str):
-            Output only. Type of the key property that this field is
-            mapped to. Empty string if this is not annotated as mapped
-            to a key property.
+            Output only. Type of the key property that this
+            field is mapped to. Empty string if this is not
+            annotated as mapped to a key property.
 
-            Example types are ``title``, ``description``. Full list is
-            defined by ``keyPropertyMapping`` in the schema field
-            annotation.
+            Example types are ``title``, ``description``.
+            Full list is defined by ``keyPropertyMapping``
+            in the schema field annotation.
 
-            If the schema field has a ``KeyPropertyMapping`` annotation,
-            ``indexable_option`` and ``searchable_option`` of this field
-            cannot be modified.
+            If the schema field has a ``KeyPropertyMapping``
+            annotation, ``indexable_option`` and
+            ``searchable_option`` of this field cannot be
+            modified.
         advanced_site_search_data_sources (MutableSequence[google.cloud.discoveryengine_v1alpha.types.FieldConfig.AdvancedSiteSearchDataSource]):
-            If this field is set, only the corresponding source will be
-            indexed for this field. Otherwise, the values from different
-            sources are merged.
+            If this field is set, only the corresponding
+            source will be indexed for this field.
+            Otherwise, the values from different sources are
+            merged.
 
-            Assuming a page with ``<author, a>`` in meta tag, and
-            ``<author, b>`` in page map: if this enum is set to
-            METATAGS, we will only index ``<author, a>``; if this enum
-            is not set, we will merge them and index
-            ``<author, [a, b]>``.
+            Assuming a page with ``<author, a>`` in meta
+            tag, and ``<author, b>`` in page map:
+
+             if this enum is set to METATAGS, we will only
+            index ``<author, a>``;  if this enum is not set,
+            we will merge them and index ``<author, [a,
+            b]>``.
         schema_org_paths (MutableSequence[str]):
-            Field paths for indexing custom attribute from schema.org
-            data. More details of schema.org and its defined types can
-            be found at `schema.org <https://schema.org>`__.
+            Field paths for indexing custom attribute from
+            schema.org data. More details of schema.org and
+            its defined types can be found at `schema.org
+            <https://schema.org>`__.
 
             It is only used on advanced site search schema.
 
-            Currently only support full path from root. The full path to
-            a field is constructed by concatenating field names,
-            starting from ``_root``, with a period ``.`` as the
-            delimiter. Examples:
+            Currently only support full path from root. The
+            full path to a field is constructed by
+            concatenating field names, starting from
+            ``_root``, with a period ``.`` as the delimiter.
+            Examples:
 
-            - Publish date of the root: \_root.datePublished
-            - Publish date of the reviews: \_root.review.datePublished
+            - Publish date of the root: _root.datePublished
+              * Publish date of the reviews:
+              _root.review.datePublished
     """
 
     class FieldType(proto.Enum):
@@ -280,31 +303,37 @@ class FieldConfig(proto.Message):
             BOOLEAN (5):
                 Field value type is Boolean.
             GEOLOCATION (6):
-                Field value type is Geolocation. Geolocation is expressed as
-                an object with the following keys:
+                Field value type is Geolocation. Geolocation is
+                expressed as an object with the following keys:
 
                 - ``id``: a string representing the location id
-                - ``longitude``: a number representing the longitude
-                  coordinate of the location
-                - ``latitude``: a number repesenting the latitude coordinate
-                  of the location
-                - ``address``: a string representing the full address of the
-                  location
+                  * ``longitude``: a number representing the
+                  longitude coordinate of the location
 
-                ``latitude`` and ``longitude`` must always be provided
-                together. At least one of a) ``address`` or b)
-                ``latitude``-``longitude`` pair must be provided.
+                - ``latitude``: a number repesenting the
+                  latitude coordinate of the location
+
+                - ``address``: a string representing the full
+                  address of the location
+
+                ``latitude`` and ``longitude`` must always be
+                provided together. At least one of a)
+                ``address`` or b) ``latitude``-``longitude``
+                pair must be provided.
             DATETIME (7):
-                Field value type is Datetime. Datetime can be expressed as
-                either:
+                Field value type is Datetime. Datetime can be
+                expressed as either:
+                * a number representing
+                milliseconds-since-the-epoch
 
-                - a number representing milliseconds-since-the-epoch
-                - a string representing milliseconds-since-the-epoch. e.g.
+                - a string representing
+                  milliseconds-since-the-epoch. e.g.
                   ``"1420070400001"``
+
                 - a string representing the `ISO
-                  8601 <https://en.wikipedia.org/wiki/ISO_8601>`__ date or
-                  date and time. e.g. ``"2015-01-01"`` or
-                  ``"2015-01-01T12:10:30Z"``
+                8601 <https://en.wikipedia.org/wiki/ISO_8601>`__
+                date or date and time. e.g. ``"2015-01-01"`` or
+                ``"2015-01-01T12:10:30Z"``
         """
         FIELD_TYPE_UNSPECIFIED = 0
         OBJECT = 1

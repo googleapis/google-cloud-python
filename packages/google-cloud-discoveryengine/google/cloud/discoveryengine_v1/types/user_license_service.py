@@ -42,23 +42,25 @@ class ListUserLicensesRequest(proto.Message):
 
     Attributes:
         parent (str):
-            Required. The parent [UserStore][] resource name, format:
+            Required. The parent [UserStore][] resource
+            name, format:
             ``projects/{project}/locations/{location}/userStores/{user_store_id}``.
         page_size (int):
-            Optional. Requested page size. Server may return fewer items
-            than requested. If unspecified, defaults to 10. The maximum
-            value is 50; values above 50 will be coerced to 50.
+            Optional. Requested page size. Server may return
+            fewer items than requested. If unspecified,
+            defaults to 10. The maximum value is 50; values
+            above 50 will be coerced to 50.
 
-            If this field is negative, an INVALID_ARGUMENT error is
-            returned.
+            If this field is negative, an INVALID_ARGUMENT
+            error is returned.
         page_token (str):
             Optional. A page token, received from a previous
-            ``ListUserLicenses`` call. Provide this to retrieve the
-            subsequent page.
+            ``ListUserLicenses`` call. Provide this to
+            retrieve the subsequent page.
 
-            When paginating, all other parameters provided to
-            ``ListUserLicenses`` must match the call that provided the
-            page token.
+            When paginating, all other parameters provided
+            to ``ListUserLicenses`` must match the call that
+            provided the page token.
         filter (str):
             Optional. Filter for the list request.
 
@@ -68,14 +70,18 @@ class ListUserLicensesRequest(proto.Message):
 
             Examples:
 
-            - ``license_assignment_state = ASSIGNED`` to list assigned
-              user licenses.
-            - ``license_assignment_state = NO_LICENSE`` to list not
-              licensed users.
-            - ``license_assignment_state = NO_LICENSE_ATTEMPTED_LOGIN``
-              to list users who attempted login but no license assigned.
-            - ``license_assignment_state != NO_LICENSE_ATTEMPTED_LOGIN``
-              to filter out users who attempted login but no license
+            - ``license_assignment_state = ASSIGNED`` to
+              list assigned user licenses. *
+              ``license_assignment_state = NO_LICENSE`` to
+              list not licensed users.
+
+            - ``license_assignment_state =
+              NO_LICENSE_ATTEMPTED_LOGIN`` to list users who
+              attempted login but no license assigned.
+
+            - ``license_assignment_state !=
+              NO_LICENSE_ATTEMPTED_LOGIN`` to filter out
+              users who attempted login but no license
               assigned.
     """
 
@@ -106,9 +112,9 @@ class ListUserLicensesResponse(proto.Message):
             All the customer's
             [UserLicense][google.cloud.discoveryengine.v1.UserLicense]s.
         next_page_token (str):
-            A token, which can be sent as ``page_token`` to retrieve the
-            next page. If this field is omitted, there are no subsequent
-            pages.
+            A token, which can be sent as ``page_token`` to
+            retrieve the next page. If this field is
+            omitted, there are no subsequent pages.
     """
 
     @property
@@ -141,7 +147,8 @@ class BatchUpdateUserLicensesRequest(proto.Message):
 
             This field is a member of `oneof`_ ``source``.
         parent (str):
-            Required. The parent [UserStore][] resource name, format:
+            Required. The parent [UserStore][] resource
+            name, format:
             ``projects/{project}/locations/{location}/userStores/{user_store_id}``.
         delete_unassigned_user_licenses (bool):
             Optional. If true, if user licenses removed
@@ -156,8 +163,8 @@ class BatchUpdateUserLicensesRequest(proto.Message):
 
         Attributes:
             user_licenses (MutableSequence[google.cloud.discoveryengine_v1.types.UserLicense]):
-                Required. A list of user licenses to update. Each user
-                license must have a valid
+                Required. A list of user licenses to update.
+                Each user license must have a valid
                 [UserLicense.user_principal][google.cloud.discoveryengine.v1.UserLicense.user_principal].
             update_mask (google.protobuf.field_mask_pb2.FieldMask):
                 Optional. The list of fields to update.

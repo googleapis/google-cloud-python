@@ -803,12 +803,16 @@ class SearchTuningServiceClient(metaclass=SearchTuningServiceClientMeta):
 
         Returns:
             google.api_core.operation.Operation:
-                An object representing a long-running operation.
-
-                The result type for the operation will be :class:`google.cloud.discoveryengine_v1.types.TrainCustomModelResponse` Response of the
-                   [TrainCustomModelRequest][google.cloud.discoveryengine.v1.TrainCustomModelRequest].
-                   This message is returned by the
-                   google.longrunning.Operations.response field.
+                An object representing a long-running
+                operation.
+                The result type for the operation will
+                be
+                :class:``google.cloud.discoveryengine_v1.types.TrainCustomModelResponse``
+                Response of the
+                [TrainCustomModelRequest][google.cloud.discoveryengine.v1.TrainCustomModelRequest].
+                This message is returned by the
+                google.longrunning.Operations.response
+                field.
 
         """
         # Create or coerce a protobuf request object.
@@ -905,8 +909,8 @@ class SearchTuningServiceClient(metaclass=SearchTuningServiceClientMeta):
         Returns:
             google.cloud.discoveryengine_v1.types.ListCustomModelsResponse:
                 Response message for
-                   [SearchTuningService.ListCustomModels][google.cloud.discoveryengine.v1.SearchTuningService.ListCustomModels]
-                   method.
+                [SearchTuningService.ListCustomModels][google.cloud.discoveryengine.v1.SearchTuningService.ListCustomModels]
+                method.
 
         """
         # Create or coerce a protobuf request object.

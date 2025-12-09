@@ -40,13 +40,13 @@ class GroundedGenerationContent(proto.Message):
 
     Attributes:
         role (str):
-            Producer of the content. Must be either ``user`` or
-            ``model``.
-
-            Intended to be used for multi-turn conversations. Otherwise,
-            it can be left unset.
+            Producer of the content. Must be either ``user``
+            or ``model``.
+            Intended to be used for multi-turn
+            conversations. Otherwise, it can be left unset.
         parts (MutableSequence[google.cloud.discoveryengine_v1beta.types.GroundedGenerationContent.Part]):
-            Ordered ``Parts`` that constitute a single message.
+            Ordered ``Parts`` that constitute a single
+            message.
     """
 
     class Part(proto.Message):
@@ -86,7 +86,8 @@ class GenerateGroundedContentRequest(proto.Message):
         location (str):
             Required. Location resource.
 
-            Format: ``projects/{project}/locations/{location}``.
+            Format:
+            ``projects/{project}/locations/{location}``.
         system_instruction (google.cloud.discoveryengine_v1beta.types.GroundedGenerationContent):
             Content of the system instruction for the
             current API.
@@ -105,26 +106,33 @@ class GenerateGroundedContentRequest(proto.Message):
         grounding_spec (google.cloud.discoveryengine_v1beta.types.GenerateGroundedContentRequest.GroundingSpec):
             Grounding specification.
         user_labels (MutableMapping[str, str]):
-            The user labels applied to a resource must meet the
-            following requirements:
+            The user labels applied to a resource must meet
+            the following requirements:
+            * Each resource can have multiple labels, up to
+            a maximum of 64.
 
-            - Each resource can have multiple labels, up to a maximum of
-              64.
             - Each label must be a key-value pair.
-            - Keys have a minimum length of 1 character and a maximum
-              length of 63 characters and cannot be empty. Values can be
-              empty and have a maximum length of 63 characters.
-            - Keys and values can contain only lowercase letters,
-              numeric characters, underscores, and dashes. All
-              characters must use UTF-8 encoding, and international
-              characters are allowed.
-            - The key portion of a label must be unique. However, you
-              can use the same key with multiple resources.
-            - Keys must start with a lowercase letter or international
-              character.
+            * Keys have a minimum length of 1 character and
+            a maximum length of 63   characters and cannot
+            be empty. Values can be empty and have a maximum
+            length of 63 characters.
+
+            - Keys and values can contain only lowercase
+              letters, numeric characters,   underscores,
+              and dashes. All characters must use UTF-8
+              encoding, and   international characters are
+              allowed.
+
+            - The key portion of a label must be unique.
+              However, you can use the same   key with
+              multiple resources.
+
+            - Keys must start with a lowercase letter or
+              international character.
 
             See `Google Cloud
-            Document <https://cloud.google.com/resource-manager/docs/creating-managing-labels#requirements>`__
+            Document
+            <https://cloud.google.com/resource-manager/docs/creating-managing-labels#requirements>`__
             for more details.
     """
 
@@ -138,8 +146,9 @@ class GenerateGroundedContentRequest(proto.Message):
                 Specifies which Vertex model id to use for
                 generation.
             language_code (str):
-                Language code for content. Use language tags defined by
-                `BCP47 <https://www.rfc-editor.org/rfc/bcp/bcp47.txt>`__.
+                Language code for content. Use language tags
+                defined by `BCP47
+                <https://www.rfc-editor.org/rfc/bcp/bcp47.txt>`__.
             temperature (float):
                 If specified, custom value for the
                 temperature will be used.
@@ -305,9 +314,10 @@ class GenerateGroundedContentRequest(proto.Message):
                 attributes (MutableMapping[str, str]):
                     Attributes associated with the content.
 
-                    Common attributes include ``source`` (indicating where the
-                    content was sourced from) and ``author`` (indicating the
-                    author of the content).
+                    Common attributes include ``source`` (indicating
+                    where the content was sourced from) and
+                    ``author`` (indicating the author of the
+                    content).
             """
 
             grounding_facts: MutableSequence[
@@ -331,6 +341,7 @@ class GenerateGroundedContentRequest(proto.Message):
                     The resource name of the Engine to use.
 
                     Format:
+
                     ``projects/{project}/locations/{location}/collections/{collection_id}/engines/{engine_id}/servingConfigs/{serving_config_id}``
                 max_result_count (int):
                     Number of search results to return.
@@ -468,8 +479,8 @@ class GenerateGroundedContentResponse(proto.Message):
             content (google.cloud.discoveryengine_v1beta.types.GroundedGenerationContent):
                 Content of the candidate.
             grounding_score (float):
-                The overall grounding score for the candidate, in the range
-                of [0, 1].
+                The overall grounding score for the candidate,
+                in the range of [0, 1].
 
                 This field is a member of `oneof`_ ``_grounding_score``.
             grounding_metadata (google.cloud.discoveryengine_v1beta.types.GenerateGroundedContentResponse.Candidate.GroundingMetadata):
@@ -570,12 +581,13 @@ class GenerateGroundedContentResponse(proto.Message):
                         The version of the predictor which was used
                         in dynamic retrieval.
                     prediction (float):
-                        The value of the predictor. This should be between [0, 1]
-                        where a value of 0 means that the query would not benefit
-                        from grounding, while a value of 1.0 means that the query
-                        would benefit the most. In between values allow to
-                        differentiate between different usefulness scores for
-                        grounding.
+                        The value of the predictor. This should be
+                        between [0, 1] where a value of 0 means that the
+                        query would not benefit from grounding, while a
+                        value of 1.0 means that the query would benefit
+                        the most. In between values allow to
+                        differentiate between different usefulness
+                        scores for grounding.
 
                         This field is a member of `oneof`_ ``_prediction``.
                 """
@@ -636,14 +648,17 @@ class GenerateGroundedContentResponse(proto.Message):
                         Text for the claim in the candidate. Always
                         provided when a support is found.
                     support_chunk_indices (MutableSequence[int]):
-                        A list of indices (into 'support_chunks') specifying the
-                        citations associated with the claim. For instance [1,3,4]
-                        means that support_chunks[1], support_chunks[3],
-                        support_chunks[4] are the chunks attributed to the claim.
+                        A list of indices (into 'support_chunks')
+                        specifying the citations associated with the
+                        claim. For instance [1,3,4] means that
+                        support_chunks[1], support_chunks[3],
+                        support_chunks[4] are the chunks attributed to
+                        the claim.
                     support_score (float):
-                        A score in the range of [0, 1] describing how grounded is a
-                        specific claim in the support chunks indicated. Higher value
-                        means that the claim is better supported by the chunks.
+                        A score in the range of [0, 1] describing how
+                        grounded is a specific claim in the support
+                        chunks indicated. Higher value means that the
+                        claim is better supported by the chunks.
 
                         This field is a member of `oneof`_ ``_support_score``.
                 """
@@ -725,12 +740,13 @@ class CheckGroundingSpec(proto.Message):
 
     Attributes:
         citation_threshold (float):
-            The threshold (in [0,1]) used for determining whether a fact
-            must be cited for a claim in the answer candidate. Choosing
-            a higher threshold will lead to fewer but very strong
-            citations, while choosing a lower threshold may lead to more
-            but somewhat weaker citations. If unset, the threshold will
-            default to 0.6.
+            The threshold (in [0,1]) used for determining
+            whether a fact must be cited for a claim in the
+            answer candidate. Choosing a higher threshold
+            will lead to fewer but very strong citations,
+            while choosing a lower threshold may lead to
+            more but somewhat weaker citations. If unset,
+            the threshold will default to 0.6.
 
             This field is a member of `oneof`_ ``_citation_threshold``.
     """
@@ -749,7 +765,8 @@ class CheckGroundingRequest(proto.Message):
 
     Attributes:
         grounding_config (str):
-            Required. The resource name of the grounding config, such as
+            Required. The resource name of the grounding
+            config, such as
             ``projects/*/locations/global/groundingConfigs/default_grounding_config``.
         answer_candidate (str):
             Answer candidate to check. It can have a
@@ -760,26 +777,33 @@ class CheckGroundingRequest(proto.Message):
         grounding_spec (google.cloud.discoveryengine_v1beta.types.CheckGroundingSpec):
             Configuration of the grounding check.
         user_labels (MutableMapping[str, str]):
-            The user labels applied to a resource must meet the
-            following requirements:
+            The user labels applied to a resource must meet
+            the following requirements:
+            * Each resource can have multiple labels, up to
+            a maximum of 64.
 
-            - Each resource can have multiple labels, up to a maximum of
-              64.
             - Each label must be a key-value pair.
-            - Keys have a minimum length of 1 character and a maximum
-              length of 63 characters and cannot be empty. Values can be
-              empty and have a maximum length of 63 characters.
-            - Keys and values can contain only lowercase letters,
-              numeric characters, underscores, and dashes. All
-              characters must use UTF-8 encoding, and international
-              characters are allowed.
-            - The key portion of a label must be unique. However, you
-              can use the same key with multiple resources.
-            - Keys must start with a lowercase letter or international
-              character.
+            * Keys have a minimum length of 1 character and
+            a maximum length of 63   characters and cannot
+            be empty. Values can be empty and have a maximum
+            length of 63 characters.
+
+            - Keys and values can contain only lowercase
+              letters, numeric characters,   underscores,
+              and dashes. All characters must use UTF-8
+              encoding, and   international characters are
+              allowed.
+
+            - The key portion of a label must be unique.
+              However, you can use the same   key with
+              multiple resources.
+
+            - Keys must start with a lowercase letter or
+              international character.
 
             See `Google Cloud
-            Document <https://cloud.google.com/resource-manager/docs/creating-managing-labels#requirements>`__
+            Document
+            <https://cloud.google.com/resource-manager/docs/creating-managing-labels#requirements>`__
             for more details.
     """
 
@@ -873,17 +897,20 @@ class CheckGroundingResponse(proto.Message):
                 Always provided regardless of whether citations
                 or anti-citations are found.
             citation_indices (MutableSequence[int]):
-                A list of indices (into 'cited_chunks') specifying the
-                citations associated with the claim. For instance [1,3,4]
-                means that cited_chunks[1], cited_chunks[3], cited_chunks[4]
-                are the facts cited supporting for the claim. A citation to
-                a fact indicates that the claim is supported by the fact.
+                A list of indices (into 'cited_chunks')
+                specifying the citations associated with the
+                claim. For instance [1,3,4] means that
+                cited_chunks[1], cited_chunks[3],
+                cited_chunks[4] are the facts cited supporting
+                for the claim. A citation to a fact indicates
+                that the claim is supported by the fact.
             grounding_check_required (bool):
-                Indicates that this claim required grounding check. When the
-                system decided this claim doesn't require
-                attribution/grounding check, this field will be set to
-                false. In that case, no grounding check was done for the
-                claim and therefore
+                Indicates that this claim required grounding
+                check. When the system decided this claim
+                doesn't require attribution/grounding check,
+                this field will be set to false. In that case,
+                no grounding check was done for the claim and
+                therefore
                 [citation_indices][google.cloud.discoveryengine.v1beta.CheckGroundingResponse.Claim.citation_indices],
                 [anti_citation_indices][google.cloud.discoveryengine.v1beta.CheckGroundingResponse.Claim.anti_citation_indices],
                 and

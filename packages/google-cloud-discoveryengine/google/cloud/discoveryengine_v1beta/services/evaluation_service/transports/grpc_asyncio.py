@@ -419,9 +419,8 @@ class EvaluationServiceGrpcAsyncIOTransport(EvaluationServiceTransport):
 
         Creates a
         [Evaluation][google.cloud.discoveryengine.v1beta.Evaluation].
-
-        Upon creation, the evaluation will be automatically triggered
-        and begin execution.
+        Upon creation, the evaluation will be automatically
+        triggered and begin execution.
 
         Returns:
             Callable[[~.CreateEvaluationRequest],

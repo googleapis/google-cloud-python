@@ -60,5 +60,4 @@ def sample_stream_generate_grounded_content():
     for response in stream:
         print(response)
 
-
 # [END discoveryengine_v1beta_generated_GroundedGenerationService_StreamGenerateGroundedContent_sync]

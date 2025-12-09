@@ -421,8 +421,8 @@ class SiteSearchEngineServiceGrpcAsyncIOTransport(SiteSearchEngineServiceTranspo
         r"""Return a callable for the batch create target sites method over gRPC.
 
         Creates
-        [TargetSite][google.cloud.discoveryengine.v1alpha.TargetSite] in
-        a batch.
+        [TargetSite][google.cloud.discoveryengine.v1alpha.TargetSite]
+        in a batch.
 
         Returns:
             Callable[[~.BatchCreateTargetSitesRequest],
@@ -696,9 +696,10 @@ class SiteSearchEngineServiceGrpcAsyncIOTransport(SiteSearchEngineServiceTranspo
         r"""Return a callable for the fetch domain verification
         status method over gRPC.
 
-        Returns list of target sites with its domain verification
-        status. This method can only be called under data store with
-        BASIC_SITE_SEARCH state at the moment.
+        Returns list of target sites with its domain
+        verification status. This method can only be called
+        under data store with BASIC_SITE_SEARCH state at the
+        moment.
 
         Returns:
             Callable[[~.FetchDomainVerificationStatusRequest],

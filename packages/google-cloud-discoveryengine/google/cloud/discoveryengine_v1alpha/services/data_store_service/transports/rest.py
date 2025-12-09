@@ -1342,8 +1342,8 @@ class DataStoreServiceRestTransport(_BaseDataStoreServiceRestTransport):
                     [DataStore][google.cloud.discoveryengine.v1alpha.DataStore].
                     It's empty when
                     [DataStore][google.cloud.discoveryengine.v1alpha.DataStore]
-                    is created, which defaults to digital parser. The first
-                    call to
+                    is created, which defaults to digital
+                    parser. The first call to
                     [DataStoreService.UpdateDocumentProcessingConfig][google.cloud.discoveryengine.v1alpha.DataStoreService.UpdateDocumentProcessingConfig]
                     method will initialize the config.
 
@@ -1818,8 +1818,8 @@ class DataStoreServiceRestTransport(_BaseDataStoreServiceRestTransport):
                     [DataStore][google.cloud.discoveryengine.v1alpha.DataStore].
                     It's empty when
                     [DataStore][google.cloud.discoveryengine.v1alpha.DataStore]
-                    is created, which defaults to digital parser. The first
-                    call to
+                    is created, which defaults to digital
+                    parser. The first call to
                     [DataStoreService.UpdateDocumentProcessingConfig][google.cloud.discoveryengine.v1alpha.DataStoreService.UpdateDocumentProcessingConfig]
                     method will initialize the config.
 

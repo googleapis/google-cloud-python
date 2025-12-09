@@ -77,8 +77,8 @@ _LOGGER = std_logging.getLogger(__name__)
 
 class DocumentServiceAsyncClient:
     """Service for ingesting
-    [Document][google.cloud.discoveryengine.v1beta.Document] information
-    of the customer's website.
+    [Document][google.cloud.discoveryengine.v1beta.Document]
+    information of the customer's website.
     """
 
     _client: DocumentServiceClient
@@ -323,7 +323,8 @@ class DocumentServiceAsyncClient:
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> document.Document:
-        r"""Gets a [Document][google.cloud.discoveryengine.v1beta.Document].
+        r"""Gets a
+        [Document][google.cloud.discoveryengine.v1beta.Document].
 
         .. code-block:: python
 
@@ -362,14 +363,17 @@ class DocumentServiceAsyncClient:
                 such as
                 ``projects/{project}/locations/{location}/collections/{collection}/dataStores/{data_store}/branches/{branch}/documents/{document}``.
 
-                If the caller does not have permission to access the
+                If the caller does not have permission
+                to access the
                 [Document][google.cloud.discoveryengine.v1beta.Document],
-                regardless of whether or not it exists, a
-                ``PERMISSION_DENIED`` error is returned.
+                regardless of whether or not it exists,
+                a ``PERMISSION_DENIED`` error is
+                returned.
 
                 If the requested
                 [Document][google.cloud.discoveryengine.v1beta.Document]
-                does not exist, a ``NOT_FOUND`` error is returned.
+                does not exist, a ``NOT_FOUND`` error is
+                returned.
 
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -483,16 +487,19 @@ class DocumentServiceAsyncClient:
                 [DocumentService.ListDocuments][google.cloud.discoveryengine.v1beta.DocumentService.ListDocuments]
                 method.
             parent (:class:`str`):
-                Required. The parent branch resource name, such as
+                Required. The parent branch resource
+                name, such as
                 ``projects/{project}/locations/{location}/collections/{collection}/dataStores/{data_store}/branches/{branch}``.
-                Use ``default_branch`` as the branch ID, to list
-                documents under the default branch.
+                Use ``default_branch`` as the branch ID,
+                to list documents under the default
+                branch.
 
-                If the caller does not have permission to list
+                If the caller does not have permission
+                to list
                 [Document][google.cloud.discoveryengine.v1beta.Document]s
-                under this branch, regardless of whether or not this
-                branch exists, a ``PERMISSION_DENIED`` error is
-                returned.
+                under this branch, regardless of whether
+                or not this branch exists, a
+                ``PERMISSION_DENIED`` error is returned.
 
                 This corresponds to the ``parent`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -508,11 +515,12 @@ class DocumentServiceAsyncClient:
         Returns:
             google.cloud.discoveryengine_v1beta.services.document_service.pagers.ListDocumentsAsyncPager:
                 Response message for
-                   [DocumentService.ListDocuments][google.cloud.discoveryengine.v1beta.DocumentService.ListDocuments]
-                   method.
+                [DocumentService.ListDocuments][google.cloud.discoveryengine.v1beta.DocumentService.ListDocuments]
+                method.
 
-                Iterating over this object will yield results and
-                resolve additional pages automatically.
+                Iterating over this object will yield
+                results and resolve additional pages
+                automatically.
 
         """
         # Create or coerce a protobuf request object.
@@ -622,7 +630,8 @@ class DocumentServiceAsyncClient:
                 [DocumentService.CreateDocument][google.cloud.discoveryengine.v1beta.DocumentService.CreateDocument]
                 method.
             parent (:class:`str`):
-                Required. The parent resource name, such as
+                Required. The parent resource name, such
+                as
                 ``projects/{project}/locations/{location}/collections/{collection}/dataStores/{data_store}/branches/{branch}``.
 
                 This corresponds to the ``parent`` field
@@ -642,21 +651,25 @@ class DocumentServiceAsyncClient:
                 which becomes the final component of the
                 [Document.name][google.cloud.discoveryengine.v1beta.Document.name].
 
-                If the caller does not have permission to create the
+                If the caller does not have permission
+                to create the
                 [Document][google.cloud.discoveryengine.v1beta.Document],
-                regardless of whether or not it exists, a
-                ``PERMISSION_DENIED`` error is returned.
+                regardless of whether or not it exists,
+                a ``PERMISSION_DENIED`` error is
+                returned.
 
                 This field must be unique among all
                 [Document][google.cloud.discoveryengine.v1beta.Document]s
                 with the same
                 [parent][google.cloud.discoveryengine.v1beta.CreateDocumentRequest.parent].
-                Otherwise, an ``ALREADY_EXISTS`` error is returned.
+                Otherwise, an ``ALREADY_EXISTS`` error
+                is returned.
 
-                This field must conform to
-                `RFC-1034 <https://tools.ietf.org/html/rfc1034>`__
-                standard with a length limit of 63 characters.
-                Otherwise, an ``INVALID_ARGUMENT`` error is returned.
+                This field must conform to `RFC-1034
+                <https://tools.ietf.org/html/rfc1034>`__
+                standard with a length limit of 63
+                characters. Otherwise, an
+                ``INVALID_ARGUMENT`` error is returned.
 
                 This corresponds to the ``document_id`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -775,16 +788,19 @@ class DocumentServiceAsyncClient:
             document (:class:`google.cloud.discoveryengine_v1beta.types.Document`):
                 Required. The document to update/create.
 
-                If the caller does not have permission to update the
+                If the caller does not have permission
+                to update the
                 [Document][google.cloud.discoveryengine.v1beta.Document],
-                regardless of whether or not it exists, a
-                ``PERMISSION_DENIED`` error is returned.
+                regardless of whether or not it exists,
+                a ``PERMISSION_DENIED`` error is
+                returned.
 
                 If the
                 [Document][google.cloud.discoveryengine.v1beta.Document]
                 to update does not exist and
                 [allow_missing][google.cloud.discoveryengine.v1beta.UpdateDocumentRequest.allow_missing]
-                is not set, a ``NOT_FOUND`` error is returned.
+                is not set, a ``NOT_FOUND`` error is
+                returned.
 
                 This corresponds to the ``document`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -912,15 +928,17 @@ class DocumentServiceAsyncClient:
                 such as
                 ``projects/{project}/locations/{location}/collections/{collection}/dataStores/{data_store}/branches/{branch}/documents/{document}``.
 
-                If the caller does not have permission to delete the
+                If the caller does not have permission
+                to delete the
                 [Document][google.cloud.discoveryengine.v1beta.Document],
-                regardless of whether or not it exists, a
-                ``PERMISSION_DENIED`` error is returned.
+                regardless of whether or not it exists,
+                a ``PERMISSION_DENIED`` error is
+                returned.
 
                 If the
                 [Document][google.cloud.discoveryengine.v1beta.Document]
-                to delete does not exist, a ``NOT_FOUND`` error is
-                returned.
+                to delete does not exist, a
+                ``NOT_FOUND`` error is returned.
 
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -989,12 +1007,12 @@ class DocumentServiceAsyncClient:
     ) -> operation_async.AsyncOperation:
         r"""Bulk import of multiple
         [Document][google.cloud.discoveryengine.v1beta.Document]s.
-        Request processing may be synchronous. Non-existing items are
-        created.
+        Request processing may be synchronous. Non-existing
+        items are created.
 
         Note: It is possible for a subset of the
-        [Document][google.cloud.discoveryengine.v1beta.Document]s to be
-        successfully updated.
+        [Document][google.cloud.discoveryengine.v1beta.Document]s
+        to be successfully updated.
 
         .. code-block:: python
 
@@ -1039,14 +1057,17 @@ class DocumentServiceAsyncClient:
 
         Returns:
             google.api_core.operation_async.AsyncOperation:
-                An object representing a long-running operation.
-
-                The result type for the operation will be :class:`google.cloud.discoveryengine_v1beta.types.ImportDocumentsResponse` Response of the
-                   [ImportDocumentsRequest][google.cloud.discoveryengine.v1beta.ImportDocumentsRequest].
-                   If the long running operation is done, then this
-                   message is returned by the
-                   google.longrunning.Operations.response field if the
-                   operation was successful.
+                An object representing a long-running
+                operation.
+                The result type for the operation will
+                be
+                :class:``google.cloud.discoveryengine_v1beta.types.ImportDocumentsResponse``
+                Response of the
+                [ImportDocumentsRequest][google.cloud.discoveryengine.v1beta.ImportDocumentsRequest].
+                If the long running operation is done,
+                then this message is returned by the
+                google.longrunning.Operations.response
+                field if the operation was successful.
 
         """
         # Create or coerce a protobuf request object.
@@ -1098,22 +1119,22 @@ class DocumentServiceAsyncClient:
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> operation_async.AsyncOperation:
         r"""Permanently deletes all selected
-        [Document][google.cloud.discoveryengine.v1beta.Document]s in a
-        branch.
+        [Document][google.cloud.discoveryengine.v1beta.Document]s
+        in a branch.
 
         This process is asynchronous. Depending on the number of
-        [Document][google.cloud.discoveryengine.v1beta.Document]s to be
-        deleted, this operation can take hours to complete. Before the
-        delete operation completes, some
-        [Document][google.cloud.discoveryengine.v1beta.Document]s might
-        still be returned by
+        [Document][google.cloud.discoveryengine.v1beta.Document]s
+        to be deleted, this operation can take hours to
+        complete. Before the delete operation completes, some
+        [Document][google.cloud.discoveryengine.v1beta.Document]s
+        might still be returned by
         [DocumentService.GetDocument][google.cloud.discoveryengine.v1beta.DocumentService.GetDocument]
         or
         [DocumentService.ListDocuments][google.cloud.discoveryengine.v1beta.DocumentService.ListDocuments].
 
         To get a list of the
-        [Document][google.cloud.discoveryengine.v1beta.Document]s to be
-        deleted, set
+        [Document][google.cloud.discoveryengine.v1beta.Document]s
+        to be deleted, set
         [PurgeDocumentsRequest.force][google.cloud.discoveryengine.v1beta.PurgeDocumentsRequest.force]
         to false.
 
@@ -1167,13 +1188,18 @@ class DocumentServiceAsyncClient:
 
         Returns:
             google.api_core.operation_async.AsyncOperation:
-                An object representing a long-running operation.
-
-                The result type for the operation will be :class:`google.cloud.discoveryengine_v1beta.types.PurgeDocumentsResponse` Response message for
-                   [DocumentService.PurgeDocuments][google.cloud.discoveryengine.v1beta.DocumentService.PurgeDocuments]
-                   method. If the long running operation is successfully
-                   done, then this message is returned by the
-                   google.longrunning.Operations.response field.
+                An object representing a long-running
+                operation.
+                The result type for the operation will
+                be
+                :class:``google.cloud.discoveryengine_v1beta.types.PurgeDocumentsResponse``
+                Response message for
+                [DocumentService.PurgeDocuments][google.cloud.discoveryengine.v1beta.DocumentService.PurgeDocuments]
+                method. If the long running operation is
+                successfully done, then this message is
+                returned by the
+                google.longrunning.Operations.response
+                field.
 
         """
         # Create or coerce a protobuf request object.
@@ -1263,7 +1289,8 @@ class DocumentServiceAsyncClient:
                 [DocumentService.BatchGetDocumentsMetadata][google.cloud.discoveryengine.v1beta.DocumentService.BatchGetDocumentsMetadata]
                 method.
             parent (:class:`str`):
-                Required. The parent branch resource name, such as
+                Required. The parent branch resource
+                name, such as
                 ``projects/{project}/locations/{location}/collections/{collection}/dataStores/{data_store}/branches/{branch}``.
 
                 This corresponds to the ``parent`` field
@@ -1280,8 +1307,8 @@ class DocumentServiceAsyncClient:
         Returns:
             google.cloud.discoveryengine_v1beta.types.BatchGetDocumentsMetadataResponse:
                 Response message for
-                   [DocumentService.BatchGetDocumentsMetadata][google.cloud.discoveryengine.v1beta.DocumentService.BatchGetDocumentsMetadata]
-                   method.
+                [DocumentService.BatchGetDocumentsMetadata][google.cloud.discoveryengine.v1beta.DocumentService.BatchGetDocumentsMetadata]
+                method.
 
         """
         # Create or coerce a protobuf request object.

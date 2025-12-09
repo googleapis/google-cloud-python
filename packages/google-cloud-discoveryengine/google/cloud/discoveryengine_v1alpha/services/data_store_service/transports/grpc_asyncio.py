@@ -366,12 +366,12 @@ class DataStoreServiceGrpcAsyncIOTransport(DataStoreServiceTransport):
 
         Creates a
         [DataStore][google.cloud.discoveryengine.v1alpha.DataStore].
-
         DataStore is for storing
-        [Documents][google.cloud.discoveryengine.v1alpha.Document]. To
-        serve these documents for Search, or Recommendation use case, an
-        [Engine][google.cloud.discoveryengine.v1alpha.Engine] needs to
-        be created separately.
+        [Documents][google.cloud.discoveryengine.v1alpha.Document].
+        To serve these documents for Search, or Recommendation
+        use case, an
+        [Engine][google.cloud.discoveryengine.v1alpha.Engine]
+        needs to be created separately.
 
         Returns:
             Callable[[~.CreateDataStoreRequest],
@@ -557,8 +557,8 @@ class DataStoreServiceGrpcAsyncIOTransport(DataStoreServiceTransport):
         is a singleon resource of
         [DataStore][google.cloud.discoveryengine.v1alpha.DataStore].
         It's empty when
-        [DataStore][google.cloud.discoveryengine.v1alpha.DataStore] is
-        created. The first call to this method will set up
+        [DataStore][google.cloud.discoveryengine.v1alpha.DataStore]
+        is created. The first call to this method will set up
         [DocumentProcessingConfig][google.cloud.discoveryengine.v1alpha.DocumentProcessingConfig].
 
         Returns:

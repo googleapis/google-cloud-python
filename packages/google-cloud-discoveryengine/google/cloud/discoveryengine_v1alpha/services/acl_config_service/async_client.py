@@ -430,12 +430,14 @@ class AclConfigServiceAsyncClient:
             name (:class:`str`):
                 Required. Resource name of
                 [AclConfig][google.cloud.discoveryengine.v1alpha.AclConfig],
-                such as ``projects/*/locations/*/aclConfig``.
+                such as
+                ``projects/*/locations/*/aclConfig``.
 
-                If the caller does not have permission to access the
+                If the caller does not have permission
+                to access the
                 [AclConfig][google.cloud.discoveryengine.v1alpha.AclConfig],
-                regardless of whether or not it exists, a
-                PERMISSION_DENIED error is returned.
+                regardless of whether or not it exists,
+                a PERMISSION_DENIED error is returned.
 
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this

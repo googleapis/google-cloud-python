@@ -371,7 +371,8 @@ class ConversationalSearchServiceGrpcTransport(ConversationalSearchServiceTransp
 
         If the
         [Conversation][google.cloud.discoveryengine.v1alpha.Conversation]
-        to create already exists, an ALREADY_EXISTS error is returned.
+        to create already exists, an ALREADY_EXISTS error is
+        returned.
 
         Returns:
             Callable[[~.CreateConversationRequest],
@@ -581,8 +582,10 @@ class ConversationalSearchServiceGrpcTransport(ConversationalSearchServiceTransp
 
         Creates a Session.
 
-        If the [Session][google.cloud.discoveryengine.v1alpha.Session]
-        to create already exists, an ALREADY_EXISTS error is returned.
+        If the
+        [Session][google.cloud.discoveryengine.v1alpha.Session]
+        to create already exists, an ALREADY_EXISTS error is
+        returned.
 
         Returns:
             Callable[[~.CreateSessionRequest],
@@ -612,7 +615,8 @@ class ConversationalSearchServiceGrpcTransport(ConversationalSearchServiceTransp
 
         Deletes a Session.
 
-        If the [Session][google.cloud.discoveryengine.v1alpha.Session]
+        If the
+        [Session][google.cloud.discoveryengine.v1alpha.Session]
         to delete does not exist, a NOT_FOUND error is returned.
 
         Returns:
@@ -643,10 +647,10 @@ class ConversationalSearchServiceGrpcTransport(ConversationalSearchServiceTransp
 
         Updates a Session.
 
-        [Session][google.cloud.discoveryengine.v1alpha.Session] action
-        type cannot be changed. If the
-        [Session][google.cloud.discoveryengine.v1alpha.Session] to
-        update does not exist, a NOT_FOUND error is returned.
+        [Session][google.cloud.discoveryengine.v1alpha.Session]
+        action type cannot be changed. If the
+        [Session][google.cloud.discoveryengine.v1alpha.Session]
+        to update does not exist, a NOT_FOUND error is returned.
 
         Returns:
             Callable[[~.UpdateSessionRequest],

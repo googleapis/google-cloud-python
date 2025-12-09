@@ -371,14 +371,16 @@ class EvaluationServiceAsyncClient:
                 such as
                 ``projects/{project}/locations/{location}/evaluations/{evaluation}``.
 
-                If the caller does not have permission to access the
+                If the caller does not have permission
+                to access the
                 [Evaluation][google.cloud.discoveryengine.v1alpha.Evaluation],
-                regardless of whether or not it exists, a
-                PERMISSION_DENIED error is returned.
+                regardless of whether or not it exists,
+                a PERMISSION_DENIED error is returned.
 
                 If the requested
                 [Evaluation][google.cloud.discoveryengine.v1alpha.Evaluation]
-                does not exist, a NOT_FOUND error is returned.
+                does not exist, a NOT_FOUND error is
+                returned.
 
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -495,14 +497,16 @@ class EvaluationServiceAsyncClient:
                 [EvaluationService.ListEvaluations][google.cloud.discoveryengine.v1alpha.EvaluationService.ListEvaluations]
                 method.
             parent (:class:`str`):
-                Required. The parent location resource name, such as
+                Required. The parent location resource
+                name, such as
                 ``projects/{project}/locations/{location}``.
 
-                If the caller does not have permission to list
+                If the caller does not have permission
+                to list
                 [Evaluation][google.cloud.discoveryengine.v1alpha.Evaluation]s
-                under this location, regardless of whether or not this
-                location exists, a ``PERMISSION_DENIED`` error is
-                returned.
+                under this location, regardless of
+                whether or not this location exists, a
+                ``PERMISSION_DENIED`` error is returned.
 
                 This corresponds to the ``parent`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -518,11 +522,12 @@ class EvaluationServiceAsyncClient:
         Returns:
             google.cloud.discoveryengine_v1alpha.services.evaluation_service.pagers.ListEvaluationsAsyncPager:
                 Response message for
-                   [EvaluationService.ListEvaluations][google.cloud.discoveryengine.v1alpha.EvaluationService.ListEvaluations]
-                   method.
+                [EvaluationService.ListEvaluations][google.cloud.discoveryengine.v1alpha.EvaluationService.ListEvaluations]
+                method.
 
-                Iterating over this object will yield results and
-                resolve additional pages automatically.
+                Iterating over this object will yield
+                results and resolve additional pages
+                automatically.
 
         """
         # Create or coerce a protobuf request object.
@@ -599,9 +604,8 @@ class EvaluationServiceAsyncClient:
     ) -> operation_async.AsyncOperation:
         r"""Creates a
         [Evaluation][google.cloud.discoveryengine.v1alpha.Evaluation].
-
-        Upon creation, the evaluation will be automatically triggered
-        and begin execution.
+        Upon creation, the evaluation will be automatically
+        triggered and begin execution.
 
         .. code-block:: python
 
@@ -644,7 +648,8 @@ class EvaluationServiceAsyncClient:
                 [EvaluationService.CreateEvaluation][google.cloud.discoveryengine.v1alpha.EvaluationService.CreateEvaluation]
                 method.
             parent (:class:`str`):
-                Required. The parent resource name, such as
+                Required. The parent resource name, such
+                as
                 ``projects/{project}/locations/{location}``.
 
                 This corresponds to the ``parent`` field
@@ -668,11 +673,15 @@ class EvaluationServiceAsyncClient:
 
         Returns:
             google.api_core.operation_async.AsyncOperation:
-                An object representing a long-running operation.
-
-                The result type for the operation will be :class:`google.cloud.discoveryengine_v1alpha.types.Evaluation` An evaluation is a single execution (or run) of an evaluation process. It
-                   encapsulates the state of the evaluation and the
-                   resulting data.
+                An object representing a long-running
+                operation.
+                The result type for the operation will
+                be
+                :class:``google.cloud.discoveryengine_v1alpha.types.Evaluation``
+                An evaluation is a single execution (or
+                run) of an evaluation process. It
+                encapsulates the state of the evaluation
+                and the resulting data.
 
         """
         # Create or coerce a protobuf request object.
@@ -781,12 +790,14 @@ class EvaluationServiceAsyncClient:
                 [EvaluationService.ListEvaluationResults][google.cloud.discoveryengine.v1alpha.EvaluationService.ListEvaluationResults]
                 method.
             evaluation (:class:`str`):
-                Required. The evaluation resource name, such as
+                Required. The evaluation resource name,
+                such as
                 ``projects/{project}/locations/{location}/evaluations/{evaluation}``.
 
-                If the caller does not have permission to list
-                [EvaluationResult][] under this evaluation, regardless
-                of whether or not this evaluation set exists, a
+                If the caller does not have permission
+                to list [EvaluationResult][] under this
+                evaluation, regardless of whether or not
+                this evaluation set exists, a
                 ``PERMISSION_DENIED`` error is returned.
 
                 This corresponds to the ``evaluation`` field
@@ -803,11 +814,12 @@ class EvaluationServiceAsyncClient:
         Returns:
             google.cloud.discoveryengine_v1alpha.services.evaluation_service.pagers.ListEvaluationResultsAsyncPager:
                 Response message for
-                   [EvaluationService.ListEvaluationResults][google.cloud.discoveryengine.v1alpha.EvaluationService.ListEvaluationResults]
-                   method.
+                [EvaluationService.ListEvaluationResults][google.cloud.discoveryengine.v1alpha.EvaluationService.ListEvaluationResults]
+                method.
 
-                Iterating over this object will yield results and
-                resolve additional pages automatically.
+                Iterating over this object will yield
+                results and resolve additional pages
+                automatically.
 
         """
         # Create or coerce a protobuf request object.

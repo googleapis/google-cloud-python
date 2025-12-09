@@ -494,12 +494,12 @@ class DocumentServiceGrpcTransport(DocumentServiceTransport):
 
         Bulk import of multiple
         [Document][google.cloud.discoveryengine.v1alpha.Document]s.
-        Request processing may be synchronous. Non-existing items are
-        created.
+        Request processing may be synchronous. Non-existing
+        items are created.
 
         Note: It is possible for a subset of the
-        [Document][google.cloud.discoveryengine.v1alpha.Document]s to be
-        successfully updated.
+        [Document][google.cloud.discoveryengine.v1alpha.Document]s
+        to be successfully updated.
 
         Returns:
             Callable[[~.ImportDocumentsRequest],
@@ -526,22 +526,22 @@ class DocumentServiceGrpcTransport(DocumentServiceTransport):
         r"""Return a callable for the purge documents method over gRPC.
 
         Permanently deletes all selected
-        [Document][google.cloud.discoveryengine.v1alpha.Document]s in a
-        branch.
+        [Document][google.cloud.discoveryengine.v1alpha.Document]s
+        in a branch.
 
         This process is asynchronous. Depending on the number of
-        [Document][google.cloud.discoveryengine.v1alpha.Document]s to be
-        deleted, this operation can take hours to complete. Before the
-        delete operation completes, some
-        [Document][google.cloud.discoveryengine.v1alpha.Document]s might
-        still be returned by
+        [Document][google.cloud.discoveryengine.v1alpha.Document]s
+        to be deleted, this operation can take hours to
+        complete. Before the delete operation completes, some
+        [Document][google.cloud.discoveryengine.v1alpha.Document]s
+        might still be returned by
         [DocumentService.GetDocument][google.cloud.discoveryengine.v1alpha.DocumentService.GetDocument]
         or
         [DocumentService.ListDocuments][google.cloud.discoveryengine.v1alpha.DocumentService.ListDocuments].
 
         To get a list of the
-        [Document][google.cloud.discoveryengine.v1alpha.Document]s to be
-        deleted, set
+        [Document][google.cloud.discoveryengine.v1alpha.Document]s
+        to be deleted, set
         [PurgeDocumentsRequest.force][google.cloud.discoveryengine.v1alpha.PurgeDocumentsRequest.force]
         to false.
 

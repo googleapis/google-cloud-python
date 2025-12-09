@@ -29,18 +29,20 @@ __protobuf__ = proto.module(
 
 class DocumentProcessingConfig(proto.Message):
     r"""A singleton resource of
-    [DataStore][google.cloud.discoveryengine.v1beta.DataStore]. If it's
-    empty when
+    [DataStore][google.cloud.discoveryengine.v1beta.DataStore]. If
+    it's empty when
     [DataStore][google.cloud.discoveryengine.v1beta.DataStore] is
     created and
-    [DataStore][google.cloud.discoveryengine.v1beta.DataStore] is set to
+    [DataStore][google.cloud.discoveryengine.v1beta.DataStore] is
+    set to
     [DataStore.ContentConfig.CONTENT_REQUIRED][google.cloud.discoveryengine.v1beta.DataStore.ContentConfig.CONTENT_REQUIRED],
     the default parser will default to digital parser.
 
     Attributes:
         name (str):
-            The full resource name of the Document Processing Config.
-            Format:
+            The full resource name of the Document
+            Processing Config. Format:
+
             ``projects/*/locations/*/collections/*/dataStores/*/documentProcessingConfig``.
         chunking_config (google.cloud.discoveryengine_v1beta.types.DocumentProcessingConfig.ChunkingConfig):
             Whether chunking mode is enabled.
@@ -51,22 +53,33 @@ class DocumentProcessingConfig(proto.Message):
             parsing config will be applied to all file types
             for Document parsing.
         parsing_config_overrides (MutableMapping[str, google.cloud.discoveryengine_v1beta.types.DocumentProcessingConfig.ParsingConfig]):
-            Map from file type to override the default parsing
-            configuration based on the file type. Supported keys:
+            Map from file type to override the default
+            parsing configuration based on the file type.
+            Supported keys:
 
-            - ``pdf``: Override parsing config for PDF files, either
-              digital parsing, ocr parsing or layout parsing is
-              supported.
-            - ``html``: Override parsing config for HTML files, only
-              digital parsing and layout parsing are supported.
-            - ``docx``: Override parsing config for DOCX files, only
-              digital parsing and layout parsing are supported.
-            - ``pptx``: Override parsing config for PPTX files, only
-              digital parsing and layout parsing are supported.
-            - ``xlsm``: Override parsing config for XLSM files, only
-              digital parsing and layout parsing are supported.
-            - ``xlsx``: Override parsing config for XLSX files, only
-              digital parsing and layout parsing are supported.
+            - ``pdf``: Override parsing config for PDF
+              files, either digital parsing, ocr parsing or
+              layout parsing is supported.
+
+            - ``html``: Override parsing config for HTML
+              files, only digital parsing and layout parsing
+              are supported.
+
+            - ``docx``: Override parsing config for DOCX
+              files, only digital parsing and layout parsing
+              are supported.
+
+            - ``pptx``: Override parsing config for PPTX
+              files, only digital parsing and layout parsing
+              are supported.
+
+            - ``xlsm``: Override parsing config for XLSM
+              files, only digital parsing and layout parsing
+              are supported.
+
+            - ``xlsx``: Override parsing config for XLSX
+              files, only digital parsing and layout parsing
+              are supported.
     """
 
     class ChunkingConfig(proto.Message):
@@ -149,8 +162,9 @@ class DocumentProcessingConfig(proto.Message):
 
             Attributes:
                 enhanced_document_elements (MutableSequence[str]):
-                    [DEPRECATED] This field is deprecated. To use the additional
-                    enhanced document elements processing, please switch to
+                    [DEPRECATED] This field is deprecated. To use
+                    the additional enhanced document elements
+                    processing, please switch to
                     ``layout_parsing_config``.
                 use_native_text (bool):
                     If true, will use native text instead of OCR

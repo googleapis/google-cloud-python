@@ -113,8 +113,8 @@ class ChunkServiceGrpcTransport(ChunkServiceTransport):
     """gRPC backend transport for ChunkService.
 
     Service for displaying processed
-    [Chunk][google.cloud.discoveryengine.v1alpha.Chunk] information of
-    the customer's unstructured data.
+    [Chunk][google.cloud.discoveryengine.v1alpha.Chunk] information
+    of the customer's unstructured data.
 
     This class defines the same methods as the primary client, so the
     primary client can load the underlying transport implementation

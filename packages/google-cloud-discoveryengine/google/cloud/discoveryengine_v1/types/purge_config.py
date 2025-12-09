@@ -48,44 +48,67 @@ class PurgeUserEventsRequest(proto.Message):
 
     Attributes:
         parent (str):
-            Required. The resource name of the catalog under which the
-            events are created. The format is
+            Required. The resource name of the catalog under
+            which the events are created. The format is
             ``projects/{project}/locations/global/collections/{collection}/dataStores/{dataStore}``.
         filter (str):
-            Required. The filter string to specify the events to be
-            deleted with a length limit of 5,000 characters. The
-            eligible fields for filtering are:
+            Required. The filter string to specify the
+            events to be deleted with a length limit of
+            5,000 characters. The eligible fields for
+            filtering are:
 
             - ``eventType``: Double quoted
-              [UserEvent.event_type][google.cloud.discoveryengine.v1.UserEvent.event_type]
-              string.
-            - ``eventTime``: in ISO 8601 "zulu" format.
-            - ``userPseudoId``: Double quoted string. Specifying this
-              will delete all events associated with a visitor.
-            - ``userId``: Double quoted string. Specifying this will
-              delete all events associated with a user.
+            [UserEvent.event_type][google.cloud.discoveryengine.v1.UserEvent.event_type]
+            string.
 
-            Note: This API only supports purging a max range of 30 days.
+            - ``eventTime``: in ISO 8601 "zulu" format.
+            * ``userPseudoId``: Double quoted string.
+            Specifying this will delete all   events
+            associated with a visitor.
+
+            - ``userId``: Double quoted string. Specifying
+              this will delete all events   associated with
+              a user.
+
+            Note: This API only supports purging a max range
+            of 30 days.
 
             Examples:
 
             - Deleting all events in a time range:
-              ``eventTime > "2012-04-23T18:25:43.511Z" eventTime < "2012-04-23T18:30:43.511Z"``
+
+              ``eventTime > "2012-04-23T18:25:43.511Z"
+              eventTime < "2012-04-23T18:30:43.511Z"``
+
             - Deleting specific eventType in a time range:
-              ``eventTime > "2012-04-23T18:25:43.511Z" eventTime < "2012-04-23T18:30:43.511Z" eventType = "search"``
-            - Deleting all events for a specific visitor in a time
-              range:
-              ``eventTime > "2012-04-23T18:25:43.511Z" eventTime < "2012-04-23T18:30:43.511Z" userPseudoId = "visitor1024"``
-            - Deleting the past 30 days of events inside a DataStore:
+
+              ``eventTime > "2012-04-23T18:25:43.511Z"
+              eventTime < "2012-04-23T18:30:43.511Z"
+            eventType = "search"``
+
+            - Deleting all events for a specific visitor in
+              a time range:
+
+              ``eventTime > "2012-04-23T18:25:43.511Z"
+              eventTime < "2012-04-23T18:30:43.511Z"
+            userPseudoId = "visitor1024"``
+
+            - Deleting the past 30 days of events inside a
+              DataStore:
+
               ``*``
 
-            The filtering fields are assumed to have an implicit AND.
+            The filtering fields are assumed to have an
+            implicit AND.
         force (bool):
-            The ``force`` field is currently not supported. Purge user
-            event requests will permanently delete all purgeable events.
-            Once the development is complete: If ``force`` is set to
-            false, the method will return the expected purge count
-            without deleting any user events. This field will default to
+            The ``force`` field is currently not supported.
+            Purge user event requests will permanently
+            delete all purgeable events. Once the
+            development is complete:
+
+            If ``force`` is set to false, the method will
+            return the expected purge count without deleting
+            any user events. This field will default to
             false if not included in the request.
     """
 
@@ -166,10 +189,11 @@ class PurgeErrorConfig(proto.Message):
 
     Attributes:
         gcs_prefix (str):
-            Cloud Storage prefix for purge errors. This must be an
-            empty, existing Cloud Storage directory. Purge errors are
-            written to sharded files in this directory, one per line, as
-            a JSON-encoded ``google.rpc.Status`` message.
+            Cloud Storage prefix for purge errors. This must
+            be an empty, existing Cloud Storage directory.
+            Purge errors are written to sharded files in
+            this directory, one per line, as a JSON-encoded
+            ``google.rpc.Status`` message.
 
             This field is a member of `oneof`_ ``destination``.
     """
@@ -195,12 +219,12 @@ class PurgeDocumentsRequest(proto.Message):
 
     Attributes:
         gcs_source (google.cloud.discoveryengine_v1.types.GcsSource):
-            Cloud Storage location for the input content. Supported
-            ``data_schema``:
+            Cloud Storage location for the input content.
+            Supported ``data_schema``:
 
             - ``document_id``: One valid
-              [Document.id][google.cloud.discoveryengine.v1.Document.id]
-              per line.
+            [Document.id][google.cloud.discoveryengine.v1.Document.id]
+            per line.
 
             This field is a member of `oneof`_ ``source``.
         inline_source (google.cloud.discoveryengine_v1.types.PurgeDocumentsRequest.InlineSource):
@@ -212,15 +236,16 @@ class PurgeDocumentsRequest(proto.Message):
             Required. The parent resource name, such as
             ``projects/{project}/locations/{location}/collections/{collection}/dataStores/{data_store}/branches/{branch}``.
         filter (str):
-            Required. Filter matching documents to purge. Only currently
-            supported value is ``*`` (all items).
+            Required. Filter matching documents to purge.
+            Only currently supported value is
+            ``*`` (all items).
         error_config (google.cloud.discoveryengine_v1.types.PurgeErrorConfig):
             The desired location of errors incurred
             during the purge.
         force (bool):
-            Actually performs the purge. If ``force`` is set to false,
-            return the expected purge count without deleting any
-            documents.
+            Actually performs the purge. If ``force`` is set
+            to false, return the expected purge count
+            without deleting any documents.
     """
 
     class InlineSource(proto.Message):
@@ -230,8 +255,8 @@ class PurgeDocumentsRequest(proto.Message):
 
         Attributes:
             documents (MutableSequence[str]):
-                Required. A list of full resource name of documents to
-                purge. In the format
+                Required. A list of full resource name of
+                documents to purge. In the format
                 ``projects/*/locations/*/collections/*/dataStores/*/branches/*/documents/*``.
                 Recommended max of 100 items.
         """
@@ -284,9 +309,10 @@ class PurgeDocumentsResponse(proto.Message):
             The total count of documents purged as a
             result of the operation.
         purge_sample (MutableSequence[str]):
-            A sample of document names that will be deleted. Only
-            populated if ``force`` is set to false. A max of 100 names
-            will be returned and the names are chosen at random.
+            A sample of document names that will be deleted.
+            Only populated if ``force`` is set to false. A
+            max of 100 names will be returned and the names
+            are chosen at random.
     """
 
     purge_count: int = proto.Field(
@@ -352,8 +378,9 @@ class PurgeSuggestionDenyListEntriesRequest(proto.Message):
 
     Attributes:
         parent (str):
-            Required. The parent data store resource name for which to
-            import denylist entries. Follows pattern
+            Required. The parent data store resource name
+            for which to import denylist entries. Follows
+            pattern
             projects/*/locations/*/collections/*/dataStores/*.
     """
 
@@ -420,8 +447,9 @@ class PurgeCompletionSuggestionsRequest(proto.Message):
 
     Attributes:
         parent (str):
-            Required. The parent data store resource name for which to
-            purge completion suggestions. Follows pattern
+            Required. The parent data store resource name
+            for which to purge completion suggestions.
+            Follows pattern
             projects/*/locations/*/collections/*/dataStores/*.
     """
 

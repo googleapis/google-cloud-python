@@ -95,15 +95,15 @@ class Session(proto.Message):
                 [ConversationalSearchService.GetSession][google.cloud.discoveryengine.v1.ConversationalSearchService.GetSession]
                 API, if
                 [GetSessionRequest.include_answer_details][google.cloud.discoveryengine.v1.GetSessionRequest.include_answer_details]
-                is set to true, this field will be populated when getting
-                answer query session.
+                is set to true, this field will be populated
+                when getting answer query session.
             detailed_assist_answer (google.cloud.discoveryengine_v1.types.AssistAnswer):
                 Output only. In
                 [ConversationalSearchService.GetSession][google.cloud.discoveryengine.v1.ConversationalSearchService.GetSession]
                 API, if
                 [GetSessionRequest.include_answer_details][google.cloud.discoveryengine.v1.GetSessionRequest.include_answer_details]
-                is set to true, this field will be populated when getting
-                assistant session.
+                is set to true, this field will be populated
+                when getting assistant session.
             query_config (MutableMapping[str, str]):
                 Optional. Represents metadata related to the
                 query config, for example LLM model and version

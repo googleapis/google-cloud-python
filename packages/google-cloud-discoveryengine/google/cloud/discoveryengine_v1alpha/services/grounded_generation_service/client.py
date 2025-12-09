@@ -778,8 +778,8 @@ class GroundedGenerationServiceClient(metaclass=GroundedGenerationServiceClientM
         Returns:
             google.cloud.discoveryengine_v1alpha.types.CheckGroundingResponse:
                 Response message for the
-                   [GroundedGenerationService.CheckGrounding][google.cloud.discoveryengine.v1alpha.GroundedGenerationService.CheckGrounding]
-                   method.
+                [GroundedGenerationService.CheckGrounding][google.cloud.discoveryengine.v1alpha.GroundedGenerationService.CheckGrounding]
+                method.
 
         """
         # Create or coerce a protobuf request object.

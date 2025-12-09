@@ -50,5 +50,4 @@ def sample_list_user_licenses():
     for response in page_result:
         print(response)
 
-
 # [END discoveryengine_v1_generated_UserLicenseService_ListUserLicenses_sync]

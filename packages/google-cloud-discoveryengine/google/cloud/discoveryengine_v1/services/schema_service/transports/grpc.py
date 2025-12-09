@@ -400,7 +400,8 @@ class SchemaServiceGrpcTransport(SchemaServiceTransport):
     ) -> Callable[[schema_service.CreateSchemaRequest], operations_pb2.Operation]:
         r"""Return a callable for the create schema method over gRPC.
 
-        Creates a [Schema][google.cloud.discoveryengine.v1.Schema].
+        Creates a
+        [Schema][google.cloud.discoveryengine.v1.Schema].
 
         Returns:
             Callable[[~.CreateSchemaRequest],
@@ -426,7 +427,8 @@ class SchemaServiceGrpcTransport(SchemaServiceTransport):
     ) -> Callable[[schema_service.UpdateSchemaRequest], operations_pb2.Operation]:
         r"""Return a callable for the update schema method over gRPC.
 
-        Updates a [Schema][google.cloud.discoveryengine.v1.Schema].
+        Updates a
+        [Schema][google.cloud.discoveryengine.v1.Schema].
 
         Returns:
             Callable[[~.UpdateSchemaRequest],
@@ -452,7 +454,8 @@ class SchemaServiceGrpcTransport(SchemaServiceTransport):
     ) -> Callable[[schema_service.DeleteSchemaRequest], operations_pb2.Operation]:
         r"""Return a callable for the delete schema method over gRPC.
 
-        Deletes a [Schema][google.cloud.discoveryengine.v1.Schema].
+        Deletes a
+        [Schema][google.cloud.discoveryengine.v1.Schema].
 
         Returns:
             Callable[[~.DeleteSchemaRequest],

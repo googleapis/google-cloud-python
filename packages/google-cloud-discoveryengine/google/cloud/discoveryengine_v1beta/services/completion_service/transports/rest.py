@@ -801,7 +801,8 @@ class CompletionServiceRestTransport(_BaseCompletionServiceRestTransport):
                 request (~.completion_service.AdvancedCompleteQueryRequest):
                     The request object. Request message for
                 [CompletionService.AdvancedCompleteQuery][google.cloud.discoveryengine.v1beta.CompletionService.AdvancedCompleteQuery]
-                method. .
+                method.
+                .
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
