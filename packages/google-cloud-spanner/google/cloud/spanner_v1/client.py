@@ -100,7 +100,7 @@ def _get_spanner_optimizer_statistics_package():
 log = logging.getLogger(__name__)
 
 
-def _get_spanner_enable_builtin_metrics():
+def _get_spanner_enable_builtin_metrics_env():
     return os.getenv(SPANNER_DISABLE_BUILTIN_METRICS_ENV_VAR) != "true"
 
 
@@ -180,6 +180,10 @@ class Client(ClientWithProject):
         This is intended only for experimental host spanner endpoints.
         If set, this will override the `api_endpoint` in `client_options`.
 
+    :type disable_builtin_metrics: bool
+    :param disable_builtin_metrics: (Optional) Default False. Set to True to disable
+            the Spanner built-in metrics collection and exporting.
+
     :raises: :class:`ValueError <exceptions.ValueError>` if both ``read_only``
              and ``admin`` are :data:`True`
     """
@@ -205,6 +209,7 @@ class Client(ClientWithProject):
         observability_options=None,
         default_transaction_options: Optional[DefaultTransactionOptions] = None,
         experimental_host=None,
+        disable_builtin_metrics=False,
     ):
         self._emulator_host = _get_spanner_emulator_host()
         self._experimental_host = experimental_host
@@ -248,7 +253,8 @@ class Client(ClientWithProject):
             warnings.warn(_EMULATOR_HOST_HTTP_SCHEME)
         # Check flag to enable Spanner builtin metrics
         if (
-            _get_spanner_enable_builtin_metrics()
+            _get_spanner_enable_builtin_metrics_env()
+            and not disable_builtin_metrics
             and HAS_GOOGLE_CLOUD_MONITORING_INSTALLED
         ):
             meter_provider = metrics.NoOpMeterProvider()

@@ -278,6 +278,37 @@ class TestClient(unittest.TestCase):
             )
         mock_spanner_metrics_factory.assert_called_once()
 
+    @mock.patch("google.cloud.spanner_v1.client.SpannerMetricsTracerFactory")
+    @mock.patch.dict(os.environ, {"SPANNER_DISABLE_BUILTIN_METRICS": "true"})
+    def test_constructor_w_disable_builtin_metrics_using_env(
+        self, mock_spanner_metrics_factory
+    ):
+        """
+        Test that Client constructor disable metrics using Spanner Option.
+        """
+        from google.cloud.spanner_v1.client import Client
+
+        creds = build_scoped_credentials()
+        client = Client(project=self.PROJECT, credentials=creds)
+        self.assertIsNotNone(client)
+        mock_spanner_metrics_factory.assert_called_once_with(enabled=False)
+
+    @mock.patch("google.cloud.spanner_v1.client.SpannerMetricsTracerFactory")
+    def test_constructor_w_disable_builtin_metrics_using_option(
+        self, mock_spanner_metrics_factory
+    ):
+        """
+        Test that Client constructor disable metrics using Spanner Option.
+        """
+        from google.cloud.spanner_v1.client import Client
+
+        creds = build_scoped_credentials()
+        client = Client(
+            project=self.PROJECT, credentials=creds, disable_builtin_metrics=True
+        )
+        self.assertIsNotNone(client)
+        mock_spanner_metrics_factory.assert_called_once_with(enabled=False)
+
     def test_constructor_route_to_leader_disbled(self):
         from google.cloud.spanner_v1 import client as MUT
 
