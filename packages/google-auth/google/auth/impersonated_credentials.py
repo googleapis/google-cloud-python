@@ -286,7 +286,7 @@ class Credentials(
             self._source_credentials.token_state == credentials.TokenState.STALE
             or self._source_credentials.token_state == credentials.TokenState.INVALID
         ):
-            self._source_credentials._refresh_token(request)
+            self._source_credentials.refresh(request)
 
         body = {
             "delegates": self._delegates,
