@@ -688,6 +688,13 @@ class ResumableUpload(UploadBase):
             _CONTENT_TYPE_HEADER: self._content_type,
             _helpers.CONTENT_RANGE_HEADER: content_range,
         }
+        if (start_byte + len(payload) == self._total_bytes) and (
+            self._checksum_object is not None
+        ):
+            local_checksum = _helpers.prepare_checksum_digest(
+                self._checksum_object.digest()
+            )
+            headers["x-goog-hash"] = f"{self._checksum_type}={local_checksum}"
         return _PUT, self.resumable_url, payload, headers
 
     def _update_checksum(self, start_byte, payload):

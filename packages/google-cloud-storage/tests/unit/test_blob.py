@@ -3049,7 +3049,14 @@ class Test_Blob(unittest.TestCase):
         self._initiate_resumable_helper(client=client)
 
     def _make_resumable_transport(
-        self, headers1, headers2, headers3, total_bytes, data_corruption=False
+        self,
+        headers1,
+        headers2,
+        headers3,
+        total_bytes,
+        data_corruption=False,
+        md5_checksum_value=None,
+        crc32c_checksum_value=None,
     ):
         fake_transport = mock.Mock(spec=["request"])
 
@@ -3057,7 +3064,7 @@ class Test_Blob(unittest.TestCase):
         fake_response2 = self._mock_requests_response(
             http.client.PERMANENT_REDIRECT, headers2
         )
-        json_body = f'{{"size": "{total_bytes:d}"}}'
+        json_body = json.dumps({"size": str(total_bytes), "md5Hash": md5_checksum_value, "crc32c": crc32c_checksum_value})
         if data_corruption:
             fake_response3 = DataCorruption(None)
         else:
@@ -3151,6 +3158,9 @@ class Test_Blob(unittest.TestCase):
         if_metageneration_match=None,
         if_metageneration_not_match=None,
         timeout=None,
+        checksum=None,
+        crc32c_checksum_value=None,
+        md5_checksum_value=None,
     ):
         # Third mock transport.request() does sends last chunk.
         content_range = f"bytes {blob.chunk_size:d}-{total_bytes - 1:d}/{total_bytes:d}"
@@ -3161,6 +3171,11 @@ class Test_Blob(unittest.TestCase):
             "content-type": content_type,
             "content-range": content_range,
         }
+        if checksum == "crc32c":
+            expected_headers["x-goog-hash"] = f"crc32c={crc32c_checksum_value}"
+        elif checksum == "md5":
+            expected_headers["x-goog-hash"] = f"md5={md5_checksum_value}"
+
         payload = data[blob.chunk_size :]
         return mock.call(
             "PUT",
@@ -3181,12 +3196,17 @@ class Test_Blob(unittest.TestCase):
         timeout=None,
         data_corruption=False,
         retry=None,
+        checksum=None,  # None is also a valid value, when user decides to disable checksum validation.
     ):
         CHUNK_SIZE = 256 * 1024
         USER_AGENT = "testing 1.2.3"
         content_type = "text/html"
         # Data to be uploaded.
         data = b"<html>" + (b"A" * CHUNK_SIZE) + b"</html>"
+
+        # Data calcuated offline and entered here. (Unit test best practice).
+        crc32c_checksum_value = "mQ30hg=="
+        md5_checksum_value = "wajHeg1f2Q2u9afI6fjPOw=="
         total_bytes = len(data)
         if use_size:
             size = total_bytes
@@ -3213,6 +3233,8 @@ class Test_Blob(unittest.TestCase):
                 headers3,
                 total_bytes,
                 data_corruption=data_corruption,
+                md5_checksum_value=md5_checksum_value,
+                crc32c_checksum_value=crc32c_checksum_value,
             )
 
         # Create some mock arguments and call the method under test.
@@ -3247,7 +3269,7 @@ class Test_Blob(unittest.TestCase):
                 if_generation_not_match,
                 if_metageneration_match,
                 if_metageneration_not_match,
-                checksum=None,
+                checksum=checksum,
                 retry=retry,
                 **timeout_kwarg,
             )
@@ -3296,6 +3318,9 @@ class Test_Blob(unittest.TestCase):
                 if_metageneration_match=if_metageneration_match,
                 if_metageneration_not_match=if_metageneration_not_match,
                 timeout=expected_timeout,
+                checksum=checksum,
+                crc32c_checksum_value=crc32c_checksum_value,
+                md5_checksum_value=md5_checksum_value,
             )
         self.assertEqual(transport.request.mock_calls, [call0, call1, call2])
 
@@ -3307,6 +3332,12 @@ class Test_Blob(unittest.TestCase):
 
     def test__do_resumable_upload_with_size(self):
         self._do_resumable_helper(use_size=True)
+
+    def test__do_resumable_upload_with_size_with_crc32c_checksum(self):
+        self._do_resumable_helper(use_size=True, checksum="crc32c")
+
+    def test__do_resumable_upload_with_size_with_md5_checksum(self):
+        self._do_resumable_helper(use_size=True, checksum="md5")
 
     def test__do_resumable_upload_with_retry(self):
         self._do_resumable_helper(retry=DEFAULT_RETRY)
