@@ -436,8 +436,9 @@ class BqmlModelFactory:
         Returns: a BqmlModel, wrapping a trained model in BigQuery
         """
         options = dict(options)
-        # Cache dataframes to make sure base table is not a snapshot
-        # cached dataframe creates a full copy, never uses snapshot
+        # Cache dataframes to make sure base table is not a snapshot.
+        # Cached dataframe creates a full copy, never uses snapshot.
+        # This is a workaround for internal issue b/310266666.
         if y_train is None:
             input_data = X_train.reset_index(drop=True).cache()
         else:

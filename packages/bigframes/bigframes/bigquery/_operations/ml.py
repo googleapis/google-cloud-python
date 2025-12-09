@@ -39,6 +39,10 @@ def _to_sql(df_or_sql: Union[pd.DataFrame, dataframe.DataFrame, str]) -> str:
     else:
         bf_df = cast(dataframe.DataFrame, df_or_sql)
 
+    # Cache dataframes to make sure base table is not a snapshot.
+    # Cached dataframe creates a full copy, never uses snapshot.
+    # This is a workaround for internal issue b/310266666.
+    bf_df.cache()
     sql, _, _ = bf_df._to_sql_query(include_index=False)
     return sql
 
