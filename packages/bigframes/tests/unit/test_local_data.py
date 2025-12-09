@@ -44,6 +44,12 @@ pd_data_normalized = pd.DataFrame(
 def test_local_data_well_formed_round_trip():
     local_entry = local_data.ManagedArrowTable.from_pandas(pd_data)
     result = pd.DataFrame(local_entry.itertuples(), columns=pd_data.columns)
+    result = result.assign(
+        **{
+            col: result[col].astype(pd_data_normalized[col].dtype)
+            for col in pd_data_normalized.columns
+        }
+    )
     pandas.testing.assert_frame_equal(pd_data_normalized, result, check_dtype=False)
 
 
@@ -118,6 +124,12 @@ def test_local_data_well_formed_round_trip_chunked():
     as_rechunked_pyarrow = pa.Table.from_batches(pa_table.to_batches(max_chunksize=2))
     local_entry = local_data.ManagedArrowTable.from_pyarrow(as_rechunked_pyarrow)
     result = pd.DataFrame(local_entry.itertuples(), columns=pd_data.columns)
+    result = result.assign(
+        **{
+            col: result[col].astype(pd_data_normalized[col].dtype)
+            for col in pd_data_normalized.columns
+        }
+    )
     pandas.testing.assert_frame_equal(pd_data_normalized, result, check_dtype=False)
 
 
@@ -126,6 +138,12 @@ def test_local_data_well_formed_round_trip_sliced():
     as_rechunked_pyarrow = pa.Table.from_batches(pa_table.slice(0, 4).to_batches())
     local_entry = local_data.ManagedArrowTable.from_pyarrow(as_rechunked_pyarrow)
     result = pd.DataFrame(local_entry.itertuples(), columns=pd_data.columns)
+    result = result.assign(
+        **{
+            col: result[col].astype(pd_data_normalized[col].dtype)
+            for col in pd_data_normalized.columns
+        }
+    )
     pandas.testing.assert_frame_equal(
         pd_data_normalized[0:4].reset_index(drop=True),
         result.reset_index(drop=True),

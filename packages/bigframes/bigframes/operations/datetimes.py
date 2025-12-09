@@ -25,7 +25,7 @@ from bigframes import dataframe, dtypes, series
 from bigframes.core import log_adapter
 import bigframes.operations as ops
 
-_ONE_DAY = pandas.Timedelta("1d")
+_ONE_DAY = pandas.Timedelta("1D")
 _ONE_SECOND = pandas.Timedelta("1s")
 _ONE_MICRO = pandas.Timedelta("1us")
 _SUPPORTED_FREQS = ("Y", "Q", "M", "W", "D", "h", "min", "s", "ms", "us")
