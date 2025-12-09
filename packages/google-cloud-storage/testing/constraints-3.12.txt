@@ -7,4 +7,3 @@ grpcio
 proto-plus
 protobuf
 grpc-google-iam-v1
-urllib3==2.5.0
