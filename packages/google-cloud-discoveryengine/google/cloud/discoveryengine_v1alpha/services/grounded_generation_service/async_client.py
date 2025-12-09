@@ -349,7 +349,8 @@ class GroundedGenerationServiceAsyncClient:
         Args:
             request (Optional[Union[google.cloud.discoveryengine_v1alpha.types.CheckGroundingRequest, dict]]):
                 The request object. Request message for
-                [GroundedGenerationService.CheckGrounding][google.cloud.discoveryengine.v1alpha.GroundedGenerationService.CheckGrounding]
+                `GroundedGenerationService.CheckGrounding
+                <google.cloud.discoveryengine.v1alpha.GroundedGenerationService.CheckGrounding>`__
                 method.
             retry (google.api_core.retry_async.AsyncRetry): Designation of what errors, if any,
                 should be retried.
@@ -362,8 +363,9 @@ class GroundedGenerationServiceAsyncClient:
         Returns:
             google.cloud.discoveryengine_v1alpha.types.CheckGroundingResponse:
                 Response message for the
-                   [GroundedGenerationService.CheckGrounding][google.cloud.discoveryengine.v1alpha.GroundedGenerationService.CheckGrounding]
-                   method.
+                `GroundedGenerationService.CheckGrounding
+                <google.cloud.discoveryengine.v1alpha.GroundedGenerationService.CheckGrounding>`__
+                method.
 
         """
         # Create or coerce a protobuf request object.

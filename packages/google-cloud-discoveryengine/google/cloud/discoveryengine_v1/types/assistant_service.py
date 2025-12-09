@@ -59,31 +59,36 @@ class AssistUserMetadata(proto.Message):
 
 class StreamAssistRequest(proto.Message):
     r"""Request for the
-    [AssistantService.StreamAssist][google.cloud.discoveryengine.v1.AssistantService.StreamAssist]
+    `AssistantService.StreamAssist
+    <google.cloud.discoveryengine.v1.AssistantService.StreamAssist>`__
     method.
 
     Attributes:
         name (str):
             Required. The resource name of the
-            [Assistant][google.cloud.discoveryengine.v1.Assistant].
+            `Assistant
+            <google.cloud.discoveryengine.v1.Assistant>`__.
             Format:
+
             ``projects/{project}/locations/{location}/collections/{collection}/engines/{engine}/assistants/{assistant}``
         query (google.cloud.discoveryengine_v1.types.Query):
             Optional. Current user query.
 
-            Empty query is only supported if ``file_ids`` are provided.
-            In this case, the answer will be generated based on those
-            context files.
+            Empty query is only supported if ``file_ids``
+            are provided. In this case, the answer will be
+            generated based on those context files.
         session (str):
-            Optional. The session to use for the request. If specified,
-            the assistant has access to the session history, and the
-            query and the answer are stored there.
+            Optional. The session to use for the request. If
+            specified, the assistant has access to the
+            session history, and the query and the answer
+            are stored there.
 
-            If ``-`` is specified as the session ID, or it is left
-            empty, then a new session is created with an automatically
-            generated ID.
+            If ``-`` is specified as the session ID, or it
+            is left empty, then a new session is created
+            with an automatically generated ID.
 
             Format:
+
             ``projects/{project}/locations/{location}/collections/{collection}/engines/{engine}/sessions/{session}``
         user_metadata (google.cloud.discoveryengine_v1.types.AssistUserMetadata):
             Optional. Information about the user
@@ -104,9 +109,11 @@ class StreamAssistRequest(proto.Message):
                 Optional. Specification of the Vertex AI
                 Search tool.
             web_grounding_spec (google.cloud.discoveryengine_v1.types.StreamAssistRequest.ToolsSpec.WebGroundingSpec):
-                Optional. Specification of the web grounding tool. If field
-                is present, enables grounding with web search. Works only if
-                [Assistant.web_grounding_type][google.cloud.discoveryengine.v1.Assistant.web_grounding_type]
+                Optional. Specification of the web grounding
+                tool. If field is present, enables grounding
+                with web search. Works only if
+                `Assistant.web_grounding_type
+                <google.cloud.discoveryengine.v1.Assistant.web_grounding_type>`__
                 is [WEB_GROUNDING_TYPE_GOOGLE_SEARCH][] or
                 [WEB_GROUNDING_TYPE_ENTERPRISE_WEB_SEARCH][].
             image_generation_spec (google.cloud.discoveryengine_v1.types.StreamAssistRequest.ToolsSpec.ImageGenerationSpec):
@@ -123,30 +130,35 @@ class StreamAssistRequest(proto.Message):
             Attributes:
                 data_store_specs (MutableSequence[google.cloud.discoveryengine_v1.types.SearchRequest.DataStoreSpec]):
                     Optional. Specs defining
-                    [DataStore][google.cloud.discoveryengine.v1.DataStore]s to
-                    filter on in a search call and configurations for those data
-                    stores. This is only considered for
-                    [Engine][google.cloud.discoveryengine.v1.Engine]s with
-                    multiple data stores.
+                    `DataStore
+                    <google.cloud.discoveryengine.v1.DataStore>`__s
+                    to filter on in a search call and configurations
+                    for those data stores. This is only considered
+                    for `Engine
+                    <google.cloud.discoveryengine.v1.Engine>`__s
+                    with multiple data stores.
                 filter (str):
-                    Optional. The filter syntax consists of an expression
-                    language for constructing a predicate from one or more
-                    fields of the documents being filtered. Filter expression is
-                    case-sensitive.
+                    Optional. The filter syntax consists of an
+                    expression language for constructing a predicate
+                    from one or more fields of the documents being
+                    filtered. Filter expression is case-sensitive.
 
-                    If this field is unrecognizable, an ``INVALID_ARGUMENT`` is
-                    returned.
+                    If this field is unrecognizable, an
+                    ``INVALID_ARGUMENT``  is returned.
 
-                    Filtering in Vertex AI Search is done by mapping the LHS
-                    filter key to a key property defined in the Vertex AI Search
-                    backend -- this mapping is defined by the customer in their
-                    schema. For example a media customer might have a field
-                    'name' in their schema. In this case the filter would look
-                    like this: filter --> name:'ANY("king kong")'
+                    Filtering in Vertex AI Search is done by mapping
+                    the LHS filter key to a key property defined in
+                    the Vertex AI Search backend -- this mapping is
+                    defined by the customer in their schema. For
+                    example a media customer might have a field
+                    'name' in their schema. In this case the filter
+                    would look like this: filter --> name:'ANY("king
+                    kong")'
 
-                    For more information about filtering including syntax and
-                    filter operators, see
-                    `Filter <https://cloud.google.com/generative-ai-app-builder/docs/filter-search-metadata>`__
+                    For more information about filtering including
+                    syntax and filter operators, see
+                    `Filter
+                    <https://cloud.google.com/generative-ai-app-builder/docs/filter-search-metadata>`__
             """
 
             data_store_specs: MutableSequence[
@@ -206,8 +218,9 @@ class StreamAssistRequest(proto.Message):
 
         Attributes:
             model_id (str):
-                Optional. The Vertex AI model_id used for the generative
-                model. If not set, the default Assistant model will be used.
+                Optional. The Vertex AI model_id used for the
+                generative model. If not set, the default
+                Assistant model will be used.
         """
 
         model_id: str = proto.Field(
@@ -247,30 +260,36 @@ class StreamAssistRequest(proto.Message):
 
 class StreamAssistResponse(proto.Message):
     r"""Response for the
-    [AssistantService.StreamAssist][google.cloud.discoveryengine.v1.AssistantService.StreamAssist]
+    `AssistantService.StreamAssist
+    <google.cloud.discoveryengine.v1.AssistantService.StreamAssist>`__
     method.
 
     Attributes:
         answer (google.cloud.discoveryengine_v1.types.AssistAnswer):
-            Assist answer resource object containing parts of the
-            assistant's final answer for the user's query.
+            Assist answer resource object containing parts
+            of the assistant's final answer for the user's
+            query.
 
-            Not present if the current response doesn't add anything to
-            previously sent
-            [AssistAnswer.replies][google.cloud.discoveryengine.v1.AssistAnswer.replies].
+            Not present if the current response doesn't add
+            anything to previously sent
+            `AssistAnswer.replies
+            <google.cloud.discoveryengine.v1.AssistAnswer.replies>`__.
 
             Observe
-            [AssistAnswer.state][google.cloud.discoveryengine.v1.AssistAnswer.state]
-            to see if more parts are to be expected. While the state is
-            ``IN_PROGRESS``, the
-            [AssistAnswer.replies][google.cloud.discoveryengine.v1.AssistAnswer.replies]
-            field in each response will contain replies (reply
-            fragments) to be appended to the ones received in previous
-            responses. [AssistAnswer.name][] won't be filled.
+            `AssistAnswer.state
+            <google.cloud.discoveryengine.v1.AssistAnswer.state>`__
+            to see if more parts are to be expected. While
+            the state is ``IN_PROGRESS``, the
+            `AssistAnswer.replies
+            <google.cloud.discoveryengine.v1.AssistAnswer.replies>`__
+            field in each response will contain replies
+            (reply fragments) to be appended to the ones
+            received in previous responses.
+            [AssistAnswer.name][] won't be filled.
 
-            If the state is ``SUCCEEDED``, ``FAILED`` or ``SKIPPED``,
-            the response is the last response and [AssistAnswer.name][]
-            will have a value.
+            If the state is ``SUCCEEDED``, ``FAILED`` or
+            ``SKIPPED``, the response is the last response
+            and [AssistAnswer.name][] will have a value.
         session_info (google.cloud.discoveryengine_v1.types.StreamAssistResponse.SessionInfo):
             Session information.
         assist_token (str):
@@ -284,9 +303,10 @@ class StreamAssistResponse(proto.Message):
 
         Attributes:
             session (str):
-                Name of the newly generated or continued session.
-
+                Name of the newly generated or continued
+                session.
                 Format:
+
                 ``projects/{project}/locations/{location}/collections/{collection}/engines/{engine}/sessions/{session}``.
         """
 

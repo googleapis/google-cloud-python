@@ -107,7 +107,8 @@ class Reply(proto.Message):
 
     Attributes:
         reply (str):
-            DEPRECATED: use ``summary`` instead. Text reply.
+            DEPRECATED: use ``summary`` instead.
+            Text reply.
         references (MutableSequence[google.cloud.discoveryengine_v1beta.types.Reply.Reference]):
             References in the reply.
         summary (google.cloud.discoveryengine_v1beta.types.SearchResponse.Summary):

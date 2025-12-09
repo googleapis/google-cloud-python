@@ -115,7 +115,7 @@ class DataStoreServiceGrpcTransport(DataStoreServiceTransport):
     """gRPC backend transport for DataStoreService.
 
     Service for managing
-    [DataStore][google.cloud.discoveryengine.v1beta.DataStore]
+    `DataStore <google.cloud.discoveryengine.v1beta.DataStore>`__
     configuration.
 
     This class defines the same methods as the primary client, so the
@@ -352,14 +352,15 @@ class DataStoreServiceGrpcTransport(DataStoreServiceTransport):
     ]:
         r"""Return a callable for the create data store method over gRPC.
 
-        Creates a
-        [DataStore][google.cloud.discoveryengine.v1beta.DataStore].
-
+        Creates a `DataStore
+        <google.cloud.discoveryengine.v1beta.DataStore>`__.
         DataStore is for storing
-        [Documents][google.cloud.discoveryengine.v1beta.Document]. To
-        serve these documents for Search, or Recommendation use case, an
-        [Engine][google.cloud.discoveryengine.v1beta.Engine] needs to be
-        created separately.
+        `Documents
+        <google.cloud.discoveryengine.v1beta.Document>`__. To
+        serve these documents for Search, or Recommendation use
+        case, an `Engine
+        <google.cloud.discoveryengine.v1beta.Engine>`__ needs to
+        be created separately.
 
         Returns:
             Callable[[~.CreateDataStoreRequest],
@@ -385,8 +386,8 @@ class DataStoreServiceGrpcTransport(DataStoreServiceTransport):
     ) -> Callable[[data_store_service.GetDataStoreRequest], data_store.DataStore]:
         r"""Return a callable for the get data store method over gRPC.
 
-        Gets a
-        [DataStore][google.cloud.discoveryengine.v1beta.DataStore].
+        Gets a `DataStore
+        <google.cloud.discoveryengine.v1beta.DataStore>`__.
 
         Returns:
             Callable[[~.GetDataStoreRequest],
@@ -415,8 +416,8 @@ class DataStoreServiceGrpcTransport(DataStoreServiceTransport):
     ]:
         r"""Return a callable for the list data stores method over gRPC.
 
-        Lists all the
-        [DataStore][google.cloud.discoveryengine.v1beta.DataStore]s
+        Lists all the `DataStore
+        <google.cloud.discoveryengine.v1beta.DataStore>`__s
         associated with the project.
 
         Returns:
@@ -445,8 +446,8 @@ class DataStoreServiceGrpcTransport(DataStoreServiceTransport):
     ]:
         r"""Return a callable for the delete data store method over gRPC.
 
-        Deletes a
-        [DataStore][google.cloud.discoveryengine.v1beta.DataStore].
+        Deletes a `DataStore
+        <google.cloud.discoveryengine.v1beta.DataStore>`__.
 
         Returns:
             Callable[[~.DeleteDataStoreRequest],
@@ -474,8 +475,8 @@ class DataStoreServiceGrpcTransport(DataStoreServiceTransport):
     ]:
         r"""Return a callable for the update data store method over gRPC.
 
-        Updates a
-        [DataStore][google.cloud.discoveryengine.v1beta.DataStore]
+        Updates a `DataStore
+        <google.cloud.discoveryengine.v1beta.DataStore>`__
 
         Returns:
             Callable[[~.UpdateDataStoreRequest],

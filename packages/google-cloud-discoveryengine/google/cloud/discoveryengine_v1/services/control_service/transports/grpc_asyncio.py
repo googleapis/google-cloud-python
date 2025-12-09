@@ -347,10 +347,11 @@ class ControlServiceGrpcAsyncIOTransport(ControlServiceTransport):
 
         Creates a Control.
 
-        By default 1000 controls are allowed for a data store. A request
-        can be submitted to adjust this limit. If the
-        [Control][google.cloud.discoveryengine.v1.Control] to create
-        already exists, an ALREADY_EXISTS error is returned.
+        By default 1000 controls are allowed for a data store. A
+        request can be submitted to adjust this limit. If the
+        `Control <google.cloud.discoveryengine.v1.Control>`__ to
+        create already exists, an ALREADY_EXISTS error is
+        returned.
 
         Returns:
             Callable[[~.CreateControlRequest],
@@ -378,8 +379,9 @@ class ControlServiceGrpcAsyncIOTransport(ControlServiceTransport):
 
         Deletes a Control.
 
-        If the [Control][google.cloud.discoveryengine.v1.Control] to
-        delete does not exist, a NOT_FOUND error is returned.
+        If the `Control
+        <google.cloud.discoveryengine.v1.Control>`__ to delete
+        does not exist, a NOT_FOUND error is returned.
 
         Returns:
             Callable[[~.DeleteControlRequest],
@@ -409,9 +411,9 @@ class ControlServiceGrpcAsyncIOTransport(ControlServiceTransport):
 
         Updates a Control.
 
-        [Control][google.cloud.discoveryengine.v1.Control] action type
-        cannot be changed. If the
-        [Control][google.cloud.discoveryengine.v1.Control] to update
+        `Control <google.cloud.discoveryengine.v1.Control>`__
+        action type cannot be changed. If the `Control
+        <google.cloud.discoveryengine.v1.Control>`__ to update
         does not exist, a NOT_FOUND error is returned.
 
         Returns:
@@ -468,7 +470,8 @@ class ControlServiceGrpcAsyncIOTransport(ControlServiceTransport):
         r"""Return a callable for the list controls method over gRPC.
 
         Lists all Controls by their parent
-        [DataStore][google.cloud.discoveryengine.v1.DataStore].
+        `DataStore
+        <google.cloud.discoveryengine.v1.DataStore>`__.
 
         Returns:
             Callable[[~.ListControlsRequest],

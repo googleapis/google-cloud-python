@@ -67,44 +67,56 @@ class GcsSource(proto.Message):
 
     Attributes:
         input_uris (MutableSequence[str]):
-            Required. Cloud Storage URIs to input files. Each URI can be
-            up to 2000 characters long. URIs can match the full object
-            path (for example, ``gs://bucket/directory/object.json``) or
-            a pattern matching one or more files, such as
+            Required. Cloud Storage URIs to input files.
+            Each URI can be up to 2000 characters long. URIs
+            can match the full object path (for example,
+            ``gs://bucket/directory/object.json``) or a
+            pattern matching one or more files, such as
             ``gs://bucket/directory/*.json``.
 
-            A request can contain at most 100 files (or 100,000 files if
-            ``data_schema`` is ``content``). Each file can be up to 2 GB
-            (or 100 MB if ``data_schema`` is ``content``).
+            A request can contain at most 100 files (or
+            100,000 files if ``data_schema`` is
+            ``content``). Each file can be up to 2 GB (or
+            100 MB if ``data_schema`` is ``content``).
         data_schema (str):
-            The schema to use when parsing the data from the source.
-
+            The schema to use when parsing the data from the
+            source.
             Supported values for document imports:
 
-            - ``document`` (default): One JSON
-              [Document][google.cloud.discoveryengine.v1beta.Document]
-              per line. Each document must have a valid
-              [Document.id][google.cloud.discoveryengine.v1beta.Document.id].
-            - ``content``: Unstructured data (e.g. PDF, HTML). Each file
-              matched by ``input_uris`` becomes a document, with the ID
-              set to the first 128 bits of SHA256(URI) encoded as a hex
-              string.
-            - ``custom``: One custom data JSON per row in arbitrary
-              format that conforms to the defined
-              [Schema][google.cloud.discoveryengine.v1beta.Schema] of
-              the data store. This can only be used by the GENERIC Data
-              Store vertical.
-            - ``csv``: A CSV file with header conforming to the defined
-              [Schema][google.cloud.discoveryengine.v1beta.Schema] of
-              the data store. Each entry after the header is imported as
-              a Document. This can only be used by the GENERIC Data
-              Store vertical.
+            * ``document`` (default): One JSON
+            `Document
+            <google.cloud.discoveryengine.v1beta.Document>`__
+            per line. Each document must
+              have a valid
+              `Document.id
+            <google.cloud.discoveryengine.v1beta.Document.id>`__.
+
+            * ``content``: Unstructured data (e.g. PDF,
+            HTML). Each file matched by   ``input_uris``
+            becomes a document, with the ID set to the first
+            128   bits of SHA256(URI) encoded as a hex
+            string.
+
+            * ``custom``: One custom data JSON per row in
+            arbitrary format that conforms   to the defined
+            `Schema
+            <google.cloud.discoveryengine.v1beta.Schema>`__
+            of   the data store. This can only be used by
+            the GENERIC Data Store vertical.
+
+            * ``csv``: A CSV file with header conforming to
+            the defined `Schema
+            <google.cloud.discoveryengine.v1beta.Schema>`__
+            of the   data store. Each entry after the header
+            is imported as a Document.   This can only be
+            used by the GENERIC Data Store vertical.
 
             Supported values for user event imports:
 
-            - ``user_event`` (default): One JSON
-              [UserEvent][google.cloud.discoveryengine.v1beta.UserEvent]
-              per line.
+            * ``user_event`` (default): One JSON
+            `UserEvent
+            <google.cloud.discoveryengine.v1beta.UserEvent>`__
+            per line.
     """
 
     input_uris: MutableSequence[str] = proto.RepeatedField(
@@ -124,8 +136,8 @@ class BigQuerySource(proto.Message):
 
     Attributes:
         partition_date (google.type.date_pb2.Date):
-            BigQuery time partitioned table's \_PARTITIONDATE in
-            YYYY-MM-DD format.
+            BigQuery time partitioned table's _PARTITIONDATE
+            in YYYY-MM-DD format.
 
             This field is a member of `oneof`_ ``partition``.
         project_id (str):
@@ -147,29 +159,36 @@ class BigQuerySource(proto.Message):
             have the BigQuery export to a specific Cloud
             Storage directory.
         data_schema (str):
-            The schema to use when parsing the data from the source.
-
+            The schema to use when parsing the data from the
+            source.
             Supported values for user event imports:
 
-            - ``user_event`` (default): One
-              [UserEvent][google.cloud.discoveryengine.v1beta.UserEvent]
-              per row.
+            * ``user_event`` (default): One
+            `UserEvent
+            <google.cloud.discoveryengine.v1beta.UserEvent>`__
+            per row.
 
             Supported values for document imports:
 
-            - ``document`` (default): One
-              [Document][google.cloud.discoveryengine.v1beta.Document]
-              format per row. Each document must have a valid
-              [Document.id][google.cloud.discoveryengine.v1beta.Document.id]
-              and one of
-              [Document.json_data][google.cloud.discoveryengine.v1beta.Document.json_data]
-              or
-              [Document.struct_data][google.cloud.discoveryengine.v1beta.Document.struct_data].
-            - ``custom``: One custom data per row in arbitrary format
-              that conforms to the defined
-              [Schema][google.cloud.discoveryengine.v1beta.Schema] of
-              the data store. This can only be used by the GENERIC Data
-              Store vertical.
+            * ``document`` (default): One
+            `Document
+            <google.cloud.discoveryengine.v1beta.Document>`__
+            format per   row. Each document must have a
+            valid
+              `Document.id
+            <google.cloud.discoveryengine.v1beta.Document.id>`__
+            and one of   `Document.json_data
+            <google.cloud.discoveryengine.v1beta.Document.json_data>`__
+            or
+              `Document.struct_data
+            <google.cloud.discoveryengine.v1beta.Document.struct_data>`__.
+
+            * ``custom``: One custom data per row in
+            arbitrary format that conforms to   the defined
+            `Schema
+            <google.cloud.discoveryengine.v1beta.Schema>`__
+            of the   data store. This can only be used by
+            the GENERIC Data Store vertical.
     """
 
     partition_date: date_pb2.Date = proto.Field(
@@ -219,9 +238,10 @@ class SpannerSource(proto.Message):
             Required. The table name of the Spanner
             database that needs to be imported.
         enable_data_boost (bool):
-            Whether to apply data boost on Spanner export. Enabling this
-            option will incur additional cost. More info can be found
-            `here <https://cloud.google.com/spanner/docs/databoost/databoost-overview#billing_and_quotas>`__.
+            Whether to apply data boost on Spanner export.
+            Enabling this option will incur additional cost.
+            More info can be found `here
+            <https://cloud.google.com/spanner/docs/databoost/databoost-overview#billing_and_quotas>`__.
     """
 
     project_id: str = proto.Field(
@@ -252,9 +272,9 @@ class BigtableOptions(proto.Message):
 
     Attributes:
         key_field_name (str):
-            The field name used for saving row key value in the
-            document. The name has to match the pattern
-            ``[a-zA-Z0-9][a-zA-Z0-9-_]*``.
+            The field name used for saving row key value in
+            the document. The name has to match the pattern
+            ```a-zA-Z0-9 <a-zA-Z0-9-_>`__*``.
         families (MutableMapping[str, google.cloud.discoveryengine_v1beta.types.BigtableOptions.BigtableColumnFamily]):
             The mapping from family names to an object
             that contains column families level information
@@ -263,9 +283,11 @@ class BigtableOptions(proto.Message):
     """
 
     class Type(proto.Enum):
-        r"""The type of values in a Bigtable column or column family. The values
-        are expected to be encoded using `HBase
-        Bytes.toBytes <https://hbase.apache.org/apidocs/org/apache/hadoop/hbase/util/Bytes.html>`__
+        r"""The type of values in a Bigtable column or column family.
+        The values are expected to be encoded using
+        `HBase
+        Bytes.toBytes
+        <https://hbase.apache.org/apidocs/org/apache/hadoop/hbase/util/Bytes.html>`__
         function when the encoding value is set to ``BINARY``.
 
         Values:
@@ -315,25 +337,28 @@ class BigtableOptions(proto.Message):
 
         Attributes:
             field_name (str):
-                The field name to use for this column family in the
-                document. The name has to match the pattern
-                ``[a-zA-Z0-9][a-zA-Z0-9-_]*``. If not set, it is parsed from
-                the family name with best effort. However, due to different
-                naming patterns, field name collisions could happen, where
-                parsing behavior is undefined.
+                The field name to use for this column family in
+                the document. The name has to match the pattern
+                ```a-zA-Z0-9 <a-zA-Z0-9-_>`__*``. If not set, it
+                is parsed from the family name with best effort.
+                However, due to different naming patterns, field
+                name collisions could happen, where parsing
+                behavior is undefined.
             encoding (google.cloud.discoveryengine_v1beta.types.BigtableOptions.Encoding):
-                The encoding mode of the values when the type is not STRING.
-                Acceptable encoding values are:
+                The encoding mode of the values when the type is
+                not STRING. Acceptable encoding values are:
 
-                - ``TEXT``: indicates values are alphanumeric text strings.
-                - ``BINARY``: indicates values are encoded using
-                  ``HBase Bytes.toBytes`` family of functions. This can be
-                  overridden for a specific column by listing that column in
-                  ``columns`` and specifying an encoding for it.
+                * ``TEXT``: indicates values are alphanumeric
+                text strings. * ``BINARY``: indicates values are
+                encoded using ``HBase Bytes.toBytes`` family of
+                functions. This can be overridden for a specific
+                column by listing that column in ``columns`` and
+                specifying an encoding for it.
             type_ (google.cloud.discoveryengine_v1beta.types.BigtableOptions.Type):
-                The type of values in this column family. The values are
-                expected to be encoded using ``HBase Bytes.toBytes``
-                function when the encoding value is set to ``BINARY``.
+                The type of values in this column family.
+                The values are expected to be encoded using
+                ``HBase Bytes.toBytes`` function when the
+                encoding value is set to ``BINARY``.
             columns (MutableSequence[google.cloud.discoveryengine_v1beta.types.BigtableOptions.BigtableColumn]):
                 The list of objects that contains column
                 level information for each column. If a column
@@ -371,25 +396,28 @@ class BigtableOptions(proto.Message):
                 cannot be decoded with utf-8, use a base-64
                 encoded string instead.
             field_name (str):
-                The field name to use for this column in the document. The
-                name has to match the pattern ``[a-zA-Z0-9][a-zA-Z0-9-_]*``.
-                If not set, it is parsed from the qualifier bytes with best
-                effort. However, due to different naming patterns, field
-                name collisions could happen, where parsing behavior is
-                undefined.
+                The field name to use for this column in the
+                document. The name has to match the pattern
+                ```a-zA-Z0-9 <a-zA-Z0-9-_>`__*``. If not set, it
+                is parsed from the qualifier bytes with best
+                effort. However, due to different naming
+                patterns, field name collisions could happen,
+                where parsing behavior is undefined.
             encoding (google.cloud.discoveryengine_v1beta.types.BigtableOptions.Encoding):
-                The encoding mode of the values when the type is not
-                ``STRING``. Acceptable encoding values are:
+                The encoding mode of the values when the type is
+                not ``STRING``. Acceptable encoding values are:
 
-                - ``TEXT``: indicates values are alphanumeric text strings.
-                - ``BINARY``: indicates values are encoded using
-                  ``HBase Bytes.toBytes`` family of functions. This can be
-                  overridden for a specific column by listing that column in
-                  ``columns`` and specifying an encoding for it.
+                * ``TEXT``: indicates values are alphanumeric
+                text strings. * ``BINARY``: indicates values are
+                encoded using ``HBase Bytes.toBytes`` family of
+                functions. This can be overridden for a specific
+                column by listing that column in ``columns`` and
+                specifying an encoding for it.
             type_ (google.cloud.discoveryengine_v1beta.types.BigtableOptions.Type):
-                The type of values in this column family. The values are
-                expected to be encoded using ``HBase Bytes.toBytes``
-                function when the encoding value is set to ``BINARY``.
+                The type of values in this column family.
+                The values are expected to be encoded using
+                ``HBase Bytes.toBytes`` function when the
+                encoding value is set to ``BINARY``.
         """
 
         qualifier: bytes = proto.Field(
@@ -469,8 +497,8 @@ class FhirStoreSource(proto.Message):
 
     Attributes:
         fhir_store (str):
-            Required. The full resource name of the FHIR store to import
-            data from, in the format of
+            Required. The full resource name of the FHIR
+            store to import data from, in the format of
             ``projects/{project}/locations/{location}/datasets/{dataset}/fhirStores/{fhir_store}``.
         gcs_staging_dir (str):
             Intermediate Cloud Storage directory used for
@@ -479,10 +507,12 @@ class FhirStoreSource(proto.Message):
             have the FhirStore export to a specific Cloud
             Storage directory.
         resource_types (MutableSequence[str]):
-            The FHIR resource types to import. The resource types should
-            be a subset of all `supported FHIR resource
-            types <https://cloud.google.com/generative-ai-app-builder/docs/fhir-schema-reference#resource-level-specification>`__.
-            Default to all supported FHIR resource types if empty.
+            The FHIR resource types to import. The resource
+            types should be a subset of all `supported FHIR
+            resource types
+            <https://cloud.google.com/generative-ai-app-builder/docs/fhir-schema-reference#resource-level-specification>`__.
+            Default to all supported FHIR resource types if
+            empty.
     """
 
     fhir_store: str = proto.Field(
@@ -528,9 +558,10 @@ class CloudSqlSource(proto.Message):
             the necessary Cloud Storage Admin permissions to
             access the specified Cloud Storage directory.
         offload (bool):
-            Option for serverless export. Enabling this option will
-            incur additional cost. More info can be found
-            `here <https://cloud.google.com/sql/pricing#serverless>`__.
+            Option for serverless export. Enabling this
+            option will incur additional cost. More info can
+            be found `here
+            <https://cloud.google.com/sql/pricing#serverless>`__.
     """
 
     project_id: str = proto.Field(
@@ -671,10 +702,11 @@ class ImportErrorConfig(proto.Message):
 
     Attributes:
         gcs_prefix (str):
-            Cloud Storage prefix for import errors. This must be an
-            empty, existing Cloud Storage directory. Import errors are
-            written to sharded files in this directory, one per line, as
-            a JSON-encoded ``google.rpc.Status`` message.
+            Cloud Storage prefix for import errors. This
+            must be an empty, existing Cloud Storage
+            directory. Import errors are written to sharded
+            files in this directory, one per line, as a
+            JSON-encoded ``google.rpc.Status`` message.
 
             This field is a member of `oneof`_ ``destination``.
     """
@@ -711,7 +743,8 @@ class ImportUserEventsRequest(proto.Message):
 
             This field is a member of `oneof`_ ``source``.
         parent (str):
-            Required. Parent DataStore resource name, of the form
+            Required. Parent DataStore resource name, of the
+            form
             ``projects/{project}/locations/{location}/collections/{collection}/dataStores/{data_store}``
         error_config (google.cloud.discoveryengine_v1beta.types.ImportErrorConfig):
             The desired location of errors incurred
@@ -939,92 +972,126 @@ class ImportDocumentsRequest(proto.Message):
 
             This field is a member of `oneof`_ ``source``.
         parent (str):
-            Required. The parent branch resource name, such as
+            Required. The parent branch resource name, such
+            as
             ``projects/{project}/locations/{location}/collections/{collection}/dataStores/{data_store}/branches/{branch}``.
             Requires create/update permission.
         error_config (google.cloud.discoveryengine_v1beta.types.ImportErrorConfig):
             The desired location of errors incurred
             during the Import.
         reconciliation_mode (google.cloud.discoveryengine_v1beta.types.ImportDocumentsRequest.ReconciliationMode):
-            The mode of reconciliation between existing documents and
-            the documents to be imported. Defaults to
-            [ReconciliationMode.INCREMENTAL][google.cloud.discoveryengine.v1beta.ImportDocumentsRequest.ReconciliationMode.INCREMENTAL].
+            The mode of reconciliation between existing
+            documents and the documents to be imported.
+            Defaults to `ReconciliationMode.INCREMENTAL
+            <google.cloud.discoveryengine.v1beta.ImportDocumentsRequest.ReconciliationMode.INCREMENTAL>`__.
         update_mask (google.protobuf.field_mask_pb2.FieldMask):
             Indicates which fields in the provided
             imported documents to update. If not set, the
             default is to update all fields.
         auto_generate_ids (bool):
-            Whether to automatically generate IDs for the documents if
-            absent.
-
+            Whether to automatically generate IDs for the
+            documents if absent.
             If set to ``true``,
-            [Document.id][google.cloud.discoveryengine.v1beta.Document.id]s
-            are automatically generated based on the hash of the
-            payload, where IDs may not be consistent during multiple
-            imports. In which case
-            [ReconciliationMode.FULL][google.cloud.discoveryengine.v1beta.ImportDocumentsRequest.ReconciliationMode.FULL]
-            is highly recommended to avoid duplicate contents. If unset
-            or set to ``false``,
-            [Document.id][google.cloud.discoveryengine.v1beta.Document.id]s
+            `Document.id
+            <google.cloud.discoveryengine.v1beta.Document.id>`__s
+            are automatically generated based on the hash of
+            the payload, where IDs may not be consistent
+            during multiple imports. In which case
+            `ReconciliationMode.FULL
+            <google.cloud.discoveryengine.v1beta.ImportDocumentsRequest.ReconciliationMode.FULL>`__
+            is highly recommended to avoid duplicate
+            contents. If unset or set to ``false``,
+            `Document.id
+            <google.cloud.discoveryengine.v1beta.Document.id>`__s
             have to be specified using
-            [id_field][google.cloud.discoveryengine.v1beta.ImportDocumentsRequest.id_field],
-            otherwise, documents without IDs fail to be imported.
+            `id_field
+            <google.cloud.discoveryengine.v1beta.ImportDocumentsRequest.id_field>`__,
+            otherwise, documents without IDs fail to be
+            imported.
 
             Supported data sources:
 
-            - [GcsSource][google.cloud.discoveryengine.v1beta.GcsSource].
-              [GcsSource.data_schema][google.cloud.discoveryengine.v1beta.GcsSource.data_schema]
-              must be ``custom`` or ``csv``. Otherwise, an
-              INVALID_ARGUMENT error is thrown.
-            - [BigQuerySource][google.cloud.discoveryengine.v1beta.BigQuerySource].
-              [BigQuerySource.data_schema][google.cloud.discoveryengine.v1beta.BigQuerySource.data_schema]
-              must be ``custom`` or ``csv``. Otherwise, an
-              INVALID_ARGUMENT error is thrown.
-            - [SpannerSource][google.cloud.discoveryengine.v1beta.SpannerSource].
-            - [CloudSqlSource][google.cloud.discoveryengine.v1beta.CloudSqlSource].
-            - [FirestoreSource][google.cloud.discoveryengine.v1beta.FirestoreSource].
-            - [BigtableSource][google.cloud.discoveryengine.v1beta.BigtableSource].
+            * `GcsSource
+            <google.cloud.discoveryengine.v1beta.GcsSource>`__.
+            `GcsSource.data_schema
+            <google.cloud.discoveryengine.v1beta.GcsSource.data_schema>`__
+            must be ``custom`` or ``csv``. Otherwise, an
+            INVALID_ARGUMENT error is thrown.
+
+            * `BigQuerySource
+            <google.cloud.discoveryengine.v1beta.BigQuerySource>`__.
+            `BigQuerySource.data_schema
+            <google.cloud.discoveryengine.v1beta.BigQuerySource.data_schema>`__
+            must be ``custom`` or ``csv``. Otherwise, an
+            INVALID_ARGUMENT error is thrown.
+
+            * `SpannerSource
+            <google.cloud.discoveryengine.v1beta.SpannerSource>`__.
+            * `CloudSqlSource
+            <google.cloud.discoveryengine.v1beta.CloudSqlSource>`__.
+
+            * `FirestoreSource
+            <google.cloud.discoveryengine.v1beta.FirestoreSource>`__.
+            * `BigtableSource
+            <google.cloud.discoveryengine.v1beta.BigtableSource>`__.
         id_field (str):
-            The field indicates the ID field or column to be used as
-            unique IDs of the documents.
+            The field indicates the ID field or column to be
+            used as unique IDs of the documents.
 
-            For
-            [GcsSource][google.cloud.discoveryengine.v1beta.GcsSource]
-            it is the key of the JSON field. For instance, ``my_id`` for
-            JSON ``{"my_id": "some_uuid"}``. For others, it may be the
-            column name of the table where the unique ids are stored.
+            For `GcsSource
+            <google.cloud.discoveryengine.v1beta.GcsSource>`__
+            it is the key of the JSON field. For instance,
+            ``my_id`` for JSON ``{"my_id":
 
-            The values of the JSON field or the table column are used as
-            the
-            [Document.id][google.cloud.discoveryengine.v1beta.Document.id]s.
-            The JSON field or the table column must be of string type,
-            and the values must be set as valid strings conform to
-            `RFC-1034 <https://tools.ietf.org/html/rfc1034>`__ with 1-63
-            characters. Otherwise, documents without valid IDs fail to
-            be imported.
+            "some_uuid"}``. For others, it may be the column
+            name of the table where the unique ids are
+            stored.
+
+            The values of the JSON field or the table column
+            are used as the `Document.id
+            <google.cloud.discoveryengine.v1beta.Document.id>`__s.
+            The JSON field or the table column must be of
+            string type, and the values must be set as valid
+            strings conform to
+            `RFC-1034
+            <https://tools.ietf.org/html/rfc1034>`__ with
+            1-63 characters. Otherwise, documents without
+            valid IDs fail to be imported.
 
             Only set this field when
-            [auto_generate_ids][google.cloud.discoveryengine.v1beta.ImportDocumentsRequest.auto_generate_ids]
-            is unset or set as ``false``. Otherwise, an INVALID_ARGUMENT
-            error is thrown.
+            `auto_generate_ids
+            <google.cloud.discoveryengine.v1beta.ImportDocumentsRequest.auto_generate_ids>`__
+            is unset or set as ``false``. Otherwise, an
+            INVALID_ARGUMENT error is thrown.
 
-            If it is unset, a default value ``_id`` is used when
-            importing from the allowed data sources.
+            If it is unset, a default value ``_id`` is used
+            when importing from the allowed data sources.
 
             Supported data sources:
 
-            - [GcsSource][google.cloud.discoveryengine.v1beta.GcsSource].
-              [GcsSource.data_schema][google.cloud.discoveryengine.v1beta.GcsSource.data_schema]
-              must be ``custom`` or ``csv``. Otherwise, an
-              INVALID_ARGUMENT error is thrown.
-            - [BigQuerySource][google.cloud.discoveryengine.v1beta.BigQuerySource].
-              [BigQuerySource.data_schema][google.cloud.discoveryengine.v1beta.BigQuerySource.data_schema]
-              must be ``custom`` or ``csv``. Otherwise, an
-              INVALID_ARGUMENT error is thrown.
-            - [SpannerSource][google.cloud.discoveryengine.v1beta.SpannerSource].
-            - [CloudSqlSource][google.cloud.discoveryengine.v1beta.CloudSqlSource].
-            - [FirestoreSource][google.cloud.discoveryengine.v1beta.FirestoreSource].
-            - [BigtableSource][google.cloud.discoveryengine.v1beta.BigtableSource].
+            * `GcsSource
+            <google.cloud.discoveryengine.v1beta.GcsSource>`__.
+            `GcsSource.data_schema
+            <google.cloud.discoveryengine.v1beta.GcsSource.data_schema>`__
+            must be ``custom`` or ``csv``. Otherwise, an
+            INVALID_ARGUMENT error is thrown.
+
+            * `BigQuerySource
+            <google.cloud.discoveryengine.v1beta.BigQuerySource>`__.
+            `BigQuerySource.data_schema
+            <google.cloud.discoveryengine.v1beta.BigQuerySource.data_schema>`__
+            must be ``custom`` or ``csv``. Otherwise, an
+            INVALID_ARGUMENT error is thrown.
+
+            * `SpannerSource
+            <google.cloud.discoveryengine.v1beta.SpannerSource>`__.
+            * `CloudSqlSource
+            <google.cloud.discoveryengine.v1beta.CloudSqlSource>`__.
+
+            * `FirestoreSource
+            <google.cloud.discoveryengine.v1beta.FirestoreSource>`__.
+            * `BigtableSource
+            <google.cloud.discoveryengine.v1beta.BigtableSource>`__.
     """
 
     class ReconciliationMode(proto.Enum):
@@ -1053,9 +1120,9 @@ class ImportDocumentsRequest(proto.Message):
 
         Attributes:
             documents (MutableSequence[google.cloud.discoveryengine_v1beta.types.Document]):
-                Required. A list of documents to update/create. Each
-                document must have a valid
-                [Document.id][google.cloud.discoveryengine.v1beta.Document.id].
+                Required. A list of documents to update/create.
+                Each document must have a valid `Document.id
+                <google.cloud.discoveryengine.v1beta.Document.id>`__.
                 Recommended max of 100 items.
         """
 
@@ -1150,10 +1217,11 @@ class ImportDocumentsRequest(proto.Message):
 
 class ImportDocumentsResponse(proto.Message):
     r"""Response of the
-    [ImportDocumentsRequest][google.cloud.discoveryengine.v1beta.ImportDocumentsRequest].
-    If the long running operation is done, then this message is returned
-    by the google.longrunning.Operations.response field if the operation
-    was successful.
+    `ImportDocumentsRequest
+    <google.cloud.discoveryengine.v1beta.ImportDocumentsRequest>`__.
+    If the long running operation is done, then this message is
+    returned by the google.longrunning.Operations.response field if
+    the operation was successful.
 
     Attributes:
         error_samples (MutableSequence[google.rpc.status_pb2.Status]):
@@ -1178,7 +1246,8 @@ class ImportDocumentsResponse(proto.Message):
 
 class ImportSuggestionDenyListEntriesRequest(proto.Message):
     r"""Request message for
-    [CompletionService.ImportSuggestionDenyListEntries][google.cloud.discoveryengine.v1beta.CompletionService.ImportSuggestionDenyListEntries]
+    `CompletionService.ImportSuggestionDenyListEntries
+    <google.cloud.discoveryengine.v1beta.CompletionService.ImportSuggestionDenyListEntries>`__
     method.
 
     This message has `oneof`_ fields (mutually exclusive fields).
@@ -1197,17 +1266,19 @@ class ImportSuggestionDenyListEntriesRequest(proto.Message):
         gcs_source (google.cloud.discoveryengine_v1beta.types.GcsSource):
             Cloud Storage location for the input content.
 
-            Only 1 file can be specified that contains all entries to
-            import. Supported values ``gcs_source.schema`` for
-            autocomplete suggestion deny list entry imports:
+            Only 1 file can be specified that contains all
+            entries to import. Supported values
+            ``gcs_source.schema`` for autocomplete
+            suggestion deny list entry imports:
 
-            - ``suggestion_deny_list`` (default): One JSON
-              [SuggestionDenyListEntry] per line.
+            * ``suggestion_deny_list`` (default): One JSON
+            [SuggestionDenyListEntry] per line.
 
             This field is a member of `oneof`_ ``source``.
         parent (str):
-            Required. The parent data store resource name for which to
-            import denylist entries. Follows pattern
+            Required. The parent data store resource name
+            for which to import denylist entries. Follows
+            pattern
             projects/*/locations/*/collections/*/dataStores/*.
     """
 
@@ -1248,7 +1319,8 @@ class ImportSuggestionDenyListEntriesRequest(proto.Message):
 
 class ImportSuggestionDenyListEntriesResponse(proto.Message):
     r"""Response message for
-    [CompletionService.ImportSuggestionDenyListEntries][google.cloud.discoveryengine.v1beta.CompletionService.ImportSuggestionDenyListEntries]
+    `CompletionService.ImportSuggestionDenyListEntries
+    <google.cloud.discoveryengine.v1beta.CompletionService.ImportSuggestionDenyListEntries>`__
     method.
 
     Attributes:
@@ -1305,7 +1377,8 @@ class ImportSuggestionDenyListEntriesMetadata(proto.Message):
 
 class ImportCompletionSuggestionsRequest(proto.Message):
     r"""Request message for
-    [CompletionService.ImportCompletionSuggestions][google.cloud.discoveryengine.v1beta.CompletionService.ImportCompletionSuggestions]
+    `CompletionService.ImportCompletionSuggestions
+    <google.cloud.discoveryengine.v1beta.CompletionService.ImportCompletionSuggestions>`__
     method.
 
     This message has `oneof`_ fields (mutually exclusive fields).
@@ -1329,8 +1402,9 @@ class ImportCompletionSuggestionsRequest(proto.Message):
 
             This field is a member of `oneof`_ ``source``.
         parent (str):
-            Required. The parent data store resource name for which to
-            import customer autocomplete suggestions.
+            Required. The parent data store resource name
+            for which to import customer autocomplete
+            suggestions.
 
             Follows pattern
             ``projects/*/locations/*/collections/*/dataStores/*``
@@ -1387,10 +1461,11 @@ class ImportCompletionSuggestionsRequest(proto.Message):
 
 class ImportCompletionSuggestionsResponse(proto.Message):
     r"""Response of the
-    [CompletionService.ImportCompletionSuggestions][google.cloud.discoveryengine.v1beta.CompletionService.ImportCompletionSuggestions]
+    `CompletionService.ImportCompletionSuggestions
+    <google.cloud.discoveryengine.v1beta.CompletionService.ImportCompletionSuggestions>`__
     method. If the long running operation is done, this message is
-    returned by the google.longrunning.Operations.response field if the
-    operation is successful.
+    returned by the google.longrunning.Operations.response field if
+    the operation is successful.
 
     Attributes:
         error_samples (MutableSequence[google.rpc.status_pb2.Status]):
@@ -1426,11 +1501,13 @@ class ImportCompletionSuggestionsMetadata(proto.Message):
             is done, this is also the finish time.
         success_count (int):
             Count of
-            [CompletionSuggestion][google.cloud.discoveryengine.v1beta.CompletionSuggestion]s
+            `CompletionSuggestion
+            <google.cloud.discoveryengine.v1beta.CompletionSuggestion>`__s
             successfully imported.
         failure_count (int):
             Count of
-            [CompletionSuggestion][google.cloud.discoveryengine.v1beta.CompletionSuggestion]s
+            `CompletionSuggestion
+            <google.cloud.discoveryengine.v1beta.CompletionSuggestion>`__s
             that failed to be imported.
     """
 
@@ -1456,7 +1533,8 @@ class ImportCompletionSuggestionsMetadata(proto.Message):
 
 class ImportSampleQueriesRequest(proto.Message):
     r"""Request message for
-    [SampleQueryService.ImportSampleQueries][google.cloud.discoveryengine.v1beta.SampleQueryService.ImportSampleQueries]
+    `SampleQueryService.ImportSampleQueries
+    <google.cloud.discoveryengine.v1beta.SampleQueryService.ImportSampleQueries>`__
     method.
 
     This message has `oneof`_ fields (mutually exclusive fields).
@@ -1480,14 +1558,16 @@ class ImportSampleQueriesRequest(proto.Message):
 
             This field is a member of `oneof`_ ``source``.
         parent (str):
-            Required. The parent sample query set resource name, such as
+            Required. The parent sample query set resource
+            name, such as
             ``projects/{project}/locations/{location}/sampleQuerySets/{sampleQuerySet}``.
 
             If the caller does not have permission to list
-            [SampleQuery][google.cloud.discoveryengine.v1beta.SampleQuery]s
-            under this sample query set, regardless of whether or not
-            this sample query set exists, a ``PERMISSION_DENIED`` error
-            is returned.
+            `SampleQuery
+            <google.cloud.discoveryengine.v1beta.SampleQuery>`__s
+            under this sample query set, regardless of
+            whether or not this sample query set exists, a
+            ``PERMISSION_DENIED`` error is returned.
         error_config (google.cloud.discoveryengine_v1beta.types.ImportErrorConfig):
             The desired location of errors incurred
             during the Import.
@@ -1495,12 +1575,14 @@ class ImportSampleQueriesRequest(proto.Message):
 
     class InlineSource(proto.Message):
         r"""The inline source for
-        [SampleQuery][google.cloud.discoveryengine.v1beta.SampleQuery]s.
+        `SampleQuery
+        <google.cloud.discoveryengine.v1beta.SampleQuery>`__s.
 
         Attributes:
             sample_queries (MutableSequence[google.cloud.discoveryengine_v1beta.types.SampleQuery]):
                 Required. A list of
-                [SampleQuery][google.cloud.discoveryengine.v1beta.SampleQuery]s
+                `SampleQuery
+                <google.cloud.discoveryengine.v1beta.SampleQuery>`__s
                 to import. Max of 1000 items.
         """
 
@@ -1541,10 +1623,11 @@ class ImportSampleQueriesRequest(proto.Message):
 
 class ImportSampleQueriesResponse(proto.Message):
     r"""Response of the
-    [SampleQueryService.ImportSampleQueries][google.cloud.discoveryengine.v1beta.SampleQueryService.ImportSampleQueries]
+    `SampleQueryService.ImportSampleQueries
+    <google.cloud.discoveryengine.v1beta.SampleQueryService.ImportSampleQueries>`__
     method. If the long running operation is done, this message is
-    returned by the google.longrunning.Operations.response field if the
-    operation is successful.
+    returned by the google.longrunning.Operations.response field if
+    the operation is successful.
 
     Attributes:
         error_samples (MutableSequence[google.rpc.status_pb2.Status]):
@@ -1580,16 +1663,17 @@ class ImportSampleQueriesMetadata(proto.Message):
             time. If the operation is done, this is also the
             finish time.
         success_count (int):
-            Count of
-            [SampleQuery][google.cloud.discoveryengine.v1beta.SampleQuery]s
+            Count of `SampleQuery
+            <google.cloud.discoveryengine.v1beta.SampleQuery>`__s
             successfully imported.
         failure_count (int):
-            Count of
-            [SampleQuery][google.cloud.discoveryengine.v1beta.SampleQuery]s
+            Count of `SampleQuery
+            <google.cloud.discoveryengine.v1beta.SampleQuery>`__s
             that failed to be imported.
         total_count (int):
             Total count of
-            [SampleQuery][google.cloud.discoveryengine.v1beta.SampleQuery]s
+            `SampleQuery
+            <google.cloud.discoveryengine.v1beta.SampleQuery>`__s
             that were processed.
     """
 

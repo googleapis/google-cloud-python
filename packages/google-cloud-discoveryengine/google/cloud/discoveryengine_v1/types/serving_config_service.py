@@ -38,10 +38,12 @@ class UpdateServingConfigRequest(proto.Message):
             Required. The ServingConfig to update.
         update_mask (google.protobuf.field_mask_pb2.FieldMask):
             Indicates which fields in the provided
-            [ServingConfig][google.cloud.discoveryengine.v1.ServingConfig]
+            `ServingConfig
+            <google.cloud.discoveryengine.v1.ServingConfig>`__
             to update. The following are NOT supported:
 
-            - [ServingConfig.name][google.cloud.discoveryengine.v1.ServingConfig.name]
+            * `ServingConfig.name
+            <google.cloud.discoveryengine.v1.ServingConfig.name>`__
 
             If not set, all supported fields are updated.
     """

@@ -380,8 +380,8 @@ class CmekConfigServiceGrpcTransport(CmekConfigServiceTransport):
     ]:
         r"""Return a callable for the get cmek config method over gRPC.
 
-        Gets the
-        [CmekConfig][google.cloud.discoveryengine.v1.CmekConfig].
+        Gets the `CmekConfig
+        <google.cloud.discoveryengine.v1.CmekConfig>`__.
 
         Returns:
             Callable[[~.GetCmekConfigRequest],
@@ -410,8 +410,8 @@ class CmekConfigServiceGrpcTransport(CmekConfigServiceTransport):
     ]:
         r"""Return a callable for the list cmek configs method over gRPC.
 
-        Lists all the
-        [CmekConfig][google.cloud.discoveryengine.v1.CmekConfig]s with
+        Lists all the `CmekConfig
+        <google.cloud.discoveryengine.v1.CmekConfig>`__s with
         the project.
 
         Returns:

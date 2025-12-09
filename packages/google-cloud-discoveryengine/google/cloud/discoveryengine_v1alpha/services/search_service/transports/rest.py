@@ -335,7 +335,8 @@ class SearchServiceRestTransport(_BaseSearchServiceRestTransport):
             Args:
                 request (~.search_service.SearchRequest):
                     The request object. Request message for
-                [SearchService.Search][google.cloud.discoveryengine.v1alpha.SearchService.Search]
+                `SearchService.Search
+                <google.cloud.discoveryengine.v1alpha.SearchService.Search>`__
                 method.
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
@@ -348,7 +349,8 @@ class SearchServiceRestTransport(_BaseSearchServiceRestTransport):
             Returns:
                 ~.search_service.SearchResponse:
                     Response message for
-                [SearchService.Search][google.cloud.discoveryengine.v1alpha.SearchService.Search]
+                `SearchService.Search
+                <google.cloud.discoveryengine.v1alpha.SearchService.Search>`__
                 method.
 
             """

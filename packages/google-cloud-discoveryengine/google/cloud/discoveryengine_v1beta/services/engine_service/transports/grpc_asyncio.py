@@ -120,8 +120,8 @@ class _LoggingClientAIOInterceptor(
 class EngineServiceGrpcAsyncIOTransport(EngineServiceTransport):
     """gRPC AsyncIO backend transport for EngineService.
 
-    Service for managing
-    [Engine][google.cloud.discoveryengine.v1beta.Engine] configuration.
+    Service for managing `Engine
+    <google.cloud.discoveryengine.v1beta.Engine>`__ configuration.
 
     This class defines the same methods as the primary client, so the
     primary client can load the underlying transport implementation
@@ -359,7 +359,8 @@ class EngineServiceGrpcAsyncIOTransport(EngineServiceTransport):
     ]:
         r"""Return a callable for the create engine method over gRPC.
 
-        Creates a [Engine][google.cloud.discoveryengine.v1beta.Engine].
+        Creates a `Engine
+        <google.cloud.discoveryengine.v1beta.Engine>`__.
 
         Returns:
             Callable[[~.CreateEngineRequest],
@@ -387,7 +388,8 @@ class EngineServiceGrpcAsyncIOTransport(EngineServiceTransport):
     ]:
         r"""Return a callable for the delete engine method over gRPC.
 
-        Deletes a [Engine][google.cloud.discoveryengine.v1beta.Engine].
+        Deletes a `Engine
+        <google.cloud.discoveryengine.v1beta.Engine>`__.
 
         Returns:
             Callable[[~.DeleteEngineRequest],
@@ -413,7 +415,8 @@ class EngineServiceGrpcAsyncIOTransport(EngineServiceTransport):
     ) -> Callable[[engine_service.UpdateEngineRequest], Awaitable[gcd_engine.Engine]]:
         r"""Return a callable for the update engine method over gRPC.
 
-        Updates an [Engine][google.cloud.discoveryengine.v1beta.Engine]
+        Updates an `Engine
+        <google.cloud.discoveryengine.v1beta.Engine>`__
 
         Returns:
             Callable[[~.UpdateEngineRequest],
@@ -439,7 +442,8 @@ class EngineServiceGrpcAsyncIOTransport(EngineServiceTransport):
     ) -> Callable[[engine_service.GetEngineRequest], Awaitable[engine.Engine]]:
         r"""Return a callable for the get engine method over gRPC.
 
-        Gets a [Engine][google.cloud.discoveryengine.v1beta.Engine].
+        Gets a `Engine
+        <google.cloud.discoveryengine.v1beta.Engine>`__.
 
         Returns:
             Callable[[~.GetEngineRequest],
@@ -468,9 +472,9 @@ class EngineServiceGrpcAsyncIOTransport(EngineServiceTransport):
     ]:
         r"""Return a callable for the list engines method over gRPC.
 
-        Lists all the
-        [Engine][google.cloud.discoveryengine.v1beta.Engine]s associated
-        with the project.
+        Lists all the `Engine
+        <google.cloud.discoveryengine.v1beta.Engine>`__s
+        associated with the project.
 
         Returns:
             Callable[[~.ListEnginesRequest],
@@ -496,10 +500,11 @@ class EngineServiceGrpcAsyncIOTransport(EngineServiceTransport):
     ) -> Callable[[engine_service.PauseEngineRequest], Awaitable[engine.Engine]]:
         r"""Return a callable for the pause engine method over gRPC.
 
-        Pauses the training of an existing engine. Only applicable if
-        [SolutionType][google.cloud.discoveryengine.v1beta.SolutionType]
-        is
-        [SOLUTION_TYPE_RECOMMENDATION][google.cloud.discoveryengine.v1beta.SolutionType.SOLUTION_TYPE_RECOMMENDATION].
+        Pauses the training of an existing engine. Only
+        applicable if `SolutionType
+        <google.cloud.discoveryengine.v1beta.SolutionType>`__ is
+        `SOLUTION_TYPE_RECOMMENDATION
+        <google.cloud.discoveryengine.v1beta.SolutionType.SOLUTION_TYPE_RECOMMENDATION>`__.
 
         Returns:
             Callable[[~.PauseEngineRequest],
@@ -525,10 +530,11 @@ class EngineServiceGrpcAsyncIOTransport(EngineServiceTransport):
     ) -> Callable[[engine_service.ResumeEngineRequest], Awaitable[engine.Engine]]:
         r"""Return a callable for the resume engine method over gRPC.
 
-        Resumes the training of an existing engine. Only applicable if
-        [SolutionType][google.cloud.discoveryengine.v1beta.SolutionType]
-        is
-        [SOLUTION_TYPE_RECOMMENDATION][google.cloud.discoveryengine.v1beta.SolutionType.SOLUTION_TYPE_RECOMMENDATION].
+        Resumes the training of an existing engine. Only
+        applicable if `SolutionType
+        <google.cloud.discoveryengine.v1beta.SolutionType>`__ is
+        `SOLUTION_TYPE_RECOMMENDATION
+        <google.cloud.discoveryengine.v1beta.SolutionType.SOLUTION_TYPE_RECOMMENDATION>`__.
 
         Returns:
             Callable[[~.ResumeEngineRequest],
@@ -557,9 +563,10 @@ class EngineServiceGrpcAsyncIOTransport(EngineServiceTransport):
         r"""Return a callable for the tune engine method over gRPC.
 
         Tunes an existing engine. Only applicable if
-        [SolutionType][google.cloud.discoveryengine.v1beta.SolutionType]
-        is
-        [SOLUTION_TYPE_RECOMMENDATION][google.cloud.discoveryengine.v1beta.SolutionType.SOLUTION_TYPE_RECOMMENDATION].
+        `SolutionType
+        <google.cloud.discoveryengine.v1beta.SolutionType>`__ is
+        `SOLUTION_TYPE_RECOMMENDATION
+        <google.cloud.discoveryengine.v1beta.SolutionType.SOLUTION_TYPE_RECOMMENDATION>`__.
 
         Returns:
             Callable[[~.TuneEngineRequest],

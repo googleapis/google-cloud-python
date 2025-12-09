@@ -30,25 +30,30 @@ __protobuf__ = proto.module(
 
 class ProvisionProjectRequest(proto.Message):
     r"""Request for
-    [ProjectService.ProvisionProject][google.cloud.discoveryengine.v1.ProjectService.ProvisionProject]
+    `ProjectService.ProvisionProject
+    <google.cloud.discoveryengine.v1.ProjectService.ProvisionProject>`__
     method.
 
     Attributes:
         name (str):
             Required. Full resource name of a
-            [Project][google.cloud.discoveryengine.v1.Project], such as
-            ``projects/{project_id_or_number}``.
+            `Project
+            <google.cloud.discoveryengine.v1.Project>`__,
+            such as ``projects/{project_id_or_number}``.
         accept_data_use_terms (bool):
-            Required. Set to ``true`` to specify that caller has read
-            and would like to give consent to the `Terms for data
-            use <https://cloud.google.com/retail/data-use-terms>`__.
+            Required. Set to ``true`` to specify that caller
+            has read and would like to give consent to the
+            `Terms for data use
+            <https://cloud.google.com/retail/data-use-terms>`__.
         data_use_terms_version (str):
             Required. The version of the `Terms for data
-            use <https://cloud.google.com/retail/data-use-terms>`__ that
-            caller has read and would like to give consent to.
+            use
+            <https://cloud.google.com/retail/data-use-terms>`__
+            that caller has read and would like to give
+            consent to.
 
-            Acceptable version is ``2022-11-23``, and this may change
-            over time.
+            Acceptable version is ``2022-11-23``, and this
+            may change over time.
     """
 
     name: str = proto.Field(

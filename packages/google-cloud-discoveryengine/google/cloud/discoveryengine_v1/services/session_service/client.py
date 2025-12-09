@@ -863,8 +863,9 @@ class SessionServiceClient(metaclass=SessionServiceClientMeta):
     ) -> gcd_session.Session:
         r"""Creates a Session.
 
-        If the [Session][google.cloud.discoveryengine.v1.Session] to
-        create already exists, an ALREADY_EXISTS error is returned.
+        If the `Session
+        <google.cloud.discoveryengine.v1.Session>`__ to create
+        already exists, an ALREADY_EXISTS error is returned.
 
         .. code-block:: python
 
@@ -896,8 +897,8 @@ class SessionServiceClient(metaclass=SessionServiceClientMeta):
             request (Union[google.cloud.discoveryengine_v1.types.CreateSessionRequest, dict]):
                 The request object. Request for CreateSession method.
             parent (str):
-                Required. Full resource name of parent data store.
-                Format:
+                Required. Full resource name of parent
+                data store. Format:
                 ``projects/{project}/locations/{location}/collections/{collection}/dataStores/{data_store_id}``
 
                 This corresponds to the ``parent`` field
@@ -981,8 +982,9 @@ class SessionServiceClient(metaclass=SessionServiceClientMeta):
     ) -> None:
         r"""Deletes a Session.
 
-        If the [Session][google.cloud.discoveryengine.v1.Session] to
-        delete does not exist, a NOT_FOUND error is returned.
+        If the `Session
+        <google.cloud.discoveryengine.v1.Session>`__ to delete
+        does not exist, a NOT_FOUND error is returned.
 
         .. code-block:: python
 
@@ -1011,8 +1013,8 @@ class SessionServiceClient(metaclass=SessionServiceClientMeta):
             request (Union[google.cloud.discoveryengine_v1.types.DeleteSessionRequest, dict]):
                 The request object. Request for DeleteSession method.
             name (str):
-                Required. The resource name of the Session to delete.
-                Format:
+                Required. The resource name of the
+                Session to delete. Format:
                 ``projects/{project}/locations/{location}/collections/{collection}/dataStores/{data_store_id}/sessions/{session_id}``
 
                 This corresponds to the ``name`` field
@@ -1083,9 +1085,9 @@ class SessionServiceClient(metaclass=SessionServiceClientMeta):
     ) -> gcd_session.Session:
         r"""Updates a Session.
 
-        [Session][google.cloud.discoveryengine.v1.Session] action type
-        cannot be changed. If the
-        [Session][google.cloud.discoveryengine.v1.Session] to update
+        `Session <google.cloud.discoveryengine.v1.Session>`__
+        action type cannot be changed. If the `Session
+        <google.cloud.discoveryengine.v1.Session>`__ to update
         does not exist, a NOT_FOUND error is returned.
 
         .. code-block:: python
@@ -1123,12 +1125,16 @@ class SessionServiceClient(metaclass=SessionServiceClientMeta):
                 should not be set.
             update_mask (google.protobuf.field_mask_pb2.FieldMask):
                 Indicates which fields in the provided
-                [Session][google.cloud.discoveryengine.v1.Session] to
-                update. The following are NOT supported:
+                `Session
+                <google.cloud.discoveryengine.v1.Session>`__
+                to update. The following are NOT
+                supported:
 
-                - [Session.name][google.cloud.discoveryengine.v1.Session.name]
+                * `Session.name
+                <google.cloud.discoveryengine.v1.Session.name>`__
 
-                If not set or empty, all supported fields are updated.
+                If not set or empty, all supported
+                fields are updated.
 
                 This corresponds to the ``update_mask`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -1238,8 +1244,8 @@ class SessionServiceClient(metaclass=SessionServiceClientMeta):
             request (Union[google.cloud.discoveryengine_v1.types.GetSessionRequest, dict]):
                 The request object. Request for GetSession method.
             name (str):
-                Required. The resource name of the Session to get.
-                Format:
+                Required. The resource name of the
+                Session to get. Format:
                 ``projects/{project}/locations/{location}/collections/{collection}/dataStores/{data_store_id}/sessions/{session_id}``
 
                 This corresponds to the ``name`` field
@@ -1315,7 +1321,8 @@ class SessionServiceClient(metaclass=SessionServiceClientMeta):
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> pagers.ListSessionsPager:
         r"""Lists all Sessions by their parent
-        [DataStore][google.cloud.discoveryengine.v1.DataStore].
+        `DataStore
+        <google.cloud.discoveryengine.v1.DataStore>`__.
 
         .. code-block:: python
 
@@ -1348,7 +1355,8 @@ class SessionServiceClient(metaclass=SessionServiceClientMeta):
             request (Union[google.cloud.discoveryengine_v1.types.ListSessionsRequest, dict]):
                 The request object. Request for ListSessions method.
             parent (str):
-                Required. The data store resource name. Format:
+                Required. The data store resource name.
+                Format:
                 ``projects/{project}/locations/{location}/collections/{collection}/dataStores/{data_store_id}``
 
                 This corresponds to the ``parent`` field

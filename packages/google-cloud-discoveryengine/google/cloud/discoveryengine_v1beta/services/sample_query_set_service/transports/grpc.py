@@ -118,7 +118,8 @@ class SampleQuerySetServiceGrpcTransport(SampleQuerySetServiceTransport):
     """gRPC backend transport for SampleQuerySetService.
 
     Service for managing
-    [SampleQuerySet][google.cloud.discoveryengine.v1beta.SampleQuerySet]s,
+    `SampleQuerySet
+    <google.cloud.discoveryengine.v1beta.SampleQuerySet>`__s,
 
     This class defines the same methods as the primary client, so the
     primary client can load the underlying transport implementation
@@ -339,7 +340,8 @@ class SampleQuerySetServiceGrpcTransport(SampleQuerySetServiceTransport):
         r"""Return a callable for the get sample query set method over gRPC.
 
         Gets a
-        [SampleQuerySet][google.cloud.discoveryengine.v1beta.SampleQuerySet].
+        `SampleQuerySet
+        <google.cloud.discoveryengine.v1beta.SampleQuerySet>`__.
 
         Returns:
             Callable[[~.GetSampleQuerySetRequest],
@@ -369,7 +371,8 @@ class SampleQuerySetServiceGrpcTransport(SampleQuerySetServiceTransport):
         r"""Return a callable for the list sample query sets method over gRPC.
 
         Gets a list of
-        [SampleQuerySet][google.cloud.discoveryengine.v1beta.SampleQuerySet]s.
+        `SampleQuerySet
+        <google.cloud.discoveryengine.v1beta.SampleQuerySet>`__s.
 
         Returns:
             Callable[[~.ListSampleQuerySetsRequest],
@@ -399,7 +402,8 @@ class SampleQuerySetServiceGrpcTransport(SampleQuerySetServiceTransport):
         r"""Return a callable for the create sample query set method over gRPC.
 
         Creates a
-        [SampleQuerySet][google.cloud.discoveryengine.v1beta.SampleQuerySet]
+        `SampleQuerySet
+        <google.cloud.discoveryengine.v1beta.SampleQuerySet>`__
 
         Returns:
             Callable[[~.CreateSampleQuerySetRequest],
@@ -429,7 +433,8 @@ class SampleQuerySetServiceGrpcTransport(SampleQuerySetServiceTransport):
         r"""Return a callable for the update sample query set method over gRPC.
 
         Updates a
-        [SampleQuerySet][google.cloud.discoveryengine.v1beta.SampleQuerySet].
+        `SampleQuerySet
+        <google.cloud.discoveryengine.v1beta.SampleQuerySet>`__.
 
         Returns:
             Callable[[~.UpdateSampleQuerySetRequest],
@@ -458,7 +463,8 @@ class SampleQuerySetServiceGrpcTransport(SampleQuerySetServiceTransport):
         r"""Return a callable for the delete sample query set method over gRPC.
 
         Deletes a
-        [SampleQuerySet][google.cloud.discoveryengine.v1beta.SampleQuerySet].
+        `SampleQuerySet
+        <google.cloud.discoveryengine.v1beta.SampleQuerySet>`__.
 
         Returns:
             Callable[[~.DeleteSampleQuerySetRequest],

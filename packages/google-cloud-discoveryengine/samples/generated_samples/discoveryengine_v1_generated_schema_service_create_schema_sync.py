@@ -54,5 +54,4 @@ def sample_create_schema():
     # Handle the response
     print(response)
 
-
 # [END discoveryengine_v1_generated_SchemaService_CreateSchema_sync]

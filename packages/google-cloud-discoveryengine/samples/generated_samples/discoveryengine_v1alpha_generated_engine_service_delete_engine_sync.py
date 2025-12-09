@@ -53,5 +53,4 @@ def sample_delete_engine():
     # Handle the response
     print(response)
 
-
 # [END discoveryengine_v1alpha_generated_EngineService_DeleteEngine_sync]

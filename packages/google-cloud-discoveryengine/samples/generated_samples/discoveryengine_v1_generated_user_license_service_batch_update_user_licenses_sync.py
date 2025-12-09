@@ -57,5 +57,4 @@ def sample_batch_update_user_licenses():
     # Handle the response
     print(response)
 
-
 # [END discoveryengine_v1_generated_UserLicenseService_BatchUpdateUserLicenses_sync]

@@ -34,7 +34,8 @@ __protobuf__ = proto.module(
 
 class EstimateDataSizeRequest(proto.Message):
     r"""Request message for
-    [EstimateBillingService.EstimateDataSize][google.cloud.discoveryengine.v1alpha.EstimateBillingService.EstimateDataSize]
+    `EstimateBillingService.EstimateDataSize
+    <google.cloud.discoveryengine.v1alpha.EstimateBillingService.EstimateDataSize>`__
     method
 
     This message has `oneof`_ fields (mutually exclusive fields).
@@ -54,7 +55,8 @@ class EstimateDataSizeRequest(proto.Message):
 
             This field is a member of `oneof`_ ``data_source``.
         location (str):
-            Required. Full resource name of the location, such as
+            Required. Full resource name of the location,
+            such as
             ``projects/{project}/locations/{location}``.
     """
 
@@ -64,9 +66,9 @@ class EstimateDataSizeRequest(proto.Message):
 
         Attributes:
             estimator_uri_patterns (MutableSequence[google.cloud.discoveryengine_v1alpha.types.EstimateDataSizeRequest.WebsiteDataSource.EstimatorUriPattern]):
-                Required. The URI patterns to estimate the data sizes. At
-                most 10 patterns are allowed, otherwise an INVALID_ARGUMENT
-                error is thrown.
+                Required. The URI patterns to estimate the data
+                sizes. At most 10 patterns are allowed,
+                otherwise an INVALID_ARGUMENT error is thrown.
         """
 
         class EstimatorUriPattern(proto.Message):
@@ -74,7 +76,8 @@ class EstimateDataSizeRequest(proto.Message):
 
             Attributes:
                 provided_uri_pattern (str):
-                    User provided URI pattern. For example, ``foo.com/bar/*``.
+                    User provided URI pattern. For example,
+                    ``foo.com/bar/*``.
                 exact_match (bool):
                     Whether we infer the generated URI or use the
                     exact provided one.

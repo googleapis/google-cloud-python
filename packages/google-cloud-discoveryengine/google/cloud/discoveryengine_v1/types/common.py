@@ -40,7 +40,7 @@ __protobuf__ = proto.module(
 
 class IndustryVertical(proto.Enum):
     r"""The industry vertical associated with the
-    [DataStore][google.cloud.discoveryengine.v1.DataStore].
+    `DataStore <google.cloud.discoveryengine.v1.DataStore>`__.
 
     Values:
         INDUSTRY_VERTICAL_UNSPECIFIED (0):
@@ -73,10 +73,10 @@ class SolutionType(proto.Enum):
             Used for use cases related to the Generative
             AI agent.
         SOLUTION_TYPE_GENERATIVE_CHAT (4):
-            Used for use cases related to the Generative Chat agent.
-            It's used for Generative chat engine only, the associated
-            data stores must enrolled with ``SOLUTION_TYPE_CHAT``
-            solution.
+            Used for use cases related to the Generative
+            Chat agent. It's used for Generative chat engine
+            only, the associated data stores must enrolled
+            with ``SOLUTION_TYPE_CHAT`` solution.
     """
     SOLUTION_TYPE_UNSPECIFIED = 0
     SOLUTION_TYPE_RECOMMENDATION = 1
@@ -86,19 +86,22 @@ class SolutionType(proto.Enum):
 
 
 class SearchUseCase(proto.Enum):
-    r"""Defines a further subdivision of ``SolutionType``. Specifically
-    applies to
-    [SOLUTION_TYPE_SEARCH][google.cloud.discoveryengine.v1.SolutionType.SOLUTION_TYPE_SEARCH].
+    r"""Defines a further subdivision of ``SolutionType``.
+    Specifically applies to
+    `SOLUTION_TYPE_SEARCH
+    <google.cloud.discoveryengine.v1.SolutionType.SOLUTION_TYPE_SEARCH>`__.
 
     Values:
         SEARCH_USE_CASE_UNSPECIFIED (0):
             Value used when unset. Will not occur in CSS.
         SEARCH_USE_CASE_SEARCH (1):
-            Search use case. Expects the traffic has a non-empty
-            [query][google.cloud.discoveryengine.v1.SearchRequest.query].
+            Search use case. Expects the traffic has a
+            non-empty `query
+            <google.cloud.discoveryengine.v1.SearchRequest.query>`__.
         SEARCH_USE_CASE_BROWSE (2):
-            Browse use case. Expects the traffic has an empty
-            [query][google.cloud.discoveryengine.v1.SearchRequest.query].
+            Browse use case. Expects the traffic has an
+            empty `query
+            <google.cloud.discoveryengine.v1.SearchRequest.query>`__.
     """
     SEARCH_USE_CASE_UNSPECIFIED = 0
     SEARCH_USE_CASE_SEARCH = 1
@@ -191,32 +194,38 @@ class Interval(proto.Message):
 
 class CustomAttribute(proto.Message):
     r"""A custom attribute that is not explicitly modeled in a resource,
-    e.g. [UserEvent][google.cloud.discoveryengine.v1.UserEvent].
+    e.g. `UserEvent <google.cloud.discoveryengine.v1.UserEvent>`__.
 
     Attributes:
         text (MutableSequence[str]):
-            The textual values of this custom attribute. For example,
-            ``["yellow", "green"]`` when the key is "color".
+            The textual values of this custom attribute. For
+            example, ``["yellow", "green"]`` when the key is
+            "color".
 
             Empty string is not allowed. Otherwise, an
             ``INVALID_ARGUMENT`` error is returned.
 
             Exactly one of
-            [CustomAttribute.text][google.cloud.discoveryengine.v1.CustomAttribute.text]
+            `CustomAttribute.text
+            <google.cloud.discoveryengine.v1.CustomAttribute.text>`__
             or
-            [CustomAttribute.numbers][google.cloud.discoveryengine.v1.CustomAttribute.numbers]
-            should be set. Otherwise, an ``INVALID_ARGUMENT`` error is
-            returned.
+            `CustomAttribute.numbers
+            <google.cloud.discoveryengine.v1.CustomAttribute.numbers>`__
+            should be set. Otherwise, an
+            ``INVALID_ARGUMENT`` error is returned.
         numbers (MutableSequence[float]):
-            The numerical values of this custom attribute. For example,
-            ``[2.3, 15.4]`` when the key is "lengths_cm".
+            The numerical values of this custom attribute.
+            For example, ``[2.3, 15.4]`` when the key is
+            "lengths_cm".
 
             Exactly one of
-            [CustomAttribute.text][google.cloud.discoveryengine.v1.CustomAttribute.text]
+            `CustomAttribute.text
+            <google.cloud.discoveryengine.v1.CustomAttribute.text>`__
             or
-            [CustomAttribute.numbers][google.cloud.discoveryengine.v1.CustomAttribute.numbers]
-            should be set. Otherwise, an ``INVALID_ARGUMENT`` error is
-            returned.
+            `CustomAttribute.numbers
+            <google.cloud.discoveryengine.v1.CustomAttribute.numbers>`__
+            should be set. Otherwise, an
+            ``INVALID_ARGUMENT`` error is returned.
     """
 
     text: MutableSequence[str] = proto.RepeatedField(
@@ -234,31 +243,35 @@ class UserInfo(proto.Message):
 
     Attributes:
         user_id (str):
-            Highly recommended for logged-in users. Unique identifier
-            for logged-in user, such as a user name. Don't set for
-            anonymous users.
+            Highly recommended for logged-in users. Unique
+            identifier for logged-in user, such as a user
+            name. Don't set for anonymous users.
 
             Always use a hashed value for this ID.
 
-            Don't set the field to the same fixed ID for different
-            users. This mixes the event history of those users together,
-            which results in degraded model quality.
+            Don't set the field to the same fixed ID for
+            different users. This mixes the event history of
+            those users together, which results in degraded
+            model quality.
 
-            The field must be a UTF-8 encoded string with a length limit
-            of 128 characters. Otherwise, an ``INVALID_ARGUMENT`` error
-            is returned.
+            The field must be a UTF-8 encoded string with a
+            length limit of 128 characters. Otherwise, an
+            ``INVALID_ARGUMENT`` error is returned.
         user_agent (str):
             User agent as included in the HTTP header.
 
-            The field must be a UTF-8 encoded string with a length limit
-            of 1,000 characters. Otherwise, an ``INVALID_ARGUMENT``
-            error is returned.
+            The field must be a UTF-8 encoded string with a
+            length limit of 1,000 characters. Otherwise, an
+            ``INVALID_ARGUMENT`` error is returned.
 
-            This should not be set when using the client side event
-            reporting with GTM or JavaScript tag in
-            [UserEventService.CollectUserEvent][google.cloud.discoveryengine.v1.UserEventService.CollectUserEvent]
+            This should not be set when using the client
+            side event reporting with GTM or JavaScript tag
+            in
+            `UserEventService.CollectUserEvent
+            <google.cloud.discoveryengine.v1.UserEventService.CollectUserEvent>`__
             or if
-            [UserEvent.direct_user_request][google.cloud.discoveryengine.v1.UserEvent.direct_user_request]
+            `UserEvent.direct_user_request
+            <google.cloud.discoveryengine.v1.UserEvent.direct_user_request>`__
             is set.
         time_zone (str):
             Optional. IANA time zone, e.g.
@@ -305,18 +318,21 @@ class Principal(proto.Message):
 
     Attributes:
         user_id (str):
-            User identifier. For Google Workspace user account, user_id
-            should be the google workspace user email. For non-google
-            identity provider user account, user_id is the mapped user
-            identifier configured during the workforcepool config.
+            User identifier.
+            For Google Workspace user account, user_id
+            should be the google workspace user email.
+            For non-google identity provider user account,
+            user_id is the mapped user identifier configured
+            during the workforcepool config.
 
             This field is a member of `oneof`_ ``principal``.
         group_id (str):
-            Group identifier. For Google Workspace user account,
-            group_id should be the google workspace group email. For
-            non-google identity provider user account, group_id is the
-            mapped group identifier configured during the workforcepool
-            config.
+            Group identifier.
+            For Google Workspace user account, group_id
+            should be the google workspace group email.
+            For non-google identity provider user account,
+            group_id is the mapped group identifier
+            configured during the workforcepool config.
 
             This field is a member of `oneof`_ ``principal``.
         external_entity_id (str):
@@ -350,16 +366,17 @@ class HealthcareFhirConfig(proto.Message):
         enable_configurable_schema (bool):
             Whether to enable configurable schema for
             ``HEALTHCARE_FHIR`` vertical.
-
-            If set to ``true``, the predefined healthcare fhir schema
-            can be extended for more customized searching and filtering.
+            If set to ``true``, the predefined healthcare
+            fhir schema can be extended for more customized
+            searching and filtering.
         enable_static_indexing_for_batch_ingestion (bool):
-            Whether to enable static indexing for ``HEALTHCARE_FHIR``
-            batch ingestion.
+            Whether to enable static indexing for
+            ``HEALTHCARE_FHIR`` batch ingestion.
 
-            If set to ``true``, the batch ingestion will be processed in
-            a static indexing mode which is slower but more capable of
-            handling larger volume.
+            If set to ``true``, the batch ingestion will be
+            processed in a static indexing mode which is
+            slower but more capable of handling larger
+            volume.
     """
 
     enable_configurable_schema: bool = proto.Field(
@@ -385,10 +402,11 @@ class SearchLinkPromotion(proto.Message):
             to promote. Must be set for site search. For
             other verticals, this is optional.
         document (str):
-            Optional. The
-            [Document][google.cloud.discoveryengine.v1.Document] the
-            user wants to promote. For site search, leave unset and only
-            populate uri. Can be set along with uri.
+            Optional. The `Document
+            <google.cloud.discoveryengine.v1.Document>`__
+            the user wants to promote. For site search,
+            leave unset and only populate uri. Can be set
+            along with uri.
         image_uri (str):
             Optional. The promotion thumbnail image url.
         description (str):

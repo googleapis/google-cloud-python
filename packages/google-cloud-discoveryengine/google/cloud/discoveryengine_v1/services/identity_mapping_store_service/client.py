@@ -874,9 +874,11 @@ class IdentityMappingStoreServiceClient(
         Args:
             request (Union[google.cloud.discoveryengine_v1.types.CreateIdentityMappingStoreRequest, dict]):
                 The request object. Request message for
-                [IdentityMappingStoreService.CreateIdentityMappingStore][google.cloud.discoveryengine.v1.IdentityMappingStoreService.CreateIdentityMappingStore]
+                `IdentityMappingStoreService.CreateIdentityMappingStore
+                <google.cloud.discoveryengine.v1.IdentityMappingStoreService.CreateIdentityMappingStore>`__
             parent (str):
-                Required. The parent collection resource name, such as
+                Required. The parent collection resource
+                name, such as
                 ``projects/{project}/locations/{location}``.
 
                 This corresponds to the ``parent`` field
@@ -890,12 +892,12 @@ class IdentityMappingStoreServiceClient(
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
             identity_mapping_store_id (str):
-                Required. The ID of the Identity Mapping Store to
-                create.
-
-                The ID must contain only letters (a-z, A-Z), numbers
-                (0-9), underscores (\_), and hyphens (-). The maximum
-                length is 63 characters.
+                Required. The ID of the Identity Mapping
+                Store to create.
+                The ID must contain only letters (a-z,
+                A-Z), numbers (0-9), underscores (_),
+                and hyphens (-). The maximum length is
+                63 characters.
 
                 This corresponds to the ``identity_mapping_store_id`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -1012,10 +1014,12 @@ class IdentityMappingStoreServiceClient(
         Args:
             request (Union[google.cloud.discoveryengine_v1.types.GetIdentityMappingStoreRequest, dict]):
                 The request object. Request message for
-                [IdentityMappingStoreService.GetIdentityMappingStore][google.cloud.discoveryengine.v1.IdentityMappingStoreService.GetIdentityMappingStore]
+                `IdentityMappingStoreService.GetIdentityMappingStore
+                <google.cloud.discoveryengine.v1.IdentityMappingStoreService.GetIdentityMappingStore>`__
             name (str):
-                Required. The name of the Identity Mapping Store to get.
-                Format:
+                Required. The name of the Identity
+                Mapping Store to get. Format:
+
                 ``projects/{project}/locations/{location}/identityMappingStores/{identityMappingStore}``
 
                 This corresponds to the ``name`` field
@@ -1135,10 +1139,12 @@ class IdentityMappingStoreServiceClient(
         Args:
             request (Union[google.cloud.discoveryengine_v1.types.DeleteIdentityMappingStoreRequest, dict]):
                 The request object. Request message for
-                [IdentityMappingStoreService.DeleteIdentityMappingStore][google.cloud.discoveryengine.v1.IdentityMappingStoreService.DeleteIdentityMappingStore]
+                `IdentityMappingStoreService.DeleteIdentityMappingStore
+                <google.cloud.discoveryengine.v1.IdentityMappingStoreService.DeleteIdentityMappingStore>`__
             name (str):
-                Required. The name of the Identity Mapping Store to
-                delete. Format:
+                Required. The name of the Identity
+                Mapping Store to delete. Format:
+
                 ``projects/{project}/locations/{location}/identityMappingStores/{identityMappingStore}``
 
                 This corresponds to the ``name`` field
@@ -1154,18 +1160,21 @@ class IdentityMappingStoreServiceClient(
 
         Returns:
             google.api_core.operation.Operation:
-                An object representing a long-running operation.
+                An object representing a long-running
+                operation.
+                The result type for the operation will
+                be
+                :class:`google.protobuf.empty_pb2.Empty`
+                A generic empty message that you can
+                re-use to avoid defining duplicated
+                empty messages in your APIs. A typical
+                example is to use it as the request or
+                the response type of an API method. For
+                instance:
 
-                The result type for the operation will be :class:`google.protobuf.empty_pb2.Empty` A generic empty message that you can re-use to avoid defining duplicated
-                   empty messages in your APIs. A typical example is to
-                   use it as the request or the response type of an API
-                   method. For instance:
-
-                      service Foo {
-                         rpc Bar(google.protobuf.Empty) returns
-                         (google.protobuf.Empty);
-
-                      }
+                    service Foo {
+                      rpc Bar(google.protobuf.Empty)
+                returns (google.protobuf.Empty);     }
 
         """
         # Create or coerce a protobuf request object.
@@ -1274,7 +1283,8 @@ class IdentityMappingStoreServiceClient(
         Args:
             request (Union[google.cloud.discoveryengine_v1.types.ImportIdentityMappingsRequest, dict]):
                 The request object. Request message for
-                [IdentityMappingStoreService.ImportIdentityMappings][google.cloud.discoveryengine.v1.IdentityMappingStoreService.ImportIdentityMappings]
+                `IdentityMappingStoreService.ImportIdentityMappings
+                <google.cloud.discoveryengine.v1.IdentityMappingStoreService.ImportIdentityMappings>`__
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
@@ -1285,10 +1295,14 @@ class IdentityMappingStoreServiceClient(
 
         Returns:
             google.api_core.operation.Operation:
-                An object representing a long-running operation.
-
-                The result type for the operation will be :class:`google.cloud.discoveryengine_v1.types.ImportIdentityMappingsResponse` Response message for
-                   [IdentityMappingStoreService.ImportIdentityMappings][google.cloud.discoveryengine.v1.IdentityMappingStoreService.ImportIdentityMappings]
+                An object representing a long-running
+                operation.
+                The result type for the operation will
+                be
+                :class:`google.cloud.discoveryengine_v1.types.ImportIdentityMappingsResponse`
+                Response message for
+                `IdentityMappingStoreService.ImportIdentityMappings
+                <google.cloud.discoveryengine.v1.IdentityMappingStoreService.ImportIdentityMappings>`__
 
         """
         # Create or coerce a protobuf request object.
@@ -1381,7 +1395,8 @@ class IdentityMappingStoreServiceClient(
         Args:
             request (Union[google.cloud.discoveryengine_v1.types.PurgeIdentityMappingsRequest, dict]):
                 The request object. Request message for
-                [IdentityMappingStoreService.PurgeIdentityMappings][google.cloud.discoveryengine.v1.IdentityMappingStoreService.PurgeIdentityMappings]
+                `IdentityMappingStoreService.PurgeIdentityMappings
+                <google.cloud.discoveryengine.v1.IdentityMappingStoreService.PurgeIdentityMappings>`__
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
@@ -1392,18 +1407,21 @@ class IdentityMappingStoreServiceClient(
 
         Returns:
             google.api_core.operation.Operation:
-                An object representing a long-running operation.
+                An object representing a long-running
+                operation.
+                The result type for the operation will
+                be
+                :class:`google.protobuf.empty_pb2.Empty`
+                A generic empty message that you can
+                re-use to avoid defining duplicated
+                empty messages in your APIs. A typical
+                example is to use it as the request or
+                the response type of an API method. For
+                instance:
 
-                The result type for the operation will be :class:`google.protobuf.empty_pb2.Empty` A generic empty message that you can re-use to avoid defining duplicated
-                   empty messages in your APIs. A typical example is to
-                   use it as the request or the response type of an API
-                   method. For instance:
-
-                      service Foo {
-                         rpc Bar(google.protobuf.Empty) returns
-                         (google.protobuf.Empty);
-
-                      }
+                    service Foo {
+                      rpc Bar(google.protobuf.Empty)
+                returns (google.protobuf.Empty);     }
 
         """
         # Create or coerce a protobuf request object.
@@ -1492,7 +1510,8 @@ class IdentityMappingStoreServiceClient(
         Args:
             request (Union[google.cloud.discoveryengine_v1.types.ListIdentityMappingsRequest, dict]):
                 The request object. Request message for
-                [IdentityMappingStoreService.ListIdentityMappings][google.cloud.discoveryengine.v1.IdentityMappingStoreService.ListIdentityMappings]
+                `IdentityMappingStoreService.ListIdentityMappings
+                <google.cloud.discoveryengine.v1.IdentityMappingStoreService.ListIdentityMappings>`__
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
@@ -1504,10 +1523,12 @@ class IdentityMappingStoreServiceClient(
         Returns:
             google.cloud.discoveryengine_v1.services.identity_mapping_store_service.pagers.ListIdentityMappingsPager:
                 Response message for
-                   [IdentityMappingStoreService.ListIdentityMappings][google.cloud.discoveryengine.v1.IdentityMappingStoreService.ListIdentityMappings]
+                `IdentityMappingStoreService.ListIdentityMappings
+                <google.cloud.discoveryengine.v1.IdentityMappingStoreService.ListIdentityMappings>`__
 
-                Iterating over this object will yield results and
-                resolve additional pages automatically.
+                Iterating over this object will yield
+                results and resolve additional pages
+                automatically.
 
         """
         # Create or coerce a protobuf request object.
@@ -1600,10 +1621,12 @@ class IdentityMappingStoreServiceClient(
         Args:
             request (Union[google.cloud.discoveryengine_v1.types.ListIdentityMappingStoresRequest, dict]):
                 The request object. Request message for
-                [IdentityMappingStoreService.ListIdentityMappingStores][google.cloud.discoveryengine.v1.IdentityMappingStoreService.ListIdentityMappingStores]
+                `IdentityMappingStoreService.ListIdentityMappingStores
+                <google.cloud.discoveryengine.v1.IdentityMappingStoreService.ListIdentityMappingStores>`__
             parent (str):
-                Required. The parent of the Identity Mapping Stores to
-                list. Format:
+                Required. The parent of the Identity
+                Mapping Stores to list. Format:
+
                 ``projects/{project}/locations/{location}``.
 
                 This corresponds to the ``parent`` field
@@ -1620,10 +1643,12 @@ class IdentityMappingStoreServiceClient(
         Returns:
             google.cloud.discoveryengine_v1.services.identity_mapping_store_service.pagers.ListIdentityMappingStoresPager:
                 Response message for
-                   [IdentityMappingStoreService.ListIdentityMappingStores][google.cloud.discoveryengine.v1.IdentityMappingStoreService.ListIdentityMappingStores]
+                `IdentityMappingStoreService.ListIdentityMappingStores
+                <google.cloud.discoveryengine.v1.IdentityMappingStoreService.ListIdentityMappingStores>`__
 
-                Iterating over this object will yield results and
-                resolve additional pages automatically.
+                Iterating over this object will yield
+                results and resolve additional pages
+                automatically.
 
         """
         # Create or coerce a protobuf request object.

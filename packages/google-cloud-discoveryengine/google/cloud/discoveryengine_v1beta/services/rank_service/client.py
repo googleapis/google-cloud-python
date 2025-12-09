@@ -747,7 +747,8 @@ class RankServiceClient(metaclass=RankServiceClientMeta):
         Args:
             request (Union[google.cloud.discoveryengine_v1beta.types.RankRequest, dict]):
                 The request object. Request message for
-                [RankService.Rank][google.cloud.discoveryengine.v1beta.RankService.Rank]
+                `RankService.Rank
+                <google.cloud.discoveryengine.v1beta.RankService.Rank>`__
                 method.
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
@@ -760,8 +761,9 @@ class RankServiceClient(metaclass=RankServiceClientMeta):
         Returns:
             google.cloud.discoveryengine_v1beta.types.RankResponse:
                 Response message for
-                   [RankService.Rank][google.cloud.discoveryengine.v1beta.RankService.Rank]
-                   method.
+                `RankService.Rank
+                <google.cloud.discoveryengine.v1beta.RankService.Rank>`__
+                method.
 
         """
         # Create or coerce a protobuf request object.

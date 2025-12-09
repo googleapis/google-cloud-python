@@ -73,7 +73,8 @@ _LOGGER = std_logging.getLogger(__name__)
 
 class ServingConfigServiceAsyncClient:
     """Service for operations related to
-    [ServingConfig][google.cloud.discoveryengine.v1beta.ServingConfig].
+    `ServingConfig
+    <google.cloud.discoveryengine.v1beta.ServingConfig>`__.
     """
 
     _client: ServingConfigServiceClient
@@ -319,7 +320,8 @@ class ServingConfigServiceAsyncClient:
     ) -> gcd_serving_config.ServingConfig:
         r"""Updates a ServingConfig.
 
-        Returns a NOT_FOUND error if the ServingConfig does not exist.
+        Returns a NOT_FOUND error if the ServingConfig does not
+        exist.
 
         .. code-block:: python
 
@@ -365,12 +367,16 @@ class ServingConfigServiceAsyncClient:
                 should not be set.
             update_mask (:class:`google.protobuf.field_mask_pb2.FieldMask`):
                 Indicates which fields in the provided
-                [ServingConfig][google.cloud.discoveryengine.v1beta.ServingConfig]
-                to update. The following are NOT supported:
+                `ServingConfig
+                <google.cloud.discoveryengine.v1beta.ServingConfig>`__
+                to update. The following are NOT
+                supported:
 
-                - [ServingConfig.name][google.cloud.discoveryengine.v1beta.ServingConfig.name]
+                * `ServingConfig.name
+                <google.cloud.discoveryengine.v1beta.ServingConfig.name>`__
 
-                If not set, all supported fields are updated.
+                If not set, all supported fields are
+                updated.
 
                 This corresponds to the ``update_mask`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -492,8 +498,8 @@ class ServingConfigServiceAsyncClient:
             request (Optional[Union[google.cloud.discoveryengine_v1beta.types.GetServingConfigRequest, dict]]):
                 The request object. Request for GetServingConfig method.
             name (:class:`str`):
-                Required. The resource name of the ServingConfig to get.
-                Format:
+                Required. The resource name of the
+                ServingConfig to get. Format:
                 ``projects/{project}/locations/{location}/collections/{collection}/engines/{engine}/servingConfigs/{serving_config_id}``
 
                 This corresponds to the ``name`` field
@@ -611,8 +617,8 @@ class ServingConfigServiceAsyncClient:
                 The request object. Request for ListServingConfigs
                 method.
             parent (:class:`str`):
-                Required. Full resource name of the parent resource.
-                Format:
+                Required. Full resource name of the
+                parent resource. Format:
                 ``projects/{project}/locations/{location}/collections/{collection}/engines/{engine}``
 
                 This corresponds to the ``parent`` field

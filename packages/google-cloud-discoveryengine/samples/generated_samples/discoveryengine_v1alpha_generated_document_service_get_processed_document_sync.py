@@ -50,5 +50,4 @@ def sample_get_processed_document():
     # Handle the response
     print(response)
 
-
 # [END discoveryengine_v1alpha_generated_DocumentService_GetProcessedDocument_sync]

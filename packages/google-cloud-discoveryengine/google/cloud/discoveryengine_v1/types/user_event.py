@@ -49,206 +49,248 @@ class UserEvent(proto.Message):
 
             Generic values:
 
-            - ``search``: Search for Documents.
-            - ``view-item``: Detailed page view of a Document.
-            - ``view-item-list``: View of a panel or ordered list of
-              Documents.
-            - ``view-home-page``: View of the home page.
-            - ``view-category-page``: View of a category page, e.g. Home
-              > Men > Jeans
-            - ``add-feedback``: Add a user feedback.
+            * ``search``: Search for Documents.
+            * ``view-item``: Detailed page view of a
+            Document.
+
+            * ``view-item-list``: View of a panel or ordered
+            list of Documents. * ``view-home-page``: View of
+            the home page.
+
+            * ``view-category-page``: View of a category
+            page, e.g. Home > Men > Jeans *
+            ``add-feedback``: Add a user feedback.
 
             Retail-related values:
 
-            - ``add-to-cart``: Add an item(s) to cart, e.g. in Retail
-              online shopping
-            - ``purchase``: Purchase an item(s)
+            * ``add-to-cart``: Add an item(s) to cart, e.g.
+            in Retail online shopping * ``purchase``:
+            Purchase an item(s)
 
             Media-related values:
 
-            - ``media-play``: Start/resume watching a video, playing a
-              song, etc.
-            - ``media-complete``: Finished or stopped midway through a
-              video, song, etc.
+            * ``media-play``: Start/resume watching a video,
+            playing a song, etc. * ``media-complete``:
+            Finished or stopped midway through a video,
+            song, etc.
 
             Custom conversion value:
 
-            - ``conversion``: Customer defined conversion event.
+            * ``conversion``: Customer defined conversion
+            event.
         conversion_type (str):
             Optional. Conversion type.
 
             Required if
-            [UserEvent.event_type][google.cloud.discoveryengine.v1.UserEvent.event_type]
-            is ``conversion``. This is a customer-defined conversion
-            name in lowercase letters or numbers separated by "-", such
-            as "watch", "good-visit" etc.
+            `UserEvent.event_type
+            <google.cloud.discoveryengine.v1.UserEvent.event_type>`__
+            is ``conversion``. This is a customer-defined
+            conversion name in lowercase letters or numbers
+            separated by "-", such as "watch", "good-visit"
+            etc.
 
             Do not set the field if
-            [UserEvent.event_type][google.cloud.discoveryengine.v1.UserEvent.event_type]
-            is not ``conversion``. This mixes the custom conversion
-            event with predefined events like ``search``, ``view-item``
-            etc.
+            `UserEvent.event_type
+            <google.cloud.discoveryengine.v1.UserEvent.event_type>`__
+            is not ``conversion``. This mixes the custom
+            conversion event with predefined events like
+            ``search``, ``view-item`` etc.
         user_pseudo_id (str):
-            Required. A unique identifier for tracking visitors.
+            Required. A unique identifier for tracking
+            visitors.
+            For example, this could be implemented with an
+            HTTP cookie, which should be able to uniquely
+            identify a visitor on a single device. This
+            unique identifier should not change if the
+            visitor log in/out of the website.
 
-            For example, this could be implemented with an HTTP cookie,
-            which should be able to uniquely identify a visitor on a
-            single device. This unique identifier should not change if
-            the visitor log in/out of the website.
+            Do not set the field to the same fixed ID for
+            different users. This mixes the event history of
+            those users together, which results in degraded
+            model quality.
 
-            Do not set the field to the same fixed ID for different
-            users. This mixes the event history of those users together,
-            which results in degraded model quality.
+            The field must be a UTF-8 encoded string with a
+            length limit of 128 characters. Otherwise, an
+            ``INVALID_ARGUMENT`` error is returned.
 
-            The field must be a UTF-8 encoded string with a length limit
-            of 128 characters. Otherwise, an ``INVALID_ARGUMENT`` error
-            is returned.
-
-            The field should not contain PII or user-data. We recommend
-            to use Google Analytics `Client
-            ID <https://developers.google.com/analytics/devguides/collection/analyticsjs/field-reference#clientId>`__
+            The field should not contain PII or user-data.
+            We recommend to use Google Analytics `Client
+            ID
+            <https://developers.google.com/analytics/devguides/collection/analyticsjs/field-reference#clientId>`__
             for this field.
         engine (str):
-            The [Engine][google.cloud.discoveryengine.v1.Engine]
+            The `Engine
+            <google.cloud.discoveryengine.v1.Engine>`__
             resource name, in the form of
             ``projects/{project}/locations/{location}/collections/{collection_id}/engines/{engine_id}``.
 
             Optional. Only required for
-            [Engine][google.cloud.discoveryengine.v1.Engine] produced
-            user events. For example, user events from blended search.
+            `Engine
+            <google.cloud.discoveryengine.v1.Engine>`__
+            produced user events. For example, user events
+            from blended search.
         data_store (str):
-            The [DataStore][google.cloud.discoveryengine.v1.DataStore]
+            The `DataStore
+            <google.cloud.discoveryengine.v1.DataStore>`__
             resource full name, of the form
             ``projects/{project}/locations/{location}/collections/{collection_id}/dataStores/{data_store_id}``.
 
-            Optional. Only required for user events whose data store
-            can't by determined by
-            [UserEvent.engine][google.cloud.discoveryengine.v1.UserEvent.engine]
-            or
-            [UserEvent.documents][google.cloud.discoveryengine.v1.UserEvent.documents].
-            If data store is set in the parent of write/import/collect
-            user event requests, this field can be omitted.
+            Optional. Only required for user events whose
+            data store can't by determined by
+            `UserEvent.engine
+            <google.cloud.discoveryengine.v1.UserEvent.engine>`__
+            or `UserEvent.documents
+            <google.cloud.discoveryengine.v1.UserEvent.documents>`__.
+            If data store is set in the parent of
+            write/import/collect user event requests, this
+            field can be omitted.
         event_time (google.protobuf.timestamp_pb2.Timestamp):
             Only required for
-            [UserEventService.ImportUserEvents][google.cloud.discoveryengine.v1.UserEventService.ImportUserEvents]
-            method. Timestamp of when the user event happened.
+            `UserEventService.ImportUserEvents
+            <google.cloud.discoveryengine.v1.UserEventService.ImportUserEvents>`__
+            method. Timestamp of when the user event
+            happened.
         user_info (google.cloud.discoveryengine_v1.types.UserInfo):
             Information about the end user.
         direct_user_request (bool):
-            Should set to true if the request is made directly from the
-            end user, in which case the
-            [UserEvent.user_info.user_agent][google.cloud.discoveryengine.v1.UserInfo.user_agent]
+            Should set to true if the request is made
+            directly from the end user, in which case the
+            `UserEvent.user_info.user_agent
+            <google.cloud.discoveryengine.v1.UserInfo.user_agent>`__
             can be populated from the HTTP request.
 
-            This flag should be set only if the API request is made
-            directly from the end user such as a mobile app (and not if
-            a gateway or a server is processing and pushing the user
-            events).
+            This flag should be set only if the API request
+            is made directly from the end user such as a
+            mobile app (and not if a gateway or a server is
+            processing and pushing the user events).
 
-            This should not be set when using the JavaScript tag in
-            [UserEventService.CollectUserEvent][google.cloud.discoveryengine.v1.UserEventService.CollectUserEvent].
+            This should not be set when using the JavaScript
+            tag in `UserEventService.CollectUserEvent
+            <google.cloud.discoveryengine.v1.UserEventService.CollectUserEvent>`__.
         session_id (str):
-            A unique identifier for tracking a visitor session with a
-            length limit of 128 bytes. A session is an aggregation of an
-            end user behavior in a time span.
+            A unique identifier for tracking a visitor
+            session with a length limit of 128 bytes. A
+            session is an aggregation of an end user
+            behavior in a time span.
 
             A general guideline to populate the session_id:
 
-            1. If user has no activity for 30 min, a new session_id
-               should be assigned.
-            2. The session_id should be unique across users, suggest use
-               uuid or add
-               [UserEvent.user_pseudo_id][google.cloud.discoveryengine.v1.UserEvent.user_pseudo_id]
-               as prefix.
+            1. If user has no activity for 30 min, a new
+                session_id should be assigned.
+            2. The session_id should be unique across users,
+                suggest use uuid or add
+                `UserEvent.user_pseudo_id
+                <google.cloud.discoveryengine.v1.UserEvent.user_pseudo_id>`__
+                as prefix.
         page_info (google.cloud.discoveryengine_v1.types.PageInfo):
-            Page metadata such as categories and other critical
-            information for certain event types such as
-            ``view-category-page``.
+            Page metadata such as categories and other
+            critical information for certain event types
+            such as ``view-category-page``.
         attribution_token (str):
-            Token to attribute an API response to user action(s) to
-            trigger the event.
-
-            Highly recommended for user events that are the result of
-            [RecommendationService.Recommend][google.cloud.discoveryengine.v1.RecommendationService.Recommend].
-            This field enables accurate attribution of recommendation
-            model performance.
+            Token to attribute an API response to user
+            action(s) to trigger the event.
+            Highly recommended for user events that are the
+            result of `RecommendationService.Recommend
+            <google.cloud.discoveryengine.v1.RecommendationService.Recommend>`__.
+            This field enables accurate attribution of
+            recommendation model performance.
 
             The value must be one of:
 
-            - [RecommendResponse.attribution_token][google.cloud.discoveryengine.v1.RecommendResponse.attribution_token]
-              for events that are the result of
-              [RecommendationService.Recommend][google.cloud.discoveryengine.v1.RecommendationService.Recommend].
-            - [SearchResponse.attribution_token][google.cloud.discoveryengine.v1.SearchResponse.attribution_token]
-              for events that are the result of
-              [SearchService.Search][google.cloud.discoveryengine.v1.SearchService.Search].
+            * `RecommendResponse.attribution_token
+            <google.cloud.discoveryengine.v1.RecommendResponse.attribution_token>`__
+            for events that are the result of
+            `RecommendationService.Recommend
+            <google.cloud.discoveryengine.v1.RecommendationService.Recommend>`__.
 
-            This token enables us to accurately attribute page view or
-            conversion completion back to the event and the particular
-            predict response containing this clicked/purchased product.
-            If user clicks on product K in the recommendation results,
-            pass
-            [RecommendResponse.attribution_token][google.cloud.discoveryengine.v1.RecommendResponse.attribution_token]
-            as a URL parameter to product K's page. When recording
-            events on product K's page, log the
-            [RecommendResponse.attribution_token][google.cloud.discoveryengine.v1.RecommendResponse.attribution_token]
+            * `SearchResponse.attribution_token
+            <google.cloud.discoveryengine.v1.SearchResponse.attribution_token>`__
+            for events that are the result of
+            `SearchService.Search
+            <google.cloud.discoveryengine.v1.SearchService.Search>`__.
+
+            This token enables us to accurately attribute
+            page view or conversion completion back to the
+            event and the particular predict response
+            containing this clicked/purchased product. If
+            user clicks on product K in the recommendation
+            results, pass
+            `RecommendResponse.attribution_token
+            <google.cloud.discoveryengine.v1.RecommendResponse.attribution_token>`__
+            as a URL parameter to product K's page. When
+            recording events on product K's page, log the
+            `RecommendResponse.attribution_token
+            <google.cloud.discoveryengine.v1.RecommendResponse.attribution_token>`__
             to this field.
         filter (str):
-            The filter syntax consists of an expression language for
-            constructing a predicate from one or more fields of the
-            documents being filtered.
+            The filter syntax consists of an expression
+            language for constructing a predicate from one
+            or more fields of the documents being filtered.
 
-            One example is for ``search`` events, the associated
-            [SearchRequest][google.cloud.discoveryengine.v1.SearchRequest]
+            One example is for ``search`` events, the
+            associated `SearchRequest
+            <google.cloud.discoveryengine.v1.SearchRequest>`__
             may contain a filter expression in
-            [SearchRequest.filter][google.cloud.discoveryengine.v1.SearchRequest.filter]
-            conforming to https://google.aip.dev/160#filtering.
+            `SearchRequest.filter
+            <google.cloud.discoveryengine.v1.SearchRequest.filter>`__
+            conforming to
+            https://google.aip.dev/160#filtering.
 
-            Similarly, for ``view-item-list`` events that are generated
-            from a
-            [RecommendRequest][google.cloud.discoveryengine.v1.RecommendRequest],
+            Similarly, for ``view-item-list`` events that
+            are generated from a `RecommendRequest
+            <google.cloud.discoveryengine.v1.RecommendRequest>`__,
             this field may be populated directly from
-            [RecommendRequest.filter][google.cloud.discoveryengine.v1.RecommendRequest.filter]
-            conforming to https://google.aip.dev/160#filtering.
+            `RecommendRequest.filter
+            <google.cloud.discoveryengine.v1.RecommendRequest.filter>`__
+            conforming to
+            https://google.aip.dev/160#filtering.
 
-            The value must be a UTF-8 encoded string with a length limit
-            of 1,000 characters. Otherwise, an ``INVALID_ARGUMENT``
-            error is returned.
+            The value must be a UTF-8 encoded string with a
+            length limit of 1,000 characters. Otherwise, an
+            ``INVALID_ARGUMENT`` error is returned.
         documents (MutableSequence[google.cloud.discoveryengine_v1.types.DocumentInfo]):
-            List of
-            [Document][google.cloud.discoveryengine.v1.Document]s
+            List of `Document
+            <google.cloud.discoveryengine.v1.Document>`__s
             associated with this user event.
 
-            This field is optional except for the following event types:
+            This field is optional except for the following
+            event types:
 
-            - ``view-item``
-            - ``add-to-cart``
-            - ``purchase``
-            - ``media-play``
-            - ``media-complete``
+            * ``view-item``
+            * ``add-to-cart``
 
-            In a ``search`` event, this field represents the documents
-            returned to the end user on the current page (the end user
-            may have not finished browsing the whole page yet). When a
-            new page is returned to the end user, after
-            pagination/filtering/ordering even for the same query, a new
-            ``search`` event with different
-            [UserEvent.documents][google.cloud.discoveryengine.v1.UserEvent.documents]
+            * ``purchase``
+            * ``media-play``
+
+            * ``media-complete``
+
+            In a ``search`` event, this field represents the
+            documents returned to the end user on the
+            current page (the end user may have not finished
+            browsing the whole page yet). When a new page is
+            returned to the end user, after
+            pagination/filtering/ordering even for the same
+            query, a new ``search`` event with different
+            `UserEvent.documents
+            <google.cloud.discoveryengine.v1.UserEvent.documents>`__
             is desired.
         panel (google.cloud.discoveryengine_v1.types.PanelInfo):
             Panel metadata associated with this user
             event.
         search_info (google.cloud.discoveryengine_v1.types.SearchInfo):
-            [SearchService.Search][google.cloud.discoveryengine.v1.SearchService.Search]
+            `SearchService.Search
+            <google.cloud.discoveryengine.v1.SearchService.Search>`__
             details related to the event.
 
             This field should be set for ``search`` event.
         completion_info (google.cloud.discoveryengine_v1.types.CompletionInfo):
-            [CompletionService.CompleteQuery][google.cloud.discoveryengine.v1.CompletionService.CompleteQuery]
+            `CompletionService.CompleteQuery
+            <google.cloud.discoveryengine.v1.CompletionService.CompleteQuery>`__
             details related to the event.
 
-            This field should be set for ``search`` event when
-            autocomplete function is enabled and the user clicks a
-            suggestion for search.
+            This field should be set for ``search`` event
+            when autocomplete function is enabled and the
+            user clicks a suggestion for search.
         transaction_info (google.cloud.discoveryengine_v1.types.TransactionInfo):
             The transaction metadata (if any) associated
             with this user event.
@@ -262,34 +304,42 @@ class UserEvent(proto.Message):
             associated with promotions. Currently, this
             field is restricted to at most one ID.
         attributes (MutableMapping[str, google.cloud.discoveryengine_v1.types.CustomAttribute]):
-            Extra user event features to include in the recommendation
-            model. These attributes must NOT contain data that needs to
-            be parsed or processed further, e.g. JSON or other
-            encodings.
+            Extra user event features to include in the
+            recommendation model. These attributes must NOT
+            contain data that needs to be parsed or
+            processed further, e.g. JSON or other encodings.
 
-            If you provide custom attributes for ingested user events,
-            also include them in the user events that you associate with
-            prediction requests. Custom attribute formatting must be
-            consistent between imported events and events provided with
-            prediction requests. This lets the Discovery Engine API use
-            those custom attributes when training models and serving
-            predictions, which helps improve recommendation quality.
+            If you provide custom attributes for ingested
+            user events, also include them in the user
+            events that you associate with prediction
+            requests. Custom attribute formatting must be
+            consistent between imported events and events
+            provided with prediction requests. This lets the
+            Discovery Engine API use those custom attributes
+            when training models and serving predictions,
+            which helps improve recommendation quality.
 
-            This field needs to pass all below criteria, otherwise an
-            ``INVALID_ARGUMENT`` error is returned:
+            This field needs to pass all below criteria,
+            otherwise an ``INVALID_ARGUMENT`` error is
+            returned:
 
-            - The key must be a UTF-8 encoded string with a length limit
-              of 5,000 characters.
-            - For text attributes, at most 400 values are allowed. Empty
-              values are not allowed. Each value must be a UTF-8 encoded
-              string with a length limit of 256 characters.
-            - For number attributes, at most 400 values are allowed.
+            * The key must be a UTF-8 encoded string with a
+            length limit of 5,000   characters.
 
-            For product recommendations, an example of extra user
-            information is ``traffic_channel``, which is how a user
-            arrives at the site. Users can arrive at the site by coming
-            to the site directly, coming through Google search, or in
-            other ways.
+            * For text attributes, at most 400 values are
+            allowed. Empty values are not   allowed. Each
+            value must be a UTF-8 encoded string with a
+            length limit of   256 characters.
+
+            * For number attributes, at most 400 values are
+            allowed.
+
+            For product recommendations, an example of extra
+            user information is ``traffic_channel``, which
+            is how a user arrives at the site. Users can
+            arrive
+            at the site by coming to the site directly,
+            coming through Google search, or in other ways.
         media_info (google.cloud.discoveryengine_v1.types.MediaInfo):
             Media-specific info.
         panels (MutableSequence[google.cloud.discoveryengine_v1.types.PanelInfo]):
@@ -406,31 +456,36 @@ class PageInfo(proto.Message):
         pageview_id (str):
             A unique ID of a web page view.
 
-            This should be kept the same for all user events triggered
-            from the same pageview. For example, an item detail page
-            view could trigger multiple events as the user is browsing
-            the page. The ``pageview_id`` property should be kept the
-            same for all these events so that they can be grouped
+            This should be kept the same for all user events
+            triggered from the same pageview. For example,
+            an item detail page view could trigger multiple
+            events as the user is browsing the page. The
+            ``pageview_id`` property should be kept the same
+            for all these events so that they can be grouped
             together properly.
 
-            When using the client side event reporting with JavaScript
-            pixel and Google Tag Manager, this value is filled in
-            automatically.
+            When using the client side event reporting with
+            JavaScript pixel and Google Tag Manager, this
+            value is filled in automatically.
         page_category (str):
-            The most specific category associated with a category page.
+            The most specific category associated with a
+            category page.
+            To represent full path of category, use '>' sign
+            to separate different hierarchies. If '>' is
+            part of the category name, replace it with other
+            character(s).
 
-            To represent full path of category, use '>' sign to separate
-            different hierarchies. If '>' is part of the category name,
-            replace it with other character(s).
+            Category pages include special pages such as
+            sales or promotions. For instance, a special
+            sale page may have the category hierarchy:
 
-            Category pages include special pages such as sales or
-            promotions. For instance, a special sale page may have the
-            category hierarchy:
-            ``"pageCategory" : "Sales > 2017 Black Friday Deals"``.
+            ``"pageCategory" : "Sales > 2017 Black Friday
+            Deals"``.
 
-            Required for ``view-category-page`` events. Other event
-            types should not set this field. Otherwise, an
-            ``INVALID_ARGUMENT`` error is returned.
+            Required for ``view-category-page`` events.
+            Other event types should not set this field.
+            Otherwise, an ``INVALID_ARGUMENT`` error is
+            returned.
         uri (str):
             Complete URL (window.location.href) of the
             user's current page.
@@ -476,49 +531,56 @@ class SearchInfo(proto.Message):
             The user's search query.
 
             See
-            [SearchRequest.query][google.cloud.discoveryengine.v1.SearchRequest.query]
+            `SearchRequest.query
+            <google.cloud.discoveryengine.v1.SearchRequest.query>`__
             for definition.
 
-            The value must be a UTF-8 encoded string with a length limit
-            of 5,000 characters. Otherwise, an ``INVALID_ARGUMENT``
-            error is returned.
+            The value must be a UTF-8 encoded string with a
+            length limit of 5,000 characters. Otherwise, an
+            ``INVALID_ARGUMENT`` error is returned.
 
             At least one of
-            [search_query][google.cloud.discoveryengine.v1.SearchInfo.search_query]
-            or
-            [PageInfo.page_category][google.cloud.discoveryengine.v1.PageInfo.page_category]
-            is required for ``search`` events. Other event types should
-            not set this field. Otherwise, an ``INVALID_ARGUMENT`` error
-            is returned.
+            `search_query
+            <google.cloud.discoveryengine.v1.SearchInfo.search_query>`__
+            or `PageInfo.page_category
+            <google.cloud.discoveryengine.v1.PageInfo.page_category>`__
+            is required for ``search`` events. Other event
+            types should not set this field. Otherwise, an
+            ``INVALID_ARGUMENT`` error is returned.
         order_by (str):
-            The order in which products are returned, if applicable.
-
+            The order in which products are returned, if
+            applicable.
             See
-            [SearchRequest.order_by][google.cloud.discoveryengine.v1.SearchRequest.order_by]
+            `SearchRequest.order_by
+            <google.cloud.discoveryengine.v1.SearchRequest.order_by>`__
             for definition and syntax.
 
-            The value must be a UTF-8 encoded string with a length limit
-            of 1,000 characters. Otherwise, an ``INVALID_ARGUMENT``
-            error is returned.
-
-            This can only be set for ``search`` events. Other event
-            types should not set this field. Otherwise, an
+            The value must be a UTF-8 encoded string with a
+            length limit of 1,000 characters. Otherwise, an
             ``INVALID_ARGUMENT`` error is returned.
+
+            This can only be set for ``search`` events.
+            Other event types should not set this field.
+            Otherwise, an ``INVALID_ARGUMENT`` error is
+            returned.
         offset (int):
-            An integer that specifies the current offset for pagination
-            (the 0-indexed starting location, amongst the products
-            deemed by the API as relevant).
+            An integer that specifies the current offset for
+            pagination (the 0-indexed starting location,
+            amongst the products deemed by the API as
+            relevant).
 
             See
-            [SearchRequest.offset][google.cloud.discoveryengine.v1.SearchRequest.offset]
+            `SearchRequest.offset
+            <google.cloud.discoveryengine.v1.SearchRequest.offset>`__
             for definition.
 
-            If this field is negative, an ``INVALID_ARGUMENT`` is
-            returned.
+            If this field is negative, an
+            ``INVALID_ARGUMENT`` is returned.
 
-            This can only be set for ``search`` events. Other event
-            types should not set this field. Otherwise, an
-            ``INVALID_ARGUMENT`` error is returned.
+            This can only be set for ``search`` events.
+            Other event types should not set this field.
+            Otherwise, an ``INVALID_ARGUMENT`` error is
+            returned.
 
             This field is a member of `oneof`_ ``_offset``.
     """
@@ -545,10 +607,12 @@ class CompletionInfo(proto.Message):
     Attributes:
         selected_suggestion (str):
             End user selected
-            [CompleteQueryResponse.QuerySuggestion.suggestion][google.cloud.discoveryengine.v1.CompleteQueryResponse.QuerySuggestion.suggestion].
+            `CompleteQueryResponse.QuerySuggestion.suggestion
+            <google.cloud.discoveryengine.v1.CompleteQueryResponse.QuerySuggestion.suggestion>`__.
         selected_position (int):
             End user selected
-            [CompleteQueryResponse.QuerySuggestion.suggestion][google.cloud.discoveryengine.v1.CompleteQueryResponse.QuerySuggestion.suggestion]
+            `CompleteQueryResponse.QuerySuggestion.suggestion
+            <google.cloud.discoveryengine.v1.CompleteQueryResponse.QuerySuggestion.suggestion>`__
             position, starting from 0.
     """
 
@@ -587,43 +651,49 @@ class TransactionInfo(proto.Message):
 
             This field is a member of `oneof`_ ``_tax``.
         cost (float):
-            All the costs associated with the products. These can be
-            manufacturing costs, shipping expenses not borne by the end
-            user, or any other costs, such that:
+            All the costs associated with the products.
+            These can be manufacturing costs, shipping
+            expenses not borne by the end user, or any other
+            costs, such that:
 
-            - Profit =
-              [value][google.cloud.discoveryengine.v1.TransactionInfo.value]
-              -
-              [tax][google.cloud.discoveryengine.v1.TransactionInfo.tax]
-              -
-              [cost][google.cloud.discoveryengine.v1.TransactionInfo.cost]
+            * Profit = `value
+            <google.cloud.discoveryengine.v1.TransactionInfo.value>`__
+            - `tax
+            <google.cloud.discoveryengine.v1.TransactionInfo.tax>`__
+            - `cost
+            <google.cloud.discoveryengine.v1.TransactionInfo.cost>`__
 
             This field is a member of `oneof`_ ``_cost``.
         discount_value (float):
-            The total discount(s) value applied to this transaction.
-            This figure should be excluded from
-            [TransactionInfo.value][google.cloud.discoveryengine.v1.TransactionInfo.value]
+            The total discount(s) value applied to this
+            transaction. This figure should be excluded from
+            `TransactionInfo.value
+            <google.cloud.discoveryengine.v1.TransactionInfo.value>`__
 
             For example, if a user paid
-            [TransactionInfo.value][google.cloud.discoveryengine.v1.TransactionInfo.value]
-            amount, then nominal (pre-discount) value of the transaction
-            is the sum of
-            [TransactionInfo.value][google.cloud.discoveryengine.v1.TransactionInfo.value]
+            `TransactionInfo.value
+            <google.cloud.discoveryengine.v1.TransactionInfo.value>`__
+            amount, then nominal (pre-discount) value of the
+            transaction is the sum of `TransactionInfo.value
+            <google.cloud.discoveryengine.v1.TransactionInfo.value>`__
             and
-            [TransactionInfo.discount_value][google.cloud.discoveryengine.v1.TransactionInfo.discount_value]
+            `TransactionInfo.discount_value
+            <google.cloud.discoveryengine.v1.TransactionInfo.discount_value>`__
 
-            This means that profit is calculated the same way,
-            regardless of the discount value, and that
-            [TransactionInfo.discount_value][google.cloud.discoveryengine.v1.TransactionInfo.discount_value]
+            This means that profit is calculated the same
+            way, regardless of the discount value, and that
+            `TransactionInfo.discount_value
+            <google.cloud.discoveryengine.v1.TransactionInfo.discount_value>`__
             can be larger than
-            [TransactionInfo.value][google.cloud.discoveryengine.v1.TransactionInfo.value]:
+            `TransactionInfo.value
+            <google.cloud.discoveryengine.v1.TransactionInfo.value>`__:
 
-            - Profit =
-              [value][google.cloud.discoveryengine.v1.TransactionInfo.value]
-              -
-              [tax][google.cloud.discoveryengine.v1.TransactionInfo.tax]
-              -
-              [cost][google.cloud.discoveryengine.v1.TransactionInfo.cost]
+            * Profit = `value
+            <google.cloud.discoveryengine.v1.TransactionInfo.value>`__
+            - `tax
+            <google.cloud.discoveryengine.v1.TransactionInfo.tax>`__
+            - `cost
+            <google.cloud.discoveryengine.v1.TransactionInfo.cost>`__
 
             This field is a member of `oneof`_ ``_discount_value``.
     """
@@ -670,32 +740,37 @@ class DocumentInfo(proto.Message):
 
     Attributes:
         id (str):
-            The [Document][google.cloud.discoveryengine.v1.Document]
+            The `Document
+            <google.cloud.discoveryengine.v1.Document>`__
             resource ID.
 
             This field is a member of `oneof`_ ``document_descriptor``.
         name (str):
-            The [Document][google.cloud.discoveryengine.v1.Document]
+            The `Document
+            <google.cloud.discoveryengine.v1.Document>`__
             resource full name, of the form:
+
             ``projects/{project}/locations/{location}/collections/{collection_id}/dataStores/{data_store_id}/branches/{branch_id}/documents/{document_id}``
 
             This field is a member of `oneof`_ ``document_descriptor``.
         uri (str):
-            The [Document][google.cloud.discoveryengine.v1.Document] URI
-            - only allowed for website data stores.
+            The `Document
+            <google.cloud.discoveryengine.v1.Document>`__
+            URI - only allowed for website data stores.
 
             This field is a member of `oneof`_ ``document_descriptor``.
         quantity (int):
-            Quantity of the Document associated with the user event.
-            Defaults to 1.
+            Quantity of the Document associated with the
+            user event. Defaults to 1.
+            For example, this field is 2 if two quantities
+            of the same Document are involved in a
+            ``add-to-cart`` event.
 
-            For example, this field is 2 if two quantities of the same
-            Document are involved in a ``add-to-cart`` event.
+            Required for events of the following event
+            types:
 
-            Required for events of the following event types:
-
-            - ``add-to-cart``
-            - ``purchase``
+            * ``add-to-cart``
+            * ``purchase``
 
             This field is a member of `oneof`_ ``_quantity``.
         promotion_ids (MutableSequence[str]):
@@ -706,14 +781,15 @@ class DocumentInfo(proto.Message):
             Output only. Whether the referenced Document
             can be found in the data store.
         conversion_value (float):
-            Optional. The conversion value associated with this
-            Document. Must be set if
-            [UserEvent.event_type][google.cloud.discoveryengine.v1.UserEvent.event_type]
+            Optional. The conversion value associated with
+            this Document. Must be set if
+            `UserEvent.event_type
+            <google.cloud.discoveryengine.v1.UserEvent.event_type>`__
             is "conversion".
 
-            For example, a value of 1000 signifies that 1000 seconds
-            were spent viewing a Document for the ``watch`` conversion
-            type.
+            For example, a value of 1000 signifies that 1000
+            seconds were spent viewing a Document for the
+            ``watch`` conversion type.
 
             This field is a member of `oneof`_ ``_conversion_value``.
     """
@@ -764,16 +840,18 @@ class PanelInfo(proto.Message):
         display_name (str):
             The display name of the panel.
         panel_position (int):
-            The ordered position of the panel, if shown to the user with
-            other panels. If set, then
-            [total_panels][google.cloud.discoveryengine.v1.PanelInfo.total_panels]
+            The ordered position of the panel, if shown to
+            the user with other panels. If set, then
+            `total_panels
+            <google.cloud.discoveryengine.v1.PanelInfo.total_panels>`__
             must also be set.
 
             This field is a member of `oneof`_ ``_panel_position``.
         total_panels (int):
-            The total number of panels, including this one, shown to the
-            user. Must be set if
-            [panel_position][google.cloud.discoveryengine.v1.PanelInfo.panel_position]
+            The total number of panels, including this one,
+            shown to the user. Must be set if
+            `panel_position
+            <google.cloud.discoveryengine.v1.PanelInfo.panel_position>`__
             is set.
 
             This field is a member of `oneof`_ ``_total_panels``.
@@ -814,20 +892,24 @@ class MediaInfo(proto.Message):
 
     Attributes:
         media_progress_duration (google.protobuf.duration_pb2.Duration):
-            The media progress time in seconds, if applicable. For
-            example, if the end user has finished 90 seconds of a
-            playback video, then
-            [MediaInfo.media_progress_duration.seconds][google.protobuf.Duration.seconds]
-            should be set to 90.
+            The media progress time in seconds, if
+            applicable. For example, if the end user has
+            finished 90 seconds of a playback video, then
+            `MediaInfo.media_progress_duration.seconds
+            <google.protobuf.Duration.seconds>`__ should be
+            set to 90.
         media_progress_percentage (float):
             Media progress should be computed using only the
-            [media_progress_duration][google.cloud.discoveryengine.v1.MediaInfo.media_progress_duration]
+            `media_progress_duration
+            <google.cloud.discoveryengine.v1.MediaInfo.media_progress_duration>`__
             relative to the media total length.
 
-            This value must be between ``[0, 1.0]`` inclusive.
+            This value must be between ``[0, 1.0]``
+            inclusive.
 
-            If this is not a playback or the progress cannot be computed
-            (e.g. ongoing livestream), this field should be unset.
+            If this is not a playback or the progress cannot
+            be computed (e.g. ongoing livestream), this
+            field should be unset.
 
             This field is a member of `oneof`_ ``_media_progress_percentage``.
     """

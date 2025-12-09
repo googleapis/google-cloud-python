@@ -371,8 +371,8 @@ class GroundedGenerationServiceAsyncClient:
 
         Args:
             requests (AsyncIterator[`google.cloud.discoveryengine_v1.types.GenerateGroundedContentRequest`]):
-                The request object AsyncIterator. Top-level message sent by the client for the
-                ``GenerateGroundedContent`` method.
+                The request object AsyncIterator. Top-level message sent by the client for
+                the ``GenerateGroundedContent`` method.
             retry (google.api_core.retry_async.AsyncRetry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
@@ -383,7 +383,9 @@ class GroundedGenerationServiceAsyncClient:
 
         Returns:
             AsyncIterable[google.cloud.discoveryengine_v1.types.GenerateGroundedContentResponse]:
-                Response for the GenerateGroundedContent method.
+                Response for the
+                ``GenerateGroundedContent`` method.
+
         """
 
         # Wrap the RPC method; this adds retry and timeout information,
@@ -450,8 +452,8 @@ class GroundedGenerationServiceAsyncClient:
 
         Args:
             request (Optional[Union[google.cloud.discoveryengine_v1.types.GenerateGroundedContentRequest, dict]]):
-                The request object. Top-level message sent by the client for the
-                ``GenerateGroundedContent`` method.
+                The request object. Top-level message sent by the client for
+                the ``GenerateGroundedContent`` method.
             retry (google.api_core.retry_async.AsyncRetry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
@@ -462,7 +464,9 @@ class GroundedGenerationServiceAsyncClient:
 
         Returns:
             google.cloud.discoveryengine_v1.types.GenerateGroundedContentResponse:
-                Response for the GenerateGroundedContent method.
+                Response for the
+                ``GenerateGroundedContent`` method.
+
         """
         # Create or coerce a protobuf request object.
         # - Use the request object if provided (there's no risk of modifying the input as
@@ -541,7 +545,8 @@ class GroundedGenerationServiceAsyncClient:
         Args:
             request (Optional[Union[google.cloud.discoveryengine_v1.types.CheckGroundingRequest, dict]]):
                 The request object. Request message for
-                [GroundedGenerationService.CheckGrounding][google.cloud.discoveryengine.v1.GroundedGenerationService.CheckGrounding]
+                `GroundedGenerationService.CheckGrounding
+                <google.cloud.discoveryengine.v1.GroundedGenerationService.CheckGrounding>`__
                 method.
             retry (google.api_core.retry_async.AsyncRetry): Designation of what errors, if any,
                 should be retried.
@@ -554,8 +559,9 @@ class GroundedGenerationServiceAsyncClient:
         Returns:
             google.cloud.discoveryengine_v1.types.CheckGroundingResponse:
                 Response message for the
-                   [GroundedGenerationService.CheckGrounding][google.cloud.discoveryengine.v1.GroundedGenerationService.CheckGrounding]
-                   method.
+                `GroundedGenerationService.CheckGrounding
+                <google.cloud.discoveryengine.v1.GroundedGenerationService.CheckGrounding>`__
+                method.
 
         """
         # Create or coerce a protobuf request object.

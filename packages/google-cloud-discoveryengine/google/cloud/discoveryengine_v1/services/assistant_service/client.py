@@ -862,7 +862,8 @@ class AssistantServiceClient(metaclass=AssistantServiceClientMeta):
         Args:
             request (Union[google.cloud.discoveryengine_v1.types.StreamAssistRequest, dict]):
                 The request object. Request for the
-                [AssistantService.StreamAssist][google.cloud.discoveryengine.v1.AssistantService.StreamAssist]
+                `AssistantService.StreamAssist
+                <google.cloud.discoveryengine.v1.AssistantService.StreamAssist>`__
                 method.
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
@@ -875,8 +876,9 @@ class AssistantServiceClient(metaclass=AssistantServiceClientMeta):
         Returns:
             Iterable[google.cloud.discoveryengine_v1.types.StreamAssistResponse]:
                 Response for the
-                   [AssistantService.StreamAssist][google.cloud.discoveryengine.v1.AssistantService.StreamAssist]
-                   method.
+                `AssistantService.StreamAssist
+                <google.cloud.discoveryengine.v1.AssistantService.StreamAssist>`__
+                method.
 
         """
         # Create or coerce a protobuf request object.

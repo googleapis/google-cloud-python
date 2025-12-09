@@ -887,7 +887,8 @@ class IdentityMappingStoreServiceRestTransport(
                 Args:
                     request (~.identity_mapping_store_service.CreateIdentityMappingStoreRequest):
                         The request object. Request message for
-                    [IdentityMappingStoreService.CreateIdentityMappingStore][google.cloud.discoveryengine.v1.IdentityMappingStoreService.CreateIdentityMappingStore]
+                    `IdentityMappingStoreService.CreateIdentityMappingStore
+                    <google.cloud.discoveryengine.v1.IdentityMappingStoreService.CreateIdentityMappingStore>`__
                     retry (google.api_core.retry.Retry): Designation of what errors, if any,
                         should be retried.
                     timeout (float): The timeout for this request.
@@ -1052,7 +1053,8 @@ class IdentityMappingStoreServiceRestTransport(
                 Args:
                     request (~.identity_mapping_store_service.DeleteIdentityMappingStoreRequest):
                         The request object. Request message for
-                    [IdentityMappingStoreService.DeleteIdentityMappingStore][google.cloud.discoveryengine.v1.IdentityMappingStoreService.DeleteIdentityMappingStore]
+                    `IdentityMappingStoreService.DeleteIdentityMappingStore
+                    <google.cloud.discoveryengine.v1.IdentityMappingStoreService.DeleteIdentityMappingStore>`__
                     retry (google.api_core.retry.Retry): Designation of what errors, if any,
                         should be retried.
                     timeout (float): The timeout for this request.
@@ -1207,7 +1209,8 @@ class IdentityMappingStoreServiceRestTransport(
                 Args:
                     request (~.identity_mapping_store_service.GetIdentityMappingStoreRequest):
                         The request object. Request message for
-                    [IdentityMappingStoreService.GetIdentityMappingStore][google.cloud.discoveryengine.v1.IdentityMappingStoreService.GetIdentityMappingStore]
+                    `IdentityMappingStoreService.GetIdentityMappingStore
+                    <google.cloud.discoveryengine.v1.IdentityMappingStoreService.GetIdentityMappingStore>`__
                     retry (google.api_core.retry.Retry): Designation of what errors, if any,
                         should be retried.
                     timeout (float): The timeout for this request.
@@ -1362,7 +1365,8 @@ class IdentityMappingStoreServiceRestTransport(
             Args:
                 request (~.identity_mapping_store_service.ImportIdentityMappingsRequest):
                     The request object. Request message for
-                [IdentityMappingStoreService.ImportIdentityMappings][google.cloud.discoveryengine.v1.IdentityMappingStoreService.ImportIdentityMappings]
+                `IdentityMappingStoreService.ImportIdentityMappings
+                <google.cloud.discoveryengine.v1.IdentityMappingStoreService.ImportIdentityMappings>`__
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -1516,7 +1520,8 @@ class IdentityMappingStoreServiceRestTransport(
             Args:
                 request (~.identity_mapping_store_service.ListIdentityMappingsRequest):
                     The request object. Request message for
-                [IdentityMappingStoreService.ListIdentityMappings][google.cloud.discoveryengine.v1.IdentityMappingStoreService.ListIdentityMappings]
+                `IdentityMappingStoreService.ListIdentityMappings
+                <google.cloud.discoveryengine.v1.IdentityMappingStoreService.ListIdentityMappings>`__
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -1528,7 +1533,8 @@ class IdentityMappingStoreServiceRestTransport(
             Returns:
                 ~.identity_mapping_store_service.ListIdentityMappingsResponse:
                     Response message for
-                [IdentityMappingStoreService.ListIdentityMappings][google.cloud.discoveryengine.v1.IdentityMappingStoreService.ListIdentityMappings]
+                `IdentityMappingStoreService.ListIdentityMappings
+                <google.cloud.discoveryengine.v1.IdentityMappingStoreService.ListIdentityMappings>`__
 
             """
 
@@ -1673,7 +1679,8 @@ class IdentityMappingStoreServiceRestTransport(
                 Args:
                     request (~.identity_mapping_store_service.ListIdentityMappingStoresRequest):
                         The request object. Request message for
-                    [IdentityMappingStoreService.ListIdentityMappingStores][google.cloud.discoveryengine.v1.IdentityMappingStoreService.ListIdentityMappingStores]
+                    `IdentityMappingStoreService.ListIdentityMappingStores
+                    <google.cloud.discoveryengine.v1.IdentityMappingStoreService.ListIdentityMappingStores>`__
                     retry (google.api_core.retry.Retry): Designation of what errors, if any,
                         should be retried.
                     timeout (float): The timeout for this request.
@@ -1685,7 +1692,8 @@ class IdentityMappingStoreServiceRestTransport(
                 Returns:
                     ~.identity_mapping_store_service.ListIdentityMappingStoresResponse:
                         Response message for
-                    [IdentityMappingStoreService.ListIdentityMappingStores][google.cloud.discoveryengine.v1.IdentityMappingStoreService.ListIdentityMappingStores]
+                    `IdentityMappingStoreService.ListIdentityMappingStores
+                    <google.cloud.discoveryengine.v1.IdentityMappingStoreService.ListIdentityMappingStores>`__
 
             """
 
@@ -1832,7 +1840,8 @@ class IdentityMappingStoreServiceRestTransport(
             Args:
                 request (~.identity_mapping_store_service.PurgeIdentityMappingsRequest):
                     The request object. Request message for
-                [IdentityMappingStoreService.PurgeIdentityMappings][google.cloud.discoveryengine.v1.IdentityMappingStoreService.PurgeIdentityMappings]
+                `IdentityMappingStoreService.PurgeIdentityMappings
+                <google.cloud.discoveryengine.v1.IdentityMappingStoreService.PurgeIdentityMappings>`__
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.

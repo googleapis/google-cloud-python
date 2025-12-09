@@ -327,7 +327,8 @@ class RankServiceAsyncClient:
         Args:
             request (Optional[Union[google.cloud.discoveryengine_v1alpha.types.RankRequest, dict]]):
                 The request object. Request message for
-                [RankService.Rank][google.cloud.discoveryengine.v1alpha.RankService.Rank]
+                `RankService.Rank
+                <google.cloud.discoveryengine.v1alpha.RankService.Rank>`__
                 method.
             retry (google.api_core.retry_async.AsyncRetry): Designation of what errors, if any,
                 should be retried.
@@ -340,8 +341,9 @@ class RankServiceAsyncClient:
         Returns:
             google.cloud.discoveryengine_v1alpha.types.RankResponse:
                 Response message for
-                   [RankService.Rank][google.cloud.discoveryengine.v1alpha.RankService.Rank]
-                   method.
+                `RankService.Rank
+                <google.cloud.discoveryengine.v1alpha.RankService.Rank>`__
+                method.
 
         """
         # Create or coerce a protobuf request object.

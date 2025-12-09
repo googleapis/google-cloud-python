@@ -66,19 +66,22 @@ __protobuf__ = proto.module(
 
 class GetSiteSearchEngineRequest(proto.Message):
     r"""Request message for
-    [SiteSearchEngineService.GetSiteSearchEngine][google.cloud.discoveryengine.v1beta.SiteSearchEngineService.GetSiteSearchEngine]
+    `SiteSearchEngineService.GetSiteSearchEngine
+    <google.cloud.discoveryengine.v1beta.SiteSearchEngineService.GetSiteSearchEngine>`__
     method.
 
     Attributes:
         name (str):
             Required. Resource name of
-            [SiteSearchEngine][google.cloud.discoveryengine.v1beta.SiteSearchEngine],
+            `SiteSearchEngine
+            <google.cloud.discoveryengine.v1beta.SiteSearchEngine>`__,
             such as
             ``projects/{project}/locations/{location}/collections/{collection}/dataStores/{data_store}/siteSearchEngine``.
 
-            If the caller does not have permission to access the
-            [SiteSearchEngine], regardless of whether or not it exists,
-            a PERMISSION_DENIED error is returned.
+            If the caller does not have permission to access
+            the [SiteSearchEngine], regardless of whether or
+            not it exists, a PERMISSION_DENIED error is
+            returned.
     """
 
     name: str = proto.Field(
@@ -89,18 +92,20 @@ class GetSiteSearchEngineRequest(proto.Message):
 
 class CreateTargetSiteRequest(proto.Message):
     r"""Request message for
-    [SiteSearchEngineService.CreateTargetSite][google.cloud.discoveryengine.v1beta.SiteSearchEngineService.CreateTargetSite]
+    `SiteSearchEngineService.CreateTargetSite
+    <google.cloud.discoveryengine.v1beta.SiteSearchEngineService.CreateTargetSite>`__
     method.
 
     Attributes:
         parent (str):
             Required. Parent resource name of
-            [TargetSite][google.cloud.discoveryengine.v1beta.TargetSite],
+            `TargetSite
+            <google.cloud.discoveryengine.v1beta.TargetSite>`__,
             such as
             ``projects/{project}/locations/{location}/collections/{collection}/dataStores/{data_store}/siteSearchEngine``.
         target_site (google.cloud.discoveryengine_v1beta.types.TargetSite):
-            Required. The
-            [TargetSite][google.cloud.discoveryengine.v1beta.TargetSite]
+            Required. The `TargetSite
+            <google.cloud.discoveryengine.v1beta.TargetSite>`__
             to create.
     """
 
@@ -117,7 +122,8 @@ class CreateTargetSiteRequest(proto.Message):
 
 class CreateTargetSiteMetadata(proto.Message):
     r"""Metadata related to the progress of the
-    [SiteSearchEngineService.CreateTargetSite][google.cloud.discoveryengine.v1beta.SiteSearchEngineService.CreateTargetSite]
+    `SiteSearchEngineService.CreateTargetSite
+    <google.cloud.discoveryengine.v1beta.SiteSearchEngineService.CreateTargetSite>`__
     operation. This will be returned by the
     google.longrunning.Operation.metadata field.
 
@@ -143,16 +149,18 @@ class CreateTargetSiteMetadata(proto.Message):
 
 class BatchCreateTargetSitesRequest(proto.Message):
     r"""Request message for
-    [SiteSearchEngineService.BatchCreateTargetSites][google.cloud.discoveryengine.v1beta.SiteSearchEngineService.BatchCreateTargetSites]
+    `SiteSearchEngineService.BatchCreateTargetSites
+    <google.cloud.discoveryengine.v1beta.SiteSearchEngineService.BatchCreateTargetSites>`__
     method.
 
     Attributes:
         parent (str):
-            Required. The parent resource shared by all TargetSites
-            being created.
+            Required. The parent resource shared by all
+            TargetSites being created.
             ``projects/{project}/locations/{location}/collections/{collection}/dataStores/{data_store}/siteSearchEngine``.
-            The parent field in the CreateBookRequest messages must
-            either be empty or match this field.
+            The parent field in the CreateBookRequest
+            messages must either be empty or match this
+            field.
         requests (MutableSequence[google.cloud.discoveryengine_v1beta.types.CreateTargetSiteRequest]):
             Required. The request message specifying the
             resources to create. A maximum of 20 TargetSites
@@ -172,23 +180,27 @@ class BatchCreateTargetSitesRequest(proto.Message):
 
 class GetTargetSiteRequest(proto.Message):
     r"""Request message for
-    [SiteSearchEngineService.GetTargetSite][google.cloud.discoveryengine.v1beta.SiteSearchEngineService.GetTargetSite]
+    `SiteSearchEngineService.GetTargetSite
+    <google.cloud.discoveryengine.v1beta.SiteSearchEngineService.GetTargetSite>`__
     method.
 
     Attributes:
         name (str):
             Required. Full resource name of
-            [TargetSite][google.cloud.discoveryengine.v1beta.TargetSite],
+            `TargetSite
+            <google.cloud.discoveryengine.v1beta.TargetSite>`__,
             such as
             ``projects/{project}/locations/{location}/collections/{collection}/dataStores/{data_store}/siteSearchEngine/targetSites/{target_site}``.
 
-            If the caller does not have permission to access the
-            [TargetSite][google.cloud.discoveryengine.v1beta.TargetSite],
-            regardless of whether or not it exists, a PERMISSION_DENIED
-            error is returned.
+            If the caller does not have permission to access
+            the `TargetSite
+            <google.cloud.discoveryengine.v1beta.TargetSite>`__,
+            regardless of whether or not it exists, a
+            PERMISSION_DENIED error is returned.
 
             If the requested
-            [TargetSite][google.cloud.discoveryengine.v1beta.TargetSite]
+            `TargetSite
+            <google.cloud.discoveryengine.v1beta.TargetSite>`__
             does not exist, a NOT_FOUND error is returned.
     """
 
@@ -200,20 +212,23 @@ class GetTargetSiteRequest(proto.Message):
 
 class UpdateTargetSiteRequest(proto.Message):
     r"""Request message for
-    [SiteSearchEngineService.UpdateTargetSite][google.cloud.discoveryengine.v1beta.SiteSearchEngineService.UpdateTargetSite]
+    `SiteSearchEngineService.UpdateTargetSite
+    <google.cloud.discoveryengine.v1beta.SiteSearchEngineService.UpdateTargetSite>`__
     method.
 
     Attributes:
         target_site (google.cloud.discoveryengine_v1beta.types.TargetSite):
-            Required. The target site to update. If the caller does not
-            have permission to update the
-            [TargetSite][google.cloud.discoveryengine.v1beta.TargetSite],
-            regardless of whether or not it exists, a PERMISSION_DENIED
-            error is returned.
+            Required. The target site to update.
+            If the caller does not have permission to update
+            the `TargetSite
+            <google.cloud.discoveryengine.v1beta.TargetSite>`__,
+            regardless of whether or not it exists, a
+            PERMISSION_DENIED error is returned.
 
-            If the
-            [TargetSite][google.cloud.discoveryengine.v1beta.TargetSite]
-            to update does not exist, a NOT_FOUND error is returned.
+            If the `TargetSite
+            <google.cloud.discoveryengine.v1beta.TargetSite>`__
+            to update does not exist, a NOT_FOUND error is
+            returned.
     """
 
     target_site: gcd_site_search_engine.TargetSite = proto.Field(
@@ -225,7 +240,8 @@ class UpdateTargetSiteRequest(proto.Message):
 
 class UpdateTargetSiteMetadata(proto.Message):
     r"""Metadata related to the progress of the
-    [SiteSearchEngineService.UpdateTargetSite][google.cloud.discoveryengine.v1beta.SiteSearchEngineService.UpdateTargetSite]
+    `SiteSearchEngineService.UpdateTargetSite
+    <google.cloud.discoveryengine.v1beta.SiteSearchEngineService.UpdateTargetSite>`__
     operation. This will be returned by the
     google.longrunning.Operation.metadata field.
 
@@ -251,23 +267,27 @@ class UpdateTargetSiteMetadata(proto.Message):
 
 class DeleteTargetSiteRequest(proto.Message):
     r"""Request message for
-    [SiteSearchEngineService.DeleteTargetSite][google.cloud.discoveryengine.v1beta.SiteSearchEngineService.DeleteTargetSite]
+    `SiteSearchEngineService.DeleteTargetSite
+    <google.cloud.discoveryengine.v1beta.SiteSearchEngineService.DeleteTargetSite>`__
     method.
 
     Attributes:
         name (str):
             Required. Full resource name of
-            [TargetSite][google.cloud.discoveryengine.v1beta.TargetSite],
+            `TargetSite
+            <google.cloud.discoveryengine.v1beta.TargetSite>`__,
             such as
             ``projects/{project}/locations/{location}/collections/{collection}/dataStores/{data_store}/siteSearchEngine/targetSites/{target_site}``.
 
-            If the caller does not have permission to access the
-            [TargetSite][google.cloud.discoveryengine.v1beta.TargetSite],
-            regardless of whether or not it exists, a PERMISSION_DENIED
-            error is returned.
+            If the caller does not have permission to access
+            the `TargetSite
+            <google.cloud.discoveryengine.v1beta.TargetSite>`__,
+            regardless of whether or not it exists, a
+            PERMISSION_DENIED error is returned.
 
             If the requested
-            [TargetSite][google.cloud.discoveryengine.v1beta.TargetSite]
+            `TargetSite
+            <google.cloud.discoveryengine.v1beta.TargetSite>`__
             does not exist, a NOT_FOUND error is returned.
     """
 
@@ -279,7 +299,8 @@ class DeleteTargetSiteRequest(proto.Message):
 
 class DeleteTargetSiteMetadata(proto.Message):
     r"""Metadata related to the progress of the
-    [SiteSearchEngineService.DeleteTargetSite][google.cloud.discoveryengine.v1beta.SiteSearchEngineService.DeleteTargetSite]
+    `SiteSearchEngineService.DeleteTargetSite
+    <google.cloud.discoveryengine.v1beta.SiteSearchEngineService.DeleteTargetSite>`__
     operation. This will be returned by the
     google.longrunning.Operation.metadata field.
 
@@ -305,34 +326,39 @@ class DeleteTargetSiteMetadata(proto.Message):
 
 class ListTargetSitesRequest(proto.Message):
     r"""Request message for
-    [SiteSearchEngineService.ListTargetSites][google.cloud.discoveryengine.v1beta.SiteSearchEngineService.ListTargetSites]
+    `SiteSearchEngineService.ListTargetSites
+    <google.cloud.discoveryengine.v1beta.SiteSearchEngineService.ListTargetSites>`__
     method.
 
     Attributes:
         parent (str):
-            Required. The parent site search engine resource name, such
-            as
+            Required. The parent site search engine resource
+            name, such as
             ``projects/{project}/locations/{location}/collections/{collection}/dataStores/{data_store}/siteSearchEngine``.
 
             If the caller does not have permission to list
-            [TargetSite][google.cloud.discoveryengine.v1beta.TargetSite]s
-            under this site search engine, regardless of whether or not
-            this branch exists, a PERMISSION_DENIED error is returned.
+            `TargetSite
+            <google.cloud.discoveryengine.v1beta.TargetSite>`__s
+            under this site search engine, regardless of
+            whether or not this branch exists, a
+            PERMISSION_DENIED error is returned.
         page_size (int):
-            Requested page size. Server may return fewer items than
-            requested. If unspecified, server will pick an appropriate
-            default. The maximum value is 1000; values above 1000 will
-            be coerced to 1000.
+            Requested page size. Server may return fewer
+            items than requested. If unspecified, server
+            will pick an appropriate default. The maximum
+            value is 1000; values above 1000 will be coerced
+            to 1000.
 
-            If this field is negative, an INVALID_ARGUMENT error is
-            returned.
+            If this field is negative, an INVALID_ARGUMENT
+            error is returned.
         page_token (str):
-            A page token, received from a previous ``ListTargetSites``
-            call. Provide this to retrieve the subsequent page.
+            A page token, received from a previous
+            ``ListTargetSites`` call. Provide this to
+            retrieve the subsequent page.
 
-            When paginating, all other parameters provided to
-            ``ListTargetSites`` must match the call that provided the
-            page token.
+            When paginating, all other parameters provided
+            to ``ListTargetSites`` must match the call that
+            provided the page token.
     """
 
     parent: str = proto.Field(
@@ -351,16 +377,17 @@ class ListTargetSitesRequest(proto.Message):
 
 class ListTargetSitesResponse(proto.Message):
     r"""Response message for
-    [SiteSearchEngineService.ListTargetSites][google.cloud.discoveryengine.v1beta.SiteSearchEngineService.ListTargetSites]
+    `SiteSearchEngineService.ListTargetSites
+    <google.cloud.discoveryengine.v1beta.SiteSearchEngineService.ListTargetSites>`__
     method.
 
     Attributes:
         target_sites (MutableSequence[google.cloud.discoveryengine_v1beta.types.TargetSite]):
             List of TargetSites.
         next_page_token (str):
-            A token that can be sent as ``page_token`` to retrieve the
-            next page. If this field is omitted, there are no subsequent
-            pages.
+            A token that can be sent as ``page_token`` to
+            retrieve the next page. If this field is
+            omitted, there are no subsequent pages.
         total_size (int):
             The total number of items matching the
             request. This will always be populated in the
@@ -390,7 +417,8 @@ class ListTargetSitesResponse(proto.Message):
 
 class BatchCreateTargetSiteMetadata(proto.Message):
     r"""Metadata related to the progress of the
-    [SiteSearchEngineService.BatchCreateTargetSites][google.cloud.discoveryengine.v1beta.SiteSearchEngineService.BatchCreateTargetSites]
+    `SiteSearchEngineService.BatchCreateTargetSites
+    <google.cloud.discoveryengine.v1beta.SiteSearchEngineService.BatchCreateTargetSites>`__
     operation. This will be returned by the
     google.longrunning.Operation.metadata field.
 
@@ -416,7 +444,8 @@ class BatchCreateTargetSiteMetadata(proto.Message):
 
 class BatchCreateTargetSitesResponse(proto.Message):
     r"""Response message for
-    [SiteSearchEngineService.BatchCreateTargetSites][google.cloud.discoveryengine.v1beta.SiteSearchEngineService.BatchCreateTargetSites]
+    `SiteSearchEngineService.BatchCreateTargetSites
+    <google.cloud.discoveryengine.v1beta.SiteSearchEngineService.BatchCreateTargetSites>`__
     method.
 
     Attributes:
@@ -435,19 +464,21 @@ class BatchCreateTargetSitesResponse(proto.Message):
 
 class CreateSitemapRequest(proto.Message):
     r"""Request message for
-    [SiteSearchEngineService.CreateSitemap][google.cloud.discoveryengine.v1beta.SiteSearchEngineService.CreateSitemap]
+    `SiteSearchEngineService.CreateSitemap
+    <google.cloud.discoveryengine.v1beta.SiteSearchEngineService.CreateSitemap>`__
     method.
 
     Attributes:
         parent (str):
             Required. Parent resource name of the
-            [SiteSearchEngine][google.cloud.discoveryengine.v1beta.SiteSearchEngine],
+            `SiteSearchEngine
+            <google.cloud.discoveryengine.v1beta.SiteSearchEngine>`__,
             such as
             ``projects/*/locations/*/collections/*/dataStores/*/siteSearchEngine``.
         sitemap (google.cloud.discoveryengine_v1beta.types.Sitemap):
-            Required. The
-            [Sitemap][google.cloud.discoveryengine.v1beta.Sitemap] to
-            create.
+            Required. The `Sitemap
+            <google.cloud.discoveryengine.v1beta.Sitemap>`__
+            to create.
     """
 
     parent: str = proto.Field(
@@ -463,24 +494,27 @@ class CreateSitemapRequest(proto.Message):
 
 class DeleteSitemapRequest(proto.Message):
     r"""Request message for
-    [SiteSearchEngineService.DeleteSitemap][google.cloud.discoveryengine.v1beta.SiteSearchEngineService.DeleteSitemap]
+    `SiteSearchEngineService.DeleteSitemap
+    <google.cloud.discoveryengine.v1beta.SiteSearchEngineService.DeleteSitemap>`__
     method.
 
     Attributes:
         name (str):
             Required. Full resource name of
-            [Sitemap][google.cloud.discoveryengine.v1beta.Sitemap], such
-            as
+            `Sitemap
+            <google.cloud.discoveryengine.v1beta.Sitemap>`__,
+            such as
             ``projects/{project}/locations/{location}/collections/{collection}/dataStores/{data_store}/siteSearchEngine/sitemaps/{sitemap}``.
 
-            If the caller does not have permission to access the
-            [Sitemap][google.cloud.discoveryengine.v1beta.Sitemap],
-            regardless of whether or not it exists, a PERMISSION_DENIED
-            error is returned.
+            If the caller does not have permission to access
+            the `Sitemap
+            <google.cloud.discoveryengine.v1beta.Sitemap>`__,
+            regardless of whether or not it exists, a
+            PERMISSION_DENIED error is returned.
 
-            If the requested
-            [Sitemap][google.cloud.discoveryengine.v1beta.Sitemap] does
-            not exist, a NOT_FOUND error is returned.
+            If the requested `Sitemap
+            <google.cloud.discoveryengine.v1beta.Sitemap>`__
+            does not exist, a NOT_FOUND error is returned.
     """
 
     name: str = proto.Field(
@@ -491,32 +525,35 @@ class DeleteSitemapRequest(proto.Message):
 
 class FetchSitemapsRequest(proto.Message):
     r"""Request message for
-    [SiteSearchEngineService.FetchSitemaps][google.cloud.discoveryengine.v1beta.SiteSearchEngineService.FetchSitemaps]
+    `SiteSearchEngineService.FetchSitemaps
+    <google.cloud.discoveryengine.v1beta.SiteSearchEngineService.FetchSitemaps>`__
     method.
 
     Attributes:
         parent (str):
             Required. Parent resource name of the
-            [SiteSearchEngine][google.cloud.discoveryengine.v1beta.SiteSearchEngine],
+            `SiteSearchEngine
+            <google.cloud.discoveryengine.v1beta.SiteSearchEngine>`__,
             such as
             ``projects/*/locations/*/collections/*/dataStores/*/siteSearchEngine``.
         matcher (google.cloud.discoveryengine_v1beta.types.FetchSitemapsRequest.Matcher):
             Optional. If specified, fetches the matching
-            [Sitemap][google.cloud.discoveryengine.v1beta.Sitemap]s. If
-            not specified, fetches all
-            [Sitemap][google.cloud.discoveryengine.v1beta.Sitemap]s in
-            the
-            [DataStore][google.cloud.discoveryengine.v1beta.DataStore].
+            `Sitemap
+            <google.cloud.discoveryengine.v1beta.Sitemap>`__s.
+            If not specified, fetches all `Sitemap
+            <google.cloud.discoveryengine.v1beta.Sitemap>`__s
+            in the `DataStore
+            <google.cloud.discoveryengine.v1beta.DataStore>`__.
     """
 
     class UrisMatcher(proto.Message):
-        r"""Matcher for the
-        [Sitemap][google.cloud.discoveryengine.v1beta.Sitemap]s by their
-        uris.
+        r"""Matcher for the `Sitemap
+        <google.cloud.discoveryengine.v1beta.Sitemap>`__s by their uris.
 
         Attributes:
             uris (MutableSequence[str]):
-                The [Sitemap][google.cloud.discoveryengine.v1beta.Sitemap]
+                The `Sitemap
+                <google.cloud.discoveryengine.v1beta.Sitemap>`__
                 uris.
         """
 
@@ -526,8 +563,8 @@ class FetchSitemapsRequest(proto.Message):
         )
 
     class Matcher(proto.Message):
-        r"""Matcher for the
-        [Sitemap][google.cloud.discoveryengine.v1beta.Sitemap]s. Currently
+        r"""Matcher for the `Sitemap
+        <google.cloud.discoveryengine.v1beta.Sitemap>`__s. Currently
         only supports uris matcher.
 
 
@@ -560,7 +597,8 @@ class FetchSitemapsRequest(proto.Message):
 
 class CreateSitemapMetadata(proto.Message):
     r"""Metadata related to the progress of the
-    [SiteSearchEngineService.CreateSitemap][google.cloud.discoveryengine.v1beta.SiteSearchEngineService.CreateSitemap]
+    `SiteSearchEngineService.CreateSitemap
+    <google.cloud.discoveryengine.v1beta.SiteSearchEngineService.CreateSitemap>`__
     operation. This will be returned by the
     google.longrunning.Operation.metadata field.
 
@@ -586,7 +624,8 @@ class CreateSitemapMetadata(proto.Message):
 
 class DeleteSitemapMetadata(proto.Message):
     r"""Metadata related to the progress of the
-    [SiteSearchEngineService.DeleteSitemap][google.cloud.discoveryengine.v1beta.SiteSearchEngineService.DeleteSitemap]
+    `SiteSearchEngineService.DeleteSitemap
+    <google.cloud.discoveryengine.v1beta.SiteSearchEngineService.DeleteSitemap>`__
     operation. This will be returned by the
     google.longrunning.Operation.metadata field.
 
@@ -612,23 +651,26 @@ class DeleteSitemapMetadata(proto.Message):
 
 class FetchSitemapsResponse(proto.Message):
     r"""Response message for
-    [SiteSearchEngineService.FetchSitemaps][google.cloud.discoveryengine.v1beta.SiteSearchEngineService.FetchSitemaps]
+    `SiteSearchEngineService.FetchSitemaps
+    <google.cloud.discoveryengine.v1beta.SiteSearchEngineService.FetchSitemaps>`__
     method.
 
     Attributes:
         sitemaps_metadata (MutableSequence[google.cloud.discoveryengine_v1beta.types.FetchSitemapsResponse.SitemapMetadata]):
-            List of
-            [Sitemap][google.cloud.discoveryengine.v1beta.Sitemap]s
+            List of `Sitemap
+            <google.cloud.discoveryengine.v1beta.Sitemap>`__s
             fetched.
     """
 
     class SitemapMetadata(proto.Message):
-        r"""Contains a [Sitemap][google.cloud.discoveryengine.v1beta.Sitemap]
-        and its metadata.
+        r"""Contains a `Sitemap
+        <google.cloud.discoveryengine.v1beta.Sitemap>`__ and its
+        metadata.
 
         Attributes:
             sitemap (google.cloud.discoveryengine_v1beta.types.Sitemap):
-                The [Sitemap][google.cloud.discoveryengine.v1beta.Sitemap].
+                The `Sitemap
+                <google.cloud.discoveryengine.v1beta.Sitemap>`__.
         """
 
         sitemap: gcd_site_search_engine.Sitemap = proto.Field(
@@ -646,13 +688,15 @@ class FetchSitemapsResponse(proto.Message):
 
 class EnableAdvancedSiteSearchRequest(proto.Message):
     r"""Request message for
-    [SiteSearchEngineService.EnableAdvancedSiteSearch][google.cloud.discoveryengine.v1beta.SiteSearchEngineService.EnableAdvancedSiteSearch]
+    `SiteSearchEngineService.EnableAdvancedSiteSearch
+    <google.cloud.discoveryengine.v1beta.SiteSearchEngineService.EnableAdvancedSiteSearch>`__
     method.
 
     Attributes:
         site_search_engine (str):
             Required. Full resource name of the
-            [SiteSearchEngine][google.cloud.discoveryengine.v1beta.SiteSearchEngine],
+            `SiteSearchEngine
+            <google.cloud.discoveryengine.v1beta.SiteSearchEngine>`__,
             such as
             ``projects/{project}/locations/{location}/dataStores/{data_store_id}/siteSearchEngine``.
     """
@@ -665,7 +709,8 @@ class EnableAdvancedSiteSearchRequest(proto.Message):
 
 class EnableAdvancedSiteSearchResponse(proto.Message):
     r"""Response message for
-    [SiteSearchEngineService.EnableAdvancedSiteSearch][google.cloud.discoveryengine.v1beta.SiteSearchEngineService.EnableAdvancedSiteSearch]
+    `SiteSearchEngineService.EnableAdvancedSiteSearch
+    <google.cloud.discoveryengine.v1beta.SiteSearchEngineService.EnableAdvancedSiteSearch>`__
     method.
 
     """
@@ -673,7 +718,8 @@ class EnableAdvancedSiteSearchResponse(proto.Message):
 
 class EnableAdvancedSiteSearchMetadata(proto.Message):
     r"""Metadata related to the progress of the
-    [SiteSearchEngineService.EnableAdvancedSiteSearch][google.cloud.discoveryengine.v1beta.SiteSearchEngineService.EnableAdvancedSiteSearch]
+    `SiteSearchEngineService.EnableAdvancedSiteSearch
+    <google.cloud.discoveryengine.v1beta.SiteSearchEngineService.EnableAdvancedSiteSearch>`__
     operation. This will be returned by the
     google.longrunning.Operation.metadata field.
 
@@ -699,13 +745,15 @@ class EnableAdvancedSiteSearchMetadata(proto.Message):
 
 class DisableAdvancedSiteSearchRequest(proto.Message):
     r"""Request message for
-    [SiteSearchEngineService.DisableAdvancedSiteSearch][google.cloud.discoveryengine.v1beta.SiteSearchEngineService.DisableAdvancedSiteSearch]
+    `SiteSearchEngineService.DisableAdvancedSiteSearch
+    <google.cloud.discoveryengine.v1beta.SiteSearchEngineService.DisableAdvancedSiteSearch>`__
     method.
 
     Attributes:
         site_search_engine (str):
             Required. Full resource name of the
-            [SiteSearchEngine][google.cloud.discoveryengine.v1beta.SiteSearchEngine],
+            `SiteSearchEngine
+            <google.cloud.discoveryengine.v1beta.SiteSearchEngine>`__,
             such as
             ``projects/{project}/locations/{location}/dataStores/{data_store_id}/siteSearchEngine``.
     """
@@ -718,7 +766,8 @@ class DisableAdvancedSiteSearchRequest(proto.Message):
 
 class DisableAdvancedSiteSearchResponse(proto.Message):
     r"""Response message for
-    [SiteSearchEngineService.DisableAdvancedSiteSearch][google.cloud.discoveryengine.v1beta.SiteSearchEngineService.DisableAdvancedSiteSearch]
+    `SiteSearchEngineService.DisableAdvancedSiteSearch
+    <google.cloud.discoveryengine.v1beta.SiteSearchEngineService.DisableAdvancedSiteSearch>`__
     method.
 
     """
@@ -726,7 +775,8 @@ class DisableAdvancedSiteSearchResponse(proto.Message):
 
 class DisableAdvancedSiteSearchMetadata(proto.Message):
     r"""Metadata related to the progress of the
-    [SiteSearchEngineService.DisableAdvancedSiteSearch][google.cloud.discoveryengine.v1beta.SiteSearchEngineService.DisableAdvancedSiteSearch]
+    `SiteSearchEngineService.DisableAdvancedSiteSearch
+    <google.cloud.discoveryengine.v1beta.SiteSearchEngineService.DisableAdvancedSiteSearch>`__
     operation. This will be returned by the
     google.longrunning.Operation.metadata field.
 
@@ -752,24 +802,27 @@ class DisableAdvancedSiteSearchMetadata(proto.Message):
 
 class RecrawlUrisRequest(proto.Message):
     r"""Request message for
-    [SiteSearchEngineService.RecrawlUris][google.cloud.discoveryengine.v1beta.SiteSearchEngineService.RecrawlUris]
+    `SiteSearchEngineService.RecrawlUris
+    <google.cloud.discoveryengine.v1beta.SiteSearchEngineService.RecrawlUris>`__
     method.
 
     Attributes:
         site_search_engine (str):
             Required. Full resource name of the
-            [SiteSearchEngine][google.cloud.discoveryengine.v1beta.SiteSearchEngine],
+            `SiteSearchEngine
+            <google.cloud.discoveryengine.v1beta.SiteSearchEngine>`__,
             such as
             ``projects/*/locations/*/collections/*/dataStores/*/siteSearchEngine``.
         uris (MutableSequence[str]):
-            Required. List of URIs to crawl. At most 10K URIs are
-            supported, otherwise an INVALID_ARGUMENT error is thrown.
-            Each URI should match at least one
-            [TargetSite][google.cloud.discoveryengine.v1beta.TargetSite]
+            Required. List of URIs to crawl. At most 10K
+            URIs are supported, otherwise an
+            INVALID_ARGUMENT error is thrown. Each URI
+            should match at least one `TargetSite
+            <google.cloud.discoveryengine.v1beta.TargetSite>`__
             in ``site_search_engine``.
         site_credential (str):
-            Optional. Full resource name of the [SiteCredential][], such
-            as
+            Optional. Full resource name of the
+            [SiteCredential][], such as
             ``projects/*/locations/*/collections/*/dataStores/*/siteSearchEngine/siteCredentials/*``.
             Only set to crawl private URIs.
     """
@@ -790,12 +843,14 @@ class RecrawlUrisRequest(proto.Message):
 
 class RecrawlUrisResponse(proto.Message):
     r"""Response message for
-    [SiteSearchEngineService.RecrawlUris][google.cloud.discoveryengine.v1beta.SiteSearchEngineService.RecrawlUris]
+    `SiteSearchEngineService.RecrawlUris
+    <google.cloud.discoveryengine.v1beta.SiteSearchEngineService.RecrawlUris>`__
     method.
 
     Attributes:
         failure_samples (MutableSequence[google.cloud.discoveryengine_v1beta.types.RecrawlUrisResponse.FailureInfo]):
-            Details for a sample of up to 10 ``failed_uris``.
+            Details for a sample of up to 10
+            ``failed_uris``.
         failed_uris (MutableSequence[str]):
             URIs that were not crawled before the LRO
             terminated.
@@ -879,7 +934,8 @@ class RecrawlUrisResponse(proto.Message):
 
 class RecrawlUrisMetadata(proto.Message):
     r"""Metadata related to the progress of the
-    [SiteSearchEngineService.RecrawlUris][google.cloud.discoveryengine.v1beta.SiteSearchEngineService.RecrawlUris]
+    `SiteSearchEngineService.RecrawlUris
+    <google.cloud.discoveryengine.v1beta.SiteSearchEngineService.RecrawlUris>`__
     operation. This will be returned by the
     google.longrunning.Operation.metadata field.
 
@@ -905,8 +961,8 @@ class RecrawlUrisMetadata(proto.Message):
             Total number of URIs that don't match any
             TargetSites.
         valid_uris_count (int):
-            Total number of unique URIs in the request that are not in
-            invalid_uris.
+            Total number of unique URIs in the request that
+            are not in invalid_uris.
         success_count (int):
             Total number of URIs that have been crawled
             so far.
@@ -964,13 +1020,14 @@ class RecrawlUrisMetadata(proto.Message):
 
 class BatchVerifyTargetSitesRequest(proto.Message):
     r"""Request message for
-    [SiteSearchEngineService.BatchVerifyTargetSites][google.cloud.discoveryengine.v1beta.SiteSearchEngineService.BatchVerifyTargetSites]
+    `SiteSearchEngineService.BatchVerifyTargetSites
+    <google.cloud.discoveryengine.v1beta.SiteSearchEngineService.BatchVerifyTargetSites>`__
     method.
 
     Attributes:
         parent (str):
-            Required. The parent resource shared by all TargetSites
-            being verified.
+            Required. The parent resource shared by all
+            TargetSites being verified.
             ``projects/{project}/locations/{location}/collections/{collection}/dataStores/{data_store}/siteSearchEngine``.
     """
 
@@ -982,7 +1039,8 @@ class BatchVerifyTargetSitesRequest(proto.Message):
 
 class BatchVerifyTargetSitesResponse(proto.Message):
     r"""Response message for
-    [SiteSearchEngineService.BatchVerifyTargetSites][google.cloud.discoveryengine.v1beta.SiteSearchEngineService.BatchVerifyTargetSites]
+    `SiteSearchEngineService.BatchVerifyTargetSites
+    <google.cloud.discoveryengine.v1beta.SiteSearchEngineService.BatchVerifyTargetSites>`__
     method.
 
     """
@@ -990,7 +1048,8 @@ class BatchVerifyTargetSitesResponse(proto.Message):
 
 class BatchVerifyTargetSitesMetadata(proto.Message):
     r"""Metadata related to the progress of the
-    [SiteSearchEngineService.BatchVerifyTargetSites][google.cloud.discoveryengine.v1beta.SiteSearchEngineService.BatchVerifyTargetSites]
+    `SiteSearchEngineService.BatchVerifyTargetSites
+    <google.cloud.discoveryengine.v1beta.SiteSearchEngineService.BatchVerifyTargetSites>`__
     operation. This will be returned by the
     google.longrunning.Operation.metadata field.
 
@@ -1016,30 +1075,33 @@ class BatchVerifyTargetSitesMetadata(proto.Message):
 
 class FetchDomainVerificationStatusRequest(proto.Message):
     r"""Request message for
-    [SiteSearchEngineService.FetchDomainVerificationStatus][google.cloud.discoveryengine.v1beta.SiteSearchEngineService.FetchDomainVerificationStatus]
+    `SiteSearchEngineService.FetchDomainVerificationStatus
+    <google.cloud.discoveryengine.v1beta.SiteSearchEngineService.FetchDomainVerificationStatus>`__
     method.
 
     Attributes:
         site_search_engine (str):
-            Required. The site search engine resource under which we
-            fetch all the domain verification status.
+            Required. The site search engine resource under
+            which we fetch all the domain verification
+            status.
             ``projects/{project}/locations/{location}/collections/{collection}/dataStores/{data_store}/siteSearchEngine``.
         page_size (int):
-            Requested page size. Server may return fewer items than
-            requested. If unspecified, server will pick an appropriate
-            default. The maximum value is 1000; values above 1000 will
-            be coerced to 1000.
+            Requested page size. Server may return fewer
+            items than requested. If unspecified, server
+            will pick an appropriate default. The maximum
+            value is 1000; values above 1000 will be coerced
+            to 1000.
 
-            If this field is negative, an INVALID_ARGUMENT error is
-            returned.
+            If this field is negative, an INVALID_ARGUMENT
+            error is returned.
         page_token (str):
             A page token, received from a previous
-            ``FetchDomainVerificationStatus`` call. Provide this to
-            retrieve the subsequent page.
+            ``FetchDomainVerificationStatus`` call. Provide
+            this to retrieve the subsequent page.
 
-            When paginating, all other parameters provided to
-            ``FetchDomainVerificationStatus`` must match the call that
-            provided the page token.
+            When paginating, all other parameters provided
+            to ``FetchDomainVerificationStatus`` must match
+            the call that provided the page token.
     """
 
     site_search_engine: str = proto.Field(
@@ -1058,7 +1120,8 @@ class FetchDomainVerificationStatusRequest(proto.Message):
 
 class FetchDomainVerificationStatusResponse(proto.Message):
     r"""Response message for
-    [SiteSearchEngineService.FetchDomainVerificationStatus][google.cloud.discoveryengine.v1beta.SiteSearchEngineService.FetchDomainVerificationStatus]
+    `SiteSearchEngineService.FetchDomainVerificationStatus
+    <google.cloud.discoveryengine.v1beta.SiteSearchEngineService.FetchDomainVerificationStatus>`__
     method.
 
     Attributes:
@@ -1066,9 +1129,9 @@ class FetchDomainVerificationStatusResponse(proto.Message):
             List of TargetSites containing the site
             verification status.
         next_page_token (str):
-            A token that can be sent as ``page_token`` to retrieve the
-            next page. If this field is omitted, there are no subsequent
-            pages.
+            A token that can be sent as ``page_token`` to
+            retrieve the next page. If this field is
+            omitted, there are no subsequent pages.
         total_size (int):
             The total number of items matching the
             request. This will always be populated in the

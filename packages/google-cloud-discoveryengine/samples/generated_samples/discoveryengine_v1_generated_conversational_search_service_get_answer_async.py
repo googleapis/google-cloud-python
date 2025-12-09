@@ -49,5 +49,4 @@ async def sample_get_answer():
     # Handle the response
     print(response)
 
-
 # [END discoveryengine_v1_generated_ConversationalSearchService_GetAnswer_async]

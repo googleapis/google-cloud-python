@@ -791,7 +791,8 @@ class SearchTuningServiceClient(metaclass=SearchTuningServiceClientMeta):
         Args:
             request (Union[google.cloud.discoveryengine_v1beta.types.TrainCustomModelRequest, dict]):
                 The request object. Request message for
-                [SearchTuningService.TrainCustomModel][google.cloud.discoveryengine.v1beta.SearchTuningService.TrainCustomModel]
+                `SearchTuningService.TrainCustomModel
+                <google.cloud.discoveryengine.v1beta.SearchTuningService.TrainCustomModel>`__
                 method.
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
@@ -803,12 +804,16 @@ class SearchTuningServiceClient(metaclass=SearchTuningServiceClientMeta):
 
         Returns:
             google.api_core.operation.Operation:
-                An object representing a long-running operation.
-
-                The result type for the operation will be :class:`google.cloud.discoveryengine_v1beta.types.TrainCustomModelResponse` Response of the
-                   [TrainCustomModelRequest][google.cloud.discoveryengine.v1beta.TrainCustomModelRequest].
-                   This message is returned by the
-                   google.longrunning.Operations.response field.
+                An object representing a long-running
+                operation.
+                The result type for the operation will
+                be
+                :class:`google.cloud.discoveryengine_v1beta.types.TrainCustomModelResponse`
+                Response of the `TrainCustomModelRequest
+                <google.cloud.discoveryengine.v1beta.TrainCustomModelRequest>`__.
+                This message is returned by the
+                google.longrunning.Operations.response
+                field.
 
         """
         # Create or coerce a protobuf request object.
@@ -892,7 +897,8 @@ class SearchTuningServiceClient(metaclass=SearchTuningServiceClientMeta):
         Args:
             request (Union[google.cloud.discoveryengine_v1beta.types.ListCustomModelsRequest, dict]):
                 The request object. Request message for
-                [SearchTuningService.ListCustomModels][google.cloud.discoveryengine.v1beta.SearchTuningService.ListCustomModels]
+                `SearchTuningService.ListCustomModels
+                <google.cloud.discoveryengine.v1beta.SearchTuningService.ListCustomModels>`__
                 method.
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
@@ -905,8 +911,9 @@ class SearchTuningServiceClient(metaclass=SearchTuningServiceClientMeta):
         Returns:
             google.cloud.discoveryengine_v1beta.types.ListCustomModelsResponse:
                 Response message for
-                   [SearchTuningService.ListCustomModels][google.cloud.discoveryengine.v1beta.SearchTuningService.ListCustomModels]
-                   method.
+                `SearchTuningService.ListCustomModels
+                <google.cloud.discoveryengine.v1beta.SearchTuningService.ListCustomModels>`__
+                method.
 
         """
         # Create or coerce a protobuf request object.

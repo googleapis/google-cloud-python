@@ -514,7 +514,8 @@ class EstimateBillingServiceRestTransport(_BaseEstimateBillingServiceRestTranspo
             Args:
                 request (~.estimate_billing_service.EstimateDataSizeRequest):
                     The request object. Request message for
-                [EstimateBillingService.EstimateDataSize][google.cloud.discoveryengine.v1alpha.EstimateBillingService.EstimateDataSize]
+                `EstimateBillingService.EstimateDataSize
+                <google.cloud.discoveryengine.v1alpha.EstimateBillingService.EstimateDataSize>`__
                 method
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.

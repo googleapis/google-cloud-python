@@ -40,13 +40,14 @@ __protobuf__ = proto.module(
 
 class GetSchemaRequest(proto.Message):
     r"""Request message for
-    [SchemaService.GetSchema][google.cloud.discoveryengine.v1.SchemaService.GetSchema]
+    `SchemaService.GetSchema
+    <google.cloud.discoveryengine.v1.SchemaService.GetSchema>`__
     method.
 
     Attributes:
         name (str):
-            Required. The full resource name of the schema, in the
-            format of
+            Required. The full resource name of the schema,
+            in the format of
             ``projects/{project}/locations/{location}/collections/{collection}/dataStores/{data_store}/schemas/{schema}``.
     """
 
@@ -58,33 +59,40 @@ class GetSchemaRequest(proto.Message):
 
 class ListSchemasRequest(proto.Message):
     r"""Request message for
-    [SchemaService.ListSchemas][google.cloud.discoveryengine.v1.SchemaService.ListSchemas]
+    `SchemaService.ListSchemas
+    <google.cloud.discoveryengine.v1.SchemaService.ListSchemas>`__
     method.
 
     Attributes:
         parent (str):
-            Required. The parent data store resource name, in the format
-            of
+            Required. The parent data store resource name,
+            in the format of
             ``projects/{project}/locations/{location}/collections/{collection}/dataStores/{data_store}``.
         page_size (int):
-            The maximum number of
-            [Schema][google.cloud.discoveryengine.v1.Schema]s to return.
-            The service may return fewer than this value.
+            The maximum number of `Schema
+            <google.cloud.discoveryengine.v1.Schema>`__s to
+            return. The service may return fewer than this
+            value.
 
             If unspecified, at most 100
-            [Schema][google.cloud.discoveryengine.v1.Schema]s are
+            `Schema
+            <google.cloud.discoveryengine.v1.Schema>`__s are
             returned.
 
-            The maximum value is 1000; values above 1000 are set to
-            1000.
+            The maximum value is 1000; values above 1000 are
+            set to 1000.
         page_token (str):
             A page token, received from a previous
-            [SchemaService.ListSchemas][google.cloud.discoveryengine.v1.SchemaService.ListSchemas]
-            call. Provide this to retrieve the subsequent page.
+            `SchemaService.ListSchemas
+            <google.cloud.discoveryengine.v1.SchemaService.ListSchemas>`__
+            call. Provide this to retrieve the subsequent
+            page.
 
-            When paginating, all other parameters provided to
-            [SchemaService.ListSchemas][google.cloud.discoveryengine.v1.SchemaService.ListSchemas]
-            must match the call that provided the page token.
+            When paginating, all other parameters provided
+            to `SchemaService.ListSchemas
+            <google.cloud.discoveryengine.v1.SchemaService.ListSchemas>`__
+            must match the call that provided the page
+            token.
     """
 
     parent: str = proto.Field(
@@ -103,17 +111,20 @@ class ListSchemasRequest(proto.Message):
 
 class ListSchemasResponse(proto.Message):
     r"""Response message for
-    [SchemaService.ListSchemas][google.cloud.discoveryengine.v1.SchemaService.ListSchemas]
+    `SchemaService.ListSchemas
+    <google.cloud.discoveryengine.v1.SchemaService.ListSchemas>`__
     method.
 
     Attributes:
         schemas (MutableSequence[google.cloud.discoveryengine_v1.types.Schema]):
-            The [Schema][google.cloud.discoveryengine.v1.Schema]s.
+            The `Schema
+            <google.cloud.discoveryengine.v1.Schema>`__s.
         next_page_token (str):
             A token that can be sent as
-            [ListSchemasRequest.page_token][google.cloud.discoveryengine.v1.ListSchemasRequest.page_token]
-            to retrieve the next page. If this field is omitted, there
-            are no subsequent pages.
+            `ListSchemasRequest.page_token
+            <google.cloud.discoveryengine.v1.ListSchemasRequest.page_token>`__
+            to retrieve the next page. If this field is
+            omitted, there are no subsequent pages.
     """
 
     @property
@@ -133,26 +144,31 @@ class ListSchemasResponse(proto.Message):
 
 class CreateSchemaRequest(proto.Message):
     r"""Request message for
-    [SchemaService.CreateSchema][google.cloud.discoveryengine.v1.SchemaService.CreateSchema]
+    `SchemaService.CreateSchema
+    <google.cloud.discoveryengine.v1.SchemaService.CreateSchema>`__
     method.
 
     Attributes:
         parent (str):
-            Required. The parent data store resource name, in the format
-            of
+            Required. The parent data store resource name,
+            in the format of
             ``projects/{project}/locations/{location}/collections/{collection}/dataStores/{data_store}``.
         schema (google.cloud.discoveryengine_v1.types.Schema):
-            Required. The
-            [Schema][google.cloud.discoveryengine.v1.Schema] to create.
+            Required. The `Schema
+            <google.cloud.discoveryengine.v1.Schema>`__ to
+            create.
         schema_id (str):
             Required. The ID to use for the
-            [Schema][google.cloud.discoveryengine.v1.Schema], which
-            becomes the final component of the
-            [Schema.name][google.cloud.discoveryengine.v1.Schema.name].
+            `Schema
+            <google.cloud.discoveryengine.v1.Schema>`__,
+            which becomes the final component of the
+            `Schema.name
+            <google.cloud.discoveryengine.v1.Schema.name>`__.
 
             This field should conform to
-            `RFC-1034 <https://tools.ietf.org/html/rfc1034>`__ standard
-            with a length limit of 63 characters.
+            `RFC-1034
+            <https://tools.ietf.org/html/rfc1034>`__
+            standard with a length limit of 63 characters.
     """
 
     parent: str = proto.Field(
@@ -172,19 +188,22 @@ class CreateSchemaRequest(proto.Message):
 
 class UpdateSchemaRequest(proto.Message):
     r"""Request message for
-    [SchemaService.UpdateSchema][google.cloud.discoveryengine.v1.SchemaService.UpdateSchema]
+    `SchemaService.UpdateSchema
+    <google.cloud.discoveryengine.v1.SchemaService.UpdateSchema>`__
     method.
 
     Attributes:
         schema (google.cloud.discoveryengine_v1.types.Schema):
-            Required. The
-            [Schema][google.cloud.discoveryengine.v1.Schema] to update.
+            Required. The `Schema
+            <google.cloud.discoveryengine.v1.Schema>`__ to
+            update.
         allow_missing (bool):
-            If set to true, and the
-            [Schema][google.cloud.discoveryengine.v1.Schema] is not
-            found, a new
-            [Schema][google.cloud.discoveryengine.v1.Schema] is created.
-            In this situation, ``update_mask`` is ignored.
+            If set to true, and the `Schema
+            <google.cloud.discoveryengine.v1.Schema>`__ is
+            not found, a new `Schema
+            <google.cloud.discoveryengine.v1.Schema>`__ is
+            created. In this situation, ``update_mask`` is
+            ignored.
     """
 
     schema: gcd_schema.Schema = proto.Field(
@@ -200,13 +219,14 @@ class UpdateSchemaRequest(proto.Message):
 
 class DeleteSchemaRequest(proto.Message):
     r"""Request message for
-    [SchemaService.DeleteSchema][google.cloud.discoveryengine.v1.SchemaService.DeleteSchema]
+    `SchemaService.DeleteSchema
+    <google.cloud.discoveryengine.v1.SchemaService.DeleteSchema>`__
     method.
 
     Attributes:
         name (str):
-            Required. The full resource name of the schema, in the
-            format of
+            Required. The full resource name of the schema,
+            in the format of
             ``projects/{project}/locations/{location}/collections/{collection}/dataStores/{data_store}/schemas/{schema}``.
     """
 

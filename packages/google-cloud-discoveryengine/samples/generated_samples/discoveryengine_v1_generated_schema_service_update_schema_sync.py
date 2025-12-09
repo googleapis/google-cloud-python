@@ -39,7 +39,8 @@ def sample_update_schema():
     client = discoveryengine_v1.SchemaServiceClient()
 
     # Initialize request argument(s)
-    request = discoveryengine_v1.UpdateSchemaRequest()
+    request = discoveryengine_v1.UpdateSchemaRequest(
+    )
 
     # Make the request
     operation = client.update_schema(request=request)
@@ -50,6 +51,5 @@ def sample_update_schema():
 
     # Handle the response
     print(response)
-
 
 # [END discoveryengine_v1_generated_SchemaService_UpdateSchema_sync]

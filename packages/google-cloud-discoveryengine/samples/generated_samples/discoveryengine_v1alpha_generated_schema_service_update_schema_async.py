@@ -39,7 +39,8 @@ async def sample_update_schema():
     client = discoveryengine_v1alpha.SchemaServiceAsyncClient()
 
     # Initialize request argument(s)
-    request = discoveryengine_v1alpha.UpdateSchemaRequest()
+    request = discoveryengine_v1alpha.UpdateSchemaRequest(
+    )
 
     # Make the request
     operation = client.update_schema(request=request)
@@ -50,6 +51,5 @@ async def sample_update_schema():
 
     # Handle the response
     print(response)
-
 
 # [END discoveryengine_v1alpha_generated_SchemaService_UpdateSchema_async]

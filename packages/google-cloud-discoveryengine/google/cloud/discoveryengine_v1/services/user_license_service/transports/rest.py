@@ -585,7 +585,8 @@ class UserLicenseServiceRestTransport(_BaseUserLicenseServiceRestTransport):
                 Args:
                     request (~.user_license_service.BatchUpdateUserLicensesRequest):
                         The request object. Request message for
-                    [UserLicenseService.BatchUpdateUserLicenses][google.cloud.discoveryengine.v1.UserLicenseService.BatchUpdateUserLicenses]
+                    `UserLicenseService.BatchUpdateUserLicenses
+                    <google.cloud.discoveryengine.v1.UserLicenseService.BatchUpdateUserLicenses>`__
                     method.
                     retry (google.api_core.retry.Retry): Designation of what errors, if any,
                         should be retried.
@@ -742,7 +743,8 @@ class UserLicenseServiceRestTransport(_BaseUserLicenseServiceRestTransport):
             Args:
                 request (~.user_license_service.ListUserLicensesRequest):
                     The request object. Request message for
-                [UserLicenseService.ListUserLicenses][google.cloud.discoveryengine.v1.UserLicenseService.ListUserLicenses].
+                `UserLicenseService.ListUserLicenses
+                <google.cloud.discoveryengine.v1.UserLicenseService.ListUserLicenses>`__.
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -754,7 +756,8 @@ class UserLicenseServiceRestTransport(_BaseUserLicenseServiceRestTransport):
             Returns:
                 ~.user_license_service.ListUserLicensesResponse:
                     Response message for
-                [UserLicenseService.ListUserLicenses][google.cloud.discoveryengine.v1.UserLicenseService.ListUserLicenses].
+                `UserLicenseService.ListUserLicenses
+                <google.cloud.discoveryengine.v1.UserLicenseService.ListUserLicenses>`__.
 
             """
 

@@ -120,8 +120,8 @@ class DocumentServiceGrpcTransport(DocumentServiceTransport):
     """gRPC backend transport for DocumentService.
 
     Service for ingesting
-    [Document][google.cloud.discoveryengine.v1beta.Document] information
-    of the customer's website.
+    `Document <google.cloud.discoveryengine.v1beta.Document>`__
+    information of the customer's website.
 
     This class defines the same methods as the primary client, so the
     primary client can load the underlying transport implementation
@@ -355,7 +355,8 @@ class DocumentServiceGrpcTransport(DocumentServiceTransport):
     ) -> Callable[[document_service.GetDocumentRequest], document.Document]:
         r"""Return a callable for the get document method over gRPC.
 
-        Gets a [Document][google.cloud.discoveryengine.v1beta.Document].
+        Gets a `Document
+        <google.cloud.discoveryengine.v1beta.Document>`__.
 
         Returns:
             Callable[[~.GetDocumentRequest],
@@ -383,8 +384,8 @@ class DocumentServiceGrpcTransport(DocumentServiceTransport):
     ]:
         r"""Return a callable for the list documents method over gRPC.
 
-        Gets a list of
-        [Document][google.cloud.discoveryengine.v1beta.Document]s.
+        Gets a list of `Document
+        <google.cloud.discoveryengine.v1beta.Document>`__s.
 
         Returns:
             Callable[[~.ListDocumentsRequest],
@@ -410,8 +411,8 @@ class DocumentServiceGrpcTransport(DocumentServiceTransport):
     ) -> Callable[[document_service.CreateDocumentRequest], gcd_document.Document]:
         r"""Return a callable for the create document method over gRPC.
 
-        Creates a
-        [Document][google.cloud.discoveryengine.v1beta.Document].
+        Creates a `Document
+        <google.cloud.discoveryengine.v1beta.Document>`__.
 
         Returns:
             Callable[[~.CreateDocumentRequest],
@@ -437,8 +438,8 @@ class DocumentServiceGrpcTransport(DocumentServiceTransport):
     ) -> Callable[[document_service.UpdateDocumentRequest], gcd_document.Document]:
         r"""Return a callable for the update document method over gRPC.
 
-        Updates a
-        [Document][google.cloud.discoveryengine.v1beta.Document].
+        Updates a `Document
+        <google.cloud.discoveryengine.v1beta.Document>`__.
 
         Returns:
             Callable[[~.UpdateDocumentRequest],
@@ -464,8 +465,8 @@ class DocumentServiceGrpcTransport(DocumentServiceTransport):
     ) -> Callable[[document_service.DeleteDocumentRequest], empty_pb2.Empty]:
         r"""Return a callable for the delete document method over gRPC.
 
-        Deletes a
-        [Document][google.cloud.discoveryengine.v1beta.Document].
+        Deletes a `Document
+        <google.cloud.discoveryengine.v1beta.Document>`__.
 
         Returns:
             Callable[[~.DeleteDocumentRequest],
@@ -492,12 +493,14 @@ class DocumentServiceGrpcTransport(DocumentServiceTransport):
         r"""Return a callable for the import documents method over gRPC.
 
         Bulk import of multiple
-        [Document][google.cloud.discoveryengine.v1beta.Document]s.
-        Request processing may be synchronous. Non-existing items are
-        created.
+        `Document
+        <google.cloud.discoveryengine.v1beta.Document>`__s.
+        Request processing may be synchronous. Non-existing
+        items are created.
 
         Note: It is possible for a subset of the
-        [Document][google.cloud.discoveryengine.v1beta.Document]s to be
+        `Document
+        <google.cloud.discoveryengine.v1beta.Document>`__s to be
         successfully updated.
 
         Returns:
@@ -525,23 +528,29 @@ class DocumentServiceGrpcTransport(DocumentServiceTransport):
         r"""Return a callable for the purge documents method over gRPC.
 
         Permanently deletes all selected
-        [Document][google.cloud.discoveryengine.v1beta.Document]s in a
+        `Document
+        <google.cloud.discoveryengine.v1beta.Document>`__s in a
         branch.
 
         This process is asynchronous. Depending on the number of
-        [Document][google.cloud.discoveryengine.v1beta.Document]s to be
-        deleted, this operation can take hours to complete. Before the
-        delete operation completes, some
-        [Document][google.cloud.discoveryengine.v1beta.Document]s might
+        `Document
+        <google.cloud.discoveryengine.v1beta.Document>`__s to be
+        deleted, this operation can take hours to complete.
+        Before the delete operation completes, some `Document
+        <google.cloud.discoveryengine.v1beta.Document>`__s might
         still be returned by
-        [DocumentService.GetDocument][google.cloud.discoveryengine.v1beta.DocumentService.GetDocument]
+        `DocumentService.GetDocument
+        <google.cloud.discoveryengine.v1beta.DocumentService.GetDocument>`__
         or
-        [DocumentService.ListDocuments][google.cloud.discoveryengine.v1beta.DocumentService.ListDocuments].
+        `DocumentService.ListDocuments
+        <google.cloud.discoveryengine.v1beta.DocumentService.ListDocuments>`__.
 
         To get a list of the
-        [Document][google.cloud.discoveryengine.v1beta.Document]s to be
+        `Document
+        <google.cloud.discoveryengine.v1beta.Document>`__s to be
         deleted, set
-        [PurgeDocumentsRequest.force][google.cloud.discoveryengine.v1beta.PurgeDocumentsRequest.force]
+        `PurgeDocumentsRequest.force
+        <google.cloud.discoveryengine.v1beta.PurgeDocumentsRequest.force>`__
         to false.
 
         Returns:
@@ -572,7 +581,8 @@ class DocumentServiceGrpcTransport(DocumentServiceTransport):
         r"""Return a callable for the batch get documents metadata method over gRPC.
 
         Gets index freshness metadata for
-        [Document][google.cloud.discoveryengine.v1beta.Document]s.
+        `Document
+        <google.cloud.discoveryengine.v1beta.Document>`__s.
         Supported for website search only.
 
         Returns:

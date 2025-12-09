@@ -50,5 +50,4 @@ async def sample_complete_query():
     # Handle the response
     print(response)
 
-
 # [END discoveryengine_v1beta_generated_CompletionService_CompleteQuery_async]

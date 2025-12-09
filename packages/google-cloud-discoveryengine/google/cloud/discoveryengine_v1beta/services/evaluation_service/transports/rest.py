@@ -398,7 +398,8 @@ class EvaluationServiceRestTransport(_BaseEvaluationServiceRestTransport):
     """REST backend synchronous transport for EvaluationService.
 
     Service for managing
-    [Evaluation][google.cloud.discoveryengine.v1beta.Evaluation]s,
+    `Evaluation
+    <google.cloud.discoveryengine.v1beta.Evaluation>`__s,
 
     This class defines the same methods as the primary client, so the
     primary client can load the underlying transport implementation
@@ -683,7 +684,8 @@ class EvaluationServiceRestTransport(_BaseEvaluationServiceRestTransport):
             Args:
                 request (~.evaluation_service.CreateEvaluationRequest):
                     The request object. Request message for
-                [EvaluationService.CreateEvaluation][google.cloud.discoveryengine.v1beta.EvaluationService.CreateEvaluation]
+                `EvaluationService.CreateEvaluation
+                <google.cloud.discoveryengine.v1beta.EvaluationService.CreateEvaluation>`__
                 method.
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
@@ -838,7 +840,8 @@ class EvaluationServiceRestTransport(_BaseEvaluationServiceRestTransport):
             Args:
                 request (~.evaluation_service.GetEvaluationRequest):
                     The request object. Request message for
-                [EvaluationService.GetEvaluation][google.cloud.discoveryengine.v1beta.EvaluationService.GetEvaluation]
+                `EvaluationService.GetEvaluation
+                <google.cloud.discoveryengine.v1beta.EvaluationService.GetEvaluation>`__
                 method.
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
@@ -989,7 +992,8 @@ class EvaluationServiceRestTransport(_BaseEvaluationServiceRestTransport):
             Args:
                 request (~.evaluation_service.ListEvaluationResultsRequest):
                     The request object. Request message for
-                [EvaluationService.ListEvaluationResults][google.cloud.discoveryengine.v1beta.EvaluationService.ListEvaluationResults]
+                `EvaluationService.ListEvaluationResults
+                <google.cloud.discoveryengine.v1beta.EvaluationService.ListEvaluationResults>`__
                 method.
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
@@ -1002,7 +1006,8 @@ class EvaluationServiceRestTransport(_BaseEvaluationServiceRestTransport):
             Returns:
                 ~.evaluation_service.ListEvaluationResultsResponse:
                     Response message for
-                [EvaluationService.ListEvaluationResults][google.cloud.discoveryengine.v1beta.EvaluationService.ListEvaluationResults]
+                `EvaluationService.ListEvaluationResults
+                <google.cloud.discoveryengine.v1beta.EvaluationService.ListEvaluationResults>`__
                 method.
 
             """
@@ -1147,7 +1152,8 @@ class EvaluationServiceRestTransport(_BaseEvaluationServiceRestTransport):
             Args:
                 request (~.evaluation_service.ListEvaluationsRequest):
                     The request object. Request message for
-                [EvaluationService.ListEvaluations][google.cloud.discoveryengine.v1beta.EvaluationService.ListEvaluations]
+                `EvaluationService.ListEvaluations
+                <google.cloud.discoveryengine.v1beta.EvaluationService.ListEvaluations>`__
                 method.
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
@@ -1160,7 +1166,8 @@ class EvaluationServiceRestTransport(_BaseEvaluationServiceRestTransport):
             Returns:
                 ~.evaluation_service.ListEvaluationsResponse:
                     Response message for
-                [EvaluationService.ListEvaluations][google.cloud.discoveryengine.v1beta.EvaluationService.ListEvaluations]
+                `EvaluationService.ListEvaluations
+                <google.cloud.discoveryengine.v1beta.EvaluationService.ListEvaluations>`__
                 method.
 
             """

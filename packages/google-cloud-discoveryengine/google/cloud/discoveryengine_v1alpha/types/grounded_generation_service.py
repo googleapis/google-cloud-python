@@ -38,12 +38,13 @@ class CheckGroundingSpec(proto.Message):
 
     Attributes:
         citation_threshold (float):
-            The threshold (in [0,1]) used for determining whether a fact
-            must be cited for a claim in the answer candidate. Choosing
-            a higher threshold will lead to fewer but very strong
-            citations, while choosing a lower threshold may lead to more
-            but somewhat weaker citations. If unset, the threshold will
-            default to 0.6.
+            The threshold (in [0,1]) used for determining
+            whether a fact must be cited for a claim in the
+            answer candidate. Choosing a higher threshold
+            will lead to fewer but very strong citations,
+            while choosing a lower threshold may lead to
+            more but somewhat weaker citations. If unset,
+            the threshold will default to 0.6.
 
             This field is a member of `oneof`_ ``_citation_threshold``.
     """
@@ -57,12 +58,14 @@ class CheckGroundingSpec(proto.Message):
 
 class CheckGroundingRequest(proto.Message):
     r"""Request message for
-    [GroundedGenerationService.CheckGrounding][google.cloud.discoveryengine.v1alpha.GroundedGenerationService.CheckGrounding]
+    `GroundedGenerationService.CheckGrounding
+    <google.cloud.discoveryengine.v1alpha.GroundedGenerationService.CheckGrounding>`__
     method.
 
     Attributes:
         grounding_config (str):
-            Required. The resource name of the grounding config, such as
+            Required. The resource name of the grounding
+            config, such as
             ``projects/*/locations/global/groundingConfigs/default_grounding_config``.
         answer_candidate (str):
             Answer candidate to check. Can have a maximum
@@ -73,26 +76,32 @@ class CheckGroundingRequest(proto.Message):
         grounding_spec (google.cloud.discoveryengine_v1alpha.types.CheckGroundingSpec):
             Configuration of the grounding check.
         user_labels (MutableMapping[str, str]):
-            The user labels applied to a resource must meet the
-            following requirements:
+            The user labels applied to a resource must meet
+            the following requirements:
+            * Each resource can have multiple labels, up to
+            a maximum of 64.
 
-            - Each resource can have multiple labels, up to a maximum of
-              64.
-            - Each label must be a key-value pair.
-            - Keys have a minimum length of 1 character and a maximum
-              length of 63 characters and cannot be empty. Values can be
-              empty and have a maximum length of 63 characters.
-            - Keys and values can contain only lowercase letters,
-              numeric characters, underscores, and dashes. All
-              characters must use UTF-8 encoding, and international
-              characters are allowed.
-            - The key portion of a label must be unique. However, you
-              can use the same key with multiple resources.
-            - Keys must start with a lowercase letter or international
-              character.
+            * Each label must be a key-value pair.
+            * Keys have a minimum length of 1 character and
+            a maximum length of 63   characters and cannot
+            be empty. Values can be empty and have a maximum
+            length of 63 characters.
+
+            * Keys and values can contain only lowercase
+            letters, numeric characters,   underscores, and
+            dashes. All characters must use UTF-8 encoding,
+            and   international characters are allowed.
+
+            * The key portion of a label must be unique.
+            However, you can use the same   key with
+            multiple resources.
+
+            * Keys must start with a lowercase letter or
+            international character.
 
             See `Google Cloud
-            Document <https://cloud.google.com/resource-manager/docs/creating-managing-labels#requirements>`__
+            Document
+            <https://cloud.google.com/resource-manager/docs/creating-managing-labels#requirements>`__
             for more details.
     """
 
@@ -123,7 +132,8 @@ class CheckGroundingRequest(proto.Message):
 
 class CheckGroundingResponse(proto.Message):
     r"""Response message for the
-    [GroundedGenerationService.CheckGrounding][google.cloud.discoveryengine.v1alpha.GroundedGenerationService.CheckGrounding]
+    `GroundedGenerationService.CheckGrounding
+    <google.cloud.discoveryengine.v1alpha.GroundedGenerationService.CheckGrounding>`__
     method.
 
 
@@ -168,21 +178,27 @@ class CheckGroundingResponse(proto.Message):
                 Always provided regardless of whether citations
                 or anti-citations are found.
             citation_indices (MutableSequence[int]):
-                A list of indices (into 'cited_chunks') specifying the
-                citations associated with the claim. For instance [1,3,4]
-                means that cited_chunks[1], cited_chunks[3], cited_chunks[4]
-                are the facts cited supporting for the claim. A citation to
-                a fact indicates that the claim is supported by the fact.
+                A list of indices (into 'cited_chunks')
+                specifying the citations associated with the
+                claim. For instance [1,3,4] means that
+                cited_chunks[1], cited_chunks[3],
+                cited_chunks[4] are the facts cited supporting
+                for the claim. A citation to a fact indicates
+                that the claim is supported by the fact.
             grounding_check_required (bool):
-                Indicates that this claim required grounding check. When the
-                system decided this claim doesn't require
-                attribution/grounding check, this field will be set to
-                false. In that case, no grounding check was done for the
-                claim and therefore
-                [citation_indices][google.cloud.discoveryengine.v1alpha.CheckGroundingResponse.Claim.citation_indices],
-                [anti_citation_indices][google.cloud.discoveryengine.v1alpha.CheckGroundingResponse.Claim.anti_citation_indices],
+                Indicates that this claim required grounding
+                check. When the system decided this claim
+                doesn't require attribution/grounding check,
+                this field will be set to false. In that case,
+                no grounding check was done for the claim and
+                therefore
+                `citation_indices
+                <google.cloud.discoveryengine.v1alpha.CheckGroundingResponse.Claim.citation_indices>`__,
+                `anti_citation_indices
+                <google.cloud.discoveryengine.v1alpha.CheckGroundingResponse.Claim.anti_citation_indices>`__,
                 and
-                [score][google.cloud.discoveryengine.v1alpha.CheckGroundingResponse.Claim.score]
+                `score
+                <google.cloud.discoveryengine.v1alpha.CheckGroundingResponse.Claim.score>`__
                 should not be returned.
 
                 This field is a member of `oneof`_ ``_grounding_check_required``.

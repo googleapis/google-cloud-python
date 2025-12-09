@@ -31,24 +31,30 @@ __protobuf__ = proto.module(
 
 class RankingRecord(proto.Message):
     r"""Record message for
-    [RankService.Rank][google.cloud.discoveryengine.v1.RankService.Rank]
-    method.
+    `RankService.Rank
+    <google.cloud.discoveryengine.v1.RankService.Rank>`__ method.
 
     Attributes:
         id (str):
             The unique ID to represent the record.
         title (str):
-            The title of the record. Empty by default. At least one of
-            [title][google.cloud.discoveryengine.v1.RankingRecord.title]
-            or
-            [content][google.cloud.discoveryengine.v1.RankingRecord.content]
-            should be set otherwise an INVALID_ARGUMENT error is thrown.
+            The title of the record. Empty by default.
+            At least one of
+            `title
+            <google.cloud.discoveryengine.v1.RankingRecord.title>`__
+            or `content
+            <google.cloud.discoveryengine.v1.RankingRecord.content>`__
+            should be set otherwise an INVALID_ARGUMENT
+            error is thrown.
         content (str):
-            The content of the record. Empty by default. At least one of
-            [title][google.cloud.discoveryengine.v1.RankingRecord.title]
-            or
-            [content][google.cloud.discoveryengine.v1.RankingRecord.content]
-            should be set otherwise an INVALID_ARGUMENT error is thrown.
+            The content of the record. Empty by default.
+            At least one of
+            `title
+            <google.cloud.discoveryengine.v1.RankingRecord.title>`__
+            or `content
+            <google.cloud.discoveryengine.v1.RankingRecord.content>`__
+            should be set otherwise an INVALID_ARGUMENT
+            error is thrown.
         score (float):
             The score of this record based on the given
             query and selected model. The score will be
@@ -77,22 +83,22 @@ class RankingRecord(proto.Message):
 
 class RankRequest(proto.Message):
     r"""Request message for
-    [RankService.Rank][google.cloud.discoveryengine.v1.RankService.Rank]
-    method.
+    `RankService.Rank
+    <google.cloud.discoveryengine.v1.RankService.Rank>`__ method.
 
     Attributes:
         ranking_config (str):
-            Required. The resource name of the rank service config, such
-            as
+            Required. The resource name of the rank service
+            config, such as
             ``projects/{project_num}/locations/{location}/rankingConfigs/default_ranking_config``.
         model (str):
-            The identifier of the model to use. It is one of:
+            The identifier of the model to use. It is one
+            of:
+            * ``semantic-ranker-512@latest``: Semantic
+            ranking model with maximum input token size 512.
 
-            - ``semantic-ranker-512@latest``: Semantic ranking model
-              with maximum input token size 512.
-
-            It is set to ``semantic-ranker-512@latest`` by default if
-            unspecified.
+            It is set to ``semantic-ranker-512@latest`` by
+            default if unspecified.
         top_n (int):
             The number of results to return. If this is
             unset or no bigger than zero, returns all
@@ -107,26 +113,32 @@ class RankRequest(proto.Message):
             record ID and score. By default, it is false,
             the response will contain record details.
         user_labels (MutableMapping[str, str]):
-            The user labels applied to a resource must meet the
-            following requirements:
+            The user labels applied to a resource must meet
+            the following requirements:
+            * Each resource can have multiple labels, up to
+            a maximum of 64.
 
-            - Each resource can have multiple labels, up to a maximum of
-              64.
-            - Each label must be a key-value pair.
-            - Keys have a minimum length of 1 character and a maximum
-              length of 63 characters and cannot be empty. Values can be
-              empty and have a maximum length of 63 characters.
-            - Keys and values can contain only lowercase letters,
-              numeric characters, underscores, and dashes. All
-              characters must use UTF-8 encoding, and international
-              characters are allowed.
-            - The key portion of a label must be unique. However, you
-              can use the same key with multiple resources.
-            - Keys must start with a lowercase letter or international
-              character.
+            * Each label must be a key-value pair.
+            * Keys have a minimum length of 1 character and
+            a maximum length of 63   characters and cannot
+            be empty. Values can be empty and have a maximum
+            length of 63 characters.
+
+            * Keys and values can contain only lowercase
+            letters, numeric characters,   underscores, and
+            dashes. All characters must use UTF-8 encoding,
+            and   international characters are allowed.
+
+            * The key portion of a label must be unique.
+            However, you can use the same   key with
+            multiple resources.
+
+            * Keys must start with a lowercase letter or
+            international character.
 
             See `Google Cloud
-            Document <https://cloud.google.com/resource-manager/docs/creating-managing-labels#requirements>`__
+            Document
+            <https://cloud.google.com/resource-manager/docs/creating-managing-labels#requirements>`__
             for more details.
     """
 
@@ -164,8 +176,8 @@ class RankRequest(proto.Message):
 
 class RankResponse(proto.Message):
     r"""Response message for
-    [RankService.Rank][google.cloud.discoveryengine.v1.RankService.Rank]
-    method.
+    `RankService.Rank
+    <google.cloud.discoveryengine.v1.RankService.Rank>`__ method.
 
     Attributes:
         records (MutableSequence[google.cloud.discoveryengine_v1.types.RankingRecord]):

@@ -49,5 +49,4 @@ async def sample_get_identity_mapping_store():
     # Handle the response
     print(response)
 
-
 # [END discoveryengine_v1_generated_IdentityMappingStoreService_GetIdentityMappingStore_async]

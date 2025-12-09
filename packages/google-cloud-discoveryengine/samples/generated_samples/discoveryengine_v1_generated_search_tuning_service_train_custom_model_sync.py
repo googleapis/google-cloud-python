@@ -53,5 +53,4 @@ def sample_train_custom_model():
     # Handle the response
     print(response)
 
-
 # [END discoveryengine_v1_generated_SearchTuningService_TrainCustomModel_sync]

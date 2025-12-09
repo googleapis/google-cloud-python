@@ -36,10 +36,10 @@ class GroundingFact(proto.Message):
             Text content of the fact. Can be at most 10K
             characters long.
         attributes (MutableMapping[str, str]):
-            Attributes associated with the fact. Common attributes
-            include ``source`` (indicating where the fact was sourced
-            from), ``author`` (indicating the author of the fact), and
-            so on.
+            Attributes associated with the fact.
+            Common attributes include ``source`` (indicating
+            where the fact was sourced from), ``author``
+            (indicating the author of the fact), and so on.
     """
 
     fact_text: str = proto.Field(

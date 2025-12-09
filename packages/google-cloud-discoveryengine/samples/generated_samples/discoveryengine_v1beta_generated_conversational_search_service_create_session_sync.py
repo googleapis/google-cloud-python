@@ -49,5 +49,4 @@ def sample_create_session():
     # Handle the response
     print(response)
 
-
 # [END discoveryengine_v1beta_generated_ConversationalSearchService_CreateSession_sync]

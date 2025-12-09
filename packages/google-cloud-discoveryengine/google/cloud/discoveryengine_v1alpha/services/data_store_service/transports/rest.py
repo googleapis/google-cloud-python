@@ -578,7 +578,7 @@ class DataStoreServiceRestTransport(_BaseDataStoreServiceRestTransport):
     """REST backend synchronous transport for DataStoreService.
 
     Service for managing
-    [DataStore][google.cloud.discoveryengine.v1alpha.DataStore]
+    `DataStore <google.cloud.discoveryengine.v1alpha.DataStore>`__
     configuration.
 
     This class defines the same methods as the primary client, so the
@@ -872,7 +872,8 @@ class DataStoreServiceRestTransport(_BaseDataStoreServiceRestTransport):
             Args:
                 request (~.data_store_service.CreateDataStoreRequest):
                     The request object. Request for
-                [DataStoreService.CreateDataStore][google.cloud.discoveryengine.v1alpha.DataStoreService.CreateDataStore]
+                `DataStoreService.CreateDataStore
+                <google.cloud.discoveryengine.v1alpha.DataStoreService.CreateDataStore>`__
                 method.
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
@@ -1027,7 +1028,8 @@ class DataStoreServiceRestTransport(_BaseDataStoreServiceRestTransport):
             Args:
                 request (~.data_store_service.DeleteDataStoreRequest):
                     The request object. Request message for
-                [DataStoreService.DeleteDataStore][google.cloud.discoveryengine.v1alpha.DataStoreService.DeleteDataStore]
+                `DataStoreService.DeleteDataStore
+                <google.cloud.discoveryengine.v1alpha.DataStoreService.DeleteDataStore>`__
                 method.
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
@@ -1176,7 +1178,8 @@ class DataStoreServiceRestTransport(_BaseDataStoreServiceRestTransport):
             Args:
                 request (~.data_store_service.GetDataStoreRequest):
                     The request object. Request message for
-                [DataStoreService.GetDataStore][google.cloud.discoveryengine.v1alpha.DataStoreService.GetDataStore]
+                `DataStoreService.GetDataStore
+                <google.cloud.discoveryengine.v1alpha.DataStoreService.GetDataStore>`__
                 method.
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
@@ -1326,7 +1329,8 @@ class DataStoreServiceRestTransport(_BaseDataStoreServiceRestTransport):
                 Args:
                     request (~.data_store_service.GetDocumentProcessingConfigRequest):
                         The request object. Request for
-                    [DataStoreService.GetDocumentProcessingConfig][google.cloud.discoveryengine.v1alpha.DataStoreService.GetDocumentProcessingConfig]
+                    `DataStoreService.GetDocumentProcessingConfig
+                    <google.cloud.discoveryengine.v1alpha.DataStoreService.GetDocumentProcessingConfig>`__
                     method.
                     retry (google.api_core.retry.Retry): Designation of what errors, if any,
                         should be retried.
@@ -1339,12 +1343,14 @@ class DataStoreServiceRestTransport(_BaseDataStoreServiceRestTransport):
                 Returns:
                     ~.document_processing_config.DocumentProcessingConfig:
                         A singleton resource of
-                    [DataStore][google.cloud.discoveryengine.v1alpha.DataStore].
-                    It's empty when
-                    [DataStore][google.cloud.discoveryengine.v1alpha.DataStore]
-                    is created, which defaults to digital parser. The first
-                    call to
-                    [DataStoreService.UpdateDocumentProcessingConfig][google.cloud.discoveryengine.v1alpha.DataStoreService.UpdateDocumentProcessingConfig]
+                    `DataStore
+                    <google.cloud.discoveryengine.v1alpha.DataStore>`__.
+                    It's empty when `DataStore
+                    <google.cloud.discoveryengine.v1alpha.DataStore>`__
+                    is created, which defaults to digital
+                    parser. The first call to
+                    `DataStoreService.UpdateDocumentProcessingConfig
+                    <google.cloud.discoveryengine.v1alpha.DataStoreService.UpdateDocumentProcessingConfig>`__
                     method will initialize the config.
 
             """
@@ -1489,7 +1495,8 @@ class DataStoreServiceRestTransport(_BaseDataStoreServiceRestTransport):
             Args:
                 request (~.data_store_service.ListDataStoresRequest):
                     The request object. Request message for
-                [DataStoreService.ListDataStores][google.cloud.discoveryengine.v1alpha.DataStoreService.ListDataStores]
+                `DataStoreService.ListDataStores
+                <google.cloud.discoveryengine.v1alpha.DataStoreService.ListDataStores>`__
                 method.
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
@@ -1502,7 +1509,8 @@ class DataStoreServiceRestTransport(_BaseDataStoreServiceRestTransport):
             Returns:
                 ~.data_store_service.ListDataStoresResponse:
                     Response message for
-                [DataStoreService.ListDataStores][google.cloud.discoveryengine.v1alpha.DataStoreService.ListDataStores]
+                `DataStoreService.ListDataStores
+                <google.cloud.discoveryengine.v1alpha.DataStoreService.ListDataStores>`__
                 method.
 
             """
@@ -1644,7 +1652,8 @@ class DataStoreServiceRestTransport(_BaseDataStoreServiceRestTransport):
             Args:
                 request (~.data_store_service.UpdateDataStoreRequest):
                     The request object. Request message for
-                [DataStoreService.UpdateDataStore][google.cloud.discoveryengine.v1alpha.DataStoreService.UpdateDataStore]
+                `DataStoreService.UpdateDataStore
+                <google.cloud.discoveryengine.v1alpha.DataStoreService.UpdateDataStore>`__
                 method.
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
@@ -1802,7 +1811,8 @@ class DataStoreServiceRestTransport(_BaseDataStoreServiceRestTransport):
                 Args:
                     request (~.data_store_service.UpdateDocumentProcessingConfigRequest):
                         The request object. Request for
-                    [DataStoreService.UpdateDocumentProcessingConfig][google.cloud.discoveryengine.v1alpha.DataStoreService.UpdateDocumentProcessingConfig]
+                    `DataStoreService.UpdateDocumentProcessingConfig
+                    <google.cloud.discoveryengine.v1alpha.DataStoreService.UpdateDocumentProcessingConfig>`__
                     method.
                     retry (google.api_core.retry.Retry): Designation of what errors, if any,
                         should be retried.
@@ -1815,12 +1825,14 @@ class DataStoreServiceRestTransport(_BaseDataStoreServiceRestTransport):
                 Returns:
                     ~.gcd_document_processing_config.DocumentProcessingConfig:
                         A singleton resource of
-                    [DataStore][google.cloud.discoveryengine.v1alpha.DataStore].
-                    It's empty when
-                    [DataStore][google.cloud.discoveryengine.v1alpha.DataStore]
-                    is created, which defaults to digital parser. The first
-                    call to
-                    [DataStoreService.UpdateDocumentProcessingConfig][google.cloud.discoveryengine.v1alpha.DataStoreService.UpdateDocumentProcessingConfig]
+                    `DataStore
+                    <google.cloud.discoveryengine.v1alpha.DataStore>`__.
+                    It's empty when `DataStore
+                    <google.cloud.discoveryengine.v1alpha.DataStore>`__
+                    is created, which defaults to digital
+                    parser. The first call to
+                    `DataStoreService.UpdateDocumentProcessingConfig
+                    <google.cloud.discoveryengine.v1alpha.DataStoreService.UpdateDocumentProcessingConfig>`__
                     method will initialize the config.
 
             """

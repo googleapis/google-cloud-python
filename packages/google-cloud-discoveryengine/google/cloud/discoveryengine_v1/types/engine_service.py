@@ -40,7 +40,8 @@ __protobuf__ = proto.module(
 
 class CreateEngineRequest(proto.Message):
     r"""Request for
-    [EngineService.CreateEngine][google.cloud.discoveryengine.v1.EngineService.CreateEngine]
+    `EngineService.CreateEngine
+    <google.cloud.discoveryengine.v1.EngineService.CreateEngine>`__
     method.
 
     Attributes:
@@ -48,19 +49,23 @@ class CreateEngineRequest(proto.Message):
             Required. The parent resource name, such as
             ``projects/{project}/locations/{location}/collections/{collection}``.
         engine (google.cloud.discoveryengine_v1.types.Engine):
-            Required. The
-            [Engine][google.cloud.discoveryengine.v1.Engine] to create.
+            Required. The `Engine
+            <google.cloud.discoveryengine.v1.Engine>`__ to
+            create.
         engine_id (str):
             Required. The ID to use for the
-            [Engine][google.cloud.discoveryengine.v1.Engine], which will
-            become the final component of the
-            [Engine][google.cloud.discoveryengine.v1.Engine]'s resource
-            name.
+            `Engine
+            <google.cloud.discoveryengine.v1.Engine>`__,
+            which will become the final component of the
+            `Engine
+            <google.cloud.discoveryengine.v1.Engine>`__'s
+            resource name.
 
-            This field must conform to
-            `RFC-1034 <https://tools.ietf.org/html/rfc1034>`__ standard
-            with a length limit of 63 characters. Otherwise, an
-            INVALID_ARGUMENT error is returned.
+            This field must conform to `RFC-1034
+            <https://tools.ietf.org/html/rfc1034>`__
+            standard with a length limit of 63 characters.
+            Otherwise, an INVALID_ARGUMENT error is
+            returned.
     """
 
     parent: str = proto.Field(
@@ -80,7 +85,8 @@ class CreateEngineRequest(proto.Message):
 
 class CreateEngineMetadata(proto.Message):
     r"""Metadata related to the progress of the
-    [EngineService.CreateEngine][google.cloud.discoveryengine.v1.EngineService.CreateEngine]
+    `EngineService.CreateEngine
+    <google.cloud.discoveryengine.v1.EngineService.CreateEngine>`__
     operation. This will be returned by the
     google.longrunning.Operation.metadata field.
 
@@ -106,22 +112,28 @@ class CreateEngineMetadata(proto.Message):
 
 class DeleteEngineRequest(proto.Message):
     r"""Request message for
-    [EngineService.DeleteEngine][google.cloud.discoveryengine.v1.EngineService.DeleteEngine]
+    `EngineService.DeleteEngine
+    <google.cloud.discoveryengine.v1.EngineService.DeleteEngine>`__
     method.
 
     Attributes:
         name (str):
             Required. Full resource name of
-            [Engine][google.cloud.discoveryengine.v1.Engine], such as
+            `Engine
+            <google.cloud.discoveryengine.v1.Engine>`__,
+            such as
             ``projects/{project}/locations/{location}/collections/{collection_id}/engines/{engine_id}``.
 
-            If the caller does not have permission to delete the
-            [Engine][google.cloud.discoveryengine.v1.Engine], regardless
-            of whether or not it exists, a PERMISSION_DENIED error is
-            returned.
+            If the caller does not have permission to delete
+            the `Engine
+            <google.cloud.discoveryengine.v1.Engine>`__,
+            regardless of whether or not it exists, a
+            PERMISSION_DENIED error is returned.
 
-            If the [Engine][google.cloud.discoveryengine.v1.Engine] to
-            delete does not exist, a NOT_FOUND error is returned.
+            If the `Engine
+            <google.cloud.discoveryengine.v1.Engine>`__ to
+            delete does not exist, a NOT_FOUND error is
+            returned.
     """
 
     name: str = proto.Field(
@@ -132,7 +144,8 @@ class DeleteEngineRequest(proto.Message):
 
 class DeleteEngineMetadata(proto.Message):
     r"""Metadata related to the progress of the
-    [EngineService.DeleteEngine][google.cloud.discoveryengine.v1.EngineService.DeleteEngine]
+    `EngineService.DeleteEngine
+    <google.cloud.discoveryengine.v1.EngineService.DeleteEngine>`__
     operation. This will be returned by the
     google.longrunning.Operation.metadata field.
 
@@ -158,13 +171,16 @@ class DeleteEngineMetadata(proto.Message):
 
 class GetEngineRequest(proto.Message):
     r"""Request message for
-    [EngineService.GetEngine][google.cloud.discoveryengine.v1.EngineService.GetEngine]
+    `EngineService.GetEngine
+    <google.cloud.discoveryengine.v1.EngineService.GetEngine>`__
     method.
 
     Attributes:
         name (str):
             Required. Full resource name of
-            [Engine][google.cloud.discoveryengine.v1.Engine], such as
+            `Engine
+            <google.cloud.discoveryengine.v1.Engine>`__,
+            such as
             ``projects/{project}/locations/{location}/collections/{collection_id}/engines/{engine_id}``.
     """
 
@@ -176,7 +192,8 @@ class GetEngineRequest(proto.Message):
 
 class ListEnginesRequest(proto.Message):
     r"""Request message for
-    [EngineService.ListEngines][google.cloud.discoveryengine.v1.EngineService.ListEngines]
+    `EngineService.ListEngines
+    <google.cloud.discoveryengine.v1.EngineService.ListEngines>`__
     method.
 
     Attributes:
@@ -212,13 +229,14 @@ class ListEnginesRequest(proto.Message):
 
 class ListEnginesResponse(proto.Message):
     r"""Response message for
-    [EngineService.ListEngines][google.cloud.discoveryengine.v1.EngineService.ListEngines]
+    `EngineService.ListEngines
+    <google.cloud.discoveryengine.v1.EngineService.ListEngines>`__
     method.
 
     Attributes:
         engines (MutableSequence[google.cloud.discoveryengine_v1.types.Engine]):
-            All the customer's
-            [Engine][google.cloud.discoveryengine.v1.Engine]s.
+            All the customer's `Engine
+            <google.cloud.discoveryengine.v1.Engine>`__s.
         next_page_token (str):
             Not supported.
     """
@@ -240,27 +258,32 @@ class ListEnginesResponse(proto.Message):
 
 class UpdateEngineRequest(proto.Message):
     r"""Request message for
-    [EngineService.UpdateEngine][google.cloud.discoveryengine.v1.EngineService.UpdateEngine]
+    `EngineService.UpdateEngine
+    <google.cloud.discoveryengine.v1.EngineService.UpdateEngine>`__
     method.
 
     Attributes:
         engine (google.cloud.discoveryengine_v1.types.Engine):
-            Required. The
-            [Engine][google.cloud.discoveryengine.v1.Engine] to update.
+            Required. The `Engine
+            <google.cloud.discoveryengine.v1.Engine>`__ to
+            update.  If the caller does not have permission
+            to update the `Engine
+            <google.cloud.discoveryengine.v1.Engine>`__,
+            regardless of whether or not it exists, a
+            PERMISSION_DENIED error is returned.
 
-            If the caller does not have permission to update the
-            [Engine][google.cloud.discoveryengine.v1.Engine], regardless
-            of whether or not it exists, a PERMISSION_DENIED error is
+            If the `Engine
+            <google.cloud.discoveryengine.v1.Engine>`__ to
+            update does not exist, a NOT_FOUND error is
             returned.
-
-            If the [Engine][google.cloud.discoveryengine.v1.Engine] to
-            update does not exist, a NOT_FOUND error is returned.
         update_mask (google.protobuf.field_mask_pb2.FieldMask):
             Indicates which fields in the provided
-            [Engine][google.cloud.discoveryengine.v1.Engine] to update.
+            `Engine
+            <google.cloud.discoveryengine.v1.Engine>`__ to
+            update.
 
-            If an unsupported or unknown field is provided, an
-            INVALID_ARGUMENT error is returned.
+            If an unsupported or unknown field is provided,
+            an INVALID_ARGUMENT error is returned.
     """
 
     engine: gcd_engine.Engine = proto.Field(

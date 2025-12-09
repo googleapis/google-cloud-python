@@ -120,8 +120,8 @@ class _LoggingClientAIOInterceptor(
 class EngineServiceGrpcAsyncIOTransport(EngineServiceTransport):
     """gRPC AsyncIO backend transport for EngineService.
 
-    Service for managing
-    [Engine][google.cloud.discoveryengine.v1.Engine] configuration.
+    Service for managing `Engine
+    <google.cloud.discoveryengine.v1.Engine>`__ configuration.
 
     This class defines the same methods as the primary client, so the
     primary client can load the underlying transport implementation
@@ -359,7 +359,8 @@ class EngineServiceGrpcAsyncIOTransport(EngineServiceTransport):
     ]:
         r"""Return a callable for the create engine method over gRPC.
 
-        Creates a [Engine][google.cloud.discoveryengine.v1.Engine].
+        Creates a `Engine
+        <google.cloud.discoveryengine.v1.Engine>`__.
 
         Returns:
             Callable[[~.CreateEngineRequest],
@@ -387,7 +388,8 @@ class EngineServiceGrpcAsyncIOTransport(EngineServiceTransport):
     ]:
         r"""Return a callable for the delete engine method over gRPC.
 
-        Deletes a [Engine][google.cloud.discoveryengine.v1.Engine].
+        Deletes a `Engine
+        <google.cloud.discoveryengine.v1.Engine>`__.
 
         Returns:
             Callable[[~.DeleteEngineRequest],
@@ -413,7 +415,8 @@ class EngineServiceGrpcAsyncIOTransport(EngineServiceTransport):
     ) -> Callable[[engine_service.UpdateEngineRequest], Awaitable[gcd_engine.Engine]]:
         r"""Return a callable for the update engine method over gRPC.
 
-        Updates an [Engine][google.cloud.discoveryengine.v1.Engine]
+        Updates an `Engine
+        <google.cloud.discoveryengine.v1.Engine>`__
 
         Returns:
             Callable[[~.UpdateEngineRequest],
@@ -439,7 +442,8 @@ class EngineServiceGrpcAsyncIOTransport(EngineServiceTransport):
     ) -> Callable[[engine_service.GetEngineRequest], Awaitable[engine.Engine]]:
         r"""Return a callable for the get engine method over gRPC.
 
-        Gets a [Engine][google.cloud.discoveryengine.v1.Engine].
+        Gets a `Engine
+        <google.cloud.discoveryengine.v1.Engine>`__.
 
         Returns:
             Callable[[~.GetEngineRequest],
@@ -468,8 +472,9 @@ class EngineServiceGrpcAsyncIOTransport(EngineServiceTransport):
     ]:
         r"""Return a callable for the list engines method over gRPC.
 
-        Lists all the [Engine][google.cloud.discoveryengine.v1.Engine]s
-        associated with the project.
+        Lists all the `Engine
+        <google.cloud.discoveryengine.v1.Engine>`__s associated
+        with the project.
 
         Returns:
             Callable[[~.ListEnginesRequest],

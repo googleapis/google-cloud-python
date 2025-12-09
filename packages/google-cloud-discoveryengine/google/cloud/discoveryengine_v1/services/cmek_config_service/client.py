@@ -853,12 +853,13 @@ class CmekConfigServiceClient(metaclass=CmekConfigServiceClientMeta):
 
         Returns:
             google.api_core.operation.Operation:
-                An object representing a long-running operation.
-
-                The result type for the operation will be
+                An object representing a long-running
+                operation.
+                The result type for the operation will
+                be
                 :class:`google.cloud.discoveryengine_v1.types.CmekConfig`
-                Configurations used to enable CMEK data encryption with
-                Cloud KMS keys.
+                Configurations used to enable CMEK data
+                encryption with Cloud KMS keys.
 
         """
         # Create or coerce a protobuf request object.
@@ -926,8 +927,8 @@ class CmekConfigServiceClient(metaclass=CmekConfigServiceClientMeta):
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> cmek_config_service.CmekConfig:
-        r"""Gets the
-        [CmekConfig][google.cloud.discoveryengine.v1.CmekConfig].
+        r"""Gets the `CmekConfig
+        <google.cloud.discoveryengine.v1.CmekConfig>`__.
 
         .. code-block:: python
 
@@ -961,14 +962,17 @@ class CmekConfigServiceClient(metaclass=CmekConfigServiceClientMeta):
                 GetCmekConfigRequest method.
             name (str):
                 Required. Resource name of
-                [CmekConfig][google.cloud.discoveryengine.v1.CmekConfig],
-                such as ``projects/*/locations/*/cmekConfig`` or
+                `CmekConfig
+                <google.cloud.discoveryengine.v1.CmekConfig>`__,
+                such as
+                ``projects/*/locations/*/cmekConfig`` or
                 ``projects/*/locations/*/cmekConfigs/*``.
 
-                If the caller does not have permission to access the
-                [CmekConfig][google.cloud.discoveryengine.v1.CmekConfig],
-                regardless of whether or not it exists, a
-                PERMISSION_DENIED error is returned.
+                If the caller does not have permission
+                to access the `CmekConfig
+                <google.cloud.discoveryengine.v1.CmekConfig>`__,
+                regardless of whether or not it exists,
+                a PERMISSION_DENIED error is returned.
 
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -1044,8 +1048,8 @@ class CmekConfigServiceClient(metaclass=CmekConfigServiceClientMeta):
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> cmek_config_service.ListCmekConfigsResponse:
-        r"""Lists all the
-        [CmekConfig][google.cloud.discoveryengine.v1.CmekConfig]s with
+        r"""Lists all the `CmekConfig
+        <google.cloud.discoveryengine.v1.CmekConfig>`__s with
         the project.
 
         .. code-block:: python
@@ -1077,17 +1081,20 @@ class CmekConfigServiceClient(metaclass=CmekConfigServiceClientMeta):
         Args:
             request (Union[google.cloud.discoveryengine_v1.types.ListCmekConfigsRequest, dict]):
                 The request object. Request message for
-                [CmekConfigService.ListCmekConfigs][google.cloud.discoveryengine.v1.CmekConfigService.ListCmekConfigs]
+                `CmekConfigService.ListCmekConfigs
+                <google.cloud.discoveryengine.v1.CmekConfigService.ListCmekConfigs>`__
                 method.
             parent (str):
-                Required. The parent location resource name, such as
+                Required. The parent location resource
+                name, such as
                 ``projects/{project}/locations/{location}``.
 
-                If the caller does not have permission to list
-                [CmekConfig][google.cloud.discoveryengine.v1.CmekConfig]s
-                under this location, regardless of whether or not a
-                CmekConfig exists, a PERMISSION_DENIED error is
-                returned.
+                If the caller does not have permission
+                to list `CmekConfig
+                <google.cloud.discoveryengine.v1.CmekConfig>`__s
+                under this location, regardless of
+                whether or not a CmekConfig exists, a
+                PERMISSION_DENIED error is returned.
 
                 This corresponds to the ``parent`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -1103,8 +1110,9 @@ class CmekConfigServiceClient(metaclass=CmekConfigServiceClientMeta):
         Returns:
             google.cloud.discoveryengine_v1.types.ListCmekConfigsResponse:
                 Response message for
-                   [CmekConfigService.ListCmekConfigs][google.cloud.discoveryengine.v1.CmekConfigService.ListCmekConfigs]
-                   method.
+                `CmekConfigService.ListCmekConfigs
+                <google.cloud.discoveryengine.v1.CmekConfigService.ListCmekConfigs>`__
+                method.
 
         """
         # Create or coerce a protobuf request object.
@@ -1199,11 +1207,13 @@ class CmekConfigServiceClient(metaclass=CmekConfigServiceClientMeta):
         Args:
             request (Union[google.cloud.discoveryengine_v1.types.DeleteCmekConfigRequest, dict]):
                 The request object. Request message for
-                [CmekConfigService.DeleteCmekConfig][google.cloud.discoveryengine.v1.CmekConfigService.DeleteCmekConfig]
+                `CmekConfigService.DeleteCmekConfig
+                <google.cloud.discoveryengine.v1.CmekConfigService.DeleteCmekConfig>`__
                 method.
             name (str):
                 Required. The resource name of the
-                [CmekConfig][google.cloud.discoveryengine.v1.CmekConfig]
+                `CmekConfig
+                <google.cloud.discoveryengine.v1.CmekConfig>`__
                 to delete, such as
                 ``projects/{project}/locations/{location}/cmekConfigs/{cmek_config}``.
 
@@ -1220,18 +1230,21 @@ class CmekConfigServiceClient(metaclass=CmekConfigServiceClientMeta):
 
         Returns:
             google.api_core.operation.Operation:
-                An object representing a long-running operation.
+                An object representing a long-running
+                operation.
+                The result type for the operation will
+                be
+                :class:`google.protobuf.empty_pb2.Empty`
+                A generic empty message that you can
+                re-use to avoid defining duplicated
+                empty messages in your APIs. A typical
+                example is to use it as the request or
+                the response type of an API method. For
+                instance:
 
-                The result type for the operation will be :class:`google.protobuf.empty_pb2.Empty` A generic empty message that you can re-use to avoid defining duplicated
-                   empty messages in your APIs. A typical example is to
-                   use it as the request or the response type of an API
-                   method. For instance:
-
-                      service Foo {
-                         rpc Bar(google.protobuf.Empty) returns
-                         (google.protobuf.Empty);
-
-                      }
+                    service Foo {
+                      rpc Bar(google.protobuf.Empty)
+                returns (google.protobuf.Empty);     }
 
         """
         # Create or coerce a protobuf request object.

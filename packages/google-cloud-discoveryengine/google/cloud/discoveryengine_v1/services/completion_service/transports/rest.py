@@ -757,7 +757,8 @@ class CompletionServiceRestTransport(_BaseCompletionServiceRestTransport):
             Args:
                 request (~.completion_service.CompleteQueryRequest):
                     The request object. Request message for
-                [CompletionService.CompleteQuery][google.cloud.discoveryengine.v1.CompletionService.CompleteQuery]
+                `CompletionService.CompleteQuery
+                <google.cloud.discoveryengine.v1.CompletionService.CompleteQuery>`__
                 method.
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
@@ -770,7 +771,8 @@ class CompletionServiceRestTransport(_BaseCompletionServiceRestTransport):
             Returns:
                 ~.completion_service.CompleteQueryResponse:
                     Response message for
-                [CompletionService.CompleteQuery][google.cloud.discoveryengine.v1.CompletionService.CompleteQuery]
+                `CompletionService.CompleteQuery
+                <google.cloud.discoveryengine.v1.CompletionService.CompleteQuery>`__
                 method.
 
             """
@@ -911,7 +913,8 @@ class CompletionServiceRestTransport(_BaseCompletionServiceRestTransport):
                 Args:
                     request (~.import_config.ImportCompletionSuggestionsRequest):
                         The request object. Request message for
-                    [CompletionService.ImportCompletionSuggestions][google.cloud.discoveryengine.v1.CompletionService.ImportCompletionSuggestions]
+                    `CompletionService.ImportCompletionSuggestions
+                    <google.cloud.discoveryengine.v1.CompletionService.ImportCompletionSuggestions>`__
                     method.
                     retry (google.api_core.retry.Retry): Designation of what errors, if any,
                         should be retried.
@@ -1073,7 +1076,8 @@ class CompletionServiceRestTransport(_BaseCompletionServiceRestTransport):
                 Args:
                     request (~.import_config.ImportSuggestionDenyListEntriesRequest):
                         The request object. Request message for
-                    [CompletionService.ImportSuggestionDenyListEntries][google.cloud.discoveryengine.v1.CompletionService.ImportSuggestionDenyListEntries]
+                    `CompletionService.ImportSuggestionDenyListEntries
+                    <google.cloud.discoveryengine.v1.CompletionService.ImportSuggestionDenyListEntries>`__
                     method.
                     retry (google.api_core.retry.Retry): Designation of what errors, if any,
                         should be retried.
@@ -1236,7 +1240,8 @@ class CompletionServiceRestTransport(_BaseCompletionServiceRestTransport):
                 Args:
                     request (~.purge_config.PurgeCompletionSuggestionsRequest):
                         The request object. Request message for
-                    [CompletionService.PurgeCompletionSuggestions][google.cloud.discoveryengine.v1.CompletionService.PurgeCompletionSuggestions]
+                    `CompletionService.PurgeCompletionSuggestions
+                    <google.cloud.discoveryengine.v1.CompletionService.PurgeCompletionSuggestions>`__
                     method.
                     retry (google.api_core.retry.Retry): Designation of what errors, if any,
                         should be retried.
@@ -1393,7 +1398,8 @@ class CompletionServiceRestTransport(_BaseCompletionServiceRestTransport):
                 Args:
                     request (~.purge_config.PurgeSuggestionDenyListEntriesRequest):
                         The request object. Request message for
-                    [CompletionService.PurgeSuggestionDenyListEntries][google.cloud.discoveryengine.v1.CompletionService.PurgeSuggestionDenyListEntries]
+                    `CompletionService.PurgeSuggestionDenyListEntries
+                    <google.cloud.discoveryengine.v1.CompletionService.PurgeSuggestionDenyListEntries>`__
                     method.
                     retry (google.api_core.retry.Retry): Designation of what errors, if any,
                         should be retried.

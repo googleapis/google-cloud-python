@@ -35,12 +35,13 @@ class SampleQuerySet(proto.Message):
     Attributes:
         name (str):
             Identifier. The full resource name of the
-            [SampleQuerySet][google.cloud.discoveryengine.v1beta.SampleQuerySet],
+            `SampleQuerySet
+            <google.cloud.discoveryengine.v1beta.SampleQuerySet>`__,
             in the format of
             ``projects/{project}/locations/{location}/sampleQuerySets/{sample_query_set}``.
 
-            This field must be a UTF-8 encoded string with a length
-            limit of 1024 characters.
+            This field must be a UTF-8 encoded string with a
+            length limit of 1024 characters.
         display_name (str):
             Required. The sample query set display name.
 
@@ -48,11 +49,13 @@ class SampleQuerySet(proto.Message):
             length limit of 128 characters.
         create_time (google.protobuf.timestamp_pb2.Timestamp):
             Output only. Timestamp the
-            [SampleQuerySet][google.cloud.discoveryengine.v1beta.SampleQuerySet]
+            `SampleQuerySet
+            <google.cloud.discoveryengine.v1beta.SampleQuerySet>`__
             was created at.
         description (str):
             The description of the
-            [SampleQuerySet][google.cloud.discoveryengine.v1beta.SampleQuerySet].
+            `SampleQuerySet
+            <google.cloud.discoveryengine.v1beta.SampleQuerySet>`__.
     """
 
     name: str = proto.Field(

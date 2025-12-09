@@ -118,8 +118,8 @@ class _LoggingClientAIOInterceptor(
 class SchemaServiceGrpcAsyncIOTransport(SchemaServiceTransport):
     """gRPC AsyncIO backend transport for SchemaService.
 
-    Service for managing
-    [Schema][google.cloud.discoveryengine.v1beta.Schema]s.
+    Service for managing `Schema
+    <google.cloud.discoveryengine.v1beta.Schema>`__s.
 
     This class defines the same methods as the primary client, so the
     primary client can load the underlying transport implementation
@@ -355,7 +355,8 @@ class SchemaServiceGrpcAsyncIOTransport(SchemaServiceTransport):
     ) -> Callable[[schema_service.GetSchemaRequest], Awaitable[schema.Schema]]:
         r"""Return a callable for the get schema method over gRPC.
 
-        Gets a [Schema][google.cloud.discoveryengine.v1beta.Schema].
+        Gets a `Schema
+        <google.cloud.discoveryengine.v1beta.Schema>`__.
 
         Returns:
             Callable[[~.GetSchemaRequest],
@@ -384,8 +385,8 @@ class SchemaServiceGrpcAsyncIOTransport(SchemaServiceTransport):
     ]:
         r"""Return a callable for the list schemas method over gRPC.
 
-        Gets a list of
-        [Schema][google.cloud.discoveryengine.v1beta.Schema]s.
+        Gets a list of `Schema
+        <google.cloud.discoveryengine.v1beta.Schema>`__s.
 
         Returns:
             Callable[[~.ListSchemasRequest],
@@ -413,7 +414,8 @@ class SchemaServiceGrpcAsyncIOTransport(SchemaServiceTransport):
     ]:
         r"""Return a callable for the create schema method over gRPC.
 
-        Creates a [Schema][google.cloud.discoveryengine.v1beta.Schema].
+        Creates a `Schema
+        <google.cloud.discoveryengine.v1beta.Schema>`__.
 
         Returns:
             Callable[[~.CreateSchemaRequest],
@@ -441,7 +443,8 @@ class SchemaServiceGrpcAsyncIOTransport(SchemaServiceTransport):
     ]:
         r"""Return a callable for the update schema method over gRPC.
 
-        Updates a [Schema][google.cloud.discoveryengine.v1beta.Schema].
+        Updates a `Schema
+        <google.cloud.discoveryengine.v1beta.Schema>`__.
 
         Returns:
             Callable[[~.UpdateSchemaRequest],
@@ -469,7 +472,8 @@ class SchemaServiceGrpcAsyncIOTransport(SchemaServiceTransport):
     ]:
         r"""Return a callable for the delete schema method over gRPC.
 
-        Deletes a [Schema][google.cloud.discoveryengine.v1beta.Schema].
+        Deletes a `Schema
+        <google.cloud.discoveryengine.v1beta.Schema>`__.
 
         Returns:
             Callable[[~.DeleteSchemaRequest],

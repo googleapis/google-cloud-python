@@ -53,5 +53,4 @@ def sample_enable_advanced_site_search():
     # Handle the response
     print(response)
 
-
 # [END discoveryengine_v1_generated_SiteSearchEngineService_EnableAdvancedSiteSearch_sync]

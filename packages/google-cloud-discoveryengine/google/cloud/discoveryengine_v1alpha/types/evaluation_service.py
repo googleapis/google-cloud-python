@@ -38,23 +38,27 @@ __protobuf__ = proto.module(
 
 class GetEvaluationRequest(proto.Message):
     r"""Request message for
-    [EvaluationService.GetEvaluation][google.cloud.discoveryengine.v1alpha.EvaluationService.GetEvaluation]
+    `EvaluationService.GetEvaluation
+    <google.cloud.discoveryengine.v1alpha.EvaluationService.GetEvaluation>`__
     method.
 
     Attributes:
         name (str):
             Required. Full resource name of
-            [Evaluation][google.cloud.discoveryengine.v1alpha.Evaluation],
+            `Evaluation
+            <google.cloud.discoveryengine.v1alpha.Evaluation>`__,
             such as
             ``projects/{project}/locations/{location}/evaluations/{evaluation}``.
 
-            If the caller does not have permission to access the
-            [Evaluation][google.cloud.discoveryengine.v1alpha.Evaluation],
-            regardless of whether or not it exists, a PERMISSION_DENIED
-            error is returned.
+            If the caller does not have permission to access
+            the `Evaluation
+            <google.cloud.discoveryengine.v1alpha.Evaluation>`__,
+            regardless of whether or not it exists, a
+            PERMISSION_DENIED error is returned.
 
             If the requested
-            [Evaluation][google.cloud.discoveryengine.v1alpha.Evaluation]
+            `Evaluation
+            <google.cloud.discoveryengine.v1alpha.Evaluation>`__
             does not exist, a NOT_FOUND error is returned.
     """
 
@@ -66,38 +70,48 @@ class GetEvaluationRequest(proto.Message):
 
 class ListEvaluationsRequest(proto.Message):
     r"""Request message for
-    [EvaluationService.ListEvaluations][google.cloud.discoveryengine.v1alpha.EvaluationService.ListEvaluations]
+    `EvaluationService.ListEvaluations
+    <google.cloud.discoveryengine.v1alpha.EvaluationService.ListEvaluations>`__
     method.
 
     Attributes:
         parent (str):
-            Required. The parent location resource name, such as
+            Required. The parent location resource name,
+            such as
             ``projects/{project}/locations/{location}``.
 
             If the caller does not have permission to list
-            [Evaluation][google.cloud.discoveryengine.v1alpha.Evaluation]s
-            under this location, regardless of whether or not this
-            location exists, a ``PERMISSION_DENIED`` error is returned.
+            `Evaluation
+            <google.cloud.discoveryengine.v1alpha.Evaluation>`__s
+            under this location, regardless of whether or
+            not this location exists, a
+            ``PERMISSION_DENIED`` error is returned.
         page_size (int):
             Maximum number of
-            [Evaluation][google.cloud.discoveryengine.v1alpha.Evaluation]s
-            to return. If unspecified, defaults to 100. The maximum
-            allowed value is 1000. Values above 1000 will be coerced to
-            1000.
+            `Evaluation
+            <google.cloud.discoveryengine.v1alpha.Evaluation>`__s
+            to return. If unspecified, defaults to 100. The
+            maximum allowed value is 1000. Values above 1000
+            will be coerced to 1000.
 
-            If this field is negative, an ``INVALID_ARGUMENT`` error is
-            returned.
+            If this field is negative, an
+            ``INVALID_ARGUMENT`` error is returned.
         page_token (str):
             A page token
-            [ListEvaluationsResponse.next_page_token][google.cloud.discoveryengine.v1alpha.ListEvaluationsResponse.next_page_token],
+            `ListEvaluationsResponse.next_page_token
+            <google.cloud.discoveryengine.v1alpha.ListEvaluationsResponse.next_page_token>`__,
             received from a previous
-            [EvaluationService.ListEvaluations][google.cloud.discoveryengine.v1alpha.EvaluationService.ListEvaluations]
-            call. Provide this to retrieve the subsequent page.
+            `EvaluationService.ListEvaluations
+            <google.cloud.discoveryengine.v1alpha.EvaluationService.ListEvaluations>`__
+            call. Provide this to retrieve the subsequent
+            page.
 
-            When paginating, all other parameters provided to
-            [EvaluationService.ListEvaluations][google.cloud.discoveryengine.v1alpha.EvaluationService.ListEvaluations]
-            must match the call that provided the page token. Otherwise,
-            an ``INVALID_ARGUMENT`` error is returned.
+            When paginating, all other parameters provided
+            to `EvaluationService.ListEvaluations
+            <google.cloud.discoveryengine.v1alpha.EvaluationService.ListEvaluations>`__
+            must match the call that provided the page
+            token. Otherwise, an ``INVALID_ARGUMENT`` error
+            is returned.
     """
 
     parent: str = proto.Field(
@@ -116,18 +130,20 @@ class ListEvaluationsRequest(proto.Message):
 
 class ListEvaluationsResponse(proto.Message):
     r"""Response message for
-    [EvaluationService.ListEvaluations][google.cloud.discoveryengine.v1alpha.EvaluationService.ListEvaluations]
+    `EvaluationService.ListEvaluations
+    <google.cloud.discoveryengine.v1alpha.EvaluationService.ListEvaluations>`__
     method.
 
     Attributes:
         evaluations (MutableSequence[google.cloud.discoveryengine_v1alpha.types.Evaluation]):
-            The
-            [Evaluation][google.cloud.discoveryengine.v1alpha.Evaluation]s.
+            The `Evaluation
+            <google.cloud.discoveryengine.v1alpha.Evaluation>`__s.
         next_page_token (str):
             A token that can be sent as
-            [ListEvaluationsRequest.page_token][google.cloud.discoveryengine.v1alpha.ListEvaluationsRequest.page_token]
-            to retrieve the next page. If this field is omitted, there
-            are no subsequent pages.
+            `ListEvaluationsRequest.page_token
+            <google.cloud.discoveryengine.v1alpha.ListEvaluationsRequest.page_token>`__
+            to retrieve the next page. If this field is
+            omitted, there are no subsequent pages.
     """
 
     @property
@@ -147,7 +163,8 @@ class ListEvaluationsResponse(proto.Message):
 
 class CreateEvaluationRequest(proto.Message):
     r"""Request message for
-    [EvaluationService.CreateEvaluation][google.cloud.discoveryengine.v1alpha.EvaluationService.CreateEvaluation]
+    `EvaluationService.CreateEvaluation
+    <google.cloud.discoveryengine.v1alpha.EvaluationService.CreateEvaluation>`__
     method.
 
     Attributes:
@@ -155,8 +172,8 @@ class CreateEvaluationRequest(proto.Message):
             Required. The parent resource name, such as
             ``projects/{project}/locations/{location}``.
         evaluation (google.cloud.discoveryengine_v1alpha.types.Evaluation):
-            Required. The
-            [Evaluation][google.cloud.discoveryengine.v1alpha.Evaluation]
+            Required. The `Evaluation
+            <google.cloud.discoveryengine.v1alpha.Evaluation>`__
             to create.
     """
 
@@ -173,7 +190,8 @@ class CreateEvaluationRequest(proto.Message):
 
 class CreateEvaluationMetadata(proto.Message):
     r"""Metadata for
-    [EvaluationService.CreateEvaluation][google.cloud.discoveryengine.v1alpha.EvaluationService.CreateEvaluation]
+    `EvaluationService.CreateEvaluation
+    <google.cloud.discoveryengine.v1alpha.EvaluationService.CreateEvaluation>`__
     method.
 
     """
@@ -181,7 +199,8 @@ class CreateEvaluationMetadata(proto.Message):
 
 class ListEvaluationResultsRequest(proto.Message):
     r"""Request message for
-    [EvaluationService.ListEvaluationResults][google.cloud.discoveryengine.v1alpha.EvaluationService.ListEvaluationResults]
+    `EvaluationService.ListEvaluationResults
+    <google.cloud.discoveryengine.v1alpha.EvaluationService.ListEvaluationResults>`__
     method.
 
     Attributes:
@@ -190,27 +209,34 @@ class ListEvaluationResultsRequest(proto.Message):
             ``projects/{project}/locations/{location}/evaluations/{evaluation}``.
 
             If the caller does not have permission to list
-            [EvaluationResult][] under this evaluation, regardless of
-            whether or not this evaluation set exists, a
-            ``PERMISSION_DENIED`` error is returned.
-        page_size (int):
-            Maximum number of [EvaluationResult][] to return. If
-            unspecified, defaults to 100. The maximum allowed value is
-            1000. Values above 1000 will be coerced to 1000.
-
-            If this field is negative, an ``INVALID_ARGUMENT`` error is
+            [EvaluationResult][] under this evaluation,
+            regardless of whether or not this evaluation set
+            exists, a ``PERMISSION_DENIED`` error is
             returned.
+        page_size (int):
+            Maximum number of [EvaluationResult][] to
+            return. If unspecified, defaults to 100. The
+            maximum allowed value is 1000. Values above 1000
+            will be coerced to 1000.
+
+            If this field is negative, an
+            ``INVALID_ARGUMENT`` error is returned.
         page_token (str):
             A page token
-            [ListEvaluationResultsResponse.next_page_token][google.cloud.discoveryengine.v1alpha.ListEvaluationResultsResponse.next_page_token],
+            `ListEvaluationResultsResponse.next_page_token
+            <google.cloud.discoveryengine.v1alpha.ListEvaluationResultsResponse.next_page_token>`__,
             received from a previous
-            [EvaluationService.ListEvaluationResults][google.cloud.discoveryengine.v1alpha.EvaluationService.ListEvaluationResults]
-            call. Provide this to retrieve the subsequent page.
+            `EvaluationService.ListEvaluationResults
+            <google.cloud.discoveryengine.v1alpha.EvaluationService.ListEvaluationResults>`__
+            call. Provide this to retrieve the subsequent
+            page.
 
-            When paginating, all other parameters provided to
-            [EvaluationService.ListEvaluationResults][google.cloud.discoveryengine.v1alpha.EvaluationService.ListEvaluationResults]
-            must match the call that provided the page token. Otherwise,
-            an ``INVALID_ARGUMENT`` error is returned.
+            When paginating, all other parameters provided
+            to `EvaluationService.ListEvaluationResults
+            <google.cloud.discoveryengine.v1alpha.EvaluationService.ListEvaluationResults>`__
+            must match the call that provided the page
+            token. Otherwise, an ``INVALID_ARGUMENT`` error
+            is returned.
     """
 
     evaluation: str = proto.Field(
@@ -229,33 +255,38 @@ class ListEvaluationResultsRequest(proto.Message):
 
 class ListEvaluationResultsResponse(proto.Message):
     r"""Response message for
-    [EvaluationService.ListEvaluationResults][google.cloud.discoveryengine.v1alpha.EvaluationService.ListEvaluationResults]
+    `EvaluationService.ListEvaluationResults
+    <google.cloud.discoveryengine.v1alpha.EvaluationService.ListEvaluationResults>`__
     method.
 
     Attributes:
         evaluation_results (MutableSequence[google.cloud.discoveryengine_v1alpha.types.ListEvaluationResultsResponse.EvaluationResult]):
             The
-            [EvaluationResult][google.cloud.discoveryengine.v1alpha.ListEvaluationResultsResponse.EvaluationResult]s.
+            `EvaluationResult
+            <google.cloud.discoveryengine.v1alpha.ListEvaluationResultsResponse.EvaluationResult>`__s.
         next_page_token (str):
             A token that can be sent as
-            [ListEvaluationResultsRequest.page_token][google.cloud.discoveryengine.v1alpha.ListEvaluationResultsRequest.page_token]
-            to retrieve the next page. If this field is omitted, there
-            are no subsequent pages.
+            `ListEvaluationResultsRequest.page_token
+            <google.cloud.discoveryengine.v1alpha.ListEvaluationResultsRequest.page_token>`__
+            to retrieve the next page. If this field is
+            omitted, there are no subsequent pages.
     """
 
     class EvaluationResult(proto.Message):
         r"""Represents the results of an evaluation for a single
-        [SampleQuery][google.cloud.discoveryengine.v1alpha.SampleQuery].
+        `SampleQuery
+        <google.cloud.discoveryengine.v1alpha.SampleQuery>`__.
 
         Attributes:
             sample_query (google.cloud.discoveryengine_v1alpha.types.SampleQuery):
                 Output only. The
-                [SampleQuery][google.cloud.discoveryengine.v1alpha.SampleQuery]
+                `SampleQuery
+                <google.cloud.discoveryengine.v1alpha.SampleQuery>`__
                 that was evaluated.
             quality_metrics (google.cloud.discoveryengine_v1alpha.types.QualityMetrics):
-                Output only. The metrics produced by the evaluation, for a
-                given
-                [SampleQuery][google.cloud.discoveryengine.v1alpha.SampleQuery].
+                Output only. The metrics produced by the
+                evaluation, for a given `SampleQuery
+                <google.cloud.discoveryengine.v1alpha.SampleQuery>`__.
         """
 
         sample_query: gcd_sample_query.SampleQuery = proto.Field(
