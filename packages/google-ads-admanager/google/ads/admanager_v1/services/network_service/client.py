@@ -63,6 +63,7 @@ _LOGGER = std_logging.getLogger(__name__)
 
 from google.longrunning import operations_pb2  # type: ignore
 
+from google.ads.admanager_v1.services.network_service import pagers
 from google.ads.admanager_v1.types import network_messages, network_service
 
 from .transports.base import DEFAULT_CLIENT_INFO, NetworkServiceTransport
@@ -829,7 +830,7 @@ class NetworkServiceClient(metaclass=NetworkServiceClientMeta):
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
-    ) -> network_service.ListNetworksResponse:
+    ) -> pagers.ListNetworksPager:
         r"""API to retrieve all the networks the current user has
         access to.
 
@@ -853,10 +854,11 @@ class NetworkServiceClient(metaclass=NetworkServiceClientMeta):
                 )
 
                 # Make the request
-                response = client.list_networks(request=request)
+                page_result = client.list_networks(request=request)
 
                 # Handle the response
-                print(response)
+                for response in page_result:
+                    print(response)
 
         Args:
             request (Union[google.ads.admanager_v1.types.ListNetworksRequest, dict]):
@@ -870,8 +872,12 @@ class NetworkServiceClient(metaclass=NetworkServiceClientMeta):
                 be of type `bytes`.
 
         Returns:
-            google.ads.admanager_v1.types.ListNetworksResponse:
+            google.ads.admanager_v1.services.network_service.pagers.ListNetworksPager:
                 Response object for ListNetworks method.
+
+                Iterating over this object will yield results and
+                resolve additional pages automatically.
+
         """
         # Create or coerce a protobuf request object.
         # - Use the request object if provided (there's no risk of modifying the input as
@@ -889,6 +895,17 @@ class NetworkServiceClient(metaclass=NetworkServiceClientMeta):
         # Send the request.
         response = rpc(
             request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # This method is paged; wrap the response in a pager, which provides
+        # an `__iter__` convenience method.
+        response = pagers.ListNetworksPager(
+            method=rpc,
+            request=request,
+            response=response,
             retry=retry,
             timeout=timeout,
             metadata=metadata,

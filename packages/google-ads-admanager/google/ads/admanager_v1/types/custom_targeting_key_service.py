@@ -17,6 +17,7 @@ from __future__ import annotations
 
 from typing import MutableMapping, MutableSequence
 
+from google.protobuf import field_mask_pb2  # type: ignore
 import proto  # type: ignore
 
 from google.ads.admanager_v1.types import custom_targeting_key_messages
@@ -27,6 +28,16 @@ __protobuf__ = proto.module(
         "GetCustomTargetingKeyRequest",
         "ListCustomTargetingKeysRequest",
         "ListCustomTargetingKeysResponse",
+        "CreateCustomTargetingKeyRequest",
+        "BatchCreateCustomTargetingKeysRequest",
+        "BatchCreateCustomTargetingKeysResponse",
+        "UpdateCustomTargetingKeyRequest",
+        "BatchUpdateCustomTargetingKeysRequest",
+        "BatchUpdateCustomTargetingKeysResponse",
+        "BatchActivateCustomTargetingKeysRequest",
+        "BatchActivateCustomTargetingKeysResponse",
+        "BatchDeactivateCustomTargetingKeysRequest",
+        "BatchDeactivateCustomTargetingKeysResponse",
     },
 )
 
@@ -153,6 +164,194 @@ class ListCustomTargetingKeysResponse(proto.Message):
         proto.INT32,
         number=3,
     )
+
+
+class CreateCustomTargetingKeyRequest(proto.Message):
+    r"""Request object for ``CreateCustomTargetingKey`` method.
+
+    Attributes:
+        parent (str):
+            Required. The parent resource where this
+            ``CustomTargetingKey`` will be created. Format:
+            ``networks/{network_code}``
+        custom_targeting_key (google.ads.admanager_v1.types.CustomTargetingKey):
+            Required. The ``CustomTargetingKey`` to create.
+    """
+
+    parent: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    custom_targeting_key: custom_targeting_key_messages.CustomTargetingKey = (
+        proto.Field(
+            proto.MESSAGE,
+            number=2,
+            message=custom_targeting_key_messages.CustomTargetingKey,
+        )
+    )
+
+
+class BatchCreateCustomTargetingKeysRequest(proto.Message):
+    r"""Request object for ``BatchCreateCustomTargetingKeys`` method.
+
+    Attributes:
+        parent (str):
+            Required. The parent resource where ``CustomTargetingKeys``
+            will be created. Format: ``networks/{network_code}`` The
+            parent field in the CreateCustomTargetingKeyRequest must
+            match this field.
+        requests (MutableSequence[google.ads.admanager_v1.types.CreateCustomTargetingKeyRequest]):
+            Required. The ``CustomTargetingKey`` objects to create. A
+            maximum of 100 objects can be created in a batch.
+    """
+
+    parent: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    requests: MutableSequence["CreateCustomTargetingKeyRequest"] = proto.RepeatedField(
+        proto.MESSAGE,
+        number=2,
+        message="CreateCustomTargetingKeyRequest",
+    )
+
+
+class BatchCreateCustomTargetingKeysResponse(proto.Message):
+    r"""Response object for ``BatchCreateCustomTargetingKeys`` method.
+
+    Attributes:
+        custom_targeting_keys (MutableSequence[google.ads.admanager_v1.types.CustomTargetingKey]):
+            The ``CustomTargetingKey`` objects created.
+    """
+
+    custom_targeting_keys: MutableSequence[
+        custom_targeting_key_messages.CustomTargetingKey
+    ] = proto.RepeatedField(
+        proto.MESSAGE,
+        number=1,
+        message=custom_targeting_key_messages.CustomTargetingKey,
+    )
+
+
+class UpdateCustomTargetingKeyRequest(proto.Message):
+    r"""Request object for ``UpdateCustomTargetingKey`` method.
+
+    Attributes:
+        custom_targeting_key (google.ads.admanager_v1.types.CustomTargetingKey):
+            Required. The ``CustomTargetingKey`` to update.
+
+            The ``CustomTargetingKey``'s ``name`` is used to identify
+            the ``CustomTargetingKey`` to update.
+        update_mask (google.protobuf.field_mask_pb2.FieldMask):
+            Required. The list of fields to update.
+    """
+
+    custom_targeting_key: custom_targeting_key_messages.CustomTargetingKey = (
+        proto.Field(
+            proto.MESSAGE,
+            number=1,
+            message=custom_targeting_key_messages.CustomTargetingKey,
+        )
+    )
+    update_mask: field_mask_pb2.FieldMask = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        message=field_mask_pb2.FieldMask,
+    )
+
+
+class BatchUpdateCustomTargetingKeysRequest(proto.Message):
+    r"""Request object for ``BatchUpdateCustomTargetingKeys`` method.
+
+    Attributes:
+        parent (str):
+            Required. The parent resource where ``CustomTargetingKeys``
+            will be updated. Format: ``networks/{network_code}`` The
+            parent field in the UpdateCustomTargetingKeyRequest must
+            match this field.
+        requests (MutableSequence[google.ads.admanager_v1.types.UpdateCustomTargetingKeyRequest]):
+            Required. The ``CustomTargetingKey`` objects to update. A
+            maximum of 100 objects can be updated in a batch.
+    """
+
+    parent: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    requests: MutableSequence["UpdateCustomTargetingKeyRequest"] = proto.RepeatedField(
+        proto.MESSAGE,
+        number=2,
+        message="UpdateCustomTargetingKeyRequest",
+    )
+
+
+class BatchUpdateCustomTargetingKeysResponse(proto.Message):
+    r"""Response object for ``BatchUpdateCustomTargetingKeys`` method.
+
+    Attributes:
+        custom_targeting_keys (MutableSequence[google.ads.admanager_v1.types.CustomTargetingKey]):
+            The ``CustomTargetingKey`` objects updated.
+    """
+
+    custom_targeting_keys: MutableSequence[
+        custom_targeting_key_messages.CustomTargetingKey
+    ] = proto.RepeatedField(
+        proto.MESSAGE,
+        number=1,
+        message=custom_targeting_key_messages.CustomTargetingKey,
+    )
+
+
+class BatchActivateCustomTargetingKeysRequest(proto.Message):
+    r"""Request object for ``BatchActivateCustomTargetingKeys`` method.
+
+    Attributes:
+        parent (str):
+            Required. Format: ``networks/{network_code}``
+        names (MutableSequence[str]):
+            Required. The resource names of the
+            ``CustomTargetingKey``\ s to activate. Format:
+            ``networks/{network_code}/customTargetingKeys/{custom_targeting_key_id}``
+    """
+
+    parent: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    names: MutableSequence[str] = proto.RepeatedField(
+        proto.STRING,
+        number=2,
+    )
+
+
+class BatchActivateCustomTargetingKeysResponse(proto.Message):
+    r"""Response object for ``BatchActivateCustomTargetingKeys`` method."""
+
+
+class BatchDeactivateCustomTargetingKeysRequest(proto.Message):
+    r"""Request message for ``BatchDeactivateCustomTargetingKeys`` method.
+
+    Attributes:
+        parent (str):
+            Required. Format: ``networks/{network_code}``
+        names (MutableSequence[str]):
+            Required. The resource names of the
+            ``CustomTargetingKey``\ s to deactivate. Format:
+            ``networks/{network_code}/customTargetingKeys/{custom_targeting_key_id}``
+    """
+
+    parent: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    names: MutableSequence[str] = proto.RepeatedField(
+        proto.STRING,
+        number=2,
+    )
+
+
+class BatchDeactivateCustomTargetingKeysResponse(proto.Message):
+    r"""Response object for ``BatchDeactivateCustomTargetingKeys`` method."""
 
 
 __all__ = tuple(sorted(__protobuf__.manifest))

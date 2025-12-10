@@ -123,6 +123,14 @@ class DataChatServiceRestInterceptor:
                 logging.log(f"Received response: {response}")
                 return response
 
+            def pre_query_data(self, request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_query_data(self, response):
+                logging.log(f"Received response: {response}")
+                return response
+
         transport = DataChatServiceRestTransport(interceptor=MyCustomDataChatServiceInterceptor())
         client = DataChatServiceClient(transport=transport)
 
@@ -385,6 +393,56 @@ class DataChatServiceRestInterceptor:
         `post_list_messages` interceptor. The (possibly modified) response returned by
         `post_list_messages` will be passed to
         `post_list_messages_with_metadata`.
+        """
+        return response, metadata
+
+    def pre_query_data(
+        self,
+        request: data_chat_service.QueryDataRequest,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        data_chat_service.QueryDataRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
+        """Pre-rpc interceptor for query_data
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the DataChatService server.
+        """
+        return request, metadata
+
+    def post_query_data(
+        self, response: data_chat_service.QueryDataResponse
+    ) -> data_chat_service.QueryDataResponse:
+        """Post-rpc interceptor for query_data
+
+        DEPRECATED. Please use the `post_query_data_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
+        after it is returned by the DataChatService server but before
+        it is returned to user code. This `post_query_data` interceptor runs
+        before the `post_query_data_with_metadata` interceptor.
+        """
+        return response
+
+    def post_query_data_with_metadata(
+        self,
+        response: data_chat_service.QueryDataResponse,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        data_chat_service.QueryDataResponse, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
+        """Post-rpc interceptor for query_data
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the DataChatService server but before it is returned to user code.
+
+        We recommend only using this `post_query_data_with_metadata`
+        interceptor in new development instead of the `post_query_data` interceptor.
+        When both interceptors are used, this `post_query_data_with_metadata` interceptor runs after the
+        `post_query_data` interceptor. The (possibly modified) response returned by
+        `post_query_data` will be passed to
+        `post_query_data_with_metadata`.
         """
         return response, metadata
 
@@ -1478,6 +1536,165 @@ class DataChatServiceRestTransport(_BaseDataChatServiceRestTransport):
                 )
             return resp
 
+    class _QueryData(
+        _BaseDataChatServiceRestTransport._BaseQueryData, DataChatServiceRestStub
+    ):
+        def __hash__(self):
+            return hash("DataChatServiceRestTransport.QueryData")
+
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+            return response
+
+        def __call__(
+            self,
+            request: data_chat_service.QueryDataRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+        ) -> data_chat_service.QueryDataResponse:
+            r"""Call the query data method over HTTP.
+
+            Args:
+                request (~.data_chat_service.QueryDataRequest):
+                    The request object. Request to query data from a natural
+                language query.
+                retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                    should be retried.
+                timeout (float): The timeout for this request.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
+
+            Returns:
+                ~.data_chat_service.QueryDataResponse:
+                    Response containing the generated
+                query and related information.
+
+            """
+
+            http_options = (
+                _BaseDataChatServiceRestTransport._BaseQueryData._get_http_options()
+            )
+
+            request, metadata = self._interceptor.pre_query_data(request, metadata)
+            transcoded_request = _BaseDataChatServiceRestTransport._BaseQueryData._get_transcoded_request(
+                http_options, request
+            )
+
+            body = (
+                _BaseDataChatServiceRestTransport._BaseQueryData._get_request_body_json(
+                    transcoded_request
+                )
+            )
+
+            # Jsonify the query params
+            query_params = (
+                _BaseDataChatServiceRestTransport._BaseQueryData._get_query_params_json(
+                    transcoded_request
+                )
+            )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.geminidataanalytics_v1alpha.DataChatServiceClient.QueryData",
+                    extra={
+                        "serviceName": "google.cloud.geminidataanalytics.v1alpha.DataChatService",
+                        "rpcName": "QueryData",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
+
+            # Send the request
+            response = DataChatServiceRestTransport._QueryData._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+                body,
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+
+            # Return the response
+            resp = data_chat_service.QueryDataResponse()
+            pb_resp = data_chat_service.QueryDataResponse.pb(resp)
+
+            json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
+            resp = self._interceptor.post_query_data(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_query_data_with_metadata(
+                resp, response_metadata
+            )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = data_chat_service.QueryDataResponse.to_json(
+                        response
+                    )
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.geminidataanalytics_v1alpha.DataChatServiceClient.query_data",
+                    extra={
+                        "serviceName": "google.cloud.geminidataanalytics.v1alpha.DataChatService",
+                        "rpcName": "QueryData",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
+            return resp
+
     @property
     def chat(
         self,
@@ -1531,6 +1748,16 @@ class DataChatServiceRestTransport(_BaseDataChatServiceRestTransport):
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._ListMessages(self._session, self._host, self._interceptor)  # type: ignore
+
+    @property
+    def query_data(
+        self,
+    ) -> Callable[
+        [data_chat_service.QueryDataRequest], data_chat_service.QueryDataResponse
+    ]:
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return self._QueryData(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
     def get_location(self):

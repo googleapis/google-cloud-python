@@ -126,6 +126,10 @@ class ReportDefinition(proto.Message):
                 Reach.
             PRIVACY_AND_MESSAGING (6):
                 Privacy and messaging.
+            REVENUE_VERIFICATION (7):
+                Gross revenue.
+            PARTNER_FINANCE (8):
+                Partner finance.
             AD_SPEED (13):
                 Ad speed.
         """
@@ -133,6 +137,8 @@ class ReportDefinition(proto.Message):
         HISTORICAL = 1
         REACH = 5
         PRIVACY_AND_MESSAGING = 6
+        REVENUE_VERIFICATION = 7
+        PARTNER_FINANCE = 8
         AD_SPEED = 13
 
     class Dimension(proto.Enum):
@@ -170,7 +176,7 @@ class ReportDefinition(proto.Message):
 
                 Data format: ``ENUM``
             ADVERTISER_CREDIT_STATUS_NAME (476):
-                Advertiser credit status locallized name
+                Advertiser credit status localized name
 
                 Corresponds to "Advertiser credit status" in the Ad Manager
                 UI.
@@ -257,7 +263,7 @@ class ReportDefinition(proto.Message):
 
                 Data format: ``ENUM``
             ADVERTISER_STATUS_NAME (472):
-                Advertiser status locallized name
+                Advertiser status localized name
 
                 Corresponds to "Advertiser status" in the Ad Manager UI.
 
@@ -275,7 +281,7 @@ class ReportDefinition(proto.Message):
 
                 Data format: ``ENUM``
             ADVERTISER_TYPE_NAME (474):
-                Advertiser type locallized name
+                Advertiser type localized name
 
                 Corresponds to "Advertiser type" in the Ad Manager UI.
 
@@ -298,7 +304,8 @@ class ReportDefinition(proto.Message):
                 Corresponds to "Ad Exchange product value" in the Ad Manager
                 UI (when showing API fields).
 
-                Compatible with the following report types: ``HISTORICAL``
+                Compatible with the following report types: ``HISTORICAL``,
+                ``REVENUE_VERIFICATION``
 
                 Data format: ``ENUM``
             ADX_PRODUCT_NAME (500):
@@ -307,7 +314,8 @@ class ReportDefinition(proto.Message):
 
                 Corresponds to "Ad Exchange product" in the Ad Manager UI.
 
-                Compatible with the following report types: ``HISTORICAL``
+                Compatible with the following report types: ``HISTORICAL``,
+                ``REVENUE_VERIFICATION``
 
                 Data format: ``STRING``
             AD_EXPERIENCES_TYPE (641):
@@ -348,6 +356,14 @@ class ReportDefinition(proto.Message):
                 Compatible with the following report types: ``HISTORICAL``
 
                 Data format: ``STRING``
+            AD_REQUEST_SIZES (541):
+                Multi-size inventory in an ad request.
+
+                Corresponds to "Ad request sizes" in the Ad Manager UI.
+
+                Compatible with the following report types:
+
+                Data format: ``STRING_LIST``
             AD_TECHNOLOGY_PROVIDER_DOMAIN (620):
                 The domain of the ad technology provider associated with the
                 bid.
@@ -1049,6 +1065,22 @@ class ReportDefinition(proto.Message):
                 Compatible with the following report types: ``HISTORICAL``
 
                 Data format: ``STRING``
+            ANALYTICS_PROPERTY_ID (733):
+                Property ID in Google Analytics
+
+                Corresponds to "Analytics property ID" in the Ad Manager UI.
+
+                Compatible with the following report types: ``HISTORICAL``
+
+                Data format: ``IDENTIFIER``
+            ANALYTICS_PROPERTY_NAME (767):
+                Property name in Google Analytics
+
+                Corresponds to "Analytics property" in the Ad Manager UI.
+
+                Compatible with the following report types: ``HISTORICAL``
+
+                Data format: ``STRING``
             APP_TRACKING_TRANSPARENCY_CONSENT_STATUS (442):
                 Enum value for App Tracking Transparency consent status.
 
@@ -1093,6 +1125,42 @@ class ReportDefinition(proto.Message):
                 Compatible with the following report types: ``HISTORICAL``
 
                 Data format: ``IDENTIFIER``
+            AUDIENCE_SEGMENT_BILLABLE (594):
+                Name of billable audience segment.
+
+                Corresponds to "Audience segment (billable)" in the Ad
+                Manager UI.
+
+                Compatible with the following report types: ``HISTORICAL``
+
+                Data format: ``STRING``
+            AUDIENCE_SEGMENT_DATA_PROVIDER_ID (613):
+                ID of the data provider for the audience segment.
+
+                Corresponds to "Audience segment data provider ID" in the Ad
+                Manager UI.
+
+                Compatible with the following report types: ``HISTORICAL``
+
+                Data format: ``IDENTIFIER``
+            AUDIENCE_SEGMENT_DATA_PROVIDER_NAME (614):
+                Name of the data provider for the audience segment.
+
+                Corresponds to "Audience segment data provider" in the Ad
+                Manager UI.
+
+                Compatible with the following report types: ``HISTORICAL``
+
+                Data format: ``STRING``
+            AUDIENCE_SEGMENT_ID_BILLABLE (595):
+                ID of billable audience segment.
+
+                Corresponds to "Audience segment ID (billable)" in the Ad
+                Manager UI.
+
+                Compatible with the following report types: ``HISTORICAL``
+
+                Data format: ``IDENTIFIER``
             AUDIENCE_SEGMENT_ID_TARGETED (584):
                 ID of targeted audience segment, including all first-party
                 and third-party segments that matched the user on the
@@ -1115,6 +1183,132 @@ class ReportDefinition(proto.Message):
                 Compatible with the following report types: ``HISTORICAL``
 
                 Data format: ``STRING``
+            AUDIENCE_SEGMENT_TARGETED_AD_ID_USER_SIZE (605):
+                Number of AdID identifiers in the audience segment.
+
+                Corresponds to "Audience segment (targeted) AdID size" in
+                the Ad Manager UI.
+
+                Compatible with the following report types: ``HISTORICAL``
+
+                Data format: ``INTEGER``
+            AUDIENCE_SEGMENT_TARGETED_AMAZON_FIRE_USER_SIZE (606):
+                Number of Amazon Fire identifiers in the audience segment.
+
+                Corresponds to "Audience segment (targeted) Amazon Fire
+                size" in the Ad Manager UI.
+
+                Compatible with the following report types: ``HISTORICAL``
+
+                Data format: ``INTEGER``
+            AUDIENCE_SEGMENT_TARGETED_ANDROID_TV_USER_SIZE (607):
+                Number of Android TV identifiers in the audience segment.
+
+                Corresponds to "Audience segment (targeted) Android TV size"
+                in the Ad Manager UI.
+
+                Compatible with the following report types: ``HISTORICAL``
+
+                Data format: ``INTEGER``
+            AUDIENCE_SEGMENT_TARGETED_APPLE_TV_USER_SIZE (608):
+                Number of Apple TV identifiers in the audience segment.
+
+                Corresponds to "Audience segment (targeted) Apple TV size"
+                in the Ad Manager UI.
+
+                Compatible with the following report types: ``HISTORICAL``
+
+                Data format: ``INTEGER``
+            AUDIENCE_SEGMENT_TARGETED_IDFA_USER_SIZE (609):
+                Number of IDFA identifiers in the audience segment.
+
+                Corresponds to "Audience segment (targeted) IDFA size" in
+                the Ad Manager UI.
+
+                Compatible with the following report types: ``HISTORICAL``
+
+                Data format: ``INTEGER``
+            AUDIENCE_SEGMENT_TARGETED_MOBILE_WEB_USER_SIZE (610):
+                Number of mobile web identifiers in the audience segment.
+
+                Corresponds to "Audience segment (targeted) mobile web size"
+                in the Ad Manager UI.
+
+                Compatible with the following report types: ``HISTORICAL``
+
+                Data format: ``INTEGER``
+            AUDIENCE_SEGMENT_TARGETED_PLAYSTATION_USER_SIZE (611):
+                Number of PlayStation identifiers in the audience segment.
+
+                Corresponds to "Audience segment (targeted) PlayStation
+                size" in the Ad Manager UI.
+
+                Compatible with the following report types: ``HISTORICAL``
+
+                Data format: ``INTEGER``
+            AUDIENCE_SEGMENT_TARGETED_PPID_USER_SIZE (612):
+                Number of PPID identifiers in the audience segment.
+
+                Corresponds to "Audience segment (targeted) PPID size" in
+                the Ad Manager UI.
+
+                Compatible with the following report types: ``HISTORICAL``
+
+                Data format: ``INTEGER``
+            AUDIENCE_SEGMENT_TARGETED_ROKU_USER_SIZE (615):
+                Number of Roku identifiers in the audience segment.
+
+                Corresponds to "Audience segment (targeted) Roku size" in
+                the Ad Manager UI.
+
+                Compatible with the following report types: ``HISTORICAL``
+
+                Data format: ``INTEGER``
+            AUDIENCE_SEGMENT_TARGETED_SAMSUNG_TV_USER_SIZE (616):
+                Number of Samsung TV identifiers in the audience segment.
+
+                Corresponds to "Audience segment (targeted) Samsung TV size"
+                in the Ad Manager UI.
+
+                Compatible with the following report types: ``HISTORICAL``
+
+                Data format: ``INTEGER``
+            AUDIENCE_SEGMENT_TARGETED_SIZE (618):
+                Number of identifiers in the audience segment.
+
+                Corresponds to "Audience segment (targeted) size" in the Ad
+                Manager UI.
+
+                Compatible with the following report types: ``HISTORICAL``
+
+                Data format: ``INTEGER``
+            AUDIENCE_SEGMENT_TARGETED_STATUS (628):
+                Status of the audience segment.
+
+                Corresponds to "Audience segment (targeted) status value" in
+                the Ad Manager UI (when showing API fields).
+
+                Compatible with the following report types: ``HISTORICAL``
+
+                Data format: ``ENUM``
+            AUDIENCE_SEGMENT_TARGETED_STATUS_NAME (617):
+                Name of the status of the audience segment.
+
+                Corresponds to "Audience segment (targeted) status" in the
+                Ad Manager UI.
+
+                Compatible with the following report types: ``HISTORICAL``
+
+                Data format: ``STRING``
+            AUDIENCE_SEGMENT_TARGETED_XBOX_USER_SIZE (619):
+                Number of Xbox identifiers in the audience segment.
+
+                Corresponds to "Audience segment (targeted) Xbox size" in
+                the Ad Manager UI.
+
+                Compatible with the following report types: ``HISTORICAL``
+
+                Data format: ``INTEGER``
             AUTO_REFRESHED_TRAFFIC (421):
                 Enum value of Auto refreshed traffic.
 
@@ -1138,7 +1332,8 @@ class ReportDefinition(proto.Message):
 
                 Corresponds to "Bidder encrypted ID" in the Ad Manager UI.
 
-                Compatible with the following report types: ``HISTORICAL``
+                Compatible with the following report types: ``HISTORICAL``,
+                ``REVENUE_VERIFICATION``
 
                 Data format: ``STRING``
             BIDDER_NAME (494):
@@ -1146,7 +1341,8 @@ class ReportDefinition(proto.Message):
 
                 Corresponds to "Bidder" in the Ad Manager UI.
 
-                Compatible with the following report types: ``HISTORICAL``
+                Compatible with the following report types: ``HISTORICAL``,
+                ``REVENUE_VERIFICATION``
 
                 Data format: ``STRING``
             BID_RANGE (679):
@@ -1371,6 +1567,38 @@ class ReportDefinition(proto.Message):
                 ``AD_SPEED``
 
                 Data format: ``STRING``
+            CONTENT_BUNDLE_ID (460):
+                ID of the video content bundle served.
+
+                Corresponds to "Content bundle ID" in the Ad Manager UI.
+
+                Compatible with the following report types: ``HISTORICAL``
+
+                Data format: ``IDENTIFIER``
+            CONTENT_BUNDLE_NAME (461):
+                Name of the video content bundle served.
+
+                Corresponds to "Content bundle" in the Ad Manager UI.
+
+                Compatible with the following report types: ``HISTORICAL``
+
+                Data format: ``STRING``
+            CONTENT_CMS_METADATA_KV_NAMESPACE_ID (462):
+                ID of the video content metadata namespace served.
+
+                Corresponds to "CMS metadata key ID" in the Ad Manager UI.
+
+                Compatible with the following report types: ``HISTORICAL``
+
+                Data format: ``IDENTIFIER``
+            CONTENT_CMS_METADATA_KV_NAMESPACE_NAME (463):
+                Name of the video content metadata namespace served.
+
+                Corresponds to "CMS metadata key" in the Ad Manager UI.
+
+                Compatible with the following report types: ``HISTORICAL``
+
+                Data format: ``STRING``
             CONTENT_CMS_NAME (643):
                 The display name of the CMS content.
 
@@ -1530,8 +1758,7 @@ class ReportDefinition(proto.Message):
 
                 Data format: ``STRING``
             CREATIVE_PROTECTIONS_FILTERING (704):
-                Creative Protections filtering (Publisher Blocks
-                Enforcement).
+                Creative Protections filtering.
 
                 Corresponds to "Creative protections filtering value" in the
                 Ad Manager UI (when showing API fields).
@@ -1579,7 +1806,7 @@ class ReportDefinition(proto.Message):
 
                 Data format: ``ENUM``
             CREATIVE_TECHNOLOGY_NAME (149):
-                Creative technology locallized name
+                Creative technology localized name
 
                 Corresponds to "Creative technology" in the Ad Manager UI.
 
@@ -1714,7 +1941,8 @@ class ReportDefinition(proto.Message):
                 Corresponds to "Date" in the Ad Manager UI.
 
                 Compatible with the following report types: ``HISTORICAL``,
-                ``REACH``, ``PRIVACY_AND_MESSAGING``, ``AD_SPEED``
+                ``REACH``, ``PRIVACY_AND_MESSAGING``,
+                ``REVENUE_VERIFICATION``, ``AD_SPEED``
 
                 Data format: ``DATE``
             DAY_OF_WEEK (4):
@@ -1786,7 +2014,7 @@ class ReportDefinition(proto.Message):
                 (when showing API fields).
 
                 Compatible with the following report types: ``HISTORICAL``,
-                ``REACH``, ``AD_SPEED``
+                ``REACH``, ``REVENUE_VERIFICATION``, ``AD_SPEED``
 
                 Data format: ``ENUM``
             DEMAND_CHANNEL_NAME (10):
@@ -1795,7 +2023,7 @@ class ReportDefinition(proto.Message):
                 Corresponds to "Demand channel" in the Ad Manager UI.
 
                 Compatible with the following report types: ``HISTORICAL``,
-                ``REACH``, ``AD_SPEED``
+                ``REACH``, ``REVENUE_VERIFICATION``, ``AD_SPEED``
 
                 Data format: ``STRING``
             DEMAND_SOURCE (592):
@@ -2343,6 +2571,14 @@ class ReportDefinition(proto.Message):
                 Compatible with the following report types: ``HISTORICAL``
 
                 Data format: ``STRING``
+            KEY_VALUES_SET (713):
+                The custom criteria key-values specified in ad requests.
+
+                Corresponds to "Key-values" in the Ad Manager UI.
+
+                Compatible with the following report types:
+
+                Data format: ``STRING_LIST``
             LINE_ITEM_AGENCY (663):
                 The agency of the order associated with the line item.
 
@@ -2362,7 +2598,7 @@ class ReportDefinition(proto.Message):
 
                 Data format: ``BOOLEAN``
             LINE_ITEM_COMPANION_DELIVERY_OPTION (204):
-                Line item comanion delivery option ENUM value.
+                Line item companion delivery option ENUM value.
 
                 Corresponds to "Line item companion delivery option value"
                 in the Ad Manager UI (when showing API fields).
@@ -2372,7 +2608,7 @@ class ReportDefinition(proto.Message):
 
                 Data format: ``ENUM``
             LINE_ITEM_COMPANION_DELIVERY_OPTION_NAME (205):
-                Localized line item comanion delivery option name.
+                Localized line item companion delivery option name.
 
                 Corresponds to "Line item companion delivery option" in the
                 Ad Manager UI.
@@ -2712,7 +2948,7 @@ class ReportDefinition(proto.Message):
 
                 Data format: ``MONEY``
             LINE_ITEM_OPTIMIZABLE (90):
-                Whether a Line item is eligible for opitimization.
+                Whether a Line item is eligible for optimization.
 
                 Corresponds to "Line item is optimizable" in the Ad Manager
                 UI.
@@ -3120,7 +3356,8 @@ class ReportDefinition(proto.Message):
                 Corresponds to "Rendering SDK value" in the Ad Manager UI
                 (when showing API fields).
 
-                Compatible with the following report types: ``HISTORICAL``
+                Compatible with the following report types: ``HISTORICAL``,
+                ``REVENUE_VERIFICATION``
 
                 Data format: ``ENUM``
             MOBILE_RENDERING_SDK_NAME (647):
@@ -3128,7 +3365,8 @@ class ReportDefinition(proto.Message):
 
                 Corresponds to "Rendering SDK" in the Ad Manager UI.
 
-                Compatible with the following report types: ``HISTORICAL``
+                Compatible with the following report types: ``HISTORICAL``,
+                ``REVENUE_VERIFICATION``
 
                 Data format: ``STRING``
             MOBILE_SDK_MAJOR_VERSION (692):
@@ -3161,7 +3399,8 @@ class ReportDefinition(proto.Message):
                 Corresponds to "Month and year" in the Ad Manager UI.
 
                 Compatible with the following report types: ``HISTORICAL``,
-                ``REACH``, ``PRIVACY_AND_MESSAGING``
+                ``REACH``, ``PRIVACY_AND_MESSAGING``,
+                ``REVENUE_VERIFICATION``, ``PARTNER_FINANCE``
 
                 Data format: ``INTEGER``
             NATIVE_AD_FORMAT_ID (255):
@@ -3555,6 +3794,46 @@ class ReportDefinition(proto.Message):
                 Compatible with the following report types: ``HISTORICAL``
 
                 Data format: ``STRING``
+            PARTNER_MANAGEMENT_ASSIGNMENT_ID (657):
+                The ID of a partner management assignment.
+
+                Corresponds to "Partner management assignment ID" in the Ad
+                Manager UI.
+
+                Compatible with the following report types: ``HISTORICAL``,
+                ``PARTNER_FINANCE``
+
+                Data format: ``INTEGER``
+            PARTNER_MANAGEMENT_ASSIGNMENT_NAME (658):
+                The name of a partner management assignment.
+
+                Corresponds to "Partner management assignment" in the Ad
+                Manager UI.
+
+                Compatible with the following report types: ``HISTORICAL``,
+                ``PARTNER_FINANCE``
+
+                Data format: ``STRING``
+            PARTNER_MANAGEMENT_PARTNER_ID (655):
+                The ID of a partner in a partner management assignment.
+
+                Corresponds to "Partner management partner ID" in the Ad
+                Manager UI.
+
+                Compatible with the following report types: ``HISTORICAL``,
+                ``PARTNER_FINANCE``
+
+                Data format: ``INTEGER``
+            PARTNER_MANAGEMENT_PARTNER_NAME (656):
+                The name of a partner in a partner management assignment.
+
+                Corresponds to "Partner management partner" in the Ad
+                Manager UI.
+
+                Compatible with the following report types: ``HISTORICAL``,
+                ``PARTNER_FINANCE``
+
+                Data format: ``STRING``
             PLACEMENT_ID (113):
                 Placement ID
 
@@ -3730,7 +4009,8 @@ class ReportDefinition(proto.Message):
                 Corresponds to "Programmatic channel value" in the Ad
                 Manager UI (when showing API fields).
 
-                Compatible with the following report types: ``HISTORICAL``
+                Compatible with the following report types: ``HISTORICAL``,
+                ``REVENUE_VERIFICATION``
 
                 Data format: ``ENUM``
             PROGRAMMATIC_CHANNEL_NAME (14):
@@ -3740,7 +4020,7 @@ class ReportDefinition(proto.Message):
                 Corresponds to "Programmatic channel" in the Ad Manager UI.
 
                 Compatible with the following report types: ``HISTORICAL``,
-                ``REACH``
+                ``REACH``, ``REVENUE_VERIFICATION``
 
                 Data format: ``STRING``
             PUBLISHER_PROVIDED_SIGNALS_ALL_LEVELS_EXTERNAL_CODE (410):
@@ -3974,7 +4254,7 @@ class ReportDefinition(proto.Message):
 
                 Data format: ``ENUM``
             REQUEST_TYPE_NAME (147):
-                Request type locallized name
+                Request type localized name
 
                 Corresponds to "Request type" in the Ad Manager UI.
 
@@ -3982,6 +4262,16 @@ class ReportDefinition(proto.Message):
                 ``AD_SPEED``
 
                 Data format: ``STRING``
+            REVENUE_VERIFICATION_ID (645):
+                Revenue Verification bidder-provided ID.
+
+                Corresponds to "Revenue verification ID" in the Ad Manager
+                UI.
+
+                Compatible with the following report types:
+                ``REVENUE_VERIFICATION``
+
+                Data format: ``IDENTIFIER``
             SERVER_SIDE_UNWRAPPING_ELIGIBLE (597):
                 Indicates if a request was eligible for server-side
                 unwrapping.
@@ -4152,6 +4442,25 @@ class ReportDefinition(proto.Message):
                 Compatible with the following report types: ``HISTORICAL``
 
                 Data format: ``IDENTIFIER``
+            USER_MESSAGES_CHOICE (702):
+                The choice made in a user message.
+
+                Corresponds to "User choice value" in the Ad Manager UI
+                (when showing API fields).
+
+                Compatible with the following report types:
+                ``PRIVACY_AND_MESSAGING``
+
+                Data format: ``ENUM``
+            USER_MESSAGES_CHOICE_NAME (703):
+                Localized name of the choice made in a user message.
+
+                Corresponds to "User choice" in the Ad Manager UI.
+
+                Compatible with the following report types:
+                ``PRIVACY_AND_MESSAGING``
+
+                Data format: ``STRING``
             USER_MESSAGES_ENTITLEMENT_SOURCE (635):
                 Enum value for the entitlement source.
 
@@ -4344,6 +4653,58 @@ class ReportDefinition(proto.Message):
                 Compatible with the following report types: ``HISTORICAL``
 
                 Data format: ``STRING``
+            VIDEO_LIVE_STREAM_EVENT_AD_BREAK_DURATION (547):
+                The duration of the ad break in seconds for a live stream
+                event.
+
+                Corresponds to "Ad break duration (seconds)" in the Ad
+                Manager UI.
+
+                Compatible with the following report types: ``HISTORICAL``
+
+                Data format: ``INTEGER``
+            VIDEO_LIVE_STREAM_EVENT_AD_BREAK_ID (548):
+                The ID of the ad break in a live stream event.
+
+                Corresponds to "Live stream ad break ID" in the Ad Manager
+                UI.
+
+                Compatible with the following report types: ``HISTORICAL``
+
+                Data format: ``STRING``
+            VIDEO_LIVE_STREAM_EVENT_AD_BREAK_NAME (549):
+                The name of the ad break in a live stream event.
+
+                Corresponds to "Live stream ad break" in the Ad Manager UI.
+
+                Compatible with the following report types: ``HISTORICAL``
+
+                Data format: ``STRING``
+            VIDEO_LIVE_STREAM_EVENT_AD_BREAK_TIME (550):
+                The time of the ad break in a live stream event in the
+                format of YYYY-MM-DD HH:MM:SS+Timezone.
+
+                Corresponds to "Ad break time" in the Ad Manager UI.
+
+                Compatible with the following report types: ``HISTORICAL``
+
+                Data format: ``TIMESTAMP``
+            VIDEO_LIVE_STREAM_EVENT_ID (551):
+                The ID of the live stream event.
+
+                Corresponds to "Live stream ID" in the Ad Manager UI.
+
+                Compatible with the following report types: ``HISTORICAL``
+
+                Data format: ``INTEGER``
+            VIDEO_LIVE_STREAM_EVENT_NAME (552):
+                The name of the live stream event.
+
+                Corresponds to "Live stream" in the Ad Manager UI.
+
+                Compatible with the following report types: ``HISTORICAL``
+
+                Data format: ``STRING``
             VIDEO_MEASUREMENT_SOURCE (601):
                 The performance of the video ad inventory broken out by
                 source.
@@ -4432,6 +4793,14 @@ class ReportDefinition(proto.Message):
                 Compatible with the following report types: ``HISTORICAL``
 
                 Data format: ``STRING``
+            WEB_PROPERTY_CODE (730):
+                Web property code
+
+                Corresponds to "Web property code" in the Ad Manager UI.
+
+                Compatible with the following report types: ``HISTORICAL``
+
+                Data format: ``STRING``
             WEEK (5):
                 Breaks down reporting data by week of the year.
 
@@ -4502,7 +4871,7 @@ class ReportDefinition(proto.Message):
 
                 Data format: ``ENUM``
             YOUTUBE_AD_TYPE_NAME (400):
-                YouTube instream Ad Type locallized name.
+                YouTube instream Ad Type localized name.
 
                 Corresponds to "YouTube ad type" in the Ad Manager UI.
 
@@ -5514,6 +5883,7 @@ class ReportDefinition(proto.Message):
         AD_EXPERIENCES_TYPE_NAME = 642
         AD_LOCATION = 390
         AD_LOCATION_NAME = 391
+        AD_REQUEST_SIZES = 541
         AD_TECHNOLOGY_PROVIDER_DOMAIN = 620
         AD_TECHNOLOGY_PROVIDER_ID = 621
         AD_TECHNOLOGY_PROVIDER_NAME = 622
@@ -5586,13 +5956,33 @@ class ReportDefinition(proto.Message):
         AGENCY_LEVEL_3_NAME = 570
         AGE_BRACKET = 508
         AGE_BRACKET_NAME = 582
+        ANALYTICS_PROPERTY_ID = 733
+        ANALYTICS_PROPERTY_NAME = 767
         APP_TRACKING_TRANSPARENCY_CONSENT_STATUS = 442
         APP_TRACKING_TRANSPARENCY_CONSENT_STATUS_NAME = 443
         APP_VERSION = 392
         AUCTION_PACKAGE_DEAL = 579
         AUCTION_PACKAGE_DEAL_ID = 571
+        AUDIENCE_SEGMENT_BILLABLE = 594
+        AUDIENCE_SEGMENT_DATA_PROVIDER_ID = 613
+        AUDIENCE_SEGMENT_DATA_PROVIDER_NAME = 614
+        AUDIENCE_SEGMENT_ID_BILLABLE = 595
         AUDIENCE_SEGMENT_ID_TARGETED = 584
         AUDIENCE_SEGMENT_TARGETED = 585
+        AUDIENCE_SEGMENT_TARGETED_AD_ID_USER_SIZE = 605
+        AUDIENCE_SEGMENT_TARGETED_AMAZON_FIRE_USER_SIZE = 606
+        AUDIENCE_SEGMENT_TARGETED_ANDROID_TV_USER_SIZE = 607
+        AUDIENCE_SEGMENT_TARGETED_APPLE_TV_USER_SIZE = 608
+        AUDIENCE_SEGMENT_TARGETED_IDFA_USER_SIZE = 609
+        AUDIENCE_SEGMENT_TARGETED_MOBILE_WEB_USER_SIZE = 610
+        AUDIENCE_SEGMENT_TARGETED_PLAYSTATION_USER_SIZE = 611
+        AUDIENCE_SEGMENT_TARGETED_PPID_USER_SIZE = 612
+        AUDIENCE_SEGMENT_TARGETED_ROKU_USER_SIZE = 615
+        AUDIENCE_SEGMENT_TARGETED_SAMSUNG_TV_USER_SIZE = 616
+        AUDIENCE_SEGMENT_TARGETED_SIZE = 618
+        AUDIENCE_SEGMENT_TARGETED_STATUS = 628
+        AUDIENCE_SEGMENT_TARGETED_STATUS_NAME = 617
+        AUDIENCE_SEGMENT_TARGETED_XBOX_USER_SIZE = 619
         AUTO_REFRESHED_TRAFFIC = 421
         AUTO_REFRESHED_TRAFFIC_NAME = 422
         BIDDER_ENCRYPTED_ID = 493
@@ -5622,6 +6012,10 @@ class ReportDefinition(proto.Message):
         CLASSIFIED_ADVERTISER_NAME = 134
         CLASSIFIED_BRAND_ID = 243
         CLASSIFIED_BRAND_NAME = 244
+        CONTENT_BUNDLE_ID = 460
+        CONTENT_BUNDLE_NAME = 461
+        CONTENT_CMS_METADATA_KV_NAMESPACE_ID = 462
+        CONTENT_CMS_METADATA_KV_NAMESPACE_NAME = 463
         CONTENT_CMS_NAME = 643
         CONTENT_CMS_VIDEO_ID = 644
         CONTENT_ID = 246
@@ -5731,6 +6125,7 @@ class ReportDefinition(proto.Message):
         IS_FIRST_LOOK_DEAL = 401
         KEY_VALUES_ID = 214
         KEY_VALUES_NAME = 215
+        KEY_VALUES_SET = 713
         LINE_ITEM_AGENCY = 663
         LINE_ITEM_ARCHIVED = 188
         LINE_ITEM_COMPANION_DELIVERY_OPTION = 204
@@ -5857,6 +6252,10 @@ class ReportDefinition(proto.Message):
         PAGE_PATH = 511
         PAGE_TITLE_AND_SCREEN_CLASS = 512
         PAGE_TITLE_AND_SCREEN_NAME = 513
+        PARTNER_MANAGEMENT_ASSIGNMENT_ID = 657
+        PARTNER_MANAGEMENT_ASSIGNMENT_NAME = 658
+        PARTNER_MANAGEMENT_PARTNER_ID = 655
+        PARTNER_MANAGEMENT_PARTNER_NAME = 656
         PLACEMENT_ID = 113
         PLACEMENT_ID_ALL = 144
         PLACEMENT_NAME = 114
@@ -5903,6 +6302,7 @@ class ReportDefinition(proto.Message):
         REQUESTED_AD_SIZES = 352
         REQUEST_TYPE = 146
         REQUEST_TYPE_NAME = 147
+        REVENUE_VERIFICATION_ID = 645
         SERVER_SIDE_UNWRAPPING_ELIGIBLE = 597
         SERVING_RESTRICTION = 631
         SERVING_RESTRICTION_NAME = 632
@@ -5922,6 +6322,8 @@ class ReportDefinition(proto.Message):
         UNIFIED_PRICING_RULE_NAME = 394
         URL = 506
         URL_ID = 507
+        USER_MESSAGES_CHOICE = 702
+        USER_MESSAGES_CHOICE_NAME = 703
         USER_MESSAGES_ENTITLEMENT_SOURCE = 635
         USER_MESSAGES_ENTITLEMENT_SOURCE_NAME = 636
         USER_MESSAGES_OPERATING_SYSTEM_CRITERIA_ID = 637
@@ -5943,6 +6345,12 @@ class ReportDefinition(proto.Message):
         VIDEO_CONTINUOUS_PLAY_TYPE = 721
         VIDEO_CONTINUOUS_PLAY_TYPE_NAME = 722
         VIDEO_FALLBACK_POSITION = 530
+        VIDEO_LIVE_STREAM_EVENT_AD_BREAK_DURATION = 547
+        VIDEO_LIVE_STREAM_EVENT_AD_BREAK_ID = 548
+        VIDEO_LIVE_STREAM_EVENT_AD_BREAK_NAME = 549
+        VIDEO_LIVE_STREAM_EVENT_AD_BREAK_TIME = 550
+        VIDEO_LIVE_STREAM_EVENT_ID = 551
+        VIDEO_LIVE_STREAM_EVENT_NAME = 552
         VIDEO_MEASUREMENT_SOURCE = 601
         VIDEO_MEASUREMENT_SOURCE_NAME = 602
         VIDEO_PLCMT = 172
@@ -5953,6 +6361,7 @@ class ReportDefinition(proto.Message):
         VIDEO_SDK_VERSION_NAME = 441
         VIDEO_STITCHER_TYPE = 752
         VIDEO_STITCHER_TYPE_NAME = 753
+        WEB_PROPERTY_CODE = 730
         WEEK = 5
         YIELD_GROUP_BUYER_NAME = 184
         YIELD_GROUP_BUYER_TAG_NAME = 627
@@ -6845,7 +7254,7 @@ class ReportDefinition(proto.Message):
                 that resulted in users clicking on an ad. The clickthrough
                 rate (CTR) is updated nightly. Ad Exchange Matched Request
                 CTR is calculated as: (Ad Exchange clicks / Ad Exchange
-                Macthed Ad Requests).
+                Matched Ad Requests).
 
                 Corresponds to "Ad Exchange matched request CTR" in the Ad
                 Manager UI.
@@ -7311,6 +7720,26 @@ class ReportDefinition(proto.Message):
                 Compatible with the following report types: ``HISTORICAL``
 
                 Data format: ``INTEGER``
+            AD_SERVER_OPPORTUNITIES_FROM_ERRORS (461):
+                Total number of ad server VAST errors discounting errors
+                generated from video fallback ads.
+
+                Corresponds to "Ad Server opportunities from errors" in the
+                Ad Manager UI.
+
+                Compatible with the following report types: ``HISTORICAL``
+
+                Data format: ``INTEGER``
+            AD_SERVER_OPPORTUNITIES_FROM_IMPRESSIONS (462):
+                Total number of ad server impressions discounting video
+                fallback impressions.
+
+                Corresponds to "Ad Server opportunities from impressions" in
+                the Ad Manager UI.
+
+                Compatible with the following report types: ``HISTORICAL``
+
+                Data format: ``INTEGER``
             AD_SERVER_PERCENT_CLICKS (12):
                 Ratio of clicks delivered by the Google Ad Manager server in
                 relation to the total clicks delivered.
@@ -7570,8 +7999,8 @@ class ReportDefinition(proto.Message):
                 Number of header bidding trafficking ad requests with no
                 bids in the Ads traffic navigator report.
 
-                Corresponds to "Header bidding trafficking ad requests with
-                no bids" in the Ad Manager UI.
+                Corresponds to "Ad requests with no header bidding
+                trafficking bids" in the Ad Manager UI.
 
                 Compatible with the following report types:
 
@@ -7600,7 +8029,7 @@ class ReportDefinition(proto.Message):
                 Number of header bidding trafficking ad requests with bids
                 in the Ads traffic navigator report.
 
-                Corresponds to "Header bidding trafficking ad requests with
+                Corresponds to "Ad requests with header bidding trafficking
                 bids" in the Ad Manager UI.
 
                 Compatible with the following report types:
@@ -7619,8 +8048,8 @@ class ReportDefinition(proto.Message):
                 Number of line items with no creative retrieved in the Ads
                 traffic navigator report.
 
-                Corresponds to "Creative not retrieved" in the Ad Manager
-                UI.
+                Corresponds to "Line items with no creative retrieved" in
+                the Ad Manager UI.
 
                 Compatible with the following report types:
 
@@ -7649,8 +8078,8 @@ class ReportDefinition(proto.Message):
                 selected to compete in the auction in the Ads traffic
                 navigator report.
 
-                Corresponds to "Not selected to compete" in the Ad Manager
-                UI.
+                Corresponds to "Line items not selected to compete" in the
+                Ad Manager UI.
 
                 Compatible with the following report types:
 
@@ -7709,8 +8138,8 @@ class ReportDefinition(proto.Message):
                 Number of ad requests with mediation demand having no
                 partners in the Ads traffic navigator report.
 
-                Corresponds to "Mediation requests with no partners" in the
-                Ad Manager UI.
+                Corresponds to "Ad requests with no targeted mediation
+                partners" in the Ad Manager UI.
 
                 Compatible with the following report types:
 
@@ -7984,8 +8413,8 @@ class ReportDefinition(proto.Message):
                 request as a single request in the Ads traffic navigator
                 report.
 
-                Corresponds to "Total ad requests (ATN)" in the Ad Manager
-                UI.
+                Corresponds to "Total ad requests (Ads traffic navigator)"
+                in the Ad Manager UI.
 
                 Compatible with the following report types:
 
@@ -8027,6 +8456,14 @@ class ReportDefinition(proto.Message):
                 Compatible with the following report types:
 
                 Data format: ``INTEGER``
+            AUDIENCE_SEGMENT_COST (558):
+                Cost of the audience segment.
+
+                Corresponds to "Audience segment cost" in the Ad Manager UI.
+
+                Compatible with the following report types: ``HISTORICAL``
+
+                Data format: ``MONEY``
             AVERAGE_ECPM (37):
                 eCPM averaged across the Google Ad Manager server, AdSense,
                 and Ad Exchange.
@@ -8043,7 +8480,8 @@ class ReportDefinition(proto.Message):
                 Corresponds to "Total average eCPM w/o CPD" in the Ad
                 Manager UI.
 
-                Compatible with the following report types: ``HISTORICAL``
+                Compatible with the following report types: ``HISTORICAL``,
+                ``AD_SPEED``
 
                 Data format: ``MONEY``
             AVERAGE_ENGAGEMENT_SECONDS_PER_SESSION (224):
@@ -8131,7 +8569,8 @@ class ReportDefinition(proto.Message):
 
                 Corresponds to "Total clicks" in the Ad Manager UI.
 
-                Compatible with the following report types: ``HISTORICAL``
+                Compatible with the following report types: ``HISTORICAL``,
+                ``AD_SPEED``
 
                 Data format: ``INTEGER``
             CODE_SERVED_COUNT (44):
@@ -8226,7 +8665,8 @@ class ReportDefinition(proto.Message):
 
                 Corresponds to "Total CTR" in the Ad Manager UI.
 
-                Compatible with the following report types: ``HISTORICAL``
+                Compatible with the following report types: ``HISTORICAL``,
+                ``AD_SPEED``
 
                 Data format: ``PERCENT``
             DEALS_BIDS (542):
@@ -8601,7 +9041,8 @@ class ReportDefinition(proto.Message):
 
                 Corresponds to "Total impressions" in the Ad Manager UI.
 
-                Compatible with the following report types: ``HISTORICAL``
+                Compatible with the following report types: ``HISTORICAL``,
+                ``AD_SPEED``
 
                 Data format: ``INTEGER``
             INACTIVE_BEGIN_TO_RENDER_IMPRESSIONS (407):
@@ -8697,6 +9138,142 @@ class ReportDefinition(proto.Message):
                 Manager UI.
 
                 Compatible with the following report types: ``HISTORICAL``
+
+                Data format: ``INTEGER``
+            PARTNER_FINANCE_GROSS_REVENUE (648):
+                The gross revenue for partner finance reports.
+
+                Corresponds to "Gross revenue" in the Ad Manager UI.
+
+                Compatible with the following report types:
+                ``PARTNER_FINANCE``
+
+                Data format: ``MONEY``
+            PARTNER_FINANCE_HOST_ECPM (649):
+                Monthly host eCPM for partner finance reports
+
+                Corresponds to "Host eCPM" in the Ad Manager UI.
+
+                Compatible with the following report types:
+                ``PARTNER_FINANCE``
+
+                Data format: ``MONEY``
+            PARTNER_FINANCE_HOST_IMPRESSIONS (650):
+                The host impressions for partner finance reports.
+
+                Corresponds to "Host impressions" in the Ad Manager UI.
+
+                Compatible with the following report types:
+                ``PARTNER_FINANCE``
+
+                Data format: ``INTEGER``
+            PARTNER_FINANCE_HOST_REVENUE (651):
+                Monthly host revenue for partner finance reports
+
+                Corresponds to "Host revenue" in the Ad Manager UI.
+
+                Compatible with the following report types:
+                ``PARTNER_FINANCE``
+
+                Data format: ``MONEY``
+            PARTNER_FINANCE_PARTNER_ECPM (652):
+                Monthly partner eCPM for partner finance reports
+
+                Corresponds to "Partner eCPM" in the Ad Manager UI.
+
+                Compatible with the following report types:
+                ``PARTNER_FINANCE``
+
+                Data format: ``MONEY``
+            PARTNER_FINANCE_PARTNER_REVENUE (653):
+                Monthly partner revenue for partner finance reports
+
+                Corresponds to "Partner revenue" in the Ad Manager UI.
+
+                Compatible with the following report types:
+                ``PARTNER_FINANCE``
+
+                Data format: ``MONEY``
+            PARTNER_MANAGEMENT_GROSS_REVENUE (533):
+                The gross revenue in the partner management.
+
+                Corresponds to "Partner management gross revenue" in the Ad
+                Manager UI.
+
+                Compatible with the following report types: ``HISTORICAL``
+
+                Data format: ``MONEY``
+            PARTNER_MANAGEMENT_HOST_CLICKS (534):
+                The host clicks in the partner management.
+
+                Corresponds to "Partner management host clicks" in the Ad
+                Manager UI.
+
+                Compatible with the following report types: ``HISTORICAL``
+
+                Data format: ``INTEGER``
+            PARTNER_MANAGEMENT_HOST_CTR (535):
+                The host CTR in the partner management.
+
+                Corresponds to "Partner management host CTR" in the Ad
+                Manager UI.
+
+                Compatible with the following report types: ``HISTORICAL``
+
+                Data format: ``PERCENT``
+            PARTNER_MANAGEMENT_HOST_IMPRESSIONS (536):
+                The host impressions in the partner management.
+
+                Corresponds to "Partner management host impressions" in the
+                Ad Manager UI.
+
+                Compatible with the following report types: ``HISTORICAL``
+
+                Data format: ``INTEGER``
+            PARTNER_MANAGEMENT_PARTNER_CLICKS (537):
+                The partner clicks in the partner management.
+
+                Corresponds to "Partner management partner clicks" in the Ad
+                Manager UI.
+
+                Compatible with the following report types: ``HISTORICAL``
+
+                Data format: ``INTEGER``
+            PARTNER_MANAGEMENT_PARTNER_CTR (538):
+                The partner CTR in the partner management.
+
+                Corresponds to "Partner management partner CTR" in the Ad
+                Manager UI.
+
+                Compatible with the following report types: ``HISTORICAL``
+
+                Data format: ``PERCENT``
+            PARTNER_MANAGEMENT_PARTNER_IMPRESSIONS (539):
+                The partner impressions in the partner management.
+
+                Corresponds to "Partner management partner impressions" in
+                the Ad Manager UI.
+
+                Compatible with the following report types: ``HISTORICAL``
+
+                Data format: ``INTEGER``
+            PARTNER_MANAGEMENT_TOTAL_CONTENT_VIEWS (540):
+                The total content views in the partner management.
+
+                Corresponds to "Partner management total monetizable content
+                views" in the Ad Manager UI.
+
+                Compatible with the following report types: ``HISTORICAL``
+
+                Data format: ``INTEGER``
+            PARTNER_MANAGEMENT_UNFILLED_IMPRESSIONS (541):
+                The unfilled impressions in the partner management.
+
+                Corresponds to "Partner management unfilled impressions" in
+                the Ad Manager UI.
+
+                Compatible with the following report types: ``HISTORICAL``,
+                ``PARTNER_FINANCE``
 
                 Data format: ``INTEGER``
             PARTNER_SALES_FILLED_POD_REQUESTS (135):
@@ -8855,7 +9432,8 @@ class ReportDefinition(proto.Message):
 
                 Corresponds to "Total revenue" in the Ad Manager UI.
 
-                Compatible with the following report types: ``HISTORICAL``
+                Compatible with the following report types: ``HISTORICAL``,
+                ``AD_SPEED``
 
                 Data format: ``MONEY``
             REVENUE_PAID_THROUGH_MCM_AUTOPAYMENT (214):
@@ -8870,9 +9448,61 @@ class ReportDefinition(proto.Message):
                 Compatible with the following report types: ``HISTORICAL``
 
                 Data format: ``MONEY``
+            REVENUE_VERIFICATION_CPD_REVENUE (560):
+                The total CPD net revenue for Revenue Verification
+                reporting.
+
+                Corresponds to "Total CPD revenue" in the Ad Manager UI.
+
+                Compatible with the following report types:
+                ``REVENUE_VERIFICATION``
+
+                Data format: ``MONEY``
+            REVENUE_VERIFICATION_GROSS_CPD_REVENUE (559):
+                The total CPD gross revenue for Revenue Verification
+                reporting.
+
+                Corresponds to "Total CPD revenue (gross)" in the Ad Manager
+                UI.
+
+                Compatible with the following report types:
+                ``REVENUE_VERIFICATION``
+
+                Data format: ``MONEY``
+            REVENUE_VERIFICATION_GROSS_REVENUE_WITHOUT_CPD (561):
+                The total gross revenue (excluding CPD) for Revenue
+                Verification reporting.
+
+                Corresponds to "Total CPM and CPC revenue (gross)" in the Ad
+                Manager UI.
+
+                Compatible with the following report types:
+                ``REVENUE_VERIFICATION``
+
+                Data format: ``MONEY``
+            REVENUE_VERIFICATION_IMPRESSIONS (564):
+                The total impressions for Revenue Verification reporting.
+
+                Corresponds to "Total impressions" in the Ad Manager UI.
+
+                Compatible with the following report types:
+                ``REVENUE_VERIFICATION``
+
+                Data format: ``INTEGER``
+            REVENUE_VERIFICATION_REVENUE_WITHOUT_CPD (567):
+                The total net revenue (excluding CPD) for Revenue
+                Verification reporting.
+
+                Corresponds to "Total CPM and CPC revenue" in the Ad Manager
+                UI.
+
+                Compatible with the following report types:
+                ``REVENUE_VERIFICATION``
+
+                Data format: ``MONEY``
             REVENUE_WITHOUT_CPD (4):
-                Total amount of revenue (excluding CPD) based on the number
-                of units served by the Google Ad Manager server, AdSense, Ad
+                Total revenue (excluding CPD) based on the number of units
+                served by the Google Ad Manager server, AdSense, Ad
                 Exchange, and third-party Mediation networks.
 
                 Corresponds to "Total CPM and CPC revenue" in the Ad Manager
@@ -9473,17 +10103,6 @@ class ReportDefinition(proto.Message):
                 ``PRIVACY_AND_MESSAGING``
 
                 Data format: ``INTEGER``
-            USER_MESSAGES_CCPA_MESSAGES_SHOWN (490):
-                Number of times a US state regulations message was shown to
-                users.
-
-                Corresponds to "US states messages shown" in the Ad Manager
-                UI.
-
-                Compatible with the following report types:
-                ``PRIVACY_AND_MESSAGING``
-
-                Data format: ``INTEGER``
             USER_MESSAGES_IDFA_ATT_ALERTS_SHOWN (491):
                 Number of iOS ATT alerts that were triggered by an IDFA
                 message (IDFA messages can be IDFA explainers or GDPR
@@ -9631,6 +10250,28 @@ class ReportDefinition(proto.Message):
                 ``PRIVACY_AND_MESSAGING``
 
                 Data format: ``PERCENT``
+            USER_MESSAGES_US_STATES_MESSAGES_SHOWN (490):
+                Number of times a US state regulations message was shown to
+                users.
+
+                Corresponds to "US states messages shown" in the Ad Manager
+                UI.
+
+                Compatible with the following report types:
+                ``PRIVACY_AND_MESSAGING``
+
+                Data format: ``INTEGER``
+            USER_MESSAGES_US_STATES_OPT_OUT_SELECTIONS (586):
+                Number of times users selected the opt-out option in a US
+                states message.
+
+                Corresponds to "US states opt-out selections" in the Ad
+                Manager UI.
+
+                Compatible with the following report types:
+                ``PRIVACY_AND_MESSAGING``
+
+                Data format: ``INTEGER``
             VIDEO_ERROR_100_COUNT (180):
                 The number of errors of type 100 in reporting.
 
@@ -10319,6 +10960,99 @@ class ReportDefinition(proto.Message):
                 Compatible with the following report types:
 
                 Data format: ``INTEGER``
+            VIDEO_TRUE_OPPORTUNITIES_TOTAL_BREAK_END (279):
+                The total number of breaks completed or fatal errors for the
+                last ad in the pod.
+
+                Corresponds to "Break end" in the Ad Manager UI.
+
+                Compatible with the following report types: ``HISTORICAL``
+
+                Data format: ``INTEGER``
+            VIDEO_TRUE_OPPORTUNITIES_TOTAL_BREAK_START (280):
+                The total number of breaks starts or errors for the first ad
+                in a pod that users made it to.
+
+                Corresponds to "Break start" in the Ad Manager UI.
+
+                Compatible with the following report types: ``HISTORICAL``
+
+                Data format: ``INTEGER``
+            VIDEO_TRUE_OPPORTUNITIES_TOTAL_CAPPED_OPPORTUNITIES_ADBREAK (281):
+                The number of video ad opportunities reached by a user
+                (rounded down, or capped based on your max ads setting,
+                whichever is less).
+
+                Corresponds to "Capped opportunities (adbreak)" in the Ad
+                Manager UI.
+
+                Compatible with the following report types: ``HISTORICAL``
+
+                Data format: ``INTEGER``
+            VIDEO_TRUE_OPPORTUNITIES_TOTAL_DURATION_ADBREAK (283):
+                The total number of seconds available to be filled.
+
+                Corresponds to "Total duration (adbreak)" in the Ad Manager
+                UI.
+
+                Compatible with the following report types: ``HISTORICAL``
+
+                Data format: ``INTEGER``
+            VIDEO_TRUE_OPPORTUNITIES_TOTAL_MATCHED_DURATION_ADBREAK (285):
+                The total number of seconds filled.
+
+                Corresponds to "Matched duration (adbreak)" in the Ad
+                Manager UI.
+
+                Compatible with the following report types: ``HISTORICAL``
+
+                Data format: ``INTEGER``
+            VIDEO_TRUE_OPPORTUNITIES_TOTAL_MATCHED_OPPORTUNITIES_ADBREAK (287):
+                The total matched opportunities in video true opportunities
+                reporting.
+
+                Corresponds to "Matched opportunities (adbreak)" in the Ad
+                Manager UI.
+
+                Compatible with the following report types: ``HISTORICAL``
+
+                Data format: ``INTEGER``
+            VIDEO_TRUE_OPPORTUNITIES_TOTAL_VIEWED_OPPORTUNITIES_ADBREAK (289):
+                The number of video ad opportunities reached by a user
+                (rounded down).
+
+                Corresponds to "Viewed opportunities (adbreak)" in the Ad
+                Manager UI.
+
+                Compatible with the following report types: ``HISTORICAL``
+
+                Data format: ``INTEGER``
+            VIDEO_TRUE_VIEWS (392):
+                The number of TrueView ad impressions viewed.
+
+                Corresponds to "True views" in the Ad Manager UI.
+
+                Compatible with the following report types: ``HISTORICAL``
+
+                Data format: ``INTEGER``
+            VIDEO_TRUE_VIEW_SKIP_RATE (393):
+                Measures the percentage of skips.
+
+                Corresponds to "True views skip rate" in the Ad Manager UI.
+
+                Compatible with the following report types: ``HISTORICAL``
+
+                Data format: ``PERCENT``
+            VIDEO_TRUE_VIEW_VIEW_THROUGH_RATE (394):
+                The view-through rate is the percentage of views divided by
+                number of impressions
+
+                Corresponds to "True views view-through rate" in the Ad
+                Manager UI.
+
+                Compatible with the following report types: ``HISTORICAL``
+
+                Data format: ``PERCENT``
             VIDEO_VIEWERSHIP_AUTO_PLAYS (103):
                 Number of times that the publisher specified a video ad
                 played automatically.
@@ -10701,6 +11435,8 @@ class ReportDefinition(proto.Message):
         AD_SERVER_IMPRESSIONS = 6
         AD_SERVER_IMPRESSIONS_WITH_COMPANION = 222
         AD_SERVER_INACTIVE_BEGIN_TO_RENDER_IMPRESSIONS = 338
+        AD_SERVER_OPPORTUNITIES_FROM_ERRORS = 461
+        AD_SERVER_OPPORTUNITIES_FROM_IMPRESSIONS = 462
         AD_SERVER_PERCENT_CLICKS = 12
         AD_SERVER_PERCENT_IMPRESSIONS = 11
         AD_SERVER_PERCENT_REVENUE = 35
@@ -10774,6 +11510,7 @@ class ReportDefinition(proto.Message):
         ATN_TOTAL_LOADED_ADS = 387
         ATN_VALID_AD_REQUESTS = 389
         ATN_YIELD_GROUP_MEDIATION_PASSBACKS = 390
+        AUDIENCE_SEGMENT_COST = 558
         AVERAGE_ECPM = 37
         AVERAGE_ECPM_WITHOUT_CPD = 5
         AVERAGE_ENGAGEMENT_SECONDS_PER_SESSION = 224
@@ -10846,6 +11583,21 @@ class ReportDefinition(proto.Message):
         MUTE_ELIGIBLE_IMPRESSIONS = 409
         OPPORTUNITIES = 463
         OVERDELIVERED_IMPRESSIONS = 432
+        PARTNER_FINANCE_GROSS_REVENUE = 648
+        PARTNER_FINANCE_HOST_ECPM = 649
+        PARTNER_FINANCE_HOST_IMPRESSIONS = 650
+        PARTNER_FINANCE_HOST_REVENUE = 651
+        PARTNER_FINANCE_PARTNER_ECPM = 652
+        PARTNER_FINANCE_PARTNER_REVENUE = 653
+        PARTNER_MANAGEMENT_GROSS_REVENUE = 533
+        PARTNER_MANAGEMENT_HOST_CLICKS = 534
+        PARTNER_MANAGEMENT_HOST_CTR = 535
+        PARTNER_MANAGEMENT_HOST_IMPRESSIONS = 536
+        PARTNER_MANAGEMENT_PARTNER_CLICKS = 537
+        PARTNER_MANAGEMENT_PARTNER_CTR = 538
+        PARTNER_MANAGEMENT_PARTNER_IMPRESSIONS = 539
+        PARTNER_MANAGEMENT_TOTAL_CONTENT_VIEWS = 540
+        PARTNER_MANAGEMENT_UNFILLED_IMPRESSIONS = 541
         PARTNER_SALES_FILLED_POD_REQUESTS = 135
         PARTNER_SALES_FILL_RATE = 136
         PARTNER_SALES_PARTNER_MATCH_RATE = 137
@@ -10863,6 +11615,11 @@ class ReportDefinition(proto.Message):
         RETENTION = 238
         REVENUE = 36
         REVENUE_PAID_THROUGH_MCM_AUTOPAYMENT = 214
+        REVENUE_VERIFICATION_CPD_REVENUE = 560
+        REVENUE_VERIFICATION_GROSS_CPD_REVENUE = 559
+        REVENUE_VERIFICATION_GROSS_REVENUE_WITHOUT_CPD = 561
+        REVENUE_VERIFICATION_IMPRESSIONS = 564
+        REVENUE_VERIFICATION_REVENUE_WITHOUT_CPD = 567
         REVENUE_WITHOUT_CPD = 4
         REWARDS_GRANTED = 413
         RICH_MEDIA_AVERAGE_DISPLAY_TIME = 587
@@ -10925,7 +11682,6 @@ class ReportDefinition(proto.Message):
         USER_MESSAGES_AD_BLOCKING_RECOVERY_ALLOWLISTED_COUNT = 487
         USER_MESSAGES_AD_BLOCKING_RECOVERY_MESSAGES_SHOWN = 488
         USER_MESSAGES_ALLOW_ADS_PAGEVIEWS = 489
-        USER_MESSAGES_CCPA_MESSAGES_SHOWN = 490
         USER_MESSAGES_IDFA_ATT_ALERTS_SHOWN = 491
         USER_MESSAGES_IDFA_ATT_CONSENT = 492
         USER_MESSAGES_IDFA_ATT_CONSENT_RATE = 493
@@ -10940,6 +11696,8 @@ class ReportDefinition(proto.Message):
         USER_MESSAGES_TOTAL_ESTIMATED_REVENUE = 500
         USER_MESSAGES_UPTC_MESSAGES_SHOWN = 501
         USER_MESSAGES_UPTC_PERSONALIZATION_OPT_OUT_RATIO = 502
+        USER_MESSAGES_US_STATES_MESSAGES_SHOWN = 490
+        USER_MESSAGES_US_STATES_OPT_OUT_SELECTIONS = 586
         VIDEO_ERROR_100_COUNT = 180
         VIDEO_ERROR_101_COUNT = 181
         VIDEO_ERROR_102_COUNT = 182
@@ -11021,6 +11779,16 @@ class ReportDefinition(proto.Message):
         VIDEO_REAL_TIME_TOTAL_ERROR_COUNT = 175
         VIDEO_REAL_TIME_TOTAL_QUERIES = 142
         VIDEO_REAL_TIME_UNMATCHED_QUERIES = 141
+        VIDEO_TRUE_OPPORTUNITIES_TOTAL_BREAK_END = 279
+        VIDEO_TRUE_OPPORTUNITIES_TOTAL_BREAK_START = 280
+        VIDEO_TRUE_OPPORTUNITIES_TOTAL_CAPPED_OPPORTUNITIES_ADBREAK = 281
+        VIDEO_TRUE_OPPORTUNITIES_TOTAL_DURATION_ADBREAK = 283
+        VIDEO_TRUE_OPPORTUNITIES_TOTAL_MATCHED_DURATION_ADBREAK = 285
+        VIDEO_TRUE_OPPORTUNITIES_TOTAL_MATCHED_OPPORTUNITIES_ADBREAK = 287
+        VIDEO_TRUE_OPPORTUNITIES_TOTAL_VIEWED_OPPORTUNITIES_ADBREAK = 289
+        VIDEO_TRUE_VIEWS = 392
+        VIDEO_TRUE_VIEW_SKIP_RATE = 393
+        VIDEO_TRUE_VIEW_VIEW_THROUGH_RATE = 394
         VIDEO_VIEWERSHIP_AUTO_PLAYS = 103
         VIDEO_VIEWERSHIP_AVERAGE_VIEW_RATE = 104
         VIDEO_VIEWERSHIP_AVERAGE_VIEW_TIME = 105
@@ -11228,6 +11996,10 @@ class ReportDefinition(proto.Message):
                     The entire previous calendar week, Monday to
                     Sunday (inclusive), preceding the calendar week
                     the report is run.
+                LAST_WEEK_STARTING_SUNDAY (39):
+                    The entire previous calendar week, Sunday to
+                    Saturday (inclusive), preceding the calendar
+                    week the report is run.
                 LAST_MONTH (8):
                     The entire previous calendar month preceding
                     the calendar month the report is run.
@@ -11249,6 +12021,9 @@ class ReportDefinition(proto.Message):
                     run.
                 LAST_90_DAYS (14):
                     The 90 days preceding the day the report is
+                    run.
+                LAST_93_DAYS (38):
+                    The 93 days preceding the day the report is
                     run.
                 LAST_180_DAYS (15):
                     The 180 days preceding the day the report is
@@ -11346,6 +12121,7 @@ class ReportDefinition(proto.Message):
             THIS_YEAR = 6
             THIS_YEAR_TO_DATE = 28
             LAST_WEEK = 7
+            LAST_WEEK_STARTING_SUNDAY = 39
             LAST_MONTH = 8
             LAST_QUARTER = 9
             LAST_YEAR = 10
@@ -11353,6 +12129,7 @@ class ReportDefinition(proto.Message):
             LAST_30_DAYS = 12
             LAST_60_DAYS = 13
             LAST_90_DAYS = 14
+            LAST_93_DAYS = 38
             LAST_180_DAYS = 15
             LAST_360_DAYS = 16
             LAST_365_DAYS = 17

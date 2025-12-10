@@ -6255,6 +6255,13 @@ def test_create_job_rest_call_success(request_type):
                     {
                         "name": "name_value",
                         "image": "image_value",
+                        "source_code": {
+                            "cloud_storage_source": {
+                                "bucket": "bucket_value",
+                                "object_": "object__value",
+                                "generation": 1068,
+                            }
+                        },
                         "command": ["command_value1", "command_value2"],
                         "args": ["args_value1", "args_value2"],
                         "env": [
@@ -6276,7 +6283,11 @@ def test_create_job_rest_call_success(request_type):
                         },
                         "ports": [{"name": "name_value", "container_port": 1511}],
                         "volume_mounts": [
-                            {"name": "name_value", "mount_path": "mount_path_value"}
+                            {
+                                "name": "name_value",
+                                "mount_path": "mount_path_value",
+                                "sub_path": "sub_path_value",
+                            }
                         ],
                         "working_dir": "working_dir_value",
                         "liveness_probe": {
@@ -6863,6 +6874,13 @@ def test_update_job_rest_call_success(request_type):
                     {
                         "name": "name_value",
                         "image": "image_value",
+                        "source_code": {
+                            "cloud_storage_source": {
+                                "bucket": "bucket_value",
+                                "object_": "object__value",
+                                "generation": 1068,
+                            }
+                        },
                         "command": ["command_value1", "command_value2"],
                         "args": ["args_value1", "args_value2"],
                         "env": [
@@ -6884,7 +6902,11 @@ def test_update_job_rest_call_success(request_type):
                         },
                         "ports": [{"name": "name_value", "container_port": 1511}],
                         "volume_mounts": [
-                            {"name": "name_value", "mount_path": "mount_path_value"}
+                            {
+                                "name": "name_value",
+                                "mount_path": "mount_path_value",
+                                "sub_path": "sub_path_value",
+                            }
                         ],
                         "working_dir": "working_dir_value",
                         "liveness_probe": {

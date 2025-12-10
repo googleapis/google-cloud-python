@@ -42,6 +42,7 @@ __protobuf__ = proto.module(
         "TCPSocketAction",
         "GRPCAction",
         "BuildInfo",
+        "SourceCode",
     },
 )
 
@@ -61,6 +62,8 @@ class Container(proto.Message):
             Dockerhub, Google Artifact Registry, or Google
             Container Registry. If the host is not provided,
             Dockerhub is assumed.
+        source_code (google.cloud.run_v2.types.SourceCode):
+            Optional. Location of the source.
         command (MutableSequence[str]):
             Entrypoint array. Not executed within a
             shell. The docker image's ENTRYPOINT is used if
@@ -123,6 +126,11 @@ class Container(proto.Message):
     image: str = proto.Field(
         proto.STRING,
         number=2,
+    )
+    source_code: "SourceCode" = proto.Field(
+        proto.MESSAGE,
+        number=17,
+        message="SourceCode",
     )
     command: MutableSequence[str] = proto.RepeatedField(
         proto.STRING,
@@ -187,7 +195,8 @@ class ResourceRequirements(proto.Message):
 
     Attributes:
         limits (MutableMapping[str, str]):
-            Only ``memory`` and ``cpu`` keys in the map are supported.
+            Only ``memory``, ``cpu`` and ``nvidia.com/gpu`` keys in the
+            map are supported.
 
             .. raw:: html
 
@@ -197,6 +206,7 @@ class ResourceRequirements(proto.Message):
                 https://cloud.google.com/run/docs/configuring/cpu.
                   * For supported 'memory' values and syntax, go to
                  https://cloud.google.com/run/docs/configuring/memory-limits
+                 * The only supported 'nvidia.com/gpu' value is '1'.
         cpu_idle (bool):
             Determines whether CPU is only allocated
             during requests (true by default). However, if
@@ -352,6 +362,10 @@ class VolumeMount(proto.Message):
             available as ``/cloudsql/[instance]``. For more information
             on Cloud SQL volumes, visit
             https://cloud.google.com/sql/docs/mysql/connect-run
+        sub_path (str):
+            Optional. Path within the volume from which
+            the container's volume should be mounted.
+            Defaults to "" (volume's root).
     """
 
     name: str = proto.Field(
@@ -361,6 +375,10 @@ class VolumeMount(proto.Message):
     mount_path: str = proto.Field(
         proto.STRING,
         number=3,
+    )
+    sub_path: str = proto.Field(
+        proto.STRING,
+        number=4,
     )
 
 
@@ -456,11 +474,11 @@ class SecretVolumeSource(proto.Message):
             secret is in a different project.
         items (MutableSequence[google.cloud.run_v2.types.VersionToPath]):
             If unspecified, the volume will expose a file whose name is
-            the secret, relative to VolumeMount.mount_path. If
-            specified, the key will be used as the version to fetch from
-            Cloud Secret Manager and the path will be the name of the
-            file exposed in the volume. When items are defined, they
-            must specify a path and a version.
+            the secret, relative to VolumeMount.mount_path +
+            VolumeMount.sub_path. If specified, the key will be used as
+            the version to fetch from Cloud Secret Manager and the path
+            will be the name of the file exposed in the volume. When
+            items are defined, they must specify a path and a version.
         default_mode (int):
             Integer representation of mode bits to use on created files
             by default. Must be a value between 0000 and 0777 (octal),
@@ -888,6 +906,52 @@ class BuildInfo(proto.Message):
     source_location: str = proto.Field(
         proto.STRING,
         number=2,
+    )
+
+
+class SourceCode(proto.Message):
+    r"""Source type for the container.
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
+    Attributes:
+        cloud_storage_source (google.cloud.run_v2.types.SourceCode.CloudStorageSource):
+            The source is a Cloud Storage bucket.
+
+            This field is a member of `oneof`_ ``source_type``.
+    """
+
+    class CloudStorageSource(proto.Message):
+        r"""Cloud Storage source.
+
+        Attributes:
+            bucket (str):
+                Required. The Cloud Storage bucket name.
+            object_ (str):
+                Required. The Cloud Storage object name.
+            generation (int):
+                Optional. The Cloud Storage object
+                generation.
+        """
+
+        bucket: str = proto.Field(
+            proto.STRING,
+            number=1,
+        )
+        object_: str = proto.Field(
+            proto.STRING,
+            number=2,
+        )
+        generation: int = proto.Field(
+            proto.INT64,
+            number=3,
+        )
+
+    cloud_storage_source: CloudStorageSource = proto.Field(
+        proto.MESSAGE,
+        number=1,
+        oneof="source_type",
+        message=CloudStorageSource,
     )
 
 

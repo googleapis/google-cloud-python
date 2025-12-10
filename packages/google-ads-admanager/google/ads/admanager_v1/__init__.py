@@ -42,6 +42,7 @@ from .services.device_category_service import DeviceCategoryServiceClient
 from .services.device_manufacturer_service import DeviceManufacturerServiceClient
 from .services.entity_signals_mapping_service import EntitySignalsMappingServiceClient
 from .services.geo_target_service import GeoTargetServiceClient
+from .services.line_item_service import LineItemServiceClient
 from .services.mobile_carrier_service import MobileCarrierServiceClient
 from .services.mobile_device_service import MobileDeviceServiceClient
 from .services.mobile_device_submodel_service import MobileDeviceSubmodelServiceClient
@@ -84,11 +85,23 @@ from .types.ad_review_center_ad_service import (
 from .types.ad_unit_enums import AdUnitStatusEnum, SmartSizeModeEnum, TargetWindowEnum
 from .types.ad_unit_messages import AdUnit, AdUnitParent, AdUnitSize, LabelFrequencyCap
 from .types.ad_unit_service import (
+    BatchActivateAdUnitsRequest,
+    BatchActivateAdUnitsResponse,
+    BatchArchiveAdUnitsRequest,
+    BatchArchiveAdUnitsResponse,
+    BatchCreateAdUnitsRequest,
+    BatchCreateAdUnitsResponse,
+    BatchDeactivateAdUnitsRequest,
+    BatchDeactivateAdUnitsResponse,
+    BatchUpdateAdUnitsRequest,
+    BatchUpdateAdUnitsResponse,
+    CreateAdUnitRequest,
     GetAdUnitRequest,
     ListAdUnitSizesRequest,
     ListAdUnitSizesResponse,
     ListAdUnitsRequest,
     ListAdUnitsResponse,
+    UpdateAdUnitRequest,
 )
 from .types.admanager_error import AdManagerError
 from .types.application_messages import Application
@@ -217,9 +230,19 @@ from .types.custom_targeting_key_enums import (
 )
 from .types.custom_targeting_key_messages import CustomTargetingKey
 from .types.custom_targeting_key_service import (
+    BatchActivateCustomTargetingKeysRequest,
+    BatchActivateCustomTargetingKeysResponse,
+    BatchCreateCustomTargetingKeysRequest,
+    BatchCreateCustomTargetingKeysResponse,
+    BatchDeactivateCustomTargetingKeysRequest,
+    BatchDeactivateCustomTargetingKeysResponse,
+    BatchUpdateCustomTargetingKeysRequest,
+    BatchUpdateCustomTargetingKeysResponse,
+    CreateCustomTargetingKeyRequest,
     GetCustomTargetingKeyRequest,
     ListCustomTargetingKeysRequest,
     ListCustomTargetingKeysResponse,
+    UpdateCustomTargetingKeyRequest,
 )
 from .types.custom_targeting_value_enums import (
     CustomTargetingValueMatchTypeEnum,
@@ -272,7 +295,16 @@ from .types.geo_target_service import (
     ListGeoTargetsRequest,
     ListGeoTargetsResponse,
 )
+from .types.goal import Goal
+from .types.goal_enums import GoalTypeEnum, UnitTypeEnum
 from .types.label_messages import Label
+from .types.line_item_enums import LineItemTypeEnum
+from .types.line_item_messages import LineItem
+from .types.line_item_service import (
+    GetLineItemRequest,
+    ListLineItemsRequest,
+    ListLineItemsResponse,
+)
 from .types.live_stream_event_messages import LiveStreamEvent
 from .types.mobile_carrier_messages import MobileCarrier
 from .types.mobile_carrier_service import (
@@ -475,8 +507,12 @@ __all__ = (
     "BandwidthGroup",
     "BandwidthGroupServiceClient",
     "BandwidthTargeting",
+    "BatchActivateAdUnitsRequest",
+    "BatchActivateAdUnitsResponse",
     "BatchActivateCustomFieldsRequest",
     "BatchActivateCustomFieldsResponse",
+    "BatchActivateCustomTargetingKeysRequest",
+    "BatchActivateCustomTargetingKeysResponse",
     "BatchActivatePlacementsRequest",
     "BatchActivatePlacementsResponse",
     "BatchActivateTeamsRequest",
@@ -484,14 +520,20 @@ __all__ = (
     "BatchAdReviewCenterAdsOperationMetadata",
     "BatchAllowAdReviewCenterAdsRequest",
     "BatchAllowAdReviewCenterAdsResponse",
+    "BatchArchiveAdUnitsRequest",
+    "BatchArchiveAdUnitsResponse",
     "BatchArchivePlacementsRequest",
     "BatchArchivePlacementsResponse",
     "BatchBlockAdReviewCenterAdsRequest",
     "BatchBlockAdReviewCenterAdsResponse",
+    "BatchCreateAdUnitsRequest",
+    "BatchCreateAdUnitsResponse",
     "BatchCreateContactsRequest",
     "BatchCreateContactsResponse",
     "BatchCreateCustomFieldsRequest",
     "BatchCreateCustomFieldsResponse",
+    "BatchCreateCustomTargetingKeysRequest",
+    "BatchCreateCustomTargetingKeysResponse",
     "BatchCreateEntitySignalsMappingsRequest",
     "BatchCreateEntitySignalsMappingsResponse",
     "BatchCreatePlacementsRequest",
@@ -500,8 +542,12 @@ __all__ = (
     "BatchCreateSitesResponse",
     "BatchCreateTeamsRequest",
     "BatchCreateTeamsResponse",
+    "BatchDeactivateAdUnitsRequest",
+    "BatchDeactivateAdUnitsResponse",
     "BatchDeactivateCustomFieldsRequest",
     "BatchDeactivateCustomFieldsResponse",
+    "BatchDeactivateCustomTargetingKeysRequest",
+    "BatchDeactivateCustomTargetingKeysResponse",
     "BatchDeactivatePlacementsRequest",
     "BatchDeactivatePlacementsResponse",
     "BatchDeactivateSitesRequest",
@@ -510,10 +556,14 @@ __all__ = (
     "BatchDeactivateTeamsResponse",
     "BatchSubmitSitesForApprovalRequest",
     "BatchSubmitSitesForApprovalResponse",
+    "BatchUpdateAdUnitsRequest",
+    "BatchUpdateAdUnitsResponse",
     "BatchUpdateContactsRequest",
     "BatchUpdateContactsResponse",
     "BatchUpdateCustomFieldsRequest",
     "BatchUpdateCustomFieldsResponse",
+    "BatchUpdateCustomTargetingKeysRequest",
+    "BatchUpdateCustomTargetingKeysResponse",
     "BatchUpdateEntitySignalsMappingsRequest",
     "BatchUpdateEntitySignalsMappingsResponse",
     "BatchUpdatePlacementsRequest",
@@ -550,8 +600,10 @@ __all__ = (
     "ContentServiceClient",
     "ContentTargeting",
     "CreateAdBreakRequest",
+    "CreateAdUnitRequest",
     "CreateContactRequest",
     "CreateCustomFieldRequest",
+    "CreateCustomTargetingKeyRequest",
     "CreateEntitySignalsMappingRequest",
     "CreatePlacementRequest",
     "CreatePrivateAuctionDealRequest",
@@ -632,6 +684,7 @@ __all__ = (
     "GetDeviceManufacturerRequest",
     "GetEntitySignalsMappingRequest",
     "GetGeoTargetRequest",
+    "GetLineItemRequest",
     "GetMobileCarrierRequest",
     "GetMobileDeviceRequest",
     "GetMobileDeviceSubmodelRequest",
@@ -649,9 +702,14 @@ __all__ = (
     "GetTaxonomyCategoryRequest",
     "GetTeamRequest",
     "GetUserRequest",
+    "Goal",
+    "GoalTypeEnum",
     "InventoryTargeting",
     "Label",
     "LabelFrequencyCap",
+    "LineItem",
+    "LineItemServiceClient",
+    "LineItemTypeEnum",
     "ListAdBreaksRequest",
     "ListAdBreaksResponse",
     "ListAdUnitSizesRequest",
@@ -700,6 +758,8 @@ __all__ = (
     "ListEntitySignalsMappingsResponse",
     "ListGeoTargetsRequest",
     "ListGeoTargetsResponse",
+    "ListLineItemsRequest",
+    "ListLineItemsResponse",
     "ListMobileCarriersRequest",
     "ListMobileCarriersResponse",
     "ListMobileDeviceSubmodelsRequest",
@@ -796,9 +856,12 @@ __all__ = (
     "TeamStatusEnum",
     "TechnologyTargeting",
     "TimeUnitEnum",
+    "UnitTypeEnum",
     "UpdateAdBreakRequest",
+    "UpdateAdUnitRequest",
     "UpdateContactRequest",
     "UpdateCustomFieldRequest",
+    "UpdateCustomTargetingKeyRequest",
     "UpdateEntitySignalsMappingRequest",
     "UpdatePlacementRequest",
     "UpdatePrivateAuctionDealRequest",

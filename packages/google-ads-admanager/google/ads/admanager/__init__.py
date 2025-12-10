@@ -80,6 +80,9 @@ from google.ads.admanager_v1.services.entity_signals_mapping_service.client impo
 from google.ads.admanager_v1.services.geo_target_service.client import (
     GeoTargetServiceClient,
 )
+from google.ads.admanager_v1.services.line_item_service.client import (
+    LineItemServiceClient,
+)
 from google.ads.admanager_v1.services.mobile_carrier_service.client import (
     MobileCarrierServiceClient,
 )
@@ -151,11 +154,23 @@ from google.ads.admanager_v1.types.ad_unit_messages import (
     LabelFrequencyCap,
 )
 from google.ads.admanager_v1.types.ad_unit_service import (
+    BatchActivateAdUnitsRequest,
+    BatchActivateAdUnitsResponse,
+    BatchArchiveAdUnitsRequest,
+    BatchArchiveAdUnitsResponse,
+    BatchCreateAdUnitsRequest,
+    BatchCreateAdUnitsResponse,
+    BatchDeactivateAdUnitsRequest,
+    BatchDeactivateAdUnitsResponse,
+    BatchUpdateAdUnitsRequest,
+    BatchUpdateAdUnitsResponse,
+    CreateAdUnitRequest,
     GetAdUnitRequest,
     ListAdUnitSizesRequest,
     ListAdUnitSizesResponse,
     ListAdUnitsRequest,
     ListAdUnitsResponse,
+    UpdateAdUnitRequest,
 )
 from google.ads.admanager_v1.types.admanager_error import AdManagerError
 from google.ads.admanager_v1.types.application_messages import Application
@@ -299,9 +314,19 @@ from google.ads.admanager_v1.types.custom_targeting_key_messages import (
     CustomTargetingKey,
 )
 from google.ads.admanager_v1.types.custom_targeting_key_service import (
+    BatchActivateCustomTargetingKeysRequest,
+    BatchActivateCustomTargetingKeysResponse,
+    BatchCreateCustomTargetingKeysRequest,
+    BatchCreateCustomTargetingKeysResponse,
+    BatchDeactivateCustomTargetingKeysRequest,
+    BatchDeactivateCustomTargetingKeysResponse,
+    BatchUpdateCustomTargetingKeysRequest,
+    BatchUpdateCustomTargetingKeysResponse,
+    CreateCustomTargetingKeyRequest,
     GetCustomTargetingKeyRequest,
     ListCustomTargetingKeysRequest,
     ListCustomTargetingKeysResponse,
+    UpdateCustomTargetingKeyRequest,
 )
 from google.ads.admanager_v1.types.custom_targeting_value_enums import (
     CustomTargetingValueMatchTypeEnum,
@@ -366,7 +391,16 @@ from google.ads.admanager_v1.types.geo_target_service import (
     ListGeoTargetsRequest,
     ListGeoTargetsResponse,
 )
+from google.ads.admanager_v1.types.goal import Goal
+from google.ads.admanager_v1.types.goal_enums import GoalTypeEnum, UnitTypeEnum
 from google.ads.admanager_v1.types.label_messages import Label
+from google.ads.admanager_v1.types.line_item_enums import LineItemTypeEnum
+from google.ads.admanager_v1.types.line_item_messages import LineItem
+from google.ads.admanager_v1.types.line_item_service import (
+    GetLineItemRequest,
+    ListLineItemsRequest,
+    ListLineItemsResponse,
+)
 from google.ads.admanager_v1.types.live_stream_event_messages import LiveStreamEvent
 from google.ads.admanager_v1.types.mobile_carrier_messages import MobileCarrier
 from google.ads.admanager_v1.types.mobile_carrier_service import (
@@ -596,6 +630,7 @@ __all__ = (
     "DeviceManufacturerServiceClient",
     "EntitySignalsMappingServiceClient",
     "GeoTargetServiceClient",
+    "LineItemServiceClient",
     "MobileCarrierServiceClient",
     "MobileDeviceServiceClient",
     "MobileDeviceSubmodelServiceClient",
@@ -636,11 +671,23 @@ __all__ = (
     "AdUnitParent",
     "AdUnitSize",
     "LabelFrequencyCap",
+    "BatchActivateAdUnitsRequest",
+    "BatchActivateAdUnitsResponse",
+    "BatchArchiveAdUnitsRequest",
+    "BatchArchiveAdUnitsResponse",
+    "BatchCreateAdUnitsRequest",
+    "BatchCreateAdUnitsResponse",
+    "BatchDeactivateAdUnitsRequest",
+    "BatchDeactivateAdUnitsResponse",
+    "BatchUpdateAdUnitsRequest",
+    "BatchUpdateAdUnitsResponse",
+    "CreateAdUnitRequest",
     "GetAdUnitRequest",
     "ListAdUnitSizesRequest",
     "ListAdUnitSizesResponse",
     "ListAdUnitsRequest",
     "ListAdUnitsResponse",
+    "UpdateAdUnitRequest",
     "AdManagerError",
     "Application",
     "GetApplicationRequest",
@@ -734,9 +781,19 @@ __all__ = (
     "CustomTargetingKeyStatusEnum",
     "CustomTargetingKeyTypeEnum",
     "CustomTargetingKey",
+    "BatchActivateCustomTargetingKeysRequest",
+    "BatchActivateCustomTargetingKeysResponse",
+    "BatchCreateCustomTargetingKeysRequest",
+    "BatchCreateCustomTargetingKeysResponse",
+    "BatchDeactivateCustomTargetingKeysRequest",
+    "BatchDeactivateCustomTargetingKeysResponse",
+    "BatchUpdateCustomTargetingKeysRequest",
+    "BatchUpdateCustomTargetingKeysResponse",
+    "CreateCustomTargetingKeyRequest",
     "GetCustomTargetingKeyRequest",
     "ListCustomTargetingKeysRequest",
     "ListCustomTargetingKeysResponse",
+    "UpdateCustomTargetingKeyRequest",
     "CustomTargetingValueMatchTypeEnum",
     "CustomTargetingValueStatusEnum",
     "CustomTargetingValue",
@@ -774,7 +831,15 @@ __all__ = (
     "GetGeoTargetRequest",
     "ListGeoTargetsRequest",
     "ListGeoTargetsResponse",
+    "Goal",
+    "GoalTypeEnum",
+    "UnitTypeEnum",
     "Label",
+    "LineItemTypeEnum",
+    "LineItem",
+    "GetLineItemRequest",
+    "ListLineItemsRequest",
+    "ListLineItemsResponse",
     "LiveStreamEvent",
     "MobileCarrier",
     "GetMobileCarrierRequest",

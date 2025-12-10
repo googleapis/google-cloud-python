@@ -73,6 +73,54 @@ class AdUnitServiceRestInterceptor:
 
     .. code-block:: python
         class MyCustomAdUnitServiceInterceptor(AdUnitServiceRestInterceptor):
+            def pre_batch_activate_ad_units(self, request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_batch_activate_ad_units(self, response):
+                logging.log(f"Received response: {response}")
+                return response
+
+            def pre_batch_archive_ad_units(self, request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_batch_archive_ad_units(self, response):
+                logging.log(f"Received response: {response}")
+                return response
+
+            def pre_batch_create_ad_units(self, request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_batch_create_ad_units(self, response):
+                logging.log(f"Received response: {response}")
+                return response
+
+            def pre_batch_deactivate_ad_units(self, request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_batch_deactivate_ad_units(self, response):
+                logging.log(f"Received response: {response}")
+                return response
+
+            def pre_batch_update_ad_units(self, request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_batch_update_ad_units(self, response):
+                logging.log(f"Received response: {response}")
+                return response
+
+            def pre_create_ad_unit(self, request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_create_ad_unit(self, response):
+                logging.log(f"Received response: {response}")
+                return response
+
             def pre_get_ad_unit(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
@@ -97,11 +145,327 @@ class AdUnitServiceRestInterceptor:
                 logging.log(f"Received response: {response}")
                 return response
 
+            def pre_update_ad_unit(self, request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_update_ad_unit(self, response):
+                logging.log(f"Received response: {response}")
+                return response
+
         transport = AdUnitServiceRestTransport(interceptor=MyCustomAdUnitServiceInterceptor())
         client = AdUnitServiceClient(transport=transport)
 
 
     """
+
+    def pre_batch_activate_ad_units(
+        self,
+        request: ad_unit_service.BatchActivateAdUnitsRequest,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        ad_unit_service.BatchActivateAdUnitsRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
+        """Pre-rpc interceptor for batch_activate_ad_units
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the AdUnitService server.
+        """
+        return request, metadata
+
+    def post_batch_activate_ad_units(
+        self, response: ad_unit_service.BatchActivateAdUnitsResponse
+    ) -> ad_unit_service.BatchActivateAdUnitsResponse:
+        """Post-rpc interceptor for batch_activate_ad_units
+
+        DEPRECATED. Please use the `post_batch_activate_ad_units_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
+        after it is returned by the AdUnitService server but before
+        it is returned to user code. This `post_batch_activate_ad_units` interceptor runs
+        before the `post_batch_activate_ad_units_with_metadata` interceptor.
+        """
+        return response
+
+    def post_batch_activate_ad_units_with_metadata(
+        self,
+        response: ad_unit_service.BatchActivateAdUnitsResponse,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        ad_unit_service.BatchActivateAdUnitsResponse,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
+        """Post-rpc interceptor for batch_activate_ad_units
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the AdUnitService server but before it is returned to user code.
+
+        We recommend only using this `post_batch_activate_ad_units_with_metadata`
+        interceptor in new development instead of the `post_batch_activate_ad_units` interceptor.
+        When both interceptors are used, this `post_batch_activate_ad_units_with_metadata` interceptor runs after the
+        `post_batch_activate_ad_units` interceptor. The (possibly modified) response returned by
+        `post_batch_activate_ad_units` will be passed to
+        `post_batch_activate_ad_units_with_metadata`.
+        """
+        return response, metadata
+
+    def pre_batch_archive_ad_units(
+        self,
+        request: ad_unit_service.BatchArchiveAdUnitsRequest,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        ad_unit_service.BatchArchiveAdUnitsRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
+        """Pre-rpc interceptor for batch_archive_ad_units
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the AdUnitService server.
+        """
+        return request, metadata
+
+    def post_batch_archive_ad_units(
+        self, response: ad_unit_service.BatchArchiveAdUnitsResponse
+    ) -> ad_unit_service.BatchArchiveAdUnitsResponse:
+        """Post-rpc interceptor for batch_archive_ad_units
+
+        DEPRECATED. Please use the `post_batch_archive_ad_units_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
+        after it is returned by the AdUnitService server but before
+        it is returned to user code. This `post_batch_archive_ad_units` interceptor runs
+        before the `post_batch_archive_ad_units_with_metadata` interceptor.
+        """
+        return response
+
+    def post_batch_archive_ad_units_with_metadata(
+        self,
+        response: ad_unit_service.BatchArchiveAdUnitsResponse,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        ad_unit_service.BatchArchiveAdUnitsResponse,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
+        """Post-rpc interceptor for batch_archive_ad_units
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the AdUnitService server but before it is returned to user code.
+
+        We recommend only using this `post_batch_archive_ad_units_with_metadata`
+        interceptor in new development instead of the `post_batch_archive_ad_units` interceptor.
+        When both interceptors are used, this `post_batch_archive_ad_units_with_metadata` interceptor runs after the
+        `post_batch_archive_ad_units` interceptor. The (possibly modified) response returned by
+        `post_batch_archive_ad_units` will be passed to
+        `post_batch_archive_ad_units_with_metadata`.
+        """
+        return response, metadata
+
+    def pre_batch_create_ad_units(
+        self,
+        request: ad_unit_service.BatchCreateAdUnitsRequest,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        ad_unit_service.BatchCreateAdUnitsRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
+        """Pre-rpc interceptor for batch_create_ad_units
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the AdUnitService server.
+        """
+        return request, metadata
+
+    def post_batch_create_ad_units(
+        self, response: ad_unit_service.BatchCreateAdUnitsResponse
+    ) -> ad_unit_service.BatchCreateAdUnitsResponse:
+        """Post-rpc interceptor for batch_create_ad_units
+
+        DEPRECATED. Please use the `post_batch_create_ad_units_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
+        after it is returned by the AdUnitService server but before
+        it is returned to user code. This `post_batch_create_ad_units` interceptor runs
+        before the `post_batch_create_ad_units_with_metadata` interceptor.
+        """
+        return response
+
+    def post_batch_create_ad_units_with_metadata(
+        self,
+        response: ad_unit_service.BatchCreateAdUnitsResponse,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        ad_unit_service.BatchCreateAdUnitsResponse,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
+        """Post-rpc interceptor for batch_create_ad_units
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the AdUnitService server but before it is returned to user code.
+
+        We recommend only using this `post_batch_create_ad_units_with_metadata`
+        interceptor in new development instead of the `post_batch_create_ad_units` interceptor.
+        When both interceptors are used, this `post_batch_create_ad_units_with_metadata` interceptor runs after the
+        `post_batch_create_ad_units` interceptor. The (possibly modified) response returned by
+        `post_batch_create_ad_units` will be passed to
+        `post_batch_create_ad_units_with_metadata`.
+        """
+        return response, metadata
+
+    def pre_batch_deactivate_ad_units(
+        self,
+        request: ad_unit_service.BatchDeactivateAdUnitsRequest,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        ad_unit_service.BatchDeactivateAdUnitsRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
+        """Pre-rpc interceptor for batch_deactivate_ad_units
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the AdUnitService server.
+        """
+        return request, metadata
+
+    def post_batch_deactivate_ad_units(
+        self, response: ad_unit_service.BatchDeactivateAdUnitsResponse
+    ) -> ad_unit_service.BatchDeactivateAdUnitsResponse:
+        """Post-rpc interceptor for batch_deactivate_ad_units
+
+        DEPRECATED. Please use the `post_batch_deactivate_ad_units_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
+        after it is returned by the AdUnitService server but before
+        it is returned to user code. This `post_batch_deactivate_ad_units` interceptor runs
+        before the `post_batch_deactivate_ad_units_with_metadata` interceptor.
+        """
+        return response
+
+    def post_batch_deactivate_ad_units_with_metadata(
+        self,
+        response: ad_unit_service.BatchDeactivateAdUnitsResponse,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        ad_unit_service.BatchDeactivateAdUnitsResponse,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
+        """Post-rpc interceptor for batch_deactivate_ad_units
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the AdUnitService server but before it is returned to user code.
+
+        We recommend only using this `post_batch_deactivate_ad_units_with_metadata`
+        interceptor in new development instead of the `post_batch_deactivate_ad_units` interceptor.
+        When both interceptors are used, this `post_batch_deactivate_ad_units_with_metadata` interceptor runs after the
+        `post_batch_deactivate_ad_units` interceptor. The (possibly modified) response returned by
+        `post_batch_deactivate_ad_units` will be passed to
+        `post_batch_deactivate_ad_units_with_metadata`.
+        """
+        return response, metadata
+
+    def pre_batch_update_ad_units(
+        self,
+        request: ad_unit_service.BatchUpdateAdUnitsRequest,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        ad_unit_service.BatchUpdateAdUnitsRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
+        """Pre-rpc interceptor for batch_update_ad_units
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the AdUnitService server.
+        """
+        return request, metadata
+
+    def post_batch_update_ad_units(
+        self, response: ad_unit_service.BatchUpdateAdUnitsResponse
+    ) -> ad_unit_service.BatchUpdateAdUnitsResponse:
+        """Post-rpc interceptor for batch_update_ad_units
+
+        DEPRECATED. Please use the `post_batch_update_ad_units_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
+        after it is returned by the AdUnitService server but before
+        it is returned to user code. This `post_batch_update_ad_units` interceptor runs
+        before the `post_batch_update_ad_units_with_metadata` interceptor.
+        """
+        return response
+
+    def post_batch_update_ad_units_with_metadata(
+        self,
+        response: ad_unit_service.BatchUpdateAdUnitsResponse,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        ad_unit_service.BatchUpdateAdUnitsResponse,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
+        """Post-rpc interceptor for batch_update_ad_units
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the AdUnitService server but before it is returned to user code.
+
+        We recommend only using this `post_batch_update_ad_units_with_metadata`
+        interceptor in new development instead of the `post_batch_update_ad_units` interceptor.
+        When both interceptors are used, this `post_batch_update_ad_units_with_metadata` interceptor runs after the
+        `post_batch_update_ad_units` interceptor. The (possibly modified) response returned by
+        `post_batch_update_ad_units` will be passed to
+        `post_batch_update_ad_units_with_metadata`.
+        """
+        return response, metadata
+
+    def pre_create_ad_unit(
+        self,
+        request: ad_unit_service.CreateAdUnitRequest,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        ad_unit_service.CreateAdUnitRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
+        """Pre-rpc interceptor for create_ad_unit
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the AdUnitService server.
+        """
+        return request, metadata
+
+    def post_create_ad_unit(
+        self, response: ad_unit_messages.AdUnit
+    ) -> ad_unit_messages.AdUnit:
+        """Post-rpc interceptor for create_ad_unit
+
+        DEPRECATED. Please use the `post_create_ad_unit_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
+        after it is returned by the AdUnitService server but before
+        it is returned to user code. This `post_create_ad_unit` interceptor runs
+        before the `post_create_ad_unit_with_metadata` interceptor.
+        """
+        return response
+
+    def post_create_ad_unit_with_metadata(
+        self,
+        response: ad_unit_messages.AdUnit,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[ad_unit_messages.AdUnit, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for create_ad_unit
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the AdUnitService server but before it is returned to user code.
+
+        We recommend only using this `post_create_ad_unit_with_metadata`
+        interceptor in new development instead of the `post_create_ad_unit` interceptor.
+        When both interceptors are used, this `post_create_ad_unit_with_metadata` interceptor runs after the
+        `post_create_ad_unit` interceptor. The (possibly modified) response returned by
+        `post_create_ad_unit` will be passed to
+        `post_create_ad_unit_with_metadata`.
+        """
+        return response, metadata
 
     def pre_get_ad_unit(
         self,
@@ -251,6 +615,54 @@ class AdUnitServiceRestInterceptor:
         """
         return response, metadata
 
+    def pre_update_ad_unit(
+        self,
+        request: ad_unit_service.UpdateAdUnitRequest,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        ad_unit_service.UpdateAdUnitRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
+        """Pre-rpc interceptor for update_ad_unit
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the AdUnitService server.
+        """
+        return request, metadata
+
+    def post_update_ad_unit(
+        self, response: ad_unit_messages.AdUnit
+    ) -> ad_unit_messages.AdUnit:
+        """Post-rpc interceptor for update_ad_unit
+
+        DEPRECATED. Please use the `post_update_ad_unit_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
+        after it is returned by the AdUnitService server but before
+        it is returned to user code. This `post_update_ad_unit` interceptor runs
+        before the `post_update_ad_unit_with_metadata` interceptor.
+        """
+        return response
+
+    def post_update_ad_unit_with_metadata(
+        self,
+        response: ad_unit_messages.AdUnit,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[ad_unit_messages.AdUnit, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for update_ad_unit
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the AdUnitService server but before it is returned to user code.
+
+        We recommend only using this `post_update_ad_unit_with_metadata`
+        interceptor in new development instead of the `post_update_ad_unit` interceptor.
+        When both interceptors are used, this `post_update_ad_unit_with_metadata` interceptor runs after the
+        `post_update_ad_unit` interceptor. The (possibly modified) response returned by
+        `post_update_ad_unit` will be passed to
+        `post_update_ad_unit_with_metadata`.
+        """
+        return response, metadata
+
     def pre_get_operation(
         self,
         request: operations_pb2.GetOperationRequest,
@@ -363,6 +775,927 @@ class AdUnitServiceRestTransport(_BaseAdUnitServiceRestTransport):
             self._session.configure_mtls_channel(client_cert_source_for_mtls)
         self._interceptor = interceptor or AdUnitServiceRestInterceptor()
         self._prep_wrapped_messages(client_info)
+
+    class _BatchActivateAdUnits(
+        _BaseAdUnitServiceRestTransport._BaseBatchActivateAdUnits, AdUnitServiceRestStub
+    ):
+        def __hash__(self):
+            return hash("AdUnitServiceRestTransport.BatchActivateAdUnits")
+
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+            return response
+
+        def __call__(
+            self,
+            request: ad_unit_service.BatchActivateAdUnitsRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+        ) -> ad_unit_service.BatchActivateAdUnitsResponse:
+            r"""Call the batch activate ad units method over HTTP.
+
+            Args:
+                request (~.ad_unit_service.BatchActivateAdUnitsRequest):
+                    The request object. Request object for ``BatchActivateAdUnits`` method.
+                retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                    should be retried.
+                timeout (float): The timeout for this request.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
+
+            Returns:
+                ~.ad_unit_service.BatchActivateAdUnitsResponse:
+                    Response object for ``BatchActivateAdUnits`` method.
+            """
+
+            http_options = (
+                _BaseAdUnitServiceRestTransport._BaseBatchActivateAdUnits._get_http_options()
+            )
+
+            request, metadata = self._interceptor.pre_batch_activate_ad_units(
+                request, metadata
+            )
+            transcoded_request = _BaseAdUnitServiceRestTransport._BaseBatchActivateAdUnits._get_transcoded_request(
+                http_options, request
+            )
+
+            body = _BaseAdUnitServiceRestTransport._BaseBatchActivateAdUnits._get_request_body_json(
+                transcoded_request
+            )
+
+            # Jsonify the query params
+            query_params = _BaseAdUnitServiceRestTransport._BaseBatchActivateAdUnits._get_query_params_json(
+                transcoded_request
+            )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.ads.admanager_v1.AdUnitServiceClient.BatchActivateAdUnits",
+                    extra={
+                        "serviceName": "google.ads.admanager.v1.AdUnitService",
+                        "rpcName": "BatchActivateAdUnits",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
+
+            # Send the request
+            response = AdUnitServiceRestTransport._BatchActivateAdUnits._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+                body,
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+
+            # Return the response
+            resp = ad_unit_service.BatchActivateAdUnitsResponse()
+            pb_resp = ad_unit_service.BatchActivateAdUnitsResponse.pb(resp)
+
+            json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
+            resp = self._interceptor.post_batch_activate_ad_units(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_batch_activate_ad_units_with_metadata(
+                resp, response_metadata
+            )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = (
+                        ad_unit_service.BatchActivateAdUnitsResponse.to_json(response)
+                    )
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.ads.admanager_v1.AdUnitServiceClient.batch_activate_ad_units",
+                    extra={
+                        "serviceName": "google.ads.admanager.v1.AdUnitService",
+                        "rpcName": "BatchActivateAdUnits",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
+            return resp
+
+    class _BatchArchiveAdUnits(
+        _BaseAdUnitServiceRestTransport._BaseBatchArchiveAdUnits, AdUnitServiceRestStub
+    ):
+        def __hash__(self):
+            return hash("AdUnitServiceRestTransport.BatchArchiveAdUnits")
+
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+            return response
+
+        def __call__(
+            self,
+            request: ad_unit_service.BatchArchiveAdUnitsRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+        ) -> ad_unit_service.BatchArchiveAdUnitsResponse:
+            r"""Call the batch archive ad units method over HTTP.
+
+            Args:
+                request (~.ad_unit_service.BatchArchiveAdUnitsRequest):
+                    The request object. Request object for ``BatchArchiveAdUnits`` method.
+                retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                    should be retried.
+                timeout (float): The timeout for this request.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
+
+            Returns:
+                ~.ad_unit_service.BatchArchiveAdUnitsResponse:
+                    Response object for ``BatchArchiveAdUnits`` method.
+            """
+
+            http_options = (
+                _BaseAdUnitServiceRestTransport._BaseBatchArchiveAdUnits._get_http_options()
+            )
+
+            request, metadata = self._interceptor.pre_batch_archive_ad_units(
+                request, metadata
+            )
+            transcoded_request = _BaseAdUnitServiceRestTransport._BaseBatchArchiveAdUnits._get_transcoded_request(
+                http_options, request
+            )
+
+            body = _BaseAdUnitServiceRestTransport._BaseBatchArchiveAdUnits._get_request_body_json(
+                transcoded_request
+            )
+
+            # Jsonify the query params
+            query_params = _BaseAdUnitServiceRestTransport._BaseBatchArchiveAdUnits._get_query_params_json(
+                transcoded_request
+            )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.ads.admanager_v1.AdUnitServiceClient.BatchArchiveAdUnits",
+                    extra={
+                        "serviceName": "google.ads.admanager.v1.AdUnitService",
+                        "rpcName": "BatchArchiveAdUnits",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
+
+            # Send the request
+            response = AdUnitServiceRestTransport._BatchArchiveAdUnits._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+                body,
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+
+            # Return the response
+            resp = ad_unit_service.BatchArchiveAdUnitsResponse()
+            pb_resp = ad_unit_service.BatchArchiveAdUnitsResponse.pb(resp)
+
+            json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
+            resp = self._interceptor.post_batch_archive_ad_units(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_batch_archive_ad_units_with_metadata(
+                resp, response_metadata
+            )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = (
+                        ad_unit_service.BatchArchiveAdUnitsResponse.to_json(response)
+                    )
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.ads.admanager_v1.AdUnitServiceClient.batch_archive_ad_units",
+                    extra={
+                        "serviceName": "google.ads.admanager.v1.AdUnitService",
+                        "rpcName": "BatchArchiveAdUnits",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
+            return resp
+
+    class _BatchCreateAdUnits(
+        _BaseAdUnitServiceRestTransport._BaseBatchCreateAdUnits, AdUnitServiceRestStub
+    ):
+        def __hash__(self):
+            return hash("AdUnitServiceRestTransport.BatchCreateAdUnits")
+
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+            return response
+
+        def __call__(
+            self,
+            request: ad_unit_service.BatchCreateAdUnitsRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+        ) -> ad_unit_service.BatchCreateAdUnitsResponse:
+            r"""Call the batch create ad units method over HTTP.
+
+            Args:
+                request (~.ad_unit_service.BatchCreateAdUnitsRequest):
+                    The request object. Request object for ``BatchCreateAdUnits`` method.
+                retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                    should be retried.
+                timeout (float): The timeout for this request.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
+
+            Returns:
+                ~.ad_unit_service.BatchCreateAdUnitsResponse:
+                    Response object for ``BatchCreateAdUnits`` method.
+            """
+
+            http_options = (
+                _BaseAdUnitServiceRestTransport._BaseBatchCreateAdUnits._get_http_options()
+            )
+
+            request, metadata = self._interceptor.pre_batch_create_ad_units(
+                request, metadata
+            )
+            transcoded_request = _BaseAdUnitServiceRestTransport._BaseBatchCreateAdUnits._get_transcoded_request(
+                http_options, request
+            )
+
+            body = _BaseAdUnitServiceRestTransport._BaseBatchCreateAdUnits._get_request_body_json(
+                transcoded_request
+            )
+
+            # Jsonify the query params
+            query_params = _BaseAdUnitServiceRestTransport._BaseBatchCreateAdUnits._get_query_params_json(
+                transcoded_request
+            )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.ads.admanager_v1.AdUnitServiceClient.BatchCreateAdUnits",
+                    extra={
+                        "serviceName": "google.ads.admanager.v1.AdUnitService",
+                        "rpcName": "BatchCreateAdUnits",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
+
+            # Send the request
+            response = AdUnitServiceRestTransport._BatchCreateAdUnits._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+                body,
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+
+            # Return the response
+            resp = ad_unit_service.BatchCreateAdUnitsResponse()
+            pb_resp = ad_unit_service.BatchCreateAdUnitsResponse.pb(resp)
+
+            json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
+            resp = self._interceptor.post_batch_create_ad_units(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_batch_create_ad_units_with_metadata(
+                resp, response_metadata
+            )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = (
+                        ad_unit_service.BatchCreateAdUnitsResponse.to_json(response)
+                    )
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.ads.admanager_v1.AdUnitServiceClient.batch_create_ad_units",
+                    extra={
+                        "serviceName": "google.ads.admanager.v1.AdUnitService",
+                        "rpcName": "BatchCreateAdUnits",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
+            return resp
+
+    class _BatchDeactivateAdUnits(
+        _BaseAdUnitServiceRestTransport._BaseBatchDeactivateAdUnits,
+        AdUnitServiceRestStub,
+    ):
+        def __hash__(self):
+            return hash("AdUnitServiceRestTransport.BatchDeactivateAdUnits")
+
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+            return response
+
+        def __call__(
+            self,
+            request: ad_unit_service.BatchDeactivateAdUnitsRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+        ) -> ad_unit_service.BatchDeactivateAdUnitsResponse:
+            r"""Call the batch deactivate ad units method over HTTP.
+
+            Args:
+                request (~.ad_unit_service.BatchDeactivateAdUnitsRequest):
+                    The request object. Request object for ``BatchDeactivateAdUnits`` method.
+                retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                    should be retried.
+                timeout (float): The timeout for this request.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
+
+            Returns:
+                ~.ad_unit_service.BatchDeactivateAdUnitsResponse:
+                    Response object for ``BatchDeactivateAdUnits`` method.
+            """
+
+            http_options = (
+                _BaseAdUnitServiceRestTransport._BaseBatchDeactivateAdUnits._get_http_options()
+            )
+
+            request, metadata = self._interceptor.pre_batch_deactivate_ad_units(
+                request, metadata
+            )
+            transcoded_request = _BaseAdUnitServiceRestTransport._BaseBatchDeactivateAdUnits._get_transcoded_request(
+                http_options, request
+            )
+
+            body = _BaseAdUnitServiceRestTransport._BaseBatchDeactivateAdUnits._get_request_body_json(
+                transcoded_request
+            )
+
+            # Jsonify the query params
+            query_params = _BaseAdUnitServiceRestTransport._BaseBatchDeactivateAdUnits._get_query_params_json(
+                transcoded_request
+            )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.ads.admanager_v1.AdUnitServiceClient.BatchDeactivateAdUnits",
+                    extra={
+                        "serviceName": "google.ads.admanager.v1.AdUnitService",
+                        "rpcName": "BatchDeactivateAdUnits",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
+
+            # Send the request
+            response = AdUnitServiceRestTransport._BatchDeactivateAdUnits._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+                body,
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+
+            # Return the response
+            resp = ad_unit_service.BatchDeactivateAdUnitsResponse()
+            pb_resp = ad_unit_service.BatchDeactivateAdUnitsResponse.pb(resp)
+
+            json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
+            resp = self._interceptor.post_batch_deactivate_ad_units(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_batch_deactivate_ad_units_with_metadata(
+                resp, response_metadata
+            )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = (
+                        ad_unit_service.BatchDeactivateAdUnitsResponse.to_json(response)
+                    )
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.ads.admanager_v1.AdUnitServiceClient.batch_deactivate_ad_units",
+                    extra={
+                        "serviceName": "google.ads.admanager.v1.AdUnitService",
+                        "rpcName": "BatchDeactivateAdUnits",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
+            return resp
+
+    class _BatchUpdateAdUnits(
+        _BaseAdUnitServiceRestTransport._BaseBatchUpdateAdUnits, AdUnitServiceRestStub
+    ):
+        def __hash__(self):
+            return hash("AdUnitServiceRestTransport.BatchUpdateAdUnits")
+
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+            return response
+
+        def __call__(
+            self,
+            request: ad_unit_service.BatchUpdateAdUnitsRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+        ) -> ad_unit_service.BatchUpdateAdUnitsResponse:
+            r"""Call the batch update ad units method over HTTP.
+
+            Args:
+                request (~.ad_unit_service.BatchUpdateAdUnitsRequest):
+                    The request object. Request object for ``BatchUpdateAdUnits`` method.
+                retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                    should be retried.
+                timeout (float): The timeout for this request.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
+
+            Returns:
+                ~.ad_unit_service.BatchUpdateAdUnitsResponse:
+                    Response object for ``BatchUpdateAdUnits`` method.
+            """
+
+            http_options = (
+                _BaseAdUnitServiceRestTransport._BaseBatchUpdateAdUnits._get_http_options()
+            )
+
+            request, metadata = self._interceptor.pre_batch_update_ad_units(
+                request, metadata
+            )
+            transcoded_request = _BaseAdUnitServiceRestTransport._BaseBatchUpdateAdUnits._get_transcoded_request(
+                http_options, request
+            )
+
+            body = _BaseAdUnitServiceRestTransport._BaseBatchUpdateAdUnits._get_request_body_json(
+                transcoded_request
+            )
+
+            # Jsonify the query params
+            query_params = _BaseAdUnitServiceRestTransport._BaseBatchUpdateAdUnits._get_query_params_json(
+                transcoded_request
+            )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.ads.admanager_v1.AdUnitServiceClient.BatchUpdateAdUnits",
+                    extra={
+                        "serviceName": "google.ads.admanager.v1.AdUnitService",
+                        "rpcName": "BatchUpdateAdUnits",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
+
+            # Send the request
+            response = AdUnitServiceRestTransport._BatchUpdateAdUnits._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+                body,
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+
+            # Return the response
+            resp = ad_unit_service.BatchUpdateAdUnitsResponse()
+            pb_resp = ad_unit_service.BatchUpdateAdUnitsResponse.pb(resp)
+
+            json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
+            resp = self._interceptor.post_batch_update_ad_units(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_batch_update_ad_units_with_metadata(
+                resp, response_metadata
+            )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = (
+                        ad_unit_service.BatchUpdateAdUnitsResponse.to_json(response)
+                    )
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.ads.admanager_v1.AdUnitServiceClient.batch_update_ad_units",
+                    extra={
+                        "serviceName": "google.ads.admanager.v1.AdUnitService",
+                        "rpcName": "BatchUpdateAdUnits",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
+            return resp
+
+    class _CreateAdUnit(
+        _BaseAdUnitServiceRestTransport._BaseCreateAdUnit, AdUnitServiceRestStub
+    ):
+        def __hash__(self):
+            return hash("AdUnitServiceRestTransport.CreateAdUnit")
+
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+            return response
+
+        def __call__(
+            self,
+            request: ad_unit_service.CreateAdUnitRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+        ) -> ad_unit_messages.AdUnit:
+            r"""Call the create ad unit method over HTTP.
+
+            Args:
+                request (~.ad_unit_service.CreateAdUnitRequest):
+                    The request object. Request object for ``CreateAdUnit`` method.
+                retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                    should be retried.
+                timeout (float): The timeout for this request.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
+
+            Returns:
+                ~.ad_unit_messages.AdUnit:
+                    The AdUnit resource.
+            """
+
+            http_options = (
+                _BaseAdUnitServiceRestTransport._BaseCreateAdUnit._get_http_options()
+            )
+
+            request, metadata = self._interceptor.pre_create_ad_unit(request, metadata)
+            transcoded_request = _BaseAdUnitServiceRestTransport._BaseCreateAdUnit._get_transcoded_request(
+                http_options, request
+            )
+
+            body = _BaseAdUnitServiceRestTransport._BaseCreateAdUnit._get_request_body_json(
+                transcoded_request
+            )
+
+            # Jsonify the query params
+            query_params = _BaseAdUnitServiceRestTransport._BaseCreateAdUnit._get_query_params_json(
+                transcoded_request
+            )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.ads.admanager_v1.AdUnitServiceClient.CreateAdUnit",
+                    extra={
+                        "serviceName": "google.ads.admanager.v1.AdUnitService",
+                        "rpcName": "CreateAdUnit",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
+
+            # Send the request
+            response = AdUnitServiceRestTransport._CreateAdUnit._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+                body,
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+
+            # Return the response
+            resp = ad_unit_messages.AdUnit()
+            pb_resp = ad_unit_messages.AdUnit.pb(resp)
+
+            json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
+            resp = self._interceptor.post_create_ad_unit(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_create_ad_unit_with_metadata(
+                resp, response_metadata
+            )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = ad_unit_messages.AdUnit.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.ads.admanager_v1.AdUnitServiceClient.create_ad_unit",
+                    extra={
+                        "serviceName": "google.ads.admanager.v1.AdUnitService",
+                        "rpcName": "CreateAdUnit",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
+            return resp
 
     class _GetAdUnit(
         _BaseAdUnitServiceRestTransport._BaseGetAdUnit, AdUnitServiceRestStub
@@ -816,6 +2149,219 @@ class AdUnitServiceRestTransport(_BaseAdUnitServiceRestTransport):
                 )
             return resp
 
+    class _UpdateAdUnit(
+        _BaseAdUnitServiceRestTransport._BaseUpdateAdUnit, AdUnitServiceRestStub
+    ):
+        def __hash__(self):
+            return hash("AdUnitServiceRestTransport.UpdateAdUnit")
+
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+            return response
+
+        def __call__(
+            self,
+            request: ad_unit_service.UpdateAdUnitRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+        ) -> ad_unit_messages.AdUnit:
+            r"""Call the update ad unit method over HTTP.
+
+            Args:
+                request (~.ad_unit_service.UpdateAdUnitRequest):
+                    The request object. Request object for ``UpdateAdUnit`` method.
+                retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                    should be retried.
+                timeout (float): The timeout for this request.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
+
+            Returns:
+                ~.ad_unit_messages.AdUnit:
+                    The AdUnit resource.
+            """
+
+            http_options = (
+                _BaseAdUnitServiceRestTransport._BaseUpdateAdUnit._get_http_options()
+            )
+
+            request, metadata = self._interceptor.pre_update_ad_unit(request, metadata)
+            transcoded_request = _BaseAdUnitServiceRestTransport._BaseUpdateAdUnit._get_transcoded_request(
+                http_options, request
+            )
+
+            body = _BaseAdUnitServiceRestTransport._BaseUpdateAdUnit._get_request_body_json(
+                transcoded_request
+            )
+
+            # Jsonify the query params
+            query_params = _BaseAdUnitServiceRestTransport._BaseUpdateAdUnit._get_query_params_json(
+                transcoded_request
+            )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.ads.admanager_v1.AdUnitServiceClient.UpdateAdUnit",
+                    extra={
+                        "serviceName": "google.ads.admanager.v1.AdUnitService",
+                        "rpcName": "UpdateAdUnit",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
+
+            # Send the request
+            response = AdUnitServiceRestTransport._UpdateAdUnit._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+                body,
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+
+            # Return the response
+            resp = ad_unit_messages.AdUnit()
+            pb_resp = ad_unit_messages.AdUnit.pb(resp)
+
+            json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
+            resp = self._interceptor.post_update_ad_unit(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_update_ad_unit_with_metadata(
+                resp, response_metadata
+            )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = ad_unit_messages.AdUnit.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.ads.admanager_v1.AdUnitServiceClient.update_ad_unit",
+                    extra={
+                        "serviceName": "google.ads.admanager.v1.AdUnitService",
+                        "rpcName": "UpdateAdUnit",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
+            return resp
+
+    @property
+    def batch_activate_ad_units(
+        self,
+    ) -> Callable[
+        [ad_unit_service.BatchActivateAdUnitsRequest],
+        ad_unit_service.BatchActivateAdUnitsResponse,
+    ]:
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return self._BatchActivateAdUnits(self._session, self._host, self._interceptor)  # type: ignore
+
+    @property
+    def batch_archive_ad_units(
+        self,
+    ) -> Callable[
+        [ad_unit_service.BatchArchiveAdUnitsRequest],
+        ad_unit_service.BatchArchiveAdUnitsResponse,
+    ]:
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return self._BatchArchiveAdUnits(self._session, self._host, self._interceptor)  # type: ignore
+
+    @property
+    def batch_create_ad_units(
+        self,
+    ) -> Callable[
+        [ad_unit_service.BatchCreateAdUnitsRequest],
+        ad_unit_service.BatchCreateAdUnitsResponse,
+    ]:
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return self._BatchCreateAdUnits(self._session, self._host, self._interceptor)  # type: ignore
+
+    @property
+    def batch_deactivate_ad_units(
+        self,
+    ) -> Callable[
+        [ad_unit_service.BatchDeactivateAdUnitsRequest],
+        ad_unit_service.BatchDeactivateAdUnitsResponse,
+    ]:
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return self._BatchDeactivateAdUnits(self._session, self._host, self._interceptor)  # type: ignore
+
+    @property
+    def batch_update_ad_units(
+        self,
+    ) -> Callable[
+        [ad_unit_service.BatchUpdateAdUnitsRequest],
+        ad_unit_service.BatchUpdateAdUnitsResponse,
+    ]:
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return self._BatchUpdateAdUnits(self._session, self._host, self._interceptor)  # type: ignore
+
+    @property
+    def create_ad_unit(
+        self,
+    ) -> Callable[[ad_unit_service.CreateAdUnitRequest], ad_unit_messages.AdUnit]:
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return self._CreateAdUnit(self._session, self._host, self._interceptor)  # type: ignore
+
     @property
     def get_ad_unit(
         self,
@@ -844,6 +2390,14 @@ class AdUnitServiceRestTransport(_BaseAdUnitServiceRestTransport):
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._ListAdUnitSizes(self._session, self._host, self._interceptor)  # type: ignore
+
+    @property
+    def update_ad_unit(
+        self,
+    ) -> Callable[[ad_unit_service.UpdateAdUnitRequest], ad_unit_messages.AdUnit]:
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return self._UpdateAdUnit(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
     def get_operation(self):

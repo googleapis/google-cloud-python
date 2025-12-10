@@ -21,15 +21,20 @@ from google.protobuf import struct_pb2  # type: ignore
 from google.protobuf import timestamp_pb2  # type: ignore
 import proto  # type: ignore
 
+from google.cloud.geminidataanalytics_v1alpha.types import context as gcg_context
 from google.cloud.geminidataanalytics_v1alpha.types import (
     credentials as gcg_credentials,
 )
-from google.cloud.geminidataanalytics_v1alpha.types import context
 from google.cloud.geminidataanalytics_v1alpha.types import datasource
 
 __protobuf__ = proto.module(
     package="google.cloud.geminidataanalytics.v1alpha",
     manifest={
+        "QueryDataRequest",
+        "GenerationOptions",
+        "QueryDataContext",
+        "QueryDataResponse",
+        "ExecutedQueryResult",
         "ListMessagesRequest",
         "ListMessagesResponse",
         "StorageMessage",
@@ -45,7 +50,6 @@ __protobuf__ = proto.module(
         "SchemaQuery",
         "SchemaResult",
         "DataMessage",
-        "LookerQuery",
         "DataQuery",
         "DataResult",
         "BigQueryJob",
@@ -60,6 +64,256 @@ __protobuf__ = proto.module(
         "Blob",
     },
 )
+
+
+class QueryDataRequest(proto.Message):
+    r"""Request to query data from a natural language query.
+
+    Attributes:
+        parent (str):
+            Required. The parent resource to generate the
+            query for. Format:
+            projects/{project}/locations/{location}
+        prompt (str):
+            Required. The natural language query for
+            which to generate query. Example: "What are the
+            top 5 best selling products this month?".
+        context (google.cloud.geminidataanalytics_v1alpha.types.QueryDataContext):
+            Required. The context for the data query,
+            including the data sources to use.
+        generation_options (google.cloud.geminidataanalytics_v1alpha.types.GenerationOptions):
+            Optional. Options to control query generation
+            and execution behavior.
+    """
+
+    parent: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    prompt: str = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+    context: "QueryDataContext" = proto.Field(
+        proto.MESSAGE,
+        number=3,
+        message="QueryDataContext",
+    )
+    generation_options: "GenerationOptions" = proto.Field(
+        proto.MESSAGE,
+        number=4,
+        message="GenerationOptions",
+    )
+
+
+class GenerationOptions(proto.Message):
+    r"""Options to control query generation, execution, and response
+    format.
+
+    Attributes:
+        generate_query_result (bool):
+            Optional. If true, the generated query will
+            be executed, and the result data will be
+            returned in the response.
+        generate_natural_language_answer (bool):
+            Optional. If true, a natural language answer
+            based on the query execution result will be
+            generated and returned in the response.
+        generate_explanation (bool):
+            Optional. If true, an explanation of the
+            generated query will be returned in the
+            response.
+        generate_disambiguation_question (bool):
+            Optional. If true (default to false), the service may return
+            a clarifying_question if the input query is ambiguous.
+    """
+
+    generate_query_result: bool = proto.Field(
+        proto.BOOL,
+        number=1,
+    )
+    generate_natural_language_answer: bool = proto.Field(
+        proto.BOOL,
+        number=2,
+    )
+    generate_explanation: bool = proto.Field(
+        proto.BOOL,
+        number=3,
+    )
+    generate_disambiguation_question: bool = proto.Field(
+        proto.BOOL,
+        number=4,
+    )
+
+
+class QueryDataContext(proto.Message):
+    r"""References to data sources and context to use for the query.
+
+    Attributes:
+        datasource_references (google.cloud.geminidataanalytics_v1alpha.types.DatasourceReferences):
+            Required. The datasource references to use
+            for the query.
+    """
+
+    datasource_references: datasource.DatasourceReferences = proto.Field(
+        proto.MESSAGE,
+        number=1,
+        message=datasource.DatasourceReferences,
+    )
+
+
+class QueryDataResponse(proto.Message):
+    r"""Response containing the generated query and related
+    information.
+
+    Attributes:
+        generated_query (str):
+            Generated query for the given user prompt.
+        intent_explanation (str):
+            A natural language explanation of the generated query.
+            Populated if options.generate_explanation was true in the
+            request.
+        query_result (google.cloud.geminidataanalytics_v1alpha.types.ExecutedQueryResult):
+            The result of executing the query. Populated if
+            options.generate_query_result or
+            options.generate_natural_language_answer was true in the
+            request, and execution was successful or attempted.
+        natural_language_answer (str):
+            A natural language answer to the query, based on the
+            query_result. Populated if
+            options.generate_natural_language_answer was true in the
+            request and query execution was successful based in the
+            response from executeSql API.
+        disambiguation_question (MutableSequence[str]):
+            If ambiguity was detected in the natural language query and
+            options.generate_disambiguation_question was true, this
+            field contains a question to the user for clarification. The
+            returned represents the service's best effort based on the
+            ambiguous input.
+    """
+
+    generated_query: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    intent_explanation: str = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+    query_result: "ExecutedQueryResult" = proto.Field(
+        proto.MESSAGE,
+        number=3,
+        message="ExecutedQueryResult",
+    )
+    natural_language_answer: str = proto.Field(
+        proto.STRING,
+        number=4,
+    )
+    disambiguation_question: MutableSequence[str] = proto.RepeatedField(
+        proto.STRING,
+        number=5,
+    )
+
+
+class ExecutedQueryResult(proto.Message):
+    r"""The result of a query execution. The design is generic for
+    all dialects.
+
+    Attributes:
+        columns (MutableSequence[google.cloud.geminidataanalytics_v1alpha.types.ExecutedQueryResult.Column]):
+            The columns in the result set, in order.
+        rows (MutableSequence[google.cloud.geminidataanalytics_v1alpha.types.ExecutedQueryResult.Row]):
+            The rows returned by the query.
+        total_row_count (int):
+            The total number of rows in the full result
+            set, if known. This may be an estimate or an
+            exact count.
+        partial_result (bool):
+            Set to true if the returned rows in ``query_result`` are a
+            subset of the full result. This can happen, for example, if
+            the query execution hits a row limit. When true, the
+            ``query_result`` does not contain all rows. To retrieve the
+            complete result, consider using the ``generated_query`` in
+            ``QueryDataResponse`` and executing it in your own
+            environment.
+        query_execution_error (str):
+            The error message if the query execution
+            failed.
+    """
+
+    class Column(proto.Message):
+        r"""Describes a single column in the result set.
+
+        Attributes:
+            name (str):
+                The name of the column.
+            type_ (str):
+                The type of the column (e.g., "VARCHAR",
+                "INT64", "TIMESTAMP").
+        """
+
+        name: str = proto.Field(
+            proto.STRING,
+            number=1,
+        )
+        type_: str = proto.Field(
+            proto.STRING,
+            number=2,
+        )
+
+    class Value(proto.Message):
+        r"""Represents a single value within a row.
+
+        Attributes:
+            value (str):
+                The cell value, represented in a string
+                format. Timestamps could be formatted, for
+                example, using RFC3339Nano. This field is used
+                if the value is not null.
+        """
+
+        value: str = proto.Field(
+            proto.STRING,
+            number=1,
+        )
+
+    class Row(proto.Message):
+        r"""Represents a single row in the result set.
+
+        Attributes:
+            values (MutableSequence[google.cloud.geminidataanalytics_v1alpha.types.ExecutedQueryResult.Value]):
+                The values in the row, corresponding
+                positionally to the columns.
+        """
+
+        values: MutableSequence["ExecutedQueryResult.Value"] = proto.RepeatedField(
+            proto.MESSAGE,
+            number=1,
+            message="ExecutedQueryResult.Value",
+        )
+
+    columns: MutableSequence[Column] = proto.RepeatedField(
+        proto.MESSAGE,
+        number=1,
+        message=Column,
+    )
+    rows: MutableSequence[Row] = proto.RepeatedField(
+        proto.MESSAGE,
+        number=2,
+        message=Row,
+    )
+    total_row_count: int = proto.Field(
+        proto.INT64,
+        number=3,
+    )
+    partial_result: bool = proto.Field(
+        proto.BOOL,
+        number=4,
+    )
+    query_execution_error: str = proto.Field(
+        proto.STRING,
+        number=5,
+    )
 
 
 class ListMessagesRequest(proto.Message):
@@ -204,11 +458,11 @@ class ChatRequest(proto.Message):
             Required. Content of current conversation.
     """
 
-    inline_context: context.Context = proto.Field(
+    inline_context: gcg_context.Context = proto.Field(
         proto.MESSAGE,
         number=101,
         oneof="context_provider",
-        message=context.Context,
+        message=gcg_context.Context,
     )
     conversation_reference: "ConversationReference" = proto.Field(
         proto.MESSAGE,
@@ -338,10 +592,10 @@ class ClientManagedResourceContext(proto.Message):
             Optional. The client managed agent id.
     """
 
-    inline_context: context.Context = proto.Field(
+    inline_context: gcg_context.Context = proto.Field(
         proto.MESSAGE,
         number=1,
-        message=context.Context,
+        message=gcg_context.Context,
     )
     conversation_id: str = proto.Field(
         proto.STRING,
@@ -693,92 +947,17 @@ class DataMessage(proto.Message):
         oneof="kind",
         message="DataResult",
     )
-    generated_looker_query: "LookerQuery" = proto.Field(
+    generated_looker_query: gcg_context.LookerQuery = proto.Field(
         proto.MESSAGE,
         number=4,
         oneof="kind",
-        message="LookerQuery",
+        message=gcg_context.LookerQuery,
     )
     big_query_job: "BigQueryJob" = proto.Field(
         proto.MESSAGE,
         number=5,
         oneof="kind",
         message="BigQueryJob",
-    )
-
-
-class LookerQuery(proto.Message):
-    r"""A query for retrieving data from a Looker Explore. See `Run Inline
-    Query <https://cloud.google.com/looker/docs/reference/looker-api/latest/methods/Query/run_inline_query>`__.
-
-
-    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
-
-    Attributes:
-        model (str):
-            Required. The LookML model used to generate
-            the query.
-        explore (str):
-            Required. The LookML Explore used to generate
-            the query.
-        fields (MutableSequence[str]):
-            Optional. The fields to retrieve from the
-            Explore.
-        filters (MutableSequence[google.cloud.geminidataanalytics_v1alpha.types.LookerQuery.Filter]):
-            Optional. The filters to apply to the
-            Explore.
-        sorts (MutableSequence[str]):
-            Optional. The sorts to apply to the Explore.
-        limit (str):
-            Optional. Limit in the query.
-
-            This field is a member of `oneof`_ ``_limit``.
-    """
-
-    class Filter(proto.Message):
-        r"""A Looker query filter.
-
-        Attributes:
-            field (str):
-                Required. The field to filter on.
-            value (str):
-                Required. The value f field to filter on.
-        """
-
-        field: str = proto.Field(
-            proto.STRING,
-            number=1,
-        )
-        value: str = proto.Field(
-            proto.STRING,
-            number=2,
-        )
-
-    model: str = proto.Field(
-        proto.STRING,
-        number=1,
-    )
-    explore: str = proto.Field(
-        proto.STRING,
-        number=2,
-    )
-    fields: MutableSequence[str] = proto.RepeatedField(
-        proto.STRING,
-        number=3,
-    )
-    filters: MutableSequence[Filter] = proto.RepeatedField(
-        proto.MESSAGE,
-        number=4,
-        message=Filter,
-    )
-    sorts: MutableSequence[str] = proto.RepeatedField(
-        proto.STRING,
-        number=5,
-    )
-    limit: str = proto.Field(
-        proto.STRING,
-        number=6,
-        optional=True,
     )
 
 
@@ -808,11 +987,11 @@ class DataQuery(proto.Message):
             the question.
     """
 
-    looker: "LookerQuery" = proto.Field(
+    looker: gcg_context.LookerQuery = proto.Field(
         proto.MESSAGE,
         number=4,
         oneof="query_type",
-        message="LookerQuery",
+        message=gcg_context.LookerQuery,
     )
     question: str = proto.Field(
         proto.STRING,
@@ -1207,10 +1386,10 @@ class ExampleQueries(proto.Message):
             BigQuery data sources.
     """
 
-    example_queries: MutableSequence[context.ExampleQuery] = proto.RepeatedField(
+    example_queries: MutableSequence[gcg_context.ExampleQuery] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
-        message=context.ExampleQuery,
+        message=gcg_context.ExampleQuery,
     )
 
 

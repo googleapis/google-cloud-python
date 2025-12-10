@@ -47,7 +47,40 @@ class GetNetworkRequest(proto.Message):
 
 
 class ListNetworksRequest(proto.Message):
-    r"""Request object for ``ListNetworks`` method."""
+    r"""Request object for ``ListNetworks`` method.
+
+    Attributes:
+        page_size (int):
+            Optional. The maximum number of ``Network``\ s to return.
+            The service may return fewer than this value. If
+            unspecified, at most 50 ``Network``\ s will be returned. The
+            maximum value is 1000; values greater than 1000 will be
+            coerced to 1000.
+        page_token (str):
+            Optional. A page token, received from a previous
+            ``ListNetworks`` call. Provide this to retrieve the
+            subsequent page.
+
+            When paginating, all other parameters provided to
+            ``ListNetworks`` must match the call that provided the page
+            token.
+        skip (int):
+            Optional. Number of individual resources to
+            skip while paginating.
+    """
+
+    page_size: int = proto.Field(
+        proto.INT32,
+        number=3,
+    )
+    page_token: str = proto.Field(
+        proto.STRING,
+        number=4,
+    )
+    skip: int = proto.Field(
+        proto.INT32,
+        number=5,
+    )
 
 
 class ListNetworksResponse(proto.Message):
@@ -56,12 +89,39 @@ class ListNetworksResponse(proto.Message):
     Attributes:
         networks (MutableSequence[google.ads.admanager_v1.types.Network]):
             The ``Network``\ s a user has access to.
+        next_page_token (str):
+            A token, which can be sent as ``page_token`` to retrieve the
+            next page. If this field is omitted, there are no subsequent
+            pages.
+        total_size (int):
+            Total number of ``Network``\ s.
+
+            ``total_size`` won't be calculated in the response unless it
+            has been included in a response field mask. The response
+            field mask can be provided to the method by using the URL
+            parameter ``$fields`` or ``fields``, or by using the
+            HTTP/gRPC header ``X-Goog-FieldMask``.
+
+            For more information, see
+            https://developers.google.com/ad-manager/api/beta/field-masks
     """
+
+    @property
+    def raw_page(self):
+        return self
 
     networks: MutableSequence[network_messages.Network] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
         message=network_messages.Network,
+    )
+    next_page_token: str = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+    total_size: int = proto.Field(
+        proto.INT32,
+        number=3,
     )
 
 

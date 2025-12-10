@@ -506,8 +506,8 @@ class Job(proto.Message):
 
             This field is a member of `oneof`_ ``create_execution``.
         etag (str):
-            Output only. A system-generated fingerprint
-            for this version of the resource. May be used to
+            Optional. A system-generated fingerprint for
+            this version of the resource. May be used to
             detect modification conflict during updates.
     """
 

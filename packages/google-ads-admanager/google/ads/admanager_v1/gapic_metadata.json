@@ -68,6 +68,36 @@
         "rest": {
           "libraryClient": "AdUnitServiceClient",
           "rpcs": {
+            "BatchActivateAdUnits": {
+              "methods": [
+                "batch_activate_ad_units"
+              ]
+            },
+            "BatchArchiveAdUnits": {
+              "methods": [
+                "batch_archive_ad_units"
+              ]
+            },
+            "BatchCreateAdUnits": {
+              "methods": [
+                "batch_create_ad_units"
+              ]
+            },
+            "BatchDeactivateAdUnits": {
+              "methods": [
+                "batch_deactivate_ad_units"
+              ]
+            },
+            "BatchUpdateAdUnits": {
+              "methods": [
+                "batch_update_ad_units"
+              ]
+            },
+            "CreateAdUnit": {
+              "methods": [
+                "create_ad_unit"
+              ]
+            },
             "GetAdUnit": {
               "methods": [
                 "get_ad_unit"
@@ -81,6 +111,11 @@
             "ListAdUnits": {
               "methods": [
                 "list_ad_units"
+              ]
+            },
+            "UpdateAdUnit": {
+              "methods": [
+                "update_ad_unit"
               ]
             }
           }
@@ -408,6 +443,31 @@
         "rest": {
           "libraryClient": "CustomTargetingKeyServiceClient",
           "rpcs": {
+            "BatchActivateCustomTargetingKeys": {
+              "methods": [
+                "batch_activate_custom_targeting_keys"
+              ]
+            },
+            "BatchCreateCustomTargetingKeys": {
+              "methods": [
+                "batch_create_custom_targeting_keys"
+              ]
+            },
+            "BatchDeactivateCustomTargetingKeys": {
+              "methods": [
+                "batch_deactivate_custom_targeting_keys"
+              ]
+            },
+            "BatchUpdateCustomTargetingKeys": {
+              "methods": [
+                "batch_update_custom_targeting_keys"
+              ]
+            },
+            "CreateCustomTargetingKey": {
+              "methods": [
+                "create_custom_targeting_key"
+              ]
+            },
             "GetCustomTargetingKey": {
               "methods": [
                 "get_custom_targeting_key"
@@ -416,6 +476,11 @@
             "ListCustomTargetingKeys": {
               "methods": [
                 "list_custom_targeting_keys"
+              ]
+            },
+            "UpdateCustomTargetingKey": {
+              "methods": [
+                "update_custom_targeting_key"
               ]
             }
           }
@@ -550,6 +615,25 @@
             "ListGeoTargets": {
               "methods": [
                 "list_geo_targets"
+              ]
+            }
+          }
+        }
+      }
+    },
+    "LineItemService": {
+      "clients": {
+        "rest": {
+          "libraryClient": "LineItemServiceClient",
+          "rpcs": {
+            "GetLineItem": {
+              "methods": [
+                "get_line_item"
+              ]
+            },
+            "ListLineItems": {
+              "methods": [
+                "list_line_items"
               ]
             }
           }
