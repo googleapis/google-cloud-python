@@ -209,7 +209,8 @@ templated_files = common.py_library(
     cov_level=98,
     split_system_tests=True,
     system_test_extras=["tracing"],
-    system_test_python_versions=["3.12"]
+    system_test_python_versions=["3.12"],
+    unit_test_python_versions=["3.7", "3.8", "3.9", "3.10", "3.11", "3.12", "3.13", "3.14"]
 )
 s.move(
     templated_files,
@@ -223,6 +224,12 @@ s.move(
 
 # Update samples folder in CONTRIBUTING.rst
 s.replace("CONTRIBUTING.rst", "samples/snippets", "samples/samples")
+
+s.replace(
+    "noxfile.py",
+    '''session.python in \("3.11", "3.12", "3.13"\)''',
+    '''session.python in ("3.11", "3.12", "3.13", "3.14")'''
+)
 
 # ----------------------------------------------------------------------------
 # Samples templates

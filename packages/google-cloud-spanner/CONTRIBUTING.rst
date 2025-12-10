@@ -226,12 +226,14 @@ We support:
 -  `Python 3.11`_
 -  `Python 3.12`_
 -  `Python 3.13`_
+-  `Python 3.14`_
 
 .. _Python 3.9: https://docs.python.org/3.9/
 .. _Python 3.10: https://docs.python.org/3.10/
 .. _Python 3.11: https://docs.python.org/3.11/
 .. _Python 3.12: https://docs.python.org/3.12/
 .. _Python 3.13: https://docs.python.org/3.13/
+.. _Python 3.14: https://docs.python.org/3.14/
 
 
 Supported versions can be found in our ``noxfile.py`` `config`_.

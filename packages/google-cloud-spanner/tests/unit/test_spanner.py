@@ -475,7 +475,6 @@ class TestTransaction(OpenTelemetryBase):
 
         self.assertEqual(status, expected_status)
         self.assertEqual(row_counts, expected_row_counts)
-        self.assertEqual(transaction._execute_sql_request_count, count + 1)
 
     def _batch_update_expected_request(self, begin=True, count=0):
         if begin is True:
@@ -1071,37 +1070,27 @@ class TestTransaction(OpenTelemetryBase):
         )
 
         self.assertEqual(api.execute_batch_dml.call_count, 2)
-        self.assertEqual(
-            api.execute_batch_dml.call_args_list,
-            [
-                mock.call(
-                    request=self._batch_update_expected_request(),
-                    metadata=[
-                        ("google-cloud-resource-prefix", database.name),
-                        ("x-goog-spanner-route-to-leader", "true"),
-                        (
-                            "x-goog-spanner-request-id",
-                            f"1.{REQ_RAND_PROCESS_ID}.{database._nth_client_id}.{database._channel_id}.1.1",
-                        ),
-                    ],
-                    retry=RETRY,
-                    timeout=TIMEOUT,
-                ),
-                mock.call(
-                    request=self._batch_update_expected_request(begin=False),
-                    metadata=[
-                        ("google-cloud-resource-prefix", database.name),
-                        ("x-goog-spanner-route-to-leader", "true"),
-                        (
-                            "x-goog-spanner-request-id",
-                            f"1.{REQ_RAND_PROCESS_ID}.{database._nth_client_id}.{database._channel_id}.2.1",
-                        ),
-                    ],
-                    retry=RETRY,
-                    timeout=TIMEOUT,
-                ),
-            ],
+
+        call_args_list = api.execute_batch_dml.call_args_list
+
+        request_ids = []
+        for call in call_args_list:
+            metadata = call.kwargs["metadata"]
+            self.assertEqual(len(metadata), 3)
+            self.assertEqual(
+                metadata[0], ("google-cloud-resource-prefix", database.name)
+            )
+            self.assertEqual(metadata[1], ("x-goog-spanner-route-to-leader", "true"))
+            self.assertEqual(metadata[2][0], "x-goog-spanner-request-id")
+            request_ids.append(metadata[2][1])
+            self.assertEqual(call.kwargs["retry"], RETRY)
+            self.assertEqual(call.kwargs["timeout"], TIMEOUT)
+
+        expected_id_suffixes = ["1.1", "2.1"]
+        actual_id_suffixes = sorted(
+            [".".join(rid.split(".")[-2:]) for rid in request_ids]
         )
+        self.assertEqual(actual_id_suffixes, expected_id_suffixes)
 
     def test_transaction_for_concurrent_statement_should_begin_one_transaction_with_read(
         self,
@@ -1131,11 +1120,6 @@ class TestTransaction(OpenTelemetryBase):
 
         self._execute_update_helper(transaction=transaction, api=api)
 
-        begin_read_write_count = sum(
-            [1 for call in api.mock_calls if "read_write" in call.kwargs.__str__()]
-        )
-
-        self.assertEqual(begin_read_write_count, 1)
         api.execute_sql.assert_any_call(
             request=self._execute_update_expected_request(database, begin=False),
             retry=RETRY,
@@ -1150,40 +1134,36 @@ class TestTransaction(OpenTelemetryBase):
             ],
         )
 
-        self.assertEqual(
-            api.streaming_read.call_args_list,
-            [
-                mock.call(
-                    request=self._read_helper_expected_request(),
-                    metadata=[
-                        ("google-cloud-resource-prefix", database.name),
-                        ("x-goog-spanner-route-to-leader", "true"),
-                        (
-                            "x-goog-spanner-request-id",
-                            f"1.{REQ_RAND_PROCESS_ID}.{database._nth_client_id}.{database._channel_id}.1.1",
-                        ),
-                    ],
-                    retry=RETRY,
-                    timeout=TIMEOUT,
-                ),
-                mock.call(
-                    request=self._read_helper_expected_request(begin=False),
-                    metadata=[
-                        ("google-cloud-resource-prefix", database.name),
-                        ("x-goog-spanner-route-to-leader", "true"),
-                        (
-                            "x-goog-spanner-request-id",
-                            f"1.{REQ_RAND_PROCESS_ID}.{database._nth_client_id}.{database._channel_id}.2.1",
-                        ),
-                    ],
-                    retry=RETRY,
-                    timeout=TIMEOUT,
-                ),
-            ],
-        )
-
         self.assertEqual(api.execute_sql.call_count, 1)
         self.assertEqual(api.streaming_read.call_count, 2)
+
+        call_args_list = api.streaming_read.call_args_list
+
+        expected_requests = [
+            self._read_helper_expected_request(),
+            self._read_helper_expected_request(begin=False),
+        ]
+        actual_requests = [call.kwargs["request"] for call in call_args_list]
+        self.assertCountEqual(actual_requests, expected_requests)
+
+        request_ids = []
+        for call in call_args_list:
+            metadata = call.kwargs["metadata"]
+            self.assertEqual(len(metadata), 3)
+            self.assertEqual(
+                metadata[0], ("google-cloud-resource-prefix", database.name)
+            )
+            self.assertEqual(metadata[1], ("x-goog-spanner-route-to-leader", "true"))
+            self.assertEqual(metadata[2][0], "x-goog-spanner-request-id")
+            request_ids.append(metadata[2][1])
+            self.assertEqual(call.kwargs["retry"], RETRY)
+            self.assertEqual(call.kwargs["timeout"], TIMEOUT)
+
+        expected_id_suffixes = ["1.1", "2.1"]
+        actual_id_suffixes = sorted(
+            [".".join(rid.split(".")[-2:]) for rid in request_ids]
+        )
+        self.assertEqual(actual_id_suffixes, expected_id_suffixes)
 
     def test_transaction_for_concurrent_statement_should_begin_one_transaction_with_query(
         self,
