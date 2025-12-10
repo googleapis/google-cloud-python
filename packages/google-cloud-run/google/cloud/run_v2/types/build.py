@@ -17,6 +17,7 @@ from __future__ import annotations
 
 from typing import MutableMapping, MutableSequence
 
+from google.api import launch_stage_pb2  # type: ignore
 from google.longrunning import operations_pb2  # type: ignore
 import proto  # type: ignore
 
@@ -77,6 +78,17 @@ class SubmitBuildRequest(proto.Message):
         tags (MutableSequence[str]):
             Optional. Additional tags to annotate the
             build.
+        machine_type (str):
+            Optional. The machine type from default pool to use for the
+            build. If left blank, cloudbuild will use a sensible
+            default. Currently only E2_HIGHCPU_8 is supported. If
+            worker_pool is set, this field will be ignored.
+        release_track (google.api.launch_stage_pb2.LaunchStage):
+            Optional. The release track of the client
+            that initiated the build request.
+        client (str):
+            Optional. The client that initiated the build
+            request.
     """
 
     class DockerBuild(proto.Message):
@@ -189,6 +201,19 @@ class SubmitBuildRequest(proto.Message):
     tags: MutableSequence[str] = proto.RepeatedField(
         proto.STRING,
         number=8,
+    )
+    machine_type: str = proto.Field(
+        proto.STRING,
+        number=9,
+    )
+    release_track: launch_stage_pb2.LaunchStage = proto.Field(
+        proto.ENUM,
+        number=10,
+        enum=launch_stage_pb2.LaunchStage,
+    )
+    client: str = proto.Field(
+        proto.STRING,
+        number=11,
     )
 
 

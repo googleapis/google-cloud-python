@@ -1436,6 +1436,7 @@ def test_get_worker_pool(request_type, transport: str = "grpc"):
             observed_generation=2021,
             latest_ready_revision="latest_ready_revision_value",
             latest_created_revision="latest_created_revision_value",
+            threat_detection_enabled=True,
             custom_audiences=["custom_audiences_value"],
             satisfies_pzs=True,
             reconciling=True,
@@ -1463,6 +1464,7 @@ def test_get_worker_pool(request_type, transport: str = "grpc"):
     assert response.observed_generation == 2021
     assert response.latest_ready_revision == "latest_ready_revision_value"
     assert response.latest_created_revision == "latest_created_revision_value"
+    assert response.threat_detection_enabled is True
     assert response.custom_audiences == ["custom_audiences_value"]
     assert response.satisfies_pzs is True
     assert response.reconciling is True
@@ -1604,6 +1606,7 @@ async def test_get_worker_pool_async(
                 observed_generation=2021,
                 latest_ready_revision="latest_ready_revision_value",
                 latest_created_revision="latest_created_revision_value",
+                threat_detection_enabled=True,
                 custom_audiences=["custom_audiences_value"],
                 satisfies_pzs=True,
                 reconciling=True,
@@ -1632,6 +1635,7 @@ async def test_get_worker_pool_async(
     assert response.observed_generation == 2021
     assert response.latest_ready_revision == "latest_ready_revision_value"
     assert response.latest_created_revision == "latest_created_revision_value"
+    assert response.threat_detection_enabled is True
     assert response.custom_audiences == ["custom_audiences_value"]
     assert response.satisfies_pzs is True
     assert response.reconciling is True
@@ -5508,6 +5512,7 @@ async def test_get_worker_pool_empty_call_grpc_asyncio():
                 observed_generation=2021,
                 latest_ready_revision="latest_ready_revision_value",
                 latest_created_revision="latest_created_revision_value",
+                threat_detection_enabled=True,
                 custom_audiences=["custom_audiences_value"],
                 satisfies_pzs=True,
                 reconciling=True,
@@ -5750,6 +5755,7 @@ async def test_get_worker_pool_routing_parameters_request_1_grpc_asyncio():
                 observed_generation=2021,
                 latest_ready_revision="latest_ready_revision_value",
                 latest_created_revision="latest_created_revision_value",
+                threat_detection_enabled=True,
                 custom_audiences=["custom_audiences_value"],
                 satisfies_pzs=True,
                 reconciling=True,
@@ -5968,6 +5974,13 @@ def test_create_worker_pool_rest_call_success(request_type):
                 {
                     "name": "name_value",
                     "image": "image_value",
+                    "source_code": {
+                        "cloud_storage_source": {
+                            "bucket": "bucket_value",
+                            "object_": "object__value",
+                            "generation": 1068,
+                        }
+                    },
                     "command": ["command_value1", "command_value2"],
                     "args": ["args_value1", "args_value2"],
                     "env": [
@@ -5989,7 +6002,11 @@ def test_create_worker_pool_rest_call_success(request_type):
                     },
                     "ports": [{"name": "name_value", "container_port": 1511}],
                     "volume_mounts": [
-                        {"name": "name_value", "mount_path": "mount_path_value"}
+                        {
+                            "name": "name_value",
+                            "mount_path": "mount_path_value",
+                            "sub_path": "sub_path_value",
+                        }
                     ],
                     "working_dir": "working_dir_value",
                     "liveness_probe": {
@@ -6054,6 +6071,7 @@ def test_create_worker_pool_rest_call_success(request_type):
             "encryption_key_revocation_action": 1,
             "encryption_key_shutdown_duration": {"seconds": 751, "nanos": 543},
             "node_selector": {"accelerator": "accelerator_value"},
+            "gpu_zonal_redundancy_disabled": True,
         },
         "instance_splits": [{"type_": 1, "revision": "revision_value", "percent": 753}],
         "scaling": {"manual_instance_count": 2234},
@@ -6074,6 +6092,7 @@ def test_create_worker_pool_rest_call_success(request_type):
         "instance_split_statuses": [
             {"type_": 1, "revision": "revision_value", "percent": 753}
         ],
+        "threat_detection_enabled": True,
         "custom_audiences": ["custom_audiences_value1", "custom_audiences_value2"],
         "satisfies_pzs": True,
         "reconciling": True,
@@ -6287,6 +6306,7 @@ def test_get_worker_pool_rest_call_success(request_type):
             observed_generation=2021,
             latest_ready_revision="latest_ready_revision_value",
             latest_created_revision="latest_created_revision_value",
+            threat_detection_enabled=True,
             custom_audiences=["custom_audiences_value"],
             satisfies_pzs=True,
             reconciling=True,
@@ -6319,6 +6339,7 @@ def test_get_worker_pool_rest_call_success(request_type):
     assert response.observed_generation == 2021
     assert response.latest_ready_revision == "latest_ready_revision_value"
     assert response.latest_created_revision == "latest_created_revision_value"
+    assert response.threat_detection_enabled is True
     assert response.custom_audiences == ["custom_audiences_value"]
     assert response.satisfies_pzs is True
     assert response.reconciling is True
@@ -6607,6 +6628,13 @@ def test_update_worker_pool_rest_call_success(request_type):
                 {
                     "name": "name_value",
                     "image": "image_value",
+                    "source_code": {
+                        "cloud_storage_source": {
+                            "bucket": "bucket_value",
+                            "object_": "object__value",
+                            "generation": 1068,
+                        }
+                    },
                     "command": ["command_value1", "command_value2"],
                     "args": ["args_value1", "args_value2"],
                     "env": [
@@ -6628,7 +6656,11 @@ def test_update_worker_pool_rest_call_success(request_type):
                     },
                     "ports": [{"name": "name_value", "container_port": 1511}],
                     "volume_mounts": [
-                        {"name": "name_value", "mount_path": "mount_path_value"}
+                        {
+                            "name": "name_value",
+                            "mount_path": "mount_path_value",
+                            "sub_path": "sub_path_value",
+                        }
                     ],
                     "working_dir": "working_dir_value",
                     "liveness_probe": {
@@ -6693,6 +6725,7 @@ def test_update_worker_pool_rest_call_success(request_type):
             "encryption_key_revocation_action": 1,
             "encryption_key_shutdown_duration": {"seconds": 751, "nanos": 543},
             "node_selector": {"accelerator": "accelerator_value"},
+            "gpu_zonal_redundancy_disabled": True,
         },
         "instance_splits": [{"type_": 1, "revision": "revision_value", "percent": 753}],
         "scaling": {"manual_instance_count": 2234},
@@ -6713,6 +6746,7 @@ def test_update_worker_pool_rest_call_success(request_type):
         "instance_split_statuses": [
             {"type_": 1, "revision": "revision_value", "percent": 753}
         ],
+        "threat_detection_enabled": True,
         "custom_audiences": ["custom_audiences_value1", "custom_audiences_value2"],
         "satisfies_pzs": True,
         "reconciling": True,

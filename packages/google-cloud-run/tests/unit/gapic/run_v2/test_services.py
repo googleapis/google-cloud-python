@@ -1398,12 +1398,14 @@ def test_get_service(request_type, transport: str = "grpc"):
             invoker_iam_disabled=True,
             default_uri_disabled=True,
             urls=["urls_value"],
+            iap_enabled=True,
             custom_audiences=["custom_audiences_value"],
             observed_generation=2021,
             latest_ready_revision="latest_ready_revision_value",
             latest_created_revision="latest_created_revision_value",
             uri="uri_value",
             satisfies_pzs=True,
+            threat_detection_enabled=True,
             reconciling=True,
             etag="etag_value",
         )
@@ -1430,12 +1432,14 @@ def test_get_service(request_type, transport: str = "grpc"):
     assert response.invoker_iam_disabled is True
     assert response.default_uri_disabled is True
     assert response.urls == ["urls_value"]
+    assert response.iap_enabled is True
     assert response.custom_audiences == ["custom_audiences_value"]
     assert response.observed_generation == 2021
     assert response.latest_ready_revision == "latest_ready_revision_value"
     assert response.latest_created_revision == "latest_created_revision_value"
     assert response.uri == "uri_value"
     assert response.satisfies_pzs is True
+    assert response.threat_detection_enabled is True
     assert response.reconciling is True
     assert response.etag == "etag_value"
 
@@ -1576,12 +1580,14 @@ async def test_get_service_async(
                 invoker_iam_disabled=True,
                 default_uri_disabled=True,
                 urls=["urls_value"],
+                iap_enabled=True,
                 custom_audiences=["custom_audiences_value"],
                 observed_generation=2021,
                 latest_ready_revision="latest_ready_revision_value",
                 latest_created_revision="latest_created_revision_value",
                 uri="uri_value",
                 satisfies_pzs=True,
+                threat_detection_enabled=True,
                 reconciling=True,
                 etag="etag_value",
             )
@@ -1609,12 +1615,14 @@ async def test_get_service_async(
     assert response.invoker_iam_disabled is True
     assert response.default_uri_disabled is True
     assert response.urls == ["urls_value"]
+    assert response.iap_enabled is True
     assert response.custom_audiences == ["custom_audiences_value"]
     assert response.observed_generation == 2021
     assert response.latest_ready_revision == "latest_ready_revision_value"
     assert response.latest_created_revision == "latest_created_revision_value"
     assert response.uri == "uri_value"
     assert response.satisfies_pzs is True
+    assert response.threat_detection_enabled is True
     assert response.reconciling is True
     assert response.etag == "etag_value"
 
@@ -1726,6 +1734,7 @@ def test_list_services(request_type, transport: str = "grpc"):
         # Designate an appropriate return value for the call.
         call.return_value = service.ListServicesResponse(
             next_page_token="next_page_token_value",
+            unreachable=["unreachable_value"],
         )
         response = client.list_services(request)
 
@@ -1738,6 +1747,7 @@ def test_list_services(request_type, transport: str = "grpc"):
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListServicesPager)
     assert response.next_page_token == "next_page_token_value"
+    assert response.unreachable == ["unreachable_value"]
 
 
 def test_list_services_non_empty_request_with_auto_populated_field():
@@ -1866,6 +1876,7 @@ async def test_list_services_async(
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
             service.ListServicesResponse(
                 next_page_token="next_page_token_value",
+                unreachable=["unreachable_value"],
             )
         )
         response = await client.list_services(request)
@@ -1879,6 +1890,7 @@ async def test_list_services_async(
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListServicesAsyncPager)
     assert response.next_page_token == "next_page_token_value"
+    assert response.unreachable == ["unreachable_value"]
 
 
 @pytest.mark.asyncio
@@ -5381,12 +5393,14 @@ async def test_get_service_empty_call_grpc_asyncio():
                 invoker_iam_disabled=True,
                 default_uri_disabled=True,
                 urls=["urls_value"],
+                iap_enabled=True,
                 custom_audiences=["custom_audiences_value"],
                 observed_generation=2021,
                 latest_ready_revision="latest_ready_revision_value",
                 latest_created_revision="latest_created_revision_value",
                 uri="uri_value",
                 satisfies_pzs=True,
+                threat_detection_enabled=True,
                 reconciling=True,
                 etag="etag_value",
             )
@@ -5416,6 +5430,7 @@ async def test_list_services_empty_call_grpc_asyncio():
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
             service.ListServicesResponse(
                 next_page_token="next_page_token_value",
+                unreachable=["unreachable_value"],
             )
         )
         await client.list_services(request=None)
@@ -5620,12 +5635,14 @@ async def test_get_service_routing_parameters_request_1_grpc_asyncio():
                 invoker_iam_disabled=True,
                 default_uri_disabled=True,
                 urls=["urls_value"],
+                iap_enabled=True,
                 custom_audiences=["custom_audiences_value"],
                 observed_generation=2021,
                 latest_ready_revision="latest_ready_revision_value",
                 latest_created_revision="latest_created_revision_value",
                 uri="uri_value",
                 satisfies_pzs=True,
+                threat_detection_enabled=True,
                 reconciling=True,
                 etag="etag_value",
             )
@@ -5662,6 +5679,7 @@ async def test_list_services_routing_parameters_request_1_grpc_asyncio():
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
             service.ListServicesResponse(
                 next_page_token="next_page_token_value",
+                unreachable=["unreachable_value"],
             )
         )
         await client.list_services(
@@ -5835,6 +5853,13 @@ def test_create_service_rest_call_success(request_type):
                 {
                     "name": "name_value",
                     "image": "image_value",
+                    "source_code": {
+                        "cloud_storage_source": {
+                            "bucket": "bucket_value",
+                            "object_": "object__value",
+                            "generation": 1068,
+                        }
+                    },
                     "command": ["command_value1", "command_value2"],
                     "args": ["args_value1", "args_value2"],
                     "env": [
@@ -5856,7 +5881,11 @@ def test_create_service_rest_call_success(request_type):
                     },
                     "ports": [{"name": "name_value", "container_port": 1511}],
                     "volume_mounts": [
-                        {"name": "name_value", "mount_path": "mount_path_value"}
+                        {
+                            "name": "name_value",
+                            "mount_path": "mount_path_value",
+                            "sub_path": "sub_path_value",
+                        }
                     ],
                     "working_dir": "working_dir_value",
                     "liveness_probe": {
@@ -5938,11 +5967,17 @@ def test_create_service_rest_call_success(request_type):
         "scaling": {
             "min_instance_count": 1920,
             "scaling_mode": 1,
+            "max_instance_count": 1922,
             "manual_instance_count": 2234,
         },
         "invoker_iam_disabled": True,
         "default_uri_disabled": True,
         "urls": ["urls_value1", "urls_value2"],
+        "iap_enabled": True,
+        "multi_region_settings": {
+            "regions": ["regions_value1", "regions_value2"],
+            "multi_region_id": "multi_region_id_value",
+        },
         "custom_audiences": ["custom_audiences_value1", "custom_audiences_value2"],
         "observed_generation": 2021,
         "terminal_condition": {
@@ -5969,6 +6004,7 @@ def test_create_service_rest_call_success(request_type):
         ],
         "uri": "uri_value",
         "satisfies_pzs": True,
+        "threat_detection_enabled": True,
         "build_config": {
             "name": "name_value",
             "source_location": "source_location_value",
@@ -6188,12 +6224,14 @@ def test_get_service_rest_call_success(request_type):
             invoker_iam_disabled=True,
             default_uri_disabled=True,
             urls=["urls_value"],
+            iap_enabled=True,
             custom_audiences=["custom_audiences_value"],
             observed_generation=2021,
             latest_ready_revision="latest_ready_revision_value",
             latest_created_revision="latest_created_revision_value",
             uri="uri_value",
             satisfies_pzs=True,
+            threat_detection_enabled=True,
             reconciling=True,
             etag="etag_value",
         )
@@ -6225,12 +6263,14 @@ def test_get_service_rest_call_success(request_type):
     assert response.invoker_iam_disabled is True
     assert response.default_uri_disabled is True
     assert response.urls == ["urls_value"]
+    assert response.iap_enabled is True
     assert response.custom_audiences == ["custom_audiences_value"]
     assert response.observed_generation == 2021
     assert response.latest_ready_revision == "latest_ready_revision_value"
     assert response.latest_created_revision == "latest_created_revision_value"
     assert response.uri == "uri_value"
     assert response.satisfies_pzs is True
+    assert response.threat_detection_enabled is True
     assert response.reconciling is True
     assert response.etag == "etag_value"
 
@@ -6337,6 +6377,7 @@ def test_list_services_rest_call_success(request_type):
         # Designate an appropriate value for the returned response.
         return_value = service.ListServicesResponse(
             next_page_token="next_page_token_value",
+            unreachable=["unreachable_value"],
         )
 
         # Wrap the value into a proper Response obj
@@ -6354,6 +6395,7 @@ def test_list_services_rest_call_success(request_type):
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListServicesPager)
     assert response.next_page_token == "next_page_token_value"
+    assert response.unreachable == ["unreachable_value"]
 
 
 @pytest.mark.parametrize("null_interceptor", [True, False])
@@ -6501,6 +6543,13 @@ def test_update_service_rest_call_success(request_type):
                 {
                     "name": "name_value",
                     "image": "image_value",
+                    "source_code": {
+                        "cloud_storage_source": {
+                            "bucket": "bucket_value",
+                            "object_": "object__value",
+                            "generation": 1068,
+                        }
+                    },
                     "command": ["command_value1", "command_value2"],
                     "args": ["args_value1", "args_value2"],
                     "env": [
@@ -6522,7 +6571,11 @@ def test_update_service_rest_call_success(request_type):
                     },
                     "ports": [{"name": "name_value", "container_port": 1511}],
                     "volume_mounts": [
-                        {"name": "name_value", "mount_path": "mount_path_value"}
+                        {
+                            "name": "name_value",
+                            "mount_path": "mount_path_value",
+                            "sub_path": "sub_path_value",
+                        }
                     ],
                     "working_dir": "working_dir_value",
                     "liveness_probe": {
@@ -6604,11 +6657,17 @@ def test_update_service_rest_call_success(request_type):
         "scaling": {
             "min_instance_count": 1920,
             "scaling_mode": 1,
+            "max_instance_count": 1922,
             "manual_instance_count": 2234,
         },
         "invoker_iam_disabled": True,
         "default_uri_disabled": True,
         "urls": ["urls_value1", "urls_value2"],
+        "iap_enabled": True,
+        "multi_region_settings": {
+            "regions": ["regions_value1", "regions_value2"],
+            "multi_region_id": "multi_region_id_value",
+        },
         "custom_audiences": ["custom_audiences_value1", "custom_audiences_value2"],
         "observed_generation": 2021,
         "terminal_condition": {
@@ -6635,6 +6694,7 @@ def test_update_service_rest_call_success(request_type):
         ],
         "uri": "uri_value",
         "satisfies_pzs": True,
+        "threat_detection_enabled": True,
         "build_config": {
             "name": "name_value",
             "source_location": "source_location_value",

@@ -27,6 +27,7 @@ Services for Google Ads Admanager v1 API
     device_manufacturer_service
     entity_signals_mapping_service
     geo_target_service
+    line_item_service
     mobile_carrier_service
     mobile_device_service
     mobile_device_submodel_service

@@ -2,7 +2,7 @@ image: us-central1-docker.pkg.dev/cloud-sdk-librarian-prod/images-prod/python-li
 libraries:
   - id: google-ads-admanager
     version: 0.6.0
-    last_generated_commit: e8365a7f88fabe8717cb8322b8ce784b03b6daea
+    last_generated_commit: effe5c4fa816021e724ca856d5640f2e55b14a8b
     apis:
       - path: google/ads/admanager/v1
         service_config: admanager_v1.yaml
@@ -293,7 +293,7 @@ libraries:
     tag_format: '{id}-v{version}'
   - id: google-cloud-alloydb
     version: 0.6.0
-    last_generated_commit: 3322511885371d2b2253f209ccc3aa60d4100cfd
+    last_generated_commit: effe5c4fa816021e724ca856d5640f2e55b14a8b
     apis:
       - path: google/cloud/alloydb/v1beta
         service_config: alloydb_v1beta.yaml
@@ -1879,7 +1879,7 @@ libraries:
     tag_format: '{id}-v{version}'
   - id: google-cloud-geminidataanalytics
     version: 0.6.0
-    last_generated_commit: cf0434f4bd20618db60ddd16a1e7db2c0dfb9158
+    last_generated_commit: effe5c4fa816021e724ca856d5640f2e55b14a8b
     apis:
       - path: google/cloud/geminidataanalytics/v1beta
         service_config: geminidataanalytics_v1beta.yaml
@@ -2227,7 +2227,7 @@ libraries:
     tag_format: '{id}-v{version}'
   - id: google-cloud-maintenance-api
     version: 0.2.0
-    last_generated_commit: 3322511885371d2b2253f209ccc3aa60d4100cfd
+    last_generated_commit: effe5c4fa816021e724ca856d5640f2e55b14a8b
     apis:
       - path: google/cloud/maintenance/api/v1beta
         service_config: maintenance_v1beta.yaml
@@ -2991,7 +2991,7 @@ libraries:
     tag_format: '{id}-v{version}'
   - id: google-cloud-run
     version: 0.12.0
-    last_generated_commit: 3322511885371d2b2253f209ccc3aa60d4100cfd
+    last_generated_commit: effe5c4fa816021e724ca856d5640f2e55b14a8b
     apis:
       - path: google/cloud/run/v2
         service_config: run_v2.yaml
@@ -4262,7 +4262,7 @@ libraries:
     tag_format: '{id}-v{version}'
   - id: googleapis-common-protos
     version: 1.72.0
-    last_generated_commit: 535d161c24965e9ed1a0b27032cc1c8b4beab818
+    last_generated_commit: effe5c4fa816021e724ca856d5640f2e55b14a8b
     apis:
       - path: google/api
         service_config: serviceconfig.yaml

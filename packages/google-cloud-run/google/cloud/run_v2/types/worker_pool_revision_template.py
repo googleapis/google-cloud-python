@@ -34,6 +34,9 @@ class WorkerPoolRevisionTemplate(proto.Message):
     r"""WorkerPoolRevisionTemplate describes the data a worker pool
     revision should have when created from a template.
 
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         revision (str):
             Optional. The unique name for the revision.
@@ -104,6 +107,11 @@ class WorkerPoolRevisionTemplate(proto.Message):
         node_selector (google.cloud.run_v2.types.NodeSelector):
             Optional. The node selector for the revision
             template.
+        gpu_zonal_redundancy_disabled (bool):
+            Optional. True if GPU zonal redundancy is
+            disabled on this worker pool.
+
+            This field is a member of `oneof`_ ``_gpu_zonal_redundancy_disabled``.
     """
 
     revision: str = proto.Field(
@@ -164,6 +172,11 @@ class WorkerPoolRevisionTemplate(proto.Message):
         proto.MESSAGE,
         number=13,
         message=vendor_settings.NodeSelector,
+    )
+    gpu_zonal_redundancy_disabled: bool = proto.Field(
+        proto.BOOL,
+        number=16,
+        optional=True,
     )
 
 

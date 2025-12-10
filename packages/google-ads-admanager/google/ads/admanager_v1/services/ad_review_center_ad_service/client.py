@@ -773,7 +773,6 @@ class AdReviewCenterAdServiceClient(metaclass=AdReviewCenterAdServiceClientMeta)
                 # Initialize request argument(s)
                 request = admanager_v1.SearchAdReviewCenterAdsRequest(
                     parent="parent_value",
-                    status="UNREVIEWED",
                 )
 
                 # Make the request

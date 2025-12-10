@@ -369,7 +369,7 @@ class WorkerPool(proto.Message):
             settings
         observed_generation (int):
             Output only. The generation of this WorkerPool currently
-            serving traffic. See comments in ``reconciling`` for
+            serving workloads. See comments in ``reconciling`` for
             additional information on reconciliation process in Cloud
             Run. Please note that unlike v1, this is an int64 value. As
             with most Google APIs, its JSON representation will be a
@@ -389,7 +389,7 @@ class WorkerPool(proto.Message):
             Run.
         latest_ready_revision (str):
             Output only. Name of the latest revision that is serving
-            traffic. See comments in ``reconciling`` for additional
+            workloads. See comments in ``reconciling`` for additional
             information on reconciliation process in Cloud Run.
         latest_created_revision (str):
             Output only. Name of the last created revision. See comments
@@ -400,13 +400,12 @@ class WorkerPool(proto.Message):
             instance splits. See comments in ``reconciling`` for
             additional information on reconciliation process in Cloud
             Run.
+        threat_detection_enabled (bool):
+            Output only. Indicates whether Cloud Run
+            Threat Detection monitoring is enabled for the
+            parent project of this worker pool.
         custom_audiences (MutableSequence[str]):
-            One or more custom audiences that you want
-            this worker pool to support. Specify each custom
-            audience as the full URL in a string. The custom
-            audiences are encoded in the token and used to
-            authenticate requests. For more information, see
-            https://cloud.google.com/run/docs/configuring/custom-audiences.
+            Not supported, and ignored by Cloud Run.
         satisfies_pzs (bool):
             Output only. Reserved for future use.
         reconciling (bool):
@@ -419,28 +418,28 @@ class WorkerPool(proto.Message):
             steps to bring the WorkerPool to the desired serving state.
             This process is called reconciliation. While reconciliation
             is in process, ``observed_generation``,
-            ``latest_ready_revison``, ``traffic_statuses``, and ``uri``
-            will have transient values that might mismatch the intended
-            state: Once reconciliation is over (and this field is
-            false), there are two possible outcomes: reconciliation
+            ``latest_ready_revison``, ``instance_split_statuses``, and
+            ``uri`` will have transient values that might mismatch the
+            intended state: Once reconciliation is over (and this field
+            is false), there are two possible outcomes: reconciliation
             succeeded and the serving state matches the WorkerPool, or
             there was an error, and reconciliation failed. This state
             can be found in ``terminal_condition.state``.
 
             If reconciliation succeeded, the following fields will
-            match: ``traffic`` and ``traffic_statuses``,
+            match: ``instance_splits`` and ``instance_split_statuses``,
             ``observed_generation`` and ``generation``,
             ``latest_ready_revision`` and ``latest_created_revision``.
 
-            If reconciliation failed, ``traffic_statuses``,
+            If reconciliation failed, ``instance_split_statuses``,
             ``observed_generation``, and ``latest_ready_revision`` will
             have the state of the last serving revision, or empty for
             newly created WorkerPools. Additional information on the
             failure can be found in ``terminal_condition`` and
             ``conditions``.
         etag (str):
-            Output only. A system-generated fingerprint
-            for this version of the resource. May be used to
+            Optional. A system-generated fingerprint for
+            this version of the resource. May be used to
             detect modification conflict during updates.
     """
 
@@ -561,6 +560,10 @@ class WorkerPool(proto.Message):
         proto.MESSAGE,
         number=27,
         message=instance_split.InstanceSplitStatus,
+    )
+    threat_detection_enabled: bool = proto.Field(
+        proto.BOOL,
+        number=28,
     )
     custom_audiences: MutableSequence[str] = proto.RepeatedField(
         proto.STRING,

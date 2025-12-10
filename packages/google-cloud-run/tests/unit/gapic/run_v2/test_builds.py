@@ -43,6 +43,7 @@ try:
 except ImportError:  # pragma: NO COVER
     HAS_GOOGLE_AUTH_AIO = False
 
+from google.api import launch_stage_pb2  # type: ignore
 from google.api_core import gapic_v1, grpc_helpers, grpc_helpers_async, path_template
 from google.api_core import client_options
 from google.api_core import exceptions as core_exceptions
@@ -1097,6 +1098,8 @@ def test_submit_build_non_empty_request_with_auto_populated_field():
         image_uri="image_uri_value",
         service_account="service_account_value",
         worker_pool="worker_pool_value",
+        machine_type="machine_type_value",
+        client="client_value",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -1112,6 +1115,8 @@ def test_submit_build_non_empty_request_with_auto_populated_field():
             image_uri="image_uri_value",
             service_account="service_account_value",
             worker_pool="worker_pool_value",
+            machine_type="machine_type_value",
+            client="client_value",
         )
 
 

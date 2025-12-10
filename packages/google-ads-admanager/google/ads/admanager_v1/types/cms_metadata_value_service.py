@@ -36,7 +36,7 @@ class GetCmsMetadataValueRequest(proto.Message):
 
     Attributes:
         name (str):
-            Required. The resource name of the CmsMetadataKey. Format:
+            Required. The resource name of the CmsMetadataValue. Format:
             ``networks/{network_code}/cmsMetadataValues/{cms_metadata_value_id}``
     """
 

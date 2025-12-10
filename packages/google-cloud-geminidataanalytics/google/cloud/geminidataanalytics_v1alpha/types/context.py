@@ -27,6 +27,7 @@ __protobuf__ = proto.module(
     manifest={
         "Context",
         "ExampleQuery",
+        "LookerQuery",
         "GlossaryTerm",
         "ConversationOptions",
         "DatasourceOptions",
@@ -222,6 +223,82 @@ class ExampleQuery(proto.Message):
     natural_language_question: str = proto.Field(
         proto.STRING,
         number=1,
+    )
+
+
+class LookerQuery(proto.Message):
+    r"""Looker Query Object `Looker API
+    documentation <https://cloud.google.com/looker/docs/reference/looker-api/latest/methods/Query/run_inline_query>`__.
+
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
+    Attributes:
+        model (str):
+            Required. The LookML model used to generate
+            the query.
+        explore (str):
+            Required. The LookML explore used to generate
+            the query.
+        fields (MutableSequence[str]):
+            Optional. The fields to retrieve from the
+            explore.
+        filters (MutableSequence[google.cloud.geminidataanalytics_v1alpha.types.LookerQuery.Filter]):
+            Optional. The filters to apply to the
+            explore.
+        sorts (MutableSequence[str]):
+            Optional. The sorts to apply to the explore.
+        limit (str):
+            Optional. Limit in the query.
+
+            This field is a member of `oneof`_ ``_limit``.
+    """
+
+    class Filter(proto.Message):
+        r"""A Looker query filter.
+
+        Attributes:
+            field (str):
+                Required. The field to filter on.
+            value (str):
+                Required. The value for the field to filter
+                on.
+        """
+
+        field: str = proto.Field(
+            proto.STRING,
+            number=1,
+        )
+        value: str = proto.Field(
+            proto.STRING,
+            number=2,
+        )
+
+    model: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    explore: str = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+    fields: MutableSequence[str] = proto.RepeatedField(
+        proto.STRING,
+        number=3,
+    )
+    filters: MutableSequence[Filter] = proto.RepeatedField(
+        proto.MESSAGE,
+        number=4,
+        message=Filter,
+    )
+    sorts: MutableSequence[str] = proto.RepeatedField(
+        proto.STRING,
+        number=5,
+    )
+    limit: str = proto.Field(
+        proto.STRING,
+        number=6,
+        optional=True,
     )
 
 
