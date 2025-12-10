@@ -4,6 +4,33 @@
 
 [1]: https://pypi.org/project/google-cloud-spanner/#history
 
+## [3.60.0](https://github.com/googleapis/python-spanner/compare/v3.59.0...v3.60.0) (2025-12-10)
+
+
+### Documentation
+
+* Update description for the BatchCreateSessionsRequest and Session ([e08260fe24b62313d7964572eeb963eb8c3c923f](https://github.com/googleapis/python-spanner/commit/e08260fe24b62313d7964572eeb963eb8c3c923f))
+* Update description for the IsolationLevel ([e08260fe24b62313d7964572eeb963eb8c3c923f](https://github.com/googleapis/python-spanner/commit/e08260fe24b62313d7964572eeb963eb8c3c923f))
+
+
+### Features
+
+* make built-in metrics enabled by default (#1459) ([64aebe7e3ecfec756435f7d102b36f5a41f7cc52](https://github.com/googleapis/python-spanner/commit/64aebe7e3ecfec756435f7d102b36f5a41f7cc52))
+* Add Spanner location API (#1457) ([e08260fe24b62313d7964572eeb963eb8c3c923f](https://github.com/googleapis/python-spanner/commit/e08260fe24b62313d7964572eeb963eb8c3c923f))
+* Add Send and Ack mutations for Queues ([e08260fe24b62313d7964572eeb963eb8c3c923f](https://github.com/googleapis/python-spanner/commit/e08260fe24b62313d7964572eeb963eb8c3c923f))
+* Add QueryAdvisorResult for query plan ([e08260fe24b62313d7964572eeb963eb8c3c923f](https://github.com/googleapis/python-spanner/commit/e08260fe24b62313d7964572eeb963eb8c3c923f))
+* add cloud.region, request_tag and transaction_tag in span attributes (#1449) ([d37fb80a39aea859059ae7d85adc75095a6e14e6](https://github.com/googleapis/python-spanner/commit/d37fb80a39aea859059ae7d85adc75095a6e14e6))
+* Exposing AutoscalingConfig in InstancePartition ([8b6f154085543953556acde161a739414988b7f0](https://github.com/googleapis/python-spanner/commit/8b6f154085543953556acde161a739414988b7f0))
+* enable OpenTelemetry metrics and tracing by default (#1410) ([bb5095dfb615159a575933a332382ba93ba4bbd1](https://github.com/googleapis/python-spanner/commit/bb5095dfb615159a575933a332382ba93ba4bbd1))
+* add support for experimental host (#1452) ([9535e5e096f6ab53f2817af4fd7ac1fa2ca71660](https://github.com/googleapis/python-spanner/commit/9535e5e096f6ab53f2817af4fd7ac1fa2ca71660))
+
+
+### Bug Fixes
+
+* Provide Spanner Option to disable metrics (#1460) ([f1ebc43ba4c1ee3a8ee77ae4b0b2468937f06b71](https://github.com/googleapis/python-spanner/commit/f1ebc43ba4c1ee3a8ee77ae4b0b2468937f06b71))
+* Deprecate credentials_file argument ([8b6f154085543953556acde161a739414988b7f0](https://github.com/googleapis/python-spanner/commit/8b6f154085543953556acde161a739414988b7f0))
+* configure keepAlive time for gRPC TCP connections (#1448) ([efb2833e52e54b096e552a4d91f94b017ac733bb](https://github.com/googleapis/python-spanner/commit/efb2833e52e54b096e552a4d91f94b017ac733bb))
+
 ## [3.59.0](https://github.com/googleapis/python-spanner/compare/v3.58.0...v3.59.0) (2025-10-18)
 
 
