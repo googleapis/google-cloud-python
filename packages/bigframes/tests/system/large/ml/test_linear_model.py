@@ -452,3 +452,39 @@ def test_model_centroids_with_custom_index(penguins_df_default_index):
 
     # If this line executes without errors, the model has correctly ignored the custom index columns
     model.predict(X_train.reset_index(drop=True))
+
+
+def test_linear_reg_model_global_explain(
+    penguins_linear_model_w_global_explain, new_penguins_df
+):
+    training_data = new_penguins_df.dropna(subset=["body_mass_g"])
+    X = training_data.drop(columns=["body_mass_g"])
+    y = training_data[["body_mass_g"]]
+    penguins_linear_model_w_global_explain.fit(X, y)
+    global_ex = penguins_linear_model_w_global_explain.global_explain()
+    assert global_ex.shape == (6, 1)
+    expected_columns = pd.Index(["attribution"])
+    pd.testing.assert_index_equal(global_ex.columns, expected_columns)
+    result = global_ex.to_pandas().drop(["attribution"], axis=1).sort_index()
+    expected_feature = (
+        pd.DataFrame(
+            {
+                "feature": [
+                    "island",
+                    "species",
+                    "sex",
+                    "flipper_length_mm",
+                    "culmen_depth_mm",
+                    "culmen_length_mm",
+                ]
+            },
+        )
+        .set_index("feature")
+        .sort_index()
+    )
+    pd.testing.assert_frame_equal(
+        result,
+        expected_feature,
+        check_exact=False,
+        check_index_type=False,
+    )
