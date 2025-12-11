@@ -36,11 +36,14 @@ __protobuf__ = proto.module(
 
 class GetSecuritySettingsRequest(proto.Message):
     r"""The request message for
-    [SecuritySettingsService.GetSecuritySettings][google.cloud.dialogflow.cx.v3.SecuritySettingsService.GetSecuritySettings].
+    `SecuritySettingsService.GetSecuritySettings
+    <google.cloud.dialogflow.cx.v3.SecuritySettingsService.GetSecuritySettings>`__.
 
     Attributes:
         name (str):
-            Required. Resource name of the settings. Format:
+            Required. Resource name of the settings.
+            Format:
+
             ``projects/<ProjectID>/locations/<LocationID>/securitySettings/<securitysettingsID>``.
     """
 
@@ -52,12 +55,14 @@ class GetSecuritySettingsRequest(proto.Message):
 
 class UpdateSecuritySettingsRequest(proto.Message):
     r"""The request message for
-    [SecuritySettingsService.UpdateSecuritySettings][google.cloud.dialogflow.cx.v3.SecuritySettingsService.UpdateSecuritySettings].
+    `SecuritySettingsService.UpdateSecuritySettings
+    <google.cloud.dialogflow.cx.v3.SecuritySettingsService.UpdateSecuritySettings>`__.
 
     Attributes:
         security_settings (google.cloud.dialogflowcx_v3.types.SecuritySettings):
-            Required. [SecuritySettings] object that contains values for
-            each of the fields to update.
+            Required. [SecuritySettings] object that
+            contains values for each of the fields to
+            update.
         update_mask (google.protobuf.field_mask_pb2.FieldMask):
             Required. The mask to control which fields
             get updated. If the mask is not present, all
@@ -77,18 +82,20 @@ class UpdateSecuritySettingsRequest(proto.Message):
 
 
 class ListSecuritySettingsRequest(proto.Message):
-    r"""The request message for [SecuritySettings.ListSecuritySettings][].
+    r"""The request message for
+    [SecuritySettings.ListSecuritySettings][].
 
     Attributes:
         parent (str):
-            Required. The location to list all security settings for.
-            Format: ``projects/<ProjectID>/locations/<LocationID>``.
+            Required. The location to list all security
+            settings for. Format:
+            ``projects/<ProjectID>/locations/<LocationID>``.
         page_size (int):
             The maximum number of items to return in a
             single page. By default 20 and at most 100.
         page_token (str):
-            The next_page_token value returned from a previous list
-            request.
+            The next_page_token value returned from a
+            previous list request.
     """
 
     parent: str = proto.Field(
@@ -106,7 +113,8 @@ class ListSecuritySettingsRequest(proto.Message):
 
 
 class ListSecuritySettingsResponse(proto.Message):
-    r"""The response message for [SecuritySettings.ListSecuritySettings][].
+    r"""The response message for
+    [SecuritySettings.ListSecuritySettings][].
 
     Attributes:
         security_settings (MutableSequence[google.cloud.dialogflowcx_v3.types.SecuritySettings]):
@@ -133,12 +141,14 @@ class ListSecuritySettingsResponse(proto.Message):
 
 
 class CreateSecuritySettingsRequest(proto.Message):
-    r"""The request message for [SecuritySettings.CreateSecuritySettings][].
+    r"""The request message for
+    [SecuritySettings.CreateSecuritySettings][].
 
     Attributes:
         parent (str):
             Required. The location to create an
-            [SecuritySettings][google.cloud.dialogflow.cx.v3.SecuritySettings]
+            `SecuritySettings
+            <google.cloud.dialogflow.cx.v3.SecuritySettings>`__
             for. Format:
             ``projects/<ProjectID>/locations/<LocationID>``.
         security_settings (google.cloud.dialogflowcx_v3.types.SecuritySettings):
@@ -157,13 +167,16 @@ class CreateSecuritySettingsRequest(proto.Message):
 
 
 class DeleteSecuritySettingsRequest(proto.Message):
-    r"""The request message for [SecuritySettings.DeleteSecuritySettings][].
+    r"""The request message for
+    [SecuritySettings.DeleteSecuritySettings][].
 
     Attributes:
         name (str):
             Required. The name of the
-            [SecuritySettings][google.cloud.dialogflow.cx.v3.SecuritySettings]
+            `SecuritySettings
+            <google.cloud.dialogflow.cx.v3.SecuritySettings>`__
             to delete. Format:
+
             ``projects/<ProjectID>/locations/<LocationID>/securitySettings/<SecuritySettingsID>``.
     """
 
@@ -188,11 +201,15 @@ class SecuritySettings(proto.Message):
 
     Attributes:
         name (str):
-            Resource name of the settings. Required for the
-            [SecuritySettingsService.UpdateSecuritySettings][google.cloud.dialogflow.cx.v3.SecuritySettingsService.UpdateSecuritySettings]
+            Resource name of the settings.
+            Required for the
+            `SecuritySettingsService.UpdateSecuritySettings
+            <google.cloud.dialogflow.cx.v3.SecuritySettingsService.UpdateSecuritySettings>`__
             method.
-            [SecuritySettingsService.CreateSecuritySettings][google.cloud.dialogflow.cx.v3.SecuritySettingsService.CreateSecuritySettings]
+            `SecuritySettingsService.CreateSecuritySettings
+            <google.cloud.dialogflow.cx.v3.SecuritySettingsService.CreateSecuritySettings>`__
             populates the name automatically. Format:
+
             ``projects/<ProjectID>/locations/<LocationID>/securitySettings/<SecuritySettingsID>``.
         display_name (str):
             Required. The human-readable name of the
@@ -205,44 +222,51 @@ class SecuritySettings(proto.Message):
             it does not have access to – for example, Cloud
             logging.
         inspect_template (str):
-            `DLP <https://cloud.google.com/dlp/docs>`__ inspect template
-            name. Use this template to define inspect base settings.
+            `DLP <https://cloud.google.com/dlp/docs>`__
+            inspect template name. Use this template to
+            define inspect base settings.
 
-            The ``DLP Inspect Templates Reader`` role is needed on the
-            Dialogflow service identity service account (has the form
+            The ``DLP Inspect Templates Reader`` role is
+            needed on the Dialogflow service identity
+            service account (has the form
             ``service-PROJECT_NUMBER@gcp-sa-dialogflow.iam.gserviceaccount.com``)
             for your agent's project.
 
             If empty, we use the default DLP inspect config.
 
-            The template name will have one of the following formats:
+            The template name will have one of the following
+            formats:
+
             ``projects/<ProjectID>/locations/<LocationID>/inspectTemplates/<TemplateID>``
             OR
             ``organizations/<OrganizationID>/locations/<LocationID>/inspectTemplates/<TemplateID>``
 
-            Note: ``inspect_template`` must be located in the same
-            region as the ``SecuritySettings``.
+            Note: ``inspect_template`` must be located in
+            the same region as the ``SecuritySettings``.
         deidentify_template (str):
-            `DLP <https://cloud.google.com/dlp/docs>`__ deidentify
-            template name. Use this template to define de-identification
-            configuration for the content.
+            `DLP <https://cloud.google.com/dlp/docs>`__
+            deidentify template name. Use this template to
+            define de-identification configuration for the
+            content.
 
-            The ``DLP De-identify Templates Reader`` role is needed on
-            the Dialogflow service identity service account (has the
-            form
+            The ``DLP De-identify Templates Reader`` role is
+            needed on the Dialogflow service identity
+            service account (has the form
             ``service-PROJECT_NUMBER@gcp-sa-dialogflow.iam.gserviceaccount.com``)
             for your agent's project.
 
-            If empty, Dialogflow replaces sensitive info with
-            ``[redacted]`` text.
+            If empty, Dialogflow replaces sensitive info
+            with ``[redacted]`` text.
 
-            The template name will have one of the following formats:
+            The template name will have one of the following
+            formats:
+
             ``projects/<ProjectID>/locations/<LocationID>/deidentifyTemplates/<TemplateID>``
             OR
             ``organizations/<OrganizationID>/locations/<LocationID>/deidentifyTemplates/<TemplateID>``
 
-            Note: ``deidentify_template`` must be located in the same
-            region as the ``SecuritySettings``.
+            Note: ``deidentify_template`` must be located in
+            the same region as the ``SecuritySettings``.
         retention_window_days (int):
             Retains the data for the specified number of
             days. User must set a value lower than
@@ -259,41 +283,49 @@ class SecuritySettings(proto.Message):
             This field is a member of `oneof`_ ``data_retention``.
         retention_strategy (google.cloud.dialogflowcx_v3.types.SecuritySettings.RetentionStrategy):
             Specifies the retention behavior defined by
-            [SecuritySettings.RetentionStrategy][google.cloud.dialogflow.cx.v3.SecuritySettings.RetentionStrategy].
+            `SecuritySettings.RetentionStrategy
+            <google.cloud.dialogflow.cx.v3.SecuritySettings.RetentionStrategy>`__.
 
             This field is a member of `oneof`_ ``data_retention``.
         purge_data_types (MutableSequence[google.cloud.dialogflowcx_v3.types.SecuritySettings.PurgeDataType]):
             List of types of data to remove when
             retention settings triggers purge.
         audio_export_settings (google.cloud.dialogflowcx_v3.types.SecuritySettings.AudioExportSettings):
-            Controls audio export settings for post-conversation
-            analytics when ingesting audio to conversations via
+            Controls audio export settings for
+            post-conversation analytics when ingesting audio
+            to conversations via
             [Participants.AnalyzeContent][] or
             [Participants.StreamingAnalyzeContent][].
 
             If
-            [retention_strategy][google.cloud.dialogflow.cx.v3.SecuritySettings.retention_strategy]
+            `retention_strategy
+            <google.cloud.dialogflow.cx.v3.SecuritySettings.retention_strategy>`__
             is set to REMOVE_AFTER_CONVERSATION or
-            [audio_export_settings.gcs_bucket][] is empty, audio export
-            is disabled.
+            [audio_export_settings.gcs_bucket][] is empty,
+            audio export is disabled.
 
-            If audio export is enabled, audio is recorded and saved to
-            [audio_export_settings.gcs_bucket][], subject to retention
-            policy of [audio_export_settings.gcs_bucket][].
+            If audio export is enabled, audio is recorded
+            and saved to
+            [audio_export_settings.gcs_bucket][], subject to
+            retention policy of
+            [audio_export_settings.gcs_bucket][].
 
-            This setting won't effect audio input for implicit sessions
-            via
-            [Sessions.DetectIntent][google.cloud.dialogflow.cx.v3.Sessions.DetectIntent]
+            This setting won't effect audio input for
+            implicit sessions via `Sessions.DetectIntent
+            <google.cloud.dialogflow.cx.v3.Sessions.DetectIntent>`__
             or
-            [Sessions.StreamingDetectIntent][google.cloud.dialogflow.cx.v3.Sessions.StreamingDetectIntent].
+            `Sessions.StreamingDetectIntent
+            <google.cloud.dialogflow.cx.v3.Sessions.StreamingDetectIntent>`__.
         insights_export_settings (google.cloud.dialogflowcx_v3.types.SecuritySettings.InsightsExportSettings):
-            Controls conversation exporting settings to Insights after
-            conversation is completed.
+            Controls conversation exporting settings to
+            Insights after conversation is completed.
 
             If
-            [retention_strategy][google.cloud.dialogflow.cx.v3.SecuritySettings.retention_strategy]
-            is set to REMOVE_AFTER_CONVERSATION, Insights export is
-            disabled no matter what you configure here.
+            `retention_strategy
+            <google.cloud.dialogflow.cx.v3.SecuritySettings.retention_strategy>`__
+            is set to REMOVE_AFTER_CONVERSATION, Insights
+            export is disabled no matter what you configure
+            here.
     """
 
     class RedactionStrategy(proto.Enum):
@@ -333,10 +365,10 @@ class SecuritySettings(proto.Message):
                 Retains the persisted data with Dialogflow's
                 internal default 365d TTLs.
             REMOVE_AFTER_CONVERSATION (1):
-                Removes data when the conversation ends. If there is no
-                [Conversation][] explicitly established, a default
-                conversation ends when the corresponding Dialogflow session
-                ends.
+                Removes data when the conversation ends. If
+                there is no [Conversation][] explicitly
+                established, a default conversation ends when
+                the corresponding Dialogflow session ends.
         """
         RETENTION_STRATEGY_UNSPECIFIED = 0
         REMOVE_AFTER_CONVERSATION = 1
@@ -426,7 +458,8 @@ class SecuritySettings(proto.Message):
 
     class InsightsExportSettings(proto.Message):
         r"""Settings for exporting conversations to
-        `Insights <https://cloud.google.com/contact-center/insights/docs>`__.
+        `Insights
+        <https://cloud.google.com/contact-center/insights/docs>`__.
 
         Attributes:
             enable_insights_export (bool):

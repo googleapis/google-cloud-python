@@ -24,13 +24,13 @@ from google.rpc import status_pb2  # type: ignore
 import proto  # type: ignore
 
 from google.cloud.dialogflowcx_v3.types import (
+    flow,
+    intent,
+    page,
     response_message,
     session,
     transition_route_group,
 )
-from google.cloud.dialogflowcx_v3.types import flow as gcdc_flow
-from google.cloud.dialogflowcx_v3.types import intent as gcdc_intent
-from google.cloud.dialogflowcx_v3.types import page as gcdc_page
 
 __protobuf__ = proto.module(
     package="google.cloud.dialogflow.cx.v3",
@@ -95,14 +95,17 @@ class TestCase(proto.Message):
     Attributes:
         name (str):
             The unique identifier of the test case.
-            [TestCases.CreateTestCase][google.cloud.dialogflow.cx.v3.TestCases.CreateTestCase]
-            will populate the name automatically. Otherwise use format:
+            `TestCases.CreateTestCase
+            <google.cloud.dialogflow.cx.v3.TestCases.CreateTestCase>`__
+            will populate the name automatically. Otherwise
+            use format:
+
             ``projects/<ProjectID>/locations/<LocationID>/agents/<AgentID>/testCases/<TestCaseID>``.
         tags (MutableSequence[str]):
-            Tags are short descriptions that users may
-            apply to test cases for organizational and
-            filtering purposes. Each tag should start with
-            "#" and has a limit of 30 characters.
+            Tags are short descriptions that users may apply
+            to test cases for organizational and filtering
+            purposes. Each tag should start with "#" and has
+            a limit of 30 characters.
         display_name (str):
             Required. The human-readable name of the test
             case, unique within the agent. Limit of 200
@@ -170,7 +173,8 @@ class TestCaseResult(proto.Message):
 
     Attributes:
         name (str):
-            The resource name for the test case result. Format:
+            The resource name for the test case result.
+            Format:
             ``projects/<ProjectID>/locations/<LocationID>/agents/<AgentID>/testCases/<TestCaseID>/results/<TestCaseResultID>``.
         environment (str):
             Environment where the test was run. If not
@@ -218,21 +222,27 @@ class TestConfig(proto.Message):
             Session parameters to be compared when
             calculating differences.
         flow (str):
-            Flow name to start the test case with. Format:
+            Flow name to start the test case with.
+            Format:
+
             ``projects/<ProjectID>/locations/<LocationID>/agents/<AgentID>/flows/<FlowID>``.
 
-            Only one of ``flow`` and ``page`` should be set to indicate
-            the starting point of the test case. If neither is set, the
-            test case will start with start page on the default start
+             Only one of ``flow`` and ``page`` should be set
+            to indicate the starting point  of the test
+            case. If neither is set, the test case will
+            start with start  page on the default start
             flow.
         page (str):
-            The [page][google.cloud.dialogflow.cx.v3.Page] to start the
-            test case with. Format:
+            The `page
+            <google.cloud.dialogflow.cx.v3.Page>`__ to start
+            the test case with. Format:
+
             ``projects/<ProjectID>/locations/<LocationID>/agents/<AgentID>/flows/<FlowID>/pages/<PageID>``.
 
-            Only one of ``flow`` and ``page`` should be set to indicate
-            the starting point of the test case. If neither is set, the
-            test case will start with start page on the default start
+             Only one of ``flow`` and ``page`` should be set
+            to indicate the starting point  of the test
+            case. If neither is set, the test case will
+            start with start  page on the default start
             flow.
     """
 
@@ -266,11 +276,12 @@ class ConversationTurn(proto.Message):
 
         Attributes:
             input (google.cloud.dialogflowcx_v3.types.QueryInput):
-                Supports [text
-                input][google.cloud.dialogflow.cx.v3.QueryInput.text],
-                [event
-                input][google.cloud.dialogflow.cx.v3.QueryInput.event],
-                [dtmf input][google.cloud.dialogflow.cx.v3.QueryInput.dtmf]
+                Supports `text input
+                <google.cloud.dialogflow.cx.v3.QueryInput.text>`__,
+                `event input
+                <google.cloud.dialogflow.cx.v3.QueryInput.event>`__,
+                `dtmf input
+                <google.cloud.dialogflow.cx.v3.QueryInput.dtmf>`__
                 in the test case.
             injected_parameters (google.protobuf.struct_pb2.Struct):
                 Parameters that need to be injected into the
@@ -311,25 +322,30 @@ class ConversationTurn(proto.Message):
                 The session parameters available to the bot
                 at this point.
             differences (MutableSequence[google.cloud.dialogflowcx_v3.types.TestRunDifference]):
-                Output only. If this is part of a [result conversation
-                turn][TestCaseResult.conversation_turns], the list of
-                differences between the original run and the replay for this
-                output, if any.
+                Output only. If this is part of a `result
+                conversation turn
+                <TestCaseResult.conversation_turns>`__, the list
+                of differences between the original run and the
+                replay for this output, if any.
             diagnostic_info (google.protobuf.struct_pb2.Struct):
                 Required. Input only. The diagnostic
-                [info][Session.DetectIntentResponse.QueryResult.diagnostic_info]
-                output for the turn. Required to calculate the testing
-                coverage.
+                `info
+                <Session.DetectIntentResponse.QueryResult.diagnostic_info>`__
+                output for the turn. Required to calculate the
+                testing coverage.
             triggered_intent (google.cloud.dialogflowcx_v3.types.Intent):
-                The [Intent][google.cloud.dialogflow.cx.v3.Intent] that
-                triggered the response. Only name and displayName will be
-                set.
+                The `Intent
+                <google.cloud.dialogflow.cx.v3.Intent>`__ that
+                triggered the response. Only name and
+                displayName will be set.
             current_page (google.cloud.dialogflowcx_v3.types.Page):
-                The [Page][google.cloud.dialogflow.cx.v3.Page] on which the
-                utterance was spoken. Only name and displayName will be set.
+                The `Page
+                <google.cloud.dialogflow.cx.v3.Page>`__ on which
+                the utterance was spoken. Only name and
+                displayName will be set.
             text_responses (MutableSequence[google.cloud.dialogflowcx_v3.types.ResponseMessage.Text]):
-                The
-                [text][google.cloud.dialogflow.cx.v3.ResponseMessage.Text]
+                The `text
+                <google.cloud.dialogflow.cx.v3.ResponseMessage.Text>`__
                 responses from the agent for the turn.
             status (google.rpc.status_pb2.Status):
                 Response error from the agent in the test
@@ -351,15 +367,15 @@ class ConversationTurn(proto.Message):
             number=6,
             message=struct_pb2.Struct,
         )
-        triggered_intent: gcdc_intent.Intent = proto.Field(
+        triggered_intent: intent.Intent = proto.Field(
             proto.MESSAGE,
             number=7,
-            message=gcdc_intent.Intent,
+            message=intent.Intent,
         )
-        current_page: gcdc_page.Page = proto.Field(
+        current_page: page.Page = proto.Field(
             proto.MESSAGE,
             number=8,
-            message=gcdc_page.Page,
+            message=page.Page,
         )
         text_responses: MutableSequence[
             response_message.ResponseMessage.Text
@@ -459,30 +475,32 @@ class TransitionCoverage(proto.Message):
 
         Attributes:
             page (google.cloud.dialogflowcx_v3.types.Page):
-                Indicates a transition to a
-                [Page][google.cloud.dialogflow.cx.v3.Page]. Only some fields
-                such as name and displayname will be set.
+                Indicates a transition to a `Page
+                <google.cloud.dialogflow.cx.v3.Page>`__. Only
+                some fields such as name and displayname will be
+                set.
 
                 This field is a member of `oneof`_ ``kind``.
             flow (google.cloud.dialogflowcx_v3.types.Flow):
-                Indicates a transition to a
-                [Flow][google.cloud.dialogflow.cx.v3.Flow]. Only some fields
-                such as name and displayname will be set.
+                Indicates a transition to a `Flow
+                <google.cloud.dialogflow.cx.v3.Flow>`__. Only
+                some fields such as name and displayname will be
+                set.
 
                 This field is a member of `oneof`_ ``kind``.
         """
 
-        page: gcdc_page.Page = proto.Field(
+        page: page.Page = proto.Field(
             proto.MESSAGE,
             number=1,
             oneof="kind",
-            message=gcdc_page.Page,
+            message=page.Page,
         )
-        flow: gcdc_flow.Flow = proto.Field(
+        flow: flow.Flow = proto.Field(
             proto.MESSAGE,
             number=2,
             oneof="kind",
-            message=gcdc_flow.Flow,
+            message=flow.Flow,
         )
 
     class Transition(proto.Message):
@@ -534,17 +552,17 @@ class TransitionCoverage(proto.Message):
             proto.BOOL,
             number=3,
         )
-        transition_route: gcdc_page.TransitionRoute = proto.Field(
+        transition_route: page.TransitionRoute = proto.Field(
             proto.MESSAGE,
             number=5,
             oneof="detail",
-            message=gcdc_page.TransitionRoute,
+            message=page.TransitionRoute,
         )
-        event_handler: gcdc_page.EventHandler = proto.Field(
+        event_handler: page.EventHandler = proto.Field(
             proto.MESSAGE,
             number=6,
             oneof="detail",
-            message=gcdc_page.EventHandler,
+            message=page.EventHandler,
         )
 
     transitions: MutableSequence[Transition] = proto.RepeatedField(
@@ -598,10 +616,10 @@ class TransitionRouteGroupCoverage(proto.Message):
                     least one of the agent's test cases.
             """
 
-            transition_route: gcdc_page.TransitionRoute = proto.Field(
+            transition_route: page.TransitionRoute = proto.Field(
                 proto.MESSAGE,
                 number=1,
-                message=gcdc_page.TransitionRoute,
+                message=page.TransitionRoute,
             )
             covered: bool = proto.Field(
                 proto.BOOL,
@@ -682,11 +700,13 @@ class IntentCoverage(proto.Message):
 
 class CalculateCoverageRequest(proto.Message):
     r"""The request message for
-    [TestCases.CalculateCoverage][google.cloud.dialogflow.cx.v3.TestCases.CalculateCoverage].
+    `TestCases.CalculateCoverage
+    <google.cloud.dialogflow.cx.v3.TestCases.CalculateCoverage>`__.
 
     Attributes:
         agent (str):
-            Required. The agent to calculate coverage for. Format:
+            Required. The agent to calculate coverage for.
+            Format:
             ``projects/<ProjectID>/locations/<LocationID>/agents/<AgentID>``.
         type_ (google.cloud.dialogflowcx_v3.types.CalculateCoverageRequest.CoverageType):
             Required. The type of coverage requested.
@@ -723,7 +743,8 @@ class CalculateCoverageRequest(proto.Message):
 
 class CalculateCoverageResponse(proto.Message):
     r"""The response message for
-    [TestCases.CalculateCoverage][google.cloud.dialogflow.cx.v3.TestCases.CalculateCoverage].
+    `TestCases.CalculateCoverage
+    <google.cloud.dialogflow.cx.v3.TestCases.CalculateCoverage>`__.
 
     This message has `oneof`_ fields (mutually exclusive fields).
     For each oneof, at most one member field can be set at the same time.
@@ -734,7 +755,8 @@ class CalculateCoverageResponse(proto.Message):
 
     Attributes:
         agent (str):
-            The agent to calculate coverage for. Format:
+            The agent to calculate coverage for.
+            Format:
             ``projects/<ProjectID>/locations/<LocationID>/agents/<AgentID>``.
         intent_coverage (google.cloud.dialogflowcx_v3.types.IntentCoverage):
             Intent coverage.
@@ -777,11 +799,13 @@ class CalculateCoverageResponse(proto.Message):
 
 class ListTestCasesRequest(proto.Message):
     r"""The request message for
-    [TestCases.ListTestCases][google.cloud.dialogflow.cx.v3.TestCases.ListTestCases].
+    `TestCases.ListTestCases
+    <google.cloud.dialogflow.cx.v3.TestCases.ListTestCases>`__.
 
     Attributes:
         parent (str):
-            Required. The agent to list all pages for. Format:
+            Required. The agent to list all pages for.
+            Format:
             ``projects/<ProjectID>/locations/<LocationID>/agents/<AgentID>``.
         page_size (int):
             The maximum number of items to return in a
@@ -790,8 +814,8 @@ class ListTestCasesRequest(proto.Message):
             allowed is 20. When TestCaseView = BASIC, the
             maximum page size allowed is 500.
         page_token (str):
-            The next_page_token value returned from a previous list
-            request.
+            The next_page_token value returned from a
+            previous list request.
         view (google.cloud.dialogflowcx_v3.types.ListTestCasesRequest.TestCaseView):
             Specifies whether response should include all
             fields or just the metadata.
@@ -837,12 +861,14 @@ class ListTestCasesRequest(proto.Message):
 
 class ListTestCasesResponse(proto.Message):
     r"""The response message for
-    [TestCases.ListTestCases][google.cloud.dialogflow.cx.v3.TestCases.ListTestCases].
+    `TestCases.ListTestCases
+    <google.cloud.dialogflow.cx.v3.TestCases.ListTestCases>`__.
 
     Attributes:
         test_cases (MutableSequence[google.cloud.dialogflowcx_v3.types.TestCase]):
-            The list of test cases. There will be a maximum number of
-            items returned based on the page_size field in the request.
+            The list of test cases. There will be a maximum
+            number of items returned based on the page_size
+            field in the request.
         next_page_token (str):
             Token to retrieve the next page of results,
             or empty if there are no more results in the
@@ -866,14 +892,17 @@ class ListTestCasesResponse(proto.Message):
 
 class BatchDeleteTestCasesRequest(proto.Message):
     r"""The request message for
-    [TestCases.BatchDeleteTestCases][google.cloud.dialogflow.cx.v3.TestCases.BatchDeleteTestCases].
+    `TestCases.BatchDeleteTestCases
+    <google.cloud.dialogflow.cx.v3.TestCases.BatchDeleteTestCases>`__.
 
     Attributes:
         parent (str):
-            Required. The agent to delete test cases from. Format:
+            Required. The agent to delete test cases from.
+            Format:
             ``projects/<ProjectID>/locations/<LocationID>/agents/<AgentID>``.
         names (MutableSequence[str]):
             Required. Format of test case names:
+
             ``projects/<ProjectID>/locations/<LocationID>/agents/<AgentID>/testCases/<TestCaseID>``.
     """
 
@@ -889,11 +918,13 @@ class BatchDeleteTestCasesRequest(proto.Message):
 
 class CreateTestCaseRequest(proto.Message):
     r"""The request message for
-    [TestCases.CreateTestCase][google.cloud.dialogflow.cx.v3.TestCases.CreateTestCase].
+    `TestCases.CreateTestCase
+    <google.cloud.dialogflow.cx.v3.TestCases.CreateTestCase>`__.
 
     Attributes:
         parent (str):
-            Required. The agent to create the test case for. Format:
+            Required. The agent to create the test case for.
+            Format:
             ``projects/<ProjectID>/locations/<LocationID>/agents/<AgentID>``.
         test_case (google.cloud.dialogflowcx_v3.types.TestCase):
             Required. The test case to create.
@@ -912,17 +943,18 @@ class CreateTestCaseRequest(proto.Message):
 
 class UpdateTestCaseRequest(proto.Message):
     r"""The request message for
-    [TestCases.UpdateTestCase][google.cloud.dialogflow.cx.v3.TestCases.UpdateTestCase].
+    `TestCases.UpdateTestCase
+    <google.cloud.dialogflow.cx.v3.TestCases.UpdateTestCase>`__.
 
     Attributes:
         test_case (google.cloud.dialogflowcx_v3.types.TestCase):
             Required. The test case to update.
         update_mask (google.protobuf.field_mask_pb2.FieldMask):
-            Required. The mask to specify which fields should be
-            updated. The
-            [``creationTime``][google.cloud.dialogflow.cx.v3.TestCase.creation_time]
-            and
-            [``lastTestResult``][google.cloud.dialogflow.cx.v3.TestCase.last_test_result]
+            Required. The mask to specify which fields
+            should be updated. The ```creationTime``
+            <google.cloud.dialogflow.cx.v3.TestCase.creation_time>`__
+            and ```lastTestResult``
+            <google.cloud.dialogflow.cx.v3.TestCase.last_test_result>`__
             cannot be updated.
     """
 
@@ -940,11 +972,14 @@ class UpdateTestCaseRequest(proto.Message):
 
 class GetTestCaseRequest(proto.Message):
     r"""The request message for
-    [TestCases.GetTestCase][google.cloud.dialogflow.cx.v3.TestCases.GetTestCase].
+    `TestCases.GetTestCase
+    <google.cloud.dialogflow.cx.v3.TestCases.GetTestCase>`__.
 
     Attributes:
         name (str):
-            Required. The name of the testcase. Format:
+            Required. The name of the testcase.
+            Format:
+
             ``projects/<ProjectID>/locations/<LocationID>/agents/<AgentID>/testCases/<TestCaseID>``.
     """
 
@@ -956,15 +991,18 @@ class GetTestCaseRequest(proto.Message):
 
 class RunTestCaseRequest(proto.Message):
     r"""The request message for
-    [TestCases.RunTestCase][google.cloud.dialogflow.cx.v3.TestCases.RunTestCase].
+    `TestCases.RunTestCase
+    <google.cloud.dialogflow.cx.v3.TestCases.RunTestCase>`__.
 
     Attributes:
         name (str):
             Required. Format of test case name to run:
+
             ``projects/<ProjectID>/locations/<LocationID>/agents/<AgentID>/testCases/<TestCaseID>``.
         environment (str):
-            Optional. Environment name. If not set, draft environment is
-            assumed. Format:
+            Optional. Environment name. If not set, draft
+            environment is assumed. Format:
+
             ``projects/<ProjectID>/locations/<LocationID>/agents/<AgentID>/environments/<EnvironmentID>``.
     """
 
@@ -980,7 +1018,8 @@ class RunTestCaseRequest(proto.Message):
 
 class RunTestCaseResponse(proto.Message):
     r"""The response message for
-    [TestCases.RunTestCase][google.cloud.dialogflow.cx.v3.TestCases.RunTestCase].
+    `TestCases.RunTestCase
+    <google.cloud.dialogflow.cx.v3.TestCases.RunTestCase>`__.
 
     Attributes:
         result (google.cloud.dialogflowcx_v3.types.TestCaseResult):
@@ -996,25 +1035,30 @@ class RunTestCaseResponse(proto.Message):
 
 class RunTestCaseMetadata(proto.Message):
     r"""Metadata returned for the
-    [TestCases.RunTestCase][google.cloud.dialogflow.cx.v3.TestCases.RunTestCase]
-    long running operation. This message currently has no fields.
+    `TestCases.RunTestCase
+    <google.cloud.dialogflow.cx.v3.TestCases.RunTestCase>`__ long
+    running operation. This message currently has no fields.
 
     """
 
 
 class BatchRunTestCasesRequest(proto.Message):
     r"""The request message for
-    [TestCases.BatchRunTestCases][google.cloud.dialogflow.cx.v3.TestCases.BatchRunTestCases].
+    `TestCases.BatchRunTestCases
+    <google.cloud.dialogflow.cx.v3.TestCases.BatchRunTestCases>`__.
 
     Attributes:
         parent (str):
             Required. Agent name. Format:
+
             ``projects/<ProjectID>/locations/<LocationID>/agents/<AgentID>``.
         environment (str):
-            Optional. If not set, draft environment is assumed. Format:
+            Optional. If not set, draft environment is
+            assumed. Format:
             ``projects/<ProjectID>/locations/<LocationID>/agents/<AgentID>/environments/<EnvironmentID>``.
         test_cases (MutableSequence[str]):
             Required. Format:
+
             ``projects/<ProjectID>/locations/<LocationID>/agents/<AgentID>/testCases/<TestCaseID>``.
     """
 
@@ -1034,12 +1078,15 @@ class BatchRunTestCasesRequest(proto.Message):
 
 class BatchRunTestCasesResponse(proto.Message):
     r"""The response message for
-    [TestCases.BatchRunTestCases][google.cloud.dialogflow.cx.v3.TestCases.BatchRunTestCases].
+    `TestCases.BatchRunTestCases
+    <google.cloud.dialogflow.cx.v3.TestCases.BatchRunTestCases>`__.
 
     Attributes:
         results (MutableSequence[google.cloud.dialogflowcx_v3.types.TestCaseResult]):
-            The test case results. The detailed [conversation
-            turns][google.cloud.dialogflow.cx.v3.TestCaseResult.conversation_turns]
+            The test case results. The detailed
+            `conversation
+            turns
+            <google.cloud.dialogflow.cx.v3.TestCaseResult.conversation_turns>`__
             are empty in this response.
     """
 
@@ -1052,7 +1099,8 @@ class BatchRunTestCasesResponse(proto.Message):
 
 class BatchRunTestCasesMetadata(proto.Message):
     r"""Metadata returned for the
-    [TestCases.BatchRunTestCases][google.cloud.dialogflow.cx.v3.TestCases.BatchRunTestCases]
+    `TestCases.BatchRunTestCases
+    <google.cloud.dialogflow.cx.v3.TestCases.BatchRunTestCases>`__
     long running operation.
 
     Attributes:
@@ -1097,7 +1145,8 @@ class TestError(proto.Message):
 
 class ImportTestCasesRequest(proto.Message):
     r"""The request message for
-    [TestCases.ImportTestCases][google.cloud.dialogflow.cx.v3.TestCases.ImportTestCases].
+    `TestCases.ImportTestCases
+    <google.cloud.dialogflow.cx.v3.TestCases.ImportTestCases>`__.
 
     This message has `oneof`_ fields (mutually exclusive fields).
     For each oneof, at most one member field can be set at the same time.
@@ -1108,19 +1157,23 @@ class ImportTestCasesRequest(proto.Message):
 
     Attributes:
         parent (str):
-            Required. The agent to import test cases to. Format:
+            Required. The agent to import test cases to.
+            Format:
             ``projects/<ProjectID>/locations/<LocationID>/agents/<AgentID>``.
         gcs_uri (str):
-            The `Google Cloud
-            Storage <https://cloud.google.com/storage/docs/>`__ URI to
-            import test cases from. The format of this URI must be
+            The `Google Cloud Storage
+            <https://cloud.google.com/storage/docs/>`__ URI
+            to import test cases from. The format of this
+            URI must be
             ``gs://<bucket-name>/<object-name>``.
 
-            Dialogflow performs a read operation for the Cloud Storage
-            object on the caller's behalf, so your request
-            authentication must have read permissions for the object.
-            For more information, see `Dialogflow access
-            control <https://cloud.google.com/dialogflow/cx/docs/concept/access-control#storage>`__.
+            Dialogflow performs a read operation for the
+            Cloud Storage object on the caller's behalf, so
+            your request authentication must have read
+            permissions for the object. For more
+            information, see `Dialogflow access
+            control
+            <https://cloud.google.com/dialogflow/cx/docs/concept/access-control#storage>`__.
 
             This field is a member of `oneof`_ ``source``.
         content (bytes):
@@ -1147,11 +1200,14 @@ class ImportTestCasesRequest(proto.Message):
 
 class ImportTestCasesResponse(proto.Message):
     r"""The response message for
-    [TestCases.ImportTestCases][google.cloud.dialogflow.cx.v3.TestCases.ImportTestCases].
+    `TestCases.ImportTestCases
+    <google.cloud.dialogflow.cx.v3.TestCases.ImportTestCases>`__.
 
     Attributes:
         names (MutableSequence[str]):
-            The unique identifiers of the new test cases. Format:
+            The unique identifiers of the new test cases.
+            Format:
+
             ``projects/<ProjectID>/locations/<LocationID>/agents/<AgentID>/testCases/<TestCaseID>``.
     """
 
@@ -1163,7 +1219,8 @@ class ImportTestCasesResponse(proto.Message):
 
 class ImportTestCasesMetadata(proto.Message):
     r"""Metadata returned for the
-    [TestCases.ImportTestCases][google.cloud.dialogflow.cx.v3.TestCases.ImportTestCases]
+    `TestCases.ImportTestCases
+    <google.cloud.dialogflow.cx.v3.TestCases.ImportTestCases>`__
     long running operation.
 
     Attributes:
@@ -1202,43 +1259,51 @@ class TestCaseError(proto.Message):
 
 class ExportTestCasesRequest(proto.Message):
     r"""The request message for
-    [TestCases.ExportTestCases][google.cloud.dialogflow.cx.v3.TestCases.ExportTestCases].
+    `TestCases.ExportTestCases
+    <google.cloud.dialogflow.cx.v3.TestCases.ExportTestCases>`__.
 
 
     .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
 
     Attributes:
         parent (str):
-            Required. The agent where to export test cases from. Format:
+            Required. The agent where to export test cases
+            from. Format:
             ``projects/<ProjectID>/locations/<LocationID>/agents/<AgentID>``.
         gcs_uri (str):
-            The `Google Cloud
-            Storage <https://cloud.google.com/storage/docs/>`__ URI to
-            export the test cases to. The format of this URI must be
-            ``gs://<bucket-name>/<object-name>``. If unspecified, the
-            serialized test cases is returned inline.
+            The `Google Cloud Storage
+            <https://cloud.google.com/storage/docs/>`__ URI
+            to export the test cases to. The format of this
+            URI must be
+            ``gs://<bucket-name>/<object-name>``. If
+            unspecified, the serialized test cases is
+            returned inline.
 
-            Dialogflow performs a write operation for the Cloud Storage
-            object on the caller's behalf, so your request
-            authentication must have write permissions for the object.
-            For more information, see `Dialogflow access
-            control <https://cloud.google.com/dialogflow/cx/docs/concept/access-control#storage>`__.
+            Dialogflow performs a write operation for the
+            Cloud Storage object on the caller's behalf, so
+            your request authentication must have write
+            permissions for the object. For more
+            information, see `Dialogflow access
+            control
+            <https://cloud.google.com/dialogflow/cx/docs/concept/access-control#storage>`__.
 
             This field is a member of `oneof`_ ``destination``.
         data_format (google.cloud.dialogflowcx_v3.types.ExportTestCasesRequest.DataFormat):
-            The data format of the exported test cases. If not
-            specified, ``BLOB`` is assumed.
+            The data format of the exported test cases. If
+            not specified, ``BLOB`` is assumed.
         filter (str):
-            The filter expression used to filter exported test cases,
-            see `API Filtering <https://aip.dev/160>`__. The expression
-            is case insensitive and supports the following syntax:
+            The filter expression used to filter exported
+            test cases, see `API Filtering
+            <https://aip.dev/160>`__. The expression is case
+            insensitive and supports the following syntax:
 
-            name = [OR name = ] ...
+              name = <value> [OR name = <value>] ...
 
             For example:
 
-            - "name = t1 OR name = t2" matches the test case with the
-              exact resource name "t1" or "t2".
+            *   "name = t1 OR name = t2" matches the test
+            case with the exact resource     name "t1" or
+            "t2".
     """
 
     class DataFormat(proto.Enum):
@@ -1278,7 +1343,8 @@ class ExportTestCasesRequest(proto.Message):
 
 class ExportTestCasesResponse(proto.Message):
     r"""The response message for
-    [TestCases.ExportTestCases][google.cloud.dialogflow.cx.v3.TestCases.ExportTestCases].
+    `TestCases.ExportTestCases
+    <google.cloud.dialogflow.cx.v3.TestCases.ExportTestCases>`__.
 
     This message has `oneof`_ fields (mutually exclusive fields).
     For each oneof, at most one member field can be set at the same time.
@@ -1289,9 +1355,11 @@ class ExportTestCasesResponse(proto.Message):
 
     Attributes:
         gcs_uri (str):
-            The URI to a file containing the exported test cases. This
-            field is populated only if ``gcs_uri`` is specified in
-            [ExportTestCasesRequest][google.cloud.dialogflow.cx.v3.ExportTestCasesRequest].
+            The URI to a file containing the exported test
+            cases. This field is  populated only if
+            ``gcs_uri`` is specified in
+            `ExportTestCasesRequest
+            <google.cloud.dialogflow.cx.v3.ExportTestCasesRequest>`__.
 
             This field is a member of `oneof`_ ``destination``.
         content (bytes):
@@ -1314,7 +1382,8 @@ class ExportTestCasesResponse(proto.Message):
 
 class ExportTestCasesMetadata(proto.Message):
     r"""Metadata returned for the
-    [TestCases.ExportTestCases][google.cloud.dialogflow.cx.v3.TestCases.ExportTestCases]
+    `TestCases.ExportTestCases
+    <google.cloud.dialogflow.cx.v3.TestCases.ExportTestCases>`__
     long running operation. This message currently has no fields.
 
     """
@@ -1322,46 +1391,58 @@ class ExportTestCasesMetadata(proto.Message):
 
 class ListTestCaseResultsRequest(proto.Message):
     r"""The request message for
-    [TestCases.ListTestCaseResults][google.cloud.dialogflow.cx.v3.TestCases.ListTestCaseResults].
+    `TestCases.ListTestCaseResults
+    <google.cloud.dialogflow.cx.v3.TestCases.ListTestCaseResults>`__.
 
     Attributes:
         parent (str):
-            Required. The test case to list results for. Format:
+            Required. The test case to list results for.
+            Format:
+
             ``projects/<ProjectID>/locations/<LocationID>/agents/<AgentID>/testCases/<TestCaseID>``.
-            Specify a ``-`` as a wildcard for TestCase ID to list
-            results across multiple test cases.
+            Specify a ``-`` as a wildcard for TestCase ID to
+            list results across multiple test cases.
         page_size (int):
             The maximum number of items to return in a
             single page. By default 100 and at most 1000.
         page_token (str):
-            The next_page_token value returned from a previous list
-            request.
+            The next_page_token value returned from a
+            previous list request.
         filter (str):
-            The filter expression used to filter test case results. See
-            `API Filtering <https://aip.dev/160>`__.
+            The filter expression used to filter test case
+            results. See `API Filtering
+            <https://aip.dev/160>`__.
 
-            The expression is case insensitive. Only 'AND' is supported
-            for logical operators. The supported syntax is listed below
-            in detail:
+            The expression is case insensitive. Only 'AND'
+            is supported for logical operators. The
+            supported syntax is listed below in detail:
 
-            [AND ] ... [AND latest]
+              <field> <operator> <value> [AND <field>
+            <operator> <value>] ...   [AND latest]
 
-            The supported fields and operators are: field operator
-            ``environment`` ``=``, ``IN`` (Use value ``draft`` for draft
-            environment) ``test_time`` ``>``, ``<``
+            The supported fields and operators are:
 
-            ``latest`` only returns the latest test result in all
-            results for each test case.
+            field                 operator
+            ``environment``         ``=``, ``IN``  (Use
+            value ``draft`` for draft environment)
+            ``test_time``           ``>``, ``<``
+
+            ``latest`` only returns the latest test result
+            in all results for each test case.
 
             Examples:
 
-            - "environment=draft AND latest" matches the latest test
-              result for each test case in the draft environment.
-            - "environment IN (e1,e2)" matches any test case results
-              with an environment resource name of either "e1" or "e2".
-            - "test_time > 1602540713" matches any test case results
-              with test time later than a unix timestamp in seconds
-              1602540713.
+            *   "environment=draft AND latest" matches the
+            latest test result for each     test case in the
+            draft environment.
+
+            *   "environment IN (e1,e2)" matches any test
+            case results with an     environment resource
+            name of either "e1" or "e2".
+
+            *   "test_time > 1602540713" matches any test
+            case results with test time     later than a
+            unix timestamp in seconds 1602540713.
     """
 
     parent: str = proto.Field(
@@ -1384,7 +1465,8 @@ class ListTestCaseResultsRequest(proto.Message):
 
 class ListTestCaseResultsResponse(proto.Message):
     r"""The response message for
-    [TestCases.ListTestCaseResults][google.cloud.dialogflow.cx.v3.TestCases.ListTestCaseResults].
+    `TestCases.ListTestCaseResults
+    <google.cloud.dialogflow.cx.v3.TestCases.ListTestCaseResults>`__.
 
     Attributes:
         test_case_results (MutableSequence[google.cloud.dialogflowcx_v3.types.TestCaseResult]):
@@ -1412,11 +1494,14 @@ class ListTestCaseResultsResponse(proto.Message):
 
 class GetTestCaseResultRequest(proto.Message):
     r"""The request message for
-    [TestCases.GetTestCaseResult][google.cloud.dialogflow.cx.v3.TestCases.GetTestCaseResult].
+    `TestCases.GetTestCaseResult
+    <google.cloud.dialogflow.cx.v3.TestCases.GetTestCaseResult>`__.
 
     Attributes:
         name (str):
-            Required. The name of the testcase. Format:
+            Required. The name of the testcase.
+            Format:
+
             ``projects/<ProjectID>/locations/<LocationID>/agents/<AgentID>/testCases/<TestCaseID>/results/<TestCaseResultID>``.
     """
 

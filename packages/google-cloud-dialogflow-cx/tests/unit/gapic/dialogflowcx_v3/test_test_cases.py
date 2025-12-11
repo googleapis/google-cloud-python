@@ -85,9 +85,8 @@ from google.cloud.dialogflowcx_v3.types import (
     page,
     response_message,
     session,
+    test_case,
 )
-from google.cloud.dialogflowcx_v3.types import test_case
-from google.cloud.dialogflowcx_v3.types import test_case as gcdc_test_case
 
 CRED_INFO_JSON = {
     "credential_source": "/path/to/file",
@@ -2282,7 +2281,7 @@ async def test_get_test_case_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        gcdc_test_case.CreateTestCaseRequest,
+        test_case.CreateTestCaseRequest,
         dict,
     ],
 )
@@ -2299,7 +2298,7 @@ def test_create_test_case(request_type, transport: str = "grpc"):
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.create_test_case), "__call__") as call:
         # Designate an appropriate return value for the call.
-        call.return_value = gcdc_test_case.TestCase(
+        call.return_value = test_case.TestCase(
             name="name_value",
             tags=["tags_value"],
             display_name="display_name_value",
@@ -2310,11 +2309,11 @@ def test_create_test_case(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        request = gcdc_test_case.CreateTestCaseRequest()
+        request = test_case.CreateTestCaseRequest()
         assert args[0] == request
 
     # Establish that the response is the type that we expect.
-    assert isinstance(response, gcdc_test_case.TestCase)
+    assert isinstance(response, test_case.TestCase)
     assert response.name == "name_value"
     assert response.tags == ["tags_value"]
     assert response.display_name == "display_name_value"
@@ -2332,7 +2331,7 @@ def test_create_test_case_non_empty_request_with_auto_populated_field():
     # Populate all string fields in the request which are not UUID4
     # since we want to check that UUID4 are populated automatically
     # if they meet the requirements of AIP 4235.
-    request = gcdc_test_case.CreateTestCaseRequest(
+    request = test_case.CreateTestCaseRequest(
         parent="parent_value",
     )
 
@@ -2344,7 +2343,7 @@ def test_create_test_case_non_empty_request_with_auto_populated_field():
         client.create_test_case(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == gcdc_test_case.CreateTestCaseRequest(
+        assert args[0] == test_case.CreateTestCaseRequest(
             parent="parent_value",
         )
 
@@ -2430,7 +2429,7 @@ async def test_create_test_case_async_use_cached_wrapped_rpc(
 
 @pytest.mark.asyncio
 async def test_create_test_case_async(
-    transport: str = "grpc_asyncio", request_type=gcdc_test_case.CreateTestCaseRequest
+    transport: str = "grpc_asyncio", request_type=test_case.CreateTestCaseRequest
 ):
     client = TestCasesAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -2445,7 +2444,7 @@ async def test_create_test_case_async(
     with mock.patch.object(type(client.transport.create_test_case), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            gcdc_test_case.TestCase(
+            test_case.TestCase(
                 name="name_value",
                 tags=["tags_value"],
                 display_name="display_name_value",
@@ -2457,11 +2456,11 @@ async def test_create_test_case_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        request = gcdc_test_case.CreateTestCaseRequest()
+        request = test_case.CreateTestCaseRequest()
         assert args[0] == request
 
     # Establish that the response is the type that we expect.
-    assert isinstance(response, gcdc_test_case.TestCase)
+    assert isinstance(response, test_case.TestCase)
     assert response.name == "name_value"
     assert response.tags == ["tags_value"]
     assert response.display_name == "display_name_value"
@@ -2480,13 +2479,13 @@ def test_create_test_case_field_headers():
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
-    request = gcdc_test_case.CreateTestCaseRequest()
+    request = test_case.CreateTestCaseRequest()
 
     request.parent = "parent_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.create_test_case), "__call__") as call:
-        call.return_value = gcdc_test_case.TestCase()
+        call.return_value = test_case.TestCase()
         client.create_test_case(request)
 
         # Establish that the underlying gRPC stub method was called.
@@ -2510,15 +2509,13 @@ async def test_create_test_case_field_headers_async():
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
-    request = gcdc_test_case.CreateTestCaseRequest()
+    request = test_case.CreateTestCaseRequest()
 
     request.parent = "parent_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.create_test_case), "__call__") as call:
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            gcdc_test_case.TestCase()
-        )
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(test_case.TestCase())
         await client.create_test_case(request)
 
         # Establish that the underlying gRPC stub method was called.
@@ -2542,12 +2539,12 @@ def test_create_test_case_flattened():
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.create_test_case), "__call__") as call:
         # Designate an appropriate return value for the call.
-        call.return_value = gcdc_test_case.TestCase()
+        call.return_value = test_case.TestCase()
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
         client.create_test_case(
             parent="parent_value",
-            test_case=gcdc_test_case.TestCase(name="name_value"),
+            test_case=test_case.TestCase(name="name_value"),
         )
 
         # Establish that the underlying call was made with the expected
@@ -2558,7 +2555,7 @@ def test_create_test_case_flattened():
         mock_val = "parent_value"
         assert arg == mock_val
         arg = args[0].test_case
-        mock_val = gcdc_test_case.TestCase(name="name_value")
+        mock_val = test_case.TestCase(name="name_value")
         assert arg == mock_val
 
 
@@ -2571,9 +2568,9 @@ def test_create_test_case_flattened_error():
     # fields is an error.
     with pytest.raises(ValueError):
         client.create_test_case(
-            gcdc_test_case.CreateTestCaseRequest(),
+            test_case.CreateTestCaseRequest(),
             parent="parent_value",
-            test_case=gcdc_test_case.TestCase(name="name_value"),
+            test_case=test_case.TestCase(name="name_value"),
         )
 
 
@@ -2586,16 +2583,14 @@ async def test_create_test_case_flattened_async():
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.create_test_case), "__call__") as call:
         # Designate an appropriate return value for the call.
-        call.return_value = gcdc_test_case.TestCase()
+        call.return_value = test_case.TestCase()
 
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            gcdc_test_case.TestCase()
-        )
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(test_case.TestCase())
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
         response = await client.create_test_case(
             parent="parent_value",
-            test_case=gcdc_test_case.TestCase(name="name_value"),
+            test_case=test_case.TestCase(name="name_value"),
         )
 
         # Establish that the underlying call was made with the expected
@@ -2606,7 +2601,7 @@ async def test_create_test_case_flattened_async():
         mock_val = "parent_value"
         assert arg == mock_val
         arg = args[0].test_case
-        mock_val = gcdc_test_case.TestCase(name="name_value")
+        mock_val = test_case.TestCase(name="name_value")
         assert arg == mock_val
 
 
@@ -2620,16 +2615,16 @@ async def test_create_test_case_flattened_error_async():
     # fields is an error.
     with pytest.raises(ValueError):
         await client.create_test_case(
-            gcdc_test_case.CreateTestCaseRequest(),
+            test_case.CreateTestCaseRequest(),
             parent="parent_value",
-            test_case=gcdc_test_case.TestCase(name="name_value"),
+            test_case=test_case.TestCase(name="name_value"),
         )
 
 
 @pytest.mark.parametrize(
     "request_type",
     [
-        gcdc_test_case.UpdateTestCaseRequest,
+        test_case.UpdateTestCaseRequest,
         dict,
     ],
 )
@@ -2646,7 +2641,7 @@ def test_update_test_case(request_type, transport: str = "grpc"):
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.update_test_case), "__call__") as call:
         # Designate an appropriate return value for the call.
-        call.return_value = gcdc_test_case.TestCase(
+        call.return_value = test_case.TestCase(
             name="name_value",
             tags=["tags_value"],
             display_name="display_name_value",
@@ -2657,11 +2652,11 @@ def test_update_test_case(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        request = gcdc_test_case.UpdateTestCaseRequest()
+        request = test_case.UpdateTestCaseRequest()
         assert args[0] == request
 
     # Establish that the response is the type that we expect.
-    assert isinstance(response, gcdc_test_case.TestCase)
+    assert isinstance(response, test_case.TestCase)
     assert response.name == "name_value"
     assert response.tags == ["tags_value"]
     assert response.display_name == "display_name_value"
@@ -2679,7 +2674,7 @@ def test_update_test_case_non_empty_request_with_auto_populated_field():
     # Populate all string fields in the request which are not UUID4
     # since we want to check that UUID4 are populated automatically
     # if they meet the requirements of AIP 4235.
-    request = gcdc_test_case.UpdateTestCaseRequest()
+    request = test_case.UpdateTestCaseRequest()
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.update_test_case), "__call__") as call:
@@ -2689,7 +2684,7 @@ def test_update_test_case_non_empty_request_with_auto_populated_field():
         client.update_test_case(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == gcdc_test_case.UpdateTestCaseRequest()
+        assert args[0] == test_case.UpdateTestCaseRequest()
 
 
 def test_update_test_case_use_cached_wrapped_rpc():
@@ -2773,7 +2768,7 @@ async def test_update_test_case_async_use_cached_wrapped_rpc(
 
 @pytest.mark.asyncio
 async def test_update_test_case_async(
-    transport: str = "grpc_asyncio", request_type=gcdc_test_case.UpdateTestCaseRequest
+    transport: str = "grpc_asyncio", request_type=test_case.UpdateTestCaseRequest
 ):
     client = TestCasesAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -2788,7 +2783,7 @@ async def test_update_test_case_async(
     with mock.patch.object(type(client.transport.update_test_case), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            gcdc_test_case.TestCase(
+            test_case.TestCase(
                 name="name_value",
                 tags=["tags_value"],
                 display_name="display_name_value",
@@ -2800,11 +2795,11 @@ async def test_update_test_case_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        request = gcdc_test_case.UpdateTestCaseRequest()
+        request = test_case.UpdateTestCaseRequest()
         assert args[0] == request
 
     # Establish that the response is the type that we expect.
-    assert isinstance(response, gcdc_test_case.TestCase)
+    assert isinstance(response, test_case.TestCase)
     assert response.name == "name_value"
     assert response.tags == ["tags_value"]
     assert response.display_name == "display_name_value"
@@ -2823,13 +2818,13 @@ def test_update_test_case_field_headers():
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
-    request = gcdc_test_case.UpdateTestCaseRequest()
+    request = test_case.UpdateTestCaseRequest()
 
     request.test_case.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.update_test_case), "__call__") as call:
-        call.return_value = gcdc_test_case.TestCase()
+        call.return_value = test_case.TestCase()
         client.update_test_case(request)
 
         # Establish that the underlying gRPC stub method was called.
@@ -2853,15 +2848,13 @@ async def test_update_test_case_field_headers_async():
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
-    request = gcdc_test_case.UpdateTestCaseRequest()
+    request = test_case.UpdateTestCaseRequest()
 
     request.test_case.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.update_test_case), "__call__") as call:
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            gcdc_test_case.TestCase()
-        )
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(test_case.TestCase())
         await client.update_test_case(request)
 
         # Establish that the underlying gRPC stub method was called.
@@ -2885,11 +2878,11 @@ def test_update_test_case_flattened():
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.update_test_case), "__call__") as call:
         # Designate an appropriate return value for the call.
-        call.return_value = gcdc_test_case.TestCase()
+        call.return_value = test_case.TestCase()
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
         client.update_test_case(
-            test_case=gcdc_test_case.TestCase(name="name_value"),
+            test_case=test_case.TestCase(name="name_value"),
             update_mask=field_mask_pb2.FieldMask(paths=["paths_value"]),
         )
 
@@ -2898,7 +2891,7 @@ def test_update_test_case_flattened():
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
         arg = args[0].test_case
-        mock_val = gcdc_test_case.TestCase(name="name_value")
+        mock_val = test_case.TestCase(name="name_value")
         assert arg == mock_val
         arg = args[0].update_mask
         mock_val = field_mask_pb2.FieldMask(paths=["paths_value"])
@@ -2914,8 +2907,8 @@ def test_update_test_case_flattened_error():
     # fields is an error.
     with pytest.raises(ValueError):
         client.update_test_case(
-            gcdc_test_case.UpdateTestCaseRequest(),
-            test_case=gcdc_test_case.TestCase(name="name_value"),
+            test_case.UpdateTestCaseRequest(),
+            test_case=test_case.TestCase(name="name_value"),
             update_mask=field_mask_pb2.FieldMask(paths=["paths_value"]),
         )
 
@@ -2929,15 +2922,13 @@ async def test_update_test_case_flattened_async():
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.update_test_case), "__call__") as call:
         # Designate an appropriate return value for the call.
-        call.return_value = gcdc_test_case.TestCase()
+        call.return_value = test_case.TestCase()
 
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            gcdc_test_case.TestCase()
-        )
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(test_case.TestCase())
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
         response = await client.update_test_case(
-            test_case=gcdc_test_case.TestCase(name="name_value"),
+            test_case=test_case.TestCase(name="name_value"),
             update_mask=field_mask_pb2.FieldMask(paths=["paths_value"]),
         )
 
@@ -2946,7 +2937,7 @@ async def test_update_test_case_flattened_async():
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
         arg = args[0].test_case
-        mock_val = gcdc_test_case.TestCase(name="name_value")
+        mock_val = test_case.TestCase(name="name_value")
         assert arg == mock_val
         arg = args[0].update_mask
         mock_val = field_mask_pb2.FieldMask(paths=["paths_value"])
@@ -2963,8 +2954,8 @@ async def test_update_test_case_flattened_error_async():
     # fields is an error.
     with pytest.raises(ValueError):
         await client.update_test_case(
-            gcdc_test_case.UpdateTestCaseRequest(),
-            test_case=gcdc_test_case.TestCase(name="name_value"),
+            test_case.UpdateTestCaseRequest(),
+            test_case=test_case.TestCase(name="name_value"),
             update_mask=field_mask_pb2.FieldMask(paths=["paths_value"]),
         )
 
@@ -5813,7 +5804,7 @@ def test_create_test_case_rest_use_cached_wrapped_rpc():
 
 
 def test_create_test_case_rest_required_fields(
-    request_type=gcdc_test_case.CreateTestCaseRequest,
+    request_type=test_case.CreateTestCaseRequest,
 ):
     transport_class = transports.TestCasesRestTransport
 
@@ -5852,7 +5843,7 @@ def test_create_test_case_rest_required_fields(
     request = request_type(**request_init)
 
     # Designate an appropriate value for the returned response.
-    return_value = gcdc_test_case.TestCase()
+    return_value = test_case.TestCase()
     # Mock the http request call within the method and fake a response.
     with mock.patch.object(Session, "request") as req:
         # We need to mock transcode() because providing default values
@@ -5874,7 +5865,7 @@ def test_create_test_case_rest_required_fields(
             response_value.status_code = 200
 
             # Convert return value to protobuf type
-            return_value = gcdc_test_case.TestCase.pb(return_value)
+            return_value = test_case.TestCase.pb(return_value)
             json_return_value = json_format.MessageToJson(return_value)
 
             response_value._content = json_return_value.encode("UTF-8")
@@ -5914,7 +5905,7 @@ def test_create_test_case_rest_flattened():
     # Mock the http request call within the method and fake a response.
     with mock.patch.object(type(client.transport._session), "request") as req:
         # Designate an appropriate value for the returned response.
-        return_value = gcdc_test_case.TestCase()
+        return_value = test_case.TestCase()
 
         # get arguments that satisfy an http rule for this method
         sample_request = {"parent": "projects/sample1/locations/sample2/agents/sample3"}
@@ -5922,7 +5913,7 @@ def test_create_test_case_rest_flattened():
         # get truthy value for each flattened field
         mock_args = dict(
             parent="parent_value",
-            test_case=gcdc_test_case.TestCase(name="name_value"),
+            test_case=test_case.TestCase(name="name_value"),
         )
         mock_args.update(sample_request)
 
@@ -5930,7 +5921,7 @@ def test_create_test_case_rest_flattened():
         response_value = Response()
         response_value.status_code = 200
         # Convert return value to protobuf type
-        return_value = gcdc_test_case.TestCase.pb(return_value)
+        return_value = test_case.TestCase.pb(return_value)
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
@@ -5959,9 +5950,9 @@ def test_create_test_case_rest_flattened_error(transport: str = "rest"):
     # fields is an error.
     with pytest.raises(ValueError):
         client.create_test_case(
-            gcdc_test_case.CreateTestCaseRequest(),
+            test_case.CreateTestCaseRequest(),
             parent="parent_value",
-            test_case=gcdc_test_case.TestCase(name="name_value"),
+            test_case=test_case.TestCase(name="name_value"),
         )
 
 
@@ -6004,7 +5995,7 @@ def test_update_test_case_rest_use_cached_wrapped_rpc():
 
 
 def test_update_test_case_rest_required_fields(
-    request_type=gcdc_test_case.UpdateTestCaseRequest,
+    request_type=test_case.UpdateTestCaseRequest,
 ):
     transport_class = transports.TestCasesRestTransport
 
@@ -6040,7 +6031,7 @@ def test_update_test_case_rest_required_fields(
     request = request_type(**request_init)
 
     # Designate an appropriate value for the returned response.
-    return_value = gcdc_test_case.TestCase()
+    return_value = test_case.TestCase()
     # Mock the http request call within the method and fake a response.
     with mock.patch.object(Session, "request") as req:
         # We need to mock transcode() because providing default values
@@ -6062,7 +6053,7 @@ def test_update_test_case_rest_required_fields(
             response_value.status_code = 200
 
             # Convert return value to protobuf type
-            return_value = gcdc_test_case.TestCase.pb(return_value)
+            return_value = test_case.TestCase.pb(return_value)
             json_return_value = json_format.MessageToJson(return_value)
 
             response_value._content = json_return_value.encode("UTF-8")
@@ -6102,7 +6093,7 @@ def test_update_test_case_rest_flattened():
     # Mock the http request call within the method and fake a response.
     with mock.patch.object(type(client.transport._session), "request") as req:
         # Designate an appropriate value for the returned response.
-        return_value = gcdc_test_case.TestCase()
+        return_value = test_case.TestCase()
 
         # get arguments that satisfy an http rule for this method
         sample_request = {
@@ -6113,7 +6104,7 @@ def test_update_test_case_rest_flattened():
 
         # get truthy value for each flattened field
         mock_args = dict(
-            test_case=gcdc_test_case.TestCase(name="name_value"),
+            test_case=test_case.TestCase(name="name_value"),
             update_mask=field_mask_pb2.FieldMask(paths=["paths_value"]),
         )
         mock_args.update(sample_request)
@@ -6122,7 +6113,7 @@ def test_update_test_case_rest_flattened():
         response_value = Response()
         response_value.status_code = 200
         # Convert return value to protobuf type
-        return_value = gcdc_test_case.TestCase.pb(return_value)
+        return_value = test_case.TestCase.pb(return_value)
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
@@ -6151,8 +6142,8 @@ def test_update_test_case_rest_flattened_error(transport: str = "rest"):
     # fields is an error.
     with pytest.raises(ValueError):
         client.update_test_case(
-            gcdc_test_case.UpdateTestCaseRequest(),
-            test_case=gcdc_test_case.TestCase(name="name_value"),
+            test_case.UpdateTestCaseRequest(),
+            test_case=test_case.TestCase(name="name_value"),
             update_mask=field_mask_pb2.FieldMask(paths=["paths_value"]),
         )
 
@@ -7429,13 +7420,13 @@ def test_create_test_case_empty_call_grpc():
 
     # Mock the actual call, and fake the request.
     with mock.patch.object(type(client.transport.create_test_case), "__call__") as call:
-        call.return_value = gcdc_test_case.TestCase()
+        call.return_value = test_case.TestCase()
         client.create_test_case(request=None)
 
         # Establish that the underlying stub method was called.
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        request_msg = gcdc_test_case.CreateTestCaseRequest()
+        request_msg = test_case.CreateTestCaseRequest()
 
         assert args[0] == request_msg
 
@@ -7450,13 +7441,13 @@ def test_update_test_case_empty_call_grpc():
 
     # Mock the actual call, and fake the request.
     with mock.patch.object(type(client.transport.update_test_case), "__call__") as call:
-        call.return_value = gcdc_test_case.TestCase()
+        call.return_value = test_case.TestCase()
         client.update_test_case(request=None)
 
         # Establish that the underlying stub method was called.
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        request_msg = gcdc_test_case.UpdateTestCaseRequest()
+        request_msg = test_case.UpdateTestCaseRequest()
 
         assert args[0] == request_msg
 
@@ -7729,7 +7720,7 @@ async def test_create_test_case_empty_call_grpc_asyncio():
     with mock.patch.object(type(client.transport.create_test_case), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            gcdc_test_case.TestCase(
+            test_case.TestCase(
                 name="name_value",
                 tags=["tags_value"],
                 display_name="display_name_value",
@@ -7741,7 +7732,7 @@ async def test_create_test_case_empty_call_grpc_asyncio():
         # Establish that the underlying stub method was called.
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        request_msg = gcdc_test_case.CreateTestCaseRequest()
+        request_msg = test_case.CreateTestCaseRequest()
 
         assert args[0] == request_msg
 
@@ -7759,7 +7750,7 @@ async def test_update_test_case_empty_call_grpc_asyncio():
     with mock.patch.object(type(client.transport.update_test_case), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            gcdc_test_case.TestCase(
+            test_case.TestCase(
                 name="name_value",
                 tags=["tags_value"],
                 display_name="display_name_value",
@@ -7771,7 +7762,7 @@ async def test_update_test_case_empty_call_grpc_asyncio():
         # Establish that the underlying stub method was called.
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        request_msg = gcdc_test_case.UpdateTestCaseRequest()
+        request_msg = test_case.UpdateTestCaseRequest()
 
         assert args[0] == request_msg
 
@@ -8340,7 +8331,7 @@ def test_get_test_case_rest_interceptors(null_interceptor):
 
 
 def test_create_test_case_rest_bad_request(
-    request_type=gcdc_test_case.CreateTestCaseRequest,
+    request_type=test_case.CreateTestCaseRequest,
 ):
     client = TestCasesClient(
         credentials=ga_credentials.AnonymousCredentials(), transport="rest"
@@ -8367,7 +8358,7 @@ def test_create_test_case_rest_bad_request(
 @pytest.mark.parametrize(
     "request_type",
     [
-        gcdc_test_case.CreateTestCaseRequest,
+        test_case.CreateTestCaseRequest,
         dict,
     ],
 )
@@ -8646,7 +8637,7 @@ def test_create_test_case_rest_call_success(request_type):
     # See https://github.com/googleapis/gapic-generator-python/issues/1748
 
     # Determine if the message type is proto-plus or protobuf
-    test_field = gcdc_test_case.CreateTestCaseRequest.meta.fields["test_case"]
+    test_field = test_case.CreateTestCaseRequest.meta.fields["test_case"]
 
     def get_message_fields(field):
         # Given a field which is a message (composite type), return a list with
@@ -8713,7 +8704,7 @@ def test_create_test_case_rest_call_success(request_type):
     # Mock the http request call within the method and fake a response.
     with mock.patch.object(type(client.transport._session), "request") as req:
         # Designate an appropriate value for the returned response.
-        return_value = gcdc_test_case.TestCase(
+        return_value = test_case.TestCase(
             name="name_value",
             tags=["tags_value"],
             display_name="display_name_value",
@@ -8725,7 +8716,7 @@ def test_create_test_case_rest_call_success(request_type):
         response_value.status_code = 200
 
         # Convert return value to protobuf type
-        return_value = gcdc_test_case.TestCase.pb(return_value)
+        return_value = test_case.TestCase.pb(return_value)
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
@@ -8733,7 +8724,7 @@ def test_create_test_case_rest_call_success(request_type):
         response = client.create_test_case(request)
 
     # Establish that the response is the type that we expect.
-    assert isinstance(response, gcdc_test_case.TestCase)
+    assert isinstance(response, test_case.TestCase)
     assert response.name == "name_value"
     assert response.tags == ["tags_value"]
     assert response.display_name == "display_name_value"
@@ -8762,8 +8753,8 @@ def test_create_test_case_rest_interceptors(null_interceptor):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
-        pb_message = gcdc_test_case.CreateTestCaseRequest.pb(
-            gcdc_test_case.CreateTestCaseRequest()
+        pb_message = test_case.CreateTestCaseRequest.pb(
+            test_case.CreateTestCaseRequest()
         )
         transcode.return_value = {
             "method": "post",
@@ -8775,17 +8766,17 @@ def test_create_test_case_rest_interceptors(null_interceptor):
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
         req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
-        return_value = gcdc_test_case.TestCase.to_json(gcdc_test_case.TestCase())
+        return_value = test_case.TestCase.to_json(test_case.TestCase())
         req.return_value.content = return_value
 
-        request = gcdc_test_case.CreateTestCaseRequest()
+        request = test_case.CreateTestCaseRequest()
         metadata = [
             ("key", "val"),
             ("cephalopod", "squid"),
         ]
         pre.return_value = request, metadata
-        post.return_value = gcdc_test_case.TestCase()
-        post_with_metadata.return_value = gcdc_test_case.TestCase(), metadata
+        post.return_value = test_case.TestCase()
+        post_with_metadata.return_value = test_case.TestCase(), metadata
 
         client.create_test_case(
             request,
@@ -8801,7 +8792,7 @@ def test_create_test_case_rest_interceptors(null_interceptor):
 
 
 def test_update_test_case_rest_bad_request(
-    request_type=gcdc_test_case.UpdateTestCaseRequest,
+    request_type=test_case.UpdateTestCaseRequest,
 ):
     client = TestCasesClient(
         credentials=ga_credentials.AnonymousCredentials(), transport="rest"
@@ -8832,7 +8823,7 @@ def test_update_test_case_rest_bad_request(
 @pytest.mark.parametrize(
     "request_type",
     [
-        gcdc_test_case.UpdateTestCaseRequest,
+        test_case.UpdateTestCaseRequest,
         dict,
     ],
 )
@@ -9115,7 +9106,7 @@ def test_update_test_case_rest_call_success(request_type):
     # See https://github.com/googleapis/gapic-generator-python/issues/1748
 
     # Determine if the message type is proto-plus or protobuf
-    test_field = gcdc_test_case.UpdateTestCaseRequest.meta.fields["test_case"]
+    test_field = test_case.UpdateTestCaseRequest.meta.fields["test_case"]
 
     def get_message_fields(field):
         # Given a field which is a message (composite type), return a list with
@@ -9182,7 +9173,7 @@ def test_update_test_case_rest_call_success(request_type):
     # Mock the http request call within the method and fake a response.
     with mock.patch.object(type(client.transport._session), "request") as req:
         # Designate an appropriate value for the returned response.
-        return_value = gcdc_test_case.TestCase(
+        return_value = test_case.TestCase(
             name="name_value",
             tags=["tags_value"],
             display_name="display_name_value",
@@ -9194,7 +9185,7 @@ def test_update_test_case_rest_call_success(request_type):
         response_value.status_code = 200
 
         # Convert return value to protobuf type
-        return_value = gcdc_test_case.TestCase.pb(return_value)
+        return_value = test_case.TestCase.pb(return_value)
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
@@ -9202,7 +9193,7 @@ def test_update_test_case_rest_call_success(request_type):
         response = client.update_test_case(request)
 
     # Establish that the response is the type that we expect.
-    assert isinstance(response, gcdc_test_case.TestCase)
+    assert isinstance(response, test_case.TestCase)
     assert response.name == "name_value"
     assert response.tags == ["tags_value"]
     assert response.display_name == "display_name_value"
@@ -9231,8 +9222,8 @@ def test_update_test_case_rest_interceptors(null_interceptor):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
-        pb_message = gcdc_test_case.UpdateTestCaseRequest.pb(
-            gcdc_test_case.UpdateTestCaseRequest()
+        pb_message = test_case.UpdateTestCaseRequest.pb(
+            test_case.UpdateTestCaseRequest()
         )
         transcode.return_value = {
             "method": "post",
@@ -9244,17 +9235,17 @@ def test_update_test_case_rest_interceptors(null_interceptor):
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
         req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
-        return_value = gcdc_test_case.TestCase.to_json(gcdc_test_case.TestCase())
+        return_value = test_case.TestCase.to_json(test_case.TestCase())
         req.return_value.content = return_value
 
-        request = gcdc_test_case.UpdateTestCaseRequest()
+        request = test_case.UpdateTestCaseRequest()
         metadata = [
             ("key", "val"),
             ("cephalopod", "squid"),
         ]
         pre.return_value = request, metadata
-        post.return_value = gcdc_test_case.TestCase()
-        post_with_metadata.return_value = gcdc_test_case.TestCase(), metadata
+        post.return_value = test_case.TestCase()
+        post_with_metadata.return_value = test_case.TestCase(), metadata
 
         client.update_test_case(
             request,
@@ -10538,7 +10529,7 @@ def test_create_test_case_empty_call_rest():
         # Establish that the underlying stub method was called.
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        request_msg = gcdc_test_case.CreateTestCaseRequest()
+        request_msg = test_case.CreateTestCaseRequest()
 
         assert args[0] == request_msg
 
@@ -10558,7 +10549,7 @@ def test_update_test_case_empty_call_rest():
         # Establish that the underlying stub method was called.
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        request_msg = gcdc_test_case.UpdateTestCaseRequest()
+        request_msg = test_case.UpdateTestCaseRequest()
 
         assert args[0] == request_msg
 

@@ -32,7 +32,6 @@ from google.protobuf import json_format
 from requests import __version__ as requests_version
 
 from google.cloud.dialogflowcx_v3.types import environment
-from google.cloud.dialogflowcx_v3.types import environment as gcdc_environment
 
 from .base import DEFAULT_CLIENT_INFO as BASE_DEFAULT_CLIENT_INFO
 from .rest_base import _BaseEnvironmentsRestTransport
@@ -152,11 +151,10 @@ class EnvironmentsRestInterceptor:
 
     def pre_create_environment(
         self,
-        request: gcdc_environment.CreateEnvironmentRequest,
+        request: environment.CreateEnvironmentRequest,
         metadata: Sequence[Tuple[str, Union[str, bytes]]],
     ) -> Tuple[
-        gcdc_environment.CreateEnvironmentRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
+        environment.CreateEnvironmentRequest, Sequence[Tuple[str, Union[str, bytes]]]
     ]:
         """Pre-rpc interceptor for create_environment
 
@@ -511,11 +509,10 @@ class EnvironmentsRestInterceptor:
 
     def pre_update_environment(
         self,
-        request: gcdc_environment.UpdateEnvironmentRequest,
+        request: environment.UpdateEnvironmentRequest,
         metadata: Sequence[Tuple[str, Union[str, bytes]]],
     ) -> Tuple[
-        gcdc_environment.UpdateEnvironmentRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
+        environment.UpdateEnvironmentRequest, Sequence[Tuple[str, Union[str, bytes]]]
     ]:
         """Pre-rpc interceptor for update_environment
 
@@ -693,7 +690,7 @@ class EnvironmentsRestTransport(_BaseEnvironmentsRestTransport):
     """REST backend synchronous transport for Environments.
 
     Service for managing
-    [Environments][google.cloud.dialogflow.cx.v3.Environment].
+    `Environments <google.cloud.dialogflow.cx.v3.Environment>`__.
 
     This class defines the same methods as the primary client, so the
     primary client can load the underlying transport implementation
@@ -860,7 +857,7 @@ class EnvironmentsRestTransport(_BaseEnvironmentsRestTransport):
 
         def __call__(
             self,
-            request: gcdc_environment.CreateEnvironmentRequest,
+            request: environment.CreateEnvironmentRequest,
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
@@ -869,9 +866,10 @@ class EnvironmentsRestTransport(_BaseEnvironmentsRestTransport):
             r"""Call the create environment method over HTTP.
 
             Args:
-                request (~.gcdc_environment.CreateEnvironmentRequest):
+                request (~.environment.CreateEnvironmentRequest):
                     The request object. The request message for
-                [Environments.CreateEnvironment][google.cloud.dialogflow.cx.v3.Environments.CreateEnvironment].
+                `Environments.CreateEnvironment
+                <google.cloud.dialogflow.cx.v3.Environments.CreateEnvironment>`__.
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -1024,7 +1022,8 @@ class EnvironmentsRestTransport(_BaseEnvironmentsRestTransport):
             Args:
                 request (~.environment.DeleteEnvironmentRequest):
                     The request object. The request message for
-                [Environments.DeleteEnvironment][google.cloud.dialogflow.cx.v3.Environments.DeleteEnvironment].
+                `Environments.DeleteEnvironment
+                <google.cloud.dialogflow.cx.v3.Environments.DeleteEnvironment>`__.
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -1134,7 +1133,8 @@ class EnvironmentsRestTransport(_BaseEnvironmentsRestTransport):
             Args:
                 request (~.environment.DeployFlowRequest):
                     The request object. The request message for
-                [Environments.DeployFlow][google.cloud.dialogflow.cx.v3.Environments.DeployFlow].
+                `Environments.DeployFlow
+                <google.cloud.dialogflow.cx.v3.Environments.DeployFlow>`__.
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -1291,7 +1291,8 @@ class EnvironmentsRestTransport(_BaseEnvironmentsRestTransport):
             Args:
                 request (~.environment.GetEnvironmentRequest):
                     The request object. The request message for
-                [Environments.GetEnvironment][google.cloud.dialogflow.cx.v3.Environments.GetEnvironment].
+                `Environments.GetEnvironment
+                <google.cloud.dialogflow.cx.v3.Environments.GetEnvironment>`__.
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -1453,7 +1454,8 @@ class EnvironmentsRestTransport(_BaseEnvironmentsRestTransport):
                 Args:
                     request (~.environment.ListContinuousTestResultsRequest):
                         The request object. The request message for
-                    [Environments.ListContinuousTestResults][google.cloud.dialogflow.cx.v3.Environments.ListContinuousTestResults].
+                    `Environments.ListContinuousTestResults
+                    <google.cloud.dialogflow.cx.v3.Environments.ListContinuousTestResults>`__.
                     retry (google.api_core.retry.Retry): Designation of what errors, if any,
                         should be retried.
                     timeout (float): The timeout for this request.
@@ -1606,7 +1608,8 @@ class EnvironmentsRestTransport(_BaseEnvironmentsRestTransport):
             Args:
                 request (~.environment.ListEnvironmentsRequest):
                     The request object. The request message for
-                [Environments.ListEnvironments][google.cloud.dialogflow.cx.v3.Environments.ListEnvironments].
+                `Environments.ListEnvironments
+                <google.cloud.dialogflow.cx.v3.Environments.ListEnvironments>`__.
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -1618,7 +1621,8 @@ class EnvironmentsRestTransport(_BaseEnvironmentsRestTransport):
             Returns:
                 ~.environment.ListEnvironmentsResponse:
                     The response message for
-                [Environments.ListEnvironments][google.cloud.dialogflow.cx.v3.Environments.ListEnvironments].
+                `Environments.ListEnvironments
+                <google.cloud.dialogflow.cx.v3.Environments.ListEnvironments>`__.
 
             """
 
@@ -1759,7 +1763,8 @@ class EnvironmentsRestTransport(_BaseEnvironmentsRestTransport):
                 Args:
                     request (~.environment.LookupEnvironmentHistoryRequest):
                         The request object. The request message for
-                    [Environments.LookupEnvironmentHistory][google.cloud.dialogflow.cx.v3.Environments.LookupEnvironmentHistory].
+                    `Environments.LookupEnvironmentHistory
+                    <google.cloud.dialogflow.cx.v3.Environments.LookupEnvironmentHistory>`__.
                     retry (google.api_core.retry.Retry): Designation of what errors, if any,
                         should be retried.
                     timeout (float): The timeout for this request.
@@ -1771,7 +1776,8 @@ class EnvironmentsRestTransport(_BaseEnvironmentsRestTransport):
                 Returns:
                     ~.environment.LookupEnvironmentHistoryResponse:
                         The response message for
-                    [Environments.LookupEnvironmentHistory][google.cloud.dialogflow.cx.v3.Environments.LookupEnvironmentHistory].
+                    `Environments.LookupEnvironmentHistory
+                    <google.cloud.dialogflow.cx.v3.Environments.LookupEnvironmentHistory>`__.
 
             """
 
@@ -1913,7 +1919,8 @@ class EnvironmentsRestTransport(_BaseEnvironmentsRestTransport):
             Args:
                 request (~.environment.RunContinuousTestRequest):
                     The request object. The request message for
-                [Environments.RunContinuousTest][google.cloud.dialogflow.cx.v3.Environments.RunContinuousTest].
+                `Environments.RunContinuousTest
+                <google.cloud.dialogflow.cx.v3.Environments.RunContinuousTest>`__.
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -2056,7 +2063,7 @@ class EnvironmentsRestTransport(_BaseEnvironmentsRestTransport):
 
         def __call__(
             self,
-            request: gcdc_environment.UpdateEnvironmentRequest,
+            request: environment.UpdateEnvironmentRequest,
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
@@ -2065,9 +2072,10 @@ class EnvironmentsRestTransport(_BaseEnvironmentsRestTransport):
             r"""Call the update environment method over HTTP.
 
             Args:
-                request (~.gcdc_environment.UpdateEnvironmentRequest):
+                request (~.environment.UpdateEnvironmentRequest):
                     The request object. The request message for
-                [Environments.UpdateEnvironment][google.cloud.dialogflow.cx.v3.Environments.UpdateEnvironment].
+                `Environments.UpdateEnvironment
+                <google.cloud.dialogflow.cx.v3.Environments.UpdateEnvironment>`__.
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -2182,9 +2190,7 @@ class EnvironmentsRestTransport(_BaseEnvironmentsRestTransport):
     @property
     def create_environment(
         self,
-    ) -> Callable[
-        [gcdc_environment.CreateEnvironmentRequest], operations_pb2.Operation
-    ]:
+    ) -> Callable[[environment.CreateEnvironmentRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._CreateEnvironment(self._session, self._host, self._interceptor)  # type: ignore
@@ -2256,9 +2262,7 @@ class EnvironmentsRestTransport(_BaseEnvironmentsRestTransport):
     @property
     def update_environment(
         self,
-    ) -> Callable[
-        [gcdc_environment.UpdateEnvironmentRequest], operations_pb2.Operation
-    ]:
+    ) -> Callable[[environment.UpdateEnvironmentRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._UpdateEnvironment(self._session, self._host, self._interceptor)  # type: ignore

@@ -49,5 +49,4 @@ async def sample_get_environment():
     # Handle the response
     print(response)
 
-
 # [END dialogflow_v3_generated_Environments_GetEnvironment_async]

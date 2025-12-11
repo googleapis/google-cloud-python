@@ -30,7 +30,6 @@ from google.protobuf import empty_pb2  # type: ignore
 
 from google.cloud.dialogflowcx_v3 import gapic_version as package_version
 from google.cloud.dialogflowcx_v3.types import intent
-from google.cloud.dialogflowcx_v3.types import intent as gcdc_intent
 
 DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
     gapic_version=package_version.__version__
@@ -237,8 +236,7 @@ class IntentsTransport(abc.ABC):
     def create_intent(
         self,
     ) -> Callable[
-        [gcdc_intent.CreateIntentRequest],
-        Union[gcdc_intent.Intent, Awaitable[gcdc_intent.Intent]],
+        [intent.CreateIntentRequest], Union[intent.Intent, Awaitable[intent.Intent]]
     ]:
         raise NotImplementedError()
 
@@ -246,8 +244,7 @@ class IntentsTransport(abc.ABC):
     def update_intent(
         self,
     ) -> Callable[
-        [gcdc_intent.UpdateIntentRequest],
-        Union[gcdc_intent.Intent, Awaitable[gcdc_intent.Intent]],
+        [intent.UpdateIntentRequest], Union[intent.Intent, Awaitable[intent.Intent]]
     ]:
         raise NotImplementedError()
 

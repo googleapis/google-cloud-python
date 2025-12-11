@@ -24,16 +24,16 @@ from google.rpc import status_pb2  # type: ignore
 from google.type import latlng_pb2  # type: ignore
 import proto  # type: ignore
 
-from google.cloud.dialogflowcx_v3.types import audio_config, data_store_connection, flow
 from google.cloud.dialogflowcx_v3.types import (
+    advanced_settings,
+    audio_config,
+    data_store_connection,
+    flow,
+    intent,
     page,
     response_message,
     session_entity_type,
 )
-from google.cloud.dialogflowcx_v3.types import (
-    advanced_settings as gcdc_advanced_settings,
-)
-from google.cloud.dialogflowcx_v3.types import intent as gcdc_intent
 
 __protobuf__ = proto.module(
     package="google.cloud.dialogflow.cx.v3",
@@ -114,8 +114,9 @@ class AnswerFeedback(proto.Message):
                 number of labels allowed is 10 and the maximum
                 length of a single label is 128 characters.
             feedback (str):
-                Optional. Additional feedback about the rating. This field
-                can be populated without choosing a predefined ``reason``.
+                Optional. Additional feedback about the rating.
+                This field can be populated without choosing a
+                predefined ``reason``.
         """
 
         reason_labels: MutableSequence[str] = proto.RepeatedField(
@@ -151,8 +152,9 @@ class SubmitAnswerFeedbackRequest(proto.Message):
             Required. The name of the session the
             feedback was sent to.
         response_id (str):
-            Required. ID of the response to update its feedback. This is
-            the same as DetectIntentResponse.response_id.
+            Required. ID of the response to update its
+            feedback. This is the same as
+            DetectIntentResponse.response_id.
         answer_feedback (google.cloud.dialogflowcx_v3.types.AnswerFeedback):
             Required. Feedback provided for a bot answer.
         update_mask (google.protobuf.field_mask_pb2.FieldMask):
@@ -186,23 +188,28 @@ class DetectIntentRequest(proto.Message):
 
     Attributes:
         session (str):
-            Required. The name of the session this query is sent to.
-            Format:
-            ``projects/<ProjectID>/locations/<LocationID>/agents/<AgentID>/sessions/<Session ID>``
-            or
+            Required. The name of the session this query is
+            sent to. Format:
+
+            ``projects/<ProjectID>/locations/<LocationID>/agents/<AgentID>/sessions/<Session
+            ID>`` or
             ``projects/<ProjectID>/locations/<LocationID>/agents/<AgentID>/environments/<EnvironmentID>/sessions/<SessionID>``.
-            If ``Environment ID`` is not specified, we assume default
-            'draft' environment. It's up to the API caller to choose an
-            appropriate ``Session ID``. It can be a random number or
-            some type of session identifiers (preferably hashed). The
-            length of the ``Session ID`` must not exceed 36 characters.
+            If ``Environment ID`` is not specified, we
+            assume default 'draft' environment.
+            It's up to the API caller to choose an
+            appropriate ``Session ID``. It can be a random
+            number or some type of session identifiers
+            (preferably hashed). The length of the ``Session
+            ID`` must not exceed 36 characters.
 
             For more information, see the `sessions
-            guide <https://cloud.google.com/dialogflow/cx/docs/concept/session>`__.
+            guide
+            <https://cloud.google.com/dialogflow/cx/docs/concept/session>`__.
 
-            Note: Always use agent versions for production traffic. See
-            `Versions and
-            environments <https://cloud.google.com/dialogflow/cx/docs/concept/version>`__.
+            Note: Always use agent versions for production
+            traffic. See `Versions and
+            environments
+            <https://cloud.google.com/dialogflow/cx/docs/concept/version>`__.
         query_params (google.cloud.dialogflowcx_v3.types.QueryParameters):
             The parameters of this query.
         query_input (google.cloud.dialogflowcx_v3.types.QueryInput):
@@ -245,18 +252,21 @@ class DetectIntentResponse(proto.Message):
         query_result (google.cloud.dialogflowcx_v3.types.QueryResult):
             The result of the conversational query.
         output_audio (bytes):
-            The audio data bytes encoded as specified in the request.
-            Note: The output audio is generated based on the values of
-            default platform text responses found in the
-            [``query_result.response_messages``][google.cloud.dialogflow.cx.v3.QueryResult.response_messages]
-            field. If multiple default text responses exist, they will
-            be concatenated when generating audio. If no default
-            platform text responses exist, the generated audio content
-            will be empty.
+            The audio data bytes encoded as specified in the
+            request. Note: The output audio is generated
+            based on the values of default platform text
+            responses found in the
+            ```query_result.response_messages``
+            <google.cloud.dialogflow.cx.v3.QueryResult.response_messages>`__
+            field. If multiple default text responses exist,
+            they will be concatenated when generating audio.
+            If no default platform text responses exist, the
+            generated audio content will be empty.
 
-            In some scenarios, multiple output audio fields may be
-            present in the response structure. In these cases, only the
-            top-most-level audio output has content.
+            In some scenarios, multiple output audio fields
+            may be present in the response structure. In
+            these cases, only the top-most-level audio
+            output has content.
         output_audio_config (google.cloud.dialogflowcx_v3.types.OutputAudioConfig):
             The config used by the speech synthesizer to
             generate the output audio.
@@ -276,10 +286,11 @@ class DetectIntentResponse(proto.Message):
             RESPONSE_TYPE_UNSPECIFIED (0):
                 Not specified. This should never happen.
             PARTIAL (1):
-                Partial response. e.g. Aggregated responses in a Fulfillment
-                that enables ``return_partial_response`` can be returned as
-                partial response. WARNING: partial response is not eligible
-                for barge-in.
+                Partial response. e.g. Aggregated responses in a
+                Fulfillment that enables
+                ``return_partial_response`` can be returned as
+                partial response. WARNING: partial response is
+                not eligible for barge-in.
             FINAL (2):
                 Final response.
         """
@@ -318,60 +329,75 @@ class DetectIntentResponse(proto.Message):
 
 class StreamingDetectIntentRequest(proto.Message):
     r"""The top-level message sent by the client to the
-    [Sessions.StreamingDetectIntent][google.cloud.dialogflow.cx.v3.Sessions.StreamingDetectIntent]
+    `Sessions.StreamingDetectIntent
+    <google.cloud.dialogflow.cx.v3.Sessions.StreamingDetectIntent>`__
     method.
 
     Multiple request messages should be sent in order:
 
-    1. The first message must contain
-       [session][google.cloud.dialogflow.cx.v3.StreamingDetectIntentRequest.session],
-       [query_input][google.cloud.dialogflow.cx.v3.StreamingDetectIntentRequest.query_input]
-       plus optionally
-       [query_params][google.cloud.dialogflow.cx.v3.StreamingDetectIntentRequest.query_params].
-       If the client wants to receive an audio response, it should also
-       contain
-       [output_audio_config][google.cloud.dialogflow.cx.v3.StreamingDetectIntentRequest.output_audio_config].
+    1.  The first message must contain
+        `session
+    <google.cloud.dialogflow.cx.v3.StreamingDetectIntentRequest.session>`__,
+    `query_input
+    <google.cloud.dialogflow.cx.v3.StreamingDetectIntentRequest.query_input>`__
+    plus optionally
+        `query_params
+    <google.cloud.dialogflow.cx.v3.StreamingDetectIntentRequest.query_params>`__.
+    If the client wants to receive an audio response, it should also
+    contain     `output_audio_config
+    <google.cloud.dialogflow.cx.v3.StreamingDetectIntentRequest.output_audio_config>`__.
 
-    2. If
-       [query_input][google.cloud.dialogflow.cx.v3.StreamingDetectIntentRequest.query_input]
-       was set to
-       [query_input.audio.config][google.cloud.dialogflow.cx.v3.AudioInput.config],
-       all subsequent messages must contain
-       [query_input.audio.audio][google.cloud.dialogflow.cx.v3.AudioInput.audio]
-       to continue with Speech recognition. If you decide to rather
-       detect an intent from text input after you already started Speech
-       recognition, please send a message with
-       [query_input.text][google.cloud.dialogflow.cx.v3.QueryInput.text].
+    2.  If
+    `query_input
+    <google.cloud.dialogflow.cx.v3.StreamingDetectIntentRequest.query_input>`__
+    was set to
+        `query_input.audio.config
+    <google.cloud.dialogflow.cx.v3.AudioInput.config>`__,     all
+    subsequent messages must contain
+        `query_input.audio.audio
+    <google.cloud.dialogflow.cx.v3.AudioInput.audio>`__     to
+    continue with Speech recognition. If you decide to rather detect
+    an     intent from text input after you already started Speech
+    recognition,     please send a message with
+        `query_input.text
+    <google.cloud.dialogflow.cx.v3.QueryInput.text>`__.
 
-       However, note that:
+        However, note that:
 
-       - Dialogflow will bill you for the audio duration so far.
-       - Dialogflow discards all Speech recognition results in favor of
-         the input text.
-       - Dialogflow will use the language code from the first message.
+    * Dialogflow will bill you for the audio duration so far.     *
+    Dialogflow discards all Speech recognition results in favor of
+    the       input text.
 
-    After you sent all input, you must half-close or abort the request
-    stream.
+    * Dialogflow will use the language code from the first message.
+
+    After you sent all input, you must half-close or abort the
+    request stream.
 
     Attributes:
         session (str):
-            The name of the session this query is sent to. Format:
+            The name of the session this query is sent to.
+            Format:
+
             ``projects/<ProjectID>/locations/<LocationID>/agents/<AgentID>/sessions/<SessionID>``
             or
             ``projects/<ProjectID>/locations/<LocationID>/agents/<AgentID>/environments/<EnvironmentID>/sessions/<SessionID>``.
-            If ``Environment ID`` is not specified, we assume default
-            'draft' environment. It's up to the API caller to choose an
-            appropriate ``Session ID``. It can be a random number or
-            some type of session identifiers (preferably hashed). The
-            length of the ``Session ID`` must not exceed 36 characters.
-            Note: session must be set in the first request.
+            If ``Environment ID`` is not specified, we
+            assume default 'draft' environment.
+            It's up to the API caller to choose an
+            appropriate ``Session ID``. It can be a random
+            number or some type of session identifiers
+            (preferably hashed). The length of the ``Session
+            ID`` must not exceed 36 characters. Note:
+            session must be set in the first request.
 
             For more information, see the `sessions
-            guide <https://cloud.google.com/dialogflow/cx/docs/concept/session>`__.
+            guide
+            <https://cloud.google.com/dialogflow/cx/docs/concept/session>`__.
 
-            Note: Always use agent versions for production traffic. See
-            `Versions and
-            environments <https://cloud.google.com/dialogflow/cx/docs/concept/version>`__.
+            Note: Always use agent versions for production
+            traffic. See `Versions and
+            environments
+            <https://cloud.google.com/dialogflow/cx/docs/concept/version>`__.
         query_params (google.cloud.dialogflowcx_v3.types.QueryParameters):
             The parameters of this query.
         query_input (google.cloud.dialogflowcx_v3.types.QueryInput):
@@ -380,12 +406,14 @@ class StreamingDetectIntentRequest(proto.Message):
             Instructs the speech synthesizer how to
             generate the output audio.
         enable_partial_response (bool):
-            Enable partial detect intent response. If this flag is not
-            enabled, response stream still contains only one final
-            ``DetectIntentResponse`` even if some ``Fulfillment``\ s in
-            the agent have been configured to return partial responses.
+            Enable partial detect intent response. If this
+            flag is not enabled, response stream still
+            contains only one final ``DetectIntentResponse``
+            even if some ``Fulfillment``s in the agent have
+            been configured to return partial responses.
         enable_debugging_info (bool):
-            If true, ``StreamingDetectIntentResponse.debugging_info``
+            If true,
+            ``StreamingDetectIntentResponse.debugging_info``
             will get populated.
     """
 
@@ -419,10 +447,11 @@ class StreamingDetectIntentRequest(proto.Message):
 
 
 class CloudConversationDebuggingInfo(proto.Message):
-    r"""Cloud conversation info for easier debugging. It will get populated
-    in ``StreamingDetectIntentResponse`` or
+    r"""Cloud conversation info for easier debugging.
+    It will get populated in ``StreamingDetectIntentResponse`` or
     ``StreamingAnalyzeContentResponse`` when the flag
-    ``enable_debugging_info`` is set to true in corresponding requests.
+    ``enable_debugging_info`` is set to true in corresponding
+    requests.
 
     Attributes:
         audio_data_chunks (int):
@@ -440,8 +469,9 @@ class CloudConversationDebuggingInfo(proto.Message):
             Time offsets of the speech partial results
             relative to the beginning of the stream.
         speech_final_results_end_times (MutableSequence[google.protobuf.duration_pb2.Duration]):
-            Time offsets of the speech final results (is_final=true)
-            relative to the beginning of the stream.
+            Time offsets of the speech final results
+            (is_final=true) relative to the beginning of the
+            stream.
         partial_responses (int):
             Total number of partial responses.
         speaker_id_passive_latency_ms_offset (int):
@@ -574,27 +604,32 @@ class CloudConversationDebuggingInfo(proto.Message):
 
 class StreamingDetectIntentResponse(proto.Message):
     r"""The top-level message returned from the
-    [StreamingDetectIntent][google.cloud.dialogflow.cx.v3.Sessions.StreamingDetectIntent]
+    `StreamingDetectIntent
+    <google.cloud.dialogflow.cx.v3.Sessions.StreamingDetectIntent>`__
     method.
 
     Multiple response messages can be returned in order:
 
-    - If the ``StreamingDetectIntentRequest.query_input.audio`` field
-      was set, the first M messages contain ``recognition_result``. Each
-      ``recognition_result`` represents a more complete transcript of
-      what the user said. The last ``recognition_result`` has
-      ``is_final`` set to ``true``.
+    *   If the ``StreamingDetectIntentRequest.query_input.audio``
+    field was     set, the first M messages contain
+    ``recognition_result``.     Each ``recognition_result``
+    represents a more complete transcript of what     the user said.
+    The last ``recognition_result`` has ``is_final`` set to
+    ``true``.
 
-    - If the ``StreamingDetectIntentRequest.enable_partial_response``
-      field was true, the ``detect_intent_response`` field is populated
-      for each of the following N responses, where 0 <= N <= 5. These
-      responses set the
-      [DetectIntentResponse.response_type][google.cloud.dialogflow.cx.v3.DetectIntentResponse.response_type]
-      field to ``PARTIAL``.
+    *   If the
+    ``StreamingDetectIntentRequest.enable_partial_response`` field
+    was     true, the ``detect_intent_response`` field is populated
+    for each     of the following N responses, where 0 <= N <= 5.
+    These responses set the
+        `DetectIntentResponse.response_type
+    <google.cloud.dialogflow.cx.v3.DetectIntentResponse.response_type>`__
+    field to ``PARTIAL``.
 
     For the last response message, the ``detect_intent_response`` is
     fully populated, and
-    [DetectIntentResponse.response_type][google.cloud.dialogflow.cx.v3.DetectIntentResponse.response_type]
+    `DetectIntentResponse.response_type
+    <google.cloud.dialogflow.cx.v3.DetectIntentResponse.response_type>`__
     is set to ``FINAL``.
 
     This message has `oneof`_ fields (mutually exclusive fields).
@@ -615,8 +650,8 @@ class StreamingDetectIntentResponse(proto.Message):
             This field is a member of `oneof`_ ``response``.
         debugging_info (google.cloud.dialogflowcx_v3.types.CloudConversationDebuggingInfo):
             Debugging info that would get populated when
-            ``StreamingDetectIntentRequest.enable_debugging_info`` is
-            set to true.
+            ``StreamingDetectIntentRequest.enable_debugging_info``
+            is set to true.
     """
 
     recognition_result: "StreamingRecognitionResult" = proto.Field(
@@ -639,29 +674,15 @@ class StreamingDetectIntentResponse(proto.Message):
 
 
 class StreamingRecognitionResult(proto.Message):
-    r"""Contains a speech recognition result corresponding to a portion of
-    the audio that is currently being processed or an indication that
-    this is the end of the single requested utterance.
+    r"""Contains a speech recognition result corresponding to a portion of the audio that is currently being processed or an indication that this is the end of the single requested utterance.
 
-    While end-user audio is being processed, Dialogflow sends a series
-    of results. Each result may contain a ``transcript`` value. A
-    transcript represents a portion of the utterance. While the
-    recognizer is processing audio, transcript values may be interim
-    values or finalized values. Once a transcript is finalized, the
-    ``is_final`` value is set to true and processing continues for the
-    next transcript.
+    While end-user audio is being processed, Dialogflow sends a series of results. Each result may contain a ``transcript`` value. A transcript represents a portion of the utterance. While the recognizer is processing audio, transcript values may be interim values or finalized values. Once a transcript is finalized, the ``is_final`` value is set to true and processing continues for the next transcript.
 
-    If
-    ``StreamingDetectIntentRequest.query_input.audio.config.single_utterance``
-    was true, and the recognizer has completed processing audio, the
-    ``message_type`` value is set to \`END_OF_SINGLE_UTTERANCE and the
-    following (last) result contains the last finalized transcript.
+    If ``StreamingDetectIntentRequest.query_input.audio.config.single_utterance`` was true, and the recognizer has completed processing audio, the ``message_type`` value is set to \`END_OF_SINGLE_UTTERANCE and the following (last) result contains the last finalized transcript.
 
-    The complete end-user utterance is determined by concatenating the
-    finalized transcript values received for the series of results.
+    The complete end-user utterance is determined by concatenating the finalized transcript values received for the series of results.
 
-    In the following example, single utterance is enabled. In the case
-    where single utterance is not enabled, result 7 would not occur.
+    In the following example, single utterance is enabled. In the case where single utterance is not enabled, result 7 would not occur.
 
     ::
 
@@ -676,53 +697,59 @@ class StreamingRecognitionResult(proto.Message):
        7   | unset                   | END_OF_SINGLE_UTTERANCE | unset
        8   | " that is the question" | TRANSCRIPT              | true
 
-    Concatenating the finalized transcripts with ``is_final`` set to
-    true, the complete utterance becomes "to be or not to be that is the
-    question".
+    Concatenating the finalized transcripts with ``is_final`` set to true, the complete utterance becomes "to be or not to be that is the question".
 
     Attributes:
         message_type (google.cloud.dialogflowcx_v3.types.StreamingRecognitionResult.MessageType):
             Type of the result message.
         transcript (str):
-            Transcript text representing the words that the user spoke.
-            Populated if and only if ``message_type`` = ``TRANSCRIPT``.
+            Transcript text representing the words that the
+            user spoke. Populated if and only if
+            ``message_type`` = ``TRANSCRIPT``.
         is_final (bool):
-            If ``false``, the ``StreamingRecognitionResult`` represents
-            an interim result that may change. If ``true``, the
-            recognizer will not return any further hypotheses about this
-            piece of the audio. May only be populated for
+            If ``false``, the ``StreamingRecognitionResult``
+            represents an interim result that may change. If
+            ``true``, the recognizer will not return any
+            further hypotheses about this piece of the
+            audio. May only be populated for
             ``message_type`` = ``TRANSCRIPT``.
         confidence (float):
-            The Speech confidence between 0.0 and 1.0 for the current
-            portion of audio. A higher number indicates an estimated
-            greater likelihood that the recognized words are correct.
-            The default of 0.0 is a sentinel value indicating that
+            The Speech confidence between 0.0 and 1.0 for
+            the current portion of audio. A higher number
+            indicates an estimated greater likelihood that
+            the recognized words are correct. The default of
+            0.0 is a sentinel value indicating that
             confidence was not set.
 
-            This field is typically only provided if ``is_final`` is
-            true and you should not rely on it being accurate or even
-            set.
+            This field is typically only provided if
+            ``is_final`` is true and you should not rely on
+            it being accurate or even set.
         stability (float):
-            An estimate of the likelihood that the speech recognizer
-            will not change its guess about this interim recognition
-            result:
+            An estimate of the likelihood that the speech
+            recognizer will not change its guess about this
+            interim recognition result:
 
-            - If the value is unspecified or 0.0, Dialogflow didn't
-              compute the stability. In particular, Dialogflow will only
-              provide stability for ``TRANSCRIPT`` results with
-              ``is_final = false``.
-            - Otherwise, the value is in (0.0, 1.0] where 0.0 means
-              completely unstable and 1.0 means completely stable.
+            * If the value is unspecified or 0.0, Dialogflow
+            didn't compute the   stability. In particular,
+            Dialogflow will only provide stability for
+            ``TRANSCRIPT`` results with ``is_final =
+            false``.
+
+            * Otherwise, the value is in (0.0, 1.0] where
+            0.0 means completely   unstable and 1.0 means
+            completely stable.
         speech_word_info (MutableSequence[google.cloud.dialogflowcx_v3.types.SpeechWordInfo]):
-            Word-specific information for the words recognized by Speech
-            in
-            [transcript][google.cloud.dialogflow.cx.v3.StreamingRecognitionResult.transcript].
-            Populated if and only if ``message_type`` = ``TRANSCRIPT``
-            and [InputAudioConfig.enable_word_info] is set.
+            Word-specific information for the words
+            recognized by Speech in `transcript
+            <google.cloud.dialogflow.cx.v3.StreamingRecognitionResult.transcript>`__.
+            Populated if and only if ``message_type`` =
+            ``TRANSCRIPT`` and
+            [InputAudioConfig.enable_word_info] is set.
         speech_end_offset (google.protobuf.duration_pb2.Duration):
-            Time offset of the end of this Speech recognition result
-            relative to the beginning of the audio. Only populated for
-            ``message_type`` = ``TRANSCRIPT``.
+            Time offset of the end of this Speech
+            recognition result relative to the beginning of
+            the audio. Only populated for ``message_type`` =
+            ``TRANSCRIPT``.
         language_code (str):
             Detected language code for the transcript.
     """
@@ -737,15 +764,18 @@ class StreamingRecognitionResult(proto.Message):
                 Message contains a (possibly partial)
                 transcript.
             END_OF_SINGLE_UTTERANCE (2):
-                This event indicates that the server has detected the end of
-                the user's speech utterance and expects no additional
-                speech. Therefore, the server will not process additional
-                audio (although it may subsequently return additional
-                results). The client should stop sending additional audio
-                data, half-close the gRPC connection, and wait for any
-                additional results until the server closes the gRPC
-                connection. This message is only sent if
-                [``single_utterance``][google.cloud.dialogflow.cx.v3.InputAudioConfig.single_utterance]
+                This event indicates that the server has
+                detected the end of the user's speech utterance
+                and expects no additional speech. Therefore, the
+                server will not process additional audio
+                (although it may subsequently return additional
+                results). The client should stop sending
+                additional audio data, half-close the gRPC
+                connection, and wait for any additional results
+                until the server closes the gRPC connection.
+                This message is only sent if
+                ```single_utterance``
+                <google.cloud.dialogflow.cx.v3.InputAudioConfig.single_utterance>`__
                 was set to ``true``, and is not used otherwise.
         """
         MESSAGE_TYPE_UNSPECIFIED = 0
@@ -796,10 +826,11 @@ class QueryParameters(proto.Message):
 
     Attributes:
         time_zone (str):
-            The time zone of this conversational query from the `time
-            zone database <https://www.iana.org/time-zones>`__, e.g.,
-            America/New_York, Europe/Paris. If not provided, the time
-            zone specified in the agent is used.
+            The time zone of this conversational query from
+            the `time zone database
+            <https://www.iana.org/time-zones>`__, e.g.,
+            America/New_York, Europe/Paris. If not provided,
+            the time zone specified in the agent is used.
         geo_location (google.type.latlng_pb2.LatLng):
             The geo location of this conversational
             query.
@@ -809,59 +840,72 @@ class QueryParameters(proto.Message):
             synonyms apply to all languages and persist for
             the session of this query.
         payload (google.protobuf.struct_pb2.Struct):
-            This field can be used to pass custom data into the webhook
-            associated with the agent. Arbitrary JSON objects are
-            supported. Some integrations that query a Dialogflow agent
-            may provide additional information in the payload. In
-            particular, for the Dialogflow Phone Gateway integration,
-            this field has the form:
+            This field can be used to pass custom data into
+            the webhook associated with the agent. Arbitrary
+            JSON objects are supported. Some integrations
+            that query a Dialogflow agent may provide
+            additional information in the payload.
+            In particular, for the Dialogflow Phone Gateway
+            integration, this field has the form:
 
-            ::
-
-               {
-                "telephony": {
-                  "caller_id": "+18558363987"
-                }
-               }
+            ```
+            {
+             "telephony": {
+               "caller_id": "+18558363987"
+             }
+            }
+            ```
         parameters (google.protobuf.struct_pb2.Struct):
-            Additional parameters to be put into [session
-            parameters][SessionInfo.parameters]. To remove a parameter
-            from the session, clients should explicitly set the
-            parameter value to null.
+            Additional parameters to be put into `session
+            parameters <SessionInfo.parameters>`__. To
+            remove a parameter from the session, clients
+            should explicitly set the parameter value to
+            null.
 
-            You can reference the session parameters in the agent with
-            the following format: $session.params.parameter-id.
+            You can reference the session parameters in the
+            agent with the following format:
+            $session.params.parameter-id.
 
-            Depending on your protocol or client library language, this
-            is a map, associative array, symbol table, dictionary, or
-            JSON object composed of a collection of (MapKey, MapValue)
+            Depending on your protocol or client library
+            language, this is a map, associative array,
+            symbol table, dictionary, or JSON object
+            composed of a collection of (MapKey, MapValue)
             pairs:
 
-            - MapKey type: string
-            - MapKey value: parameter name
-            - MapValue type: If parameter's entity type is a composite
-              entity then use map, otherwise, depending on the parameter
-              value type, it could be one of string, number, boolean,
-              null, list or map.
-            - MapValue value: If parameter's entity type is a composite
-              entity then use map from composite entity property names
-              to property values, otherwise, use parameter value.
+            * MapKey type: string
+            * MapKey value: parameter name
+
+            * MapValue type: If parameter's entity type is a
+            composite entity then use map, otherwise,
+            depending on the parameter value type, it could
+            be one of string, number, boolean, null, list or
+            map.
+
+            * MapValue value: If parameter's entity type is
+            a composite entity then use map from composite
+            entity property names to property values,
+            otherwise, use parameter value.
         current_page (str):
-            The unique identifier of the
-            [page][google.cloud.dialogflow.cx.v3.Page] to override the
-            [current page][QueryResult.current_page] in the session.
+            The unique identifier of the `page
+            <google.cloud.dialogflow.cx.v3.Page>`__ to
+            override the `current page
+            <QueryResult.current_page>`__ in the session.
             Format:
+
             ``projects/<ProjectID>/locations/<LocationID>/agents/<AgentID>/flows/<FlowID>/pages/<PageID>``.
 
-            If ``current_page`` is specified, the previous state of the
-            session will be ignored by Dialogflow, including the
-            [previous page][QueryResult.current_page] and the [previous
-            session parameters][QueryResult.parameters]. In most cases,
-            [current_page][google.cloud.dialogflow.cx.v3.QueryParameters.current_page]
-            and
-            [parameters][google.cloud.dialogflow.cx.v3.QueryParameters.parameters]
-            should be configured together to direct a session to a
-            specific state.
+            If ``current_page`` is specified, the previous
+            state of the session will be ignored by
+            Dialogflow, including the `previous page
+            <QueryResult.current_page>`__ and the `previous
+            session parameters <QueryResult.parameters>`__.
+            In most cases,
+            `current_page
+            <google.cloud.dialogflow.cx.v3.QueryParameters.current_page>`__
+            and `parameters
+            <google.cloud.dialogflow.cx.v3.QueryParameters.parameters>`__
+            should be configured together to direct a
+            session to a specific state.
         disable_webhook (bool):
             Whether to disable webhook calls for this
             request.
@@ -884,26 +928,34 @@ class QueryParameters(proto.Message):
             "If-Modified-Since", "If-None-Match",
             "X-Forwarded-For", etc.
         flow_versions (MutableSequence[str]):
-            A list of flow versions to override for the request. Format:
+            A list of flow versions to override for the
+            request. Format:
+
             ``projects/<ProjectID>/locations/<LocationID>/agents/<AgentID>/flows/<FlowID>/versions/<VersionID>``.
 
-            If version 1 of flow X is included in this list, the traffic
-            of flow X will go through version 1 regardless of the
-            version configuration in the environment. Each flow can have
-            at most one version specified in this list.
+            If version 1 of flow X is included in this list,
+            the traffic of flow X will go through version 1
+            regardless of the version configuration in the
+            environment. Each flow can have at most one
+            version specified in this list.
         channel (str):
             The channel which this query is for.
 
             If specified, only the
-            [ResponseMessage][google.cloud.dialogflow.cx.v3.ResponseMessage]
-            associated with the channel will be returned. If no
-            [ResponseMessage][google.cloud.dialogflow.cx.v3.ResponseMessage]
-            is associated with the channel, it falls back to the
-            [ResponseMessage][google.cloud.dialogflow.cx.v3.ResponseMessage]
+            `ResponseMessage
+            <google.cloud.dialogflow.cx.v3.ResponseMessage>`__
+            associated with the channel will be returned. If
+            no
+            `ResponseMessage
+            <google.cloud.dialogflow.cx.v3.ResponseMessage>`__
+            is associated with the channel, it falls back to
+            the `ResponseMessage
+            <google.cloud.dialogflow.cx.v3.ResponseMessage>`__
             with unspecified channel.
 
             If unspecified, the
-            [ResponseMessage][google.cloud.dialogflow.cx.v3.ResponseMessage]
+            `ResponseMessage
+            <google.cloud.dialogflow.cx.v3.ResponseMessage>`__
             with unspecified channel will be returned.
         session_ttl (google.protobuf.duration_pb2.Duration):
             Optional. Configure lifetime of the
@@ -913,32 +965,34 @@ class QueryParameters(proto.Message):
             for the session. This value should be no longer
             than 1 day.
         end_user_metadata (google.protobuf.struct_pb2.Struct):
-            Optional. Information about the end-user to improve the
-            relevance and accuracy of generative answers.
+            Optional. Information about the end-user to
+            improve the relevance and accuracy of generative
+            answers.
 
-            This will be interpreted and used by a language model, so,
-            for good results, the data should be self-descriptive, and
-            in a simple structure.
+            This will be interpreted and used by a language
+            model, so, for good results, the data should be
+            self-descriptive, and in a simple structure.
 
             Example:
 
-            .. code:: json
-
-               {
-                 "subscription plan": "Business Premium Plus",
-                 "devices owned": [
-                   {"model": "Google Pixel 7"},
-                   {"model": "Google Pixel Tablet"}
-                 ]
-               }
+            ```json
+            {
+              "subscription plan": "Business Premium Plus",
+            "devices owned": [
+                {"model": "Google Pixel 7"},
+                {"model": "Google Pixel Tablet"}
+              ]
+            }
+            ```
         search_config (google.cloud.dialogflowcx_v3.types.SearchConfig):
             Optional. Search configuration for UCS search
             queries.
         populate_data_store_connection_signals (bool):
-            Optional. If set to true and data stores are involved in
-            serving the request then
+            Optional. If set to true and data stores are
+            involved in serving the request then
             DetectIntentResponse.query_result.data_store_connection_signals
-            will be filled with data that can help evaluations.
+            will be filled with data that can help
+            evaluations.
     """
 
     time_zone: str = proto.Field(
@@ -1069,34 +1123,39 @@ class BoostSpec(proto.Message):
 
         Attributes:
             condition (str):
-                Optional. An expression which specifies a boost condition.
-                The syntax and supported fields are the same as a filter
-                expression. Examples:
+                Optional. An expression which specifies a boost
+                condition. The syntax and supported fields are
+                the same as a filter expression. Examples:
 
-                - To boost documents with document ID "doc_1" or "doc_2",
-                  and color "Red" or "Blue":
+                * To boost documents with document ID "doc_1" or
+                "doc_2", and color
+                  "Red" or "Blue":
 
-                  - (id: ANY("doc_1", "doc_2")) AND (color:
-                    ANY("Red","Blue"))
+                * (id: ANY("doc_1", "doc_2")) AND (color:
+                ANY("Red","Blue"))
             boost (float):
-                Optional. Strength of the condition boost, which should be
-                in [-1, 1]. Negative boost means demotion. Default is 0.0.
+                Optional. Strength of the condition boost, which
+                should be in [-1, 1]. Negative boost means
+                demotion. Default is 0.0.
 
-                Setting to 1.0 gives the document a big promotion. However,
-                it does not necessarily mean that the boosted document will
-                be the top result at all times, nor that other documents
-                will be excluded. Results could still be shown even when
-                none of them matches the condition. And results that are
-                significantly more relevant to the search query can still
-                trump your heavily favored but irrelevant documents.
+                Setting to 1.0 gives the document a big
+                promotion. However, it does not necessarily mean
+                that the boosted document will be the top result
+                at all times, nor that other documents will be
+                excluded. Results could still be shown even when
+                none of them matches the condition. And results
+                that are significantly more relevant to the
+                search query can still trump your heavily
+                favored but irrelevant documents.
 
-                Setting to -1.0 gives the document a big demotion. However,
-                results that are deeply relevant might still be shown. The
-                document will have an upstream battle to get a fairly high
+                Setting to -1.0 gives the document a big
+                demotion. However, results that are deeply
+                relevant might still be shown. The document will
+                have an upstream battle to get a fairly high
                 ranking, but it is not blocked out completely.
 
-                Setting to 0.0 means no boost applied. The boosting
-                condition is ignored.
+                Setting to 0.0 means no boost applied. The
+                boosting condition is ignored.
             boost_control_spec (google.cloud.dialogflowcx_v3.types.BoostSpec.ConditionBoostSpec.BoostControlSpec):
                 Optional. Complex specification for custom
                 ranking based on customer defined attribute
@@ -1113,20 +1172,23 @@ class BoostSpec(proto.Message):
                     Optional. The name of the field whose value
                     will be used to determine the boost amount.
                 attribute_type (google.cloud.dialogflowcx_v3.types.BoostSpec.ConditionBoostSpec.BoostControlSpec.AttributeType):
-                    Optional. The attribute type to be used to determine the
-                    boost amount. The attribute value can be derived from the
-                    field value of the specified field_name. In the case of
-                    numerical it is straightforward i.e. attribute_value =
-                    numerical_field_value. In the case of freshness however,
-                    attribute_value = (time.now() - datetime_field_value).
+                    Optional. The attribute type to be used to
+                    determine the boost amount. The attribute value
+                    can be derived from the field value of the
+                    specified field_name. In the case of numerical
+                    it is straightforward i.e. attribute_value =
+                    numerical_field_value. In the case of freshness
+                    however, attribute_value = (time.now() -
+                    datetime_field_value).
                 interpolation_type (google.cloud.dialogflowcx_v3.types.BoostSpec.ConditionBoostSpec.BoostControlSpec.InterpolationType):
                     Optional. The interpolation type to be
                     applied to connect the control points listed
                     below.
                 control_points (MutableSequence[google.cloud.dialogflowcx_v3.types.BoostSpec.ConditionBoostSpec.BoostControlSpec.ControlPoint]):
-                    Optional. The control points used to define the curve. The
-                    monotonic function (defined through the interpolation_type
-                    above) passes through the control points listed here.
+                    Optional. The control points used to define the
+                    curve. The monotonic function (defined through
+                    the interpolation_type above) passes through the
+                    control points listed here.
             """
 
             class AttributeType(proto.Enum):
@@ -1137,19 +1199,21 @@ class BoostSpec(proto.Message):
                     ATTRIBUTE_TYPE_UNSPECIFIED (0):
                         Unspecified AttributeType.
                     NUMERICAL (1):
-                        The value of the numerical field will be used to dynamically
-                        update the boost amount. In this case, the attribute_value
-                        (the x value) of the control point will be the actual value
-                        of the numerical field for which the boost_amount is
+                        The value of the numerical field will be used to
+                        dynamically update the boost amount. In this
+                        case, the attribute_value (the x value) of the
+                        control point will be the actual value of the
+                        numerical field for which the boost_amount is
                         specified.
                     FRESHNESS (2):
-                        For the freshness use case the attribute value will be the
-                        duration between the current time and the date in the
-                        datetime field specified. The value must be formatted as an
-                        XSD ``dayTimeDuration`` value (a restricted subset of an ISO
-                        8601 duration value). The pattern for this is:
-                        ``[nD][T[nH][nM][nS]]``. E.g. ``5D``, ``3DT12H30M``,
-                        ``T24H``.
+                        For the freshness use case the attribute value
+                        will be the duration between the current time
+                        and the date in the datetime field specified.
+                        The value must be formatted as an XSD
+                        ``dayTimeDuration`` value (a restricted subset
+                        of an ISO 8601 duration value). The pattern for
+                        this is: ```nD <T[nH>`__`nM <nS>`__]``. E.g.
+                        ``5D``, ``3DT12H30M``, ``T24H``.
                 """
                 ATTRIBUTE_TYPE_UNSPECIFIED = 0
                 NUMERICAL = 1
@@ -1180,14 +1244,16 @@ class BoostSpec(proto.Message):
                         Optional. Can be one of:
 
                         1. The numerical field value.
-                        2. The duration spec for freshness: The value must be
-                           formatted as an XSD ``dayTimeDuration`` value (a
-                           restricted subset of an ISO 8601 duration value). The
-                           pattern for this is: ``[nD][T[nH][nM][nS]]``.
+                        2. The duration spec for freshness:
+
+                        The value must be formatted as an XSD
+                        ``dayTimeDuration`` value (a restricted subset
+                        of an ISO 8601 duration value). The pattern for
+                        this is: ```nD <T[nH>`__`nM <nS>`__]``.
                     boost_amount (float):
-                        Optional. The value between -1 to 1 by which to boost the
-                        score if the attribute_value evaluates to the value
-                        specified above.
+                        Optional. The value between -1 to 1 by which to
+                        boost the score if the attribute_value evaluates
+                        to the value specified above.
                 """
 
                 attribute_value: str = proto.Field(
@@ -1249,9 +1315,10 @@ class BoostSpecs(proto.Message):
 
     Attributes:
         data_stores (MutableSequence[str]):
-            Optional. Data Stores where the boosting configuration is
-            applied. The full names of the referenced data stores.
-            Formats:
+            Optional. Data Stores where the boosting
+            configuration is applied. The full names of the
+            referenced data stores. Formats:
+
             ``projects/{project}/locations/{location}/collections/{collection}/dataStores/{data_store}``
             ``projects/{project}/locations/{location}/dataStores/{data_store}``
         spec (MutableSequence[google.cloud.dialogflowcx_v3.types.BoostSpec]):
@@ -1274,14 +1341,15 @@ class FilterSpecs(proto.Message):
 
     Attributes:
         data_stores (MutableSequence[str]):
-            Optional. Data Stores where the boosting configuration is
-            applied. The full names of the referenced data stores.
-            Formats:
+            Optional. Data Stores where the boosting
+            configuration is applied. The full names of the
+            referenced data stores. Formats:
+
             ``projects/{project}/locations/{location}/collections/{collection}/dataStores/{data_store}``
             ``projects/{project}/locations/{location}/dataStores/{data_store}``
         filter (str):
-            Optional. The filter expression to be
-            applied. Expression syntax is documented at
+            Optional. The filter expression to be applied.
+            Expression syntax is documented at
             https://cloud.google.com/generative-ai-app-builder/docs/filter-search-metadata#filter-expression-syntax
     """
 
@@ -1340,11 +1408,13 @@ class QueryInput(proto.Message):
 
             This field is a member of `oneof`_ ``input``.
         language_code (str):
-            Required. The language of the input. See `Language
-            Support <https://cloud.google.com/dialogflow/cx/docs/reference/language>`__
-            for a list of the currently supported language codes. Note
-            that queries in the same session do not necessarily need to
-            specify the same language.
+            Required. The language of the input. See
+            `Language Support
+            <https://cloud.google.com/dialogflow/cx/docs/reference/language>`__
+            for a list of the currently supported language
+            codes. Note that queries in the same session do
+            not necessarily need to specify the same
+            language.
     """
 
     text: "TextInput" = proto.Field(
@@ -1395,60 +1465,75 @@ class QueryResult(proto.Message):
 
     Attributes:
         text (str):
-            If [natural language
-            text][google.cloud.dialogflow.cx.v3.TextInput] was provided
-            as input, this field will contain a copy of the text.
+            If `natural language text
+            <google.cloud.dialogflow.cx.v3.TextInput>`__ was
+            provided as input, this field will contain a
+            copy of the text.
 
             This field is a member of `oneof`_ ``query``.
         trigger_intent (str):
-            If an [intent][google.cloud.dialogflow.cx.v3.IntentInput]
-            was provided as input, this field will contain a copy of the
-            intent identifier. Format:
+            If an `intent
+            <google.cloud.dialogflow.cx.v3.IntentInput>`__
+            was provided as input, this field will contain a
+            copy of the intent identifier. Format:
+
             ``projects/<ProjectID>/locations/<LocationID>/agents/<AgentID>/intents/<IntentID>``.
 
             This field is a member of `oneof`_ ``query``.
         transcript (str):
-            If [natural language speech
-            audio][google.cloud.dialogflow.cx.v3.AudioInput] was
-            provided as input, this field will contain the transcript
-            for the audio.
+            If `natural language speech
+            audio
+            <google.cloud.dialogflow.cx.v3.AudioInput>`__
+            was provided as input, this field will contain
+            the transcript for the audio.
 
             This field is a member of `oneof`_ ``query``.
         trigger_event (str):
-            If an [event][google.cloud.dialogflow.cx.v3.EventInput] was
-            provided as input, this field will contain the name of the
-            event.
+            If an `event
+            <google.cloud.dialogflow.cx.v3.EventInput>`__
+            was provided as input, this field will contain
+            the name of the event.
 
             This field is a member of `oneof`_ ``query``.
         dtmf (google.cloud.dialogflowcx_v3.types.DtmfInput):
-            If a [DTMF][google.cloud.dialogflow.cx.v3.DtmfInput] was
-            provided as input, this field will contain a copy of the
-            [DtmfInput][google.cloud.dialogflow.cx.v3.DtmfInput].
+            If a `DTMF
+            <google.cloud.dialogflow.cx.v3.DtmfInput>`__ was
+            provided as input, this field will contain a
+            copy of the `DtmfInput
+            <google.cloud.dialogflow.cx.v3.DtmfInput>`__.
 
             This field is a member of `oneof`_ ``query``.
         language_code (str):
-            The language that was triggered during intent detection. See
-            `Language
-            Support <https://cloud.google.com/dialogflow/cx/docs/reference/language>`__
-            for a list of the currently supported language codes.
+            The language that was triggered during intent
+            detection. See `Language
+            Support
+            <https://cloud.google.com/dialogflow/cx/docs/reference/language>`__
+            for a list of the currently supported language
+            codes.
         parameters (google.protobuf.struct_pb2.Struct):
-            The collected [session
-            parameters][google.cloud.dialogflow.cx.v3.SessionInfo.parameters].
+            The collected `session
+            parameters
+            <google.cloud.dialogflow.cx.v3.SessionInfo.parameters>`__.
 
-            Depending on your protocol or client library language, this
-            is a map, associative array, symbol table, dictionary, or
-            JSON object composed of a collection of (MapKey, MapValue)
+            Depending on your protocol or client library
+            language, this is a map, associative array,
+            symbol table, dictionary, or JSON object
+            composed of a collection of (MapKey, MapValue)
             pairs:
 
-            - MapKey type: string
-            - MapKey value: parameter name
-            - MapValue type: If parameter's entity type is a composite
-              entity then use map, otherwise, depending on the parameter
-              value type, it could be one of string, number, boolean,
-              null, list or map.
-            - MapValue value: If parameter's entity type is a composite
-              entity then use map from composite entity property names
-              to property values, otherwise, use parameter value.
+            * MapKey type: string
+            * MapKey value: parameter name
+
+            * MapValue type: If parameter's entity type is a
+            composite entity then use map, otherwise,
+            depending on the parameter value type, it could
+            be one of string, number, boolean, null, list or
+            map.
+
+            * MapValue value: If parameter's entity type is
+            a composite entity then use map from composite
+            entity property names to property values,
+            otherwise, use parameter value.
         response_messages (MutableSequence[google.cloud.dialogflowcx_v3.types.ResponseMessage]):
             The list of rich messages returned to the
             client. Responses vary from simple text messages
@@ -1471,61 +1556,77 @@ class QueryResult(proto.Message):
             of call sequence.
         webhook_payloads (MutableSequence[google.protobuf.struct_pb2.Struct]):
             The list of webhook payload in
-            [WebhookResponse.payload][google.cloud.dialogflow.cx.v3.WebhookResponse.payload],
-            in the order of call sequence. If some webhook call fails or
-            doesn't return any payload, an empty ``Struct`` would be
-            used instead.
+            `WebhookResponse.payload
+            <google.cloud.dialogflow.cx.v3.WebhookResponse.payload>`__,
+            in the order of call sequence. If some webhook
+            call fails or doesn't return any payload, an
+            empty ``Struct`` would be used instead.
         current_page (google.cloud.dialogflowcx_v3.types.Page):
-            The current [Page][google.cloud.dialogflow.cx.v3.Page].
-            Some, not all fields are filled in this message, including
-            but not limited to ``name`` and ``display_name``.
+            The current `Page
+            <google.cloud.dialogflow.cx.v3.Page>`__. Some,
+            not all fields are filled in this message,
+            including but not limited to ``name`` and
+            ``display_name``.
         current_flow (google.cloud.dialogflowcx_v3.types.Flow):
-            The current [Flow][google.cloud.dialogflow.cx.v3.Flow].
-            Some, not all fields are filled in this message, including
-            but not limited to ``name`` and ``display_name``.
+            The current `Flow
+            <google.cloud.dialogflow.cx.v3.Flow>`__. Some,
+            not all fields are filled in this message,
+            including but not limited to ``name`` and
+            ``display_name``.
         intent (google.cloud.dialogflowcx_v3.types.Intent):
-            The [Intent][google.cloud.dialogflow.cx.v3.Intent] that
-            matched the conversational query. Some, not all fields are
-            filled in this message, including but not limited to:
-            ``name`` and ``display_name``. This field is deprecated,
-            please use
-            [QueryResult.match][google.cloud.dialogflow.cx.v3.QueryResult.match]
+            The `Intent
+            <google.cloud.dialogflow.cx.v3.Intent>`__ that
+            matched the conversational query. Some, not all
+            fields are filled in this message, including but
+            not limited to: ``name`` and ``display_name``.
+            This field is deprecated, please use
+            `QueryResult.match
+            <google.cloud.dialogflow.cx.v3.QueryResult.match>`__
             instead.
         intent_detection_confidence (float):
-            The intent detection confidence. Values range from 0.0
-            (completely uncertain) to 1.0 (completely certain). This
-            value is for informational purpose only and is only used to
-            help match the best intent within the classification
-            threshold. This value may change for the same end-user
-            expression at any time due to a model retraining or change
-            in implementation. This field is deprecated, please use
-            [QueryResult.match][google.cloud.dialogflow.cx.v3.QueryResult.match]
+            The intent detection confidence. Values range
+            from 0.0 (completely uncertain) to 1.0
+            (completely certain). This value is for
+            informational purpose only and is only used to
+            help match the best intent within the
+            classification threshold. This value may change
+            for the same end-user expression at any time due
+            to a model retraining or change in
+            implementation. This field is deprecated, please
+            use
+            `QueryResult.match
+            <google.cloud.dialogflow.cx.v3.QueryResult.match>`__
             instead.
         match (google.cloud.dialogflowcx_v3.types.Match):
             Intent match result, could be an intent or an
             event.
         diagnostic_info (google.protobuf.struct_pb2.Struct):
-            The free-form diagnostic info. For example, this field could
-            contain webhook call latency. The fields of this data can
-            change without notice, so you should not write code that
-            depends on its structure.
+            The free-form diagnostic info. For example, this
+            field could contain webhook call latency. The
+            fields of this data can change without notice,
+            so you should not write code that depends on its
+            structure.
 
-            One of the fields is called "Alternative Matched Intents",
-            which may aid with debugging. The following describes these
-            intent results:
+            One of the fields is called "Alternative Matched
+            Intents", which may aid with debugging. The
+            following describes these intent results:
 
-            - The list is empty if no intent was matched to end-user
-              input.
-            - Only intents that are referenced in the currently active
-              flow are included.
+            - The list is empty if no intent was matched to
+              end-user input.
+            - Only intents that are referenced in the
+              currently active flow are   included.
+
             - The matched intent is included.
-            - Other intents that could have matched end-user input, but
-              did not match because they are referenced by intent routes
-              that are out of
-              `scope <https://cloud.google.com/dialogflow/cx/docs/concept/handler#scope>`__,
+            - Other intents that could have matched end-user
+              input, but did not match   because they are
+              referenced by intent routes that are out of
+              `scope
+              <https://cloud.google.com/dialogflow/cx/docs/concept/handler#scope>`__,
               are included.
-            - Other intents referenced by intent routes in scope that
-              matched end-user input, but had a lower confidence score.
+
+            - Other intents referenced by intent routes in
+              scope that matched end-user   input, but had a
+              lower confidence score.
         sentiment_analysis_result (google.cloud.dialogflowcx_v3.types.SentimentAnalysisResult):
             The sentiment analyss result, which depends on
             [``analyze_query_text_sentiment``]
@@ -1630,10 +1731,10 @@ class QueryResult(proto.Message):
         number=31,
         message=flow.Flow,
     )
-    intent: gcdc_intent.Intent = proto.Field(
+    intent: intent.Intent = proto.Field(
         proto.MESSAGE,
         number=8,
-        message=gcdc_intent.Intent,
+        message=intent.Intent,
     )
     intent_detection_confidence: float = proto.Field(
         proto.FLOAT,
@@ -1654,10 +1755,10 @@ class QueryResult(proto.Message):
         number=17,
         message="SentimentAnalysisResult",
     )
-    advanced_settings: gcdc_advanced_settings.AdvancedSettings = proto.Field(
+    advanced_settings: advanced_settings.AdvancedSettings = proto.Field(
         proto.MESSAGE,
         number=21,
-        message=gcdc_advanced_settings.AdvancedSettings,
+        message=advanced_settings.AdvancedSettings,
     )
     allow_answer_feedback: bool = proto.Field(
         proto.BOOL,
@@ -1693,7 +1794,9 @@ class IntentInput(proto.Message):
 
     Attributes:
         intent (str):
-            Required. The unique identifier of the intent. Format:
+            Required. The unique identifier of the intent.
+            Format:
+
             ``projects/<ProjectID>/locations/<LocationID>/agents/<AgentID>/intents/<IntentID>``.
     """
 
@@ -1711,16 +1814,19 @@ class AudioInput(proto.Message):
             Required. Instructs the speech recognizer how
             to process the speech audio.
         audio (bytes):
-            The natural language speech audio to be processed. A single
-            request can contain up to 2 minutes of speech audio data.
-            The [transcribed
-            text][google.cloud.dialogflow.cx.v3.QueryResult.transcript]
+            The natural language speech audio to be
+            processed. A single request can contain up to 2
+            minutes of speech audio data. The `transcribed
+            text
+            <google.cloud.dialogflow.cx.v3.QueryResult.transcript>`__
             cannot contain more than 256 bytes.
 
-            For non-streaming audio detect intent, both ``config`` and
-            ``audio`` must be provided. For streaming audio detect
-            intent, ``config`` must be provided in the first request and
-            ``audio`` must be provided in all following requests.
+            For non-streaming audio detect intent, both
+            ``config`` and ``audio`` must be provided.
+            For streaming audio detect intent, ``config``
+            must be provided in the first request and
+            ``audio`` must be provided in all following
+            requests.
     """
 
     config: audio_config.InputAudioConfig = proto.Field(
@@ -1773,43 +1879,53 @@ class Match(proto.Message):
 
     Attributes:
         intent (google.cloud.dialogflowcx_v3.types.Intent):
-            The [Intent][google.cloud.dialogflow.cx.v3.Intent] that
-            matched the query. Some, not all fields are filled in this
-            message, including but not limited to: ``name`` and
-            ``display_name``. Only filled for
-            [``INTENT``][google.cloud.dialogflow.cx.v3.Match.MatchType]
+            The `Intent
+            <google.cloud.dialogflow.cx.v3.Intent>`__ that
+            matched the query. Some, not all fields are
+            filled in this message, including but not
+            limited to: ``name`` and ``display_name``. Only
+            filled for ```INTENT``
+            <google.cloud.dialogflow.cx.v3.Match.MatchType>`__
             match type.
         event (str):
             The event that matched the query. Filled for
-            [``EVENT``][google.cloud.dialogflow.cx.v3.Match.MatchType],
-            [``NO_MATCH``][google.cloud.dialogflow.cx.v3.Match.MatchType]
-            and
-            [``NO_INPUT``][google.cloud.dialogflow.cx.v3.Match.MatchType]
+            ```EVENT``
+            <google.cloud.dialogflow.cx.v3.Match.MatchType>`__,
+            ```NO_MATCH``
+            <google.cloud.dialogflow.cx.v3.Match.MatchType>`__
+            and ```NO_INPUT``
+            <google.cloud.dialogflow.cx.v3.Match.MatchType>`__
             match types.
         parameters (google.protobuf.struct_pb2.Struct):
-            The collection of parameters extracted from the query.
-
-            Depending on your protocol or client library language, this
-            is a map, associative array, symbol table, dictionary, or
-            JSON object composed of a collection of (MapKey, MapValue)
+            The collection of parameters extracted from the
+            query.
+            Depending on your protocol or client library
+            language, this is a map, associative array,
+            symbol table, dictionary, or JSON object
+            composed of a collection of (MapKey, MapValue)
             pairs:
 
-            - MapKey type: string
-            - MapKey value: parameter name
-            - MapValue type: If parameter's entity type is a composite
-              entity then use map, otherwise, depending on the parameter
-              value type, it could be one of string, number, boolean,
-              null, list or map.
-            - MapValue value: If parameter's entity type is a composite
-              entity then use map from composite entity property names
-              to property values, otherwise, use parameter value.
+            * MapKey type: string
+            * MapKey value: parameter name
+
+            * MapValue type: If parameter's entity type is a
+            composite entity then use map, otherwise,
+            depending on the parameter value type, it could
+            be one of string, number, boolean, null, list or
+            map.
+
+            * MapValue value: If parameter's entity type is
+            a composite entity then use map from composite
+            entity property names to property values,
+            otherwise, use parameter value.
         resolved_input (str):
             Final text input which was matched during
             MatchIntent. This value can be different from
             original input sent in request because of
             spelling correction or other processing.
         match_type (google.cloud.dialogflowcx_v3.types.Match.MatchType):
-            Type of this [Match][google.cloud.dialogflow.cx.v3.Match].
+            Type of this `Match
+            <google.cloud.dialogflow.cx.v3.Match>`__.
         confidence (float):
             The confidence of this match. Values range
             from 0.0 (completely uncertain) to 1.0
@@ -1844,7 +1960,8 @@ class Match(proto.Message):
                 The query was matched to a Knowledge
                 Connector answer.
             PLAYBOOK (9):
-                The query was handled by a [``Playbook``][Playbook].
+                The query was handled by a ```Playbook``
+                <Playbook>`__.
         """
         MATCH_TYPE_UNSPECIFIED = 0
         INTENT = 1
@@ -1856,10 +1973,10 @@ class Match(proto.Message):
         KNOWLEDGE_CONNECTOR = 8
         PLAYBOOK = 9
 
-    intent: gcdc_intent.Intent = proto.Field(
+    intent: intent.Intent = proto.Field(
         proto.MESSAGE,
         number=1,
-        message=gcdc_intent.Intent,
+        message=intent.Intent,
     )
     event: str = proto.Field(
         proto.STRING,
@@ -1890,25 +2007,30 @@ class MatchIntentRequest(proto.Message):
 
     Attributes:
         session (str):
-            Required. The name of the session this query is sent to.
-            Format:
+            Required. The name of the session this query is
+            sent to. Format:
+
             ``projects/<ProjectID>/locations/<LocationID>/agents/<AgentID>/sessions/<SessionID>``
             or
             ``projects/<ProjectID>/locations/<LocationID>/agents/<AgentID>/environments/<EnvironmentID>/sessions/<SessionID>``.
-            If ``Environment ID`` is not specified, we assume default
-            'draft' environment. It's up to the API caller to choose an
-            appropriate ``Session ID``. It can be a random number or
-            some type of session identifiers (preferably hashed). The
-            length of the ``Session ID`` must not exceed 36 characters.
+            If ``Environment ID`` is not specified, we
+            assume default 'draft' environment.
+            It's up to the API caller to choose an
+            appropriate ``Session ID``. It can be a random
+            number or some type of session identifiers
+            (preferably hashed). The length of the ``Session
+            ID`` must not exceed 36 characters.
 
             For more information, see the `sessions
-            guide <https://cloud.google.com/dialogflow/cx/docs/concept/session>`__.
+            guide
+            <https://cloud.google.com/dialogflow/cx/docs/concept/session>`__.
         query_params (google.cloud.dialogflowcx_v3.types.QueryParameters):
             The parameters of this query.
         query_input (google.cloud.dialogflowcx_v3.types.QueryInput):
             Required. The input specification.
         persist_parameter_changes (bool):
-            Persist session parameter changes from ``query_params``.
+            Persist session parameter changes from
+            ``query_params``.
     """
 
     session: str = proto.Field(
@@ -1943,29 +2065,34 @@ class MatchIntentResponse(proto.Message):
 
     Attributes:
         text (str):
-            If [natural language
-            text][google.cloud.dialogflow.cx.v3.TextInput] was provided
-            as input, this field will contain a copy of the text.
+            If `natural language text
+            <google.cloud.dialogflow.cx.v3.TextInput>`__ was
+            provided as input, this field will contain a
+            copy of the text.
 
             This field is a member of `oneof`_ ``query``.
         trigger_intent (str):
-            If an [intent][google.cloud.dialogflow.cx.v3.IntentInput]
-            was provided as input, this field will contain a copy of the
-            intent identifier. Format:
+            If an `intent
+            <google.cloud.dialogflow.cx.v3.IntentInput>`__
+            was provided as input, this field will contain a
+            copy of the intent identifier. Format:
+
             ``projects/<ProjectID>/locations/<LocationID>/agents/<AgentID>/intents/<IntentID>``.
 
             This field is a member of `oneof`_ ``query``.
         transcript (str):
-            If [natural language speech
-            audio][google.cloud.dialogflow.cx.v3.AudioInput] was
-            provided as input, this field will contain the transcript
-            for the audio.
+            If `natural language speech
+            audio
+            <google.cloud.dialogflow.cx.v3.AudioInput>`__
+            was provided as input, this field will contain
+            the transcript for the audio.
 
             This field is a member of `oneof`_ ``query``.
         trigger_event (str):
-            If an [event][google.cloud.dialogflow.cx.v3.EventInput] was
-            provided as input, this field will contain a copy of the
-            event name.
+            If an `event
+            <google.cloud.dialogflow.cx.v3.EventInput>`__
+            was provided as input, this field will contain a
+            copy of the event name.
 
             This field is a member of `oneof`_ ``query``.
         matches (MutableSequence[google.cloud.dialogflowcx_v3.types.Match]):
@@ -1973,9 +2100,11 @@ class MatchIntentResponse(proto.Message):
             descendingly by the confidence we have that the
             particular intent matches the query.
         current_page (google.cloud.dialogflowcx_v3.types.Page):
-            The current [Page][google.cloud.dialogflow.cx.v3.Page].
-            Some, not all fields are filled in this message, including
-            but not limited to ``name`` and ``display_name``.
+            The current `Page
+            <google.cloud.dialogflow.cx.v3.Page>`__. Some,
+            not all fields are filled in this message,
+            including but not limited to ``name`` and
+            ``display_name``.
     """
 
     text: str = proto.Field(
@@ -2053,18 +2182,21 @@ class FulfillIntentResponse(proto.Message):
         query_result (google.cloud.dialogflowcx_v3.types.QueryResult):
             The result of the conversational query.
         output_audio (bytes):
-            The audio data bytes encoded as specified in the request.
-            Note: The output audio is generated based on the values of
-            default platform text responses found in the
-            [``query_result.response_messages``][google.cloud.dialogflow.cx.v3.QueryResult.response_messages]
-            field. If multiple default text responses exist, they will
-            be concatenated when generating audio. If no default
-            platform text responses exist, the generated audio content
-            will be empty.
+            The audio data bytes encoded as specified in the
+            request. Note: The output audio is generated
+            based on the values of default platform text
+            responses found in the
+            ```query_result.response_messages``
+            <google.cloud.dialogflow.cx.v3.QueryResult.response_messages>`__
+            field. If multiple default text responses exist,
+            they will be concatenated when generating audio.
+            If no default platform text responses exist, the
+            generated audio content will be empty.
 
-            In some scenarios, multiple output audio fields may be
-            present in the response structure. In these cases, only the
-            top-most-level audio output has content.
+            In some scenarios, multiple output audio fields
+            may be present in the response structure. In
+            these cases, only the top-most-level audio
+            output has content.
         output_audio_config (google.cloud.dialogflowcx_v3.types.OutputAudioConfig):
             The config used by the speech synthesizer to
             generate the output audio.
@@ -2101,9 +2233,10 @@ class SentimentAnalysisResult(proto.Message):
             Sentiment score between -1.0 (negative
             sentiment) and 1.0 (positive  sentiment).
         magnitude (float):
-            A non-negative number in the [0, +inf) range, which
-            represents the absolute magnitude of sentiment, regardless
-            of score (positive or negative).
+            A non-negative number in the [0, +inf) range,
+            which represents the absolute magnitude of
+            sentiment, regardless of score (positive or
+            negative).
     """
 
     score: float = proto.Field(

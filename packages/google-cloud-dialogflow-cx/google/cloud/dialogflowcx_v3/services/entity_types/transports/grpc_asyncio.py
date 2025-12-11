@@ -35,7 +35,6 @@ from grpc.experimental import aio  # type: ignore
 import proto  # type: ignore
 
 from google.cloud.dialogflowcx_v3.types import entity_type
-from google.cloud.dialogflowcx_v3.types import entity_type as gcdc_entity_type
 
 from .base import DEFAULT_CLIENT_INFO, EntityTypesTransport
 from .grpc import EntityTypesGrpcTransport
@@ -120,8 +119,8 @@ class _LoggingClientAIOInterceptor(
 class EntityTypesGrpcAsyncIOTransport(EntityTypesTransport):
     """gRPC AsyncIO backend transport for EntityTypes.
 
-    Service for managing
-    [EntityTypes][google.cloud.dialogflow.cx.v3.EntityType].
+    Service for managing `EntityTypes
+    <google.cloud.dialogflow.cx.v3.EntityType>`__.
 
     This class defines the same methods as the primary client, so the
     primary client can load the underlying transport implementation
@@ -383,8 +382,7 @@ class EntityTypesGrpcAsyncIOTransport(EntityTypesTransport):
     def create_entity_type(
         self,
     ) -> Callable[
-        [gcdc_entity_type.CreateEntityTypeRequest],
-        Awaitable[gcdc_entity_type.EntityType],
+        [entity_type.CreateEntityTypeRequest], Awaitable[entity_type.EntityType]
     ]:
         r"""Return a callable for the create entity type method over gRPC.
 
@@ -392,7 +390,8 @@ class EntityTypesGrpcAsyncIOTransport(EntityTypesTransport):
 
         Note: You should always train a flow prior to sending it
         queries. See the `training
-        documentation <https://cloud.google.com/dialogflow/cx/docs/concept/training>`__.
+        documentation
+        <https://cloud.google.com/dialogflow/cx/docs/concept/training>`__.
 
         Returns:
             Callable[[~.CreateEntityTypeRequest],
@@ -407,8 +406,8 @@ class EntityTypesGrpcAsyncIOTransport(EntityTypesTransport):
         if "create_entity_type" not in self._stubs:
             self._stubs["create_entity_type"] = self._logged_channel.unary_unary(
                 "/google.cloud.dialogflow.cx.v3.EntityTypes/CreateEntityType",
-                request_serializer=gcdc_entity_type.CreateEntityTypeRequest.serialize,
-                response_deserializer=gcdc_entity_type.EntityType.deserialize,
+                request_serializer=entity_type.CreateEntityTypeRequest.serialize,
+                response_deserializer=entity_type.EntityType.deserialize,
             )
         return self._stubs["create_entity_type"]
 
@@ -416,8 +415,7 @@ class EntityTypesGrpcAsyncIOTransport(EntityTypesTransport):
     def update_entity_type(
         self,
     ) -> Callable[
-        [gcdc_entity_type.UpdateEntityTypeRequest],
-        Awaitable[gcdc_entity_type.EntityType],
+        [entity_type.UpdateEntityTypeRequest], Awaitable[entity_type.EntityType]
     ]:
         r"""Return a callable for the update entity type method over gRPC.
 
@@ -425,7 +423,8 @@ class EntityTypesGrpcAsyncIOTransport(EntityTypesTransport):
 
         Note: You should always train a flow prior to sending it
         queries. See the `training
-        documentation <https://cloud.google.com/dialogflow/cx/docs/concept/training>`__.
+        documentation
+        <https://cloud.google.com/dialogflow/cx/docs/concept/training>`__.
 
         Returns:
             Callable[[~.UpdateEntityTypeRequest],
@@ -440,8 +439,8 @@ class EntityTypesGrpcAsyncIOTransport(EntityTypesTransport):
         if "update_entity_type" not in self._stubs:
             self._stubs["update_entity_type"] = self._logged_channel.unary_unary(
                 "/google.cloud.dialogflow.cx.v3.EntityTypes/UpdateEntityType",
-                request_serializer=gcdc_entity_type.UpdateEntityTypeRequest.serialize,
-                response_deserializer=gcdc_entity_type.EntityType.deserialize,
+                request_serializer=entity_type.UpdateEntityTypeRequest.serialize,
+                response_deserializer=entity_type.EntityType.deserialize,
             )
         return self._stubs["update_entity_type"]
 
@@ -455,7 +454,8 @@ class EntityTypesGrpcAsyncIOTransport(EntityTypesTransport):
 
         Note: You should always train a flow prior to sending it
         queries. See the `training
-        documentation <https://cloud.google.com/dialogflow/cx/docs/concept/training>`__.
+        documentation
+        <https://cloud.google.com/dialogflow/cx/docs/concept/training>`__.
 
         Returns:
             Callable[[~.DeleteEntityTypeRequest],

@@ -54,7 +54,6 @@ from google.protobuf import timestamp_pb2  # type: ignore
 
 from google.cloud.dialogflowcx_v3.services.environments import pagers
 from google.cloud.dialogflowcx_v3.types import environment
-from google.cloud.dialogflowcx_v3.types import environment as gcdc_environment
 
 from .client import EnvironmentsClient
 from .transports.base import DEFAULT_CLIENT_INFO, EnvironmentsTransport
@@ -72,7 +71,7 @@ _LOGGER = std_logging.getLogger(__name__)
 
 class EnvironmentsAsyncClient:
     """Service for managing
-    [Environments][google.cloud.dialogflow.cx.v3.Environment].
+    `Environments <google.cloud.dialogflow.cx.v3.Environment>`__.
     """
 
     _client: EnvironmentsClient
@@ -322,7 +321,7 @@ class EnvironmentsAsyncClient:
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> pagers.ListEnvironmentsAsyncPager:
         r"""Returns the list of all environments in the specified
-        [Agent][google.cloud.dialogflow.cx.v3.Agent].
+        `Agent <google.cloud.dialogflow.cx.v3.Agent>`__.
 
         .. code-block:: python
 
@@ -354,11 +353,13 @@ class EnvironmentsAsyncClient:
         Args:
             request (Optional[Union[google.cloud.dialogflowcx_v3.types.ListEnvironmentsRequest, dict]]):
                 The request object. The request message for
-                [Environments.ListEnvironments][google.cloud.dialogflow.cx.v3.Environments.ListEnvironments].
+                `Environments.ListEnvironments
+                <google.cloud.dialogflow.cx.v3.Environments.ListEnvironments>`__.
             parent (:class:`str`):
-                Required. The
-                [Agent][google.cloud.dialogflow.cx.v3.Agent] to list all
-                environments for. Format:
+                Required. The `Agent
+                <google.cloud.dialogflow.cx.v3.Agent>`__
+                to list all environments for. Format:
+
                 ``projects/<ProjectID>/locations/<LocationID>/agents/<AgentID>``.
 
                 This corresponds to the ``parent`` field
@@ -375,10 +376,12 @@ class EnvironmentsAsyncClient:
         Returns:
             google.cloud.dialogflowcx_v3.services.environments.pagers.ListEnvironmentsAsyncPager:
                 The response message for
-                   [Environments.ListEnvironments][google.cloud.dialogflow.cx.v3.Environments.ListEnvironments].
+                `Environments.ListEnvironments
+                <google.cloud.dialogflow.cx.v3.Environments.ListEnvironments>`__.
 
-                Iterating over this object will yield results and
-                resolve additional pages automatically.
+                Iterating over this object will yield
+                results and resolve additional pages
+                automatically.
 
         """
         # Create or coerce a protobuf request object.
@@ -451,7 +454,8 @@ class EnvironmentsAsyncClient:
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> environment.Environment:
         r"""Retrieves the specified
-        [Environment][google.cloud.dialogflow.cx.v3.Environment].
+        `Environment
+        <google.cloud.dialogflow.cx.v3.Environment>`__.
 
         .. code-block:: python
 
@@ -482,11 +486,14 @@ class EnvironmentsAsyncClient:
         Args:
             request (Optional[Union[google.cloud.dialogflowcx_v3.types.GetEnvironmentRequest, dict]]):
                 The request object. The request message for
-                [Environments.GetEnvironment][google.cloud.dialogflow.cx.v3.Environments.GetEnvironment].
+                `Environments.GetEnvironment
+                <google.cloud.dialogflow.cx.v3.Environments.GetEnvironment>`__.
             name (:class:`str`):
                 Required. The name of the
-                [Environment][google.cloud.dialogflow.cx.v3.Environment].
+                `Environment
+                <google.cloud.dialogflow.cx.v3.Environment>`__.
                 Format:
+
                 ``projects/<ProjectID>/locations/<LocationID>/agents/<AgentID>/environments/<EnvironmentID>``.
 
                 This corresponds to the ``name`` field
@@ -570,29 +577,31 @@ class EnvironmentsAsyncClient:
 
     async def create_environment(
         self,
-        request: Optional[
-            Union[gcdc_environment.CreateEnvironmentRequest, dict]
-        ] = None,
+        request: Optional[Union[environment.CreateEnvironmentRequest, dict]] = None,
         *,
         parent: Optional[str] = None,
-        environment: Optional[gcdc_environment.Environment] = None,
+        environment: Optional[environment.Environment] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> operation_async.AsyncOperation:
-        r"""Creates an
-        [Environment][google.cloud.dialogflow.cx.v3.Environment] in the
-        specified [Agent][google.cloud.dialogflow.cx.v3.Agent].
+        r"""Creates an `Environment
+        <google.cloud.dialogflow.cx.v3.Environment>`__ in the
+        specified `Agent
+        <google.cloud.dialogflow.cx.v3.Agent>`__.
 
         This method is a `long-running
-        operation <https://cloud.google.com/dialogflow/cx/docs/how/long-running-operation>`__.
+        operation
+        <https://cloud.google.com/dialogflow/cx/docs/how/long-running-operation>`__.
         The returned ``Operation`` type has the following
         method-specific fields:
 
         - ``metadata``: An empty `Struct
-          message <https://developers.google.com/protocol-buffers/docs/reference/google.protobuf#struct>`__
-        - ``response``:
-          [Environment][google.cloud.dialogflow.cx.v3.Environment]
+          message
+        <https://developers.google.com/protocol-buffers/docs/reference/google.protobuf#struct>`__
+
+        - ``response``: `Environment
+          <google.cloud.dialogflow.cx.v3.Environment>`__
 
         .. code-block:: python
 
@@ -631,13 +640,15 @@ class EnvironmentsAsyncClient:
         Args:
             request (Optional[Union[google.cloud.dialogflowcx_v3.types.CreateEnvironmentRequest, dict]]):
                 The request object. The request message for
-                [Environments.CreateEnvironment][google.cloud.dialogflow.cx.v3.Environments.CreateEnvironment].
+                `Environments.CreateEnvironment
+                <google.cloud.dialogflow.cx.v3.Environments.CreateEnvironment>`__.
             parent (:class:`str`):
-                Required. The
-                [Agent][google.cloud.dialogflow.cx.v3.Agent] to create
-                an
-                [Environment][google.cloud.dialogflow.cx.v3.Environment]
+                Required. The `Agent
+                <google.cloud.dialogflow.cx.v3.Agent>`__
+                to create an `Environment
+                <google.cloud.dialogflow.cx.v3.Environment>`__
                 for. Format:
+
                 ``projects/<ProjectID>/locations/<LocationID>/agents/<AgentID>``.
 
                 This corresponds to the ``parent`` field
@@ -658,19 +669,25 @@ class EnvironmentsAsyncClient:
 
         Returns:
             google.api_core.operation_async.AsyncOperation:
-                An object representing a long-running operation.
-
-                The result type for the operation will be :class:`google.cloud.dialogflowcx_v3.types.Environment` Represents an environment for an agent. You can create multiple versions
-                   of your agent and publish them to separate
-                   environments. When you edit an agent, you are editing
-                   the draft agent. At any point, you can save the draft
-                   agent as an agent version, which is an immutable
-                   snapshot of your agent. When you save the draft
-                   agent, it is published to the default environment.
-                   When you create agent versions, you can publish them
-                   to custom environments. You can create a variety of
-                   custom environments for testing, development,
-                   production, etc.
+                An object representing a long-running
+                operation.
+                The result type for the operation will
+                be
+                :class:`google.cloud.dialogflowcx_v3.types.Environment`
+                Represents an environment for an agent.
+                You can create multiple versions of your
+                agent and publish them to separate
+                environments. When you edit an agent,
+                you are editing the draft agent. At any
+                point, you can save the draft agent as
+                an agent version, which is an immutable
+                snapshot of your agent. When you save
+                the draft agent, it is published to the
+                default environment. When you create
+                agent versions, you can publish them to
+                custom environments. You can create a
+                variety of custom environments for
+                testing, development, production, etc.
 
         """
         # Create or coerce a protobuf request object.
@@ -688,8 +705,8 @@ class EnvironmentsAsyncClient:
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
-        if not isinstance(request, gcdc_environment.CreateEnvironmentRequest):
-            request = gcdc_environment.CreateEnvironmentRequest(request)
+        if not isinstance(request, environment.CreateEnvironmentRequest):
+            request = environment.CreateEnvironmentRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -725,7 +742,7 @@ class EnvironmentsAsyncClient:
         response = operation_async.from_gapic(
             response,
             self._client._transport.operations_client,
-            gcdc_environment.Environment,
+            environment.Environment,
             metadata_type=struct_pb2.Struct,
         )
 
@@ -734,28 +751,30 @@ class EnvironmentsAsyncClient:
 
     async def update_environment(
         self,
-        request: Optional[
-            Union[gcdc_environment.UpdateEnvironmentRequest, dict]
-        ] = None,
+        request: Optional[Union[environment.UpdateEnvironmentRequest, dict]] = None,
         *,
-        environment: Optional[gcdc_environment.Environment] = None,
+        environment: Optional[environment.Environment] = None,
         update_mask: Optional[field_mask_pb2.FieldMask] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> operation_async.AsyncOperation:
         r"""Updates the specified
-        [Environment][google.cloud.dialogflow.cx.v3.Environment].
+        `Environment
+        <google.cloud.dialogflow.cx.v3.Environment>`__.
 
         This method is a `long-running
-        operation <https://cloud.google.com/dialogflow/cx/docs/how/long-running-operation>`__.
+        operation
+        <https://cloud.google.com/dialogflow/cx/docs/how/long-running-operation>`__.
         The returned ``Operation`` type has the following
         method-specific fields:
 
         - ``metadata``: An empty `Struct
-          message <https://developers.google.com/protocol-buffers/docs/reference/google.protobuf#struct>`__
-        - ``response``:
-          [Environment][google.cloud.dialogflow.cx.v3.Environment]
+          message
+        <https://developers.google.com/protocol-buffers/docs/reference/google.protobuf#struct>`__
+
+        - ``response``: `Environment
+          <google.cloud.dialogflow.cx.v3.Environment>`__
 
         .. code-block:: python
 
@@ -793,7 +812,8 @@ class EnvironmentsAsyncClient:
         Args:
             request (Optional[Union[google.cloud.dialogflowcx_v3.types.UpdateEnvironmentRequest, dict]]):
                 The request object. The request message for
-                [Environments.UpdateEnvironment][google.cloud.dialogflow.cx.v3.Environments.UpdateEnvironment].
+                `Environments.UpdateEnvironment
+                <google.cloud.dialogflow.cx.v3.Environments.UpdateEnvironment>`__.
             environment (:class:`google.cloud.dialogflowcx_v3.types.Environment`):
                 Required. The environment to update.
                 This corresponds to the ``environment`` field
@@ -816,19 +836,25 @@ class EnvironmentsAsyncClient:
 
         Returns:
             google.api_core.operation_async.AsyncOperation:
-                An object representing a long-running operation.
-
-                The result type for the operation will be :class:`google.cloud.dialogflowcx_v3.types.Environment` Represents an environment for an agent. You can create multiple versions
-                   of your agent and publish them to separate
-                   environments. When you edit an agent, you are editing
-                   the draft agent. At any point, you can save the draft
-                   agent as an agent version, which is an immutable
-                   snapshot of your agent. When you save the draft
-                   agent, it is published to the default environment.
-                   When you create agent versions, you can publish them
-                   to custom environments. You can create a variety of
-                   custom environments for testing, development,
-                   production, etc.
+                An object representing a long-running
+                operation.
+                The result type for the operation will
+                be
+                :class:`google.cloud.dialogflowcx_v3.types.Environment`
+                Represents an environment for an agent.
+                You can create multiple versions of your
+                agent and publish them to separate
+                environments. When you edit an agent,
+                you are editing the draft agent. At any
+                point, you can save the draft agent as
+                an agent version, which is an immutable
+                snapshot of your agent. When you save
+                the draft agent, it is published to the
+                default environment. When you create
+                agent versions, you can publish them to
+                custom environments. You can create a
+                variety of custom environments for
+                testing, development, production, etc.
 
         """
         # Create or coerce a protobuf request object.
@@ -846,8 +872,8 @@ class EnvironmentsAsyncClient:
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
-        if not isinstance(request, gcdc_environment.UpdateEnvironmentRequest):
-            request = gcdc_environment.UpdateEnvironmentRequest(request)
+        if not isinstance(request, environment.UpdateEnvironmentRequest):
+            request = environment.UpdateEnvironmentRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -885,7 +911,7 @@ class EnvironmentsAsyncClient:
         response = operation_async.from_gapic(
             response,
             self._client._transport.operations_client,
-            gcdc_environment.Environment,
+            environment.Environment,
             metadata_type=struct_pb2.Struct,
         )
 
@@ -902,7 +928,8 @@ class EnvironmentsAsyncClient:
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> None:
         r"""Deletes the specified
-        [Environment][google.cloud.dialogflow.cx.v3.Environment].
+        `Environment
+        <google.cloud.dialogflow.cx.v3.Environment>`__.
 
         .. code-block:: python
 
@@ -930,11 +957,14 @@ class EnvironmentsAsyncClient:
         Args:
             request (Optional[Union[google.cloud.dialogflowcx_v3.types.DeleteEnvironmentRequest, dict]]):
                 The request object. The request message for
-                [Environments.DeleteEnvironment][google.cloud.dialogflow.cx.v3.Environments.DeleteEnvironment].
+                `Environments.DeleteEnvironment
+                <google.cloud.dialogflow.cx.v3.Environments.DeleteEnvironment>`__.
             name (:class:`str`):
                 Required. The name of the
-                [Environment][google.cloud.dialogflow.cx.v3.Environment]
+                `Environment
+                <google.cloud.dialogflow.cx.v3.Environment>`__
                 to delete. Format:
+
                 ``projects/<ProjectID>/locations/<LocationID>/agents/<AgentID>/environments/<EnvironmentID>``.
 
                 This corresponds to the ``name`` field
@@ -1006,7 +1036,8 @@ class EnvironmentsAsyncClient:
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> pagers.LookupEnvironmentHistoryAsyncPager:
         r"""Looks up the history of the specified
-        [Environment][google.cloud.dialogflow.cx.v3.Environment].
+        `Environment
+        <google.cloud.dialogflow.cx.v3.Environment>`__.
 
         .. code-block:: python
 
@@ -1038,10 +1069,13 @@ class EnvironmentsAsyncClient:
         Args:
             request (Optional[Union[google.cloud.dialogflowcx_v3.types.LookupEnvironmentHistoryRequest, dict]]):
                 The request object. The request message for
-                [Environments.LookupEnvironmentHistory][google.cloud.dialogflow.cx.v3.Environments.LookupEnvironmentHistory].
+                `Environments.LookupEnvironmentHistory
+                <google.cloud.dialogflow.cx.v3.Environments.LookupEnvironmentHistory>`__.
             name (:class:`str`):
-                Required. Resource name of the environment to look up
-                the history for. Format:
+                Required. Resource name of the
+                environment to look up the history for.
+                Format:
+
                 ``projects/<ProjectID>/locations/<LocationID>/agents/<AgentID>/environments/<EnvironmentID>``.
 
                 This corresponds to the ``name`` field
@@ -1058,10 +1092,12 @@ class EnvironmentsAsyncClient:
         Returns:
             google.cloud.dialogflowcx_v3.services.environments.pagers.LookupEnvironmentHistoryAsyncPager:
                 The response message for
-                   [Environments.LookupEnvironmentHistory][google.cloud.dialogflow.cx.v3.Environments.LookupEnvironmentHistory].
+                `Environments.LookupEnvironmentHistory
+                <google.cloud.dialogflow.cx.v3.Environments.LookupEnvironmentHistory>`__.
 
-                Iterating over this object will yield results and
-                resolve additional pages automatically.
+                Iterating over this object will yield
+                results and resolve additional pages
+                automatically.
 
         """
         # Create or coerce a protobuf request object.
@@ -1133,17 +1169,24 @@ class EnvironmentsAsyncClient:
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> operation_async.AsyncOperation:
         r"""Kicks off a continuous test under the specified
-        [Environment][google.cloud.dialogflow.cx.v3.Environment].
+        `Environment
+        <google.cloud.dialogflow.cx.v3.Environment>`__.
 
         This method is a `long-running
-        operation <https://cloud.google.com/dialogflow/cx/docs/how/long-running-operation>`__.
+        operation
+        <https://cloud.google.com/dialogflow/cx/docs/how/long-running-operation>`__.
         The returned ``Operation`` type has the following
         method-specific fields:
 
         - ``metadata``:
-          [RunContinuousTestMetadata][google.cloud.dialogflow.cx.v3.RunContinuousTestMetadata]
+
+        `RunContinuousTestMetadata
+        <google.cloud.dialogflow.cx.v3.RunContinuousTestMetadata>`__
+
         - ``response``:
-          [RunContinuousTestResponse][google.cloud.dialogflow.cx.v3.RunContinuousTestResponse]
+
+        `RunContinuousTestResponse
+        <google.cloud.dialogflow.cx.v3.RunContinuousTestResponse>`__
 
         .. code-block:: python
 
@@ -1178,7 +1221,8 @@ class EnvironmentsAsyncClient:
         Args:
             request (Optional[Union[google.cloud.dialogflowcx_v3.types.RunContinuousTestRequest, dict]]):
                 The request object. The request message for
-                [Environments.RunContinuousTest][google.cloud.dialogflow.cx.v3.Environments.RunContinuousTest].
+                `Environments.RunContinuousTest
+                <google.cloud.dialogflow.cx.v3.Environments.RunContinuousTest>`__.
             retry (google.api_core.retry_async.AsyncRetry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
@@ -1189,10 +1233,14 @@ class EnvironmentsAsyncClient:
 
         Returns:
             google.api_core.operation_async.AsyncOperation:
-                An object representing a long-running operation.
-
-                The result type for the operation will be :class:`google.cloud.dialogflowcx_v3.types.RunContinuousTestResponse` The response message for
-                   [Environments.RunContinuousTest][google.cloud.dialogflow.cx.v3.Environments.RunContinuousTest].
+                An object representing a long-running
+                operation.
+                The result type for the operation will
+                be
+                :class:`google.cloud.dialogflowcx_v3.types.RunContinuousTestResponse`
+                The response message for
+                `Environments.RunContinuousTest
+                <google.cloud.dialogflow.cx.v3.Environments.RunContinuousTest>`__.
 
         """
         # Create or coerce a protobuf request object.
@@ -1281,9 +1329,12 @@ class EnvironmentsAsyncClient:
         Args:
             request (Optional[Union[google.cloud.dialogflowcx_v3.types.ListContinuousTestResultsRequest, dict]]):
                 The request object. The request message for
-                [Environments.ListContinuousTestResults][google.cloud.dialogflow.cx.v3.Environments.ListContinuousTestResults].
+                `Environments.ListContinuousTestResults
+                <google.cloud.dialogflow.cx.v3.Environments.ListContinuousTestResults>`__.
             parent (:class:`str`):
-                Required. The environment to list results for. Format:
+                Required. The environment to list
+                results for. Format:
+
                 ``projects/<ProjectID>/locations/<LocationID>/agents/<AgentID>/environments/<EnvironmentID>``.
 
                 This corresponds to the ``parent`` field
@@ -1301,9 +1352,9 @@ class EnvironmentsAsyncClient:
             google.cloud.dialogflowcx_v3.services.environments.pagers.ListContinuousTestResultsAsyncPager:
                 The response message for
                 [Environments.ListTestCaseResults][].
-
-                Iterating over this object will yield results and
-                resolve additional pages automatically.
+                Iterating over this object will yield
+                results and resolve additional pages
+                automatically.
 
         """
         # Create or coerce a protobuf request object.
@@ -1375,17 +1426,24 @@ class EnvironmentsAsyncClient:
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> operation_async.AsyncOperation:
         r"""Deploys a flow to the specified
-        [Environment][google.cloud.dialogflow.cx.v3.Environment].
+        `Environment
+        <google.cloud.dialogflow.cx.v3.Environment>`__.
 
         This method is a `long-running
-        operation <https://cloud.google.com/dialogflow/cx/docs/how/long-running-operation>`__.
+        operation
+        <https://cloud.google.com/dialogflow/cx/docs/how/long-running-operation>`__.
         The returned ``Operation`` type has the following
         method-specific fields:
 
         - ``metadata``:
-          [DeployFlowMetadata][google.cloud.dialogflow.cx.v3.DeployFlowMetadata]
+
+        `DeployFlowMetadata
+        <google.cloud.dialogflow.cx.v3.DeployFlowMetadata>`__
+
         - ``response``:
-          [DeployFlowResponse][google.cloud.dialogflow.cx.v3.DeployFlowResponse]
+
+        `DeployFlowResponse
+        <google.cloud.dialogflow.cx.v3.DeployFlowResponse>`__
 
         .. code-block:: python
 
@@ -1421,7 +1479,8 @@ class EnvironmentsAsyncClient:
         Args:
             request (Optional[Union[google.cloud.dialogflowcx_v3.types.DeployFlowRequest, dict]]):
                 The request object. The request message for
-                [Environments.DeployFlow][google.cloud.dialogflow.cx.v3.Environments.DeployFlow].
+                `Environments.DeployFlow
+                <google.cloud.dialogflow.cx.v3.Environments.DeployFlow>`__.
             retry (google.api_core.retry_async.AsyncRetry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
@@ -1432,10 +1491,14 @@ class EnvironmentsAsyncClient:
 
         Returns:
             google.api_core.operation_async.AsyncOperation:
-                An object representing a long-running operation.
-
-                The result type for the operation will be :class:`google.cloud.dialogflowcx_v3.types.DeployFlowResponse` The response message for
-                   [Environments.DeployFlow][google.cloud.dialogflow.cx.v3.Environments.DeployFlow].
+                An object representing a long-running
+                operation.
+                The result type for the operation will
+                be
+                :class:`google.cloud.dialogflowcx_v3.types.DeployFlowResponse`
+                The response message for
+                `Environments.DeployFlow
+                <google.cloud.dialogflow.cx.v3.Environments.DeployFlow>`__.
 
         """
         # Create or coerce a protobuf request object.

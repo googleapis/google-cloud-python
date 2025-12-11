@@ -50,5 +50,4 @@ async def sample_submit_answer_feedback():
     # Handle the response
     print(response)
 
-
 # [END dialogflow_v3_generated_Sessions_SubmitAnswerFeedback_async]

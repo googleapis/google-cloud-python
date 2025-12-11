@@ -52,5 +52,4 @@ def sample_update_version():
     # Handle the response
     print(response)
 
-
 # [END dialogflow_v3_generated_Versions_UpdateVersion_sync]

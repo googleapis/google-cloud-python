@@ -52,7 +52,6 @@ from google.protobuf import field_mask_pb2  # type: ignore
 
 from google.cloud.dialogflowcx_v3.services.entity_types import pagers
 from google.cloud.dialogflowcx_v3.types import entity_type
-from google.cloud.dialogflowcx_v3.types import entity_type as gcdc_entity_type
 
 from .client import EntityTypesClient
 from .transports.base import DEFAULT_CLIENT_INFO, EntityTypesTransport
@@ -69,8 +68,8 @@ _LOGGER = std_logging.getLogger(__name__)
 
 
 class EntityTypesAsyncClient:
-    """Service for managing
-    [EntityTypes][google.cloud.dialogflow.cx.v3.EntityType].
+    """Service for managing `EntityTypes
+    <google.cloud.dialogflow.cx.v3.EntityType>`__.
     """
 
     _client: EntityTypesClient
@@ -332,9 +331,12 @@ class EntityTypesAsyncClient:
         Args:
             request (Optional[Union[google.cloud.dialogflowcx_v3.types.GetEntityTypeRequest, dict]]):
                 The request object. The request message for
-                [EntityTypes.GetEntityType][google.cloud.dialogflow.cx.v3.EntityTypes.GetEntityType].
+                `EntityTypes.GetEntityType
+                <google.cloud.dialogflow.cx.v3.EntityTypes.GetEntityType>`__.
             name (:class:`str`):
-                Required. The name of the entity type. Format:
+                Required. The name of the entity type.
+                Format:
+
                 ``projects/<ProjectID>/locations/<LocationID>/agents/<AgentID>/entityTypes/<EntityTypeID>``.
 
                 This corresponds to the ``name`` field
@@ -350,40 +352,52 @@ class EntityTypesAsyncClient:
 
         Returns:
             google.cloud.dialogflowcx_v3.types.EntityType:
-                Entities are extracted from user input and represent parameters that are
-                   meaningful to your application. For example, a date
-                   range, a proper name such as a geographic location or
-                   landmark, and so on. Entities represent actionable
-                   data for your application.
+                Entities are extracted from user input
+                and represent parameters that are
+                meaningful to your application. For
+                example, a date range, a proper name
+                such as a geographic location or
+                landmark, and so on. Entities represent
+                actionable data for your application.
 
-                   When you define an entity, you can also include
-                   synonyms that all map to that entity. For example,
-                   "soft drink", "soda", "pop", and so on.
+                When you define an entity, you can also
+                include synonyms that all map to that
+                entity. For example, "soft drink",
+                "soda", "pop", and so on.
 
-                   There are three types of entities:
+                There are three types of entities:
 
-                   - **System** - entities that are defined by the
-                     Dialogflow API for common data types such as date,
-                     time, currency, and so on. A system entity is
-                     represented by the EntityType type.
-                   - **Custom** - entities that are defined by you that
-                     represent actionable data that is meaningful to
-                     your application. For example, you could define a
-                     pizza.sauce entity for red or white pizza sauce, a
-                     pizza.cheese entity for the different types of
-                     cheese on a pizza, a pizza.topping entity for
-                     different toppings, and so on. A custom entity is
-                     represented by the EntityType type.
-                   - **User** - entities that are built for an
-                     individual user such as favorites, preferences,
-                     playlists, and so on. A user entity is represented
-                     by the
-                     [SessionEntityType][google.cloud.dialogflow.cx.v3.SessionEntityType]
-                     type.
+                *   **System** - entities that are
+                defined by the Dialogflow API for common
+                data types such as date, time, currency,
+                and so on. A system entity is
+                represented by the ``EntityType`` type.
 
-                   For more information about entity types, see the
-                   [Dialogflow
-                   documentation](https://cloud.google.com/dialogflow/docs/entities-overview).
+                *   **Custom** - entities that are
+                defined by you that represent
+                actionable data that is meaningful to
+                your application. For example,     you
+                could define a ``pizza.sauce`` entity
+                for red or white pizza sauce,     a
+                ``pizza.cheese`` entity for the
+                different types of cheese on a pizza,
+                a ``pizza.topping`` entity for different
+                toppings, and so on. A custom     entity
+                is represented by the ``EntityType``
+                type.
+
+                *   **User** - entities that are built
+                for an individual user such as
+                favorites, preferences, playlists, and
+                so on. A user entity is     represented
+                by the
+                    `SessionEntityType
+                <google.cloud.dialogflow.cx.v3.SessionEntityType>`__
+                type.
+
+                For more information about entity types,
+                see the `Dialogflow documentation
+                <https://cloud.google.com/dialogflow/docs/entities-overview>`__.
 
         """
         # Create or coerce a protobuf request object.
@@ -437,19 +451,20 @@ class EntityTypesAsyncClient:
 
     async def create_entity_type(
         self,
-        request: Optional[Union[gcdc_entity_type.CreateEntityTypeRequest, dict]] = None,
+        request: Optional[Union[entity_type.CreateEntityTypeRequest, dict]] = None,
         *,
         parent: Optional[str] = None,
-        entity_type: Optional[gcdc_entity_type.EntityType] = None,
+        entity_type: Optional[entity_type.EntityType] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
-    ) -> gcdc_entity_type.EntityType:
+    ) -> entity_type.EntityType:
         r"""Creates an entity type in the specified agent.
 
         Note: You should always train a flow prior to sending it
         queries. See the `training
-        documentation <https://cloud.google.com/dialogflow/cx/docs/concept/training>`__.
+        documentation
+        <https://cloud.google.com/dialogflow/cx/docs/concept/training>`__.
 
         .. code-block:: python
 
@@ -485,9 +500,11 @@ class EntityTypesAsyncClient:
         Args:
             request (Optional[Union[google.cloud.dialogflowcx_v3.types.CreateEntityTypeRequest, dict]]):
                 The request object. The request message for
-                [EntityTypes.CreateEntityType][google.cloud.dialogflow.cx.v3.EntityTypes.CreateEntityType].
+                `EntityTypes.CreateEntityType
+                <google.cloud.dialogflow.cx.v3.EntityTypes.CreateEntityType>`__.
             parent (:class:`str`):
-                Required. The agent to create a entity type for. Format:
+                Required. The agent to create a entity
+                type for. Format:
                 ``projects/<ProjectID>/locations/<LocationID>/agents/<AgentID>``.
 
                 This corresponds to the ``parent`` field
@@ -508,40 +525,52 @@ class EntityTypesAsyncClient:
 
         Returns:
             google.cloud.dialogflowcx_v3.types.EntityType:
-                Entities are extracted from user input and represent parameters that are
-                   meaningful to your application. For example, a date
-                   range, a proper name such as a geographic location or
-                   landmark, and so on. Entities represent actionable
-                   data for your application.
+                Entities are extracted from user input
+                and represent parameters that are
+                meaningful to your application. For
+                example, a date range, a proper name
+                such as a geographic location or
+                landmark, and so on. Entities represent
+                actionable data for your application.
 
-                   When you define an entity, you can also include
-                   synonyms that all map to that entity. For example,
-                   "soft drink", "soda", "pop", and so on.
+                When you define an entity, you can also
+                include synonyms that all map to that
+                entity. For example, "soft drink",
+                "soda", "pop", and so on.
 
-                   There are three types of entities:
+                There are three types of entities:
 
-                   - **System** - entities that are defined by the
-                     Dialogflow API for common data types such as date,
-                     time, currency, and so on. A system entity is
-                     represented by the EntityType type.
-                   - **Custom** - entities that are defined by you that
-                     represent actionable data that is meaningful to
-                     your application. For example, you could define a
-                     pizza.sauce entity for red or white pizza sauce, a
-                     pizza.cheese entity for the different types of
-                     cheese on a pizza, a pizza.topping entity for
-                     different toppings, and so on. A custom entity is
-                     represented by the EntityType type.
-                   - **User** - entities that are built for an
-                     individual user such as favorites, preferences,
-                     playlists, and so on. A user entity is represented
-                     by the
-                     [SessionEntityType][google.cloud.dialogflow.cx.v3.SessionEntityType]
-                     type.
+                *   **System** - entities that are
+                defined by the Dialogflow API for common
+                data types such as date, time, currency,
+                and so on. A system entity is
+                represented by the ``EntityType`` type.
 
-                   For more information about entity types, see the
-                   [Dialogflow
-                   documentation](https://cloud.google.com/dialogflow/docs/entities-overview).
+                *   **Custom** - entities that are
+                defined by you that represent
+                actionable data that is meaningful to
+                your application. For example,     you
+                could define a ``pizza.sauce`` entity
+                for red or white pizza sauce,     a
+                ``pizza.cheese`` entity for the
+                different types of cheese on a pizza,
+                a ``pizza.topping`` entity for different
+                toppings, and so on. A custom     entity
+                is represented by the ``EntityType``
+                type.
+
+                *   **User** - entities that are built
+                for an individual user such as
+                favorites, preferences, playlists, and
+                so on. A user entity is     represented
+                by the
+                    `SessionEntityType
+                <google.cloud.dialogflow.cx.v3.SessionEntityType>`__
+                type.
+
+                For more information about entity types,
+                see the `Dialogflow documentation
+                <https://cloud.google.com/dialogflow/docs/entities-overview>`__.
 
         """
         # Create or coerce a protobuf request object.
@@ -559,8 +588,8 @@ class EntityTypesAsyncClient:
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
-        if not isinstance(request, gcdc_entity_type.CreateEntityTypeRequest):
-            request = gcdc_entity_type.CreateEntityTypeRequest(request)
+        if not isinstance(request, entity_type.CreateEntityTypeRequest):
+            request = entity_type.CreateEntityTypeRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -597,19 +626,20 @@ class EntityTypesAsyncClient:
 
     async def update_entity_type(
         self,
-        request: Optional[Union[gcdc_entity_type.UpdateEntityTypeRequest, dict]] = None,
+        request: Optional[Union[entity_type.UpdateEntityTypeRequest, dict]] = None,
         *,
-        entity_type: Optional[gcdc_entity_type.EntityType] = None,
+        entity_type: Optional[entity_type.EntityType] = None,
         update_mask: Optional[field_mask_pb2.FieldMask] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
-    ) -> gcdc_entity_type.EntityType:
+    ) -> entity_type.EntityType:
         r"""Updates the specified entity type.
 
         Note: You should always train a flow prior to sending it
         queries. See the `training
-        documentation <https://cloud.google.com/dialogflow/cx/docs/concept/training>`__.
+        documentation
+        <https://cloud.google.com/dialogflow/cx/docs/concept/training>`__.
 
         .. code-block:: python
 
@@ -644,7 +674,8 @@ class EntityTypesAsyncClient:
         Args:
             request (Optional[Union[google.cloud.dialogflowcx_v3.types.UpdateEntityTypeRequest, dict]]):
                 The request object. The request message for
-                [EntityTypes.UpdateEntityType][google.cloud.dialogflow.cx.v3.EntityTypes.UpdateEntityType].
+                `EntityTypes.UpdateEntityType
+                <google.cloud.dialogflow.cx.v3.EntityTypes.UpdateEntityType>`__.
             entity_type (:class:`google.cloud.dialogflowcx_v3.types.EntityType`):
                 Required. The entity type to update.
                 This corresponds to the ``entity_type`` field
@@ -667,40 +698,52 @@ class EntityTypesAsyncClient:
 
         Returns:
             google.cloud.dialogflowcx_v3.types.EntityType:
-                Entities are extracted from user input and represent parameters that are
-                   meaningful to your application. For example, a date
-                   range, a proper name such as a geographic location or
-                   landmark, and so on. Entities represent actionable
-                   data for your application.
+                Entities are extracted from user input
+                and represent parameters that are
+                meaningful to your application. For
+                example, a date range, a proper name
+                such as a geographic location or
+                landmark, and so on. Entities represent
+                actionable data for your application.
 
-                   When you define an entity, you can also include
-                   synonyms that all map to that entity. For example,
-                   "soft drink", "soda", "pop", and so on.
+                When you define an entity, you can also
+                include synonyms that all map to that
+                entity. For example, "soft drink",
+                "soda", "pop", and so on.
 
-                   There are three types of entities:
+                There are three types of entities:
 
-                   - **System** - entities that are defined by the
-                     Dialogflow API for common data types such as date,
-                     time, currency, and so on. A system entity is
-                     represented by the EntityType type.
-                   - **Custom** - entities that are defined by you that
-                     represent actionable data that is meaningful to
-                     your application. For example, you could define a
-                     pizza.sauce entity for red or white pizza sauce, a
-                     pizza.cheese entity for the different types of
-                     cheese on a pizza, a pizza.topping entity for
-                     different toppings, and so on. A custom entity is
-                     represented by the EntityType type.
-                   - **User** - entities that are built for an
-                     individual user such as favorites, preferences,
-                     playlists, and so on. A user entity is represented
-                     by the
-                     [SessionEntityType][google.cloud.dialogflow.cx.v3.SessionEntityType]
-                     type.
+                *   **System** - entities that are
+                defined by the Dialogflow API for common
+                data types such as date, time, currency,
+                and so on. A system entity is
+                represented by the ``EntityType`` type.
 
-                   For more information about entity types, see the
-                   [Dialogflow
-                   documentation](https://cloud.google.com/dialogflow/docs/entities-overview).
+                *   **Custom** - entities that are
+                defined by you that represent
+                actionable data that is meaningful to
+                your application. For example,     you
+                could define a ``pizza.sauce`` entity
+                for red or white pizza sauce,     a
+                ``pizza.cheese`` entity for the
+                different types of cheese on a pizza,
+                a ``pizza.topping`` entity for different
+                toppings, and so on. A custom     entity
+                is represented by the ``EntityType``
+                type.
+
+                *   **User** - entities that are built
+                for an individual user such as
+                favorites, preferences, playlists, and
+                so on. A user entity is     represented
+                by the
+                    `SessionEntityType
+                <google.cloud.dialogflow.cx.v3.SessionEntityType>`__
+                type.
+
+                For more information about entity types,
+                see the `Dialogflow documentation
+                <https://cloud.google.com/dialogflow/docs/entities-overview>`__.
 
         """
         # Create or coerce a protobuf request object.
@@ -718,8 +761,8 @@ class EntityTypesAsyncClient:
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
-        if not isinstance(request, gcdc_entity_type.UpdateEntityTypeRequest):
-            request = gcdc_entity_type.UpdateEntityTypeRequest(request)
+        if not isinstance(request, entity_type.UpdateEntityTypeRequest):
+            request = entity_type.UpdateEntityTypeRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -769,7 +812,8 @@ class EntityTypesAsyncClient:
 
         Note: You should always train a flow prior to sending it
         queries. See the `training
-        documentation <https://cloud.google.com/dialogflow/cx/docs/concept/training>`__.
+        documentation
+        <https://cloud.google.com/dialogflow/cx/docs/concept/training>`__.
 
         .. code-block:: python
 
@@ -797,9 +841,12 @@ class EntityTypesAsyncClient:
         Args:
             request (Optional[Union[google.cloud.dialogflowcx_v3.types.DeleteEntityTypeRequest, dict]]):
                 The request object. The request message for
-                [EntityTypes.DeleteEntityType][google.cloud.dialogflow.cx.v3.EntityTypes.DeleteEntityType].
+                `EntityTypes.DeleteEntityType
+                <google.cloud.dialogflow.cx.v3.EntityTypes.DeleteEntityType>`__.
             name (:class:`str`):
-                Required. The name of the entity type to delete. Format:
+                Required. The name of the entity type to
+                delete. Format:
+
                 ``projects/<ProjectID>/locations/<LocationID>/agents/<AgentID>/entityTypes/<EntityTypeID>``.
 
                 This corresponds to the ``name`` field
@@ -901,10 +948,11 @@ class EntityTypesAsyncClient:
         Args:
             request (Optional[Union[google.cloud.dialogflowcx_v3.types.ListEntityTypesRequest, dict]]):
                 The request object. The request message for
-                [EntityTypes.ListEntityTypes][google.cloud.dialogflow.cx.v3.EntityTypes.ListEntityTypes].
+                `EntityTypes.ListEntityTypes
+                <google.cloud.dialogflow.cx.v3.EntityTypes.ListEntityTypes>`__.
             parent (:class:`str`):
-                Required. The agent to list all entity types for.
-                Format:
+                Required. The agent to list all entity
+                types for. Format:
                 ``projects/<ProjectID>/locations/<LocationID>/agents/<AgentID>``.
 
                 This corresponds to the ``parent`` field
@@ -921,10 +969,12 @@ class EntityTypesAsyncClient:
         Returns:
             google.cloud.dialogflowcx_v3.services.entity_types.pagers.ListEntityTypesAsyncPager:
                 The response message for
-                   [EntityTypes.ListEntityTypes][google.cloud.dialogflow.cx.v3.EntityTypes.ListEntityTypes].
+                `EntityTypes.ListEntityTypes
+                <google.cloud.dialogflow.cx.v3.EntityTypes.ListEntityTypes>`__.
 
-                Iterating over this object will yield results and
-                resolve additional pages automatically.
+                Iterating over this object will yield
+                results and resolve additional pages
+                automatically.
 
         """
         # Create or coerce a protobuf request object.
@@ -1032,7 +1082,8 @@ class EntityTypesAsyncClient:
         Args:
             request (Optional[Union[google.cloud.dialogflowcx_v3.types.ExportEntityTypesRequest, dict]]):
                 The request object. The request message for
-                [EntityTypes.ExportEntityTypes][google.cloud.dialogflow.cx.v3.EntityTypes.ExportEntityTypes].
+                `EntityTypes.ExportEntityTypes
+                <google.cloud.dialogflow.cx.v3.EntityTypes.ExportEntityTypes>`__.
             retry (google.api_core.retry_async.AsyncRetry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
@@ -1043,10 +1094,14 @@ class EntityTypesAsyncClient:
 
         Returns:
             google.api_core.operation_async.AsyncOperation:
-                An object representing a long-running operation.
-
-                The result type for the operation will be :class:`google.cloud.dialogflowcx_v3.types.ExportEntityTypesResponse` The response message for
-                   [EntityTypes.ExportEntityTypes][google.cloud.dialogflow.cx.v3.EntityTypes.ExportEntityTypes].
+                An object representing a long-running
+                operation.
+                The result type for the operation will
+                be
+                :class:`google.cloud.dialogflowcx_v3.types.ExportEntityTypesResponse`
+                The response message for
+                `EntityTypes.ExportEntityTypes
+                <google.cloud.dialogflow.cx.v3.EntityTypes.ExportEntityTypes>`__.
 
         """
         # Create or coerce a protobuf request object.
@@ -1134,7 +1189,8 @@ class EntityTypesAsyncClient:
         Args:
             request (Optional[Union[google.cloud.dialogflowcx_v3.types.ImportEntityTypesRequest, dict]]):
                 The request object. The request message for
-                [EntityTypes.ImportEntityTypes][google.cloud.dialogflow.cx.v3.EntityTypes.ImportEntityTypes].
+                `EntityTypes.ImportEntityTypes
+                <google.cloud.dialogflow.cx.v3.EntityTypes.ImportEntityTypes>`__.
             retry (google.api_core.retry_async.AsyncRetry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
@@ -1145,10 +1201,14 @@ class EntityTypesAsyncClient:
 
         Returns:
             google.api_core.operation_async.AsyncOperation:
-                An object representing a long-running operation.
-
-                The result type for the operation will be :class:`google.cloud.dialogflowcx_v3.types.ImportEntityTypesResponse` The response message for
-                   [EntityTypes.ImportEntityTypes][google.cloud.dialogflow.cx.v3.EntityTypes.ImportEntityTypes].
+                An object representing a long-running
+                operation.
+                The result type for the operation will
+                be
+                :class:`google.cloud.dialogflowcx_v3.types.ImportEntityTypesResponse`
+                The response message for
+                `EntityTypes.ImportEntityTypes
+                <google.cloud.dialogflow.cx.v3.EntityTypes.ImportEntityTypes>`__.
 
         """
         # Create or coerce a protobuf request object.

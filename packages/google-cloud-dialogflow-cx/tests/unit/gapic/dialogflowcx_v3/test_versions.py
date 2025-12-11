@@ -73,9 +73,7 @@ from google.cloud.dialogflowcx_v3.services.versions import (
     pagers,
     transports,
 )
-from google.cloud.dialogflowcx_v3.types import flow
-from google.cloud.dialogflowcx_v3.types import version
-from google.cloud.dialogflowcx_v3.types import version as gcdc_version
+from google.cloud.dialogflowcx_v3.types import flow, version
 
 CRED_INFO_JSON = {
     "credential_source": "/path/to/file",
@@ -1927,7 +1925,7 @@ async def test_get_version_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        gcdc_version.CreateVersionRequest,
+        version.CreateVersionRequest,
         dict,
     ],
 )
@@ -1950,7 +1948,7 @@ def test_create_version(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        request = gcdc_version.CreateVersionRequest()
+        request = version.CreateVersionRequest()
         assert args[0] == request
 
     # Establish that the response is the type that we expect.
@@ -1968,7 +1966,7 @@ def test_create_version_non_empty_request_with_auto_populated_field():
     # Populate all string fields in the request which are not UUID4
     # since we want to check that UUID4 are populated automatically
     # if they meet the requirements of AIP 4235.
-    request = gcdc_version.CreateVersionRequest(
+    request = version.CreateVersionRequest(
         parent="parent_value",
     )
 
@@ -1980,7 +1978,7 @@ def test_create_version_non_empty_request_with_auto_populated_field():
         client.create_version(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == gcdc_version.CreateVersionRequest(
+        assert args[0] == version.CreateVersionRequest(
             parent="parent_value",
         )
 
@@ -2074,7 +2072,7 @@ async def test_create_version_async_use_cached_wrapped_rpc(
 
 @pytest.mark.asyncio
 async def test_create_version_async(
-    transport: str = "grpc_asyncio", request_type=gcdc_version.CreateVersionRequest
+    transport: str = "grpc_asyncio", request_type=version.CreateVersionRequest
 ):
     client = VersionsAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -2096,7 +2094,7 @@ async def test_create_version_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        request = gcdc_version.CreateVersionRequest()
+        request = version.CreateVersionRequest()
         assert args[0] == request
 
     # Establish that the response is the type that we expect.
@@ -2115,7 +2113,7 @@ def test_create_version_field_headers():
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
-    request = gcdc_version.CreateVersionRequest()
+    request = version.CreateVersionRequest()
 
     request.parent = "parent_value"
 
@@ -2145,7 +2143,7 @@ async def test_create_version_field_headers_async():
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
-    request = gcdc_version.CreateVersionRequest()
+    request = version.CreateVersionRequest()
 
     request.parent = "parent_value"
 
@@ -2182,7 +2180,7 @@ def test_create_version_flattened():
         # using the keyword arguments to the method.
         client.create_version(
             parent="parent_value",
-            version=gcdc_version.Version(name="name_value"),
+            version=version.Version(name="name_value"),
         )
 
         # Establish that the underlying call was made with the expected
@@ -2193,7 +2191,7 @@ def test_create_version_flattened():
         mock_val = "parent_value"
         assert arg == mock_val
         arg = args[0].version
-        mock_val = gcdc_version.Version(name="name_value")
+        mock_val = version.Version(name="name_value")
         assert arg == mock_val
 
 
@@ -2206,9 +2204,9 @@ def test_create_version_flattened_error():
     # fields is an error.
     with pytest.raises(ValueError):
         client.create_version(
-            gcdc_version.CreateVersionRequest(),
+            version.CreateVersionRequest(),
             parent="parent_value",
-            version=gcdc_version.Version(name="name_value"),
+            version=version.Version(name="name_value"),
         )
 
 
@@ -2230,7 +2228,7 @@ async def test_create_version_flattened_async():
         # using the keyword arguments to the method.
         response = await client.create_version(
             parent="parent_value",
-            version=gcdc_version.Version(name="name_value"),
+            version=version.Version(name="name_value"),
         )
 
         # Establish that the underlying call was made with the expected
@@ -2241,7 +2239,7 @@ async def test_create_version_flattened_async():
         mock_val = "parent_value"
         assert arg == mock_val
         arg = args[0].version
-        mock_val = gcdc_version.Version(name="name_value")
+        mock_val = version.Version(name="name_value")
         assert arg == mock_val
 
 
@@ -2255,16 +2253,16 @@ async def test_create_version_flattened_error_async():
     # fields is an error.
     with pytest.raises(ValueError):
         await client.create_version(
-            gcdc_version.CreateVersionRequest(),
+            version.CreateVersionRequest(),
             parent="parent_value",
-            version=gcdc_version.Version(name="name_value"),
+            version=version.Version(name="name_value"),
         )
 
 
 @pytest.mark.parametrize(
     "request_type",
     [
-        gcdc_version.UpdateVersionRequest,
+        version.UpdateVersionRequest,
         dict,
     ],
 )
@@ -2281,26 +2279,26 @@ def test_update_version(request_type, transport: str = "grpc"):
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.update_version), "__call__") as call:
         # Designate an appropriate return value for the call.
-        call.return_value = gcdc_version.Version(
+        call.return_value = version.Version(
             name="name_value",
             display_name="display_name_value",
             description="description_value",
-            state=gcdc_version.Version.State.RUNNING,
+            state=version.Version.State.RUNNING,
         )
         response = client.update_version(request)
 
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        request = gcdc_version.UpdateVersionRequest()
+        request = version.UpdateVersionRequest()
         assert args[0] == request
 
     # Establish that the response is the type that we expect.
-    assert isinstance(response, gcdc_version.Version)
+    assert isinstance(response, version.Version)
     assert response.name == "name_value"
     assert response.display_name == "display_name_value"
     assert response.description == "description_value"
-    assert response.state == gcdc_version.Version.State.RUNNING
+    assert response.state == version.Version.State.RUNNING
 
 
 def test_update_version_non_empty_request_with_auto_populated_field():
@@ -2314,7 +2312,7 @@ def test_update_version_non_empty_request_with_auto_populated_field():
     # Populate all string fields in the request which are not UUID4
     # since we want to check that UUID4 are populated automatically
     # if they meet the requirements of AIP 4235.
-    request = gcdc_version.UpdateVersionRequest()
+    request = version.UpdateVersionRequest()
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.update_version), "__call__") as call:
@@ -2324,7 +2322,7 @@ def test_update_version_non_empty_request_with_auto_populated_field():
         client.update_version(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == gcdc_version.UpdateVersionRequest()
+        assert args[0] == version.UpdateVersionRequest()
 
 
 def test_update_version_use_cached_wrapped_rpc():
@@ -2406,7 +2404,7 @@ async def test_update_version_async_use_cached_wrapped_rpc(
 
 @pytest.mark.asyncio
 async def test_update_version_async(
-    transport: str = "grpc_asyncio", request_type=gcdc_version.UpdateVersionRequest
+    transport: str = "grpc_asyncio", request_type=version.UpdateVersionRequest
 ):
     client = VersionsAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -2421,11 +2419,11 @@ async def test_update_version_async(
     with mock.patch.object(type(client.transport.update_version), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            gcdc_version.Version(
+            version.Version(
                 name="name_value",
                 display_name="display_name_value",
                 description="description_value",
-                state=gcdc_version.Version.State.RUNNING,
+                state=version.Version.State.RUNNING,
             )
         )
         response = await client.update_version(request)
@@ -2433,15 +2431,15 @@ async def test_update_version_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        request = gcdc_version.UpdateVersionRequest()
+        request = version.UpdateVersionRequest()
         assert args[0] == request
 
     # Establish that the response is the type that we expect.
-    assert isinstance(response, gcdc_version.Version)
+    assert isinstance(response, version.Version)
     assert response.name == "name_value"
     assert response.display_name == "display_name_value"
     assert response.description == "description_value"
-    assert response.state == gcdc_version.Version.State.RUNNING
+    assert response.state == version.Version.State.RUNNING
 
 
 @pytest.mark.asyncio
@@ -2456,13 +2454,13 @@ def test_update_version_field_headers():
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
-    request = gcdc_version.UpdateVersionRequest()
+    request = version.UpdateVersionRequest()
 
     request.version.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.update_version), "__call__") as call:
-        call.return_value = gcdc_version.Version()
+        call.return_value = version.Version()
         client.update_version(request)
 
         # Establish that the underlying gRPC stub method was called.
@@ -2486,15 +2484,13 @@ async def test_update_version_field_headers_async():
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
-    request = gcdc_version.UpdateVersionRequest()
+    request = version.UpdateVersionRequest()
 
     request.version.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.update_version), "__call__") as call:
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            gcdc_version.Version()
-        )
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(version.Version())
         await client.update_version(request)
 
         # Establish that the underlying gRPC stub method was called.
@@ -2518,11 +2514,11 @@ def test_update_version_flattened():
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.update_version), "__call__") as call:
         # Designate an appropriate return value for the call.
-        call.return_value = gcdc_version.Version()
+        call.return_value = version.Version()
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
         client.update_version(
-            version=gcdc_version.Version(name="name_value"),
+            version=version.Version(name="name_value"),
             update_mask=field_mask_pb2.FieldMask(paths=["paths_value"]),
         )
 
@@ -2531,7 +2527,7 @@ def test_update_version_flattened():
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
         arg = args[0].version
-        mock_val = gcdc_version.Version(name="name_value")
+        mock_val = version.Version(name="name_value")
         assert arg == mock_val
         arg = args[0].update_mask
         mock_val = field_mask_pb2.FieldMask(paths=["paths_value"])
@@ -2547,8 +2543,8 @@ def test_update_version_flattened_error():
     # fields is an error.
     with pytest.raises(ValueError):
         client.update_version(
-            gcdc_version.UpdateVersionRequest(),
-            version=gcdc_version.Version(name="name_value"),
+            version.UpdateVersionRequest(),
+            version=version.Version(name="name_value"),
             update_mask=field_mask_pb2.FieldMask(paths=["paths_value"]),
         )
 
@@ -2562,15 +2558,13 @@ async def test_update_version_flattened_async():
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.update_version), "__call__") as call:
         # Designate an appropriate return value for the call.
-        call.return_value = gcdc_version.Version()
+        call.return_value = version.Version()
 
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            gcdc_version.Version()
-        )
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(version.Version())
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
         response = await client.update_version(
-            version=gcdc_version.Version(name="name_value"),
+            version=version.Version(name="name_value"),
             update_mask=field_mask_pb2.FieldMask(paths=["paths_value"]),
         )
 
@@ -2579,7 +2573,7 @@ async def test_update_version_flattened_async():
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
         arg = args[0].version
-        mock_val = gcdc_version.Version(name="name_value")
+        mock_val = version.Version(name="name_value")
         assert arg == mock_val
         arg = args[0].update_mask
         mock_val = field_mask_pb2.FieldMask(paths=["paths_value"])
@@ -2596,8 +2590,8 @@ async def test_update_version_flattened_error_async():
     # fields is an error.
     with pytest.raises(ValueError):
         await client.update_version(
-            gcdc_version.UpdateVersionRequest(),
-            version=gcdc_version.Version(name="name_value"),
+            version.UpdateVersionRequest(),
+            version=version.Version(name="name_value"),
             update_mask=field_mask_pb2.FieldMask(paths=["paths_value"]),
         )
 
@@ -4047,9 +4041,7 @@ def test_create_version_rest_use_cached_wrapped_rpc():
         assert mock_rpc.call_count == 2
 
 
-def test_create_version_rest_required_fields(
-    request_type=gcdc_version.CreateVersionRequest,
-):
+def test_create_version_rest_required_fields(request_type=version.CreateVersionRequest):
     transport_class = transports.VersionsRestTransport
 
     request_init = {}
@@ -4156,7 +4148,7 @@ def test_create_version_rest_flattened():
         # get truthy value for each flattened field
         mock_args = dict(
             parent="parent_value",
-            version=gcdc_version.Version(name="name_value"),
+            version=version.Version(name="name_value"),
         )
         mock_args.update(sample_request)
 
@@ -4191,9 +4183,9 @@ def test_create_version_rest_flattened_error(transport: str = "rest"):
     # fields is an error.
     with pytest.raises(ValueError):
         client.create_version(
-            gcdc_version.CreateVersionRequest(),
+            version.CreateVersionRequest(),
             parent="parent_value",
-            version=gcdc_version.Version(name="name_value"),
+            version=version.Version(name="name_value"),
         )
 
 
@@ -4233,9 +4225,7 @@ def test_update_version_rest_use_cached_wrapped_rpc():
         assert mock_rpc.call_count == 2
 
 
-def test_update_version_rest_required_fields(
-    request_type=gcdc_version.UpdateVersionRequest,
-):
+def test_update_version_rest_required_fields(request_type=version.UpdateVersionRequest):
     transport_class = transports.VersionsRestTransport
 
     request_init = {}
@@ -4270,7 +4260,7 @@ def test_update_version_rest_required_fields(
     request = request_type(**request_init)
 
     # Designate an appropriate value for the returned response.
-    return_value = gcdc_version.Version()
+    return_value = version.Version()
     # Mock the http request call within the method and fake a response.
     with mock.patch.object(Session, "request") as req:
         # We need to mock transcode() because providing default values
@@ -4292,7 +4282,7 @@ def test_update_version_rest_required_fields(
             response_value.status_code = 200
 
             # Convert return value to protobuf type
-            return_value = gcdc_version.Version.pb(return_value)
+            return_value = version.Version.pb(return_value)
             json_return_value = json_format.MessageToJson(return_value)
 
             response_value._content = json_return_value.encode("UTF-8")
@@ -4332,7 +4322,7 @@ def test_update_version_rest_flattened():
     # Mock the http request call within the method and fake a response.
     with mock.patch.object(type(client.transport._session), "request") as req:
         # Designate an appropriate value for the returned response.
-        return_value = gcdc_version.Version()
+        return_value = version.Version()
 
         # get arguments that satisfy an http rule for this method
         sample_request = {
@@ -4343,7 +4333,7 @@ def test_update_version_rest_flattened():
 
         # get truthy value for each flattened field
         mock_args = dict(
-            version=gcdc_version.Version(name="name_value"),
+            version=version.Version(name="name_value"),
             update_mask=field_mask_pb2.FieldMask(paths=["paths_value"]),
         )
         mock_args.update(sample_request)
@@ -4352,7 +4342,7 @@ def test_update_version_rest_flattened():
         response_value = Response()
         response_value.status_code = 200
         # Convert return value to protobuf type
-        return_value = gcdc_version.Version.pb(return_value)
+        return_value = version.Version.pb(return_value)
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
@@ -4381,8 +4371,8 @@ def test_update_version_rest_flattened_error(transport: str = "rest"):
     # fields is an error.
     with pytest.raises(ValueError):
         client.update_version(
-            gcdc_version.UpdateVersionRequest(),
-            version=gcdc_version.Version(name="name_value"),
+            version.UpdateVersionRequest(),
+            version=version.Version(name="name_value"),
             update_mask=field_mask_pb2.FieldMask(paths=["paths_value"]),
         )
 
@@ -5097,7 +5087,7 @@ def test_create_version_empty_call_grpc():
         # Establish that the underlying stub method was called.
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        request_msg = gcdc_version.CreateVersionRequest()
+        request_msg = version.CreateVersionRequest()
 
         assert args[0] == request_msg
 
@@ -5112,13 +5102,13 @@ def test_update_version_empty_call_grpc():
 
     # Mock the actual call, and fake the request.
     with mock.patch.object(type(client.transport.update_version), "__call__") as call:
-        call.return_value = gcdc_version.Version()
+        call.return_value = version.Version()
         client.update_version(request=None)
 
         # Establish that the underlying stub method was called.
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        request_msg = gcdc_version.UpdateVersionRequest()
+        request_msg = version.UpdateVersionRequest()
 
         assert args[0] == request_msg
 
@@ -5277,7 +5267,7 @@ async def test_create_version_empty_call_grpc_asyncio():
         # Establish that the underlying stub method was called.
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        request_msg = gcdc_version.CreateVersionRequest()
+        request_msg = version.CreateVersionRequest()
 
         assert args[0] == request_msg
 
@@ -5295,11 +5285,11 @@ async def test_update_version_empty_call_grpc_asyncio():
     with mock.patch.object(type(client.transport.update_version), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            gcdc_version.Version(
+            version.Version(
                 name="name_value",
                 display_name="display_name_value",
                 description="description_value",
-                state=gcdc_version.Version.State.RUNNING,
+                state=version.Version.State.RUNNING,
             )
         )
         await client.update_version(request=None)
@@ -5307,7 +5297,7 @@ async def test_update_version_empty_call_grpc_asyncio():
         # Establish that the underlying stub method was called.
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        request_msg = gcdc_version.UpdateVersionRequest()
+        request_msg = version.UpdateVersionRequest()
 
         assert args[0] == request_msg
 
@@ -5653,9 +5643,7 @@ def test_get_version_rest_interceptors(null_interceptor):
         post_with_metadata.assert_called_once()
 
 
-def test_create_version_rest_bad_request(
-    request_type=gcdc_version.CreateVersionRequest,
-):
+def test_create_version_rest_bad_request(request_type=version.CreateVersionRequest):
     client = VersionsClient(
         credentials=ga_credentials.AnonymousCredentials(), transport="rest"
     )
@@ -5683,7 +5671,7 @@ def test_create_version_rest_bad_request(
 @pytest.mark.parametrize(
     "request_type",
     [
-        gcdc_version.CreateVersionRequest,
+        version.CreateVersionRequest,
         dict,
     ],
 )
@@ -5713,7 +5701,7 @@ def test_create_version_rest_call_success(request_type):
     # See https://github.com/googleapis/gapic-generator-python/issues/1748
 
     # Determine if the message type is proto-plus or protobuf
-    test_field = gcdc_version.CreateVersionRequest.meta.fields["version"]
+    test_field = version.CreateVersionRequest.meta.fields["version"]
 
     def get_message_fields(field):
         # Given a field which is a message (composite type), return a list with
@@ -5819,9 +5807,7 @@ def test_create_version_rest_interceptors(null_interceptor):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
-        pb_message = gcdc_version.CreateVersionRequest.pb(
-            gcdc_version.CreateVersionRequest()
-        )
+        pb_message = version.CreateVersionRequest.pb(version.CreateVersionRequest())
         transcode.return_value = {
             "method": "post",
             "uri": "my_uri",
@@ -5835,7 +5821,7 @@ def test_create_version_rest_interceptors(null_interceptor):
         return_value = json_format.MessageToJson(operations_pb2.Operation())
         req.return_value.content = return_value
 
-        request = gcdc_version.CreateVersionRequest()
+        request = version.CreateVersionRequest()
         metadata = [
             ("key", "val"),
             ("cephalopod", "squid"),
@@ -5857,9 +5843,7 @@ def test_create_version_rest_interceptors(null_interceptor):
         post_with_metadata.assert_called_once()
 
 
-def test_update_version_rest_bad_request(
-    request_type=gcdc_version.UpdateVersionRequest,
-):
+def test_update_version_rest_bad_request(request_type=version.UpdateVersionRequest):
     client = VersionsClient(
         credentials=ga_credentials.AnonymousCredentials(), transport="rest"
     )
@@ -5889,7 +5873,7 @@ def test_update_version_rest_bad_request(
 @pytest.mark.parametrize(
     "request_type",
     [
-        gcdc_version.UpdateVersionRequest,
+        version.UpdateVersionRequest,
         dict,
     ],
 )
@@ -5921,7 +5905,7 @@ def test_update_version_rest_call_success(request_type):
     # See https://github.com/googleapis/gapic-generator-python/issues/1748
 
     # Determine if the message type is proto-plus or protobuf
-    test_field = gcdc_version.UpdateVersionRequest.meta.fields["version"]
+    test_field = version.UpdateVersionRequest.meta.fields["version"]
 
     def get_message_fields(field):
         # Given a field which is a message (composite type), return a list with
@@ -5988,11 +5972,11 @@ def test_update_version_rest_call_success(request_type):
     # Mock the http request call within the method and fake a response.
     with mock.patch.object(type(client.transport._session), "request") as req:
         # Designate an appropriate value for the returned response.
-        return_value = gcdc_version.Version(
+        return_value = version.Version(
             name="name_value",
             display_name="display_name_value",
             description="description_value",
-            state=gcdc_version.Version.State.RUNNING,
+            state=version.Version.State.RUNNING,
         )
 
         # Wrap the value into a proper Response obj
@@ -6000,7 +5984,7 @@ def test_update_version_rest_call_success(request_type):
         response_value.status_code = 200
 
         # Convert return value to protobuf type
-        return_value = gcdc_version.Version.pb(return_value)
+        return_value = version.Version.pb(return_value)
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
@@ -6008,11 +5992,11 @@ def test_update_version_rest_call_success(request_type):
         response = client.update_version(request)
 
     # Establish that the response is the type that we expect.
-    assert isinstance(response, gcdc_version.Version)
+    assert isinstance(response, version.Version)
     assert response.name == "name_value"
     assert response.display_name == "display_name_value"
     assert response.description == "description_value"
-    assert response.state == gcdc_version.Version.State.RUNNING
+    assert response.state == version.Version.State.RUNNING
 
 
 @pytest.mark.parametrize("null_interceptor", [True, False])
@@ -6037,9 +6021,7 @@ def test_update_version_rest_interceptors(null_interceptor):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
-        pb_message = gcdc_version.UpdateVersionRequest.pb(
-            gcdc_version.UpdateVersionRequest()
-        )
+        pb_message = version.UpdateVersionRequest.pb(version.UpdateVersionRequest())
         transcode.return_value = {
             "method": "post",
             "uri": "my_uri",
@@ -6050,17 +6032,17 @@ def test_update_version_rest_interceptors(null_interceptor):
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
         req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
-        return_value = gcdc_version.Version.to_json(gcdc_version.Version())
+        return_value = version.Version.to_json(version.Version())
         req.return_value.content = return_value
 
-        request = gcdc_version.UpdateVersionRequest()
+        request = version.UpdateVersionRequest()
         metadata = [
             ("key", "val"),
             ("cephalopod", "squid"),
         ]
         pre.return_value = request, metadata
-        post.return_value = gcdc_version.Version()
-        post_with_metadata.return_value = gcdc_version.Version(), metadata
+        post.return_value = version.Version()
+        post_with_metadata.return_value = version.Version(), metadata
 
         client.update_version(
             request,
@@ -6798,7 +6780,7 @@ def test_create_version_empty_call_rest():
         # Establish that the underlying stub method was called.
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        request_msg = gcdc_version.CreateVersionRequest()
+        request_msg = version.CreateVersionRequest()
 
         assert args[0] == request_msg
 
@@ -6818,7 +6800,7 @@ def test_update_version_empty_call_rest():
         # Establish that the underlying stub method was called.
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        request_msg = gcdc_version.UpdateVersionRequest()
+        request_msg = version.UpdateVersionRequest()
 
         assert args[0] == request_msg
 

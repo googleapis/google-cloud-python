@@ -67,7 +67,6 @@ from google.protobuf import field_mask_pb2  # type: ignore
 
 from google.cloud.dialogflowcx_v3.services.generators import pagers
 from google.cloud.dialogflowcx_v3.types import generator
-from google.cloud.dialogflowcx_v3.types import generator as gcdc_generator
 
 from .transports.base import DEFAULT_CLIENT_INFO, GeneratorsTransport
 from .transports.grpc import GeneratorsGrpcTransport
@@ -111,8 +110,8 @@ class GeneratorsClientMeta(type):
 
 
 class GeneratorsClient(metaclass=GeneratorsClientMeta):
-    """Service for managing
-    [Generators][google.cloud.dialogflow.cx.v3.Generator]
+    """Service for managing `Generators
+    <google.cloud.dialogflow.cx.v3.Generator>`__
     """
 
     @staticmethod
@@ -756,9 +755,11 @@ class GeneratorsClient(metaclass=GeneratorsClientMeta):
         Args:
             request (Union[google.cloud.dialogflowcx_v3.types.ListGeneratorsRequest, dict]):
                 The request object. The request message for
-                [Generators.ListGenerators][google.cloud.dialogflow.cx.v3.Generators.ListGenerators].
+                `Generators.ListGenerators
+                <google.cloud.dialogflow.cx.v3.Generators.ListGenerators>`__.
             parent (str):
-                Required. The agent to list all generators for. Format:
+                Required. The agent to list all
+                generators for. Format:
                 ``projects/<ProjectID>/locations/<LocationID>/agents/<AgentID>``.
 
                 This corresponds to the ``parent`` field
@@ -775,10 +776,12 @@ class GeneratorsClient(metaclass=GeneratorsClientMeta):
         Returns:
             google.cloud.dialogflowcx_v3.services.generators.pagers.ListGeneratorsPager:
                 The response message for
-                   [Generators.ListGenerators][google.cloud.dialogflow.cx.v3.Generators.ListGenerators].
+                `Generators.ListGenerators
+                <google.cloud.dialogflow.cx.v3.Generators.ListGenerators>`__.
 
-                Iterating over this object will yield results and
-                resolve additional pages automatically.
+                Iterating over this object will yield
+                results and resolve additional pages
+                automatically.
 
         """
         # Create or coerce a protobuf request object.
@@ -878,9 +881,12 @@ class GeneratorsClient(metaclass=GeneratorsClientMeta):
         Args:
             request (Union[google.cloud.dialogflowcx_v3.types.GetGeneratorRequest, dict]):
                 The request object. The request message for
-                [Generators.GetGenerator][google.cloud.dialogflow.cx.v3.Generators.GetGenerator].
+                `Generators.GetGenerator
+                <google.cloud.dialogflow.cx.v3.Generators.GetGenerator>`__.
             name (str):
-                Required. The name of the generator. Format:
+                Required. The name of the generator.
+                Format:
+
                 ``projects/<ProjectID>/locations/<LocationID>/agents/<AgentID>/generators/<GeneratorID>``.
 
                 This corresponds to the ``name`` field
@@ -952,14 +958,14 @@ class GeneratorsClient(metaclass=GeneratorsClientMeta):
 
     def create_generator(
         self,
-        request: Optional[Union[gcdc_generator.CreateGeneratorRequest, dict]] = None,
+        request: Optional[Union[generator.CreateGeneratorRequest, dict]] = None,
         *,
         parent: Optional[str] = None,
-        generator: Optional[gcdc_generator.Generator] = None,
+        generator: Optional[generator.Generator] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
-    ) -> gcdc_generator.Generator:
+    ) -> generator.Generator:
         r"""Creates a generator in the specified agent.
 
         .. code-block:: python
@@ -996,9 +1002,11 @@ class GeneratorsClient(metaclass=GeneratorsClientMeta):
         Args:
             request (Union[google.cloud.dialogflowcx_v3.types.CreateGeneratorRequest, dict]):
                 The request object. The request message for
-                [Generators.CreateGenerator][google.cloud.dialogflow.cx.v3.Generators.CreateGenerator].
+                `Generators.CreateGenerator
+                <google.cloud.dialogflow.cx.v3.Generators.CreateGenerator>`__.
             parent (str):
-                Required. The agent to create a generator for. Format:
+                Required. The agent to create a
+                generator for. Format:
                 ``projects/<ProjectID>/locations/<LocationID>/agents/<AgentID>``.
 
                 This corresponds to the ``parent`` field
@@ -1042,8 +1050,8 @@ class GeneratorsClient(metaclass=GeneratorsClientMeta):
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
-        if not isinstance(request, gcdc_generator.CreateGeneratorRequest):
-            request = gcdc_generator.CreateGeneratorRequest(request)
+        if not isinstance(request, generator.CreateGeneratorRequest):
+            request = generator.CreateGeneratorRequest(request)
             # If we have keyword arguments corresponding to fields on the
             # request, apply these.
             if parent is not None:
@@ -1077,14 +1085,14 @@ class GeneratorsClient(metaclass=GeneratorsClientMeta):
 
     def update_generator(
         self,
-        request: Optional[Union[gcdc_generator.UpdateGeneratorRequest, dict]] = None,
+        request: Optional[Union[generator.UpdateGeneratorRequest, dict]] = None,
         *,
-        generator: Optional[gcdc_generator.Generator] = None,
+        generator: Optional[generator.Generator] = None,
         update_mask: Optional[field_mask_pb2.FieldMask] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
-    ) -> gcdc_generator.Generator:
+    ) -> generator.Generator:
         r"""Update the specified generator.
 
         .. code-block:: python
@@ -1120,7 +1128,8 @@ class GeneratorsClient(metaclass=GeneratorsClientMeta):
         Args:
             request (Union[google.cloud.dialogflowcx_v3.types.UpdateGeneratorRequest, dict]):
                 The request object. The request message for
-                [Generators.UpdateGenerator][google.cloud.dialogflow.cx.v3.Generators.UpdateGenerator].
+                `Generators.UpdateGenerator
+                <google.cloud.dialogflow.cx.v3.Generators.UpdateGenerator>`__.
             generator (google.cloud.dialogflowcx_v3.types.Generator):
                 Required. The generator to update.
                 This corresponds to the ``generator`` field
@@ -1167,8 +1176,8 @@ class GeneratorsClient(metaclass=GeneratorsClientMeta):
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
-        if not isinstance(request, gcdc_generator.UpdateGeneratorRequest):
-            request = gcdc_generator.UpdateGeneratorRequest(request)
+        if not isinstance(request, generator.UpdateGeneratorRequest):
+            request = generator.UpdateGeneratorRequest(request)
             # If we have keyword arguments corresponding to fields on the
             # request, apply these.
             if generator is not None:
@@ -1239,9 +1248,12 @@ class GeneratorsClient(metaclass=GeneratorsClientMeta):
         Args:
             request (Union[google.cloud.dialogflowcx_v3.types.DeleteGeneratorRequest, dict]):
                 The request object. The request message for
-                [Generators.DeleteGenerator][google.cloud.dialogflow.cx.v3.Generators.DeleteGenerator].
+                `Generators.DeleteGenerator
+                <google.cloud.dialogflow.cx.v3.Generators.DeleteGenerator>`__.
             name (str):
-                Required. The name of the generator to delete. Format:
+                Required. The name of the generator to
+                delete. Format:
+
                 ``projects/<ProjectID>/locations/<LocationID>/agents/<AgentID>/generators/<GeneratorID>``.
 
                 This corresponds to the ``name`` field

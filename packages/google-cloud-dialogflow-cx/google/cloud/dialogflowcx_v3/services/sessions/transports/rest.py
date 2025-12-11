@@ -488,10 +488,11 @@ class SessionsRestStub:
 class SessionsRestTransport(_BaseSessionsRestTransport):
     """REST backend synchronous transport for Sessions.
 
-    A session represents an interaction with a user. You retrieve user
-    input and pass it to the
-    [DetectIntent][google.cloud.dialogflow.cx.v3.Sessions.DetectIntent]
-    method to determine user intent and respond.
+    A session represents an interaction with a user. You retrieve
+    user input and pass it to the
+    `DetectIntent
+    <google.cloud.dialogflow.cx.v3.Sessions.DetectIntent>`__ method
+    to determine user intent and respond.
 
     This class defines the same methods as the primary client, so the
     primary client can load the underlying transport implementation

@@ -29,9 +29,6 @@ import google.protobuf
 from google.protobuf import empty_pb2  # type: ignore
 
 from google.cloud.dialogflowcx_v3 import gapic_version as package_version
-from google.cloud.dialogflowcx_v3.types import (
-    session_entity_type as gcdc_session_entity_type,
-)
 from google.cloud.dialogflowcx_v3.types import session_entity_type
 
 DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
@@ -231,10 +228,10 @@ class SessionEntityTypesTransport(abc.ABC):
     def create_session_entity_type(
         self,
     ) -> Callable[
-        [gcdc_session_entity_type.CreateSessionEntityTypeRequest],
+        [session_entity_type.CreateSessionEntityTypeRequest],
         Union[
-            gcdc_session_entity_type.SessionEntityType,
-            Awaitable[gcdc_session_entity_type.SessionEntityType],
+            session_entity_type.SessionEntityType,
+            Awaitable[session_entity_type.SessionEntityType],
         ],
     ]:
         raise NotImplementedError()
@@ -243,10 +240,10 @@ class SessionEntityTypesTransport(abc.ABC):
     def update_session_entity_type(
         self,
     ) -> Callable[
-        [gcdc_session_entity_type.UpdateSessionEntityTypeRequest],
+        [session_entity_type.UpdateSessionEntityTypeRequest],
         Union[
-            gcdc_session_entity_type.SessionEntityType,
-            Awaitable[gcdc_session_entity_type.SessionEntityType],
+            session_entity_type.SessionEntityType,
+            Awaitable[session_entity_type.SessionEntityType],
         ],
     ]:
         raise NotImplementedError()

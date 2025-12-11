@@ -43,11 +43,14 @@ __protobuf__ = proto.module(
 
 class CreateVersionOperationMetadata(proto.Message):
     r"""Metadata associated with the long running operation for
-    [Versions.CreateVersion][google.cloud.dialogflow.cx.v3.Versions.CreateVersion].
+    `Versions.CreateVersion
+    <google.cloud.dialogflow.cx.v3.Versions.CreateVersion>`__.
 
     Attributes:
         version (str):
-            Name of the created version. Format:
+            Name of the created version.
+            Format:
+
             ``projects/<ProjectID>/locations/<LocationID>/agents/<AgentID>/flows/<FlowID>/versions/<VersionID>``.
     """
 
@@ -136,19 +139,22 @@ class Version(proto.Message):
 
 class ListVersionsRequest(proto.Message):
     r"""The request message for
-    [Versions.ListVersions][google.cloud.dialogflow.cx.v3.Versions.ListVersions].
+    `Versions.ListVersions
+    <google.cloud.dialogflow.cx.v3.Versions.ListVersions>`__.
 
     Attributes:
         parent (str):
-            Required. The [Flow][google.cloud.dialogflow.cx.v3.Flow] to
-            list all versions for. Format:
+            Required. The `Flow
+            <google.cloud.dialogflow.cx.v3.Flow>`__ to list
+            all versions for. Format:
+
             ``projects/<ProjectID>/locations/<LocationID>/agents/<AgentID>/flows/<FlowID>``.
         page_size (int):
             The maximum number of items to return in a
             single page. By default 20 and at most 100.
         page_token (str):
-            The next_page_token value returned from a previous list
-            request.
+            The next_page_token value returned from a
+            previous list request.
     """
 
     parent: str = proto.Field(
@@ -167,14 +173,16 @@ class ListVersionsRequest(proto.Message):
 
 class ListVersionsResponse(proto.Message):
     r"""The response message for
-    [Versions.ListVersions][google.cloud.dialogflow.cx.v3.Versions.ListVersions].
+    `Versions.ListVersions
+    <google.cloud.dialogflow.cx.v3.Versions.ListVersions>`__.
 
     Attributes:
         versions (MutableSequence[google.cloud.dialogflowcx_v3.types.Version]):
-            A list of versions. There will be a maximum number of items
-            returned based on the page_size field in the request. The
-            list may in some cases be empty or contain fewer entries
-            than page_size even if this isn't the last page.
+            A list of versions. There will be a maximum
+            number of items returned based on the page_size
+            field in the request. The list may in some cases
+            be empty or contain fewer entries than page_size
+            even if this isn't the last page.
         next_page_token (str):
             Token to retrieve the next page of results,
             or empty if there are no more results in the
@@ -198,12 +206,15 @@ class ListVersionsResponse(proto.Message):
 
 class GetVersionRequest(proto.Message):
     r"""The request message for
-    [Versions.GetVersion][google.cloud.dialogflow.cx.v3.Versions.GetVersion].
+    `Versions.GetVersion
+    <google.cloud.dialogflow.cx.v3.Versions.GetVersion>`__.
 
     Attributes:
         name (str):
-            Required. The name of the
-            [Version][google.cloud.dialogflow.cx.v3.Version]. Format:
+            Required. The name of the `Version
+            <google.cloud.dialogflow.cx.v3.Version>`__.
+            Format:
+
             ``projects/<ProjectID>/locations/<LocationID>/agents/<AgentID>/flows/<FlowID>/versions/<VersionID>``.
     """
 
@@ -215,13 +226,17 @@ class GetVersionRequest(proto.Message):
 
 class CreateVersionRequest(proto.Message):
     r"""The request message for
-    [Versions.CreateVersion][google.cloud.dialogflow.cx.v3.Versions.CreateVersion].
+    `Versions.CreateVersion
+    <google.cloud.dialogflow.cx.v3.Versions.CreateVersion>`__.
 
     Attributes:
         parent (str):
-            Required. The [Flow][google.cloud.dialogflow.cx.v3.Flow] to
-            create an [Version][google.cloud.dialogflow.cx.v3.Version]
-            for. Format:
+            Required. The `Flow
+            <google.cloud.dialogflow.cx.v3.Flow>`__ to
+            create an `Version
+            <google.cloud.dialogflow.cx.v3.Version>`__ for.
+            Format:
+
             ``projects/<ProjectID>/locations/<LocationID>/agents/<AgentID>/flows/<FlowID>``.
         version (google.cloud.dialogflowcx_v3.types.Version):
             Required. The version to create.
@@ -240,15 +255,16 @@ class CreateVersionRequest(proto.Message):
 
 class UpdateVersionRequest(proto.Message):
     r"""The request message for
-    [Versions.UpdateVersion][google.cloud.dialogflow.cx.v3.Versions.UpdateVersion].
+    `Versions.UpdateVersion
+    <google.cloud.dialogflow.cx.v3.Versions.UpdateVersion>`__.
 
     Attributes:
         version (google.cloud.dialogflowcx_v3.types.Version):
             Required. The version to update.
         update_mask (google.protobuf.field_mask_pb2.FieldMask):
-            Required. The mask to control which fields get updated.
-            Currently only ``description`` and ``display_name`` can be
-            updated.
+            Required. The mask to control which fields get
+            updated. Currently only ``description`` and
+            ``display_name`` can be updated.
     """
 
     version: "Version" = proto.Field(
@@ -265,13 +281,15 @@ class UpdateVersionRequest(proto.Message):
 
 class DeleteVersionRequest(proto.Message):
     r"""The request message for
-    [Versions.DeleteVersion][google.cloud.dialogflow.cx.v3.Versions.DeleteVersion].
+    `Versions.DeleteVersion
+    <google.cloud.dialogflow.cx.v3.Versions.DeleteVersion>`__.
 
     Attributes:
         name (str):
-            Required. The name of the
-            [Version][google.cloud.dialogflow.cx.v3.Version] to delete.
-            Format:
+            Required. The name of the `Version
+            <google.cloud.dialogflow.cx.v3.Version>`__ to
+            delete. Format:
+
             ``projects/<ProjectID>/locations/<LocationID>/agents/<AgentID>/flows/<FlowID>/versions/<VersionID>``.
     """
 
@@ -283,20 +301,23 @@ class DeleteVersionRequest(proto.Message):
 
 class LoadVersionRequest(proto.Message):
     r"""The request message for
-    [Versions.LoadVersion][google.cloud.dialogflow.cx.v3.Versions.LoadVersion].
+    `Versions.LoadVersion
+    <google.cloud.dialogflow.cx.v3.Versions.LoadVersion>`__.
 
     Attributes:
         name (str):
-            Required. The
-            [Version][google.cloud.dialogflow.cx.v3.Version] to be
+            Required. The `Version
+            <google.cloud.dialogflow.cx.v3.Version>`__ to be
             loaded to draft flow. Format:
+
             ``projects/<ProjectID>/locations/<LocationID>/agents/<AgentID>/flows/<FlowID>/versions/<VersionID>``.
         allow_override_agent_resources (bool):
-            This field is used to prevent accidental overwrite of other
-            agent resources, which can potentially impact other flow's
-            behavior. If ``allow_override_agent_resources`` is false,
-            conflicted agent-level resources will not be overridden
-            (i.e. intents, entities, webhooks).
+            This field is used to prevent accidental
+            overwrite of other agent resources, which can
+            potentially impact other flow's behavior. If
+            ``allow_override_agent_resources`` is false,
+            conflicted agent-level resources will not be
+            overridden (i.e. intents, entities, webhooks).
     """
 
     name: str = proto.Field(
@@ -311,29 +332,35 @@ class LoadVersionRequest(proto.Message):
 
 class CompareVersionsRequest(proto.Message):
     r"""The request message for
-    [Versions.CompareVersions][google.cloud.dialogflow.cx.v3.Versions.CompareVersions].
+    `Versions.CompareVersions
+    <google.cloud.dialogflow.cx.v3.Versions.CompareVersions>`__.
 
     Attributes:
         base_version (str):
-            Required. Name of the base flow version to compare with the
-            target version. Use version ID ``0`` to indicate the draft
-            version of the specified flow.
+            Required. Name of the base flow version to
+            compare with the target version. Use version ID
+            ``0`` to indicate the draft version of the
+            specified flow.
 
             Format:
+
             ``projects/<ProjectID>/locations/<LocationID>/agents/<AgentID>/flows/<FlowID>/versions/<VersionID>``.
         target_version (str):
-            Required. Name of the target flow version to compare with
-            the base version. Use version ID ``0`` to indicate the draft
-            version of the specified flow. Format:
+            Required. Name of the target flow version to
+            compare with the base version. Use version ID
+            ``0`` to indicate the draft version of the
+            specified flow. Format:
+
             ``projects/<ProjectID>/locations/<LocationID>/agents/<AgentID>/flows/<FlowID>/versions/<VersionID>``.
         language_code (str):
             The language to compare the flow versions for.
 
-            If not specified, the agent's default language is used.
-            `Many
-            languages <https://cloud.google.com/dialogflow/docs/reference/language>`__
-            are supported. Note: languages must be enabled in the agent
-            before they can be used.
+            If not specified, the agent's default language
+            is used. `Many
+            languages
+            <https://cloud.google.com/dialogflow/docs/reference/language>`__
+            are supported. Note: languages must be enabled
+            in the agent before they can be used.
     """
 
     base_version: str = proto.Field(
@@ -352,7 +379,8 @@ class CompareVersionsRequest(proto.Message):
 
 class CompareVersionsResponse(proto.Message):
     r"""The response message for
-    [Versions.CompareVersions][google.cloud.dialogflow.cx.v3.Versions.CompareVersions].
+    `Versions.CompareVersions
+    <google.cloud.dialogflow.cx.v3.Versions.CompareVersions>`__.
 
     Attributes:
         base_version_content_json (str):

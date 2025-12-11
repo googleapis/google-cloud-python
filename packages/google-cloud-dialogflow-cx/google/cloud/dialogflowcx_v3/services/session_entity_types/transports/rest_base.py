@@ -23,9 +23,6 @@ from google.longrunning import operations_pb2  # type: ignore
 from google.protobuf import empty_pb2  # type: ignore
 from google.protobuf import json_format
 
-from google.cloud.dialogflowcx_v3.types import (
-    session_entity_type as gcdc_session_entity_type,
-)
 from google.cloud.dialogflowcx_v3.types import session_entity_type
 
 from .base import DEFAULT_CLIENT_INFO, SessionEntityTypesTransport
@@ -125,9 +122,7 @@ class _BaseSessionEntityTypesRestTransport(SessionEntityTypesTransport):
 
         @staticmethod
         def _get_transcoded_request(http_options, request):
-            pb_request = gcdc_session_entity_type.CreateSessionEntityTypeRequest.pb(
-                request
-            )
+            pb_request = session_entity_type.CreateSessionEntityTypeRequest.pb(request)
             transcoded_request = path_template.transcode(http_options, pb_request)
             return transcoded_request
 
@@ -342,9 +337,7 @@ class _BaseSessionEntityTypesRestTransport(SessionEntityTypesTransport):
 
         @staticmethod
         def _get_transcoded_request(http_options, request):
-            pb_request = gcdc_session_entity_type.UpdateSessionEntityTypeRequest.pb(
-                request
-            )
+            pb_request = session_entity_type.UpdateSessionEntityTypeRequest.pb(request)
             transcoded_request = path_template.transcode(http_options, pb_request)
             return transcoded_request
 

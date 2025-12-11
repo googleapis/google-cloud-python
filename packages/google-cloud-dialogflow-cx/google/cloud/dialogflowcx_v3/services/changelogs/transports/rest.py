@@ -324,8 +324,8 @@ class ChangelogsRestStub:
 class ChangelogsRestTransport(_BaseChangelogsRestTransport):
     """REST backend synchronous transport for Changelogs.
 
-    Service for managing
-    [Changelogs][google.cloud.dialogflow.cx.v3.Changelog].
+    Service for managing `Changelogs
+    <google.cloud.dialogflow.cx.v3.Changelog>`__.
 
     This class defines the same methods as the primary client, so the
     primary client can load the underlying transport implementation
@@ -443,7 +443,8 @@ class ChangelogsRestTransport(_BaseChangelogsRestTransport):
             Args:
                 request (~.changelog.GetChangelogRequest):
                     The request object. The request message for
-                [Changelogs.GetChangelog][google.cloud.dialogflow.cx.v3.Changelogs.GetChangelog].
+                `Changelogs.GetChangelog
+                <google.cloud.dialogflow.cx.v3.Changelogs.GetChangelog>`__.
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -594,7 +595,8 @@ class ChangelogsRestTransport(_BaseChangelogsRestTransport):
             Args:
                 request (~.changelog.ListChangelogsRequest):
                     The request object. The request message for
-                [Changelogs.ListChangelogs][google.cloud.dialogflow.cx.v3.Changelogs.ListChangelogs].
+                `Changelogs.ListChangelogs
+                <google.cloud.dialogflow.cx.v3.Changelogs.ListChangelogs>`__.
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -606,7 +608,8 @@ class ChangelogsRestTransport(_BaseChangelogsRestTransport):
             Returns:
                 ~.changelog.ListChangelogsResponse:
                     The response message for
-                [Changelogs.ListChangelogs][google.cloud.dialogflow.cx.v3.Changelogs.ListChangelogs].
+                `Changelogs.ListChangelogs
+                <google.cloud.dialogflow.cx.v3.Changelogs.ListChangelogs>`__.
 
             """
 

@@ -38,14 +38,18 @@ __protobuf__ = proto.module(
 
 class TransitionRouteGroup(proto.Message):
     r"""A TransitionRouteGroup represents a group of
-    [``TransitionRoutes``][google.cloud.dialogflow.cx.v3.TransitionRoute]
-    to be used by a [Page][google.cloud.dialogflow.cx.v3.Page].
+    ```TransitionRoutes``
+    <google.cloud.dialogflow.cx.v3.TransitionRoute>`__ to be used by
+    a `Page <google.cloud.dialogflow.cx.v3.Page>`__.
 
     Attributes:
         name (str):
-            The unique identifier of the transition route group.
-            [TransitionRouteGroups.CreateTransitionRouteGroup][google.cloud.dialogflow.cx.v3.TransitionRouteGroups.CreateTransitionRouteGroup]
+            The unique identifier of the transition route
+            group.
+            `TransitionRouteGroups.CreateTransitionRouteGroup
+            <google.cloud.dialogflow.cx.v3.TransitionRouteGroups.CreateTransitionRouteGroup>`__
             populates the name automatically. Format:
+
             ``projects/<ProjectID>/locations/<LocationID>/agents/<AgentID>/flows/<FlowID>/transitionRouteGroups/<TransitionRouteGroupID>``
             .
         display_name (str):
@@ -55,7 +59,8 @@ class TransitionRouteGroup(proto.Message):
             characters.
         transition_routes (MutableSequence[google.cloud.dialogflowcx_v3.types.TransitionRoute]):
             Transition routes associated with the
-            [TransitionRouteGroup][google.cloud.dialogflow.cx.v3.TransitionRouteGroup].
+            `TransitionRouteGroup
+            <google.cloud.dialogflow.cx.v3.TransitionRouteGroup>`__.
     """
 
     name: str = proto.Field(
@@ -75,33 +80,39 @@ class TransitionRouteGroup(proto.Message):
 
 class ListTransitionRouteGroupsRequest(proto.Message):
     r"""The request message for
-    [TransitionRouteGroups.ListTransitionRouteGroups][google.cloud.dialogflow.cx.v3.TransitionRouteGroups.ListTransitionRouteGroups].
+    `TransitionRouteGroups.ListTransitionRouteGroups
+    <google.cloud.dialogflow.cx.v3.TransitionRouteGroups.ListTransitionRouteGroups>`__.
 
     Attributes:
         parent (str):
-            Required. The flow to list all transition route groups for.
-            Format:
+            Required. The flow to list all transition route
+            groups for. Format:
+
             ``projects/<ProjectID>/locations/<LocationID>/agents/<AgentID>/flows/<FlowID>``
-            or \`projects//locations//agents/.
+            or
+            `projects/<ProjectID>/locations/<LocationID>/agents/<AgentID>.
         page_size (int):
             The maximum number of items to return in a
             single page. By default 100 and at most 1000.
         page_token (str):
-            The next_page_token value returned from a previous list
-            request.
+            The next_page_token value returned from a
+            previous list request.
         language_code (str):
-            The language to list transition route groups for. The
-            following fields are language dependent:
+            The language to list transition route groups
+            for. The following fields are language
+            dependent:
 
-            - ``TransitionRouteGroup.transition_routes.trigger_fulfillment.messages``
-            -
-
+            *
+            ``TransitionRouteGroup.transition_routes.trigger_fulfillment.messages``
+            *
             ``TransitionRouteGroup.transition_routes.trigger_fulfillment.conditional_cases``
 
-            If not specified, the agent's default language is used.
-            `Many
-            languages <https://cloud.google.com/dialogflow/cx/docs/reference/language>`__
-            are supported. Note: languages must be enabled in the agent
+            If not specified, the agent's default language
+            is used. `Many
+            languages
+            <https://cloud.google.com/dialogflow/cx/docs/reference/language>`__
+            are supported.
+            Note: languages must be enabled in the agent
             before they can be used.
     """
 
@@ -125,15 +136,16 @@ class ListTransitionRouteGroupsRequest(proto.Message):
 
 class ListTransitionRouteGroupsResponse(proto.Message):
     r"""The response message for
-    [TransitionRouteGroups.ListTransitionRouteGroups][google.cloud.dialogflow.cx.v3.TransitionRouteGroups.ListTransitionRouteGroups].
+    `TransitionRouteGroups.ListTransitionRouteGroups
+    <google.cloud.dialogflow.cx.v3.TransitionRouteGroups.ListTransitionRouteGroups>`__.
 
     Attributes:
         transition_route_groups (MutableSequence[google.cloud.dialogflowcx_v3.types.TransitionRouteGroup]):
-            The list of transition route groups. There will be a maximum
-            number of items returned based on the page_size field in the
-            request. The list may in some cases be empty or contain
-            fewer entries than page_size even if this isn't the last
-            page.
+            The list of transition route groups. There will
+            be a maximum number of items returned based on
+            the page_size field in the request. The list may
+            in some cases be empty or contain fewer entries
+            than page_size even if this isn't the last page.
         next_page_token (str):
             Token to retrieve the next page of results,
             or empty if there are no more results in the
@@ -159,29 +171,35 @@ class ListTransitionRouteGroupsResponse(proto.Message):
 
 class GetTransitionRouteGroupRequest(proto.Message):
     r"""The request message for
-    [TransitionRouteGroups.GetTransitionRouteGroup][google.cloud.dialogflow.cx.v3.TransitionRouteGroups.GetTransitionRouteGroup].
+    `TransitionRouteGroups.GetTransitionRouteGroup
+    <google.cloud.dialogflow.cx.v3.TransitionRouteGroups.GetTransitionRouteGroup>`__.
 
     Attributes:
         name (str):
             Required. The name of the
-            [TransitionRouteGroup][google.cloud.dialogflow.cx.v3.TransitionRouteGroup].
+            `TransitionRouteGroup
+            <google.cloud.dialogflow.cx.v3.TransitionRouteGroup>`__.
             Format:
+
             ``projects/<ProjectID>/locations/<LocationID>/agents/<AgentID>/flows/<FlowID>/transitionRouteGroups/<TransitionRouteGroupID>``
             or
             ``projects/<ProjectID>/locations/<LocationID>/agents/<AgentID>/transitionRouteGroups/<TransitionRouteGroupID>``.
         language_code (str):
-            The language to retrieve the transition route group for. The
-            following fields are language dependent:
+            The language to retrieve the transition route
+            group for. The following fields are language
+            dependent:
 
-            - ``TransitionRouteGroup.transition_routes.trigger_fulfillment.messages``
-            -
-
+            *
+            ``TransitionRouteGroup.transition_routes.trigger_fulfillment.messages``
+            *
             ``TransitionRouteGroup.transition_routes.trigger_fulfillment.conditional_cases``
 
-            If not specified, the agent's default language is used.
-            `Many
-            languages <https://cloud.google.com/dialogflow/cx/docs/reference/language>`__
-            are supported. Note: languages must be enabled in the agent
+            If not specified, the agent's default language
+            is used. `Many
+            languages
+            <https://cloud.google.com/dialogflow/cx/docs/reference/language>`__
+            are supported.
+            Note: languages must be enabled in the agent
             before they can be used.
     """
 
@@ -197,13 +215,16 @@ class GetTransitionRouteGroupRequest(proto.Message):
 
 class CreateTransitionRouteGroupRequest(proto.Message):
     r"""The request message for
-    [TransitionRouteGroups.CreateTransitionRouteGroup][google.cloud.dialogflow.cx.v3.TransitionRouteGroups.CreateTransitionRouteGroup].
+    `TransitionRouteGroups.CreateTransitionRouteGroup
+    <google.cloud.dialogflow.cx.v3.TransitionRouteGroups.CreateTransitionRouteGroup>`__.
 
     Attributes:
         parent (str):
             Required. The flow to create an
-            [TransitionRouteGroup][google.cloud.dialogflow.cx.v3.TransitionRouteGroup]
+            `TransitionRouteGroup
+            <google.cloud.dialogflow.cx.v3.TransitionRouteGroup>`__
             for. Format:
+
             ``projects/<ProjectID>/locations/<LocationID>/agents/<AgentID>/flows/<FlowID>``
             or
             ``projects/<ProjectID>/locations/<LocationID>/agents/<AgentID>``
@@ -214,16 +235,17 @@ class CreateTransitionRouteGroupRequest(proto.Message):
         language_code (str):
             The language of the following fields in
             ``TransitionRouteGroup``:
-
-            - ``TransitionRouteGroup.transition_routes.trigger_fulfillment.messages``
-            -
-
+            *
+            ``TransitionRouteGroup.transition_routes.trigger_fulfillment.messages``
+            *
             ``TransitionRouteGroup.transition_routes.trigger_fulfillment.conditional_cases``
 
-            If not specified, the agent's default language is used.
-            `Many
-            languages <https://cloud.google.com/dialogflow/cx/docs/reference/language>`__
-            are supported. Note: languages must be enabled in the agent
+            If not specified, the agent's default language
+            is used. `Many
+            languages
+            <https://cloud.google.com/dialogflow/cx/docs/reference/language>`__
+            are supported.
+            Note: languages must be enabled in the agent
             before they can be used.
     """
 
@@ -244,7 +266,8 @@ class CreateTransitionRouteGroupRequest(proto.Message):
 
 class UpdateTransitionRouteGroupRequest(proto.Message):
     r"""The request message for
-    [TransitionRouteGroups.UpdateTransitionRouteGroup][google.cloud.dialogflow.cx.v3.TransitionRouteGroups.UpdateTransitionRouteGroup].
+    `TransitionRouteGroups.UpdateTransitionRouteGroup
+    <google.cloud.dialogflow.cx.v3.TransitionRouteGroups.UpdateTransitionRouteGroup>`__.
 
     Attributes:
         transition_route_group (google.cloud.dialogflowcx_v3.types.TransitionRouteGroup):
@@ -255,16 +278,17 @@ class UpdateTransitionRouteGroupRequest(proto.Message):
         language_code (str):
             The language of the following fields in
             ``TransitionRouteGroup``:
-
-            - ``TransitionRouteGroup.transition_routes.trigger_fulfillment.messages``
-            -
-
+            *
+            ``TransitionRouteGroup.transition_routes.trigger_fulfillment.messages``
+            *
             ``TransitionRouteGroup.transition_routes.trigger_fulfillment.conditional_cases``
 
-            If not specified, the agent's default language is used.
-            `Many
-            languages <https://cloud.google.com/dialogflow/cx/docs/reference/language>`__
-            are supported. Note: languages must be enabled in the agent
+            If not specified, the agent's default language
+            is used. `Many
+            languages
+            <https://cloud.google.com/dialogflow/cx/docs/reference/language>`__
+            are supported.
+            Note: languages must be enabled in the agent
             before they can be used.
     """
 
@@ -286,26 +310,31 @@ class UpdateTransitionRouteGroupRequest(proto.Message):
 
 class DeleteTransitionRouteGroupRequest(proto.Message):
     r"""The request message for
-    [TransitionRouteGroups.DeleteTransitionRouteGroup][google.cloud.dialogflow.cx.v3.TransitionRouteGroups.DeleteTransitionRouteGroup].
+    `TransitionRouteGroups.DeleteTransitionRouteGroup
+    <google.cloud.dialogflow.cx.v3.TransitionRouteGroups.DeleteTransitionRouteGroup>`__.
 
     Attributes:
         name (str):
             Required. The name of the
-            [TransitionRouteGroup][google.cloud.dialogflow.cx.v3.TransitionRouteGroup]
+            `TransitionRouteGroup
+            <google.cloud.dialogflow.cx.v3.TransitionRouteGroup>`__
             to delete. Format:
+
             ``projects/<ProjectID>/locations/<LocationID>/agents/<AgentID>/flows/<FlowID>/transitionRouteGroups/<TransitionRouteGroupID>``
             or
             ``projects/<ProjectID>/locations/<LocationID>/agents/<AgentID>/transitionRouteGroups/<TransitionRouteGroupID>``.
         force (bool):
-            This field has no effect for transition route group that no
-            page is using. If the transition route group is referenced
-            by any page:
+            This field has no effect for transition route
+            group that no page is using. If the transition
+            route group is referenced by any page:
 
-            - If ``force`` is set to false, an error will be returned
-              with message indicating pages that reference the
-              transition route group.
-            - If ``force`` is set to true, Dialogflow will remove the
-              transition route group, as well as any reference to it.
+            *  If ``force`` is set to false, an error will
+            be returned with message    indicating pages
+            that reference the transition route group.
+
+            *  If ``force`` is set to true, Dialogflow will
+            remove the transition route    group, as well as
+            any reference to it.
     """
 
     name: str = proto.Field(

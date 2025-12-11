@@ -24,7 +24,6 @@ from google.protobuf import empty_pb2  # type: ignore
 from google.protobuf import json_format
 
 from google.cloud.dialogflowcx_v3.types import test_case
-from google.cloud.dialogflowcx_v3.types import test_case as gcdc_test_case
 
 from .base import DEFAULT_CLIENT_INFO, TestCasesTransport
 
@@ -281,7 +280,7 @@ class _BaseTestCasesRestTransport(TestCasesTransport):
 
         @staticmethod
         def _get_transcoded_request(http_options, request):
-            pb_request = gcdc_test_case.CreateTestCaseRequest.pb(request)
+            pb_request = test_case.CreateTestCaseRequest.pb(request)
             transcoded_request = path_template.transcode(http_options, pb_request)
             return transcoded_request
 
@@ -699,7 +698,7 @@ class _BaseTestCasesRestTransport(TestCasesTransport):
 
         @staticmethod
         def _get_transcoded_request(http_options, request):
-            pb_request = gcdc_test_case.UpdateTestCaseRequest.pb(request)
+            pb_request = test_case.UpdateTestCaseRequest.pb(request)
             transcoded_request = path_template.transcode(http_options, pb_request)
             return transcoded_request
 

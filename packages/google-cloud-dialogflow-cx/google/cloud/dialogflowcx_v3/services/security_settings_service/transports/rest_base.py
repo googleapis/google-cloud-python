@@ -23,9 +23,6 @@ from google.longrunning import operations_pb2  # type: ignore
 from google.protobuf import empty_pb2  # type: ignore
 from google.protobuf import json_format
 
-from google.cloud.dialogflowcx_v3.types import (
-    security_settings as gcdc_security_settings,
-)
 from google.cloud.dialogflowcx_v3.types import security_settings
 
 from .base import DEFAULT_CLIENT_INFO, SecuritySettingsServiceTransport
@@ -120,9 +117,7 @@ class _BaseSecuritySettingsServiceRestTransport(SecuritySettingsServiceTransport
 
         @staticmethod
         def _get_transcoded_request(http_options, request):
-            pb_request = gcdc_security_settings.CreateSecuritySettingsRequest.pb(
-                request
-            )
+            pb_request = security_settings.CreateSecuritySettingsRequest.pb(request)
             transcoded_request = path_template.transcode(http_options, pb_request)
             return transcoded_request
 
@@ -322,9 +317,7 @@ class _BaseSecuritySettingsServiceRestTransport(SecuritySettingsServiceTransport
 
         @staticmethod
         def _get_transcoded_request(http_options, request):
-            pb_request = gcdc_security_settings.UpdateSecuritySettingsRequest.pb(
-                request
-            )
+            pb_request = security_settings.UpdateSecuritySettingsRequest.pb(request)
             transcoded_request = path_template.transcode(http_options, pb_request)
             return transcoded_request
 

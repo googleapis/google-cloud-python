@@ -32,7 +32,6 @@ import grpc  # type: ignore
 import proto  # type: ignore
 
 from google.cloud.dialogflowcx_v3.types import environment
-from google.cloud.dialogflowcx_v3.types import environment as gcdc_environment
 
 from .base import DEFAULT_CLIENT_INFO, EnvironmentsTransport
 
@@ -115,7 +114,7 @@ class EnvironmentsGrpcTransport(EnvironmentsTransport):
     """gRPC backend transport for Environments.
 
     Service for managing
-    [Environments][google.cloud.dialogflow.cx.v3.Environment].
+    `Environments <google.cloud.dialogflow.cx.v3.Environment>`__.
 
     This class defines the same methods as the primary client, so the
     primary client can load the underlying transport implementation
@@ -352,7 +351,7 @@ class EnvironmentsGrpcTransport(EnvironmentsTransport):
         r"""Return a callable for the list environments method over gRPC.
 
         Returns the list of all environments in the specified
-        [Agent][google.cloud.dialogflow.cx.v3.Agent].
+        `Agent <google.cloud.dialogflow.cx.v3.Agent>`__.
 
         Returns:
             Callable[[~.ListEnvironmentsRequest],
@@ -379,7 +378,8 @@ class EnvironmentsGrpcTransport(EnvironmentsTransport):
         r"""Return a callable for the get environment method over gRPC.
 
         Retrieves the specified
-        [Environment][google.cloud.dialogflow.cx.v3.Environment].
+        `Environment
+        <google.cloud.dialogflow.cx.v3.Environment>`__.
 
         Returns:
             Callable[[~.GetEnvironmentRequest],
@@ -402,24 +402,26 @@ class EnvironmentsGrpcTransport(EnvironmentsTransport):
     @property
     def create_environment(
         self,
-    ) -> Callable[
-        [gcdc_environment.CreateEnvironmentRequest], operations_pb2.Operation
-    ]:
+    ) -> Callable[[environment.CreateEnvironmentRequest], operations_pb2.Operation]:
         r"""Return a callable for the create environment method over gRPC.
 
-        Creates an
-        [Environment][google.cloud.dialogflow.cx.v3.Environment] in the
-        specified [Agent][google.cloud.dialogflow.cx.v3.Agent].
+        Creates an `Environment
+        <google.cloud.dialogflow.cx.v3.Environment>`__ in the
+        specified `Agent
+        <google.cloud.dialogflow.cx.v3.Agent>`__.
 
         This method is a `long-running
-        operation <https://cloud.google.com/dialogflow/cx/docs/how/long-running-operation>`__.
+        operation
+        <https://cloud.google.com/dialogflow/cx/docs/how/long-running-operation>`__.
         The returned ``Operation`` type has the following
         method-specific fields:
 
         - ``metadata``: An empty `Struct
-          message <https://developers.google.com/protocol-buffers/docs/reference/google.protobuf#struct>`__
-        - ``response``:
-          [Environment][google.cloud.dialogflow.cx.v3.Environment]
+          message
+        <https://developers.google.com/protocol-buffers/docs/reference/google.protobuf#struct>`__
+
+        - ``response``: `Environment
+          <google.cloud.dialogflow.cx.v3.Environment>`__
 
         Returns:
             Callable[[~.CreateEnvironmentRequest],
@@ -434,7 +436,7 @@ class EnvironmentsGrpcTransport(EnvironmentsTransport):
         if "create_environment" not in self._stubs:
             self._stubs["create_environment"] = self._logged_channel.unary_unary(
                 "/google.cloud.dialogflow.cx.v3.Environments/CreateEnvironment",
-                request_serializer=gcdc_environment.CreateEnvironmentRequest.serialize,
+                request_serializer=environment.CreateEnvironmentRequest.serialize,
                 response_deserializer=operations_pb2.Operation.FromString,
             )
         return self._stubs["create_environment"]
@@ -442,23 +444,25 @@ class EnvironmentsGrpcTransport(EnvironmentsTransport):
     @property
     def update_environment(
         self,
-    ) -> Callable[
-        [gcdc_environment.UpdateEnvironmentRequest], operations_pb2.Operation
-    ]:
+    ) -> Callable[[environment.UpdateEnvironmentRequest], operations_pb2.Operation]:
         r"""Return a callable for the update environment method over gRPC.
 
         Updates the specified
-        [Environment][google.cloud.dialogflow.cx.v3.Environment].
+        `Environment
+        <google.cloud.dialogflow.cx.v3.Environment>`__.
 
         This method is a `long-running
-        operation <https://cloud.google.com/dialogflow/cx/docs/how/long-running-operation>`__.
+        operation
+        <https://cloud.google.com/dialogflow/cx/docs/how/long-running-operation>`__.
         The returned ``Operation`` type has the following
         method-specific fields:
 
         - ``metadata``: An empty `Struct
-          message <https://developers.google.com/protocol-buffers/docs/reference/google.protobuf#struct>`__
-        - ``response``:
-          [Environment][google.cloud.dialogflow.cx.v3.Environment]
+          message
+        <https://developers.google.com/protocol-buffers/docs/reference/google.protobuf#struct>`__
+
+        - ``response``: `Environment
+          <google.cloud.dialogflow.cx.v3.Environment>`__
 
         Returns:
             Callable[[~.UpdateEnvironmentRequest],
@@ -473,7 +477,7 @@ class EnvironmentsGrpcTransport(EnvironmentsTransport):
         if "update_environment" not in self._stubs:
             self._stubs["update_environment"] = self._logged_channel.unary_unary(
                 "/google.cloud.dialogflow.cx.v3.Environments/UpdateEnvironment",
-                request_serializer=gcdc_environment.UpdateEnvironmentRequest.serialize,
+                request_serializer=environment.UpdateEnvironmentRequest.serialize,
                 response_deserializer=operations_pb2.Operation.FromString,
             )
         return self._stubs["update_environment"]
@@ -485,7 +489,8 @@ class EnvironmentsGrpcTransport(EnvironmentsTransport):
         r"""Return a callable for the delete environment method over gRPC.
 
         Deletes the specified
-        [Environment][google.cloud.dialogflow.cx.v3.Environment].
+        `Environment
+        <google.cloud.dialogflow.cx.v3.Environment>`__.
 
         Returns:
             Callable[[~.DeleteEnvironmentRequest],
@@ -515,7 +520,8 @@ class EnvironmentsGrpcTransport(EnvironmentsTransport):
         r"""Return a callable for the lookup environment history method over gRPC.
 
         Looks up the history of the specified
-        [Environment][google.cloud.dialogflow.cx.v3.Environment].
+        `Environment
+        <google.cloud.dialogflow.cx.v3.Environment>`__.
 
         Returns:
             Callable[[~.LookupEnvironmentHistoryRequest],
@@ -544,17 +550,24 @@ class EnvironmentsGrpcTransport(EnvironmentsTransport):
         r"""Return a callable for the run continuous test method over gRPC.
 
         Kicks off a continuous test under the specified
-        [Environment][google.cloud.dialogflow.cx.v3.Environment].
+        `Environment
+        <google.cloud.dialogflow.cx.v3.Environment>`__.
 
         This method is a `long-running
-        operation <https://cloud.google.com/dialogflow/cx/docs/how/long-running-operation>`__.
+        operation
+        <https://cloud.google.com/dialogflow/cx/docs/how/long-running-operation>`__.
         The returned ``Operation`` type has the following
         method-specific fields:
 
         - ``metadata``:
-          [RunContinuousTestMetadata][google.cloud.dialogflow.cx.v3.RunContinuousTestMetadata]
+
+        `RunContinuousTestMetadata
+        <google.cloud.dialogflow.cx.v3.RunContinuousTestMetadata>`__
+
         - ``response``:
-          [RunContinuousTestResponse][google.cloud.dialogflow.cx.v3.RunContinuousTestResponse]
+
+        `RunContinuousTestResponse
+        <google.cloud.dialogflow.cx.v3.RunContinuousTestResponse>`__
 
         Returns:
             Callable[[~.RunContinuousTestRequest],
@@ -613,17 +626,24 @@ class EnvironmentsGrpcTransport(EnvironmentsTransport):
         r"""Return a callable for the deploy flow method over gRPC.
 
         Deploys a flow to the specified
-        [Environment][google.cloud.dialogflow.cx.v3.Environment].
+        `Environment
+        <google.cloud.dialogflow.cx.v3.Environment>`__.
 
         This method is a `long-running
-        operation <https://cloud.google.com/dialogflow/cx/docs/how/long-running-operation>`__.
+        operation
+        <https://cloud.google.com/dialogflow/cx/docs/how/long-running-operation>`__.
         The returned ``Operation`` type has the following
         method-specific fields:
 
         - ``metadata``:
-          [DeployFlowMetadata][google.cloud.dialogflow.cx.v3.DeployFlowMetadata]
+
+        `DeployFlowMetadata
+        <google.cloud.dialogflow.cx.v3.DeployFlowMetadata>`__
+
         - ``response``:
-          [DeployFlowResponse][google.cloud.dialogflow.cx.v3.DeployFlowResponse]
+
+        `DeployFlowResponse
+        <google.cloud.dialogflow.cx.v3.DeployFlowResponse>`__
 
         Returns:
             Callable[[~.DeployFlowRequest],

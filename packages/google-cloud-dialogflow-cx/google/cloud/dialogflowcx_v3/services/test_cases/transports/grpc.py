@@ -32,7 +32,6 @@ import grpc  # type: ignore
 import proto  # type: ignore
 
 from google.cloud.dialogflowcx_v3.types import test_case
-from google.cloud.dialogflowcx_v3.types import test_case as gcdc_test_case
 
 from .base import DEFAULT_CLIENT_INFO, TestCasesTransport
 
@@ -114,9 +113,9 @@ class _LoggingClientInterceptor(grpc.UnaryUnaryClientInterceptor):  # pragma: NO
 class TestCasesGrpcTransport(TestCasesTransport):
     """gRPC backend transport for TestCases.
 
-    Service for managing [Test
-    Cases][google.cloud.dialogflow.cx.v3.TestCase] and [Test Case
-    Results][google.cloud.dialogflow.cx.v3.TestCaseResult].
+    Service for managing `Test Cases
+    <google.cloud.dialogflow.cx.v3.TestCase>`__ and `Test Case
+    Results <google.cloud.dialogflow.cx.v3.TestCaseResult>`__.
 
     This class defines the same methods as the primary client, so the
     primary client can load the underlying transport implementation
@@ -425,7 +424,7 @@ class TestCasesGrpcTransport(TestCasesTransport):
     @property
     def create_test_case(
         self,
-    ) -> Callable[[gcdc_test_case.CreateTestCaseRequest], gcdc_test_case.TestCase]:
+    ) -> Callable[[test_case.CreateTestCaseRequest], test_case.TestCase]:
         r"""Return a callable for the create test case method over gRPC.
 
         Creates a test case for the given agent.
@@ -443,15 +442,15 @@ class TestCasesGrpcTransport(TestCasesTransport):
         if "create_test_case" not in self._stubs:
             self._stubs["create_test_case"] = self._logged_channel.unary_unary(
                 "/google.cloud.dialogflow.cx.v3.TestCases/CreateTestCase",
-                request_serializer=gcdc_test_case.CreateTestCaseRequest.serialize,
-                response_deserializer=gcdc_test_case.TestCase.deserialize,
+                request_serializer=test_case.CreateTestCaseRequest.serialize,
+                response_deserializer=test_case.TestCase.deserialize,
             )
         return self._stubs["create_test_case"]
 
     @property
     def update_test_case(
         self,
-    ) -> Callable[[gcdc_test_case.UpdateTestCaseRequest], gcdc_test_case.TestCase]:
+    ) -> Callable[[test_case.UpdateTestCaseRequest], test_case.TestCase]:
         r"""Return a callable for the update test case method over gRPC.
 
         Updates the specified test case.
@@ -469,8 +468,8 @@ class TestCasesGrpcTransport(TestCasesTransport):
         if "update_test_case" not in self._stubs:
             self._stubs["update_test_case"] = self._logged_channel.unary_unary(
                 "/google.cloud.dialogflow.cx.v3.TestCases/UpdateTestCase",
-                request_serializer=gcdc_test_case.UpdateTestCaseRequest.serialize,
-                response_deserializer=gcdc_test_case.TestCase.deserialize,
+                request_serializer=test_case.UpdateTestCaseRequest.serialize,
+                response_deserializer=test_case.TestCase.deserialize,
             )
         return self._stubs["update_test_case"]
 
@@ -483,14 +482,20 @@ class TestCasesGrpcTransport(TestCasesTransport):
         Kicks off a test case run.
 
         This method is a `long-running
-        operation <https://cloud.google.com/dialogflow/cx/docs/how/long-running-operation>`__.
+        operation
+        <https://cloud.google.com/dialogflow/cx/docs/how/long-running-operation>`__.
         The returned ``Operation`` type has the following
         method-specific fields:
 
         - ``metadata``:
-          [RunTestCaseMetadata][google.cloud.dialogflow.cx.v3.RunTestCaseMetadata]
+
+        `RunTestCaseMetadata
+        <google.cloud.dialogflow.cx.v3.RunTestCaseMetadata>`__
+
         - ``response``:
-          [RunTestCaseResponse][google.cloud.dialogflow.cx.v3.RunTestCaseResponse]
+
+        `RunTestCaseResponse
+        <google.cloud.dialogflow.cx.v3.RunTestCaseResponse>`__
 
         Returns:
             Callable[[~.RunTestCaseRequest],
@@ -519,14 +524,20 @@ class TestCasesGrpcTransport(TestCasesTransport):
         Kicks off a batch run of test cases.
 
         This method is a `long-running
-        operation <https://cloud.google.com/dialogflow/cx/docs/how/long-running-operation>`__.
+        operation
+        <https://cloud.google.com/dialogflow/cx/docs/how/long-running-operation>`__.
         The returned ``Operation`` type has the following
         method-specific fields:
 
         - ``metadata``:
-          [BatchRunTestCasesMetadata][google.cloud.dialogflow.cx.v3.BatchRunTestCasesMetadata]
+
+        `BatchRunTestCasesMetadata
+        <google.cloud.dialogflow.cx.v3.BatchRunTestCasesMetadata>`__
+
         - ``response``:
-          [BatchRunTestCasesResponse][google.cloud.dialogflow.cx.v3.BatchRunTestCasesResponse]
+
+        `BatchRunTestCasesResponse
+        <google.cloud.dialogflow.cx.v3.BatchRunTestCasesResponse>`__
 
         Returns:
             Callable[[~.BatchRunTestCasesRequest],
@@ -580,20 +591,26 @@ class TestCasesGrpcTransport(TestCasesTransport):
     ) -> Callable[[test_case.ImportTestCasesRequest], operations_pb2.Operation]:
         r"""Return a callable for the import test cases method over gRPC.
 
-        Imports the test cases from a Cloud Storage bucket or a local
-        file. It always creates new test cases and won't overwrite any
-        existing ones. The provided ID in the imported test case is
-        neglected.
+        Imports the test cases from a Cloud Storage bucket or a
+        local file. It always creates new test cases and won't
+        overwrite any existing ones. The provided ID in the
+        imported test case is neglected.
 
         This method is a `long-running
-        operation <https://cloud.google.com/dialogflow/cx/docs/how/long-running-operation>`__.
+        operation
+        <https://cloud.google.com/dialogflow/cx/docs/how/long-running-operation>`__.
         The returned ``Operation`` type has the following
         method-specific fields:
 
         - ``metadata``:
-          [ImportTestCasesMetadata][google.cloud.dialogflow.cx.v3.ImportTestCasesMetadata]
+
+        `ImportTestCasesMetadata
+        <google.cloud.dialogflow.cx.v3.ImportTestCasesMetadata>`__
+
         - ``response``:
-          [ImportTestCasesResponse][google.cloud.dialogflow.cx.v3.ImportTestCasesResponse]
+
+        `ImportTestCasesResponse
+        <google.cloud.dialogflow.cx.v3.ImportTestCasesResponse>`__
 
         Returns:
             Callable[[~.ImportTestCasesRequest],
@@ -619,19 +636,25 @@ class TestCasesGrpcTransport(TestCasesTransport):
     ) -> Callable[[test_case.ExportTestCasesRequest], operations_pb2.Operation]:
         r"""Return a callable for the export test cases method over gRPC.
 
-        Exports the test cases under the agent to a Cloud Storage bucket
-        or a local file. Filter can be applied to export a subset of
-        test cases.
+        Exports the test cases under the agent to a Cloud
+        Storage bucket or a local file. Filter can be applied to
+        export a subset of test cases.
 
         This method is a `long-running
-        operation <https://cloud.google.com/dialogflow/cx/docs/how/long-running-operation>`__.
+        operation
+        <https://cloud.google.com/dialogflow/cx/docs/how/long-running-operation>`__.
         The returned ``Operation`` type has the following
         method-specific fields:
 
         - ``metadata``:
-          [ExportTestCasesMetadata][google.cloud.dialogflow.cx.v3.ExportTestCasesMetadata]
+
+        `ExportTestCasesMetadata
+        <google.cloud.dialogflow.cx.v3.ExportTestCasesMetadata>`__
+
         - ``response``:
-          [ExportTestCasesResponse][google.cloud.dialogflow.cx.v3.ExportTestCasesResponse]
+
+        `ExportTestCasesResponse
+        <google.cloud.dialogflow.cx.v3.ExportTestCasesResponse>`__
 
         Returns:
             Callable[[~.ExportTestCasesRequest],

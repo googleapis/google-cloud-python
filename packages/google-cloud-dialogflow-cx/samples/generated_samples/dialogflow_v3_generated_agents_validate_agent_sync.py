@@ -49,5 +49,4 @@ def sample_validate_agent():
     # Handle the response
     print(response)
 
-
 # [END dialogflow_v3_generated_Agents_ValidateAgent_sync]

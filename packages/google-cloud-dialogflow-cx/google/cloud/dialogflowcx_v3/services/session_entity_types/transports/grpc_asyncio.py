@@ -34,9 +34,6 @@ import grpc  # type: ignore
 from grpc.experimental import aio  # type: ignore
 import proto  # type: ignore
 
-from google.cloud.dialogflowcx_v3.types import (
-    session_entity_type as gcdc_session_entity_type,
-)
 from google.cloud.dialogflowcx_v3.types import session_entity_type
 
 from .base import DEFAULT_CLIENT_INFO, SessionEntityTypesTransport
@@ -123,7 +120,8 @@ class SessionEntityTypesGrpcAsyncIOTransport(SessionEntityTypesTransport):
     """gRPC AsyncIO backend transport for SessionEntityTypes.
 
     Service for managing
-    [SessionEntityTypes][google.cloud.dialogflow.cx.v3.SessionEntityType].
+    `SessionEntityTypes
+    <google.cloud.dialogflow.cx.v3.SessionEntityType>`__.
 
     This class defines the same methods as the primary client, so the
     primary client can load the underlying transport implementation
@@ -399,8 +397,8 @@ class SessionEntityTypesGrpcAsyncIOTransport(SessionEntityTypesTransport):
     def create_session_entity_type(
         self,
     ) -> Callable[
-        [gcdc_session_entity_type.CreateSessionEntityTypeRequest],
-        Awaitable[gcdc_session_entity_type.SessionEntityType],
+        [session_entity_type.CreateSessionEntityTypeRequest],
+        Awaitable[session_entity_type.SessionEntityType],
     ]:
         r"""Return a callable for the create session entity type method over gRPC.
 
@@ -421,8 +419,8 @@ class SessionEntityTypesGrpcAsyncIOTransport(SessionEntityTypesTransport):
                 "create_session_entity_type"
             ] = self._logged_channel.unary_unary(
                 "/google.cloud.dialogflow.cx.v3.SessionEntityTypes/CreateSessionEntityType",
-                request_serializer=gcdc_session_entity_type.CreateSessionEntityTypeRequest.serialize,
-                response_deserializer=gcdc_session_entity_type.SessionEntityType.deserialize,
+                request_serializer=session_entity_type.CreateSessionEntityTypeRequest.serialize,
+                response_deserializer=session_entity_type.SessionEntityType.deserialize,
             )
         return self._stubs["create_session_entity_type"]
 
@@ -430,8 +428,8 @@ class SessionEntityTypesGrpcAsyncIOTransport(SessionEntityTypesTransport):
     def update_session_entity_type(
         self,
     ) -> Callable[
-        [gcdc_session_entity_type.UpdateSessionEntityTypeRequest],
-        Awaitable[gcdc_session_entity_type.SessionEntityType],
+        [session_entity_type.UpdateSessionEntityTypeRequest],
+        Awaitable[session_entity_type.SessionEntityType],
     ]:
         r"""Return a callable for the update session entity type method over gRPC.
 
@@ -452,8 +450,8 @@ class SessionEntityTypesGrpcAsyncIOTransport(SessionEntityTypesTransport):
                 "update_session_entity_type"
             ] = self._logged_channel.unary_unary(
                 "/google.cloud.dialogflow.cx.v3.SessionEntityTypes/UpdateSessionEntityType",
-                request_serializer=gcdc_session_entity_type.UpdateSessionEntityTypeRequest.serialize,
-                response_deserializer=gcdc_session_entity_type.SessionEntityType.deserialize,
+                request_serializer=session_entity_type.UpdateSessionEntityTypeRequest.serialize,
+                response_deserializer=session_entity_type.SessionEntityType.deserialize,
             )
         return self._stubs["update_session_entity_type"]
 

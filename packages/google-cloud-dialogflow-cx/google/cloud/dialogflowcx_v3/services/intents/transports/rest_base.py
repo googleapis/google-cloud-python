@@ -24,7 +24,6 @@ from google.protobuf import empty_pb2  # type: ignore
 from google.protobuf import json_format
 
 from google.cloud.dialogflowcx_v3.types import intent
-from google.cloud.dialogflowcx_v3.types import intent as gcdc_intent
 
 from .base import DEFAULT_CLIENT_INFO, IntentsTransport
 
@@ -118,7 +117,7 @@ class _BaseIntentsRestTransport(IntentsTransport):
 
         @staticmethod
         def _get_transcoded_request(http_options, request):
-            pb_request = gcdc_intent.CreateIntentRequest.pb(request)
+            pb_request = intent.CreateIntentRequest.pb(request)
             transcoded_request = path_template.transcode(http_options, pb_request)
             return transcoded_request
 
@@ -430,7 +429,7 @@ class _BaseIntentsRestTransport(IntentsTransport):
 
         @staticmethod
         def _get_transcoded_request(http_options, request):
-            pb_request = gcdc_intent.UpdateIntentRequest.pb(request)
+            pb_request = intent.UpdateIntentRequest.pb(request)
             transcoded_request = path_template.transcode(http_options, pb_request)
             return transcoded_request
 

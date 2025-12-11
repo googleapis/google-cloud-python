@@ -23,9 +23,6 @@ from google.longrunning import operations_pb2  # type: ignore
 from google.protobuf import empty_pb2  # type: ignore
 from google.protobuf import json_format
 
-from google.cloud.dialogflowcx_v3.types import (
-    transition_route_group as gcdc_transition_route_group,
-)
 from google.cloud.dialogflowcx_v3.types import transition_route_group
 
 from .base import DEFAULT_CLIENT_INFO, TransitionRouteGroupsTransport
@@ -125,10 +122,8 @@ class _BaseTransitionRouteGroupsRestTransport(TransitionRouteGroupsTransport):
 
         @staticmethod
         def _get_transcoded_request(http_options, request):
-            pb_request = (
-                gcdc_transition_route_group.CreateTransitionRouteGroupRequest.pb(
-                    request
-                )
+            pb_request = transition_route_group.CreateTransitionRouteGroupRequest.pb(
+                request
             )
             transcoded_request = path_template.transcode(http_options, pb_request)
             return transcoded_request
@@ -350,10 +345,8 @@ class _BaseTransitionRouteGroupsRestTransport(TransitionRouteGroupsTransport):
 
         @staticmethod
         def _get_transcoded_request(http_options, request):
-            pb_request = (
-                gcdc_transition_route_group.UpdateTransitionRouteGroupRequest.pb(
-                    request
-                )
+            pb_request = transition_route_group.UpdateTransitionRouteGroupRequest.pb(
+                request
             )
             transcoded_request = path_template.transcode(http_options, pb_request)
             return transcoded_request

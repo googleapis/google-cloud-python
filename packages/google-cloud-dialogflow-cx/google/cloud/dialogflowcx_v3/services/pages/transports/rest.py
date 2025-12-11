@@ -32,7 +32,6 @@ from google.protobuf import json_format
 from requests import __version__ as requests_version
 
 from google.cloud.dialogflowcx_v3.types import page
-from google.cloud.dialogflowcx_v3.types import page as gcdc_page
 
 from .base import DEFAULT_CLIENT_INFO as BASE_DEFAULT_CLIENT_INFO
 from .rest_base import _BasePagesRestTransport
@@ -120,9 +119,9 @@ class PagesRestInterceptor:
 
     def pre_create_page(
         self,
-        request: gcdc_page.CreatePageRequest,
+        request: page.CreatePageRequest,
         metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[gcdc_page.CreatePageRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
+    ) -> Tuple[page.CreatePageRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for create_page
 
         Override in a subclass to manipulate the request or metadata
@@ -130,7 +129,7 @@ class PagesRestInterceptor:
         """
         return request, metadata
 
-    def post_create_page(self, response: gcdc_page.Page) -> gcdc_page.Page:
+    def post_create_page(self, response: page.Page) -> page.Page:
         """Post-rpc interceptor for create_page
 
         DEPRECATED. Please use the `post_create_page_with_metadata`
@@ -144,10 +143,8 @@ class PagesRestInterceptor:
         return response
 
     def post_create_page_with_metadata(
-        self,
-        response: gcdc_page.Page,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[gcdc_page.Page, Sequence[Tuple[str, Union[str, bytes]]]]:
+        self, response: page.Page, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[page.Page, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for create_page
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -264,9 +261,9 @@ class PagesRestInterceptor:
 
     def pre_update_page(
         self,
-        request: gcdc_page.UpdatePageRequest,
+        request: page.UpdatePageRequest,
         metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[gcdc_page.UpdatePageRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
+    ) -> Tuple[page.UpdatePageRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for update_page
 
         Override in a subclass to manipulate the request or metadata
@@ -274,7 +271,7 @@ class PagesRestInterceptor:
         """
         return request, metadata
 
-    def post_update_page(self, response: gcdc_page.Page) -> gcdc_page.Page:
+    def post_update_page(self, response: page.Page) -> page.Page:
         """Post-rpc interceptor for update_page
 
         DEPRECATED. Please use the `post_update_page_with_metadata`
@@ -288,10 +285,8 @@ class PagesRestInterceptor:
         return response
 
     def post_update_page_with_metadata(
-        self,
-        response: gcdc_page.Page,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[gcdc_page.Page, Sequence[Tuple[str, Union[str, bytes]]]]:
+        self, response: page.Page, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[page.Page, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for update_page
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -440,7 +435,8 @@ class PagesRestStub:
 class PagesRestTransport(_BasePagesRestTransport):
     """REST backend synchronous transport for Pages.
 
-    Service for managing [Pages][google.cloud.dialogflow.cx.v3.Page].
+    Service for managing `Pages
+    <google.cloud.dialogflow.cx.v3.Page>`__.
 
     This class defines the same methods as the primary client, so the
     primary client can load the underlying transport implementation
@@ -546,18 +542,19 @@ class PagesRestTransport(_BasePagesRestTransport):
 
         def __call__(
             self,
-            request: gcdc_page.CreatePageRequest,
+            request: page.CreatePageRequest,
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
             metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
-        ) -> gcdc_page.Page:
+        ) -> page.Page:
             r"""Call the create page method over HTTP.
 
             Args:
-                request (~.gcdc_page.CreatePageRequest):
+                request (~.page.CreatePageRequest):
                     The request object. The request message for
-                [Pages.CreatePage][google.cloud.dialogflow.cx.v3.Pages.CreatePage].
+                `Pages.CreatePage
+                <google.cloud.dialogflow.cx.v3.Pages.CreatePage>`__.
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -567,28 +564,35 @@ class PagesRestTransport(_BasePagesRestTransport):
                     be of type `bytes`.
 
             Returns:
-                ~.gcdc_page.Page:
-                    A Dialogflow CX conversation (session) can be described
-                and visualized as a state machine. The states of a CX
+                ~.page.Page:
+                    A Dialogflow CX conversation (session)
+                can be described and visualized as a
+                state machine. The states of a CX
                 session are represented by pages.
 
-                For each flow, you define many pages, where your
-                combined pages can handle a complete conversation on the
-                topics the flow is designed for. At any given moment,
-                exactly one page is the current page, the current page
-                is considered active, and the flow associated with that
-                page is considered active. Every flow has a special
-                start page. When a flow initially becomes active, the
-                start page page becomes the current page. For each
-                conversational turn, the current page will either stay
-                the same or transition to another page.
+                For each flow, you define many pages,
+                where your combined pages can handle a
+                complete conversation on the topics the
+                flow is designed for. At any given
+                moment, exactly one page is the current
+                page, the current page is considered
+                active, and the flow associated with
+                that page is considered active. Every
+                flow has a special start page. When a
+                flow initially becomes active, the start
+                page page becomes the current page. For
+                each conversational turn, the current
+                page will either stay the same or
+                transition to another page.
 
-                You configure each page to collect information from the
-                end-user that is relevant for the conversational state
+                You configure each page to collect
+                information from the end-user that is
+                relevant for the conversational state
                 represented by the page.
 
-                For more information, see the `Page
-                guide <https://cloud.google.com/dialogflow/cx/docs/concept/page>`__.
+                For more information, see the
+                `Page guide
+                <https://cloud.google.com/dialogflow/cx/docs/concept/page>`__.
 
             """
 
@@ -656,8 +660,8 @@ class PagesRestTransport(_BasePagesRestTransport):
                 raise core_exceptions.from_http_response(response)
 
             # Return the response
-            resp = gcdc_page.Page()
-            pb_resp = gcdc_page.Page.pb(resp)
+            resp = page.Page()
+            pb_resp = page.Page.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
@@ -670,7 +674,7 @@ class PagesRestTransport(_BasePagesRestTransport):
                 logging.DEBUG
             ):  # pragma: NO COVER
                 try:
-                    response_payload = gcdc_page.Page.to_json(response)
+                    response_payload = page.Page.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -728,7 +732,8 @@ class PagesRestTransport(_BasePagesRestTransport):
             Args:
                 request (~.page.DeletePageRequest):
                     The request object. The request message for
-                [Pages.DeletePage][google.cloud.dialogflow.cx.v3.Pages.DeletePage].
+                `Pages.DeletePage
+                <google.cloud.dialogflow.cx.v3.Pages.DeletePage>`__.
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -835,7 +840,8 @@ class PagesRestTransport(_BasePagesRestTransport):
             Args:
                 request (~.page.GetPageRequest):
                     The request object. The request message for
-                [Pages.GetPage][google.cloud.dialogflow.cx.v3.Pages.GetPage].
+                `Pages.GetPage
+                <google.cloud.dialogflow.cx.v3.Pages.GetPage>`__.
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -846,27 +852,34 @@ class PagesRestTransport(_BasePagesRestTransport):
 
             Returns:
                 ~.page.Page:
-                    A Dialogflow CX conversation (session) can be described
-                and visualized as a state machine. The states of a CX
+                    A Dialogflow CX conversation (session)
+                can be described and visualized as a
+                state machine. The states of a CX
                 session are represented by pages.
 
-                For each flow, you define many pages, where your
-                combined pages can handle a complete conversation on the
-                topics the flow is designed for. At any given moment,
-                exactly one page is the current page, the current page
-                is considered active, and the flow associated with that
-                page is considered active. Every flow has a special
-                start page. When a flow initially becomes active, the
-                start page page becomes the current page. For each
-                conversational turn, the current page will either stay
-                the same or transition to another page.
+                For each flow, you define many pages,
+                where your combined pages can handle a
+                complete conversation on the topics the
+                flow is designed for. At any given
+                moment, exactly one page is the current
+                page, the current page is considered
+                active, and the flow associated with
+                that page is considered active. Every
+                flow has a special start page. When a
+                flow initially becomes active, the start
+                page page becomes the current page. For
+                each conversational turn, the current
+                page will either stay the same or
+                transition to another page.
 
-                You configure each page to collect information from the
-                end-user that is relevant for the conversational state
+                You configure each page to collect
+                information from the end-user that is
+                relevant for the conversational state
                 represented by the page.
 
-                For more information, see the `Page
-                guide <https://cloud.google.com/dialogflow/cx/docs/concept/page>`__.
+                For more information, see the
+                `Page guide
+                <https://cloud.google.com/dialogflow/cx/docs/concept/page>`__.
 
             """
 
@@ -999,7 +1012,8 @@ class PagesRestTransport(_BasePagesRestTransport):
             Args:
                 request (~.page.ListPagesRequest):
                     The request object. The request message for
-                [Pages.ListPages][google.cloud.dialogflow.cx.v3.Pages.ListPages].
+                `Pages.ListPages
+                <google.cloud.dialogflow.cx.v3.Pages.ListPages>`__.
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -1011,7 +1025,8 @@ class PagesRestTransport(_BasePagesRestTransport):
             Returns:
                 ~.page.ListPagesResponse:
                     The response message for
-                [Pages.ListPages][google.cloud.dialogflow.cx.v3.Pages.ListPages].
+                `Pages.ListPages
+                <google.cloud.dialogflow.cx.v3.Pages.ListPages>`__.
 
             """
 
@@ -1136,18 +1151,19 @@ class PagesRestTransport(_BasePagesRestTransport):
 
         def __call__(
             self,
-            request: gcdc_page.UpdatePageRequest,
+            request: page.UpdatePageRequest,
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
             metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
-        ) -> gcdc_page.Page:
+        ) -> page.Page:
             r"""Call the update page method over HTTP.
 
             Args:
-                request (~.gcdc_page.UpdatePageRequest):
+                request (~.page.UpdatePageRequest):
                     The request object. The request message for
-                [Pages.UpdatePage][google.cloud.dialogflow.cx.v3.Pages.UpdatePage].
+                `Pages.UpdatePage
+                <google.cloud.dialogflow.cx.v3.Pages.UpdatePage>`__.
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -1157,28 +1173,35 @@ class PagesRestTransport(_BasePagesRestTransport):
                     be of type `bytes`.
 
             Returns:
-                ~.gcdc_page.Page:
-                    A Dialogflow CX conversation (session) can be described
-                and visualized as a state machine. The states of a CX
+                ~.page.Page:
+                    A Dialogflow CX conversation (session)
+                can be described and visualized as a
+                state machine. The states of a CX
                 session are represented by pages.
 
-                For each flow, you define many pages, where your
-                combined pages can handle a complete conversation on the
-                topics the flow is designed for. At any given moment,
-                exactly one page is the current page, the current page
-                is considered active, and the flow associated with that
-                page is considered active. Every flow has a special
-                start page. When a flow initially becomes active, the
-                start page page becomes the current page. For each
-                conversational turn, the current page will either stay
-                the same or transition to another page.
+                For each flow, you define many pages,
+                where your combined pages can handle a
+                complete conversation on the topics the
+                flow is designed for. At any given
+                moment, exactly one page is the current
+                page, the current page is considered
+                active, and the flow associated with
+                that page is considered active. Every
+                flow has a special start page. When a
+                flow initially becomes active, the start
+                page page becomes the current page. For
+                each conversational turn, the current
+                page will either stay the same or
+                transition to another page.
 
-                You configure each page to collect information from the
-                end-user that is relevant for the conversational state
+                You configure each page to collect
+                information from the end-user that is
+                relevant for the conversational state
                 represented by the page.
 
-                For more information, see the `Page
-                guide <https://cloud.google.com/dialogflow/cx/docs/concept/page>`__.
+                For more information, see the
+                `Page guide
+                <https://cloud.google.com/dialogflow/cx/docs/concept/page>`__.
 
             """
 
@@ -1246,8 +1269,8 @@ class PagesRestTransport(_BasePagesRestTransport):
                 raise core_exceptions.from_http_response(response)
 
             # Return the response
-            resp = gcdc_page.Page()
-            pb_resp = gcdc_page.Page.pb(resp)
+            resp = page.Page()
+            pb_resp = page.Page.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
@@ -1260,7 +1283,7 @@ class PagesRestTransport(_BasePagesRestTransport):
                 logging.DEBUG
             ):  # pragma: NO COVER
                 try:
-                    response_payload = gcdc_page.Page.to_json(response)
+                    response_payload = page.Page.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -1280,7 +1303,7 @@ class PagesRestTransport(_BasePagesRestTransport):
             return resp
 
     @property
-    def create_page(self) -> Callable[[gcdc_page.CreatePageRequest], gcdc_page.Page]:
+    def create_page(self) -> Callable[[page.CreatePageRequest], page.Page]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._CreatePage(self._session, self._host, self._interceptor)  # type: ignore
@@ -1304,7 +1327,7 @@ class PagesRestTransport(_BasePagesRestTransport):
         return self._ListPages(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def update_page(self) -> Callable[[gcdc_page.UpdatePageRequest], gcdc_page.Page]:
+    def update_page(self) -> Callable[[page.UpdatePageRequest], page.Page]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._UpdatePage(self._session, self._host, self._interceptor)  # type: ignore

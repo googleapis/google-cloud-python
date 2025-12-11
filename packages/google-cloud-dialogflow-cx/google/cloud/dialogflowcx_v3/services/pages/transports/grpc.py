@@ -32,7 +32,6 @@ import grpc  # type: ignore
 import proto  # type: ignore
 
 from google.cloud.dialogflowcx_v3.types import page
-from google.cloud.dialogflowcx_v3.types import page as gcdc_page
 
 from .base import DEFAULT_CLIENT_INFO, PagesTransport
 
@@ -114,7 +113,8 @@ class _LoggingClientInterceptor(grpc.UnaryUnaryClientInterceptor):  # pragma: NO
 class PagesGrpcTransport(PagesTransport):
     """gRPC backend transport for Pages.
 
-    Service for managing [Pages][google.cloud.dialogflow.cx.v3.Page].
+    Service for managing `Pages
+    <google.cloud.dialogflow.cx.v3.Page>`__.
 
     This class defines the same methods as the primary client, so the
     primary client can load the underlying transport implementation
@@ -374,14 +374,15 @@ class PagesGrpcTransport(PagesTransport):
         return self._stubs["get_page"]
 
     @property
-    def create_page(self) -> Callable[[gcdc_page.CreatePageRequest], gcdc_page.Page]:
+    def create_page(self) -> Callable[[page.CreatePageRequest], page.Page]:
         r"""Return a callable for the create page method over gRPC.
 
         Creates a page in the specified flow.
 
         Note: You should always train a flow prior to sending it
         queries. See the `training
-        documentation <https://cloud.google.com/dialogflow/cx/docs/concept/training>`__.
+        documentation
+        <https://cloud.google.com/dialogflow/cx/docs/concept/training>`__.
 
         Returns:
             Callable[[~.CreatePageRequest],
@@ -396,20 +397,21 @@ class PagesGrpcTransport(PagesTransport):
         if "create_page" not in self._stubs:
             self._stubs["create_page"] = self._logged_channel.unary_unary(
                 "/google.cloud.dialogflow.cx.v3.Pages/CreatePage",
-                request_serializer=gcdc_page.CreatePageRequest.serialize,
-                response_deserializer=gcdc_page.Page.deserialize,
+                request_serializer=page.CreatePageRequest.serialize,
+                response_deserializer=page.Page.deserialize,
             )
         return self._stubs["create_page"]
 
     @property
-    def update_page(self) -> Callable[[gcdc_page.UpdatePageRequest], gcdc_page.Page]:
+    def update_page(self) -> Callable[[page.UpdatePageRequest], page.Page]:
         r"""Return a callable for the update page method over gRPC.
 
         Updates the specified page.
 
         Note: You should always train a flow prior to sending it
         queries. See the `training
-        documentation <https://cloud.google.com/dialogflow/cx/docs/concept/training>`__.
+        documentation
+        <https://cloud.google.com/dialogflow/cx/docs/concept/training>`__.
 
         Returns:
             Callable[[~.UpdatePageRequest],
@@ -424,8 +426,8 @@ class PagesGrpcTransport(PagesTransport):
         if "update_page" not in self._stubs:
             self._stubs["update_page"] = self._logged_channel.unary_unary(
                 "/google.cloud.dialogflow.cx.v3.Pages/UpdatePage",
-                request_serializer=gcdc_page.UpdatePageRequest.serialize,
-                response_deserializer=gcdc_page.Page.deserialize,
+                request_serializer=page.UpdatePageRequest.serialize,
+                response_deserializer=page.Page.deserialize,
             )
         return self._stubs["update_page"]
 
@@ -437,7 +439,8 @@ class PagesGrpcTransport(PagesTransport):
 
         Note: You should always train a flow prior to sending it
         queries. See the `training
-        documentation <https://cloud.google.com/dialogflow/cx/docs/concept/training>`__.
+        documentation
+        <https://cloud.google.com/dialogflow/cx/docs/concept/training>`__.
 
         Returns:
             Callable[[~.DeletePageRequest],

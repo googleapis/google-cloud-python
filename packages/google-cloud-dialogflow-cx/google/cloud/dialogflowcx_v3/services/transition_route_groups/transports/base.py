@@ -29,9 +29,6 @@ import google.protobuf
 from google.protobuf import empty_pb2  # type: ignore
 
 from google.cloud.dialogflowcx_v3 import gapic_version as package_version
-from google.cloud.dialogflowcx_v3.types import (
-    transition_route_group as gcdc_transition_route_group,
-)
 from google.cloud.dialogflowcx_v3.types import transition_route_group
 
 DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
@@ -231,10 +228,10 @@ class TransitionRouteGroupsTransport(abc.ABC):
     def create_transition_route_group(
         self,
     ) -> Callable[
-        [gcdc_transition_route_group.CreateTransitionRouteGroupRequest],
+        [transition_route_group.CreateTransitionRouteGroupRequest],
         Union[
-            gcdc_transition_route_group.TransitionRouteGroup,
-            Awaitable[gcdc_transition_route_group.TransitionRouteGroup],
+            transition_route_group.TransitionRouteGroup,
+            Awaitable[transition_route_group.TransitionRouteGroup],
         ],
     ]:
         raise NotImplementedError()
@@ -243,10 +240,10 @@ class TransitionRouteGroupsTransport(abc.ABC):
     def update_transition_route_group(
         self,
     ) -> Callable[
-        [gcdc_transition_route_group.UpdateTransitionRouteGroupRequest],
+        [transition_route_group.UpdateTransitionRouteGroupRequest],
         Union[
-            gcdc_transition_route_group.TransitionRouteGroup,
-            Awaitable[gcdc_transition_route_group.TransitionRouteGroup],
+            transition_route_group.TransitionRouteGroup,
+            Awaitable[transition_route_group.TransitionRouteGroup],
         ],
     ]:
         raise NotImplementedError()

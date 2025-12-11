@@ -34,9 +34,6 @@ import grpc  # type: ignore
 from grpc.experimental import aio  # type: ignore
 import proto  # type: ignore
 
-from google.cloud.dialogflowcx_v3.types import (
-    transition_route_group as gcdc_transition_route_group,
-)
 from google.cloud.dialogflowcx_v3.types import transition_route_group
 
 from .base import DEFAULT_CLIENT_INFO, TransitionRouteGroupsTransport
@@ -123,7 +120,8 @@ class TransitionRouteGroupsGrpcAsyncIOTransport(TransitionRouteGroupsTransport):
     """gRPC AsyncIO backend transport for TransitionRouteGroups.
 
     Service for managing
-    [TransitionRouteGroups][google.cloud.dialogflow.cx.v3.TransitionRouteGroup].
+    `TransitionRouteGroups
+    <google.cloud.dialogflow.cx.v3.TransitionRouteGroup>`__.
 
     This class defines the same methods as the primary client, so the
     primary client can load the underlying transport implementation
@@ -378,7 +376,8 @@ class TransitionRouteGroupsGrpcAsyncIOTransport(TransitionRouteGroupsTransport):
         r"""Return a callable for the get transition route group method over gRPC.
 
         Retrieves the specified
-        [TransitionRouteGroup][google.cloud.dialogflow.cx.v3.TransitionRouteGroup].
+        `TransitionRouteGroup
+        <google.cloud.dialogflow.cx.v3.TransitionRouteGroup>`__.
 
         Returns:
             Callable[[~.GetTransitionRouteGroupRequest],
@@ -404,18 +403,20 @@ class TransitionRouteGroupsGrpcAsyncIOTransport(TransitionRouteGroupsTransport):
     def create_transition_route_group(
         self,
     ) -> Callable[
-        [gcdc_transition_route_group.CreateTransitionRouteGroupRequest],
-        Awaitable[gcdc_transition_route_group.TransitionRouteGroup],
+        [transition_route_group.CreateTransitionRouteGroupRequest],
+        Awaitable[transition_route_group.TransitionRouteGroup],
     ]:
         r"""Return a callable for the create transition route group method over gRPC.
 
         Creates an
-        [TransitionRouteGroup][google.cloud.dialogflow.cx.v3.TransitionRouteGroup]
+        `TransitionRouteGroup
+        <google.cloud.dialogflow.cx.v3.TransitionRouteGroup>`__
         in the specified flow.
 
         Note: You should always train a flow prior to sending it
         queries. See the `training
-        documentation <https://cloud.google.com/dialogflow/cx/docs/concept/training>`__.
+        documentation
+        <https://cloud.google.com/dialogflow/cx/docs/concept/training>`__.
 
         Returns:
             Callable[[~.CreateTransitionRouteGroupRequest],
@@ -432,8 +433,8 @@ class TransitionRouteGroupsGrpcAsyncIOTransport(TransitionRouteGroupsTransport):
                 "create_transition_route_group"
             ] = self._logged_channel.unary_unary(
                 "/google.cloud.dialogflow.cx.v3.TransitionRouteGroups/CreateTransitionRouteGroup",
-                request_serializer=gcdc_transition_route_group.CreateTransitionRouteGroupRequest.serialize,
-                response_deserializer=gcdc_transition_route_group.TransitionRouteGroup.deserialize,
+                request_serializer=transition_route_group.CreateTransitionRouteGroupRequest.serialize,
+                response_deserializer=transition_route_group.TransitionRouteGroup.deserialize,
             )
         return self._stubs["create_transition_route_group"]
 
@@ -441,17 +442,19 @@ class TransitionRouteGroupsGrpcAsyncIOTransport(TransitionRouteGroupsTransport):
     def update_transition_route_group(
         self,
     ) -> Callable[
-        [gcdc_transition_route_group.UpdateTransitionRouteGroupRequest],
-        Awaitable[gcdc_transition_route_group.TransitionRouteGroup],
+        [transition_route_group.UpdateTransitionRouteGroupRequest],
+        Awaitable[transition_route_group.TransitionRouteGroup],
     ]:
         r"""Return a callable for the update transition route group method over gRPC.
 
         Updates the specified
-        [TransitionRouteGroup][google.cloud.dialogflow.cx.v3.TransitionRouteGroup].
+        `TransitionRouteGroup
+        <google.cloud.dialogflow.cx.v3.TransitionRouteGroup>`__.
 
         Note: You should always train a flow prior to sending it
         queries. See the `training
-        documentation <https://cloud.google.com/dialogflow/cx/docs/concept/training>`__.
+        documentation
+        <https://cloud.google.com/dialogflow/cx/docs/concept/training>`__.
 
         Returns:
             Callable[[~.UpdateTransitionRouteGroupRequest],
@@ -468,8 +471,8 @@ class TransitionRouteGroupsGrpcAsyncIOTransport(TransitionRouteGroupsTransport):
                 "update_transition_route_group"
             ] = self._logged_channel.unary_unary(
                 "/google.cloud.dialogflow.cx.v3.TransitionRouteGroups/UpdateTransitionRouteGroup",
-                request_serializer=gcdc_transition_route_group.UpdateTransitionRouteGroupRequest.serialize,
-                response_deserializer=gcdc_transition_route_group.TransitionRouteGroup.deserialize,
+                request_serializer=transition_route_group.UpdateTransitionRouteGroupRequest.serialize,
+                response_deserializer=transition_route_group.TransitionRouteGroup.deserialize,
             )
         return self._stubs["update_transition_route_group"]
 
@@ -483,11 +486,13 @@ class TransitionRouteGroupsGrpcAsyncIOTransport(TransitionRouteGroupsTransport):
         r"""Return a callable for the delete transition route group method over gRPC.
 
         Deletes the specified
-        [TransitionRouteGroup][google.cloud.dialogflow.cx.v3.TransitionRouteGroup].
+        `TransitionRouteGroup
+        <google.cloud.dialogflow.cx.v3.TransitionRouteGroup>`__.
 
         Note: You should always train a flow prior to sending it
         queries. See the `training
-        documentation <https://cloud.google.com/dialogflow/cx/docs/concept/training>`__.
+        documentation
+        <https://cloud.google.com/dialogflow/cx/docs/concept/training>`__.
 
         Returns:
             Callable[[~.DeleteTransitionRouteGroupRequest],

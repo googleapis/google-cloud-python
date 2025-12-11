@@ -43,43 +43,49 @@ __protobuf__ = proto.module(
 
 
 class EntityType(proto.Message):
-    r"""Entities are extracted from user input and represent parameters that
-    are meaningful to your application. For example, a date range, a
-    proper name such as a geographic location or landmark, and so on.
-    Entities represent actionable data for your application.
+    r"""Entities are extracted from user input and represent parameters
+    that are meaningful to your application. For example, a date
+    range, a proper name such as a geographic location or landmark,
+    and so on. Entities represent actionable data for your
+    application.
 
-    When you define an entity, you can also include synonyms that all
-    map to that entity. For example, "soft drink", "soda", "pop", and so
-    on.
+    When you define an entity, you can also include synonyms that
+    all map to that entity. For example, "soft drink", "soda",
+    "pop", and so on.
 
     There are three types of entities:
 
-    - **System** - entities that are defined by the Dialogflow API for
-      common data types such as date, time, currency, and so on. A
-      system entity is represented by the ``EntityType`` type.
+    *   **System** - entities that are defined by the Dialogflow API
+    for common     data types such as date, time, currency, and so
+    on. A system entity is     represented by the ``EntityType``
+    type.
 
-    - **Custom** - entities that are defined by you that represent
-      actionable data that is meaningful to your application. For
-      example, you could define a ``pizza.sauce`` entity for red or
-      white pizza sauce, a ``pizza.cheese`` entity for the different
-      types of cheese on a pizza, a ``pizza.topping`` entity for
-      different toppings, and so on. A custom entity is represented by
-      the ``EntityType`` type.
+    *   **Custom** - entities that are defined by you that represent
+    actionable data that is meaningful to your application. For
+    example,     you could define a ``pizza.sauce`` entity for red
+    or white pizza sauce,     a ``pizza.cheese`` entity for the
+    different types of cheese on a pizza,     a ``pizza.topping``
+    entity for different toppings, and so on. A custom     entity is
+    represented by the ``EntityType`` type.
 
-    - **User** - entities that are built for an individual user such as
-      favorites, preferences, playlists, and so on. A user entity is
-      represented by the
-      [SessionEntityType][google.cloud.dialogflow.cx.v3.SessionEntityType]
-      type.
+    *   **User** - entities that are built for an individual user
+    such as     favorites, preferences, playlists, and so on. A user
+    entity is     represented by the
+        `SessionEntityType
+    <google.cloud.dialogflow.cx.v3.SessionEntityType>`__     type.
 
     For more information about entity types, see the `Dialogflow
-    documentation <https://cloud.google.com/dialogflow/docs/entities-overview>`__.
+    documentation
+    <https://cloud.google.com/dialogflow/docs/entities-overview>`__.
 
     Attributes:
         name (str):
-            The unique identifier of the entity type. Required for
-            [EntityTypes.UpdateEntityType][google.cloud.dialogflow.cx.v3.EntityTypes.UpdateEntityType].
+            The unique identifier of the entity type.
+            Required for
+            `EntityTypes.UpdateEntityType
+            <google.cloud.dialogflow.cx.v3.EntityTypes.UpdateEntityType>`__.
             Format:
+
             ``projects/<ProjectID>/locations/<LocationID>/agents/<AgentID>/entityTypes/<EntityTypeID>``.
         display_name (str):
             Required. The human-readable name of the
@@ -93,12 +99,14 @@ class EntityType(proto.Message):
             The collection of entity entries associated
             with the entity type.
         excluded_phrases (MutableSequence[google.cloud.dialogflowcx_v3.types.EntityType.ExcludedPhrase]):
-            Collection of exceptional words and phrases that shouldn't
-            be matched. For example, if you have a size entity type with
-            entry ``giant``\ (an adjective), you might consider adding
-            ``giants``\ (a noun) as an exclusion. If the kind of entity
-            type is ``KIND_MAP``, then the phrases specified by entities
-            and excluded phrases should be mutually exclusive.
+            Collection of exceptional words and phrases that
+            shouldn't be matched. For example, if you have a
+            size entity type with entry ``giant``(an
+            adjective), you might consider adding
+            ``giants``(a noun) as an exclusion. If the kind
+            of entity type is ``KIND_MAP``, then the phrases
+            specified by entities and excluded phrases
+            should be mutually exclusive.
         enable_fuzzy_extraction (bool):
             Enables fuzzy entity extraction during
             classification.
@@ -155,27 +163,30 @@ class EntityType(proto.Message):
 
         Attributes:
             value (str):
-                Required. The primary value associated with this entity
-                entry. For example, if the entity type is *vegetable*, the
-                value could be *scallions*.
+                Required. The primary value associated with this
+                entity entry. For example, if the entity type is
+                *vegetable*, the value could be *scallions*.
 
                 For ``KIND_MAP`` entity types:
 
-                - A canonical value to be used in place of synonyms.
+                *   A canonical value to be used in place of
+                synonyms.
 
                 For ``KIND_LIST`` entity types:
 
-                - A string that can contain references to other entity types
-                  (with or without aliases).
+                *   A string that can contain references to
+                other entity types (with or     without
+                aliases).
             synonyms (MutableSequence[str]):
-                Required. A collection of value synonyms. For example, if
-                the entity type is *vegetable*, and ``value`` is
-                *scallions*, a synonym could be *green onions*.
+                Required. A collection of value synonyms. For
+                example, if the entity type is *vegetable*, and
+                ``value`` is *scallions*, a synonym could be
+                *green onions*.
 
                 For ``KIND_LIST`` entity types:
 
-                - This collection must contain exactly one synonym equal to
-                  ``value``.
+                *   This collection must contain exactly one
+                synonym equal to ``value``.
         """
 
         value: str = proto.Field(
@@ -240,7 +251,8 @@ class EntityType(proto.Message):
 
 class ExportEntityTypesRequest(proto.Message):
     r"""The request message for
-    [EntityTypes.ExportEntityTypes][google.cloud.dialogflow.cx.v3.EntityTypes.ExportEntityTypes].
+    `EntityTypes.ExportEntityTypes
+    <google.cloud.dialogflow.cx.v3.EntityTypes.ExportEntityTypes>`__.
 
     This message has `oneof`_ fields (mutually exclusive fields).
     For each oneof, at most one member field can be set at the same time.
@@ -251,23 +263,29 @@ class ExportEntityTypesRequest(proto.Message):
 
     Attributes:
         parent (str):
-            Required. The name of the parent agent to export entity
-            types. Format:
+            Required. The name of the parent agent to export
+            entity types. Format:
             ``projects/<ProjectID>/locations/<LocationID>/agents/<AgentID>``.
         entity_types (MutableSequence[str]):
-            Required. The name of the entity types to export. Format:
+            Required. The name of the entity types to
+            export. Format:
+
             ``projects/<ProjectID>/locations/<LocationID>/agents/<AgentID>/entityTypes/<EntityTypeID>``.
         entity_types_uri (str):
             Optional. The `Google Cloud
-            Storage <https://cloud.google.com/storage/docs/>`__ URI to
-            export the entity types to. The format of this URI must be
+            Storage
+            <https://cloud.google.com/storage/docs/>`__ URI
+            to export the entity types to. The format of
+            this URI must be
             ``gs://<bucket-name>/<object-name>``.
 
-            Dialogflow performs a write operation for the Cloud Storage
-            object on the caller's behalf, so your request
-            authentication must have write permissions for the object.
-            For more information, see `Dialogflow access
-            control <https://cloud.google.com/dialogflow/cx/docs/concept/access-control#storage>`__.
+            Dialogflow performs a write operation for the
+            Cloud Storage object on the caller's behalf, so
+            your request authentication must have write
+            permissions for the object. For more
+            information, see `Dialogflow access
+            control
+            <https://cloud.google.com/dialogflow/cx/docs/concept/access-control#storage>`__.
 
             This field is a member of `oneof`_ ``destination``.
         entity_types_content_inline (bool):
@@ -276,20 +294,24 @@ class ExportEntityTypesRequest(proto.Message):
 
             This field is a member of `oneof`_ ``destination``.
         data_format (google.cloud.dialogflowcx_v3.types.ExportEntityTypesRequest.DataFormat):
-            Optional. The data format of the exported entity types. If
-            not specified, ``BLOB`` is assumed.
+            Optional. The data format of the exported entity
+            types. If not specified, ``BLOB`` is assumed.
         language_code (str):
-            Optional. The language to retrieve the entity type for. The
-            following fields are language dependent:
+            Optional. The language to retrieve the entity
+            type for. The following fields are language
+            dependent:
 
-            - ``EntityType.entities.value``
-            - ``EntityType.entities.synonyms``
-            - ``EntityType.excluded_phrases.value``
+            *   ``EntityType.entities.value``
+            *   ``EntityType.entities.synonyms``
 
-            If not specified, all language dependent fields will be
-            retrieved. `Many
-            languages <https://cloud.google.com/dialogflow/docs/reference/language>`__
-            are supported. Note: languages must be enabled in the agent
+            *   ``EntityType.excluded_phrases.value``
+
+            If not specified, all language dependent fields
+            will be retrieved. `Many
+            languages
+            <https://cloud.google.com/dialogflow/docs/reference/language>`__
+            are supported.
+            Note: languages must be enabled in the agent
             before they can be used.
     """
 
@@ -340,7 +362,8 @@ class ExportEntityTypesRequest(proto.Message):
 
 class ExportEntityTypesResponse(proto.Message):
     r"""The response message for
-    [EntityTypes.ExportEntityTypes][google.cloud.dialogflow.cx.v3.EntityTypes.ExportEntityTypes].
+    `EntityTypes.ExportEntityTypes
+    <google.cloud.dialogflow.cx.v3.EntityTypes.ExportEntityTypes>`__.
 
     This message has `oneof`_ fields (mutually exclusive fields).
     For each oneof, at most one member field can be set at the same time.
@@ -351,17 +374,19 @@ class ExportEntityTypesResponse(proto.Message):
 
     Attributes:
         entity_types_uri (str):
-            The URI to a file containing the exported entity types. This
-            field is populated only if ``entity_types_uri`` is specified
-            in
-            [ExportEntityTypesRequest][google.cloud.dialogflow.cx.v3.ExportEntityTypesRequest].
+            The URI to a file containing the exported entity
+            types. This field is populated only if
+            ``entity_types_uri`` is specified in
+            `ExportEntityTypesRequest
+            <google.cloud.dialogflow.cx.v3.ExportEntityTypesRequest>`__.
 
             This field is a member of `oneof`_ ``exported_entity_types``.
         entity_types_content (google.cloud.dialogflowcx_v3.types.InlineDestination):
-            Uncompressed byte content for entity types. This field is
-            populated only if ``entity_types_content_inline`` is set to
-            true in
-            [ExportEntityTypesRequest][google.cloud.dialogflow.cx.v3.ExportEntityTypesRequest].
+            Uncompressed byte content for entity types. This
+            field is populated only if
+            ``entity_types_content_inline`` is set to true
+            in `ExportEntityTypesRequest
+            <google.cloud.dialogflow.cx.v3.ExportEntityTypesRequest>`__.
 
             This field is a member of `oneof`_ ``exported_entity_types``.
     """
@@ -381,7 +406,8 @@ class ExportEntityTypesResponse(proto.Message):
 
 class ExportEntityTypesMetadata(proto.Message):
     r"""Metadata returned for the
-    [EntityTypes.ExportEntityTypes][google.cloud.dialogflow.cx.v3.EntityTypes.ExportEntityTypes]
+    `EntityTypes.ExportEntityTypes
+    <google.cloud.dialogflow.cx.v3.EntityTypes.ExportEntityTypes>`__
     long running operation.
 
     """
@@ -389,7 +415,8 @@ class ExportEntityTypesMetadata(proto.Message):
 
 class ImportEntityTypesRequest(proto.Message):
     r"""The request message for
-    [EntityTypes.ImportEntityTypes][google.cloud.dialogflow.cx.v3.EntityTypes.ImportEntityTypes].
+    `EntityTypes.ImportEntityTypes
+    <google.cloud.dialogflow.cx.v3.EntityTypes.ImportEntityTypes>`__.
 
     This message has `oneof`_ fields (mutually exclusive fields).
     For each oneof, at most one member field can be set at the same time.
@@ -400,19 +427,23 @@ class ImportEntityTypesRequest(proto.Message):
 
     Attributes:
         parent (str):
-            Required. The agent to import the entity types into. Format:
+            Required. The agent to import the entity types
+            into. Format:
             ``projects/<ProjectID>/locations/<LocationID>/agents/<AgentID>``.
         entity_types_uri (str):
-            The `Google Cloud
-            Storage <https://cloud.google.com/storage/docs/>`__ URI to
-            import entity types from. The format of this URI must be
+            The `Google Cloud Storage
+            <https://cloud.google.com/storage/docs/>`__ URI
+            to import entity types from. The format of this
+            URI must be
             ``gs://<bucket-name>/<object-name>``.
 
-            Dialogflow performs a read operation for the Cloud Storage
-            object on the caller's behalf, so your request
-            authentication must have read permissions for the object.
-            For more information, see `Dialogflow access
-            control <https://cloud.google.com/dialogflow/cx/docs/concept/access-control#storage>`__.
+            Dialogflow performs a read operation for the
+            Cloud Storage object on the caller's behalf, so
+            your request authentication must have read
+            permissions for the object. For more
+            information, see `Dialogflow access
+            control
+            <https://cloud.google.com/dialogflow/cx/docs/concept/access-control#storage>`__.
 
             This field is a member of `oneof`_ ``entity_types``.
         entity_types_content (google.cloud.dialogflowcx_v3.types.InlineSource):
@@ -423,15 +454,18 @@ class ImportEntityTypesRequest(proto.Message):
             Required. Merge option for importing entity
             types.
         target_entity_type (str):
-            Optional. The target entity type to import into. Format:
+            Optional. The target entity type to import into.
+            Format:
+
             ``projects/<ProjectID>/locations/<LocationID>/agents/<AgentID>/entity_types/<EntityTypeID>``.
-            If set, there should be only one entity type included in
-            [entity_types][google.cloud.dialogflow.cx.v3.ImportEntityTypesRequest.entity_types],
-            of which the type should match the type of the target entity
-            type. All
-            [entities][google.cloud.dialogflow.cx.v3.EntityType.entities]
-            in the imported entity type will be added to the target
-            entity type.
+            If set, there should be only one entity type
+            included in `entity_types
+            <google.cloud.dialogflow.cx.v3.ImportEntityTypesRequest.entity_types>`__,
+            of which the type should match the type of the
+            target entity type. All `entities
+            <google.cloud.dialogflow.cx.v3.EntityType.entities>`__
+            in the imported entity type will be added to the
+            target entity type.
     """
 
     class MergeOption(proto.Enum):
@@ -439,8 +473,8 @@ class ImportEntityTypesRequest(proto.Message):
 
         Values:
             MERGE_OPTION_UNSPECIFIED (0):
-                Unspecified. If used, system uses REPORT_CONFLICT as
-                default.
+                Unspecified. If used, system uses
+                REPORT_CONFLICT as default.
             REPLACE (1):
                 Replace the original entity type in the agent
                 with the new entity type when display name
@@ -496,23 +530,27 @@ class ImportEntityTypesRequest(proto.Message):
 
 class ImportEntityTypesResponse(proto.Message):
     r"""The response message for
-    [EntityTypes.ImportEntityTypes][google.cloud.dialogflow.cx.v3.EntityTypes.ImportEntityTypes].
+    `EntityTypes.ImportEntityTypes
+    <google.cloud.dialogflow.cx.v3.EntityTypes.ImportEntityTypes>`__.
 
     Attributes:
         entity_types (MutableSequence[str]):
-            The unique identifier of the imported entity types. Format:
+            The unique identifier of the imported entity
+            types. Format:
+
             ``projects/<ProjectID>/locations/<LocationID>/agents/<AgentID>/entity_types/<EntityTypeID>``.
         conflicting_resources (google.cloud.dialogflowcx_v3.types.ImportEntityTypesResponse.ConflictingResources):
             Info which resources have conflicts when
-            [REPORT_CONFLICT][ImportEntityTypesResponse.REPORT_CONFLICT]
+            `REPORT_CONFLICT
+            <ImportEntityTypesResponse.REPORT_CONFLICT>`__
             merge_option is set in ImportEntityTypesRequest.
     """
 
     class ConflictingResources(proto.Message):
         r"""Conflicting resources detected during the import process. Only
-        filled when
-        [REPORT_CONFLICT][ImportEntityTypesResponse.REPORT_CONFLICT] is set
-        in the request and there are conflicts in the display names.
+        filled when `REPORT_CONFLICT
+        <ImportEntityTypesResponse.REPORT_CONFLICT>`__ is set in the
+        request and there are conflicts in the display names.
 
         Attributes:
             entity_type_display_names (MutableSequence[str]):
@@ -543,7 +581,8 @@ class ImportEntityTypesResponse(proto.Message):
 
 class ImportEntityTypesMetadata(proto.Message):
     r"""Metadata returned for the
-    [EntityTypes.ImportEntityTypes][google.cloud.dialogflow.cx.v3.EntityTypes.ImportEntityTypes]
+    `EntityTypes.ImportEntityTypes
+    <google.cloud.dialogflow.cx.v3.EntityTypes.ImportEntityTypes>`__
     long running operation.
 
     """
@@ -551,31 +590,36 @@ class ImportEntityTypesMetadata(proto.Message):
 
 class ListEntityTypesRequest(proto.Message):
     r"""The request message for
-    [EntityTypes.ListEntityTypes][google.cloud.dialogflow.cx.v3.EntityTypes.ListEntityTypes].
+    `EntityTypes.ListEntityTypes
+    <google.cloud.dialogflow.cx.v3.EntityTypes.ListEntityTypes>`__.
 
     Attributes:
         parent (str):
-            Required. The agent to list all entity types for. Format:
+            Required. The agent to list all entity types
+            for. Format:
             ``projects/<ProjectID>/locations/<LocationID>/agents/<AgentID>``.
         language_code (str):
-            The language to list entity types for. The following fields
-            are language dependent:
+            The language to list entity types for. The
+            following fields are language dependent:
 
-            - ``EntityType.entities.value``
-            - ``EntityType.entities.synonyms``
-            - ``EntityType.excluded_phrases.value``
+            *   ``EntityType.entities.value``
+            *   ``EntityType.entities.synonyms``
 
-            If not specified, the agent's default language is used.
-            `Many
-            languages <https://cloud.google.com/dialogflow/cx/docs/reference/language>`__
-            are supported. Note: languages must be enabled in the agent
+            *   ``EntityType.excluded_phrases.value``
+
+            If not specified, the agent's default language
+            is used. `Many
+            languages
+            <https://cloud.google.com/dialogflow/cx/docs/reference/language>`__
+            are supported.
+            Note: languages must be enabled in the agent
             before they can be used.
         page_size (int):
             The maximum number of items to return in a
             single page. By default 100 and at most 1000.
         page_token (str):
-            The next_page_token value returned from a previous list
-            request.
+            The next_page_token value returned from a
+            previous list request.
     """
 
     parent: str = proto.Field(
@@ -598,12 +642,14 @@ class ListEntityTypesRequest(proto.Message):
 
 class ListEntityTypesResponse(proto.Message):
     r"""The response message for
-    [EntityTypes.ListEntityTypes][google.cloud.dialogflow.cx.v3.EntityTypes.ListEntityTypes].
+    `EntityTypes.ListEntityTypes
+    <google.cloud.dialogflow.cx.v3.EntityTypes.ListEntityTypes>`__.
 
     Attributes:
         entity_types (MutableSequence[google.cloud.dialogflowcx_v3.types.EntityType]):
-            The list of entity types. There will be a maximum number of
-            items returned based on the page_size field in the request.
+            The list of entity types. There will be a
+            maximum number of items returned based on the
+            page_size field in the request.
         next_page_token (str):
             Token to retrieve the next page of results,
             or empty if there are no more results in the
@@ -627,24 +673,30 @@ class ListEntityTypesResponse(proto.Message):
 
 class GetEntityTypeRequest(proto.Message):
     r"""The request message for
-    [EntityTypes.GetEntityType][google.cloud.dialogflow.cx.v3.EntityTypes.GetEntityType].
+    `EntityTypes.GetEntityType
+    <google.cloud.dialogflow.cx.v3.EntityTypes.GetEntityType>`__.
 
     Attributes:
         name (str):
-            Required. The name of the entity type. Format:
+            Required. The name of the entity type.
+            Format:
+
             ``projects/<ProjectID>/locations/<LocationID>/agents/<AgentID>/entityTypes/<EntityTypeID>``.
         language_code (str):
-            The language to retrieve the entity type for. The following
-            fields are language dependent:
+            The language to retrieve the entity type for.
+            The following fields are language dependent:
 
-            - ``EntityType.entities.value``
-            - ``EntityType.entities.synonyms``
-            - ``EntityType.excluded_phrases.value``
+            *   ``EntityType.entities.value``
+            *   ``EntityType.entities.synonyms``
 
-            If not specified, the agent's default language is used.
-            `Many
-            languages <https://cloud.google.com/dialogflow/cx/docs/reference/language>`__
-            are supported. Note: languages must be enabled in the agent
+            *   ``EntityType.excluded_phrases.value``
+
+            If not specified, the agent's default language
+            is used. `Many
+            languages
+            <https://cloud.google.com/dialogflow/cx/docs/reference/language>`__
+            are supported.
+            Note: languages must be enabled in the agent
             before they can be used.
     """
 
@@ -660,25 +712,30 @@ class GetEntityTypeRequest(proto.Message):
 
 class CreateEntityTypeRequest(proto.Message):
     r"""The request message for
-    [EntityTypes.CreateEntityType][google.cloud.dialogflow.cx.v3.EntityTypes.CreateEntityType].
+    `EntityTypes.CreateEntityType
+    <google.cloud.dialogflow.cx.v3.EntityTypes.CreateEntityType>`__.
 
     Attributes:
         parent (str):
-            Required. The agent to create a entity type for. Format:
+            Required. The agent to create a entity type for.
+            Format:
             ``projects/<ProjectID>/locations/<LocationID>/agents/<AgentID>``.
         entity_type (google.cloud.dialogflowcx_v3.types.EntityType):
             Required. The entity type to create.
         language_code (str):
-            The language of the following fields in ``entity_type``:
+            The language of the following fields in
+            ``entity_type``:
+            *   ``EntityType.entities.value``
 
-            - ``EntityType.entities.value``
-            - ``EntityType.entities.synonyms``
-            - ``EntityType.excluded_phrases.value``
+            *   ``EntityType.entities.synonyms``
+            *   ``EntityType.excluded_phrases.value``
 
-            If not specified, the agent's default language is used.
-            `Many
-            languages <https://cloud.google.com/dialogflow/cx/docs/reference/language>`__
-            are supported. Note: languages must be enabled in the agent
+            If not specified, the agent's default language
+            is used. `Many
+            languages
+            <https://cloud.google.com/dialogflow/cx/docs/reference/language>`__
+            are supported.
+            Note: languages must be enabled in the agent
             before they can be used.
     """
 
@@ -699,22 +756,26 @@ class CreateEntityTypeRequest(proto.Message):
 
 class UpdateEntityTypeRequest(proto.Message):
     r"""The request message for
-    [EntityTypes.UpdateEntityType][google.cloud.dialogflow.cx.v3.EntityTypes.UpdateEntityType].
+    `EntityTypes.UpdateEntityType
+    <google.cloud.dialogflow.cx.v3.EntityTypes.UpdateEntityType>`__.
 
     Attributes:
         entity_type (google.cloud.dialogflowcx_v3.types.EntityType):
             Required. The entity type to update.
         language_code (str):
-            The language of the following fields in ``entity_type``:
+            The language of the following fields in
+            ``entity_type``:
+            *   ``EntityType.entities.value``
 
-            - ``EntityType.entities.value``
-            - ``EntityType.entities.synonyms``
-            - ``EntityType.excluded_phrases.value``
+            *   ``EntityType.entities.synonyms``
+            *   ``EntityType.excluded_phrases.value``
 
-            If not specified, the agent's default language is used.
-            `Many
-            languages <https://cloud.google.com/dialogflow/cx/docs/reference/language>`__
-            are supported. Note: languages must be enabled in the agent
+            If not specified, the agent's default language
+            is used. `Many
+            languages
+            <https://cloud.google.com/dialogflow/cx/docs/reference/language>`__
+            are supported.
+            Note: languages must be enabled in the agent
             before they can be used.
         update_mask (google.protobuf.field_mask_pb2.FieldMask):
             The mask to control which fields get updated.
@@ -738,26 +799,34 @@ class UpdateEntityTypeRequest(proto.Message):
 
 class DeleteEntityTypeRequest(proto.Message):
     r"""The request message for
-    [EntityTypes.DeleteEntityType][google.cloud.dialogflow.cx.v3.EntityTypes.DeleteEntityType].
+    `EntityTypes.DeleteEntityType
+    <google.cloud.dialogflow.cx.v3.EntityTypes.DeleteEntityType>`__.
 
     Attributes:
         name (str):
-            Required. The name of the entity type to delete. Format:
+            Required. The name of the entity type to delete.
+            Format:
+
             ``projects/<ProjectID>/locations/<LocationID>/agents/<AgentID>/entityTypes/<EntityTypeID>``.
         force (bool):
-            This field has no effect for entity type not being used. For
-            entity types that are used by intents or pages:
+            This field has no effect for entity type not
+            being used. For entity types that are used by
+            intents or pages:
 
-            - If ``force`` is set to false, an error will be returned
-              with message indicating the referencing resources.
-            - If ``force`` is set to true, Dialogflow will remove the
-              entity type, as well as any references to the entity type
-              (i.e. Page
-              [parameter][google.cloud.dialogflow.cx.v3.Form.Parameter]
-              of the entity type will be changed to '@sys.any' and
-              intent
-              [parameter][google.cloud.dialogflow.cx.v3.Intent.Parameter]
-              of the entity type will be removed).
+            *  If ``force`` is set to false, an error will
+            be returned with message    indicating the
+            referencing resources.
+
+            *  If ``force`` is set to true, Dialogflow will
+            remove the entity type, as    well as any
+            references to the entity type (i.e. Page
+            `parameter
+            <google.cloud.dialogflow.cx.v3.Form.Parameter>`__
+            of the entity    type will be changed to
+               '@sys.any' and intent
+               `parameter
+            <google.cloud.dialogflow.cx.v3.Intent.Parameter>`__
+            of the    entity type will be removed).
     """
 
     name: str = proto.Field(

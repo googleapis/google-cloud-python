@@ -52,7 +52,6 @@ from google.protobuf import field_mask_pb2  # type: ignore
 
 from google.cloud.dialogflowcx_v3.services.intents import pagers
 from google.cloud.dialogflowcx_v3.types import intent
-from google.cloud.dialogflowcx_v3.types import intent as gcdc_intent
 
 from .client import IntentsClient
 from .transports.base import DEFAULT_CLIENT_INFO, IntentsTransport
@@ -69,8 +68,8 @@ _LOGGER = std_logging.getLogger(__name__)
 
 
 class IntentsAsyncClient:
-    """Service for managing
-    [Intents][google.cloud.dialogflow.cx.v3.Intent].
+    """Service for managing `Intents
+    <google.cloud.dialogflow.cx.v3.Intent>`__.
     """
 
     _client: IntentsClient
@@ -332,9 +331,11 @@ class IntentsAsyncClient:
         Args:
             request (Optional[Union[google.cloud.dialogflowcx_v3.types.ListIntentsRequest, dict]]):
                 The request object. The request message for
-                [Intents.ListIntents][google.cloud.dialogflow.cx.v3.Intents.ListIntents].
+                `Intents.ListIntents
+                <google.cloud.dialogflow.cx.v3.Intents.ListIntents>`__.
             parent (:class:`str`):
-                Required. The agent to list all intents for. Format:
+                Required. The agent to list all intents
+                for. Format:
                 ``projects/<ProjectID>/locations/<LocationID>/agents/<AgentID>``.
 
                 This corresponds to the ``parent`` field
@@ -351,10 +352,12 @@ class IntentsAsyncClient:
         Returns:
             google.cloud.dialogflowcx_v3.services.intents.pagers.ListIntentsAsyncPager:
                 The response message for
-                   [Intents.ListIntents][google.cloud.dialogflow.cx.v3.Intents.ListIntents].
+                `Intents.ListIntents
+                <google.cloud.dialogflow.cx.v3.Intents.ListIntents>`__.
 
-                Iterating over this object will yield results and
-                resolve additional pages automatically.
+                Iterating over this object will yield
+                results and resolve additional pages
+                automatically.
 
         """
         # Create or coerce a protobuf request object.
@@ -457,9 +460,12 @@ class IntentsAsyncClient:
         Args:
             request (Optional[Union[google.cloud.dialogflowcx_v3.types.GetIntentRequest, dict]]):
                 The request object. The request message for
-                [Intents.GetIntent][google.cloud.dialogflow.cx.v3.Intents.GetIntent].
+                `Intents.GetIntent
+                <google.cloud.dialogflow.cx.v3.Intents.GetIntent>`__.
             name (:class:`str`):
-                Required. The name of the intent. Format:
+                Required. The name of the intent.
+                Format:
+
                 ``projects/<ProjectID>/locations/<LocationID>/agents/<AgentID>/intents/<IntentID>``.
 
                 This corresponds to the ``name`` field
@@ -535,19 +541,20 @@ class IntentsAsyncClient:
 
     async def create_intent(
         self,
-        request: Optional[Union[gcdc_intent.CreateIntentRequest, dict]] = None,
+        request: Optional[Union[intent.CreateIntentRequest, dict]] = None,
         *,
         parent: Optional[str] = None,
-        intent: Optional[gcdc_intent.Intent] = None,
+        intent: Optional[intent.Intent] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
-    ) -> gcdc_intent.Intent:
+    ) -> intent.Intent:
         r"""Creates an intent in the specified agent.
 
         Note: You should always train a flow prior to sending it
         queries. See the `training
-        documentation <https://cloud.google.com/dialogflow/cx/docs/concept/training>`__.
+        documentation
+        <https://cloud.google.com/dialogflow/cx/docs/concept/training>`__.
 
         .. code-block:: python
 
@@ -582,9 +589,11 @@ class IntentsAsyncClient:
         Args:
             request (Optional[Union[google.cloud.dialogflowcx_v3.types.CreateIntentRequest, dict]]):
                 The request object. The request message for
-                [Intents.CreateIntent][google.cloud.dialogflow.cx.v3.Intents.CreateIntent].
+                `Intents.CreateIntent
+                <google.cloud.dialogflow.cx.v3.Intents.CreateIntent>`__.
             parent (:class:`str`):
-                Required. The agent to create an intent for. Format:
+                Required. The agent to create an intent
+                for. Format:
                 ``projects/<ProjectID>/locations/<LocationID>/agents/<AgentID>``.
 
                 This corresponds to the ``parent`` field
@@ -629,8 +638,8 @@ class IntentsAsyncClient:
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
-        if not isinstance(request, gcdc_intent.CreateIntentRequest):
-            request = gcdc_intent.CreateIntentRequest(request)
+        if not isinstance(request, intent.CreateIntentRequest):
+            request = intent.CreateIntentRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -667,19 +676,20 @@ class IntentsAsyncClient:
 
     async def update_intent(
         self,
-        request: Optional[Union[gcdc_intent.UpdateIntentRequest, dict]] = None,
+        request: Optional[Union[intent.UpdateIntentRequest, dict]] = None,
         *,
-        intent: Optional[gcdc_intent.Intent] = None,
+        intent: Optional[intent.Intent] = None,
         update_mask: Optional[field_mask_pb2.FieldMask] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
-    ) -> gcdc_intent.Intent:
+    ) -> intent.Intent:
         r"""Updates the specified intent.
 
         Note: You should always train a flow prior to sending it
         queries. See the `training
-        documentation <https://cloud.google.com/dialogflow/cx/docs/concept/training>`__.
+        documentation
+        <https://cloud.google.com/dialogflow/cx/docs/concept/training>`__.
 
         .. code-block:: python
 
@@ -713,7 +723,8 @@ class IntentsAsyncClient:
         Args:
             request (Optional[Union[google.cloud.dialogflowcx_v3.types.UpdateIntentRequest, dict]]):
                 The request object. The request message for
-                [Intents.UpdateIntent][google.cloud.dialogflow.cx.v3.Intents.UpdateIntent].
+                `Intents.UpdateIntent
+                <google.cloud.dialogflow.cx.v3.Intents.UpdateIntent>`__.
             intent (:class:`google.cloud.dialogflowcx_v3.types.Intent`):
                 Required. The intent to update.
                 This corresponds to the ``intent`` field
@@ -761,8 +772,8 @@ class IntentsAsyncClient:
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
-        if not isinstance(request, gcdc_intent.UpdateIntentRequest):
-            request = gcdc_intent.UpdateIntentRequest(request)
+        if not isinstance(request, intent.UpdateIntentRequest):
+            request = intent.UpdateIntentRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -812,7 +823,8 @@ class IntentsAsyncClient:
 
         Note: You should always train a flow prior to sending it
         queries. See the `training
-        documentation <https://cloud.google.com/dialogflow/cx/docs/concept/training>`__.
+        documentation
+        <https://cloud.google.com/dialogflow/cx/docs/concept/training>`__.
 
         .. code-block:: python
 
@@ -840,9 +852,12 @@ class IntentsAsyncClient:
         Args:
             request (Optional[Union[google.cloud.dialogflowcx_v3.types.DeleteIntentRequest, dict]]):
                 The request object. The request message for
-                [Intents.DeleteIntent][google.cloud.dialogflow.cx.v3.Intents.DeleteIntent].
+                `Intents.DeleteIntent
+                <google.cloud.dialogflow.cx.v3.Intents.DeleteIntent>`__.
             name (:class:`str`):
-                Required. The name of the intent to delete. Format:
+                Required. The name of the intent to
+                delete. Format:
+
                 ``projects/<ProjectID>/locations/<LocationID>/agents/<AgentID>/intents/<IntentID>``.
 
                 This corresponds to the ``name`` field
@@ -913,14 +928,20 @@ class IntentsAsyncClient:
         r"""Imports the specified intents into the agent.
 
         This method is a `long-running
-        operation <https://cloud.google.com/dialogflow/cx/docs/how/long-running-operation>`__.
+        operation
+        <https://cloud.google.com/dialogflow/cx/docs/how/long-running-operation>`__.
         The returned ``Operation`` type has the following
         method-specific fields:
 
         - ``metadata``:
-          [ImportIntentsMetadata][google.cloud.dialogflow.cx.v3.ImportIntentsMetadata]
+
+        `ImportIntentsMetadata
+        <google.cloud.dialogflow.cx.v3.ImportIntentsMetadata>`__
+
         - ``response``:
-          [ImportIntentsResponse][google.cloud.dialogflow.cx.v3.ImportIntentsResponse]
+
+        `ImportIntentsResponse
+        <google.cloud.dialogflow.cx.v3.ImportIntentsResponse>`__
 
         .. code-block:: python
 
@@ -956,7 +977,8 @@ class IntentsAsyncClient:
         Args:
             request (Optional[Union[google.cloud.dialogflowcx_v3.types.ImportIntentsRequest, dict]]):
                 The request object. The request message for
-                [Intents.ImportIntents][google.cloud.dialogflow.cx.v3.Intents.ImportIntents].
+                `Intents.ImportIntents
+                <google.cloud.dialogflow.cx.v3.Intents.ImportIntents>`__.
             retry (google.api_core.retry_async.AsyncRetry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
@@ -967,10 +989,14 @@ class IntentsAsyncClient:
 
         Returns:
             google.api_core.operation_async.AsyncOperation:
-                An object representing a long-running operation.
-
-                The result type for the operation will be :class:`google.cloud.dialogflowcx_v3.types.ImportIntentsResponse` The response message for
-                   [Intents.ImportIntents][google.cloud.dialogflow.cx.v3.Intents.ImportIntents].
+                An object representing a long-running
+                operation.
+                The result type for the operation will
+                be
+                :class:`google.cloud.dialogflowcx_v3.types.ImportIntentsResponse`
+                The response message for
+                `Intents.ImportIntents
+                <google.cloud.dialogflow.cx.v3.Intents.ImportIntents>`__.
 
         """
         # Create or coerce a protobuf request object.
@@ -1024,14 +1050,20 @@ class IntentsAsyncClient:
         r"""Exports the selected intents.
 
         This method is a `long-running
-        operation <https://cloud.google.com/dialogflow/cx/docs/how/long-running-operation>`__.
+        operation
+        <https://cloud.google.com/dialogflow/cx/docs/how/long-running-operation>`__.
         The returned ``Operation`` type has the following
         method-specific fields:
 
         - ``metadata``:
-          [ExportIntentsMetadata][google.cloud.dialogflow.cx.v3.ExportIntentsMetadata]
+
+        `ExportIntentsMetadata
+        <google.cloud.dialogflow.cx.v3.ExportIntentsMetadata>`__
+
         - ``response``:
-          [ExportIntentsResponse][google.cloud.dialogflow.cx.v3.ExportIntentsResponse]
+
+        `ExportIntentsResponse
+        <google.cloud.dialogflow.cx.v3.ExportIntentsResponse>`__
 
         .. code-block:: python
 
@@ -1068,7 +1100,8 @@ class IntentsAsyncClient:
         Args:
             request (Optional[Union[google.cloud.dialogflowcx_v3.types.ExportIntentsRequest, dict]]):
                 The request object. The request message for
-                [Intents.ExportIntents][google.cloud.dialogflow.cx.v3.Intents.ExportIntents].
+                `Intents.ExportIntents
+                <google.cloud.dialogflow.cx.v3.Intents.ExportIntents>`__.
             retry (google.api_core.retry_async.AsyncRetry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
@@ -1079,10 +1112,14 @@ class IntentsAsyncClient:
 
         Returns:
             google.api_core.operation_async.AsyncOperation:
-                An object representing a long-running operation.
-
-                The result type for the operation will be :class:`google.cloud.dialogflowcx_v3.types.ExportIntentsResponse` The response message for
-                   [Intents.ExportIntents][google.cloud.dialogflow.cx.v3.Intents.ExportIntents].
+                An object representing a long-running
+                operation.
+                The result type for the operation will
+                be
+                :class:`google.cloud.dialogflowcx_v3.types.ExportIntentsResponse`
+                The response message for
+                `Intents.ExportIntents
+                <google.cloud.dialogflow.cx.v3.Intents.ExportIntents>`__.
 
         """
         # Create or coerce a protobuf request object.

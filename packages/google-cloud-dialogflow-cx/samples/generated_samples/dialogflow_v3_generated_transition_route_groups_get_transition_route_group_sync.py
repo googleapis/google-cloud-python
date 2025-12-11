@@ -49,5 +49,4 @@ def sample_get_transition_route_group():
     # Handle the response
     print(response)
 
-
 # [END dialogflow_v3_generated_TransitionRouteGroups_GetTransitionRouteGroup_sync]

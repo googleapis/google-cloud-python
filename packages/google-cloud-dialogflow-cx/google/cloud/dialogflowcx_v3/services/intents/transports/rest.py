@@ -32,7 +32,6 @@ from google.protobuf import json_format
 from requests import __version__ as requests_version
 
 from google.cloud.dialogflowcx_v3.types import intent
-from google.cloud.dialogflowcx_v3.types import intent as gcdc_intent
 
 from .base import DEFAULT_CLIENT_INFO as BASE_DEFAULT_CLIENT_INFO
 from .rest_base import _BaseIntentsRestTransport
@@ -136,11 +135,9 @@ class IntentsRestInterceptor:
 
     def pre_create_intent(
         self,
-        request: gcdc_intent.CreateIntentRequest,
+        request: intent.CreateIntentRequest,
         metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        gcdc_intent.CreateIntentRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+    ) -> Tuple[intent.CreateIntentRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for create_intent
 
         Override in a subclass to manipulate the request or metadata
@@ -148,7 +145,7 @@ class IntentsRestInterceptor:
         """
         return request, metadata
 
-    def post_create_intent(self, response: gcdc_intent.Intent) -> gcdc_intent.Intent:
+    def post_create_intent(self, response: intent.Intent) -> intent.Intent:
         """Post-rpc interceptor for create_intent
 
         DEPRECATED. Please use the `post_create_intent_with_metadata`
@@ -162,10 +159,8 @@ class IntentsRestInterceptor:
         return response
 
     def post_create_intent_with_metadata(
-        self,
-        response: gcdc_intent.Intent,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[gcdc_intent.Intent, Sequence[Tuple[str, Union[str, bytes]]]]:
+        self, response: intent.Intent, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[intent.Intent, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for create_intent
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -374,11 +369,9 @@ class IntentsRestInterceptor:
 
     def pre_update_intent(
         self,
-        request: gcdc_intent.UpdateIntentRequest,
+        request: intent.UpdateIntentRequest,
         metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        gcdc_intent.UpdateIntentRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+    ) -> Tuple[intent.UpdateIntentRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for update_intent
 
         Override in a subclass to manipulate the request or metadata
@@ -386,7 +379,7 @@ class IntentsRestInterceptor:
         """
         return request, metadata
 
-    def post_update_intent(self, response: gcdc_intent.Intent) -> gcdc_intent.Intent:
+    def post_update_intent(self, response: intent.Intent) -> intent.Intent:
         """Post-rpc interceptor for update_intent
 
         DEPRECATED. Please use the `post_update_intent_with_metadata`
@@ -400,10 +393,8 @@ class IntentsRestInterceptor:
         return response
 
     def post_update_intent_with_metadata(
-        self,
-        response: gcdc_intent.Intent,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[gcdc_intent.Intent, Sequence[Tuple[str, Union[str, bytes]]]]:
+        self, response: intent.Intent, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[intent.Intent, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for update_intent
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -552,8 +543,8 @@ class IntentsRestStub:
 class IntentsRestTransport(_BaseIntentsRestTransport):
     """REST backend synchronous transport for Intents.
 
-    Service for managing
-    [Intents][google.cloud.dialogflow.cx.v3.Intent].
+    Service for managing `Intents
+    <google.cloud.dialogflow.cx.v3.Intent>`__.
 
     This class defines the same methods as the primary client, so the
     primary client can load the underlying transport implementation
@@ -718,18 +709,19 @@ class IntentsRestTransport(_BaseIntentsRestTransport):
 
         def __call__(
             self,
-            request: gcdc_intent.CreateIntentRequest,
+            request: intent.CreateIntentRequest,
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
             metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
-        ) -> gcdc_intent.Intent:
+        ) -> intent.Intent:
             r"""Call the create intent method over HTTP.
 
             Args:
-                request (~.gcdc_intent.CreateIntentRequest):
+                request (~.intent.CreateIntentRequest):
                     The request object. The request message for
-                [Intents.CreateIntent][google.cloud.dialogflow.cx.v3.Intents.CreateIntent].
+                `Intents.CreateIntent
+                <google.cloud.dialogflow.cx.v3.Intents.CreateIntent>`__.
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -739,7 +731,7 @@ class IntentsRestTransport(_BaseIntentsRestTransport):
                     be of type `bytes`.
 
             Returns:
-                ~.gcdc_intent.Intent:
+                ~.intent.Intent:
                     An intent represents a user's intent
                 to interact with a conversational agent.
                 You can provide information for the
@@ -816,8 +808,8 @@ class IntentsRestTransport(_BaseIntentsRestTransport):
                 raise core_exceptions.from_http_response(response)
 
             # Return the response
-            resp = gcdc_intent.Intent()
-            pb_resp = gcdc_intent.Intent.pb(resp)
+            resp = intent.Intent()
+            pb_resp = intent.Intent.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
@@ -830,7 +822,7 @@ class IntentsRestTransport(_BaseIntentsRestTransport):
                 logging.DEBUG
             ):  # pragma: NO COVER
                 try:
-                    response_payload = gcdc_intent.Intent.to_json(response)
+                    response_payload = intent.Intent.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -888,7 +880,8 @@ class IntentsRestTransport(_BaseIntentsRestTransport):
             Args:
                 request (~.intent.DeleteIntentRequest):
                     The request object. The request message for
-                [Intents.DeleteIntent][google.cloud.dialogflow.cx.v3.Intents.DeleteIntent].
+                `Intents.DeleteIntent
+                <google.cloud.dialogflow.cx.v3.Intents.DeleteIntent>`__.
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -998,7 +991,8 @@ class IntentsRestTransport(_BaseIntentsRestTransport):
             Args:
                 request (~.intent.ExportIntentsRequest):
                     The request object. The request message for
-                [Intents.ExportIntents][google.cloud.dialogflow.cx.v3.Intents.ExportIntents].
+                `Intents.ExportIntents
+                <google.cloud.dialogflow.cx.v3.Intents.ExportIntents>`__.
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -1151,7 +1145,8 @@ class IntentsRestTransport(_BaseIntentsRestTransport):
             Args:
                 request (~.intent.GetIntentRequest):
                     The request object. The request message for
-                [Intents.GetIntent][google.cloud.dialogflow.cx.v3.Intents.GetIntent].
+                `Intents.GetIntent
+                <google.cloud.dialogflow.cx.v3.Intents.GetIntent>`__.
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -1304,7 +1299,8 @@ class IntentsRestTransport(_BaseIntentsRestTransport):
             Args:
                 request (~.intent.ImportIntentsRequest):
                     The request object. The request message for
-                [Intents.ImportIntents][google.cloud.dialogflow.cx.v3.Intents.ImportIntents].
+                `Intents.ImportIntents
+                <google.cloud.dialogflow.cx.v3.Intents.ImportIntents>`__.
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -1457,7 +1453,8 @@ class IntentsRestTransport(_BaseIntentsRestTransport):
             Args:
                 request (~.intent.ListIntentsRequest):
                     The request object. The request message for
-                [Intents.ListIntents][google.cloud.dialogflow.cx.v3.Intents.ListIntents].
+                `Intents.ListIntents
+                <google.cloud.dialogflow.cx.v3.Intents.ListIntents>`__.
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -1469,7 +1466,8 @@ class IntentsRestTransport(_BaseIntentsRestTransport):
             Returns:
                 ~.intent.ListIntentsResponse:
                     The response message for
-                [Intents.ListIntents][google.cloud.dialogflow.cx.v3.Intents.ListIntents].
+                `Intents.ListIntents
+                <google.cloud.dialogflow.cx.v3.Intents.ListIntents>`__.
 
             """
 
@@ -1596,18 +1594,19 @@ class IntentsRestTransport(_BaseIntentsRestTransport):
 
         def __call__(
             self,
-            request: gcdc_intent.UpdateIntentRequest,
+            request: intent.UpdateIntentRequest,
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
             metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
-        ) -> gcdc_intent.Intent:
+        ) -> intent.Intent:
             r"""Call the update intent method over HTTP.
 
             Args:
-                request (~.gcdc_intent.UpdateIntentRequest):
+                request (~.intent.UpdateIntentRequest):
                     The request object. The request message for
-                [Intents.UpdateIntent][google.cloud.dialogflow.cx.v3.Intents.UpdateIntent].
+                `Intents.UpdateIntent
+                <google.cloud.dialogflow.cx.v3.Intents.UpdateIntent>`__.
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -1617,7 +1616,7 @@ class IntentsRestTransport(_BaseIntentsRestTransport):
                     be of type `bytes`.
 
             Returns:
-                ~.gcdc_intent.Intent:
+                ~.intent.Intent:
                     An intent represents a user's intent
                 to interact with a conversational agent.
                 You can provide information for the
@@ -1694,8 +1693,8 @@ class IntentsRestTransport(_BaseIntentsRestTransport):
                 raise core_exceptions.from_http_response(response)
 
             # Return the response
-            resp = gcdc_intent.Intent()
-            pb_resp = gcdc_intent.Intent.pb(resp)
+            resp = intent.Intent()
+            pb_resp = intent.Intent.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
@@ -1708,7 +1707,7 @@ class IntentsRestTransport(_BaseIntentsRestTransport):
                 logging.DEBUG
             ):  # pragma: NO COVER
                 try:
-                    response_payload = gcdc_intent.Intent.to_json(response)
+                    response_payload = intent.Intent.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -1728,9 +1727,7 @@ class IntentsRestTransport(_BaseIntentsRestTransport):
             return resp
 
     @property
-    def create_intent(
-        self,
-    ) -> Callable[[gcdc_intent.CreateIntentRequest], gcdc_intent.Intent]:
+    def create_intent(self) -> Callable[[intent.CreateIntentRequest], intent.Intent]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._CreateIntent(self._session, self._host, self._interceptor)  # type: ignore
@@ -1772,9 +1769,7 @@ class IntentsRestTransport(_BaseIntentsRestTransport):
         return self._ListIntents(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def update_intent(
-        self,
-    ) -> Callable[[gcdc_intent.UpdateIntentRequest], gcdc_intent.Intent]:
+    def update_intent(self) -> Callable[[intent.UpdateIntentRequest], intent.Intent]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._UpdateIntent(self._session, self._host, self._interceptor)  # type: ignore

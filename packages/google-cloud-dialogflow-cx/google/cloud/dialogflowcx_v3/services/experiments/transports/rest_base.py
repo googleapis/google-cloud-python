@@ -24,7 +24,6 @@ from google.protobuf import empty_pb2  # type: ignore
 from google.protobuf import json_format
 
 from google.cloud.dialogflowcx_v3.types import experiment
-from google.cloud.dialogflowcx_v3.types import experiment as gcdc_experiment
 
 from .base import DEFAULT_CLIENT_INFO, ExperimentsTransport
 
@@ -118,7 +117,7 @@ class _BaseExperimentsRestTransport(ExperimentsTransport):
 
         @staticmethod
         def _get_transcoded_request(http_options, request):
-            pb_request = gcdc_experiment.CreateExperimentRequest.pb(request)
+            pb_request = experiment.CreateExperimentRequest.pb(request)
             transcoded_request = path_template.transcode(http_options, pb_request)
             return transcoded_request
 
@@ -432,7 +431,7 @@ class _BaseExperimentsRestTransport(ExperimentsTransport):
 
         @staticmethod
         def _get_transcoded_request(http_options, request):
-            pb_request = gcdc_experiment.UpdateExperimentRequest.pb(request)
+            pb_request = experiment.UpdateExperimentRequest.pb(request)
             transcoded_request = path_template.transcode(http_options, pb_request)
             return transcoded_request
 

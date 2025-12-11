@@ -32,7 +32,6 @@ from google.protobuf import json_format
 from requests import __version__ as requests_version
 
 from google.cloud.dialogflowcx_v3.types import version
-from google.cloud.dialogflowcx_v3.types import version as gcdc_version
 
 from .base import DEFAULT_CLIENT_INFO as BASE_DEFAULT_CLIENT_INFO
 from .rest_base import _BaseVersionsRestTransport
@@ -184,11 +183,9 @@ class VersionsRestInterceptor:
 
     def pre_create_version(
         self,
-        request: gcdc_version.CreateVersionRequest,
+        request: version.CreateVersionRequest,
         metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        gcdc_version.CreateVersionRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+    ) -> Tuple[version.CreateVersionRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for create_version
 
         Override in a subclass to manipulate the request or metadata
@@ -380,11 +377,9 @@ class VersionsRestInterceptor:
 
     def pre_update_version(
         self,
-        request: gcdc_version.UpdateVersionRequest,
+        request: version.UpdateVersionRequest,
         metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        gcdc_version.UpdateVersionRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+    ) -> Tuple[version.UpdateVersionRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for update_version
 
         Override in a subclass to manipulate the request or metadata
@@ -392,9 +387,7 @@ class VersionsRestInterceptor:
         """
         return request, metadata
 
-    def post_update_version(
-        self, response: gcdc_version.Version
-    ) -> gcdc_version.Version:
+    def post_update_version(self, response: version.Version) -> version.Version:
         """Post-rpc interceptor for update_version
 
         DEPRECATED. Please use the `post_update_version_with_metadata`
@@ -409,9 +402,9 @@ class VersionsRestInterceptor:
 
     def post_update_version_with_metadata(
         self,
-        response: gcdc_version.Version,
+        response: version.Version,
         metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[gcdc_version.Version, Sequence[Tuple[str, Union[str, bytes]]]]:
+    ) -> Tuple[version.Version, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for update_version
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -560,8 +553,8 @@ class VersionsRestStub:
 class VersionsRestTransport(_BaseVersionsRestTransport):
     """REST backend synchronous transport for Versions.
 
-    Service for managing
-    [Versions][google.cloud.dialogflow.cx.v3.Version].
+    Service for managing `Versions
+    <google.cloud.dialogflow.cx.v3.Version>`__.
 
     This class defines the same methods as the primary client, so the
     primary client can load the underlying transport implementation
@@ -739,7 +732,8 @@ class VersionsRestTransport(_BaseVersionsRestTransport):
             Args:
                 request (~.version.CompareVersionsRequest):
                     The request object. The request message for
-                [Versions.CompareVersions][google.cloud.dialogflow.cx.v3.Versions.CompareVersions].
+                `Versions.CompareVersions
+                <google.cloud.dialogflow.cx.v3.Versions.CompareVersions>`__.
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -751,7 +745,8 @@ class VersionsRestTransport(_BaseVersionsRestTransport):
             Returns:
                 ~.version.CompareVersionsResponse:
                     The response message for
-                [Versions.CompareVersions][google.cloud.dialogflow.cx.v3.Versions.CompareVersions].
+                `Versions.CompareVersions
+                <google.cloud.dialogflow.cx.v3.Versions.CompareVersions>`__.
 
             """
 
@@ -889,7 +884,7 @@ class VersionsRestTransport(_BaseVersionsRestTransport):
 
         def __call__(
             self,
-            request: gcdc_version.CreateVersionRequest,
+            request: version.CreateVersionRequest,
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
@@ -898,9 +893,10 @@ class VersionsRestTransport(_BaseVersionsRestTransport):
             r"""Call the create version method over HTTP.
 
             Args:
-                request (~.gcdc_version.CreateVersionRequest):
+                request (~.version.CreateVersionRequest):
                     The request object. The request message for
-                [Versions.CreateVersion][google.cloud.dialogflow.cx.v3.Versions.CreateVersion].
+                `Versions.CreateVersion
+                <google.cloud.dialogflow.cx.v3.Versions.CreateVersion>`__.
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -1055,7 +1051,8 @@ class VersionsRestTransport(_BaseVersionsRestTransport):
             Args:
                 request (~.version.DeleteVersionRequest):
                     The request object. The request message for
-                [Versions.DeleteVersion][google.cloud.dialogflow.cx.v3.Versions.DeleteVersion].
+                `Versions.DeleteVersion
+                <google.cloud.dialogflow.cx.v3.Versions.DeleteVersion>`__.
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -1164,7 +1161,8 @@ class VersionsRestTransport(_BaseVersionsRestTransport):
             Args:
                 request (~.version.GetVersionRequest):
                     The request object. The request message for
-                [Versions.GetVersion][google.cloud.dialogflow.cx.v3.Versions.GetVersion].
+                `Versions.GetVersion
+                <google.cloud.dialogflow.cx.v3.Versions.GetVersion>`__.
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -1311,7 +1309,8 @@ class VersionsRestTransport(_BaseVersionsRestTransport):
             Args:
                 request (~.version.ListVersionsRequest):
                     The request object. The request message for
-                [Versions.ListVersions][google.cloud.dialogflow.cx.v3.Versions.ListVersions].
+                `Versions.ListVersions
+                <google.cloud.dialogflow.cx.v3.Versions.ListVersions>`__.
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -1323,7 +1322,8 @@ class VersionsRestTransport(_BaseVersionsRestTransport):
             Returns:
                 ~.version.ListVersionsResponse:
                     The response message for
-                [Versions.ListVersions][google.cloud.dialogflow.cx.v3.Versions.ListVersions].
+                `Versions.ListVersions
+                <google.cloud.dialogflow.cx.v3.Versions.ListVersions>`__.
 
             """
 
@@ -1461,7 +1461,8 @@ class VersionsRestTransport(_BaseVersionsRestTransport):
             Args:
                 request (~.version.LoadVersionRequest):
                     The request object. The request message for
-                [Versions.LoadVersion][google.cloud.dialogflow.cx.v3.Versions.LoadVersion].
+                `Versions.LoadVersion
+                <google.cloud.dialogflow.cx.v3.Versions.LoadVersion>`__.
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -1606,18 +1607,19 @@ class VersionsRestTransport(_BaseVersionsRestTransport):
 
         def __call__(
             self,
-            request: gcdc_version.UpdateVersionRequest,
+            request: version.UpdateVersionRequest,
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
             metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
-        ) -> gcdc_version.Version:
+        ) -> version.Version:
             r"""Call the update version method over HTTP.
 
             Args:
-                request (~.gcdc_version.UpdateVersionRequest):
+                request (~.version.UpdateVersionRequest):
                     The request object. The request message for
-                [Versions.UpdateVersion][google.cloud.dialogflow.cx.v3.Versions.UpdateVersion].
+                `Versions.UpdateVersion
+                <google.cloud.dialogflow.cx.v3.Versions.UpdateVersion>`__.
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -1627,7 +1629,7 @@ class VersionsRestTransport(_BaseVersionsRestTransport):
                     be of type `bytes`.
 
             Returns:
-                ~.gcdc_version.Version:
+                ~.version.Version:
                     Represents a version of a flow.
             """
 
@@ -1697,8 +1699,8 @@ class VersionsRestTransport(_BaseVersionsRestTransport):
                 raise core_exceptions.from_http_response(response)
 
             # Return the response
-            resp = gcdc_version.Version()
-            pb_resp = gcdc_version.Version.pb(resp)
+            resp = version.Version()
+            pb_resp = version.Version.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
@@ -1711,7 +1713,7 @@ class VersionsRestTransport(_BaseVersionsRestTransport):
                 logging.DEBUG
             ):  # pragma: NO COVER
                 try:
-                    response_payload = gcdc_version.Version.to_json(response)
+                    response_payload = version.Version.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -1741,7 +1743,7 @@ class VersionsRestTransport(_BaseVersionsRestTransport):
     @property
     def create_version(
         self,
-    ) -> Callable[[gcdc_version.CreateVersionRequest], operations_pb2.Operation]:
+    ) -> Callable[[version.CreateVersionRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._CreateVersion(self._session, self._host, self._interceptor)  # type: ignore
@@ -1779,7 +1781,7 @@ class VersionsRestTransport(_BaseVersionsRestTransport):
     @property
     def update_version(
         self,
-    ) -> Callable[[gcdc_version.UpdateVersionRequest], gcdc_version.Version]:
+    ) -> Callable[[version.UpdateVersionRequest], version.Version]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._UpdateVersion(self._session, self._host, self._interceptor)  # type: ignore

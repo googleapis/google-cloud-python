@@ -24,7 +24,6 @@ from google.protobuf import empty_pb2  # type: ignore
 from google.protobuf import json_format
 
 from google.cloud.dialogflowcx_v3.types import generator
-from google.cloud.dialogflowcx_v3.types import generator as gcdc_generator
 
 from .base import DEFAULT_CLIENT_INFO, GeneratorsTransport
 
@@ -118,7 +117,7 @@ class _BaseGeneratorsRestTransport(GeneratorsTransport):
 
         @staticmethod
         def _get_transcoded_request(http_options, request):
-            pb_request = gcdc_generator.CreateGeneratorRequest.pb(request)
+            pb_request = generator.CreateGeneratorRequest.pb(request)
             transcoded_request = path_template.transcode(http_options, pb_request)
             return transcoded_request
 
@@ -316,7 +315,7 @@ class _BaseGeneratorsRestTransport(GeneratorsTransport):
 
         @staticmethod
         def _get_transcoded_request(http_options, request):
-            pb_request = gcdc_generator.UpdateGeneratorRequest.pb(request)
+            pb_request = generator.UpdateGeneratorRequest.pb(request)
             transcoded_request = path_template.transcode(http_options, pb_request)
             return transcoded_request
 

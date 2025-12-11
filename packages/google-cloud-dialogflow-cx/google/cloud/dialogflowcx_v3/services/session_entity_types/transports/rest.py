@@ -31,9 +31,6 @@ from google.protobuf import empty_pb2  # type: ignore
 from google.protobuf import json_format
 from requests import __version__ as requests_version
 
-from google.cloud.dialogflowcx_v3.types import (
-    session_entity_type as gcdc_session_entity_type,
-)
 from google.cloud.dialogflowcx_v3.types import session_entity_type
 
 from .base import DEFAULT_CLIENT_INFO as BASE_DEFAULT_CLIENT_INFO
@@ -122,10 +119,10 @@ class SessionEntityTypesRestInterceptor:
 
     def pre_create_session_entity_type(
         self,
-        request: gcdc_session_entity_type.CreateSessionEntityTypeRequest,
+        request: session_entity_type.CreateSessionEntityTypeRequest,
         metadata: Sequence[Tuple[str, Union[str, bytes]]],
     ) -> Tuple[
-        gcdc_session_entity_type.CreateSessionEntityTypeRequest,
+        session_entity_type.CreateSessionEntityTypeRequest,
         Sequence[Tuple[str, Union[str, bytes]]],
     ]:
         """Pre-rpc interceptor for create_session_entity_type
@@ -136,8 +133,8 @@ class SessionEntityTypesRestInterceptor:
         return request, metadata
 
     def post_create_session_entity_type(
-        self, response: gcdc_session_entity_type.SessionEntityType
-    ) -> gcdc_session_entity_type.SessionEntityType:
+        self, response: session_entity_type.SessionEntityType
+    ) -> session_entity_type.SessionEntityType:
         """Post-rpc interceptor for create_session_entity_type
 
         DEPRECATED. Please use the `post_create_session_entity_type_with_metadata`
@@ -152,11 +149,10 @@ class SessionEntityTypesRestInterceptor:
 
     def post_create_session_entity_type_with_metadata(
         self,
-        response: gcdc_session_entity_type.SessionEntityType,
+        response: session_entity_type.SessionEntityType,
         metadata: Sequence[Tuple[str, Union[str, bytes]]],
     ) -> Tuple[
-        gcdc_session_entity_type.SessionEntityType,
-        Sequence[Tuple[str, Union[str, bytes]]],
+        session_entity_type.SessionEntityType, Sequence[Tuple[str, Union[str, bytes]]]
     ]:
         """Post-rpc interceptor for create_session_entity_type
 
@@ -292,10 +288,10 @@ class SessionEntityTypesRestInterceptor:
 
     def pre_update_session_entity_type(
         self,
-        request: gcdc_session_entity_type.UpdateSessionEntityTypeRequest,
+        request: session_entity_type.UpdateSessionEntityTypeRequest,
         metadata: Sequence[Tuple[str, Union[str, bytes]]],
     ) -> Tuple[
-        gcdc_session_entity_type.UpdateSessionEntityTypeRequest,
+        session_entity_type.UpdateSessionEntityTypeRequest,
         Sequence[Tuple[str, Union[str, bytes]]],
     ]:
         """Pre-rpc interceptor for update_session_entity_type
@@ -306,8 +302,8 @@ class SessionEntityTypesRestInterceptor:
         return request, metadata
 
     def post_update_session_entity_type(
-        self, response: gcdc_session_entity_type.SessionEntityType
-    ) -> gcdc_session_entity_type.SessionEntityType:
+        self, response: session_entity_type.SessionEntityType
+    ) -> session_entity_type.SessionEntityType:
         """Post-rpc interceptor for update_session_entity_type
 
         DEPRECATED. Please use the `post_update_session_entity_type_with_metadata`
@@ -322,11 +318,10 @@ class SessionEntityTypesRestInterceptor:
 
     def post_update_session_entity_type_with_metadata(
         self,
-        response: gcdc_session_entity_type.SessionEntityType,
+        response: session_entity_type.SessionEntityType,
         metadata: Sequence[Tuple[str, Union[str, bytes]]],
     ) -> Tuple[
-        gcdc_session_entity_type.SessionEntityType,
-        Sequence[Tuple[str, Union[str, bytes]]],
+        session_entity_type.SessionEntityType, Sequence[Tuple[str, Union[str, bytes]]]
     ]:
         """Post-rpc interceptor for update_session_entity_type
 
@@ -477,7 +472,8 @@ class SessionEntityTypesRestTransport(_BaseSessionEntityTypesRestTransport):
     """REST backend synchronous transport for SessionEntityTypes.
 
     Service for managing
-    [SessionEntityTypes][google.cloud.dialogflow.cx.v3.SessionEntityType].
+    `SessionEntityTypes
+    <google.cloud.dialogflow.cx.v3.SessionEntityType>`__.
 
     This class defines the same methods as the primary client, so the
     primary client can load the underlying transport implementation
@@ -586,19 +582,20 @@ class SessionEntityTypesRestTransport(_BaseSessionEntityTypesRestTransport):
 
         def __call__(
             self,
-            request: gcdc_session_entity_type.CreateSessionEntityTypeRequest,
+            request: session_entity_type.CreateSessionEntityTypeRequest,
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
             metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
-        ) -> gcdc_session_entity_type.SessionEntityType:
+        ) -> session_entity_type.SessionEntityType:
             r"""Call the create session entity
             type method over HTTP.
 
                 Args:
-                    request (~.gcdc_session_entity_type.CreateSessionEntityTypeRequest):
+                    request (~.session_entity_type.CreateSessionEntityTypeRequest):
                         The request object. The request message for
-                    [SessionEntityTypes.CreateSessionEntityType][google.cloud.dialogflow.cx.v3.SessionEntityTypes.CreateSessionEntityType].
+                    `SessionEntityTypes.CreateSessionEntityType
+                    <google.cloud.dialogflow.cx.v3.SessionEntityTypes.CreateSessionEntityType>`__.
                     retry (google.api_core.retry.Retry): Designation of what errors, if any,
                         should be retried.
                     timeout (float): The timeout for this request.
@@ -608,24 +605,27 @@ class SessionEntityTypesRestTransport(_BaseSessionEntityTypesRestTransport):
                         be of type `bytes`.
 
                 Returns:
-                    ~.gcdc_session_entity_type.SessionEntityType:
-                        Session entity types are referred to as **User** entity
-                    types and are entities that are built for an individual
-                    user such as favorites, preferences, playlists, and so
-                    on.
+                    ~.session_entity_type.SessionEntityType:
+                        Session entity types are referred to as
+                    **User** entity types and are entities
+                    that are built for an individual user
+                    such as favorites, preferences,
+                    playlists, and so on.
 
-                    You can redefine a session entity type at the session
-                    level to extend or replace a [custom entity
-                    type][google.cloud.dialogflow.cx.v3.EntityType] at the
-                    user session level (we refer to the entity types defined
-                    at the agent level as "custom entity types").
+                    You can redefine a session entity type
+                    at the session level to extend or
+                    replace a `custom entity type
+                    <google.cloud.dialogflow.cx.v3.EntityType>`__
+                    at the user session level (we refer to
+                    the entity types defined at the agent
+                    level as "custom entity types").
 
-                    Note: session entity types apply to all queries,
-                    regardless of the language.
+                    Note: session entity types apply to all
+                    queries, regardless of the language.
 
-                    For more information about entity types, see the
-                    `Dialogflow
-                    documentation <https://cloud.google.com/dialogflow/docs/entities-overview>`__.
+                    For more information about entity types,
+                    see the `Dialogflow documentation
+                    <https://cloud.google.com/dialogflow/docs/entities-overview>`__.
 
             """
 
@@ -695,8 +695,8 @@ class SessionEntityTypesRestTransport(_BaseSessionEntityTypesRestTransport):
                 raise core_exceptions.from_http_response(response)
 
             # Return the response
-            resp = gcdc_session_entity_type.SessionEntityType()
-            pb_resp = gcdc_session_entity_type.SessionEntityType.pb(resp)
+            resp = session_entity_type.SessionEntityType()
+            pb_resp = session_entity_type.SessionEntityType.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
@@ -709,8 +709,8 @@ class SessionEntityTypesRestTransport(_BaseSessionEntityTypesRestTransport):
                 logging.DEBUG
             ):  # pragma: NO COVER
                 try:
-                    response_payload = (
-                        gcdc_session_entity_type.SessionEntityType.to_json(response)
+                    response_payload = session_entity_type.SessionEntityType.to_json(
+                        response
                     )
                 except:
                     response_payload = None
@@ -773,7 +773,8 @@ class SessionEntityTypesRestTransport(_BaseSessionEntityTypesRestTransport):
                 Args:
                     request (~.session_entity_type.DeleteSessionEntityTypeRequest):
                         The request object. The request message for
-                    [SessionEntityTypes.DeleteSessionEntityType][google.cloud.dialogflow.cx.v3.SessionEntityTypes.DeleteSessionEntityType].
+                    `SessionEntityTypes.DeleteSessionEntityType
+                    <google.cloud.dialogflow.cx.v3.SessionEntityTypes.DeleteSessionEntityType>`__.
                     retry (google.api_core.retry.Retry): Designation of what errors, if any,
                         should be retried.
                     timeout (float): The timeout for this request.
@@ -885,7 +886,8 @@ class SessionEntityTypesRestTransport(_BaseSessionEntityTypesRestTransport):
             Args:
                 request (~.session_entity_type.GetSessionEntityTypeRequest):
                     The request object. The request message for
-                [SessionEntityTypes.GetSessionEntityType][google.cloud.dialogflow.cx.v3.SessionEntityTypes.GetSessionEntityType].
+                `SessionEntityTypes.GetSessionEntityType
+                <google.cloud.dialogflow.cx.v3.SessionEntityTypes.GetSessionEntityType>`__.
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -896,23 +898,26 @@ class SessionEntityTypesRestTransport(_BaseSessionEntityTypesRestTransport):
 
             Returns:
                 ~.session_entity_type.SessionEntityType:
-                    Session entity types are referred to as **User** entity
-                types and are entities that are built for an individual
-                user such as favorites, preferences, playlists, and so
-                on.
+                    Session entity types are referred to as
+                **User** entity types and are entities
+                that are built for an individual user
+                such as favorites, preferences,
+                playlists, and so on.
 
-                You can redefine a session entity type at the session
-                level to extend or replace a [custom entity
-                type][google.cloud.dialogflow.cx.v3.EntityType] at the
-                user session level (we refer to the entity types defined
-                at the agent level as "custom entity types").
+                You can redefine a session entity type
+                at the session level to extend or
+                replace a `custom entity type
+                <google.cloud.dialogflow.cx.v3.EntityType>`__
+                at the user session level (we refer to
+                the entity types defined at the agent
+                level as "custom entity types").
 
-                Note: session entity types apply to all queries,
-                regardless of the language.
+                Note: session entity types apply to all
+                queries, regardless of the language.
 
-                For more information about entity types, see the
-                `Dialogflow
-                documentation <https://cloud.google.com/dialogflow/docs/entities-overview>`__.
+                For more information about entity types,
+                see the `Dialogflow documentation
+                <https://cloud.google.com/dialogflow/docs/entities-overview>`__.
 
             """
 
@@ -1054,7 +1059,8 @@ class SessionEntityTypesRestTransport(_BaseSessionEntityTypesRestTransport):
             Args:
                 request (~.session_entity_type.ListSessionEntityTypesRequest):
                     The request object. The request message for
-                [SessionEntityTypes.ListSessionEntityTypes][google.cloud.dialogflow.cx.v3.SessionEntityTypes.ListSessionEntityTypes].
+                `SessionEntityTypes.ListSessionEntityTypes
+                <google.cloud.dialogflow.cx.v3.SessionEntityTypes.ListSessionEntityTypes>`__.
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -1066,7 +1072,8 @@ class SessionEntityTypesRestTransport(_BaseSessionEntityTypesRestTransport):
             Returns:
                 ~.session_entity_type.ListSessionEntityTypesResponse:
                     The response message for
-                [SessionEntityTypes.ListSessionEntityTypes][google.cloud.dialogflow.cx.v3.SessionEntityTypes.ListSessionEntityTypes].
+                `SessionEntityTypes.ListSessionEntityTypes
+                <google.cloud.dialogflow.cx.v3.SessionEntityTypes.ListSessionEntityTypes>`__.
 
             """
 
@@ -1200,19 +1207,20 @@ class SessionEntityTypesRestTransport(_BaseSessionEntityTypesRestTransport):
 
         def __call__(
             self,
-            request: gcdc_session_entity_type.UpdateSessionEntityTypeRequest,
+            request: session_entity_type.UpdateSessionEntityTypeRequest,
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
             metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
-        ) -> gcdc_session_entity_type.SessionEntityType:
+        ) -> session_entity_type.SessionEntityType:
             r"""Call the update session entity
             type method over HTTP.
 
                 Args:
-                    request (~.gcdc_session_entity_type.UpdateSessionEntityTypeRequest):
+                    request (~.session_entity_type.UpdateSessionEntityTypeRequest):
                         The request object. The request message for
-                    [SessionEntityTypes.UpdateSessionEntityType][google.cloud.dialogflow.cx.v3.SessionEntityTypes.UpdateSessionEntityType].
+                    `SessionEntityTypes.UpdateSessionEntityType
+                    <google.cloud.dialogflow.cx.v3.SessionEntityTypes.UpdateSessionEntityType>`__.
                     retry (google.api_core.retry.Retry): Designation of what errors, if any,
                         should be retried.
                     timeout (float): The timeout for this request.
@@ -1222,24 +1230,27 @@ class SessionEntityTypesRestTransport(_BaseSessionEntityTypesRestTransport):
                         be of type `bytes`.
 
                 Returns:
-                    ~.gcdc_session_entity_type.SessionEntityType:
-                        Session entity types are referred to as **User** entity
-                    types and are entities that are built for an individual
-                    user such as favorites, preferences, playlists, and so
-                    on.
+                    ~.session_entity_type.SessionEntityType:
+                        Session entity types are referred to as
+                    **User** entity types and are entities
+                    that are built for an individual user
+                    such as favorites, preferences,
+                    playlists, and so on.
 
-                    You can redefine a session entity type at the session
-                    level to extend or replace a [custom entity
-                    type][google.cloud.dialogflow.cx.v3.EntityType] at the
-                    user session level (we refer to the entity types defined
-                    at the agent level as "custom entity types").
+                    You can redefine a session entity type
+                    at the session level to extend or
+                    replace a `custom entity type
+                    <google.cloud.dialogflow.cx.v3.EntityType>`__
+                    at the user session level (we refer to
+                    the entity types defined at the agent
+                    level as "custom entity types").
 
-                    Note: session entity types apply to all queries,
-                    regardless of the language.
+                    Note: session entity types apply to all
+                    queries, regardless of the language.
 
-                    For more information about entity types, see the
-                    `Dialogflow
-                    documentation <https://cloud.google.com/dialogflow/docs/entities-overview>`__.
+                    For more information about entity types,
+                    see the `Dialogflow documentation
+                    <https://cloud.google.com/dialogflow/docs/entities-overview>`__.
 
             """
 
@@ -1309,8 +1320,8 @@ class SessionEntityTypesRestTransport(_BaseSessionEntityTypesRestTransport):
                 raise core_exceptions.from_http_response(response)
 
             # Return the response
-            resp = gcdc_session_entity_type.SessionEntityType()
-            pb_resp = gcdc_session_entity_type.SessionEntityType.pb(resp)
+            resp = session_entity_type.SessionEntityType()
+            pb_resp = session_entity_type.SessionEntityType.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
@@ -1323,8 +1334,8 @@ class SessionEntityTypesRestTransport(_BaseSessionEntityTypesRestTransport):
                 logging.DEBUG
             ):  # pragma: NO COVER
                 try:
-                    response_payload = (
-                        gcdc_session_entity_type.SessionEntityType.to_json(response)
+                    response_payload = session_entity_type.SessionEntityType.to_json(
+                        response
                     )
                 except:
                     response_payload = None
@@ -1348,8 +1359,8 @@ class SessionEntityTypesRestTransport(_BaseSessionEntityTypesRestTransport):
     def create_session_entity_type(
         self,
     ) -> Callable[
-        [gcdc_session_entity_type.CreateSessionEntityTypeRequest],
-        gcdc_session_entity_type.SessionEntityType,
+        [session_entity_type.CreateSessionEntityTypeRequest],
+        session_entity_type.SessionEntityType,
     ]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
@@ -1391,8 +1402,8 @@ class SessionEntityTypesRestTransport(_BaseSessionEntityTypesRestTransport):
     def update_session_entity_type(
         self,
     ) -> Callable[
-        [gcdc_session_entity_type.UpdateSessionEntityTypeRequest],
-        gcdc_session_entity_type.SessionEntityType,
+        [session_entity_type.UpdateSessionEntityTypeRequest],
+        session_entity_type.SessionEntityType,
     ]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast

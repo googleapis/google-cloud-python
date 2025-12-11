@@ -112,10 +112,11 @@ class _LoggingClientInterceptor(grpc.UnaryUnaryClientInterceptor):  # pragma: NO
 class SessionsGrpcTransport(SessionsTransport):
     """gRPC backend transport for Sessions.
 
-    A session represents an interaction with a user. You retrieve user
-    input and pass it to the
-    [DetectIntent][google.cloud.dialogflow.cx.v3.Sessions.DetectIntent]
-    method to determine user intent and respond.
+    A session represents an interaction with a user. You retrieve
+    user input and pass it to the
+    `DetectIntent
+    <google.cloud.dialogflow.cx.v3.Sessions.DetectIntent>`__ method
+    to determine user intent and respond.
 
     This class defines the same methods as the primary client, so the
     primary client can load the underlying transport implementation
@@ -332,14 +333,16 @@ class SessionsGrpcTransport(SessionsTransport):
     ) -> Callable[[session.DetectIntentRequest], session.DetectIntentResponse]:
         r"""Return a callable for the detect intent method over gRPC.
 
-        Processes a natural language query and returns structured,
-        actionable data as a result. This method is not idempotent,
-        because it may cause session entity types to be updated, which
-        in turn might affect results of future queries.
+        Processes a natural language query and returns
+        structured, actionable data as a result. This method is
+        not idempotent, because it may cause session entity
+        types to be updated, which in turn might affect results
+        of future queries.
 
-        Note: Always use agent versions for production traffic. See
-        `Versions and
-        environments <https://cloud.google.com/dialogflow/cx/docs/concept/version>`__.
+        Note: Always use agent versions for production traffic.
+        See `Versions and
+        environments
+        <https://cloud.google.com/dialogflow/cx/docs/concept/version>`__.
 
         Returns:
             Callable[[~.DetectIntentRequest],
@@ -365,10 +368,12 @@ class SessionsGrpcTransport(SessionsTransport):
     ) -> Callable[[session.DetectIntentRequest], session.DetectIntentResponse]:
         r"""Return a callable for the server streaming detect intent method over gRPC.
 
-        Processes a natural language query and returns structured,
-        actionable data as a result through server-side streaming.
-        Server-side streaming allows Dialogflow to send `partial
-        responses <https://cloud.google.com/dialogflow/cx/docs/concept/fulfillment#partial-response>`__
+        Processes a natural language query and returns
+        structured, actionable data as a result through
+        server-side streaming. Server-side streaming allows
+        Dialogflow to send `partial
+        responses
+        <https://cloud.google.com/dialogflow/cx/docs/concept/fulfillment#partial-response>`__
         earlier in a single request.
 
         Returns:
@@ -400,13 +405,14 @@ class SessionsGrpcTransport(SessionsTransport):
         r"""Return a callable for the streaming detect intent method over gRPC.
 
         Processes a natural language query in audio format in a
-        streaming fashion and returns structured, actionable data as a
-        result. This method is only available via the gRPC API (not
-        REST).
+        streaming fashion and returns structured, actionable
+        data as a result. This method is only available via the
+        gRPC API (not REST).
 
-        Note: Always use agent versions for production traffic. See
-        `Versions and
-        environments <https://cloud.google.com/dialogflow/cx/docs/concept/version>`__.
+        Note: Always use agent versions for production traffic.
+        See `Versions and
+        environments
+        <https://cloud.google.com/dialogflow/cx/docs/concept/version>`__.
 
         Returns:
             Callable[[~.StreamingDetectIntentRequest],
@@ -460,11 +466,14 @@ class SessionsGrpcTransport(SessionsTransport):
         r"""Return a callable for the fulfill intent method over gRPC.
 
         Fulfills a matched intent returned by
-        [MatchIntent][google.cloud.dialogflow.cx.v3.Sessions.MatchIntent].
+        `MatchIntent
+        <google.cloud.dialogflow.cx.v3.Sessions.MatchIntent>`__.
         Must be called after
-        [MatchIntent][google.cloud.dialogflow.cx.v3.Sessions.MatchIntent],
+        `MatchIntent
+        <google.cloud.dialogflow.cx.v3.Sessions.MatchIntent>`__,
         with input from
-        [MatchIntentResponse][google.cloud.dialogflow.cx.v3.MatchIntentResponse].
+        `MatchIntentResponse
+        <google.cloud.dialogflow.cx.v3.MatchIntentResponse>`__.
         Otherwise, the behavior is undefined.
 
         Returns:

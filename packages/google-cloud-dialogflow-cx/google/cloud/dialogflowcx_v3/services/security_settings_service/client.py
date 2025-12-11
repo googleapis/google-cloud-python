@@ -66,9 +66,6 @@ from google.longrunning import operations_pb2  # type: ignore
 from google.protobuf import field_mask_pb2  # type: ignore
 
 from google.cloud.dialogflowcx_v3.services.security_settings_service import pagers
-from google.cloud.dialogflowcx_v3.types import (
-    security_settings as gcdc_security_settings,
-)
 from google.cloud.dialogflowcx_v3.types import security_settings
 
 from .transports.base import DEFAULT_CLIENT_INFO, SecuritySettingsServiceTransport
@@ -773,15 +770,15 @@ class SecuritySettingsServiceClient(metaclass=SecuritySettingsServiceClientMeta)
     def create_security_settings(
         self,
         request: Optional[
-            Union[gcdc_security_settings.CreateSecuritySettingsRequest, dict]
+            Union[security_settings.CreateSecuritySettingsRequest, dict]
         ] = None,
         *,
         parent: Optional[str] = None,
-        security_settings: Optional[gcdc_security_settings.SecuritySettings] = None,
+        security_settings: Optional[security_settings.SecuritySettings] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
-    ) -> gcdc_security_settings.SecuritySettings:
+    ) -> security_settings.SecuritySettings:
         r"""Create security settings in the specified location.
 
         .. code-block:: python
@@ -821,7 +818,8 @@ class SecuritySettingsServiceClient(metaclass=SecuritySettingsServiceClientMeta)
                 [SecuritySettings.CreateSecuritySettings][].
             parent (str):
                 Required. The location to create an
-                [SecuritySettings][google.cloud.dialogflow.cx.v3.SecuritySettings]
+                `SecuritySettings
+                <google.cloud.dialogflow.cx.v3.SecuritySettings>`__
                 for. Format:
                 ``projects/<ProjectID>/locations/<LocationID>``.
 
@@ -868,10 +866,8 @@ class SecuritySettingsServiceClient(metaclass=SecuritySettingsServiceClientMeta)
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
-        if not isinstance(
-            request, gcdc_security_settings.CreateSecuritySettingsRequest
-        ):
-            request = gcdc_security_settings.CreateSecuritySettingsRequest(request)
+        if not isinstance(request, security_settings.CreateSecuritySettingsRequest):
+            request = security_settings.CreateSecuritySettingsRequest(request)
             # If we have keyword arguments corresponding to fields on the
             # request, apply these.
             if parent is not None:
@@ -915,8 +911,9 @@ class SecuritySettingsServiceClient(metaclass=SecuritySettingsServiceClientMeta)
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> security_settings.SecuritySettings:
         r"""Retrieves the specified
-        [SecuritySettings][google.cloud.dialogflow.cx.v3.SecuritySettings].
-        The returned settings may be stale by up to 1 minute.
+        `SecuritySettings
+        <google.cloud.dialogflow.cx.v3.SecuritySettings>`__. The
+        returned settings may be stale by up to 1 minute.
 
         .. code-block:: python
 
@@ -947,9 +944,12 @@ class SecuritySettingsServiceClient(metaclass=SecuritySettingsServiceClientMeta)
         Args:
             request (Union[google.cloud.dialogflowcx_v3.types.GetSecuritySettingsRequest, dict]):
                 The request object. The request message for
-                [SecuritySettingsService.GetSecuritySettings][google.cloud.dialogflow.cx.v3.SecuritySettingsService.GetSecuritySettings].
+                `SecuritySettingsService.GetSecuritySettings
+                <google.cloud.dialogflow.cx.v3.SecuritySettingsService.GetSecuritySettings>`__.
             name (str):
-                Required. Resource name of the settings. Format:
+                Required. Resource name of the settings.
+                Format:
+
                 ``projects/<ProjectID>/locations/<LocationID>/securitySettings/<securitysettingsID>``.
 
                 This corresponds to the ``name`` field
@@ -1022,17 +1022,18 @@ class SecuritySettingsServiceClient(metaclass=SecuritySettingsServiceClientMeta)
     def update_security_settings(
         self,
         request: Optional[
-            Union[gcdc_security_settings.UpdateSecuritySettingsRequest, dict]
+            Union[security_settings.UpdateSecuritySettingsRequest, dict]
         ] = None,
         *,
-        security_settings: Optional[gcdc_security_settings.SecuritySettings] = None,
+        security_settings: Optional[security_settings.SecuritySettings] = None,
         update_mask: Optional[field_mask_pb2.FieldMask] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
-    ) -> gcdc_security_settings.SecuritySettings:
+    ) -> security_settings.SecuritySettings:
         r"""Updates the specified
-        [SecuritySettings][google.cloud.dialogflow.cx.v3.SecuritySettings].
+        `SecuritySettings
+        <google.cloud.dialogflow.cx.v3.SecuritySettings>`__.
 
         .. code-block:: python
 
@@ -1067,10 +1068,12 @@ class SecuritySettingsServiceClient(metaclass=SecuritySettingsServiceClientMeta)
         Args:
             request (Union[google.cloud.dialogflowcx_v3.types.UpdateSecuritySettingsRequest, dict]):
                 The request object. The request message for
-                [SecuritySettingsService.UpdateSecuritySettings][google.cloud.dialogflow.cx.v3.SecuritySettingsService.UpdateSecuritySettings].
+                `SecuritySettingsService.UpdateSecuritySettings
+                <google.cloud.dialogflow.cx.v3.SecuritySettingsService.UpdateSecuritySettings>`__.
             security_settings (google.cloud.dialogflowcx_v3.types.SecuritySettings):
-                Required. [SecuritySettings] object that contains values
-                for each of the fields to update.
+                Required. [SecuritySettings] object that
+                contains values for each of the fields
+                to update.
 
                 This corresponds to the ``security_settings`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -1116,10 +1119,8 @@ class SecuritySettingsServiceClient(metaclass=SecuritySettingsServiceClientMeta)
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
-        if not isinstance(
-            request, gcdc_security_settings.UpdateSecuritySettingsRequest
-        ):
-            request = gcdc_security_settings.UpdateSecuritySettingsRequest(request)
+        if not isinstance(request, security_settings.UpdateSecuritySettingsRequest):
+            request = security_settings.UpdateSecuritySettingsRequest(request)
             # If we have keyword arguments corresponding to fields on the
             # request, apply these.
             if security_settings is not None:
@@ -1199,8 +1200,8 @@ class SecuritySettingsServiceClient(metaclass=SecuritySettingsServiceClientMeta)
                 The request object. The request message for
                 [SecuritySettings.ListSecuritySettings][].
             parent (str):
-                Required. The location to list all security settings
-                for. Format:
+                Required. The location to list all
+                security settings for. Format:
                 ``projects/<ProjectID>/locations/<LocationID>``.
 
                 This corresponds to the ``parent`` field
@@ -1218,9 +1219,9 @@ class SecuritySettingsServiceClient(metaclass=SecuritySettingsServiceClientMeta)
             google.cloud.dialogflowcx_v3.services.security_settings_service.pagers.ListSecuritySettingsPager:
                 The response message for
                 [SecuritySettings.ListSecuritySettings][].
-
-                Iterating over this object will yield results and
-                resolve additional pages automatically.
+                Iterating over this object will yield
+                results and resolve additional pages
+                automatically.
 
         """
         # Create or coerce a protobuf request object.
@@ -1292,7 +1293,8 @@ class SecuritySettingsServiceClient(metaclass=SecuritySettingsServiceClientMeta)
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> None:
         r"""Deletes the specified
-        [SecuritySettings][google.cloud.dialogflow.cx.v3.SecuritySettings].
+        `SecuritySettings
+        <google.cloud.dialogflow.cx.v3.SecuritySettings>`__.
 
         .. code-block:: python
 
@@ -1323,8 +1325,10 @@ class SecuritySettingsServiceClient(metaclass=SecuritySettingsServiceClientMeta)
                 [SecuritySettings.DeleteSecuritySettings][].
             name (str):
                 Required. The name of the
-                [SecuritySettings][google.cloud.dialogflow.cx.v3.SecuritySettings]
+                `SecuritySettings
+                <google.cloud.dialogflow.cx.v3.SecuritySettings>`__
                 to delete. Format:
+
                 ``projects/<ProjectID>/locations/<LocationID>/securitySettings/<SecuritySettingsID>``.
 
                 This corresponds to the ``name`` field

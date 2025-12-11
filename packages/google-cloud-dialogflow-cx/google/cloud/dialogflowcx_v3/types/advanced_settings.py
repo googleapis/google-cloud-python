@@ -35,9 +35,9 @@ class AdvancedSettings(proto.Message):
     agent/flow/page/fulfillment/parameter. Settings exposed at lower
     level overrides the settings exposed at higher level. Overriding
     occurs at the sub-setting level. For example, the
-    playback_interruption_settings at fulfillment level only overrides
-    the playback_interruption_settings at the agent level, leaving other
-    settings at the agent level unchanged.
+    playback_interruption_settings at fulfillment level only
+    overrides the playback_interruption_settings at the agent level,
+    leaving other settings at the agent level unchanged.
 
     DTMF settings does not override each other. DTMF settings set at
     different levels define DTMF detections running in parallel.
@@ -92,10 +92,13 @@ class AdvancedSettings(proto.Message):
                 endpointer sensitivity as seconds of timeout
                 value.
             models (MutableMapping[str, str]):
-                Mapping from language to Speech-to-Text model. The mapped
-                Speech-to-Text model will be selected for requests from its
-                corresponding language. For more information, see `Speech
-                models <https://cloud.google.com/dialogflow/cx/docs/concept/speech-models>`__.
+                Mapping from language to Speech-to-Text model.
+                The mapped Speech-to-Text model will be selected
+                for requests from its corresponding language.
+                For more information, see
+                `Speech
+                models
+                <https://cloud.google.com/dialogflow/cx/docs/concept/speech-models>`__.
         """
 
         endpointer_sensitivity: int = proto.Field(
@@ -175,10 +178,11 @@ class AdvancedSettings(proto.Message):
             enable_interaction_logging (bool):
                 Enables DF Interaction logging.
             enable_consent_based_redaction (bool):
-                Enables consent-based end-user input redaction, if true, a
-                pre-defined session parameter
-                ``$session.params.conversation-redaction`` will be used to
-                determine if the utterance should be redacted.
+                Enables consent-based end-user input redaction,
+                if true, a pre-defined session parameter
+                ``$session.params.conversation-redaction`` will
+                be used to determine if the utterance should be
+                redacted.
         """
 
         enable_stackdriver_logging: bool = proto.Field(

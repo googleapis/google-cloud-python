@@ -32,7 +32,6 @@ from google.protobuf import json_format
 from requests import __version__ as requests_version
 
 from google.cloud.dialogflowcx_v3.types import generator
-from google.cloud.dialogflowcx_v3.types import generator as gcdc_generator
 
 from .base import DEFAULT_CLIENT_INFO as BASE_DEFAULT_CLIENT_INFO
 from .rest_base import _BaseGeneratorsRestTransport
@@ -120,10 +119,10 @@ class GeneratorsRestInterceptor:
 
     def pre_create_generator(
         self,
-        request: gcdc_generator.CreateGeneratorRequest,
+        request: generator.CreateGeneratorRequest,
         metadata: Sequence[Tuple[str, Union[str, bytes]]],
     ) -> Tuple[
-        gcdc_generator.CreateGeneratorRequest, Sequence[Tuple[str, Union[str, bytes]]]
+        generator.CreateGeneratorRequest, Sequence[Tuple[str, Union[str, bytes]]]
     ]:
         """Pre-rpc interceptor for create_generator
 
@@ -133,8 +132,8 @@ class GeneratorsRestInterceptor:
         return request, metadata
 
     def post_create_generator(
-        self, response: gcdc_generator.Generator
-    ) -> gcdc_generator.Generator:
+        self, response: generator.Generator
+    ) -> generator.Generator:
         """Post-rpc interceptor for create_generator
 
         DEPRECATED. Please use the `post_create_generator_with_metadata`
@@ -149,9 +148,9 @@ class GeneratorsRestInterceptor:
 
     def post_create_generator_with_metadata(
         self,
-        response: gcdc_generator.Generator,
+        response: generator.Generator,
         metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[gcdc_generator.Generator, Sequence[Tuple[str, Union[str, bytes]]]]:
+    ) -> Tuple[generator.Generator, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for create_generator
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -276,10 +275,10 @@ class GeneratorsRestInterceptor:
 
     def pre_update_generator(
         self,
-        request: gcdc_generator.UpdateGeneratorRequest,
+        request: generator.UpdateGeneratorRequest,
         metadata: Sequence[Tuple[str, Union[str, bytes]]],
     ) -> Tuple[
-        gcdc_generator.UpdateGeneratorRequest, Sequence[Tuple[str, Union[str, bytes]]]
+        generator.UpdateGeneratorRequest, Sequence[Tuple[str, Union[str, bytes]]]
     ]:
         """Pre-rpc interceptor for update_generator
 
@@ -289,8 +288,8 @@ class GeneratorsRestInterceptor:
         return request, metadata
 
     def post_update_generator(
-        self, response: gcdc_generator.Generator
-    ) -> gcdc_generator.Generator:
+        self, response: generator.Generator
+    ) -> generator.Generator:
         """Post-rpc interceptor for update_generator
 
         DEPRECATED. Please use the `post_update_generator_with_metadata`
@@ -305,9 +304,9 @@ class GeneratorsRestInterceptor:
 
     def post_update_generator_with_metadata(
         self,
-        response: gcdc_generator.Generator,
+        response: generator.Generator,
         metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[gcdc_generator.Generator, Sequence[Tuple[str, Union[str, bytes]]]]:
+    ) -> Tuple[generator.Generator, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for update_generator
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -456,8 +455,8 @@ class GeneratorsRestStub:
 class GeneratorsRestTransport(_BaseGeneratorsRestTransport):
     """REST backend synchronous transport for Generators.
 
-    Service for managing
-    [Generators][google.cloud.dialogflow.cx.v3.Generator]
+    Service for managing `Generators
+    <google.cloud.dialogflow.cx.v3.Generator>`__
 
     This class defines the same methods as the primary client, so the
     primary client can load the underlying transport implementation
@@ -565,18 +564,19 @@ class GeneratorsRestTransport(_BaseGeneratorsRestTransport):
 
         def __call__(
             self,
-            request: gcdc_generator.CreateGeneratorRequest,
+            request: generator.CreateGeneratorRequest,
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
             metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
-        ) -> gcdc_generator.Generator:
+        ) -> generator.Generator:
             r"""Call the create generator method over HTTP.
 
             Args:
-                request (~.gcdc_generator.CreateGeneratorRequest):
+                request (~.generator.CreateGeneratorRequest):
                     The request object. The request message for
-                [Generators.CreateGenerator][google.cloud.dialogflow.cx.v3.Generators.CreateGenerator].
+                `Generators.CreateGenerator
+                <google.cloud.dialogflow.cx.v3.Generators.CreateGenerator>`__.
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -586,7 +586,7 @@ class GeneratorsRestTransport(_BaseGeneratorsRestTransport):
                     be of type `bytes`.
 
             Returns:
-                ~.gcdc_generator.Generator:
+                ~.generator.Generator:
                     Generators contain prompt to be sent
                 to the LLM model to generate text. The
                 prompt can contain parameters which will
@@ -660,8 +660,8 @@ class GeneratorsRestTransport(_BaseGeneratorsRestTransport):
                 raise core_exceptions.from_http_response(response)
 
             # Return the response
-            resp = gcdc_generator.Generator()
-            pb_resp = gcdc_generator.Generator.pb(resp)
+            resp = generator.Generator()
+            pb_resp = generator.Generator.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
@@ -674,7 +674,7 @@ class GeneratorsRestTransport(_BaseGeneratorsRestTransport):
                 logging.DEBUG
             ):  # pragma: NO COVER
                 try:
-                    response_payload = gcdc_generator.Generator.to_json(response)
+                    response_payload = generator.Generator.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -734,7 +734,8 @@ class GeneratorsRestTransport(_BaseGeneratorsRestTransport):
             Args:
                 request (~.generator.DeleteGeneratorRequest):
                     The request object. The request message for
-                [Generators.DeleteGenerator][google.cloud.dialogflow.cx.v3.Generators.DeleteGenerator].
+                `Generators.DeleteGenerator
+                <google.cloud.dialogflow.cx.v3.Generators.DeleteGenerator>`__.
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -843,7 +844,8 @@ class GeneratorsRestTransport(_BaseGeneratorsRestTransport):
             Args:
                 request (~.generator.GetGeneratorRequest):
                     The request object. The request message for
-                [Generators.GetGenerator][google.cloud.dialogflow.cx.v3.Generators.GetGenerator].
+                `Generators.GetGenerator
+                <google.cloud.dialogflow.cx.v3.Generators.GetGenerator>`__.
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -998,7 +1000,8 @@ class GeneratorsRestTransport(_BaseGeneratorsRestTransport):
             Args:
                 request (~.generator.ListGeneratorsRequest):
                     The request object. The request message for
-                [Generators.ListGenerators][google.cloud.dialogflow.cx.v3.Generators.ListGenerators].
+                `Generators.ListGenerators
+                <google.cloud.dialogflow.cx.v3.Generators.ListGenerators>`__.
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -1010,7 +1013,8 @@ class GeneratorsRestTransport(_BaseGeneratorsRestTransport):
             Returns:
                 ~.generator.ListGeneratorsResponse:
                     The response message for
-                [Generators.ListGenerators][google.cloud.dialogflow.cx.v3.Generators.ListGenerators].
+                `Generators.ListGenerators
+                <google.cloud.dialogflow.cx.v3.Generators.ListGenerators>`__.
 
             """
 
@@ -1139,18 +1143,19 @@ class GeneratorsRestTransport(_BaseGeneratorsRestTransport):
 
         def __call__(
             self,
-            request: gcdc_generator.UpdateGeneratorRequest,
+            request: generator.UpdateGeneratorRequest,
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
             metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
-        ) -> gcdc_generator.Generator:
+        ) -> generator.Generator:
             r"""Call the update generator method over HTTP.
 
             Args:
-                request (~.gcdc_generator.UpdateGeneratorRequest):
+                request (~.generator.UpdateGeneratorRequest):
                     The request object. The request message for
-                [Generators.UpdateGenerator][google.cloud.dialogflow.cx.v3.Generators.UpdateGenerator].
+                `Generators.UpdateGenerator
+                <google.cloud.dialogflow.cx.v3.Generators.UpdateGenerator>`__.
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -1160,7 +1165,7 @@ class GeneratorsRestTransport(_BaseGeneratorsRestTransport):
                     be of type `bytes`.
 
             Returns:
-                ~.gcdc_generator.Generator:
+                ~.generator.Generator:
                     Generators contain prompt to be sent
                 to the LLM model to generate text. The
                 prompt can contain parameters which will
@@ -1234,8 +1239,8 @@ class GeneratorsRestTransport(_BaseGeneratorsRestTransport):
                 raise core_exceptions.from_http_response(response)
 
             # Return the response
-            resp = gcdc_generator.Generator()
-            pb_resp = gcdc_generator.Generator.pb(resp)
+            resp = generator.Generator()
+            pb_resp = generator.Generator.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
@@ -1248,7 +1253,7 @@ class GeneratorsRestTransport(_BaseGeneratorsRestTransport):
                 logging.DEBUG
             ):  # pragma: NO COVER
                 try:
-                    response_payload = gcdc_generator.Generator.to_json(response)
+                    response_payload = generator.Generator.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -1270,7 +1275,7 @@ class GeneratorsRestTransport(_BaseGeneratorsRestTransport):
     @property
     def create_generator(
         self,
-    ) -> Callable[[gcdc_generator.CreateGeneratorRequest], gcdc_generator.Generator]:
+    ) -> Callable[[generator.CreateGeneratorRequest], generator.Generator]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._CreateGenerator(self._session, self._host, self._interceptor)  # type: ignore
@@ -1302,7 +1307,7 @@ class GeneratorsRestTransport(_BaseGeneratorsRestTransport):
     @property
     def update_generator(
         self,
-    ) -> Callable[[gcdc_generator.UpdateGeneratorRequest], gcdc_generator.Generator]:
+    ) -> Callable[[generator.UpdateGeneratorRequest], generator.Generator]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._UpdateGenerator(self._session, self._host, self._interceptor)  # type: ignore

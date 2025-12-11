@@ -73,9 +73,7 @@ from google.cloud.dialogflowcx_v3.services.environments import (
     pagers,
     transports,
 )
-from google.cloud.dialogflowcx_v3.types import environment
-from google.cloud.dialogflowcx_v3.types import environment as gcdc_environment
-from google.cloud.dialogflowcx_v3.types import webhook
+from google.cloud.dialogflowcx_v3.types import environment, webhook
 
 CRED_INFO_JSON = {
     "credential_source": "/path/to/file",
@@ -1984,7 +1982,7 @@ async def test_get_environment_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        gcdc_environment.CreateEnvironmentRequest,
+        environment.CreateEnvironmentRequest,
         dict,
     ],
 )
@@ -2009,7 +2007,7 @@ def test_create_environment(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        request = gcdc_environment.CreateEnvironmentRequest()
+        request = environment.CreateEnvironmentRequest()
         assert args[0] == request
 
     # Establish that the response is the type that we expect.
@@ -2027,7 +2025,7 @@ def test_create_environment_non_empty_request_with_auto_populated_field():
     # Populate all string fields in the request which are not UUID4
     # since we want to check that UUID4 are populated automatically
     # if they meet the requirements of AIP 4235.
-    request = gcdc_environment.CreateEnvironmentRequest(
+    request = environment.CreateEnvironmentRequest(
         parent="parent_value",
     )
 
@@ -2041,7 +2039,7 @@ def test_create_environment_non_empty_request_with_auto_populated_field():
         client.create_environment(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == gcdc_environment.CreateEnvironmentRequest(
+        assert args[0] == environment.CreateEnvironmentRequest(
             parent="parent_value",
         )
 
@@ -2139,8 +2137,7 @@ async def test_create_environment_async_use_cached_wrapped_rpc(
 
 @pytest.mark.asyncio
 async def test_create_environment_async(
-    transport: str = "grpc_asyncio",
-    request_type=gcdc_environment.CreateEnvironmentRequest,
+    transport: str = "grpc_asyncio", request_type=environment.CreateEnvironmentRequest
 ):
     client = EnvironmentsAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -2164,7 +2161,7 @@ async def test_create_environment_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        request = gcdc_environment.CreateEnvironmentRequest()
+        request = environment.CreateEnvironmentRequest()
         assert args[0] == request
 
     # Establish that the response is the type that we expect.
@@ -2183,7 +2180,7 @@ def test_create_environment_field_headers():
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
-    request = gcdc_environment.CreateEnvironmentRequest()
+    request = environment.CreateEnvironmentRequest()
 
     request.parent = "parent_value"
 
@@ -2215,7 +2212,7 @@ async def test_create_environment_field_headers_async():
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
-    request = gcdc_environment.CreateEnvironmentRequest()
+    request = environment.CreateEnvironmentRequest()
 
     request.parent = "parent_value"
 
@@ -2256,7 +2253,7 @@ def test_create_environment_flattened():
         # using the keyword arguments to the method.
         client.create_environment(
             parent="parent_value",
-            environment=gcdc_environment.Environment(name="name_value"),
+            environment=environment.Environment(name="name_value"),
         )
 
         # Establish that the underlying call was made with the expected
@@ -2267,7 +2264,7 @@ def test_create_environment_flattened():
         mock_val = "parent_value"
         assert arg == mock_val
         arg = args[0].environment
-        mock_val = gcdc_environment.Environment(name="name_value")
+        mock_val = environment.Environment(name="name_value")
         assert arg == mock_val
 
 
@@ -2280,9 +2277,9 @@ def test_create_environment_flattened_error():
     # fields is an error.
     with pytest.raises(ValueError):
         client.create_environment(
-            gcdc_environment.CreateEnvironmentRequest(),
+            environment.CreateEnvironmentRequest(),
             parent="parent_value",
-            environment=gcdc_environment.Environment(name="name_value"),
+            environment=environment.Environment(name="name_value"),
         )
 
 
@@ -2306,7 +2303,7 @@ async def test_create_environment_flattened_async():
         # using the keyword arguments to the method.
         response = await client.create_environment(
             parent="parent_value",
-            environment=gcdc_environment.Environment(name="name_value"),
+            environment=environment.Environment(name="name_value"),
         )
 
         # Establish that the underlying call was made with the expected
@@ -2317,7 +2314,7 @@ async def test_create_environment_flattened_async():
         mock_val = "parent_value"
         assert arg == mock_val
         arg = args[0].environment
-        mock_val = gcdc_environment.Environment(name="name_value")
+        mock_val = environment.Environment(name="name_value")
         assert arg == mock_val
 
 
@@ -2331,16 +2328,16 @@ async def test_create_environment_flattened_error_async():
     # fields is an error.
     with pytest.raises(ValueError):
         await client.create_environment(
-            gcdc_environment.CreateEnvironmentRequest(),
+            environment.CreateEnvironmentRequest(),
             parent="parent_value",
-            environment=gcdc_environment.Environment(name="name_value"),
+            environment=environment.Environment(name="name_value"),
         )
 
 
 @pytest.mark.parametrize(
     "request_type",
     [
-        gcdc_environment.UpdateEnvironmentRequest,
+        environment.UpdateEnvironmentRequest,
         dict,
     ],
 )
@@ -2365,7 +2362,7 @@ def test_update_environment(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        request = gcdc_environment.UpdateEnvironmentRequest()
+        request = environment.UpdateEnvironmentRequest()
         assert args[0] == request
 
     # Establish that the response is the type that we expect.
@@ -2383,7 +2380,7 @@ def test_update_environment_non_empty_request_with_auto_populated_field():
     # Populate all string fields in the request which are not UUID4
     # since we want to check that UUID4 are populated automatically
     # if they meet the requirements of AIP 4235.
-    request = gcdc_environment.UpdateEnvironmentRequest()
+    request = environment.UpdateEnvironmentRequest()
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2395,7 +2392,7 @@ def test_update_environment_non_empty_request_with_auto_populated_field():
         client.update_environment(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == gcdc_environment.UpdateEnvironmentRequest()
+        assert args[0] == environment.UpdateEnvironmentRequest()
 
 
 def test_update_environment_use_cached_wrapped_rpc():
@@ -2491,8 +2488,7 @@ async def test_update_environment_async_use_cached_wrapped_rpc(
 
 @pytest.mark.asyncio
 async def test_update_environment_async(
-    transport: str = "grpc_asyncio",
-    request_type=gcdc_environment.UpdateEnvironmentRequest,
+    transport: str = "grpc_asyncio", request_type=environment.UpdateEnvironmentRequest
 ):
     client = EnvironmentsAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -2516,7 +2512,7 @@ async def test_update_environment_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        request = gcdc_environment.UpdateEnvironmentRequest()
+        request = environment.UpdateEnvironmentRequest()
         assert args[0] == request
 
     # Establish that the response is the type that we expect.
@@ -2535,7 +2531,7 @@ def test_update_environment_field_headers():
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
-    request = gcdc_environment.UpdateEnvironmentRequest()
+    request = environment.UpdateEnvironmentRequest()
 
     request.environment.name = "name_value"
 
@@ -2567,7 +2563,7 @@ async def test_update_environment_field_headers_async():
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
-    request = gcdc_environment.UpdateEnvironmentRequest()
+    request = environment.UpdateEnvironmentRequest()
 
     request.environment.name = "name_value"
 
@@ -2607,7 +2603,7 @@ def test_update_environment_flattened():
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
         client.update_environment(
-            environment=gcdc_environment.Environment(name="name_value"),
+            environment=environment.Environment(name="name_value"),
             update_mask=field_mask_pb2.FieldMask(paths=["paths_value"]),
         )
 
@@ -2616,7 +2612,7 @@ def test_update_environment_flattened():
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
         arg = args[0].environment
-        mock_val = gcdc_environment.Environment(name="name_value")
+        mock_val = environment.Environment(name="name_value")
         assert arg == mock_val
         arg = args[0].update_mask
         mock_val = field_mask_pb2.FieldMask(paths=["paths_value"])
@@ -2632,8 +2628,8 @@ def test_update_environment_flattened_error():
     # fields is an error.
     with pytest.raises(ValueError):
         client.update_environment(
-            gcdc_environment.UpdateEnvironmentRequest(),
-            environment=gcdc_environment.Environment(name="name_value"),
+            environment.UpdateEnvironmentRequest(),
+            environment=environment.Environment(name="name_value"),
             update_mask=field_mask_pb2.FieldMask(paths=["paths_value"]),
         )
 
@@ -2657,7 +2653,7 @@ async def test_update_environment_flattened_async():
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
         response = await client.update_environment(
-            environment=gcdc_environment.Environment(name="name_value"),
+            environment=environment.Environment(name="name_value"),
             update_mask=field_mask_pb2.FieldMask(paths=["paths_value"]),
         )
 
@@ -2666,7 +2662,7 @@ async def test_update_environment_flattened_async():
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
         arg = args[0].environment
-        mock_val = gcdc_environment.Environment(name="name_value")
+        mock_val = environment.Environment(name="name_value")
         assert arg == mock_val
         arg = args[0].update_mask
         mock_val = field_mask_pb2.FieldMask(paths=["paths_value"])
@@ -2683,8 +2679,8 @@ async def test_update_environment_flattened_error_async():
     # fields is an error.
     with pytest.raises(ValueError):
         await client.update_environment(
-            gcdc_environment.UpdateEnvironmentRequest(),
-            environment=gcdc_environment.Environment(name="name_value"),
+            environment.UpdateEnvironmentRequest(),
+            environment=environment.Environment(name="name_value"),
             update_mask=field_mask_pb2.FieldMask(paths=["paths_value"]),
         )
 
@@ -5105,7 +5101,7 @@ def test_create_environment_rest_use_cached_wrapped_rpc():
 
 
 def test_create_environment_rest_required_fields(
-    request_type=gcdc_environment.CreateEnvironmentRequest,
+    request_type=environment.CreateEnvironmentRequest,
 ):
     transport_class = transports.EnvironmentsRestTransport
 
@@ -5211,7 +5207,7 @@ def test_create_environment_rest_flattened():
         # get truthy value for each flattened field
         mock_args = dict(
             parent="parent_value",
-            environment=gcdc_environment.Environment(name="name_value"),
+            environment=environment.Environment(name="name_value"),
         )
         mock_args.update(sample_request)
 
@@ -5246,9 +5242,9 @@ def test_create_environment_rest_flattened_error(transport: str = "rest"):
     # fields is an error.
     with pytest.raises(ValueError):
         client.create_environment(
-            gcdc_environment.CreateEnvironmentRequest(),
+            environment.CreateEnvironmentRequest(),
             parent="parent_value",
-            environment=gcdc_environment.Environment(name="name_value"),
+            environment=environment.Environment(name="name_value"),
         )
 
 
@@ -5297,7 +5293,7 @@ def test_update_environment_rest_use_cached_wrapped_rpc():
 
 
 def test_update_environment_rest_required_fields(
-    request_type=gcdc_environment.UpdateEnvironmentRequest,
+    request_type=environment.UpdateEnvironmentRequest,
 ):
     transport_class = transports.EnvironmentsRestTransport
 
@@ -5403,7 +5399,7 @@ def test_update_environment_rest_flattened():
 
         # get truthy value for each flattened field
         mock_args = dict(
-            environment=gcdc_environment.Environment(name="name_value"),
+            environment=environment.Environment(name="name_value"),
             update_mask=field_mask_pb2.FieldMask(paths=["paths_value"]),
         )
         mock_args.update(sample_request)
@@ -5439,8 +5435,8 @@ def test_update_environment_rest_flattened_error(transport: str = "rest"):
     # fields is an error.
     with pytest.raises(ValueError):
         client.update_environment(
-            gcdc_environment.UpdateEnvironmentRequest(),
-            environment=gcdc_environment.Environment(name="name_value"),
+            environment.UpdateEnvironmentRequest(),
+            environment=environment.Environment(name="name_value"),
             update_mask=field_mask_pb2.FieldMask(paths=["paths_value"]),
         )
 
@@ -6582,7 +6578,7 @@ def test_create_environment_empty_call_grpc():
         # Establish that the underlying stub method was called.
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        request_msg = gcdc_environment.CreateEnvironmentRequest()
+        request_msg = environment.CreateEnvironmentRequest()
 
         assert args[0] == request_msg
 
@@ -6605,7 +6601,7 @@ def test_update_environment_empty_call_grpc():
         # Establish that the underlying stub method was called.
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        request_msg = gcdc_environment.UpdateEnvironmentRequest()
+        request_msg = environment.UpdateEnvironmentRequest()
 
         assert args[0] == request_msg
 
@@ -6817,7 +6813,7 @@ async def test_create_environment_empty_call_grpc_asyncio():
         # Establish that the underlying stub method was called.
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        request_msg = gcdc_environment.CreateEnvironmentRequest()
+        request_msg = environment.CreateEnvironmentRequest()
 
         assert args[0] == request_msg
 
@@ -6844,7 +6840,7 @@ async def test_update_environment_empty_call_grpc_asyncio():
         # Establish that the underlying stub method was called.
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        request_msg = gcdc_environment.UpdateEnvironmentRequest()
+        request_msg = environment.UpdateEnvironmentRequest()
 
         assert args[0] == request_msg
 
@@ -7259,7 +7255,7 @@ def test_get_environment_rest_interceptors(null_interceptor):
 
 
 def test_create_environment_rest_bad_request(
-    request_type=gcdc_environment.CreateEnvironmentRequest,
+    request_type=environment.CreateEnvironmentRequest,
 ):
     client = EnvironmentsClient(
         credentials=ga_credentials.AnonymousCredentials(), transport="rest"
@@ -7286,7 +7282,7 @@ def test_create_environment_rest_bad_request(
 @pytest.mark.parametrize(
     "request_type",
     [
-        gcdc_environment.CreateEnvironmentRequest,
+        environment.CreateEnvironmentRequest,
         dict,
     ],
 )
@@ -7349,7 +7345,7 @@ def test_create_environment_rest_call_success(request_type):
     # See https://github.com/googleapis/gapic-generator-python/issues/1748
 
     # Determine if the message type is proto-plus or protobuf
-    test_field = gcdc_environment.CreateEnvironmentRequest.meta.fields["environment"]
+    test_field = environment.CreateEnvironmentRequest.meta.fields["environment"]
 
     def get_message_fields(field):
         # Given a field which is a message (composite type), return a list with
@@ -7457,8 +7453,8 @@ def test_create_environment_rest_interceptors(null_interceptor):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
-        pb_message = gcdc_environment.CreateEnvironmentRequest.pb(
-            gcdc_environment.CreateEnvironmentRequest()
+        pb_message = environment.CreateEnvironmentRequest.pb(
+            environment.CreateEnvironmentRequest()
         )
         transcode.return_value = {
             "method": "post",
@@ -7473,7 +7469,7 @@ def test_create_environment_rest_interceptors(null_interceptor):
         return_value = json_format.MessageToJson(operations_pb2.Operation())
         req.return_value.content = return_value
 
-        request = gcdc_environment.CreateEnvironmentRequest()
+        request = environment.CreateEnvironmentRequest()
         metadata = [
             ("key", "val"),
             ("cephalopod", "squid"),
@@ -7496,7 +7492,7 @@ def test_create_environment_rest_interceptors(null_interceptor):
 
 
 def test_update_environment_rest_bad_request(
-    request_type=gcdc_environment.UpdateEnvironmentRequest,
+    request_type=environment.UpdateEnvironmentRequest,
 ):
     client = EnvironmentsClient(
         credentials=ga_credentials.AnonymousCredentials(), transport="rest"
@@ -7527,7 +7523,7 @@ def test_update_environment_rest_bad_request(
 @pytest.mark.parametrize(
     "request_type",
     [
-        gcdc_environment.UpdateEnvironmentRequest,
+        environment.UpdateEnvironmentRequest,
         dict,
     ],
 )
@@ -7594,7 +7590,7 @@ def test_update_environment_rest_call_success(request_type):
     # See https://github.com/googleapis/gapic-generator-python/issues/1748
 
     # Determine if the message type is proto-plus or protobuf
-    test_field = gcdc_environment.UpdateEnvironmentRequest.meta.fields["environment"]
+    test_field = environment.UpdateEnvironmentRequest.meta.fields["environment"]
 
     def get_message_fields(field):
         # Given a field which is a message (composite type), return a list with
@@ -7702,8 +7698,8 @@ def test_update_environment_rest_interceptors(null_interceptor):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
-        pb_message = gcdc_environment.UpdateEnvironmentRequest.pb(
-            gcdc_environment.UpdateEnvironmentRequest()
+        pb_message = environment.UpdateEnvironmentRequest.pb(
+            environment.UpdateEnvironmentRequest()
         )
         transcode.return_value = {
             "method": "post",
@@ -7718,7 +7714,7 @@ def test_update_environment_rest_interceptors(null_interceptor):
         return_value = json_format.MessageToJson(operations_pb2.Operation())
         req.return_value.content = return_value
 
-        request = gcdc_environment.UpdateEnvironmentRequest()
+        request = environment.UpdateEnvironmentRequest()
         metadata = [
             ("key", "val"),
             ("cephalopod", "squid"),
@@ -8747,7 +8743,7 @@ def test_create_environment_empty_call_rest():
         # Establish that the underlying stub method was called.
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        request_msg = gcdc_environment.CreateEnvironmentRequest()
+        request_msg = environment.CreateEnvironmentRequest()
 
         assert args[0] == request_msg
 
@@ -8769,7 +8765,7 @@ def test_update_environment_empty_call_rest():
         # Establish that the underlying stub method was called.
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        request_msg = gcdc_environment.UpdateEnvironmentRequest()
+        request_msg = environment.UpdateEnvironmentRequest()
 
         assert args[0] == request_msg
 

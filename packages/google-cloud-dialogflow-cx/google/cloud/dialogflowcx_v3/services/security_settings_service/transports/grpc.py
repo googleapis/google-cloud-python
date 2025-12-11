@@ -31,9 +31,6 @@ import google.protobuf.message
 import grpc  # type: ignore
 import proto  # type: ignore
 
-from google.cloud.dialogflowcx_v3.types import (
-    security_settings as gcdc_security_settings,
-)
 from google.cloud.dialogflowcx_v3.types import security_settings
 
 from .base import DEFAULT_CLIENT_INFO, SecuritySettingsServiceTransport
@@ -331,8 +328,8 @@ class SecuritySettingsServiceGrpcTransport(SecuritySettingsServiceTransport):
     def create_security_settings(
         self,
     ) -> Callable[
-        [gcdc_security_settings.CreateSecuritySettingsRequest],
-        gcdc_security_settings.SecuritySettings,
+        [security_settings.CreateSecuritySettingsRequest],
+        security_settings.SecuritySettings,
     ]:
         r"""Return a callable for the create security settings method over gRPC.
 
@@ -351,8 +348,8 @@ class SecuritySettingsServiceGrpcTransport(SecuritySettingsServiceTransport):
         if "create_security_settings" not in self._stubs:
             self._stubs["create_security_settings"] = self._logged_channel.unary_unary(
                 "/google.cloud.dialogflow.cx.v3.SecuritySettingsService/CreateSecuritySettings",
-                request_serializer=gcdc_security_settings.CreateSecuritySettingsRequest.serialize,
-                response_deserializer=gcdc_security_settings.SecuritySettings.deserialize,
+                request_serializer=security_settings.CreateSecuritySettingsRequest.serialize,
+                response_deserializer=security_settings.SecuritySettings.deserialize,
             )
         return self._stubs["create_security_settings"]
 
@@ -366,8 +363,9 @@ class SecuritySettingsServiceGrpcTransport(SecuritySettingsServiceTransport):
         r"""Return a callable for the get security settings method over gRPC.
 
         Retrieves the specified
-        [SecuritySettings][google.cloud.dialogflow.cx.v3.SecuritySettings].
-        The returned settings may be stale by up to 1 minute.
+        `SecuritySettings
+        <google.cloud.dialogflow.cx.v3.SecuritySettings>`__. The
+        returned settings may be stale by up to 1 minute.
 
         Returns:
             Callable[[~.GetSecuritySettingsRequest],
@@ -391,13 +389,14 @@ class SecuritySettingsServiceGrpcTransport(SecuritySettingsServiceTransport):
     def update_security_settings(
         self,
     ) -> Callable[
-        [gcdc_security_settings.UpdateSecuritySettingsRequest],
-        gcdc_security_settings.SecuritySettings,
+        [security_settings.UpdateSecuritySettingsRequest],
+        security_settings.SecuritySettings,
     ]:
         r"""Return a callable for the update security settings method over gRPC.
 
         Updates the specified
-        [SecuritySettings][google.cloud.dialogflow.cx.v3.SecuritySettings].
+        `SecuritySettings
+        <google.cloud.dialogflow.cx.v3.SecuritySettings>`__.
 
         Returns:
             Callable[[~.UpdateSecuritySettingsRequest],
@@ -412,8 +411,8 @@ class SecuritySettingsServiceGrpcTransport(SecuritySettingsServiceTransport):
         if "update_security_settings" not in self._stubs:
             self._stubs["update_security_settings"] = self._logged_channel.unary_unary(
                 "/google.cloud.dialogflow.cx.v3.SecuritySettingsService/UpdateSecuritySettings",
-                request_serializer=gcdc_security_settings.UpdateSecuritySettingsRequest.serialize,
-                response_deserializer=gcdc_security_settings.SecuritySettings.deserialize,
+                request_serializer=security_settings.UpdateSecuritySettingsRequest.serialize,
+                response_deserializer=security_settings.SecuritySettings.deserialize,
             )
         return self._stubs["update_security_settings"]
 
@@ -454,7 +453,8 @@ class SecuritySettingsServiceGrpcTransport(SecuritySettingsServiceTransport):
         r"""Return a callable for the delete security settings method over gRPC.
 
         Deletes the specified
-        [SecuritySettings][google.cloud.dialogflow.cx.v3.SecuritySettings].
+        `SecuritySettings
+        <google.cloud.dialogflow.cx.v3.SecuritySettings>`__.
 
         Returns:
             Callable[[~.DeleteSecuritySettingsRequest],

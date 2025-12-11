@@ -72,11 +72,16 @@ class Intent(proto.Message):
 
     Attributes:
         name (str):
-            The unique identifier of the intent. Required for the
-            [Intents.UpdateIntent][google.cloud.dialogflow.cx.v3.Intents.UpdateIntent]
+            The unique identifier of the intent.
+            Required for the
+            `Intents.UpdateIntent
+            <google.cloud.dialogflow.cx.v3.Intents.UpdateIntent>`__
             method.
-            [Intents.CreateIntent][google.cloud.dialogflow.cx.v3.Intents.CreateIntent]
-            populates the name automatically. Format:
+            `Intents.CreateIntent
+            <google.cloud.dialogflow.cx.v3.Intents.CreateIntent>`__
+            populates the name automatically.
+            Format:
+
             ``projects/<ProjectID>/locations/<LocationID>/agents/<AgentID>/intents/<IntentID>``.
         display_name (str):
             Required. The human-readable name of the
@@ -88,14 +93,17 @@ class Intent(proto.Message):
             The collection of parameters associated with
             the intent.
         priority (int):
-            The priority of this intent. Higher numbers represent higher
-            priorities.
+            The priority of this intent. Higher numbers
+            represent higher priorities.
 
-            - If the supplied value is unspecified or 0, the service
-              translates the value to 500,000, which corresponds to the
-              ``Normal`` priority in the console.
-            - If the supplied value is negative, the intent is ignored
-              in runtime detect intent requests.
+            - If the supplied value is unspecified or 0, the
+              service   translates the value to 500,000,
+              which corresponds to the   ``Normal`` priority
+              in the console.
+
+            - If the supplied value is negative, the intent
+              is ignored   in runtime detect intent
+              requests.
         is_fallback (bool):
             Indicates whether this is a fallback intent.
             Currently only default fallback intent is
@@ -107,20 +115,24 @@ class Intent(proto.Message):
             assigned to fallback intents act as negative
             examples that triggers no-match event.
         labels (MutableMapping[str, str]):
-            The key/value metadata to label an intent. Labels can
-            contain lowercase letters, digits and the symbols '-' and
-            '\_'. International characters are allowed, including
-            letters from unicase alphabets. Keys must start with a
-            letter. Keys and values can be no longer than 63 characters
-            and no more than 128 bytes.
+            The key/value metadata to label an intent.
+            Labels can contain lowercase letters, digits and
+            the symbols '-' and '_'. International
+            characters are allowed, including letters from
+            unicase alphabets. Keys must start with a
+            letter. Keys and values can be no longer than 63
+            characters and no more than 128 bytes.
 
-            Prefix "sys-" is reserved for Dialogflow defined labels.
-            Currently allowed Dialogflow defined labels include:
+            Prefix "sys-" is reserved for Dialogflow defined
+            labels. Currently allowed Dialogflow defined
+            labels include:
 
-            - sys-head
-            - sys-contextual The above labels do not require value.
-              "sys-head" means the intent is a head intent.
-              "sys.contextual" means the intent is a contextual intent.
+            * sys-head
+            * sys-contextual
+            The above labels do not require value.
+            "sys-head" means the intent is a head intent.
+            "sys.contextual" means the intent is a
+            contextual intent.
         description (str):
             Human readable description for better
             understanding an intent like its scope, content,
@@ -137,29 +149,34 @@ class Intent(proto.Message):
                 Output only. The unique identifier of the
                 training phrase.
             parts (MutableSequence[google.cloud.dialogflowcx_v3.types.Intent.TrainingPhrase.Part]):
-                Required. The ordered list of training phrase parts. The
-                parts are concatenated in order to form the training phrase.
+                Required. The ordered list of training phrase
+                parts. The parts are concatenated in order to
+                form the training phrase.
 
-                Note: The API does not automatically annotate training
-                phrases like the Dialogflow Console does.
+                Note: The API does not automatically annotate
+                training phrases like the Dialogflow Console
+                does.
 
-                Note: Do not forget to include whitespace at part
-                boundaries, so the training phrase is well formatted when
-                the parts are concatenated.
+                Note: Do not forget to include whitespace at
+                part boundaries, so the training phrase is well
+                formatted when the parts are concatenated.
 
-                If the training phrase does not need to be annotated with
-                parameters, you just need a single part with only the
-                [Part.text][google.cloud.dialogflow.cx.v3.Intent.TrainingPhrase.Part.text]
+                If the training phrase does not need to be
+                annotated with parameters, you just need a
+                single part with only the
+                `Part.text
+                <google.cloud.dialogflow.cx.v3.Intent.TrainingPhrase.Part.text>`__
                 field set.
 
-                If you want to annotate the training phrase, you must create
-                multiple parts, where the fields of each part are populated
-                in one of two ways:
+                If you want to annotate the training phrase, you
+                must create multiple parts, where the fields of
+                each part are populated in one of two ways:
 
-                - ``Part.text`` is set to a part of the phrase that has no
-                  parameters.
-                - ``Part.text`` is set to a part of the phrase that you want
-                  to annotate, and the ``parameter_id`` field is set.
+                -   ``Part.text`` is set to a part of the phrase
+                  that has no parameters.
+                -   ``Part.text`` is set to a part of the phrase
+                  that you want to annotate,     and the
+                  ``parameter_id`` field is set.
             repeat_count (int):
                 Indicates how many times this example was
                 added to the intent.
@@ -172,11 +189,11 @@ class Intent(proto.Message):
                 text (str):
                     Required. The text for this part.
                 parameter_id (str):
-                    The
-                    [parameter][google.cloud.dialogflow.cx.v3.Intent.Parameter]
-                    used to annotate this part of the training phrase. This
-                    field is required for annotated parts of the training
-                    phrase.
+                    The `parameter
+                    <google.cloud.dialogflow.cx.v3.Intent.Parameter>`__
+                    used to annotate this part of the training
+                    phrase. This field is required for annotated
+                    parts of the training phrase.
             """
 
             text: str = proto.Field(
@@ -207,13 +224,16 @@ class Intent(proto.Message):
 
         Attributes:
             id (str):
-                Required. The unique identifier of the parameter. This field
-                is used by [training
-                phrases][google.cloud.dialogflow.cx.v3.Intent.TrainingPhrase]
-                to annotate their
-                [parts][google.cloud.dialogflow.cx.v3.Intent.TrainingPhrase.Part].
+                Required. The unique identifier of the
+                parameter. This field is used by `training
+                phrases
+                <google.cloud.dialogflow.cx.v3.Intent.TrainingPhrase>`__
+                to annotate their `parts
+                <google.cloud.dialogflow.cx.v3.Intent.TrainingPhrase.Part>`__.
             entity_type (str):
-                Required. The entity type of the parameter. Format:
+                Required. The entity type of the parameter.
+                Format:
+
                 ``projects/-/locations/-/agents/-/entityTypes/<SystemEntityTypeID>``
                 for system entity types (for example,
                 ``projects/-/locations/-/agents/-/entityTypes/sys.date``),
@@ -224,12 +244,15 @@ class Intent(proto.Message):
                 Indicates whether the parameter represents a
                 list of values.
             redact (bool):
-                Indicates whether the parameter content should be redacted
-                in log. If redaction is enabled, the parameter content will
-                be replaced by parameter name during logging. Note: the
-                parameter content is subject to redaction if either
-                parameter level redaction or [entity type level
-                redaction][google.cloud.dialogflow.cx.v3.EntityType.redact]
+                Indicates whether the parameter content should
+                be redacted in log. If redaction is enabled, the
+                parameter content will be replaced by parameter
+                name during logging.
+                Note: the parameter content is subject to
+                redaction if either parameter level redaction or
+                `entity type level
+                redaction
+                <google.cloud.dialogflow.cx.v3.EntityType.redact>`__
                 is enabled.
         """
 
@@ -289,22 +312,26 @@ class Intent(proto.Message):
 
 class ListIntentsRequest(proto.Message):
     r"""The request message for
-    [Intents.ListIntents][google.cloud.dialogflow.cx.v3.Intents.ListIntents].
+    `Intents.ListIntents
+    <google.cloud.dialogflow.cx.v3.Intents.ListIntents>`__.
 
     Attributes:
         parent (str):
-            Required. The agent to list all intents for. Format:
+            Required. The agent to list all intents for.
+            Format:
             ``projects/<ProjectID>/locations/<LocationID>/agents/<AgentID>``.
         language_code (str):
-            The language to list intents for. The following fields are
-            language dependent:
+            The language to list intents for. The following
+            fields are language dependent:
 
-            - ``Intent.training_phrases.parts.text``
+            *   ``Intent.training_phrases.parts.text``
 
-            If not specified, the agent's default language is used.
-            `Many
-            languages <https://cloud.google.com/dialogflow/cx/docs/reference/language>`__
-            are supported. Note: languages must be enabled in the agent
+            If not specified, the agent's default language
+            is used. `Many
+            languages
+            <https://cloud.google.com/dialogflow/cx/docs/reference/language>`__
+            are supported.
+            Note: languages must be enabled in the agent
             before they can be used.
         intent_view (google.cloud.dialogflowcx_v3.types.IntentView):
             The resource view to apply to the returned
@@ -313,8 +340,8 @@ class ListIntentsRequest(proto.Message):
             The maximum number of items to return in a
             single page. By default 100 and at most 1000.
         page_token (str):
-            The next_page_token value returned from a previous list
-            request.
+            The next_page_token value returned from a
+            previous list request.
     """
 
     parent: str = proto.Field(
@@ -342,12 +369,14 @@ class ListIntentsRequest(proto.Message):
 
 class ListIntentsResponse(proto.Message):
     r"""The response message for
-    [Intents.ListIntents][google.cloud.dialogflow.cx.v3.Intents.ListIntents].
+    `Intents.ListIntents
+    <google.cloud.dialogflow.cx.v3.Intents.ListIntents>`__.
 
     Attributes:
         intents (MutableSequence[google.cloud.dialogflowcx_v3.types.Intent]):
-            The list of intents. There will be a maximum number of items
-            returned based on the page_size field in the request.
+            The list of intents. There will be a maximum
+            number of items returned based on the page_size
+            field in the request.
         next_page_token (str):
             Token to retrieve the next page of results,
             or empty if there are no more results in the
@@ -371,22 +400,27 @@ class ListIntentsResponse(proto.Message):
 
 class GetIntentRequest(proto.Message):
     r"""The request message for
-    [Intents.GetIntent][google.cloud.dialogflow.cx.v3.Intents.GetIntent].
+    `Intents.GetIntent
+    <google.cloud.dialogflow.cx.v3.Intents.GetIntent>`__.
 
     Attributes:
         name (str):
-            Required. The name of the intent. Format:
+            Required. The name of the intent.
+            Format:
+
             ``projects/<ProjectID>/locations/<LocationID>/agents/<AgentID>/intents/<IntentID>``.
         language_code (str):
-            The language to retrieve the intent for. The following
-            fields are language dependent:
+            The language to retrieve the intent for. The
+            following fields are language dependent:
 
-            - ``Intent.training_phrases.parts.text``
+            *   ``Intent.training_phrases.parts.text``
 
-            If not specified, the agent's default language is used.
-            `Many
-            languages <https://cloud.google.com/dialogflow/cx/docs/reference/language>`__
-            are supported. Note: languages must be enabled in the agent
+            If not specified, the agent's default language
+            is used. `Many
+            languages
+            <https://cloud.google.com/dialogflow/cx/docs/reference/language>`__
+            are supported.
+            Note: languages must be enabled in the agent
             before they can be used.
     """
 
@@ -402,23 +436,27 @@ class GetIntentRequest(proto.Message):
 
 class CreateIntentRequest(proto.Message):
     r"""The request message for
-    [Intents.CreateIntent][google.cloud.dialogflow.cx.v3.Intents.CreateIntent].
+    `Intents.CreateIntent
+    <google.cloud.dialogflow.cx.v3.Intents.CreateIntent>`__.
 
     Attributes:
         parent (str):
-            Required. The agent to create an intent for. Format:
+            Required. The agent to create an intent for.
+            Format:
             ``projects/<ProjectID>/locations/<LocationID>/agents/<AgentID>``.
         intent (google.cloud.dialogflowcx_v3.types.Intent):
             Required. The intent to create.
         language_code (str):
-            The language of the following fields in ``intent``:
+            The language of the following fields in
+            ``intent``:
+            *   ``Intent.training_phrases.parts.text``
 
-            - ``Intent.training_phrases.parts.text``
-
-            If not specified, the agent's default language is used.
-            `Many
-            languages <https://cloud.google.com/dialogflow/cx/docs/reference/language>`__
-            are supported. Note: languages must be enabled in the agent
+            If not specified, the agent's default language
+            is used. `Many
+            languages
+            <https://cloud.google.com/dialogflow/cx/docs/reference/language>`__
+            are supported.
+            Note: languages must be enabled in the agent
             before they can be used.
     """
 
@@ -439,20 +477,23 @@ class CreateIntentRequest(proto.Message):
 
 class UpdateIntentRequest(proto.Message):
     r"""The request message for
-    [Intents.UpdateIntent][google.cloud.dialogflow.cx.v3.Intents.UpdateIntent].
+    `Intents.UpdateIntent
+    <google.cloud.dialogflow.cx.v3.Intents.UpdateIntent>`__.
 
     Attributes:
         intent (google.cloud.dialogflowcx_v3.types.Intent):
             Required. The intent to update.
         language_code (str):
-            The language of the following fields in ``intent``:
+            The language of the following fields in
+            ``intent``:
+            *   ``Intent.training_phrases.parts.text``
 
-            - ``Intent.training_phrases.parts.text``
-
-            If not specified, the agent's default language is used.
-            `Many
-            languages <https://cloud.google.com/dialogflow/cx/docs/reference/language>`__
-            are supported. Note: languages must be enabled in the agent
+            If not specified, the agent's default language
+            is used. `Many
+            languages
+            <https://cloud.google.com/dialogflow/cx/docs/reference/language>`__
+            are supported.
+            Note: languages must be enabled in the agent
             before they can be used.
         update_mask (google.protobuf.field_mask_pb2.FieldMask):
             The mask to control which fields get updated.
@@ -478,11 +519,14 @@ class UpdateIntentRequest(proto.Message):
 
 class DeleteIntentRequest(proto.Message):
     r"""The request message for
-    [Intents.DeleteIntent][google.cloud.dialogflow.cx.v3.Intents.DeleteIntent].
+    `Intents.DeleteIntent
+    <google.cloud.dialogflow.cx.v3.Intents.DeleteIntent>`__.
 
     Attributes:
         name (str):
-            Required. The name of the intent to delete. Format:
+            Required. The name of the intent to delete.
+            Format:
+
             ``projects/<ProjectID>/locations/<LocationID>/agents/<AgentID>/intents/<IntentID>``.
     """
 
@@ -494,7 +538,8 @@ class DeleteIntentRequest(proto.Message):
 
 class ImportIntentsRequest(proto.Message):
     r"""The request message for
-    [Intents.ImportIntents][google.cloud.dialogflow.cx.v3.Intents.ImportIntents].
+    `Intents.ImportIntents
+    <google.cloud.dialogflow.cx.v3.Intents.ImportIntents>`__.
 
     This message has `oneof`_ fields (mutually exclusive fields).
     For each oneof, at most one member field can be set at the same time.
@@ -505,19 +550,22 @@ class ImportIntentsRequest(proto.Message):
 
     Attributes:
         parent (str):
-            Required. The agent to import the intents into. Format:
+            Required. The agent to import the intents into.
+            Format:
             ``projects/<ProjectID>/locations/<LocationID>/agents/<AgentID>``.
         intents_uri (str):
-            The `Google Cloud
-            Storage <https://cloud.google.com/storage/docs/>`__ URI to
-            import intents from. The format of this URI must be
-            ``gs://<bucket-name>/<object-name>``.
+            The `Google Cloud Storage
+            <https://cloud.google.com/storage/docs/>`__ URI
+            to import intents from. The format of this URI
+            must be ``gs://<bucket-name>/<object-name>``.
 
-            Dialogflow performs a read operation for the Cloud Storage
-            object on the caller's behalf, so your request
-            authentication must have read permissions for the object.
-            For more information, see `Dialogflow access
-            control <https://cloud.google.com/dialogflow/cx/docs/concept/access-control#storage>`__.
+            Dialogflow performs a read operation for the
+            Cloud Storage object on the caller's behalf, so
+            your request authentication must have read
+            permissions for the object. For more
+            information, see `Dialogflow access
+            control
+            <https://cloud.google.com/dialogflow/cx/docs/concept/access-control#storage>`__.
 
             This field is a member of `oneof`_ ``intents``.
         intents_content (google.cloud.dialogflowcx_v3.types.InlineSource):
@@ -525,8 +573,8 @@ class ImportIntentsRequest(proto.Message):
 
             This field is a member of `oneof`_ ``intents``.
         merge_option (google.cloud.dialogflowcx_v3.types.ImportIntentsRequest.MergeOption):
-            Merge option for importing intents. If not specified,
-            ``REJECT`` is assumed.
+            Merge option for importing intents. If not
+            specified, ``REJECT`` is assumed.
     """
 
     class MergeOption(proto.Enum):
@@ -537,10 +585,11 @@ class ImportIntentsRequest(proto.Message):
                 Unspecified. Should not be used.
             REJECT (1):
                 DEPRECATED: Please use
-                [REPORT_CONFLICT][ImportIntentsRequest.REPORT_CONFLICT]
-                instead. Fail the request if there are intents whose display
-                names conflict with the display names of intents in the
-                agent.
+                `REPORT_CONFLICT
+                <ImportIntentsRequest.REPORT_CONFLICT>`__
+                instead. Fail the request if there are intents
+                whose display names conflict with the display
+                names of intents in the agent.
             REPLACE (2):
                 Replace the original intent in the agent with
                 the new intent when display name conflicts
@@ -592,22 +641,27 @@ class ImportIntentsRequest(proto.Message):
 
 class ImportIntentsResponse(proto.Message):
     r"""The response message for
-    [Intents.ImportIntents][google.cloud.dialogflow.cx.v3.Intents.ImportIntents].
+    `Intents.ImportIntents
+    <google.cloud.dialogflow.cx.v3.Intents.ImportIntents>`__.
 
     Attributes:
         intents (MutableSequence[str]):
-            The unique identifier of the imported intents. Format:
+            The unique identifier of the imported intents.
+            Format:
+
             ``projects/<ProjectID>/locations/<LocationID>/agents/<AgentID>/intents/<IntentID>``.
         conflicting_resources (google.cloud.dialogflowcx_v3.types.ImportIntentsResponse.ConflictingResources):
             Info which resources have conflicts when
-            [REPORT_CONFLICT][ImportIntentsResponse.REPORT_CONFLICT]
+            `REPORT_CONFLICT
+            <ImportIntentsResponse.REPORT_CONFLICT>`__
             merge_option is set in ImportIntentsRequest.
     """
 
     class ConflictingResources(proto.Message):
         r"""Conflicting resources detected during the import process. Only
-        filled when [REPORT_CONFLICT][ImportIntentsResponse.REPORT_CONFLICT]
-        is set in the request and there are conflicts in the display names.
+        filled when `REPORT_CONFLICT
+        <ImportIntentsResponse.REPORT_CONFLICT>`__ is set in the request
+        and there are conflicts in the display names.
 
         Attributes:
             intent_display_names (MutableSequence[str]):
@@ -638,15 +692,17 @@ class ImportIntentsResponse(proto.Message):
 
 class ImportIntentsMetadata(proto.Message):
     r"""Metadata returned for the
-    [Intents.ImportIntents][google.cloud.dialogflow.cx.v3.Intents.ImportIntents]
-    long running operation.
+    `Intents.ImportIntents
+    <google.cloud.dialogflow.cx.v3.Intents.ImportIntents>`__ long
+    running operation.
 
     """
 
 
 class ExportIntentsRequest(proto.Message):
     r"""The request message for
-    [Intents.ExportIntents][google.cloud.dialogflow.cx.v3.Intents.ExportIntents].
+    `Intents.ExportIntents
+    <google.cloud.dialogflow.cx.v3.Intents.ExportIntents>`__.
 
     This message has `oneof`_ fields (mutually exclusive fields).
     For each oneof, at most one member field can be set at the same time.
@@ -657,23 +713,29 @@ class ExportIntentsRequest(proto.Message):
 
     Attributes:
         parent (str):
-            Required. The name of the parent agent to export intents.
-            Format:
+            Required. The name of the parent agent to export
+            intents. Format:
             ``projects/<ProjectID>/locations/<LocationID>/agents/<AgentID>``.
         intents (MutableSequence[str]):
-            Required. The name of the intents to export. Format:
+            Required. The name of the intents to export.
+            Format:
+
             ``projects/<ProjectID>/locations/<LocationID>/agents/<AgentID>/intents/<IntentID>``.
         intents_uri (str):
             Optional. The `Google Cloud
-            Storage <https://cloud.google.com/storage/docs/>`__ URI to
-            export the intents to. The format of this URI must be
+            Storage
+            <https://cloud.google.com/storage/docs/>`__ URI
+            to export the intents to. The format of this URI
+            must be
             ``gs://<bucket-name>/<object-name>``.
 
-            Dialogflow performs a write operation for the Cloud Storage
-            object on the caller's behalf, so your request
-            authentication must have write permissions for the object.
-            For more information, see `Dialogflow access
-            control <https://cloud.google.com/dialogflow/cx/docs/concept/access-control#storage>`__.
+            Dialogflow performs a write operation for the
+            Cloud Storage object on the caller's behalf, so
+            your request authentication must have write
+            permissions for the object. For more
+            information, see `Dialogflow access
+            control
+            <https://cloud.google.com/dialogflow/cx/docs/concept/access-control#storage>`__.
 
             This field is a member of `oneof`_ ``destination``.
         intents_content_inline (bool):
@@ -682,8 +744,8 @@ class ExportIntentsRequest(proto.Message):
 
             This field is a member of `oneof`_ ``destination``.
         data_format (google.cloud.dialogflowcx_v3.types.ExportIntentsRequest.DataFormat):
-            Optional. The data format of the exported intents. If not
-            specified, ``BLOB`` is assumed.
+            Optional. The data format of the exported
+            intents. If not specified, ``BLOB`` is assumed.
     """
 
     class DataFormat(proto.Enum):
@@ -731,7 +793,8 @@ class ExportIntentsRequest(proto.Message):
 
 class ExportIntentsResponse(proto.Message):
     r"""The response message for
-    [Intents.ExportIntents][google.cloud.dialogflow.cx.v3.Intents.ExportIntents].
+    `Intents.ExportIntents
+    <google.cloud.dialogflow.cx.v3.Intents.ExportIntents>`__.
 
     This message has `oneof`_ fields (mutually exclusive fields).
     For each oneof, at most one member field can be set at the same time.
@@ -742,16 +805,19 @@ class ExportIntentsResponse(proto.Message):
 
     Attributes:
         intents_uri (str):
-            The URI to a file containing the exported intents. This
-            field is populated only if ``intents_uri`` is specified in
-            [ExportIntentsRequest][google.cloud.dialogflow.cx.v3.ExportIntentsRequest].
+            The URI to a file containing the exported
+            intents. This field is populated only if
+            ``intents_uri`` is specified in
+            `ExportIntentsRequest
+            <google.cloud.dialogflow.cx.v3.ExportIntentsRequest>`__.
 
             This field is a member of `oneof`_ ``intents``.
         intents_content (google.cloud.dialogflowcx_v3.types.InlineDestination):
-            Uncompressed byte content for intents. This field is
-            populated only if ``intents_content_inline`` is set to true
-            in
-            [ExportIntentsRequest][google.cloud.dialogflow.cx.v3.ExportIntentsRequest].
+            Uncompressed byte content for intents. This
+            field is populated only if
+            ``intents_content_inline`` is set to true in
+            `ExportIntentsRequest
+            <google.cloud.dialogflow.cx.v3.ExportIntentsRequest>`__.
 
             This field is a member of `oneof`_ ``intents``.
     """
@@ -771,8 +837,9 @@ class ExportIntentsResponse(proto.Message):
 
 class ExportIntentsMetadata(proto.Message):
     r"""Metadata returned for the
-    [Intents.ExportIntents][google.cloud.dialogflow.cx.v3.Intents.ExportIntents]
-    long running operation.
+    `Intents.ExportIntents
+    <google.cloud.dialogflow.cx.v3.Intents.ExportIntents>`__ long
+    running operation.
 
     """
 

@@ -55,5 +55,4 @@ def sample_server_streaming_detect_intent():
     for response in stream:
         print(response)
 
-
 # [END dialogflow_v3_generated_Sessions_ServerStreamingDetectIntent_sync]

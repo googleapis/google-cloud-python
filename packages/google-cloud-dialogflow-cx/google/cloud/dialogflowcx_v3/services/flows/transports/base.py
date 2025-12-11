@@ -30,7 +30,6 @@ from google.protobuf import empty_pb2  # type: ignore
 
 from google.cloud.dialogflowcx_v3 import gapic_version as package_version
 from google.cloud.dialogflowcx_v3.types import flow
-from google.cloud.dialogflowcx_v3.types import flow as gcdc_flow
 
 DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
     gapic_version=package_version.__version__
@@ -234,9 +233,7 @@ class FlowsTransport(abc.ABC):
     @property
     def create_flow(
         self,
-    ) -> Callable[
-        [gcdc_flow.CreateFlowRequest], Union[gcdc_flow.Flow, Awaitable[gcdc_flow.Flow]]
-    ]:
+    ) -> Callable[[flow.CreateFlowRequest], Union[flow.Flow, Awaitable[flow.Flow]]]:
         raise NotImplementedError()
 
     @property
@@ -265,9 +262,7 @@ class FlowsTransport(abc.ABC):
     @property
     def update_flow(
         self,
-    ) -> Callable[
-        [gcdc_flow.UpdateFlowRequest], Union[gcdc_flow.Flow, Awaitable[gcdc_flow.Flow]]
-    ]:
+    ) -> Callable[[flow.UpdateFlowRequest], Union[flow.Flow, Awaitable[flow.Flow]]]:
         raise NotImplementedError()
 
     @property

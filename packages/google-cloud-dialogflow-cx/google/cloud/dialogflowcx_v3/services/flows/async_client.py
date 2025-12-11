@@ -54,10 +54,12 @@ from google.protobuf import struct_pb2  # type: ignore
 from google.protobuf import timestamp_pb2  # type: ignore
 
 from google.cloud.dialogflowcx_v3.services.flows import pagers
-from google.cloud.dialogflowcx_v3.types import advanced_settings
-from google.cloud.dialogflowcx_v3.types import flow
-from google.cloud.dialogflowcx_v3.types import flow as gcdc_flow
-from google.cloud.dialogflowcx_v3.types import page, validation_message
+from google.cloud.dialogflowcx_v3.types import (
+    advanced_settings,
+    flow,
+    page,
+    validation_message,
+)
 
 from .client import FlowsClient
 from .transports.base import DEFAULT_CLIENT_INFO, FlowsTransport
@@ -74,7 +76,9 @@ _LOGGER = std_logging.getLogger(__name__)
 
 
 class FlowsAsyncClient:
-    """Service for managing [Flows][google.cloud.dialogflow.cx.v3.Flow]."""
+    """Service for managing `Flows
+    <google.cloud.dialogflow.cx.v3.Flow>`__.
+    """
 
     _client: FlowsClient
 
@@ -307,19 +311,20 @@ class FlowsAsyncClient:
 
     async def create_flow(
         self,
-        request: Optional[Union[gcdc_flow.CreateFlowRequest, dict]] = None,
+        request: Optional[Union[flow.CreateFlowRequest, dict]] = None,
         *,
         parent: Optional[str] = None,
-        flow: Optional[gcdc_flow.Flow] = None,
+        flow: Optional[flow.Flow] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
-    ) -> gcdc_flow.Flow:
+    ) -> flow.Flow:
         r"""Creates a flow in the specified agent.
 
         Note: You should always train a flow prior to sending it
         queries. See the `training
-        documentation <https://cloud.google.com/dialogflow/cx/docs/concept/training>`__.
+        documentation
+        <https://cloud.google.com/dialogflow/cx/docs/concept/training>`__.
 
         .. code-block:: python
 
@@ -354,9 +359,11 @@ class FlowsAsyncClient:
         Args:
             request (Optional[Union[google.cloud.dialogflowcx_v3.types.CreateFlowRequest, dict]]):
                 The request object. The request message for
-                [Flows.CreateFlow][google.cloud.dialogflow.cx.v3.Flows.CreateFlow].
+                `Flows.CreateFlow
+                <google.cloud.dialogflow.cx.v3.Flows.CreateFlow>`__.
             parent (:class:`str`):
-                Required. The agent to create a flow for. Format:
+                Required. The agent to create a flow
+                for. Format:
                 ``projects/<ProjectID>/locations/<LocationID>/agents/<AgentID>``.
 
                 This corresponds to the ``parent`` field
@@ -417,8 +424,8 @@ class FlowsAsyncClient:
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
-        if not isinstance(request, gcdc_flow.CreateFlowRequest):
-            request = gcdc_flow.CreateFlowRequest(request)
+        if not isinstance(request, flow.CreateFlowRequest):
+            request = flow.CreateFlowRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -490,9 +497,12 @@ class FlowsAsyncClient:
         Args:
             request (Optional[Union[google.cloud.dialogflowcx_v3.types.DeleteFlowRequest, dict]]):
                 The request object. The request message for
-                [Flows.DeleteFlow][google.cloud.dialogflow.cx.v3.Flows.DeleteFlow].
+                `Flows.DeleteFlow
+                <google.cloud.dialogflow.cx.v3.Flows.DeleteFlow>`__.
             name (:class:`str`):
-                Required. The name of the flow to delete. Format:
+                Required. The name of the flow to
+                delete. Format:
+
                 ``projects/<ProjectID>/locations/<LocationID>/agents/<AgentID>/flows/<FlowID>``.
 
                 This corresponds to the ``name`` field
@@ -593,9 +603,11 @@ class FlowsAsyncClient:
         Args:
             request (Optional[Union[google.cloud.dialogflowcx_v3.types.ListFlowsRequest, dict]]):
                 The request object. The request message for
-                [Flows.ListFlows][google.cloud.dialogflow.cx.v3.Flows.ListFlows].
+                `Flows.ListFlows
+                <google.cloud.dialogflow.cx.v3.Flows.ListFlows>`__.
             parent (:class:`str`):
-                Required. The agent containing the flows. Format:
+                Required. The agent containing the
+                flows. Format:
                 ``projects/<ProjectID>/locations/<LocationID>/agents/<AgentID>``.
 
                 This corresponds to the ``parent`` field
@@ -612,10 +624,12 @@ class FlowsAsyncClient:
         Returns:
             google.cloud.dialogflowcx_v3.services.flows.pagers.ListFlowsAsyncPager:
                 The response message for
-                   [Flows.ListFlows][google.cloud.dialogflow.cx.v3.Flows.ListFlows].
+                `Flows.ListFlows
+                <google.cloud.dialogflow.cx.v3.Flows.ListFlows>`__.
 
-                Iterating over this object will yield results and
-                resolve additional pages automatically.
+                Iterating over this object will yield
+                results and resolve additional pages
+                automatically.
 
         """
         # Create or coerce a protobuf request object.
@@ -718,9 +732,12 @@ class FlowsAsyncClient:
         Args:
             request (Optional[Union[google.cloud.dialogflowcx_v3.types.GetFlowRequest, dict]]):
                 The request object. The response message for
-                [Flows.GetFlow][google.cloud.dialogflow.cx.v3.Flows.GetFlow].
+                `Flows.GetFlow
+                <google.cloud.dialogflow.cx.v3.Flows.GetFlow>`__.
             name (:class:`str`):
-                Required. The name of the flow to get. Format:
+                Required. The name of the flow to get.
+                Format:
+
                 ``projects/<ProjectID>/locations/<LocationID>/agents/<AgentID>/flows/<FlowID>``.
 
                 This corresponds to the ``name`` field
@@ -810,19 +827,20 @@ class FlowsAsyncClient:
 
     async def update_flow(
         self,
-        request: Optional[Union[gcdc_flow.UpdateFlowRequest, dict]] = None,
+        request: Optional[Union[flow.UpdateFlowRequest, dict]] = None,
         *,
-        flow: Optional[gcdc_flow.Flow] = None,
+        flow: Optional[flow.Flow] = None,
         update_mask: Optional[field_mask_pb2.FieldMask] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
-    ) -> gcdc_flow.Flow:
+    ) -> flow.Flow:
         r"""Updates the specified flow.
 
         Note: You should always train a flow prior to sending it
         queries. See the `training
-        documentation <https://cloud.google.com/dialogflow/cx/docs/concept/training>`__.
+        documentation
+        <https://cloud.google.com/dialogflow/cx/docs/concept/training>`__.
 
         .. code-block:: python
 
@@ -856,7 +874,8 @@ class FlowsAsyncClient:
         Args:
             request (Optional[Union[google.cloud.dialogflowcx_v3.types.UpdateFlowRequest, dict]]):
                 The request object. The request message for
-                [Flows.UpdateFlow][google.cloud.dialogflow.cx.v3.Flows.UpdateFlow].
+                `Flows.UpdateFlow
+                <google.cloud.dialogflow.cx.v3.Flows.UpdateFlow>`__.
             flow (:class:`google.cloud.dialogflowcx_v3.types.Flow`):
                 Required. The flow to update.
                 This corresponds to the ``flow`` field
@@ -920,8 +939,8 @@ class FlowsAsyncClient:
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
-        if not isinstance(request, gcdc_flow.UpdateFlowRequest):
-            request = gcdc_flow.UpdateFlowRequest(request)
+        if not isinstance(request, flow.UpdateFlowRequest):
+            request = flow.UpdateFlowRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -967,22 +986,27 @@ class FlowsAsyncClient:
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> operation_async.AsyncOperation:
-        r"""Trains the specified flow. Note that only the flow in 'draft'
-        environment is trained.
+        r"""Trains the specified flow. Note that only the flow in
+        'draft' environment is trained.
 
         This method is a `long-running
-        operation <https://cloud.google.com/dialogflow/cx/docs/how/long-running-operation>`__.
+        operation
+        <https://cloud.google.com/dialogflow/cx/docs/how/long-running-operation>`__.
         The returned ``Operation`` type has the following
         method-specific fields:
 
         - ``metadata``: An empty `Struct
-          message <https://developers.google.com/protocol-buffers/docs/reference/google.protobuf#struct>`__
+          message
+        <https://developers.google.com/protocol-buffers/docs/reference/google.protobuf#struct>`__
+
         - ``response``: An `Empty
-          message <https://developers.google.com/protocol-buffers/docs/reference/google.protobuf#empty>`__
+          message
+        <https://developers.google.com/protocol-buffers/docs/reference/google.protobuf#empty>`__
 
         Note: You should always train a flow prior to sending it
         queries. See the `training
-        documentation <https://cloud.google.com/dialogflow/cx/docs/concept/training>`__.
+        documentation
+        <https://cloud.google.com/dialogflow/cx/docs/concept/training>`__.
 
         .. code-block:: python
 
@@ -1017,9 +1041,12 @@ class FlowsAsyncClient:
         Args:
             request (Optional[Union[google.cloud.dialogflowcx_v3.types.TrainFlowRequest, dict]]):
                 The request object. The request message for
-                [Flows.TrainFlow][google.cloud.dialogflow.cx.v3.Flows.TrainFlow].
+                `Flows.TrainFlow
+                <google.cloud.dialogflow.cx.v3.Flows.TrainFlow>`__.
             name (:class:`str`):
-                Required. The flow to train. Format:
+                Required. The flow to train.
+                Format:
+
                 ``projects/<ProjectID>/locations/<LocationID>/agents/<AgentID>/flows/<FlowID>``.
 
                 This corresponds to the ``name`` field
@@ -1035,18 +1062,21 @@ class FlowsAsyncClient:
 
         Returns:
             google.api_core.operation_async.AsyncOperation:
-                An object representing a long-running operation.
+                An object representing a long-running
+                operation.
+                The result type for the operation will
+                be
+                :class:`google.protobuf.empty_pb2.Empty`
+                A generic empty message that you can
+                re-use to avoid defining duplicated
+                empty messages in your APIs. A typical
+                example is to use it as the request or
+                the response type of an API method. For
+                instance:
 
-                The result type for the operation will be :class:`google.protobuf.empty_pb2.Empty` A generic empty message that you can re-use to avoid defining duplicated
-                   empty messages in your APIs. A typical example is to
-                   use it as the request or the response type of an API
-                   method. For instance:
-
-                      service Foo {
-                         rpc Bar(google.protobuf.Empty) returns
-                         (google.protobuf.Empty);
-
-                      }
+                    service Foo {
+                      rpc Bar(google.protobuf.Empty)
+                returns (google.protobuf.Empty);     }
 
         """
         # Create or coerce a protobuf request object.
@@ -1148,7 +1178,8 @@ class FlowsAsyncClient:
         Args:
             request (Optional[Union[google.cloud.dialogflowcx_v3.types.ValidateFlowRequest, dict]]):
                 The request object. The request message for
-                [Flows.ValidateFlow][google.cloud.dialogflow.cx.v3.Flows.ValidateFlow].
+                `Flows.ValidateFlow
+                <google.cloud.dialogflow.cx.v3.Flows.ValidateFlow>`__.
             retry (google.api_core.retry_async.AsyncRetry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
@@ -1160,7 +1191,8 @@ class FlowsAsyncClient:
         Returns:
             google.cloud.dialogflowcx_v3.types.FlowValidationResult:
                 The response message for
-                   [Flows.GetFlowValidationResult][google.cloud.dialogflow.cx.v3.Flows.GetFlowValidationResult].
+                `Flows.GetFlowValidationResult
+                <google.cloud.dialogflow.cx.v3.Flows.GetFlowValidationResult>`__.
 
         """
         # Create or coerce a protobuf request object.
@@ -1236,9 +1268,12 @@ class FlowsAsyncClient:
         Args:
             request (Optional[Union[google.cloud.dialogflowcx_v3.types.GetFlowValidationResultRequest, dict]]):
                 The request object. The request message for
-                [Flows.GetFlowValidationResult][google.cloud.dialogflow.cx.v3.Flows.GetFlowValidationResult].
+                `Flows.GetFlowValidationResult
+                <google.cloud.dialogflow.cx.v3.Flows.GetFlowValidationResult>`__.
             name (:class:`str`):
-                Required. The flow name. Format:
+                Required. The flow name.
+                Format:
+
                 ``projects/<ProjectID>/locations/<LocationID>/agents/<AgentID>/flows/<FlowID>/validationResult``.
 
                 This corresponds to the ``name`` field
@@ -1255,7 +1290,8 @@ class FlowsAsyncClient:
         Returns:
             google.cloud.dialogflowcx_v3.types.FlowValidationResult:
                 The response message for
-                   [Flows.GetFlowValidationResult][google.cloud.dialogflow.cx.v3.Flows.GetFlowValidationResult].
+                `Flows.GetFlowValidationResult
+                <google.cloud.dialogflow.cx.v3.Flows.GetFlowValidationResult>`__.
 
         """
         # Create or coerce a protobuf request object.
@@ -1315,22 +1351,27 @@ class FlowsAsyncClient:
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> operation_async.AsyncOperation:
-        r"""Imports the specified flow to the specified agent from a binary
-        file.
-
+        r"""Imports the specified flow to the specified agent from a
+        binary file.
         This method is a `long-running
-        operation <https://cloud.google.com/dialogflow/cx/docs/how/long-running-operation>`__.
+        operation
+        <https://cloud.google.com/dialogflow/cx/docs/how/long-running-operation>`__.
         The returned ``Operation`` type has the following
         method-specific fields:
 
         - ``metadata``: An empty `Struct
-          message <https://developers.google.com/protocol-buffers/docs/reference/google.protobuf#struct>`__
+          message
+        <https://developers.google.com/protocol-buffers/docs/reference/google.protobuf#struct>`__
+
         - ``response``:
-          [ImportFlowResponse][google.cloud.dialogflow.cx.v3.ImportFlowResponse]
+
+        `ImportFlowResponse
+        <google.cloud.dialogflow.cx.v3.ImportFlowResponse>`__
 
         Note: You should always train a flow prior to sending it
         queries. See the `training
-        documentation <https://cloud.google.com/dialogflow/cx/docs/concept/training>`__.
+        documentation
+        <https://cloud.google.com/dialogflow/cx/docs/concept/training>`__.
 
         .. code-block:: python
 
@@ -1366,7 +1407,8 @@ class FlowsAsyncClient:
         Args:
             request (Optional[Union[google.cloud.dialogflowcx_v3.types.ImportFlowRequest, dict]]):
                 The request object. The request message for
-                [Flows.ImportFlow][google.cloud.dialogflow.cx.v3.Flows.ImportFlow].
+                `Flows.ImportFlow
+                <google.cloud.dialogflow.cx.v3.Flows.ImportFlow>`__.
             retry (google.api_core.retry_async.AsyncRetry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
@@ -1377,10 +1419,14 @@ class FlowsAsyncClient:
 
         Returns:
             google.api_core.operation_async.AsyncOperation:
-                An object representing a long-running operation.
-
-                The result type for the operation will be :class:`google.cloud.dialogflowcx_v3.types.ImportFlowResponse` The response message for
-                   [Flows.ImportFlow][google.cloud.dialogflow.cx.v3.Flows.ImportFlow].
+                An object representing a long-running
+                operation.
+                The result type for the operation will
+                be
+                :class:`google.cloud.dialogflowcx_v3.types.ImportFlowResponse`
+                The response message for
+                `Flows.ImportFlow
+                <google.cloud.dialogflow.cx.v3.Flows.ImportFlow>`__.
 
         """
         # Create or coerce a protobuf request object.
@@ -1434,17 +1480,22 @@ class FlowsAsyncClient:
         r"""Exports the specified flow to a binary file.
 
         This method is a `long-running
-        operation <https://cloud.google.com/dialogflow/cx/docs/how/long-running-operation>`__.
+        operation
+        <https://cloud.google.com/dialogflow/cx/docs/how/long-running-operation>`__.
         The returned ``Operation`` type has the following
         method-specific fields:
 
         - ``metadata``: An empty `Struct
-          message <https://developers.google.com/protocol-buffers/docs/reference/google.protobuf#struct>`__
-        - ``response``:
-          [ExportFlowResponse][google.cloud.dialogflow.cx.v3.ExportFlowResponse]
+          message
+        <https://developers.google.com/protocol-buffers/docs/reference/google.protobuf#struct>`__
 
-        Note that resources (e.g. intents, entities, webhooks) that the
-        flow references will also be exported.
+        - ``response``:
+
+        `ExportFlowResponse
+        <google.cloud.dialogflow.cx.v3.ExportFlowResponse>`__
+
+        Note that resources (e.g. intents, entities, webhooks)
+        that the flow references will also be exported.
 
         .. code-block:: python
 
@@ -1479,7 +1530,8 @@ class FlowsAsyncClient:
         Args:
             request (Optional[Union[google.cloud.dialogflowcx_v3.types.ExportFlowRequest, dict]]):
                 The request object. The request message for
-                [Flows.ExportFlow][google.cloud.dialogflow.cx.v3.Flows.ExportFlow].
+                `Flows.ExportFlow
+                <google.cloud.dialogflow.cx.v3.Flows.ExportFlow>`__.
             retry (google.api_core.retry_async.AsyncRetry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
@@ -1490,10 +1542,14 @@ class FlowsAsyncClient:
 
         Returns:
             google.api_core.operation_async.AsyncOperation:
-                An object representing a long-running operation.
-
-                The result type for the operation will be :class:`google.cloud.dialogflowcx_v3.types.ExportFlowResponse` The response message for
-                   [Flows.ExportFlow][google.cloud.dialogflow.cx.v3.Flows.ExportFlow].
+                An object representing a long-running
+                operation.
+                The result type for the operation will
+                be
+                :class:`google.cloud.dialogflowcx_v3.types.ExportFlowResponse`
+                The response message for
+                `Flows.ExportFlow
+                <google.cloud.dialogflow.cx.v3.Flows.ExportFlow>`__.
 
         """
         # Create or coerce a protobuf request object.

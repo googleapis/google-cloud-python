@@ -70,7 +70,6 @@ from google.protobuf import timestamp_pb2  # type: ignore
 
 from google.cloud.dialogflowcx_v3.services.test_cases import pagers
 from google.cloud.dialogflowcx_v3.types import test_case
-from google.cloud.dialogflowcx_v3.types import test_case as gcdc_test_case
 
 from .transports.base import DEFAULT_CLIENT_INFO, TestCasesTransport
 from .transports.grpc import TestCasesGrpcTransport
@@ -114,9 +113,9 @@ class TestCasesClientMeta(type):
 
 
 class TestCasesClient(metaclass=TestCasesClientMeta):
-    """Service for managing [Test
-    Cases][google.cloud.dialogflow.cx.v3.TestCase] and [Test Case
-    Results][google.cloud.dialogflow.cx.v3.TestCaseResult].
+    """Service for managing `Test Cases
+    <google.cloud.dialogflow.cx.v3.TestCase>`__ and `Test Case
+    Results <google.cloud.dialogflow.cx.v3.TestCaseResult>`__.
     """
 
     @staticmethod
@@ -1003,9 +1002,11 @@ class TestCasesClient(metaclass=TestCasesClientMeta):
         Args:
             request (Union[google.cloud.dialogflowcx_v3.types.ListTestCasesRequest, dict]):
                 The request object. The request message for
-                [TestCases.ListTestCases][google.cloud.dialogflow.cx.v3.TestCases.ListTestCases].
+                `TestCases.ListTestCases
+                <google.cloud.dialogflow.cx.v3.TestCases.ListTestCases>`__.
             parent (str):
-                Required. The agent to list all pages for. Format:
+                Required. The agent to list all pages
+                for. Format:
                 ``projects/<ProjectID>/locations/<LocationID>/agents/<AgentID>``.
 
                 This corresponds to the ``parent`` field
@@ -1022,10 +1023,12 @@ class TestCasesClient(metaclass=TestCasesClientMeta):
         Returns:
             google.cloud.dialogflowcx_v3.services.test_cases.pagers.ListTestCasesPager:
                 The response message for
-                   [TestCases.ListTestCases][google.cloud.dialogflow.cx.v3.TestCases.ListTestCases].
+                `TestCases.ListTestCases
+                <google.cloud.dialogflow.cx.v3.TestCases.ListTestCases>`__.
 
-                Iterating over this object will yield results and
-                resolve additional pages automatically.
+                Iterating over this object will yield
+                results and resolve additional pages
+                automatically.
 
         """
         # Create or coerce a protobuf request object.
@@ -1123,9 +1126,11 @@ class TestCasesClient(metaclass=TestCasesClientMeta):
         Args:
             request (Union[google.cloud.dialogflowcx_v3.types.BatchDeleteTestCasesRequest, dict]):
                 The request object. The request message for
-                [TestCases.BatchDeleteTestCases][google.cloud.dialogflow.cx.v3.TestCases.BatchDeleteTestCases].
+                `TestCases.BatchDeleteTestCases
+                <google.cloud.dialogflow.cx.v3.TestCases.BatchDeleteTestCases>`__.
             parent (str):
-                Required. The agent to delete test cases from. Format:
+                Required. The agent to delete test cases
+                from. Format:
                 ``projects/<ProjectID>/locations/<LocationID>/agents/<AgentID>``.
 
                 This corresponds to the ``parent`` field
@@ -1222,9 +1227,12 @@ class TestCasesClient(metaclass=TestCasesClientMeta):
         Args:
             request (Union[google.cloud.dialogflowcx_v3.types.GetTestCaseRequest, dict]):
                 The request object. The request message for
-                [TestCases.GetTestCase][google.cloud.dialogflow.cx.v3.TestCases.GetTestCase].
+                `TestCases.GetTestCase
+                <google.cloud.dialogflow.cx.v3.TestCases.GetTestCase>`__.
             name (str):
-                Required. The name of the testcase. Format:
+                Required. The name of the testcase.
+                Format:
+
                 ``projects/<ProjectID>/locations/<LocationID>/agents/<AgentID>/testCases/<TestCaseID>``.
 
                 This corresponds to the ``name`` field
@@ -1290,14 +1298,14 @@ class TestCasesClient(metaclass=TestCasesClientMeta):
 
     def create_test_case(
         self,
-        request: Optional[Union[gcdc_test_case.CreateTestCaseRequest, dict]] = None,
+        request: Optional[Union[test_case.CreateTestCaseRequest, dict]] = None,
         *,
         parent: Optional[str] = None,
-        test_case: Optional[gcdc_test_case.TestCase] = None,
+        test_case: Optional[test_case.TestCase] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
-    ) -> gcdc_test_case.TestCase:
+    ) -> test_case.TestCase:
         r"""Creates a test case for the given agent.
 
         .. code-block:: python
@@ -1333,9 +1341,11 @@ class TestCasesClient(metaclass=TestCasesClientMeta):
         Args:
             request (Union[google.cloud.dialogflowcx_v3.types.CreateTestCaseRequest, dict]):
                 The request object. The request message for
-                [TestCases.CreateTestCase][google.cloud.dialogflow.cx.v3.TestCases.CreateTestCase].
+                `TestCases.CreateTestCase
+                <google.cloud.dialogflow.cx.v3.TestCases.CreateTestCase>`__.
             parent (str):
-                Required. The agent to create the test case for. Format:
+                Required. The agent to create the test
+                case for. Format:
                 ``projects/<ProjectID>/locations/<LocationID>/agents/<AgentID>``.
 
                 This corresponds to the ``parent`` field
@@ -1373,8 +1383,8 @@ class TestCasesClient(metaclass=TestCasesClientMeta):
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
-        if not isinstance(request, gcdc_test_case.CreateTestCaseRequest):
-            request = gcdc_test_case.CreateTestCaseRequest(request)
+        if not isinstance(request, test_case.CreateTestCaseRequest):
+            request = test_case.CreateTestCaseRequest(request)
             # If we have keyword arguments corresponding to fields on the
             # request, apply these.
             if parent is not None:
@@ -1408,14 +1418,14 @@ class TestCasesClient(metaclass=TestCasesClientMeta):
 
     def update_test_case(
         self,
-        request: Optional[Union[gcdc_test_case.UpdateTestCaseRequest, dict]] = None,
+        request: Optional[Union[test_case.UpdateTestCaseRequest, dict]] = None,
         *,
-        test_case: Optional[gcdc_test_case.TestCase] = None,
+        test_case: Optional[test_case.TestCase] = None,
         update_mask: Optional[field_mask_pb2.FieldMask] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
-    ) -> gcdc_test_case.TestCase:
+    ) -> test_case.TestCase:
         r"""Updates the specified test case.
 
         .. code-block:: python
@@ -1450,18 +1460,20 @@ class TestCasesClient(metaclass=TestCasesClientMeta):
         Args:
             request (Union[google.cloud.dialogflowcx_v3.types.UpdateTestCaseRequest, dict]):
                 The request object. The request message for
-                [TestCases.UpdateTestCase][google.cloud.dialogflow.cx.v3.TestCases.UpdateTestCase].
+                `TestCases.UpdateTestCase
+                <google.cloud.dialogflow.cx.v3.TestCases.UpdateTestCase>`__.
             test_case (google.cloud.dialogflowcx_v3.types.TestCase):
                 Required. The test case to update.
                 This corresponds to the ``test_case`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
             update_mask (google.protobuf.field_mask_pb2.FieldMask):
-                Required. The mask to specify which fields should be
-                updated. The
-                [``creationTime``][google.cloud.dialogflow.cx.v3.TestCase.creation_time]
-                and
-                [``lastTestResult``][google.cloud.dialogflow.cx.v3.TestCase.last_test_result]
+                Required. The mask to specify which
+                fields should be updated. The
+                ```creationTime``
+                <google.cloud.dialogflow.cx.v3.TestCase.creation_time>`__
+                and ```lastTestResult``
+                <google.cloud.dialogflow.cx.v3.TestCase.last_test_result>`__
                 cannot be updated.
 
                 This corresponds to the ``update_mask`` field
@@ -1494,8 +1506,8 @@ class TestCasesClient(metaclass=TestCasesClientMeta):
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
-        if not isinstance(request, gcdc_test_case.UpdateTestCaseRequest):
-            request = gcdc_test_case.UpdateTestCaseRequest(request)
+        if not isinstance(request, test_case.UpdateTestCaseRequest):
+            request = test_case.UpdateTestCaseRequest(request)
             # If we have keyword arguments corresponding to fields on the
             # request, apply these.
             if test_case is not None:
@@ -1540,14 +1552,20 @@ class TestCasesClient(metaclass=TestCasesClientMeta):
         r"""Kicks off a test case run.
 
         This method is a `long-running
-        operation <https://cloud.google.com/dialogflow/cx/docs/how/long-running-operation>`__.
+        operation
+        <https://cloud.google.com/dialogflow/cx/docs/how/long-running-operation>`__.
         The returned ``Operation`` type has the following
         method-specific fields:
 
         - ``metadata``:
-          [RunTestCaseMetadata][google.cloud.dialogflow.cx.v3.RunTestCaseMetadata]
+
+        `RunTestCaseMetadata
+        <google.cloud.dialogflow.cx.v3.RunTestCaseMetadata>`__
+
         - ``response``:
-          [RunTestCaseResponse][google.cloud.dialogflow.cx.v3.RunTestCaseResponse]
+
+        `RunTestCaseResponse
+        <google.cloud.dialogflow.cx.v3.RunTestCaseResponse>`__
 
         .. code-block:: python
 
@@ -1582,7 +1600,8 @@ class TestCasesClient(metaclass=TestCasesClientMeta):
         Args:
             request (Union[google.cloud.dialogflowcx_v3.types.RunTestCaseRequest, dict]):
                 The request object. The request message for
-                [TestCases.RunTestCase][google.cloud.dialogflow.cx.v3.TestCases.RunTestCase].
+                `TestCases.RunTestCase
+                <google.cloud.dialogflow.cx.v3.TestCases.RunTestCase>`__.
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
@@ -1593,10 +1612,14 @@ class TestCasesClient(metaclass=TestCasesClientMeta):
 
         Returns:
             google.api_core.operation.Operation:
-                An object representing a long-running operation.
-
-                The result type for the operation will be :class:`google.cloud.dialogflowcx_v3.types.RunTestCaseResponse` The response message for
-                   [TestCases.RunTestCase][google.cloud.dialogflow.cx.v3.TestCases.RunTestCase].
+                An object representing a long-running
+                operation.
+                The result type for the operation will
+                be
+                :class:`google.cloud.dialogflowcx_v3.types.RunTestCaseResponse`
+                The response message for
+                `TestCases.RunTestCase
+                <google.cloud.dialogflow.cx.v3.TestCases.RunTestCase>`__.
 
         """
         # Create or coerce a protobuf request object.
@@ -1648,14 +1671,20 @@ class TestCasesClient(metaclass=TestCasesClientMeta):
         r"""Kicks off a batch run of test cases.
 
         This method is a `long-running
-        operation <https://cloud.google.com/dialogflow/cx/docs/how/long-running-operation>`__.
+        operation
+        <https://cloud.google.com/dialogflow/cx/docs/how/long-running-operation>`__.
         The returned ``Operation`` type has the following
         method-specific fields:
 
         - ``metadata``:
-          [BatchRunTestCasesMetadata][google.cloud.dialogflow.cx.v3.BatchRunTestCasesMetadata]
+
+        `BatchRunTestCasesMetadata
+        <google.cloud.dialogflow.cx.v3.BatchRunTestCasesMetadata>`__
+
         - ``response``:
-          [BatchRunTestCasesResponse][google.cloud.dialogflow.cx.v3.BatchRunTestCasesResponse]
+
+        `BatchRunTestCasesResponse
+        <google.cloud.dialogflow.cx.v3.BatchRunTestCasesResponse>`__
 
         .. code-block:: python
 
@@ -1691,7 +1720,8 @@ class TestCasesClient(metaclass=TestCasesClientMeta):
         Args:
             request (Union[google.cloud.dialogflowcx_v3.types.BatchRunTestCasesRequest, dict]):
                 The request object. The request message for
-                [TestCases.BatchRunTestCases][google.cloud.dialogflow.cx.v3.TestCases.BatchRunTestCases].
+                `TestCases.BatchRunTestCases
+                <google.cloud.dialogflow.cx.v3.TestCases.BatchRunTestCases>`__.
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
@@ -1702,10 +1732,14 @@ class TestCasesClient(metaclass=TestCasesClientMeta):
 
         Returns:
             google.api_core.operation.Operation:
-                An object representing a long-running operation.
-
-                The result type for the operation will be :class:`google.cloud.dialogflowcx_v3.types.BatchRunTestCasesResponse` The response message for
-                   [TestCases.BatchRunTestCases][google.cloud.dialogflow.cx.v3.TestCases.BatchRunTestCases].
+                An object representing a long-running
+                operation.
+                The result type for the operation will
+                be
+                :class:`google.cloud.dialogflowcx_v3.types.BatchRunTestCasesResponse`
+                The response message for
+                `TestCases.BatchRunTestCases
+                <google.cloud.dialogflow.cx.v3.TestCases.BatchRunTestCases>`__.
 
         """
         # Create or coerce a protobuf request object.
@@ -1786,7 +1820,8 @@ class TestCasesClient(metaclass=TestCasesClientMeta):
         Args:
             request (Union[google.cloud.dialogflowcx_v3.types.CalculateCoverageRequest, dict]):
                 The request object. The request message for
-                [TestCases.CalculateCoverage][google.cloud.dialogflow.cx.v3.TestCases.CalculateCoverage].
+                `TestCases.CalculateCoverage
+                <google.cloud.dialogflow.cx.v3.TestCases.CalculateCoverage>`__.
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
@@ -1798,7 +1833,8 @@ class TestCasesClient(metaclass=TestCasesClientMeta):
         Returns:
             google.cloud.dialogflowcx_v3.types.CalculateCoverageResponse:
                 The response message for
-                   [TestCases.CalculateCoverage][google.cloud.dialogflow.cx.v3.TestCases.CalculateCoverage].
+                `TestCases.CalculateCoverage
+                <google.cloud.dialogflow.cx.v3.TestCases.CalculateCoverage>`__.
 
         """
         # Create or coerce a protobuf request object.
@@ -1839,20 +1875,26 @@ class TestCasesClient(metaclass=TestCasesClientMeta):
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> operation.Operation:
-        r"""Imports the test cases from a Cloud Storage bucket or a local
-        file. It always creates new test cases and won't overwrite any
-        existing ones. The provided ID in the imported test case is
-        neglected.
+        r"""Imports the test cases from a Cloud Storage bucket or a
+        local file. It always creates new test cases and won't
+        overwrite any existing ones. The provided ID in the
+        imported test case is neglected.
 
         This method is a `long-running
-        operation <https://cloud.google.com/dialogflow/cx/docs/how/long-running-operation>`__.
+        operation
+        <https://cloud.google.com/dialogflow/cx/docs/how/long-running-operation>`__.
         The returned ``Operation`` type has the following
         method-specific fields:
 
         - ``metadata``:
-          [ImportTestCasesMetadata][google.cloud.dialogflow.cx.v3.ImportTestCasesMetadata]
+
+        `ImportTestCasesMetadata
+        <google.cloud.dialogflow.cx.v3.ImportTestCasesMetadata>`__
+
         - ``response``:
-          [ImportTestCasesResponse][google.cloud.dialogflow.cx.v3.ImportTestCasesResponse]
+
+        `ImportTestCasesResponse
+        <google.cloud.dialogflow.cx.v3.ImportTestCasesResponse>`__
 
         .. code-block:: python
 
@@ -1888,7 +1930,8 @@ class TestCasesClient(metaclass=TestCasesClientMeta):
         Args:
             request (Union[google.cloud.dialogflowcx_v3.types.ImportTestCasesRequest, dict]):
                 The request object. The request message for
-                [TestCases.ImportTestCases][google.cloud.dialogflow.cx.v3.TestCases.ImportTestCases].
+                `TestCases.ImportTestCases
+                <google.cloud.dialogflow.cx.v3.TestCases.ImportTestCases>`__.
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
@@ -1899,10 +1942,14 @@ class TestCasesClient(metaclass=TestCasesClientMeta):
 
         Returns:
             google.api_core.operation.Operation:
-                An object representing a long-running operation.
-
-                The result type for the operation will be :class:`google.cloud.dialogflowcx_v3.types.ImportTestCasesResponse` The response message for
-                   [TestCases.ImportTestCases][google.cloud.dialogflow.cx.v3.TestCases.ImportTestCases].
+                An object representing a long-running
+                operation.
+                The result type for the operation will
+                be
+                :class:`google.cloud.dialogflowcx_v3.types.ImportTestCasesResponse`
+                The response message for
+                `TestCases.ImportTestCases
+                <google.cloud.dialogflow.cx.v3.TestCases.ImportTestCases>`__.
 
         """
         # Create or coerce a protobuf request object.
@@ -1951,19 +1998,25 @@ class TestCasesClient(metaclass=TestCasesClientMeta):
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> operation.Operation:
-        r"""Exports the test cases under the agent to a Cloud Storage bucket
-        or a local file. Filter can be applied to export a subset of
-        test cases.
+        r"""Exports the test cases under the agent to a Cloud
+        Storage bucket or a local file. Filter can be applied to
+        export a subset of test cases.
 
         This method is a `long-running
-        operation <https://cloud.google.com/dialogflow/cx/docs/how/long-running-operation>`__.
+        operation
+        <https://cloud.google.com/dialogflow/cx/docs/how/long-running-operation>`__.
         The returned ``Operation`` type has the following
         method-specific fields:
 
         - ``metadata``:
-          [ExportTestCasesMetadata][google.cloud.dialogflow.cx.v3.ExportTestCasesMetadata]
+
+        `ExportTestCasesMetadata
+        <google.cloud.dialogflow.cx.v3.ExportTestCasesMetadata>`__
+
         - ``response``:
-          [ExportTestCasesResponse][google.cloud.dialogflow.cx.v3.ExportTestCasesResponse]
+
+        `ExportTestCasesResponse
+        <google.cloud.dialogflow.cx.v3.ExportTestCasesResponse>`__
 
         .. code-block:: python
 
@@ -1999,7 +2052,8 @@ class TestCasesClient(metaclass=TestCasesClientMeta):
         Args:
             request (Union[google.cloud.dialogflowcx_v3.types.ExportTestCasesRequest, dict]):
                 The request object. The request message for
-                [TestCases.ExportTestCases][google.cloud.dialogflow.cx.v3.TestCases.ExportTestCases].
+                `TestCases.ExportTestCases
+                <google.cloud.dialogflow.cx.v3.TestCases.ExportTestCases>`__.
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
@@ -2010,10 +2064,14 @@ class TestCasesClient(metaclass=TestCasesClientMeta):
 
         Returns:
             google.api_core.operation.Operation:
-                An object representing a long-running operation.
-
-                The result type for the operation will be :class:`google.cloud.dialogflowcx_v3.types.ExportTestCasesResponse` The response message for
-                   [TestCases.ExportTestCases][google.cloud.dialogflow.cx.v3.TestCases.ExportTestCases].
+                An object representing a long-running
+                operation.
+                The result type for the operation will
+                be
+                :class:`google.cloud.dialogflowcx_v3.types.ExportTestCasesResponse`
+                The response message for
+                `TestCases.ExportTestCases
+                <google.cloud.dialogflow.cx.v3.TestCases.ExportTestCases>`__.
 
         """
         # Create or coerce a protobuf request object.
@@ -2097,12 +2155,16 @@ class TestCasesClient(metaclass=TestCasesClientMeta):
         Args:
             request (Union[google.cloud.dialogflowcx_v3.types.ListTestCaseResultsRequest, dict]):
                 The request object. The request message for
-                [TestCases.ListTestCaseResults][google.cloud.dialogflow.cx.v3.TestCases.ListTestCaseResults].
+                `TestCases.ListTestCaseResults
+                <google.cloud.dialogflow.cx.v3.TestCases.ListTestCaseResults>`__.
             parent (str):
-                Required. The test case to list results for. Format:
+                Required. The test case to list results
+                for. Format:
+
                 ``projects/<ProjectID>/locations/<LocationID>/agents/<AgentID>/testCases/<TestCaseID>``.
-                Specify a ``-`` as a wildcard for TestCase ID to list
-                results across multiple test cases.
+                Specify a ``-`` as a wildcard for
+                TestCase ID to  list results across
+                multiple test cases.
 
                 This corresponds to the ``parent`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -2118,10 +2180,12 @@ class TestCasesClient(metaclass=TestCasesClientMeta):
         Returns:
             google.cloud.dialogflowcx_v3.services.test_cases.pagers.ListTestCaseResultsPager:
                 The response message for
-                   [TestCases.ListTestCaseResults][google.cloud.dialogflow.cx.v3.TestCases.ListTestCaseResults].
+                `TestCases.ListTestCaseResults
+                <google.cloud.dialogflow.cx.v3.TestCases.ListTestCaseResults>`__.
 
-                Iterating over this object will yield results and
-                resolve additional pages automatically.
+                Iterating over this object will yield
+                results and resolve additional pages
+                automatically.
 
         """
         # Create or coerce a protobuf request object.
@@ -2221,9 +2285,12 @@ class TestCasesClient(metaclass=TestCasesClientMeta):
         Args:
             request (Union[google.cloud.dialogflowcx_v3.types.GetTestCaseResultRequest, dict]):
                 The request object. The request message for
-                [TestCases.GetTestCaseResult][google.cloud.dialogflow.cx.v3.TestCases.GetTestCaseResult].
+                `TestCases.GetTestCaseResult
+                <google.cloud.dialogflow.cx.v3.TestCases.GetTestCaseResult>`__.
             name (str):
-                Required. The name of the testcase. Format:
+                Required. The name of the testcase.
+                Format:
+
                 ``projects/<ProjectID>/locations/<LocationID>/agents/<AgentID>/testCases/<TestCaseID>/results/<TestCaseResultID>``.
 
                 This corresponds to the ``name`` field

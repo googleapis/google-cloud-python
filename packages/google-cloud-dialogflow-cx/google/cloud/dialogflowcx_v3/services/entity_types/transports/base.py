@@ -30,7 +30,6 @@ from google.protobuf import empty_pb2  # type: ignore
 
 from google.cloud.dialogflowcx_v3 import gapic_version as package_version
 from google.cloud.dialogflowcx_v3.types import entity_type
-from google.cloud.dialogflowcx_v3.types import entity_type as gcdc_entity_type
 
 DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
     gapic_version=package_version.__version__
@@ -229,8 +228,8 @@ class EntityTypesTransport(abc.ABC):
     def create_entity_type(
         self,
     ) -> Callable[
-        [gcdc_entity_type.CreateEntityTypeRequest],
-        Union[gcdc_entity_type.EntityType, Awaitable[gcdc_entity_type.EntityType]],
+        [entity_type.CreateEntityTypeRequest],
+        Union[entity_type.EntityType, Awaitable[entity_type.EntityType]],
     ]:
         raise NotImplementedError()
 
@@ -238,8 +237,8 @@ class EntityTypesTransport(abc.ABC):
     def update_entity_type(
         self,
     ) -> Callable[
-        [gcdc_entity_type.UpdateEntityTypeRequest],
-        Union[gcdc_entity_type.EntityType, Awaitable[gcdc_entity_type.EntityType]],
+        [entity_type.UpdateEntityTypeRequest],
+        Union[entity_type.EntityType, Awaitable[entity_type.EntityType]],
     ]:
         raise NotImplementedError()
 

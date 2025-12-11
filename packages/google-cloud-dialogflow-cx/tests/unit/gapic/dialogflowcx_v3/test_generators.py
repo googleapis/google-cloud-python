@@ -62,7 +62,6 @@ from google.cloud.dialogflowcx_v3.services.generators import (
     transports,
 )
 from google.cloud.dialogflowcx_v3.types import generator
-from google.cloud.dialogflowcx_v3.types import generator as gcdc_generator
 
 CRED_INFO_JSON = {
     "credential_source": "/path/to/file",
@@ -1925,7 +1924,7 @@ async def test_get_generator_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        gcdc_generator.CreateGeneratorRequest,
+        generator.CreateGeneratorRequest,
         dict,
     ],
 )
@@ -1942,7 +1941,7 @@ def test_create_generator(request_type, transport: str = "grpc"):
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.create_generator), "__call__") as call:
         # Designate an appropriate return value for the call.
-        call.return_value = gcdc_generator.Generator(
+        call.return_value = generator.Generator(
             name="name_value",
             display_name="display_name_value",
         )
@@ -1951,11 +1950,11 @@ def test_create_generator(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        request = gcdc_generator.CreateGeneratorRequest()
+        request = generator.CreateGeneratorRequest()
         assert args[0] == request
 
     # Establish that the response is the type that we expect.
-    assert isinstance(response, gcdc_generator.Generator)
+    assert isinstance(response, generator.Generator)
     assert response.name == "name_value"
     assert response.display_name == "display_name_value"
 
@@ -1971,7 +1970,7 @@ def test_create_generator_non_empty_request_with_auto_populated_field():
     # Populate all string fields in the request which are not UUID4
     # since we want to check that UUID4 are populated automatically
     # if they meet the requirements of AIP 4235.
-    request = gcdc_generator.CreateGeneratorRequest(
+    request = generator.CreateGeneratorRequest(
         parent="parent_value",
         language_code="language_code_value",
     )
@@ -1984,7 +1983,7 @@ def test_create_generator_non_empty_request_with_auto_populated_field():
         client.create_generator(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == gcdc_generator.CreateGeneratorRequest(
+        assert args[0] == generator.CreateGeneratorRequest(
             parent="parent_value",
             language_code="language_code_value",
         )
@@ -2071,7 +2070,7 @@ async def test_create_generator_async_use_cached_wrapped_rpc(
 
 @pytest.mark.asyncio
 async def test_create_generator_async(
-    transport: str = "grpc_asyncio", request_type=gcdc_generator.CreateGeneratorRequest
+    transport: str = "grpc_asyncio", request_type=generator.CreateGeneratorRequest
 ):
     client = GeneratorsAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -2086,7 +2085,7 @@ async def test_create_generator_async(
     with mock.patch.object(type(client.transport.create_generator), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            gcdc_generator.Generator(
+            generator.Generator(
                 name="name_value",
                 display_name="display_name_value",
             )
@@ -2096,11 +2095,11 @@ async def test_create_generator_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        request = gcdc_generator.CreateGeneratorRequest()
+        request = generator.CreateGeneratorRequest()
         assert args[0] == request
 
     # Establish that the response is the type that we expect.
-    assert isinstance(response, gcdc_generator.Generator)
+    assert isinstance(response, generator.Generator)
     assert response.name == "name_value"
     assert response.display_name == "display_name_value"
 
@@ -2117,13 +2116,13 @@ def test_create_generator_field_headers():
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
-    request = gcdc_generator.CreateGeneratorRequest()
+    request = generator.CreateGeneratorRequest()
 
     request.parent = "parent_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.create_generator), "__call__") as call:
-        call.return_value = gcdc_generator.Generator()
+        call.return_value = generator.Generator()
         client.create_generator(request)
 
         # Establish that the underlying gRPC stub method was called.
@@ -2147,15 +2146,13 @@ async def test_create_generator_field_headers_async():
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
-    request = gcdc_generator.CreateGeneratorRequest()
+    request = generator.CreateGeneratorRequest()
 
     request.parent = "parent_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.create_generator), "__call__") as call:
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            gcdc_generator.Generator()
-        )
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(generator.Generator())
         await client.create_generator(request)
 
         # Establish that the underlying gRPC stub method was called.
@@ -2179,12 +2176,12 @@ def test_create_generator_flattened():
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.create_generator), "__call__") as call:
         # Designate an appropriate return value for the call.
-        call.return_value = gcdc_generator.Generator()
+        call.return_value = generator.Generator()
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
         client.create_generator(
             parent="parent_value",
-            generator=gcdc_generator.Generator(name="name_value"),
+            generator=generator.Generator(name="name_value"),
         )
 
         # Establish that the underlying call was made with the expected
@@ -2195,7 +2192,7 @@ def test_create_generator_flattened():
         mock_val = "parent_value"
         assert arg == mock_val
         arg = args[0].generator
-        mock_val = gcdc_generator.Generator(name="name_value")
+        mock_val = generator.Generator(name="name_value")
         assert arg == mock_val
 
 
@@ -2208,9 +2205,9 @@ def test_create_generator_flattened_error():
     # fields is an error.
     with pytest.raises(ValueError):
         client.create_generator(
-            gcdc_generator.CreateGeneratorRequest(),
+            generator.CreateGeneratorRequest(),
             parent="parent_value",
-            generator=gcdc_generator.Generator(name="name_value"),
+            generator=generator.Generator(name="name_value"),
         )
 
 
@@ -2223,16 +2220,14 @@ async def test_create_generator_flattened_async():
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.create_generator), "__call__") as call:
         # Designate an appropriate return value for the call.
-        call.return_value = gcdc_generator.Generator()
+        call.return_value = generator.Generator()
 
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            gcdc_generator.Generator()
-        )
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(generator.Generator())
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
         response = await client.create_generator(
             parent="parent_value",
-            generator=gcdc_generator.Generator(name="name_value"),
+            generator=generator.Generator(name="name_value"),
         )
 
         # Establish that the underlying call was made with the expected
@@ -2243,7 +2238,7 @@ async def test_create_generator_flattened_async():
         mock_val = "parent_value"
         assert arg == mock_val
         arg = args[0].generator
-        mock_val = gcdc_generator.Generator(name="name_value")
+        mock_val = generator.Generator(name="name_value")
         assert arg == mock_val
 
 
@@ -2257,16 +2252,16 @@ async def test_create_generator_flattened_error_async():
     # fields is an error.
     with pytest.raises(ValueError):
         await client.create_generator(
-            gcdc_generator.CreateGeneratorRequest(),
+            generator.CreateGeneratorRequest(),
             parent="parent_value",
-            generator=gcdc_generator.Generator(name="name_value"),
+            generator=generator.Generator(name="name_value"),
         )
 
 
 @pytest.mark.parametrize(
     "request_type",
     [
-        gcdc_generator.UpdateGeneratorRequest,
+        generator.UpdateGeneratorRequest,
         dict,
     ],
 )
@@ -2283,7 +2278,7 @@ def test_update_generator(request_type, transport: str = "grpc"):
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.update_generator), "__call__") as call:
         # Designate an appropriate return value for the call.
-        call.return_value = gcdc_generator.Generator(
+        call.return_value = generator.Generator(
             name="name_value",
             display_name="display_name_value",
         )
@@ -2292,11 +2287,11 @@ def test_update_generator(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        request = gcdc_generator.UpdateGeneratorRequest()
+        request = generator.UpdateGeneratorRequest()
         assert args[0] == request
 
     # Establish that the response is the type that we expect.
-    assert isinstance(response, gcdc_generator.Generator)
+    assert isinstance(response, generator.Generator)
     assert response.name == "name_value"
     assert response.display_name == "display_name_value"
 
@@ -2312,7 +2307,7 @@ def test_update_generator_non_empty_request_with_auto_populated_field():
     # Populate all string fields in the request which are not UUID4
     # since we want to check that UUID4 are populated automatically
     # if they meet the requirements of AIP 4235.
-    request = gcdc_generator.UpdateGeneratorRequest(
+    request = generator.UpdateGeneratorRequest(
         language_code="language_code_value",
     )
 
@@ -2324,7 +2319,7 @@ def test_update_generator_non_empty_request_with_auto_populated_field():
         client.update_generator(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == gcdc_generator.UpdateGeneratorRequest(
+        assert args[0] == generator.UpdateGeneratorRequest(
             language_code="language_code_value",
         )
 
@@ -2410,7 +2405,7 @@ async def test_update_generator_async_use_cached_wrapped_rpc(
 
 @pytest.mark.asyncio
 async def test_update_generator_async(
-    transport: str = "grpc_asyncio", request_type=gcdc_generator.UpdateGeneratorRequest
+    transport: str = "grpc_asyncio", request_type=generator.UpdateGeneratorRequest
 ):
     client = GeneratorsAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -2425,7 +2420,7 @@ async def test_update_generator_async(
     with mock.patch.object(type(client.transport.update_generator), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            gcdc_generator.Generator(
+            generator.Generator(
                 name="name_value",
                 display_name="display_name_value",
             )
@@ -2435,11 +2430,11 @@ async def test_update_generator_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        request = gcdc_generator.UpdateGeneratorRequest()
+        request = generator.UpdateGeneratorRequest()
         assert args[0] == request
 
     # Establish that the response is the type that we expect.
-    assert isinstance(response, gcdc_generator.Generator)
+    assert isinstance(response, generator.Generator)
     assert response.name == "name_value"
     assert response.display_name == "display_name_value"
 
@@ -2456,13 +2451,13 @@ def test_update_generator_field_headers():
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
-    request = gcdc_generator.UpdateGeneratorRequest()
+    request = generator.UpdateGeneratorRequest()
 
     request.generator.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.update_generator), "__call__") as call:
-        call.return_value = gcdc_generator.Generator()
+        call.return_value = generator.Generator()
         client.update_generator(request)
 
         # Establish that the underlying gRPC stub method was called.
@@ -2486,15 +2481,13 @@ async def test_update_generator_field_headers_async():
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
-    request = gcdc_generator.UpdateGeneratorRequest()
+    request = generator.UpdateGeneratorRequest()
 
     request.generator.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.update_generator), "__call__") as call:
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            gcdc_generator.Generator()
-        )
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(generator.Generator())
         await client.update_generator(request)
 
         # Establish that the underlying gRPC stub method was called.
@@ -2518,11 +2511,11 @@ def test_update_generator_flattened():
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.update_generator), "__call__") as call:
         # Designate an appropriate return value for the call.
-        call.return_value = gcdc_generator.Generator()
+        call.return_value = generator.Generator()
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
         client.update_generator(
-            generator=gcdc_generator.Generator(name="name_value"),
+            generator=generator.Generator(name="name_value"),
             update_mask=field_mask_pb2.FieldMask(paths=["paths_value"]),
         )
 
@@ -2531,7 +2524,7 @@ def test_update_generator_flattened():
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
         arg = args[0].generator
-        mock_val = gcdc_generator.Generator(name="name_value")
+        mock_val = generator.Generator(name="name_value")
         assert arg == mock_val
         arg = args[0].update_mask
         mock_val = field_mask_pb2.FieldMask(paths=["paths_value"])
@@ -2547,8 +2540,8 @@ def test_update_generator_flattened_error():
     # fields is an error.
     with pytest.raises(ValueError):
         client.update_generator(
-            gcdc_generator.UpdateGeneratorRequest(),
-            generator=gcdc_generator.Generator(name="name_value"),
+            generator.UpdateGeneratorRequest(),
+            generator=generator.Generator(name="name_value"),
             update_mask=field_mask_pb2.FieldMask(paths=["paths_value"]),
         )
 
@@ -2562,15 +2555,13 @@ async def test_update_generator_flattened_async():
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.update_generator), "__call__") as call:
         # Designate an appropriate return value for the call.
-        call.return_value = gcdc_generator.Generator()
+        call.return_value = generator.Generator()
 
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            gcdc_generator.Generator()
-        )
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(generator.Generator())
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
         response = await client.update_generator(
-            generator=gcdc_generator.Generator(name="name_value"),
+            generator=generator.Generator(name="name_value"),
             update_mask=field_mask_pb2.FieldMask(paths=["paths_value"]),
         )
 
@@ -2579,7 +2570,7 @@ async def test_update_generator_flattened_async():
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
         arg = args[0].generator
-        mock_val = gcdc_generator.Generator(name="name_value")
+        mock_val = generator.Generator(name="name_value")
         assert arg == mock_val
         arg = args[0].update_mask
         mock_val = field_mask_pb2.FieldMask(paths=["paths_value"])
@@ -2596,8 +2587,8 @@ async def test_update_generator_flattened_error_async():
     # fields is an error.
     with pytest.raises(ValueError):
         await client.update_generator(
-            gcdc_generator.UpdateGeneratorRequest(),
-            generator=gcdc_generator.Generator(name="name_value"),
+            generator.UpdateGeneratorRequest(),
+            generator=generator.Generator(name="name_value"),
             update_mask=field_mask_pb2.FieldMask(paths=["paths_value"]),
         )
 
@@ -3390,7 +3381,7 @@ def test_create_generator_rest_use_cached_wrapped_rpc():
 
 
 def test_create_generator_rest_required_fields(
-    request_type=gcdc_generator.CreateGeneratorRequest,
+    request_type=generator.CreateGeneratorRequest,
 ):
     transport_class = transports.GeneratorsRestTransport
 
@@ -3431,7 +3422,7 @@ def test_create_generator_rest_required_fields(
     request = request_type(**request_init)
 
     # Designate an appropriate value for the returned response.
-    return_value = gcdc_generator.Generator()
+    return_value = generator.Generator()
     # Mock the http request call within the method and fake a response.
     with mock.patch.object(Session, "request") as req:
         # We need to mock transcode() because providing default values
@@ -3453,7 +3444,7 @@ def test_create_generator_rest_required_fields(
             response_value.status_code = 200
 
             # Convert return value to protobuf type
-            return_value = gcdc_generator.Generator.pb(return_value)
+            return_value = generator.Generator.pb(return_value)
             json_return_value = json_format.MessageToJson(return_value)
 
             response_value._content = json_return_value.encode("UTF-8")
@@ -3493,7 +3484,7 @@ def test_create_generator_rest_flattened():
     # Mock the http request call within the method and fake a response.
     with mock.patch.object(type(client.transport._session), "request") as req:
         # Designate an appropriate value for the returned response.
-        return_value = gcdc_generator.Generator()
+        return_value = generator.Generator()
 
         # get arguments that satisfy an http rule for this method
         sample_request = {"parent": "projects/sample1/locations/sample2/agents/sample3"}
@@ -3501,7 +3492,7 @@ def test_create_generator_rest_flattened():
         # get truthy value for each flattened field
         mock_args = dict(
             parent="parent_value",
-            generator=gcdc_generator.Generator(name="name_value"),
+            generator=generator.Generator(name="name_value"),
         )
         mock_args.update(sample_request)
 
@@ -3509,7 +3500,7 @@ def test_create_generator_rest_flattened():
         response_value = Response()
         response_value.status_code = 200
         # Convert return value to protobuf type
-        return_value = gcdc_generator.Generator.pb(return_value)
+        return_value = generator.Generator.pb(return_value)
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
@@ -3538,9 +3529,9 @@ def test_create_generator_rest_flattened_error(transport: str = "rest"):
     # fields is an error.
     with pytest.raises(ValueError):
         client.create_generator(
-            gcdc_generator.CreateGeneratorRequest(),
+            generator.CreateGeneratorRequest(),
             parent="parent_value",
-            generator=gcdc_generator.Generator(name="name_value"),
+            generator=generator.Generator(name="name_value"),
         )
 
 
@@ -3583,7 +3574,7 @@ def test_update_generator_rest_use_cached_wrapped_rpc():
 
 
 def test_update_generator_rest_required_fields(
-    request_type=gcdc_generator.UpdateGeneratorRequest,
+    request_type=generator.UpdateGeneratorRequest,
 ):
     transport_class = transports.GeneratorsRestTransport
 
@@ -3624,7 +3615,7 @@ def test_update_generator_rest_required_fields(
     request = request_type(**request_init)
 
     # Designate an appropriate value for the returned response.
-    return_value = gcdc_generator.Generator()
+    return_value = generator.Generator()
     # Mock the http request call within the method and fake a response.
     with mock.patch.object(Session, "request") as req:
         # We need to mock transcode() because providing default values
@@ -3646,7 +3637,7 @@ def test_update_generator_rest_required_fields(
             response_value.status_code = 200
 
             # Convert return value to protobuf type
-            return_value = gcdc_generator.Generator.pb(return_value)
+            return_value = generator.Generator.pb(return_value)
             json_return_value = json_format.MessageToJson(return_value)
 
             response_value._content = json_return_value.encode("UTF-8")
@@ -3686,7 +3677,7 @@ def test_update_generator_rest_flattened():
     # Mock the http request call within the method and fake a response.
     with mock.patch.object(type(client.transport._session), "request") as req:
         # Designate an appropriate value for the returned response.
-        return_value = gcdc_generator.Generator()
+        return_value = generator.Generator()
 
         # get arguments that satisfy an http rule for this method
         sample_request = {
@@ -3697,7 +3688,7 @@ def test_update_generator_rest_flattened():
 
         # get truthy value for each flattened field
         mock_args = dict(
-            generator=gcdc_generator.Generator(name="name_value"),
+            generator=generator.Generator(name="name_value"),
             update_mask=field_mask_pb2.FieldMask(paths=["paths_value"]),
         )
         mock_args.update(sample_request)
@@ -3706,7 +3697,7 @@ def test_update_generator_rest_flattened():
         response_value = Response()
         response_value.status_code = 200
         # Convert return value to protobuf type
-        return_value = gcdc_generator.Generator.pb(return_value)
+        return_value = generator.Generator.pb(return_value)
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
@@ -3735,8 +3726,8 @@ def test_update_generator_rest_flattened_error(transport: str = "rest"):
     # fields is an error.
     with pytest.raises(ValueError):
         client.update_generator(
-            gcdc_generator.UpdateGeneratorRequest(),
-            generator=gcdc_generator.Generator(name="name_value"),
+            generator.UpdateGeneratorRequest(),
+            generator=generator.Generator(name="name_value"),
             update_mask=field_mask_pb2.FieldMask(paths=["paths_value"]),
         )
 
@@ -4078,13 +4069,13 @@ def test_create_generator_empty_call_grpc():
 
     # Mock the actual call, and fake the request.
     with mock.patch.object(type(client.transport.create_generator), "__call__") as call:
-        call.return_value = gcdc_generator.Generator()
+        call.return_value = generator.Generator()
         client.create_generator(request=None)
 
         # Establish that the underlying stub method was called.
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        request_msg = gcdc_generator.CreateGeneratorRequest()
+        request_msg = generator.CreateGeneratorRequest()
 
         assert args[0] == request_msg
 
@@ -4099,13 +4090,13 @@ def test_update_generator_empty_call_grpc():
 
     # Mock the actual call, and fake the request.
     with mock.patch.object(type(client.transport.update_generator), "__call__") as call:
-        call.return_value = gcdc_generator.Generator()
+        call.return_value = generator.Generator()
         client.update_generator(request=None)
 
         # Establish that the underlying stub method was called.
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        request_msg = gcdc_generator.UpdateGeneratorRequest()
+        request_msg = generator.UpdateGeneratorRequest()
 
         assert args[0] == request_msg
 
@@ -4213,7 +4204,7 @@ async def test_create_generator_empty_call_grpc_asyncio():
     with mock.patch.object(type(client.transport.create_generator), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            gcdc_generator.Generator(
+            generator.Generator(
                 name="name_value",
                 display_name="display_name_value",
             )
@@ -4223,7 +4214,7 @@ async def test_create_generator_empty_call_grpc_asyncio():
         # Establish that the underlying stub method was called.
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        request_msg = gcdc_generator.CreateGeneratorRequest()
+        request_msg = generator.CreateGeneratorRequest()
 
         assert args[0] == request_msg
 
@@ -4241,7 +4232,7 @@ async def test_update_generator_empty_call_grpc_asyncio():
     with mock.patch.object(type(client.transport.update_generator), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            gcdc_generator.Generator(
+            generator.Generator(
                 name="name_value",
                 display_name="display_name_value",
             )
@@ -4251,7 +4242,7 @@ async def test_update_generator_empty_call_grpc_asyncio():
         # Establish that the underlying stub method was called.
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        request_msg = gcdc_generator.UpdateGeneratorRequest()
+        request_msg = generator.UpdateGeneratorRequest()
 
         assert args[0] == request_msg
 
@@ -4543,7 +4534,7 @@ def test_get_generator_rest_interceptors(null_interceptor):
 
 
 def test_create_generator_rest_bad_request(
-    request_type=gcdc_generator.CreateGeneratorRequest,
+    request_type=generator.CreateGeneratorRequest,
 ):
     client = GeneratorsClient(
         credentials=ga_credentials.AnonymousCredentials(), transport="rest"
@@ -4570,7 +4561,7 @@ def test_create_generator_rest_bad_request(
 @pytest.mark.parametrize(
     "request_type",
     [
-        gcdc_generator.CreateGeneratorRequest,
+        generator.CreateGeneratorRequest,
         dict,
     ],
 )
@@ -4598,7 +4589,7 @@ def test_create_generator_rest_call_success(request_type):
     # See https://github.com/googleapis/gapic-generator-python/issues/1748
 
     # Determine if the message type is proto-plus or protobuf
-    test_field = gcdc_generator.CreateGeneratorRequest.meta.fields["generator"]
+    test_field = generator.CreateGeneratorRequest.meta.fields["generator"]
 
     def get_message_fields(field):
         # Given a field which is a message (composite type), return a list with
@@ -4665,7 +4656,7 @@ def test_create_generator_rest_call_success(request_type):
     # Mock the http request call within the method and fake a response.
     with mock.patch.object(type(client.transport._session), "request") as req:
         # Designate an appropriate value for the returned response.
-        return_value = gcdc_generator.Generator(
+        return_value = generator.Generator(
             name="name_value",
             display_name="display_name_value",
         )
@@ -4675,7 +4666,7 @@ def test_create_generator_rest_call_success(request_type):
         response_value.status_code = 200
 
         # Convert return value to protobuf type
-        return_value = gcdc_generator.Generator.pb(return_value)
+        return_value = generator.Generator.pb(return_value)
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
@@ -4683,7 +4674,7 @@ def test_create_generator_rest_call_success(request_type):
         response = client.create_generator(request)
 
     # Establish that the response is the type that we expect.
-    assert isinstance(response, gcdc_generator.Generator)
+    assert isinstance(response, generator.Generator)
     assert response.name == "name_value"
     assert response.display_name == "display_name_value"
 
@@ -4712,8 +4703,8 @@ def test_create_generator_rest_interceptors(null_interceptor):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
-        pb_message = gcdc_generator.CreateGeneratorRequest.pb(
-            gcdc_generator.CreateGeneratorRequest()
+        pb_message = generator.CreateGeneratorRequest.pb(
+            generator.CreateGeneratorRequest()
         )
         transcode.return_value = {
             "method": "post",
@@ -4725,17 +4716,17 @@ def test_create_generator_rest_interceptors(null_interceptor):
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
         req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
-        return_value = gcdc_generator.Generator.to_json(gcdc_generator.Generator())
+        return_value = generator.Generator.to_json(generator.Generator())
         req.return_value.content = return_value
 
-        request = gcdc_generator.CreateGeneratorRequest()
+        request = generator.CreateGeneratorRequest()
         metadata = [
             ("key", "val"),
             ("cephalopod", "squid"),
         ]
         pre.return_value = request, metadata
-        post.return_value = gcdc_generator.Generator()
-        post_with_metadata.return_value = gcdc_generator.Generator(), metadata
+        post.return_value = generator.Generator()
+        post_with_metadata.return_value = generator.Generator(), metadata
 
         client.create_generator(
             request,
@@ -4751,7 +4742,7 @@ def test_create_generator_rest_interceptors(null_interceptor):
 
 
 def test_update_generator_rest_bad_request(
-    request_type=gcdc_generator.UpdateGeneratorRequest,
+    request_type=generator.UpdateGeneratorRequest,
 ):
     client = GeneratorsClient(
         credentials=ga_credentials.AnonymousCredentials(), transport="rest"
@@ -4782,7 +4773,7 @@ def test_update_generator_rest_bad_request(
 @pytest.mark.parametrize(
     "request_type",
     [
-        gcdc_generator.UpdateGeneratorRequest,
+        generator.UpdateGeneratorRequest,
         dict,
     ],
 )
@@ -4814,7 +4805,7 @@ def test_update_generator_rest_call_success(request_type):
     # See https://github.com/googleapis/gapic-generator-python/issues/1748
 
     # Determine if the message type is proto-plus or protobuf
-    test_field = gcdc_generator.UpdateGeneratorRequest.meta.fields["generator"]
+    test_field = generator.UpdateGeneratorRequest.meta.fields["generator"]
 
     def get_message_fields(field):
         # Given a field which is a message (composite type), return a list with
@@ -4881,7 +4872,7 @@ def test_update_generator_rest_call_success(request_type):
     # Mock the http request call within the method and fake a response.
     with mock.patch.object(type(client.transport._session), "request") as req:
         # Designate an appropriate value for the returned response.
-        return_value = gcdc_generator.Generator(
+        return_value = generator.Generator(
             name="name_value",
             display_name="display_name_value",
         )
@@ -4891,7 +4882,7 @@ def test_update_generator_rest_call_success(request_type):
         response_value.status_code = 200
 
         # Convert return value to protobuf type
-        return_value = gcdc_generator.Generator.pb(return_value)
+        return_value = generator.Generator.pb(return_value)
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
@@ -4899,7 +4890,7 @@ def test_update_generator_rest_call_success(request_type):
         response = client.update_generator(request)
 
     # Establish that the response is the type that we expect.
-    assert isinstance(response, gcdc_generator.Generator)
+    assert isinstance(response, generator.Generator)
     assert response.name == "name_value"
     assert response.display_name == "display_name_value"
 
@@ -4928,8 +4919,8 @@ def test_update_generator_rest_interceptors(null_interceptor):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
-        pb_message = gcdc_generator.UpdateGeneratorRequest.pb(
-            gcdc_generator.UpdateGeneratorRequest()
+        pb_message = generator.UpdateGeneratorRequest.pb(
+            generator.UpdateGeneratorRequest()
         )
         transcode.return_value = {
             "method": "post",
@@ -4941,17 +4932,17 @@ def test_update_generator_rest_interceptors(null_interceptor):
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
         req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
-        return_value = gcdc_generator.Generator.to_json(gcdc_generator.Generator())
+        return_value = generator.Generator.to_json(generator.Generator())
         req.return_value.content = return_value
 
-        request = gcdc_generator.UpdateGeneratorRequest()
+        request = generator.UpdateGeneratorRequest()
         metadata = [
             ("key", "val"),
             ("cephalopod", "squid"),
         ]
         pre.return_value = request, metadata
-        post.return_value = gcdc_generator.Generator()
-        post_with_metadata.return_value = gcdc_generator.Generator(), metadata
+        post.return_value = generator.Generator()
+        post_with_metadata.return_value = generator.Generator(), metadata
 
         client.update_generator(
             request,
@@ -5445,7 +5436,7 @@ def test_create_generator_empty_call_rest():
         # Establish that the underlying stub method was called.
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        request_msg = gcdc_generator.CreateGeneratorRequest()
+        request_msg = generator.CreateGeneratorRequest()
 
         assert args[0] == request_msg
 
@@ -5465,7 +5456,7 @@ def test_update_generator_empty_call_rest():
         # Establish that the underlying stub method was called.
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        request_msg = gcdc_generator.UpdateGeneratorRequest()
+        request_msg = generator.UpdateGeneratorRequest()
 
         assert args[0] == request_msg
 

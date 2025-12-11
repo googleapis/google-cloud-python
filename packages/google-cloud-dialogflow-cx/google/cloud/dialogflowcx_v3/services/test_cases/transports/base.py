@@ -30,7 +30,6 @@ from google.protobuf import empty_pb2  # type: ignore
 
 from google.cloud.dialogflowcx_v3 import gapic_version as package_version
 from google.cloud.dialogflowcx_v3.types import test_case
-from google.cloud.dialogflowcx_v3.types import test_case as gcdc_test_case
 
 DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
     gapic_version=package_version.__version__
@@ -274,8 +273,8 @@ class TestCasesTransport(abc.ABC):
     def create_test_case(
         self,
     ) -> Callable[
-        [gcdc_test_case.CreateTestCaseRequest],
-        Union[gcdc_test_case.TestCase, Awaitable[gcdc_test_case.TestCase]],
+        [test_case.CreateTestCaseRequest],
+        Union[test_case.TestCase, Awaitable[test_case.TestCase]],
     ]:
         raise NotImplementedError()
 
@@ -283,8 +282,8 @@ class TestCasesTransport(abc.ABC):
     def update_test_case(
         self,
     ) -> Callable[
-        [gcdc_test_case.UpdateTestCaseRequest],
-        Union[gcdc_test_case.TestCase, Awaitable[gcdc_test_case.TestCase]],
+        [test_case.UpdateTestCaseRequest],
+        Union[test_case.TestCase, Awaitable[test_case.TestCase]],
     ]:
         raise NotImplementedError()
 

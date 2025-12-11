@@ -61,9 +61,6 @@ from google.cloud.dialogflowcx_v3.services.security_settings_service import (
     pagers,
     transports,
 )
-from google.cloud.dialogflowcx_v3.types import (
-    security_settings as gcdc_security_settings,
-)
 from google.cloud.dialogflowcx_v3.types import security_settings
 
 CRED_INFO_JSON = {
@@ -1186,7 +1183,7 @@ def test_security_settings_service_client_create_channel_credentials_file(
 @pytest.mark.parametrize(
     "request_type",
     [
-        gcdc_security_settings.CreateSecuritySettingsRequest,
+        security_settings.CreateSecuritySettingsRequest,
         dict,
     ],
 )
@@ -1205,15 +1202,15 @@ def test_create_security_settings(request_type, transport: str = "grpc"):
         type(client.transport.create_security_settings), "__call__"
     ) as call:
         # Designate an appropriate return value for the call.
-        call.return_value = gcdc_security_settings.SecuritySettings(
+        call.return_value = security_settings.SecuritySettings(
             name="name_value",
             display_name="display_name_value",
-            redaction_strategy=gcdc_security_settings.SecuritySettings.RedactionStrategy.REDACT_WITH_SERVICE,
-            redaction_scope=gcdc_security_settings.SecuritySettings.RedactionScope.REDACT_DISK_STORAGE,
+            redaction_strategy=security_settings.SecuritySettings.RedactionStrategy.REDACT_WITH_SERVICE,
+            redaction_scope=security_settings.SecuritySettings.RedactionScope.REDACT_DISK_STORAGE,
             inspect_template="inspect_template_value",
             deidentify_template="deidentify_template_value",
             purge_data_types=[
-                gcdc_security_settings.SecuritySettings.PurgeDataType.DIALOGFLOW_HISTORY
+                security_settings.SecuritySettings.PurgeDataType.DIALOGFLOW_HISTORY
             ],
             retention_window_days=2271,
         )
@@ -1222,25 +1219,25 @@ def test_create_security_settings(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        request = gcdc_security_settings.CreateSecuritySettingsRequest()
+        request = security_settings.CreateSecuritySettingsRequest()
         assert args[0] == request
 
     # Establish that the response is the type that we expect.
-    assert isinstance(response, gcdc_security_settings.SecuritySettings)
+    assert isinstance(response, security_settings.SecuritySettings)
     assert response.name == "name_value"
     assert response.display_name == "display_name_value"
     assert (
         response.redaction_strategy
-        == gcdc_security_settings.SecuritySettings.RedactionStrategy.REDACT_WITH_SERVICE
+        == security_settings.SecuritySettings.RedactionStrategy.REDACT_WITH_SERVICE
     )
     assert (
         response.redaction_scope
-        == gcdc_security_settings.SecuritySettings.RedactionScope.REDACT_DISK_STORAGE
+        == security_settings.SecuritySettings.RedactionScope.REDACT_DISK_STORAGE
     )
     assert response.inspect_template == "inspect_template_value"
     assert response.deidentify_template == "deidentify_template_value"
     assert response.purge_data_types == [
-        gcdc_security_settings.SecuritySettings.PurgeDataType.DIALOGFLOW_HISTORY
+        security_settings.SecuritySettings.PurgeDataType.DIALOGFLOW_HISTORY
     ]
 
 
@@ -1255,7 +1252,7 @@ def test_create_security_settings_non_empty_request_with_auto_populated_field():
     # Populate all string fields in the request which are not UUID4
     # since we want to check that UUID4 are populated automatically
     # if they meet the requirements of AIP 4235.
-    request = gcdc_security_settings.CreateSecuritySettingsRequest(
+    request = security_settings.CreateSecuritySettingsRequest(
         parent="parent_value",
     )
 
@@ -1269,7 +1266,7 @@ def test_create_security_settings_non_empty_request_with_auto_populated_field():
         client.create_security_settings(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == gcdc_security_settings.CreateSecuritySettingsRequest(
+        assert args[0] == security_settings.CreateSecuritySettingsRequest(
             parent="parent_value",
         )
 
@@ -1359,7 +1356,7 @@ async def test_create_security_settings_async_use_cached_wrapped_rpc(
 @pytest.mark.asyncio
 async def test_create_security_settings_async(
     transport: str = "grpc_asyncio",
-    request_type=gcdc_security_settings.CreateSecuritySettingsRequest,
+    request_type=security_settings.CreateSecuritySettingsRequest,
 ):
     client = SecuritySettingsServiceAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -1376,15 +1373,15 @@ async def test_create_security_settings_async(
     ) as call:
         # Designate an appropriate return value for the call.
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            gcdc_security_settings.SecuritySettings(
+            security_settings.SecuritySettings(
                 name="name_value",
                 display_name="display_name_value",
-                redaction_strategy=gcdc_security_settings.SecuritySettings.RedactionStrategy.REDACT_WITH_SERVICE,
-                redaction_scope=gcdc_security_settings.SecuritySettings.RedactionScope.REDACT_DISK_STORAGE,
+                redaction_strategy=security_settings.SecuritySettings.RedactionStrategy.REDACT_WITH_SERVICE,
+                redaction_scope=security_settings.SecuritySettings.RedactionScope.REDACT_DISK_STORAGE,
                 inspect_template="inspect_template_value",
                 deidentify_template="deidentify_template_value",
                 purge_data_types=[
-                    gcdc_security_settings.SecuritySettings.PurgeDataType.DIALOGFLOW_HISTORY
+                    security_settings.SecuritySettings.PurgeDataType.DIALOGFLOW_HISTORY
                 ],
             )
         )
@@ -1393,25 +1390,25 @@ async def test_create_security_settings_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        request = gcdc_security_settings.CreateSecuritySettingsRequest()
+        request = security_settings.CreateSecuritySettingsRequest()
         assert args[0] == request
 
     # Establish that the response is the type that we expect.
-    assert isinstance(response, gcdc_security_settings.SecuritySettings)
+    assert isinstance(response, security_settings.SecuritySettings)
     assert response.name == "name_value"
     assert response.display_name == "display_name_value"
     assert (
         response.redaction_strategy
-        == gcdc_security_settings.SecuritySettings.RedactionStrategy.REDACT_WITH_SERVICE
+        == security_settings.SecuritySettings.RedactionStrategy.REDACT_WITH_SERVICE
     )
     assert (
         response.redaction_scope
-        == gcdc_security_settings.SecuritySettings.RedactionScope.REDACT_DISK_STORAGE
+        == security_settings.SecuritySettings.RedactionScope.REDACT_DISK_STORAGE
     )
     assert response.inspect_template == "inspect_template_value"
     assert response.deidentify_template == "deidentify_template_value"
     assert response.purge_data_types == [
-        gcdc_security_settings.SecuritySettings.PurgeDataType.DIALOGFLOW_HISTORY
+        security_settings.SecuritySettings.PurgeDataType.DIALOGFLOW_HISTORY
     ]
 
 
@@ -1427,7 +1424,7 @@ def test_create_security_settings_field_headers():
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
-    request = gcdc_security_settings.CreateSecuritySettingsRequest()
+    request = security_settings.CreateSecuritySettingsRequest()
 
     request.parent = "parent_value"
 
@@ -1435,7 +1432,7 @@ def test_create_security_settings_field_headers():
     with mock.patch.object(
         type(client.transport.create_security_settings), "__call__"
     ) as call:
-        call.return_value = gcdc_security_settings.SecuritySettings()
+        call.return_value = security_settings.SecuritySettings()
         client.create_security_settings(request)
 
         # Establish that the underlying gRPC stub method was called.
@@ -1459,7 +1456,7 @@ async def test_create_security_settings_field_headers_async():
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
-    request = gcdc_security_settings.CreateSecuritySettingsRequest()
+    request = security_settings.CreateSecuritySettingsRequest()
 
     request.parent = "parent_value"
 
@@ -1468,7 +1465,7 @@ async def test_create_security_settings_field_headers_async():
         type(client.transport.create_security_settings), "__call__"
     ) as call:
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            gcdc_security_settings.SecuritySettings()
+            security_settings.SecuritySettings()
         )
         await client.create_security_settings(request)
 
@@ -1495,14 +1492,12 @@ def test_create_security_settings_flattened():
         type(client.transport.create_security_settings), "__call__"
     ) as call:
         # Designate an appropriate return value for the call.
-        call.return_value = gcdc_security_settings.SecuritySettings()
+        call.return_value = security_settings.SecuritySettings()
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
         client.create_security_settings(
             parent="parent_value",
-            security_settings=gcdc_security_settings.SecuritySettings(
-                name="name_value"
-            ),
+            security_settings=security_settings.SecuritySettings(name="name_value"),
         )
 
         # Establish that the underlying call was made with the expected
@@ -1513,7 +1508,7 @@ def test_create_security_settings_flattened():
         mock_val = "parent_value"
         assert arg == mock_val
         arg = args[0].security_settings
-        mock_val = gcdc_security_settings.SecuritySettings(name="name_value")
+        mock_val = security_settings.SecuritySettings(name="name_value")
         assert arg == mock_val
 
 
@@ -1526,11 +1521,9 @@ def test_create_security_settings_flattened_error():
     # fields is an error.
     with pytest.raises(ValueError):
         client.create_security_settings(
-            gcdc_security_settings.CreateSecuritySettingsRequest(),
+            security_settings.CreateSecuritySettingsRequest(),
             parent="parent_value",
-            security_settings=gcdc_security_settings.SecuritySettings(
-                name="name_value"
-            ),
+            security_settings=security_settings.SecuritySettings(name="name_value"),
         )
 
 
@@ -1545,18 +1538,16 @@ async def test_create_security_settings_flattened_async():
         type(client.transport.create_security_settings), "__call__"
     ) as call:
         # Designate an appropriate return value for the call.
-        call.return_value = gcdc_security_settings.SecuritySettings()
+        call.return_value = security_settings.SecuritySettings()
 
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            gcdc_security_settings.SecuritySettings()
+            security_settings.SecuritySettings()
         )
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
         response = await client.create_security_settings(
             parent="parent_value",
-            security_settings=gcdc_security_settings.SecuritySettings(
-                name="name_value"
-            ),
+            security_settings=security_settings.SecuritySettings(name="name_value"),
         )
 
         # Establish that the underlying call was made with the expected
@@ -1567,7 +1558,7 @@ async def test_create_security_settings_flattened_async():
         mock_val = "parent_value"
         assert arg == mock_val
         arg = args[0].security_settings
-        mock_val = gcdc_security_settings.SecuritySettings(name="name_value")
+        mock_val = security_settings.SecuritySettings(name="name_value")
         assert arg == mock_val
 
 
@@ -1581,11 +1572,9 @@ async def test_create_security_settings_flattened_error_async():
     # fields is an error.
     with pytest.raises(ValueError):
         await client.create_security_settings(
-            gcdc_security_settings.CreateSecuritySettingsRequest(),
+            security_settings.CreateSecuritySettingsRequest(),
             parent="parent_value",
-            security_settings=gcdc_security_settings.SecuritySettings(
-                name="name_value"
-            ),
+            security_settings=security_settings.SecuritySettings(name="name_value"),
         )
 
 
@@ -1980,7 +1969,7 @@ async def test_get_security_settings_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        gcdc_security_settings.UpdateSecuritySettingsRequest,
+        security_settings.UpdateSecuritySettingsRequest,
         dict,
     ],
 )
@@ -1999,15 +1988,15 @@ def test_update_security_settings(request_type, transport: str = "grpc"):
         type(client.transport.update_security_settings), "__call__"
     ) as call:
         # Designate an appropriate return value for the call.
-        call.return_value = gcdc_security_settings.SecuritySettings(
+        call.return_value = security_settings.SecuritySettings(
             name="name_value",
             display_name="display_name_value",
-            redaction_strategy=gcdc_security_settings.SecuritySettings.RedactionStrategy.REDACT_WITH_SERVICE,
-            redaction_scope=gcdc_security_settings.SecuritySettings.RedactionScope.REDACT_DISK_STORAGE,
+            redaction_strategy=security_settings.SecuritySettings.RedactionStrategy.REDACT_WITH_SERVICE,
+            redaction_scope=security_settings.SecuritySettings.RedactionScope.REDACT_DISK_STORAGE,
             inspect_template="inspect_template_value",
             deidentify_template="deidentify_template_value",
             purge_data_types=[
-                gcdc_security_settings.SecuritySettings.PurgeDataType.DIALOGFLOW_HISTORY
+                security_settings.SecuritySettings.PurgeDataType.DIALOGFLOW_HISTORY
             ],
             retention_window_days=2271,
         )
@@ -2016,25 +2005,25 @@ def test_update_security_settings(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        request = gcdc_security_settings.UpdateSecuritySettingsRequest()
+        request = security_settings.UpdateSecuritySettingsRequest()
         assert args[0] == request
 
     # Establish that the response is the type that we expect.
-    assert isinstance(response, gcdc_security_settings.SecuritySettings)
+    assert isinstance(response, security_settings.SecuritySettings)
     assert response.name == "name_value"
     assert response.display_name == "display_name_value"
     assert (
         response.redaction_strategy
-        == gcdc_security_settings.SecuritySettings.RedactionStrategy.REDACT_WITH_SERVICE
+        == security_settings.SecuritySettings.RedactionStrategy.REDACT_WITH_SERVICE
     )
     assert (
         response.redaction_scope
-        == gcdc_security_settings.SecuritySettings.RedactionScope.REDACT_DISK_STORAGE
+        == security_settings.SecuritySettings.RedactionScope.REDACT_DISK_STORAGE
     )
     assert response.inspect_template == "inspect_template_value"
     assert response.deidentify_template == "deidentify_template_value"
     assert response.purge_data_types == [
-        gcdc_security_settings.SecuritySettings.PurgeDataType.DIALOGFLOW_HISTORY
+        security_settings.SecuritySettings.PurgeDataType.DIALOGFLOW_HISTORY
     ]
 
 
@@ -2049,7 +2038,7 @@ def test_update_security_settings_non_empty_request_with_auto_populated_field():
     # Populate all string fields in the request which are not UUID4
     # since we want to check that UUID4 are populated automatically
     # if they meet the requirements of AIP 4235.
-    request = gcdc_security_settings.UpdateSecuritySettingsRequest()
+    request = security_settings.UpdateSecuritySettingsRequest()
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2061,7 +2050,7 @@ def test_update_security_settings_non_empty_request_with_auto_populated_field():
         client.update_security_settings(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == gcdc_security_settings.UpdateSecuritySettingsRequest()
+        assert args[0] == security_settings.UpdateSecuritySettingsRequest()
 
 
 def test_update_security_settings_use_cached_wrapped_rpc():
@@ -2149,7 +2138,7 @@ async def test_update_security_settings_async_use_cached_wrapped_rpc(
 @pytest.mark.asyncio
 async def test_update_security_settings_async(
     transport: str = "grpc_asyncio",
-    request_type=gcdc_security_settings.UpdateSecuritySettingsRequest,
+    request_type=security_settings.UpdateSecuritySettingsRequest,
 ):
     client = SecuritySettingsServiceAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -2166,15 +2155,15 @@ async def test_update_security_settings_async(
     ) as call:
         # Designate an appropriate return value for the call.
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            gcdc_security_settings.SecuritySettings(
+            security_settings.SecuritySettings(
                 name="name_value",
                 display_name="display_name_value",
-                redaction_strategy=gcdc_security_settings.SecuritySettings.RedactionStrategy.REDACT_WITH_SERVICE,
-                redaction_scope=gcdc_security_settings.SecuritySettings.RedactionScope.REDACT_DISK_STORAGE,
+                redaction_strategy=security_settings.SecuritySettings.RedactionStrategy.REDACT_WITH_SERVICE,
+                redaction_scope=security_settings.SecuritySettings.RedactionScope.REDACT_DISK_STORAGE,
                 inspect_template="inspect_template_value",
                 deidentify_template="deidentify_template_value",
                 purge_data_types=[
-                    gcdc_security_settings.SecuritySettings.PurgeDataType.DIALOGFLOW_HISTORY
+                    security_settings.SecuritySettings.PurgeDataType.DIALOGFLOW_HISTORY
                 ],
             )
         )
@@ -2183,25 +2172,25 @@ async def test_update_security_settings_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        request = gcdc_security_settings.UpdateSecuritySettingsRequest()
+        request = security_settings.UpdateSecuritySettingsRequest()
         assert args[0] == request
 
     # Establish that the response is the type that we expect.
-    assert isinstance(response, gcdc_security_settings.SecuritySettings)
+    assert isinstance(response, security_settings.SecuritySettings)
     assert response.name == "name_value"
     assert response.display_name == "display_name_value"
     assert (
         response.redaction_strategy
-        == gcdc_security_settings.SecuritySettings.RedactionStrategy.REDACT_WITH_SERVICE
+        == security_settings.SecuritySettings.RedactionStrategy.REDACT_WITH_SERVICE
     )
     assert (
         response.redaction_scope
-        == gcdc_security_settings.SecuritySettings.RedactionScope.REDACT_DISK_STORAGE
+        == security_settings.SecuritySettings.RedactionScope.REDACT_DISK_STORAGE
     )
     assert response.inspect_template == "inspect_template_value"
     assert response.deidentify_template == "deidentify_template_value"
     assert response.purge_data_types == [
-        gcdc_security_settings.SecuritySettings.PurgeDataType.DIALOGFLOW_HISTORY
+        security_settings.SecuritySettings.PurgeDataType.DIALOGFLOW_HISTORY
     ]
 
 
@@ -2217,7 +2206,7 @@ def test_update_security_settings_field_headers():
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
-    request = gcdc_security_settings.UpdateSecuritySettingsRequest()
+    request = security_settings.UpdateSecuritySettingsRequest()
 
     request.security_settings.name = "name_value"
 
@@ -2225,7 +2214,7 @@ def test_update_security_settings_field_headers():
     with mock.patch.object(
         type(client.transport.update_security_settings), "__call__"
     ) as call:
-        call.return_value = gcdc_security_settings.SecuritySettings()
+        call.return_value = security_settings.SecuritySettings()
         client.update_security_settings(request)
 
         # Establish that the underlying gRPC stub method was called.
@@ -2249,7 +2238,7 @@ async def test_update_security_settings_field_headers_async():
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
-    request = gcdc_security_settings.UpdateSecuritySettingsRequest()
+    request = security_settings.UpdateSecuritySettingsRequest()
 
     request.security_settings.name = "name_value"
 
@@ -2258,7 +2247,7 @@ async def test_update_security_settings_field_headers_async():
         type(client.transport.update_security_settings), "__call__"
     ) as call:
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            gcdc_security_settings.SecuritySettings()
+            security_settings.SecuritySettings()
         )
         await client.update_security_settings(request)
 
@@ -2285,13 +2274,11 @@ def test_update_security_settings_flattened():
         type(client.transport.update_security_settings), "__call__"
     ) as call:
         # Designate an appropriate return value for the call.
-        call.return_value = gcdc_security_settings.SecuritySettings()
+        call.return_value = security_settings.SecuritySettings()
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
         client.update_security_settings(
-            security_settings=gcdc_security_settings.SecuritySettings(
-                name="name_value"
-            ),
+            security_settings=security_settings.SecuritySettings(name="name_value"),
             update_mask=field_mask_pb2.FieldMask(paths=["paths_value"]),
         )
 
@@ -2300,7 +2287,7 @@ def test_update_security_settings_flattened():
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
         arg = args[0].security_settings
-        mock_val = gcdc_security_settings.SecuritySettings(name="name_value")
+        mock_val = security_settings.SecuritySettings(name="name_value")
         assert arg == mock_val
         arg = args[0].update_mask
         mock_val = field_mask_pb2.FieldMask(paths=["paths_value"])
@@ -2316,10 +2303,8 @@ def test_update_security_settings_flattened_error():
     # fields is an error.
     with pytest.raises(ValueError):
         client.update_security_settings(
-            gcdc_security_settings.UpdateSecuritySettingsRequest(),
-            security_settings=gcdc_security_settings.SecuritySettings(
-                name="name_value"
-            ),
+            security_settings.UpdateSecuritySettingsRequest(),
+            security_settings=security_settings.SecuritySettings(name="name_value"),
             update_mask=field_mask_pb2.FieldMask(paths=["paths_value"]),
         )
 
@@ -2335,17 +2320,15 @@ async def test_update_security_settings_flattened_async():
         type(client.transport.update_security_settings), "__call__"
     ) as call:
         # Designate an appropriate return value for the call.
-        call.return_value = gcdc_security_settings.SecuritySettings()
+        call.return_value = security_settings.SecuritySettings()
 
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            gcdc_security_settings.SecuritySettings()
+            security_settings.SecuritySettings()
         )
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
         response = await client.update_security_settings(
-            security_settings=gcdc_security_settings.SecuritySettings(
-                name="name_value"
-            ),
+            security_settings=security_settings.SecuritySettings(name="name_value"),
             update_mask=field_mask_pb2.FieldMask(paths=["paths_value"]),
         )
 
@@ -2354,7 +2337,7 @@ async def test_update_security_settings_flattened_async():
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
         arg = args[0].security_settings
-        mock_val = gcdc_security_settings.SecuritySettings(name="name_value")
+        mock_val = security_settings.SecuritySettings(name="name_value")
         assert arg == mock_val
         arg = args[0].update_mask
         mock_val = field_mask_pb2.FieldMask(paths=["paths_value"])
@@ -2371,10 +2354,8 @@ async def test_update_security_settings_flattened_error_async():
     # fields is an error.
     with pytest.raises(ValueError):
         await client.update_security_settings(
-            gcdc_security_settings.UpdateSecuritySettingsRequest(),
-            security_settings=gcdc_security_settings.SecuritySettings(
-                name="name_value"
-            ),
+            security_settings.UpdateSecuritySettingsRequest(),
+            security_settings=security_settings.SecuritySettings(name="name_value"),
             update_mask=field_mask_pb2.FieldMask(paths=["paths_value"]),
         )
 
@@ -3299,7 +3280,7 @@ def test_create_security_settings_rest_use_cached_wrapped_rpc():
 
 
 def test_create_security_settings_rest_required_fields(
-    request_type=gcdc_security_settings.CreateSecuritySettingsRequest,
+    request_type=security_settings.CreateSecuritySettingsRequest,
 ):
     transport_class = transports.SecuritySettingsServiceRestTransport
 
@@ -3338,7 +3319,7 @@ def test_create_security_settings_rest_required_fields(
     request = request_type(**request_init)
 
     # Designate an appropriate value for the returned response.
-    return_value = gcdc_security_settings.SecuritySettings()
+    return_value = security_settings.SecuritySettings()
     # Mock the http request call within the method and fake a response.
     with mock.patch.object(Session, "request") as req:
         # We need to mock transcode() because providing default values
@@ -3360,7 +3341,7 @@ def test_create_security_settings_rest_required_fields(
             response_value.status_code = 200
 
             # Convert return value to protobuf type
-            return_value = gcdc_security_settings.SecuritySettings.pb(return_value)
+            return_value = security_settings.SecuritySettings.pb(return_value)
             json_return_value = json_format.MessageToJson(return_value)
 
             response_value._content = json_return_value.encode("UTF-8")
@@ -3400,7 +3381,7 @@ def test_create_security_settings_rest_flattened():
     # Mock the http request call within the method and fake a response.
     with mock.patch.object(type(client.transport._session), "request") as req:
         # Designate an appropriate value for the returned response.
-        return_value = gcdc_security_settings.SecuritySettings()
+        return_value = security_settings.SecuritySettings()
 
         # get arguments that satisfy an http rule for this method
         sample_request = {"parent": "projects/sample1/locations/sample2"}
@@ -3408,9 +3389,7 @@ def test_create_security_settings_rest_flattened():
         # get truthy value for each flattened field
         mock_args = dict(
             parent="parent_value",
-            security_settings=gcdc_security_settings.SecuritySettings(
-                name="name_value"
-            ),
+            security_settings=security_settings.SecuritySettings(name="name_value"),
         )
         mock_args.update(sample_request)
 
@@ -3418,7 +3397,7 @@ def test_create_security_settings_rest_flattened():
         response_value = Response()
         response_value.status_code = 200
         # Convert return value to protobuf type
-        return_value = gcdc_security_settings.SecuritySettings.pb(return_value)
+        return_value = security_settings.SecuritySettings.pb(return_value)
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
@@ -3447,11 +3426,9 @@ def test_create_security_settings_rest_flattened_error(transport: str = "rest"):
     # fields is an error.
     with pytest.raises(ValueError):
         client.create_security_settings(
-            gcdc_security_settings.CreateSecuritySettingsRequest(),
+            security_settings.CreateSecuritySettingsRequest(),
             parent="parent_value",
-            security_settings=gcdc_security_settings.SecuritySettings(
-                name="name_value"
-            ),
+            security_settings=security_settings.SecuritySettings(name="name_value"),
         )
 
 
@@ -3682,7 +3659,7 @@ def test_update_security_settings_rest_use_cached_wrapped_rpc():
 
 
 def test_update_security_settings_rest_required_fields(
-    request_type=gcdc_security_settings.UpdateSecuritySettingsRequest,
+    request_type=security_settings.UpdateSecuritySettingsRequest,
 ):
     transport_class = transports.SecuritySettingsServiceRestTransport
 
@@ -3718,7 +3695,7 @@ def test_update_security_settings_rest_required_fields(
     request = request_type(**request_init)
 
     # Designate an appropriate value for the returned response.
-    return_value = gcdc_security_settings.SecuritySettings()
+    return_value = security_settings.SecuritySettings()
     # Mock the http request call within the method and fake a response.
     with mock.patch.object(Session, "request") as req:
         # We need to mock transcode() because providing default values
@@ -3740,7 +3717,7 @@ def test_update_security_settings_rest_required_fields(
             response_value.status_code = 200
 
             # Convert return value to protobuf type
-            return_value = gcdc_security_settings.SecuritySettings.pb(return_value)
+            return_value = security_settings.SecuritySettings.pb(return_value)
             json_return_value = json_format.MessageToJson(return_value)
 
             response_value._content = json_return_value.encode("UTF-8")
@@ -3780,7 +3757,7 @@ def test_update_security_settings_rest_flattened():
     # Mock the http request call within the method and fake a response.
     with mock.patch.object(type(client.transport._session), "request") as req:
         # Designate an appropriate value for the returned response.
-        return_value = gcdc_security_settings.SecuritySettings()
+        return_value = security_settings.SecuritySettings()
 
         # get arguments that satisfy an http rule for this method
         sample_request = {
@@ -3791,9 +3768,7 @@ def test_update_security_settings_rest_flattened():
 
         # get truthy value for each flattened field
         mock_args = dict(
-            security_settings=gcdc_security_settings.SecuritySettings(
-                name="name_value"
-            ),
+            security_settings=security_settings.SecuritySettings(name="name_value"),
             update_mask=field_mask_pb2.FieldMask(paths=["paths_value"]),
         )
         mock_args.update(sample_request)
@@ -3802,7 +3777,7 @@ def test_update_security_settings_rest_flattened():
         response_value = Response()
         response_value.status_code = 200
         # Convert return value to protobuf type
-        return_value = gcdc_security_settings.SecuritySettings.pb(return_value)
+        return_value = security_settings.SecuritySettings.pb(return_value)
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
@@ -3831,10 +3806,8 @@ def test_update_security_settings_rest_flattened_error(transport: str = "rest"):
     # fields is an error.
     with pytest.raises(ValueError):
         client.update_security_settings(
-            gcdc_security_settings.UpdateSecuritySettingsRequest(),
-            security_settings=gcdc_security_settings.SecuritySettings(
-                name="name_value"
-            ),
+            security_settings.UpdateSecuritySettingsRequest(),
+            security_settings=security_settings.SecuritySettings(name="name_value"),
             update_mask=field_mask_pb2.FieldMask(paths=["paths_value"]),
         )
 
@@ -4400,13 +4373,13 @@ def test_create_security_settings_empty_call_grpc():
     with mock.patch.object(
         type(client.transport.create_security_settings), "__call__"
     ) as call:
-        call.return_value = gcdc_security_settings.SecuritySettings()
+        call.return_value = security_settings.SecuritySettings()
         client.create_security_settings(request=None)
 
         # Establish that the underlying stub method was called.
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        request_msg = gcdc_security_settings.CreateSecuritySettingsRequest()
+        request_msg = security_settings.CreateSecuritySettingsRequest()
 
         assert args[0] == request_msg
 
@@ -4446,13 +4419,13 @@ def test_update_security_settings_empty_call_grpc():
     with mock.patch.object(
         type(client.transport.update_security_settings), "__call__"
     ) as call:
-        call.return_value = gcdc_security_settings.SecuritySettings()
+        call.return_value = security_settings.SecuritySettings()
         client.update_security_settings(request=None)
 
         # Establish that the underlying stub method was called.
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        request_msg = gcdc_security_settings.UpdateSecuritySettingsRequest()
+        request_msg = security_settings.UpdateSecuritySettingsRequest()
 
         assert args[0] == request_msg
 
@@ -4532,15 +4505,15 @@ async def test_create_security_settings_empty_call_grpc_asyncio():
     ) as call:
         # Designate an appropriate return value for the call.
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            gcdc_security_settings.SecuritySettings(
+            security_settings.SecuritySettings(
                 name="name_value",
                 display_name="display_name_value",
-                redaction_strategy=gcdc_security_settings.SecuritySettings.RedactionStrategy.REDACT_WITH_SERVICE,
-                redaction_scope=gcdc_security_settings.SecuritySettings.RedactionScope.REDACT_DISK_STORAGE,
+                redaction_strategy=security_settings.SecuritySettings.RedactionStrategy.REDACT_WITH_SERVICE,
+                redaction_scope=security_settings.SecuritySettings.RedactionScope.REDACT_DISK_STORAGE,
                 inspect_template="inspect_template_value",
                 deidentify_template="deidentify_template_value",
                 purge_data_types=[
-                    gcdc_security_settings.SecuritySettings.PurgeDataType.DIALOGFLOW_HISTORY
+                    security_settings.SecuritySettings.PurgeDataType.DIALOGFLOW_HISTORY
                 ],
             )
         )
@@ -4549,7 +4522,7 @@ async def test_create_security_settings_empty_call_grpc_asyncio():
         # Establish that the underlying stub method was called.
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        request_msg = gcdc_security_settings.CreateSecuritySettingsRequest()
+        request_msg = security_settings.CreateSecuritySettingsRequest()
 
         assert args[0] == request_msg
 
@@ -4606,15 +4579,15 @@ async def test_update_security_settings_empty_call_grpc_asyncio():
     ) as call:
         # Designate an appropriate return value for the call.
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            gcdc_security_settings.SecuritySettings(
+            security_settings.SecuritySettings(
                 name="name_value",
                 display_name="display_name_value",
-                redaction_strategy=gcdc_security_settings.SecuritySettings.RedactionStrategy.REDACT_WITH_SERVICE,
-                redaction_scope=gcdc_security_settings.SecuritySettings.RedactionScope.REDACT_DISK_STORAGE,
+                redaction_strategy=security_settings.SecuritySettings.RedactionStrategy.REDACT_WITH_SERVICE,
+                redaction_scope=security_settings.SecuritySettings.RedactionScope.REDACT_DISK_STORAGE,
                 inspect_template="inspect_template_value",
                 deidentify_template="deidentify_template_value",
                 purge_data_types=[
-                    gcdc_security_settings.SecuritySettings.PurgeDataType.DIALOGFLOW_HISTORY
+                    security_settings.SecuritySettings.PurgeDataType.DIALOGFLOW_HISTORY
                 ],
             )
         )
@@ -4623,7 +4596,7 @@ async def test_update_security_settings_empty_call_grpc_asyncio():
         # Establish that the underlying stub method was called.
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        request_msg = gcdc_security_settings.UpdateSecuritySettingsRequest()
+        request_msg = security_settings.UpdateSecuritySettingsRequest()
 
         assert args[0] == request_msg
 
@@ -4690,7 +4663,7 @@ def test_transport_kind_rest():
 
 
 def test_create_security_settings_rest_bad_request(
-    request_type=gcdc_security_settings.CreateSecuritySettingsRequest,
+    request_type=security_settings.CreateSecuritySettingsRequest,
 ):
     client = SecuritySettingsServiceClient(
         credentials=ga_credentials.AnonymousCredentials(), transport="rest"
@@ -4717,7 +4690,7 @@ def test_create_security_settings_rest_bad_request(
 @pytest.mark.parametrize(
     "request_type",
     [
-        gcdc_security_settings.CreateSecuritySettingsRequest,
+        security_settings.CreateSecuritySettingsRequest,
         dict,
     ],
 )
@@ -4752,7 +4725,7 @@ def test_create_security_settings_rest_call_success(request_type):
     # See https://github.com/googleapis/gapic-generator-python/issues/1748
 
     # Determine if the message type is proto-plus or protobuf
-    test_field = gcdc_security_settings.CreateSecuritySettingsRequest.meta.fields[
+    test_field = security_settings.CreateSecuritySettingsRequest.meta.fields[
         "security_settings"
     ]
 
@@ -4821,15 +4794,15 @@ def test_create_security_settings_rest_call_success(request_type):
     # Mock the http request call within the method and fake a response.
     with mock.patch.object(type(client.transport._session), "request") as req:
         # Designate an appropriate value for the returned response.
-        return_value = gcdc_security_settings.SecuritySettings(
+        return_value = security_settings.SecuritySettings(
             name="name_value",
             display_name="display_name_value",
-            redaction_strategy=gcdc_security_settings.SecuritySettings.RedactionStrategy.REDACT_WITH_SERVICE,
-            redaction_scope=gcdc_security_settings.SecuritySettings.RedactionScope.REDACT_DISK_STORAGE,
+            redaction_strategy=security_settings.SecuritySettings.RedactionStrategy.REDACT_WITH_SERVICE,
+            redaction_scope=security_settings.SecuritySettings.RedactionScope.REDACT_DISK_STORAGE,
             inspect_template="inspect_template_value",
             deidentify_template="deidentify_template_value",
             purge_data_types=[
-                gcdc_security_settings.SecuritySettings.PurgeDataType.DIALOGFLOW_HISTORY
+                security_settings.SecuritySettings.PurgeDataType.DIALOGFLOW_HISTORY
             ],
             retention_window_days=2271,
         )
@@ -4839,7 +4812,7 @@ def test_create_security_settings_rest_call_success(request_type):
         response_value.status_code = 200
 
         # Convert return value to protobuf type
-        return_value = gcdc_security_settings.SecuritySettings.pb(return_value)
+        return_value = security_settings.SecuritySettings.pb(return_value)
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
@@ -4847,21 +4820,21 @@ def test_create_security_settings_rest_call_success(request_type):
         response = client.create_security_settings(request)
 
     # Establish that the response is the type that we expect.
-    assert isinstance(response, gcdc_security_settings.SecuritySettings)
+    assert isinstance(response, security_settings.SecuritySettings)
     assert response.name == "name_value"
     assert response.display_name == "display_name_value"
     assert (
         response.redaction_strategy
-        == gcdc_security_settings.SecuritySettings.RedactionStrategy.REDACT_WITH_SERVICE
+        == security_settings.SecuritySettings.RedactionStrategy.REDACT_WITH_SERVICE
     )
     assert (
         response.redaction_scope
-        == gcdc_security_settings.SecuritySettings.RedactionScope.REDACT_DISK_STORAGE
+        == security_settings.SecuritySettings.RedactionScope.REDACT_DISK_STORAGE
     )
     assert response.inspect_template == "inspect_template_value"
     assert response.deidentify_template == "deidentify_template_value"
     assert response.purge_data_types == [
-        gcdc_security_settings.SecuritySettings.PurgeDataType.DIALOGFLOW_HISTORY
+        security_settings.SecuritySettings.PurgeDataType.DIALOGFLOW_HISTORY
     ]
 
 
@@ -4892,8 +4865,8 @@ def test_create_security_settings_rest_interceptors(null_interceptor):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
-        pb_message = gcdc_security_settings.CreateSecuritySettingsRequest.pb(
-            gcdc_security_settings.CreateSecuritySettingsRequest()
+        pb_message = security_settings.CreateSecuritySettingsRequest.pb(
+            security_settings.CreateSecuritySettingsRequest()
         )
         transcode.return_value = {
             "method": "post",
@@ -4905,22 +4878,19 @@ def test_create_security_settings_rest_interceptors(null_interceptor):
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
         req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
-        return_value = gcdc_security_settings.SecuritySettings.to_json(
-            gcdc_security_settings.SecuritySettings()
+        return_value = security_settings.SecuritySettings.to_json(
+            security_settings.SecuritySettings()
         )
         req.return_value.content = return_value
 
-        request = gcdc_security_settings.CreateSecuritySettingsRequest()
+        request = security_settings.CreateSecuritySettingsRequest()
         metadata = [
             ("key", "val"),
             ("cephalopod", "squid"),
         ]
         pre.return_value = request, metadata
-        post.return_value = gcdc_security_settings.SecuritySettings()
-        post_with_metadata.return_value = (
-            gcdc_security_settings.SecuritySettings(),
-            metadata,
-        )
+        post.return_value = security_settings.SecuritySettings()
+        post_with_metadata.return_value = security_settings.SecuritySettings(), metadata
 
         client.create_security_settings(
             request,
@@ -5093,7 +5063,7 @@ def test_get_security_settings_rest_interceptors(null_interceptor):
 
 
 def test_update_security_settings_rest_bad_request(
-    request_type=gcdc_security_settings.UpdateSecuritySettingsRequest,
+    request_type=security_settings.UpdateSecuritySettingsRequest,
 ):
     client = SecuritySettingsServiceClient(
         credentials=ga_credentials.AnonymousCredentials(), transport="rest"
@@ -5124,7 +5094,7 @@ def test_update_security_settings_rest_bad_request(
 @pytest.mark.parametrize(
     "request_type",
     [
-        gcdc_security_settings.UpdateSecuritySettingsRequest,
+        security_settings.UpdateSecuritySettingsRequest,
         dict,
     ],
 )
@@ -5163,7 +5133,7 @@ def test_update_security_settings_rest_call_success(request_type):
     # See https://github.com/googleapis/gapic-generator-python/issues/1748
 
     # Determine if the message type is proto-plus or protobuf
-    test_field = gcdc_security_settings.UpdateSecuritySettingsRequest.meta.fields[
+    test_field = security_settings.UpdateSecuritySettingsRequest.meta.fields[
         "security_settings"
     ]
 
@@ -5232,15 +5202,15 @@ def test_update_security_settings_rest_call_success(request_type):
     # Mock the http request call within the method and fake a response.
     with mock.patch.object(type(client.transport._session), "request") as req:
         # Designate an appropriate value for the returned response.
-        return_value = gcdc_security_settings.SecuritySettings(
+        return_value = security_settings.SecuritySettings(
             name="name_value",
             display_name="display_name_value",
-            redaction_strategy=gcdc_security_settings.SecuritySettings.RedactionStrategy.REDACT_WITH_SERVICE,
-            redaction_scope=gcdc_security_settings.SecuritySettings.RedactionScope.REDACT_DISK_STORAGE,
+            redaction_strategy=security_settings.SecuritySettings.RedactionStrategy.REDACT_WITH_SERVICE,
+            redaction_scope=security_settings.SecuritySettings.RedactionScope.REDACT_DISK_STORAGE,
             inspect_template="inspect_template_value",
             deidentify_template="deidentify_template_value",
             purge_data_types=[
-                gcdc_security_settings.SecuritySettings.PurgeDataType.DIALOGFLOW_HISTORY
+                security_settings.SecuritySettings.PurgeDataType.DIALOGFLOW_HISTORY
             ],
             retention_window_days=2271,
         )
@@ -5250,7 +5220,7 @@ def test_update_security_settings_rest_call_success(request_type):
         response_value.status_code = 200
 
         # Convert return value to protobuf type
-        return_value = gcdc_security_settings.SecuritySettings.pb(return_value)
+        return_value = security_settings.SecuritySettings.pb(return_value)
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
@@ -5258,21 +5228,21 @@ def test_update_security_settings_rest_call_success(request_type):
         response = client.update_security_settings(request)
 
     # Establish that the response is the type that we expect.
-    assert isinstance(response, gcdc_security_settings.SecuritySettings)
+    assert isinstance(response, security_settings.SecuritySettings)
     assert response.name == "name_value"
     assert response.display_name == "display_name_value"
     assert (
         response.redaction_strategy
-        == gcdc_security_settings.SecuritySettings.RedactionStrategy.REDACT_WITH_SERVICE
+        == security_settings.SecuritySettings.RedactionStrategy.REDACT_WITH_SERVICE
     )
     assert (
         response.redaction_scope
-        == gcdc_security_settings.SecuritySettings.RedactionScope.REDACT_DISK_STORAGE
+        == security_settings.SecuritySettings.RedactionScope.REDACT_DISK_STORAGE
     )
     assert response.inspect_template == "inspect_template_value"
     assert response.deidentify_template == "deidentify_template_value"
     assert response.purge_data_types == [
-        gcdc_security_settings.SecuritySettings.PurgeDataType.DIALOGFLOW_HISTORY
+        security_settings.SecuritySettings.PurgeDataType.DIALOGFLOW_HISTORY
     ]
 
 
@@ -5303,8 +5273,8 @@ def test_update_security_settings_rest_interceptors(null_interceptor):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
-        pb_message = gcdc_security_settings.UpdateSecuritySettingsRequest.pb(
-            gcdc_security_settings.UpdateSecuritySettingsRequest()
+        pb_message = security_settings.UpdateSecuritySettingsRequest.pb(
+            security_settings.UpdateSecuritySettingsRequest()
         )
         transcode.return_value = {
             "method": "post",
@@ -5316,22 +5286,19 @@ def test_update_security_settings_rest_interceptors(null_interceptor):
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
         req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
-        return_value = gcdc_security_settings.SecuritySettings.to_json(
-            gcdc_security_settings.SecuritySettings()
+        return_value = security_settings.SecuritySettings.to_json(
+            security_settings.SecuritySettings()
         )
         req.return_value.content = return_value
 
-        request = gcdc_security_settings.UpdateSecuritySettingsRequest()
+        request = security_settings.UpdateSecuritySettingsRequest()
         metadata = [
             ("key", "val"),
             ("cephalopod", "squid"),
         ]
         pre.return_value = request, metadata
-        post.return_value = gcdc_security_settings.SecuritySettings()
-        post_with_metadata.return_value = (
-            gcdc_security_settings.SecuritySettings(),
-            metadata,
-        )
+        post.return_value = security_settings.SecuritySettings()
+        post_with_metadata.return_value = security_settings.SecuritySettings(), metadata
 
         client.update_security_settings(
             request,
@@ -5921,7 +5888,7 @@ def test_create_security_settings_empty_call_rest():
         # Establish that the underlying stub method was called.
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        request_msg = gcdc_security_settings.CreateSecuritySettingsRequest()
+        request_msg = security_settings.CreateSecuritySettingsRequest()
 
         assert args[0] == request_msg
 
@@ -5965,7 +5932,7 @@ def test_update_security_settings_empty_call_rest():
         # Establish that the underlying stub method was called.
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        request_msg = gcdc_security_settings.UpdateSecuritySettingsRequest()
+        request_msg = security_settings.UpdateSecuritySettingsRequest()
 
         assert args[0] == request_msg
 

@@ -52,7 +52,6 @@ from google.protobuf import timestamp_pb2  # type: ignore
 
 from google.cloud.dialogflowcx_v3.services.experiments import pagers
 from google.cloud.dialogflowcx_v3.types import experiment
-from google.cloud.dialogflowcx_v3.types import experiment as gcdc_experiment
 
 from .client import ExperimentsClient
 from .transports.base import DEFAULT_CLIENT_INFO, ExperimentsTransport
@@ -69,8 +68,8 @@ _LOGGER = std_logging.getLogger(__name__)
 
 
 class ExperimentsAsyncClient:
-    """Service for managing
-    [Experiments][google.cloud.dialogflow.cx.v3.Experiment].
+    """Service for managing `Experiments
+    <google.cloud.dialogflow.cx.v3.Experiment>`__.
     """
 
     _client: ExperimentsClient
@@ -304,7 +303,8 @@ class ExperimentsAsyncClient:
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> pagers.ListExperimentsAsyncPager:
         r"""Returns the list of all experiments in the specified
-        [Environment][google.cloud.dialogflow.cx.v3.Environment].
+        `Environment
+        <google.cloud.dialogflow.cx.v3.Environment>`__.
 
         .. code-block:: python
 
@@ -336,11 +336,13 @@ class ExperimentsAsyncClient:
         Args:
             request (Optional[Union[google.cloud.dialogflowcx_v3.types.ListExperimentsRequest, dict]]):
                 The request object. The request message for
-                [Experiments.ListExperiments][google.cloud.dialogflow.cx.v3.Experiments.ListExperiments].
+                `Experiments.ListExperiments
+                <google.cloud.dialogflow.cx.v3.Experiments.ListExperiments>`__.
             parent (:class:`str`):
-                Required. The
-                [Environment][google.cloud.dialogflow.cx.v3.Environment]
+                Required. The `Environment
+                <google.cloud.dialogflow.cx.v3.Environment>`__
                 to list all environments for. Format:
+
                 ``projects/<ProjectID>/locations/<LocationID>/agents/<AgentID>/environments/<EnvironmentID>``.
 
                 This corresponds to the ``parent`` field
@@ -357,10 +359,12 @@ class ExperimentsAsyncClient:
         Returns:
             google.cloud.dialogflowcx_v3.services.experiments.pagers.ListExperimentsAsyncPager:
                 The response message for
-                   [Experiments.ListExperiments][google.cloud.dialogflow.cx.v3.Experiments.ListExperiments].
+                `Experiments.ListExperiments
+                <google.cloud.dialogflow.cx.v3.Experiments.ListExperiments>`__.
 
-                Iterating over this object will yield results and
-                resolve additional pages automatically.
+                Iterating over this object will yield
+                results and resolve additional pages
+                automatically.
 
         """
         # Create or coerce a protobuf request object.
@@ -433,7 +437,8 @@ class ExperimentsAsyncClient:
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> experiment.Experiment:
         r"""Retrieves the specified
-        [Experiment][google.cloud.dialogflow.cx.v3.Experiment].
+        `Experiment
+        <google.cloud.dialogflow.cx.v3.Experiment>`__.
 
         .. code-block:: python
 
@@ -464,11 +469,14 @@ class ExperimentsAsyncClient:
         Args:
             request (Optional[Union[google.cloud.dialogflowcx_v3.types.GetExperimentRequest, dict]]):
                 The request object. The request message for
-                [Experiments.GetExperiment][google.cloud.dialogflow.cx.v3.Experiments.GetExperiment].
+                `Experiments.GetExperiment
+                <google.cloud.dialogflow.cx.v3.Experiments.GetExperiment>`__.
             name (:class:`str`):
                 Required. The name of the
-                [Environment][google.cloud.dialogflow.cx.v3.Environment].
+                `Environment
+                <google.cloud.dialogflow.cx.v3.Environment>`__.
                 Format:
+
                 ``projects/<ProjectID>/locations/<LocationID>/agents/<AgentID>/environments/<EnvironmentID>/experiments/<ExperimentID>``.
 
                 This corresponds to the ``name`` field
@@ -539,18 +547,18 @@ class ExperimentsAsyncClient:
 
     async def create_experiment(
         self,
-        request: Optional[Union[gcdc_experiment.CreateExperimentRequest, dict]] = None,
+        request: Optional[Union[experiment.CreateExperimentRequest, dict]] = None,
         *,
         parent: Optional[str] = None,
-        experiment: Optional[gcdc_experiment.Experiment] = None,
+        experiment: Optional[experiment.Experiment] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
-    ) -> gcdc_experiment.Experiment:
-        r"""Creates an
-        [Experiment][google.cloud.dialogflow.cx.v3.Experiment] in the
-        specified
-        [Environment][google.cloud.dialogflow.cx.v3.Environment].
+    ) -> experiment.Experiment:
+        r"""Creates an `Experiment
+        <google.cloud.dialogflow.cx.v3.Experiment>`__ in the
+        specified `Environment
+        <google.cloud.dialogflow.cx.v3.Environment>`__.
 
         .. code-block:: python
 
@@ -585,13 +593,15 @@ class ExperimentsAsyncClient:
         Args:
             request (Optional[Union[google.cloud.dialogflowcx_v3.types.CreateExperimentRequest, dict]]):
                 The request object. The request message for
-                [Experiments.CreateExperiment][google.cloud.dialogflow.cx.v3.Experiments.CreateExperiment].
+                `Experiments.CreateExperiment
+                <google.cloud.dialogflow.cx.v3.Experiments.CreateExperiment>`__.
             parent (:class:`str`):
-                Required. The
-                [Agent][google.cloud.dialogflow.cx.v3.Agent] to create
-                an
-                [Environment][google.cloud.dialogflow.cx.v3.Environment]
+                Required. The `Agent
+                <google.cloud.dialogflow.cx.v3.Agent>`__
+                to create an `Environment
+                <google.cloud.dialogflow.cx.v3.Environment>`__
                 for. Format:
+
                 ``projects/<ProjectID>/locations/<LocationID>/agents/<AgentID>/environments/<EnvironmentID>``.
 
                 This corresponds to the ``parent`` field
@@ -631,8 +641,8 @@ class ExperimentsAsyncClient:
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
-        if not isinstance(request, gcdc_experiment.CreateExperimentRequest):
-            request = gcdc_experiment.CreateExperimentRequest(request)
+        if not isinstance(request, experiment.CreateExperimentRequest):
+            request = experiment.CreateExperimentRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -669,16 +679,17 @@ class ExperimentsAsyncClient:
 
     async def update_experiment(
         self,
-        request: Optional[Union[gcdc_experiment.UpdateExperimentRequest, dict]] = None,
+        request: Optional[Union[experiment.UpdateExperimentRequest, dict]] = None,
         *,
-        experiment: Optional[gcdc_experiment.Experiment] = None,
+        experiment: Optional[experiment.Experiment] = None,
         update_mask: Optional[field_mask_pb2.FieldMask] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
-    ) -> gcdc_experiment.Experiment:
+    ) -> experiment.Experiment:
         r"""Updates the specified
-        [Experiment][google.cloud.dialogflow.cx.v3.Experiment].
+        `Experiment
+        <google.cloud.dialogflow.cx.v3.Experiment>`__.
 
         .. code-block:: python
 
@@ -712,7 +723,8 @@ class ExperimentsAsyncClient:
         Args:
             request (Optional[Union[google.cloud.dialogflowcx_v3.types.UpdateExperimentRequest, dict]]):
                 The request object. The request message for
-                [Experiments.UpdateExperiment][google.cloud.dialogflow.cx.v3.Experiments.UpdateExperiment].
+                `Experiments.UpdateExperiment
+                <google.cloud.dialogflow.cx.v3.Experiments.UpdateExperiment>`__.
             experiment (:class:`google.cloud.dialogflowcx_v3.types.Experiment`):
                 Required. The experiment to update.
                 This corresponds to the ``experiment`` field
@@ -754,8 +766,8 @@ class ExperimentsAsyncClient:
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
-        if not isinstance(request, gcdc_experiment.UpdateExperimentRequest):
-            request = gcdc_experiment.UpdateExperimentRequest(request)
+        if not isinstance(request, experiment.UpdateExperimentRequest):
+            request = experiment.UpdateExperimentRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -802,7 +814,8 @@ class ExperimentsAsyncClient:
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> None:
         r"""Deletes the specified
-        [Experiment][google.cloud.dialogflow.cx.v3.Experiment].
+        `Experiment
+        <google.cloud.dialogflow.cx.v3.Experiment>`__.
 
         .. code-block:: python
 
@@ -830,11 +843,14 @@ class ExperimentsAsyncClient:
         Args:
             request (Optional[Union[google.cloud.dialogflowcx_v3.types.DeleteExperimentRequest, dict]]):
                 The request object. The request message for
-                [Experiments.DeleteExperiment][google.cloud.dialogflow.cx.v3.Experiments.DeleteExperiment].
+                `Experiments.DeleteExperiment
+                <google.cloud.dialogflow.cx.v3.Experiments.DeleteExperiment>`__.
             name (:class:`str`):
                 Required. The name of the
-                [Environment][google.cloud.dialogflow.cx.v3.Environment]
+                `Environment
+                <google.cloud.dialogflow.cx.v3.Environment>`__
                 to delete. Format:
+
                 ``projects/<ProjectID>/locations/<LocationID>/agents/<AgentID>/environments/<EnvironmentID>/experiments/<ExperimentID>``.
 
                 This corresponds to the ``name`` field
@@ -904,8 +920,10 @@ class ExperimentsAsyncClient:
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> experiment.Experiment:
         r"""Starts the specified
-        [Experiment][google.cloud.dialogflow.cx.v3.Experiment]. This rpc
-        only changes the state of experiment from PENDING to RUNNING.
+        `Experiment
+        <google.cloud.dialogflow.cx.v3.Experiment>`__. This rpc
+        only changes the state of experiment from PENDING to
+        RUNNING.
 
         .. code-block:: python
 
@@ -936,10 +954,12 @@ class ExperimentsAsyncClient:
         Args:
             request (Optional[Union[google.cloud.dialogflowcx_v3.types.StartExperimentRequest, dict]]):
                 The request object. The request message for
-                [Experiments.StartExperiment][google.cloud.dialogflow.cx.v3.Experiments.StartExperiment].
+                `Experiments.StartExperiment
+                <google.cloud.dialogflow.cx.v3.Experiments.StartExperiment>`__.
             name (:class:`str`):
-                Required. Resource name of the experiment to start.
-                Format:
+                Required. Resource name of the
+                experiment to start. Format:
+
                 ``projects/<ProjectID>/locations/<LocationID>/agents/<AgentID>/environments/<EnvironmentID>/experiments/<ExperimentID>``.
 
                 This corresponds to the ``name`` field
@@ -1017,9 +1037,10 @@ class ExperimentsAsyncClient:
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> experiment.Experiment:
-        r"""Stops the specified
-        [Experiment][google.cloud.dialogflow.cx.v3.Experiment]. This rpc
-        only changes the state of experiment from RUNNING to DONE.
+        r"""Stops the specified `Experiment
+        <google.cloud.dialogflow.cx.v3.Experiment>`__. This rpc
+        only changes the state of experiment from RUNNING to
+        DONE.
 
         .. code-block:: python
 
@@ -1050,10 +1071,12 @@ class ExperimentsAsyncClient:
         Args:
             request (Optional[Union[google.cloud.dialogflowcx_v3.types.StopExperimentRequest, dict]]):
                 The request object. The request message for
-                [Experiments.StopExperiment][google.cloud.dialogflow.cx.v3.Experiments.StopExperiment].
+                `Experiments.StopExperiment
+                <google.cloud.dialogflow.cx.v3.Experiments.StopExperiment>`__.
             name (:class:`str`):
-                Required. Resource name of the experiment to stop.
-                Format:
+                Required. Resource name of the
+                experiment to stop. Format:
+
                 ``projects/<ProjectID>/locations/<LocationID>/agents/<AgentID>/environments/<EnvironmentID>/experiments/<ExperimentID>``.
 
                 This corresponds to the ``name`` field

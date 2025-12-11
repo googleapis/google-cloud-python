@@ -31,12 +31,7 @@ import google.protobuf.message
 import grpc  # type: ignore
 import proto  # type: ignore
 
-from google.cloud.dialogflowcx_v3.types import (
-    generative_settings as gcdc_generative_settings,
-)
-from google.cloud.dialogflowcx_v3.types import agent
-from google.cloud.dialogflowcx_v3.types import agent as gcdc_agent
-from google.cloud.dialogflowcx_v3.types import generative_settings
+from google.cloud.dialogflowcx_v3.types import agent, generative_settings
 
 from .base import DEFAULT_CLIENT_INFO, AgentsTransport
 
@@ -118,7 +113,8 @@ class _LoggingClientInterceptor(grpc.UnaryUnaryClientInterceptor):  # pragma: NO
 class AgentsGrpcTransport(AgentsTransport):
     """gRPC backend transport for Agents.
 
-    Service for managing [Agents][google.cloud.dialogflow.cx.v3.Agent].
+    Service for managing `Agents
+    <google.cloud.dialogflow.cx.v3.Agent>`__.
 
     This class defines the same methods as the primary client, so the
     primary client can load the underlying transport implementation
@@ -398,16 +394,15 @@ class AgentsGrpcTransport(AgentsTransport):
         return self._stubs["get_agent"]
 
     @property
-    def create_agent(
-        self,
-    ) -> Callable[[gcdc_agent.CreateAgentRequest], gcdc_agent.Agent]:
+    def create_agent(self) -> Callable[[agent.CreateAgentRequest], agent.Agent]:
         r"""Return a callable for the create agent method over gRPC.
 
         Creates an agent in the specified location.
 
-        Note: You should always train flows prior to sending them
-        queries. See the `training
-        documentation <https://cloud.google.com/dialogflow/cx/docs/concept/training>`__.
+        Note: You should always train flows prior to sending
+        them queries. See the `training
+        documentation
+        <https://cloud.google.com/dialogflow/cx/docs/concept/training>`__.
 
         Returns:
             Callable[[~.CreateAgentRequest],
@@ -422,22 +417,21 @@ class AgentsGrpcTransport(AgentsTransport):
         if "create_agent" not in self._stubs:
             self._stubs["create_agent"] = self._logged_channel.unary_unary(
                 "/google.cloud.dialogflow.cx.v3.Agents/CreateAgent",
-                request_serializer=gcdc_agent.CreateAgentRequest.serialize,
-                response_deserializer=gcdc_agent.Agent.deserialize,
+                request_serializer=agent.CreateAgentRequest.serialize,
+                response_deserializer=agent.Agent.deserialize,
             )
         return self._stubs["create_agent"]
 
     @property
-    def update_agent(
-        self,
-    ) -> Callable[[gcdc_agent.UpdateAgentRequest], gcdc_agent.Agent]:
+    def update_agent(self) -> Callable[[agent.UpdateAgentRequest], agent.Agent]:
         r"""Return a callable for the update agent method over gRPC.
 
         Updates the specified agent.
 
-        Note: You should always train flows prior to sending them
-        queries. See the `training
-        documentation <https://cloud.google.com/dialogflow/cx/docs/concept/training>`__.
+        Note: You should always train flows prior to sending
+        them queries. See the `training
+        documentation
+        <https://cloud.google.com/dialogflow/cx/docs/concept/training>`__.
 
         Returns:
             Callable[[~.UpdateAgentRequest],
@@ -452,8 +446,8 @@ class AgentsGrpcTransport(AgentsTransport):
         if "update_agent" not in self._stubs:
             self._stubs["update_agent"] = self._logged_channel.unary_unary(
                 "/google.cloud.dialogflow.cx.v3.Agents/UpdateAgent",
-                request_serializer=gcdc_agent.UpdateAgentRequest.serialize,
-                response_deserializer=gcdc_agent.Agent.deserialize,
+                request_serializer=agent.UpdateAgentRequest.serialize,
+                response_deserializer=agent.Agent.deserialize,
             )
         return self._stubs["update_agent"]
 
@@ -490,14 +484,19 @@ class AgentsGrpcTransport(AgentsTransport):
         Exports the specified agent to a binary file.
 
         This method is a `long-running
-        operation <https://cloud.google.com/dialogflow/cx/docs/how/long-running-operation>`__.
+        operation
+        <https://cloud.google.com/dialogflow/cx/docs/how/long-running-operation>`__.
         The returned ``Operation`` type has the following
         method-specific fields:
 
         - ``metadata``: An empty `Struct
-          message <https://developers.google.com/protocol-buffers/docs/reference/google.protobuf#struct>`__
+          message
+        <https://developers.google.com/protocol-buffers/docs/reference/google.protobuf#struct>`__
+
         - ``response``:
-          [ExportAgentResponse][google.cloud.dialogflow.cx.v3.ExportAgentResponse]
+
+        `ExportAgentResponse
+        <google.cloud.dialogflow.cx.v3.ExportAgentResponse>`__
 
         Returns:
             Callable[[~.ExportAgentRequest],
@@ -526,22 +525,27 @@ class AgentsGrpcTransport(AgentsTransport):
         Restores the specified agent from a binary file.
 
         Replaces the current agent with a new one. Note that all
-        existing resources in agent (e.g. intents, entity types, flows)
-        will be removed.
+        existing resources in agent (e.g. intents, entity types,
+        flows) will be removed.
 
         This method is a `long-running
-        operation <https://cloud.google.com/dialogflow/cx/docs/how/long-running-operation>`__.
+        operation
+        <https://cloud.google.com/dialogflow/cx/docs/how/long-running-operation>`__.
         The returned ``Operation`` type has the following
         method-specific fields:
 
         - ``metadata``: An empty `Struct
-          message <https://developers.google.com/protocol-buffers/docs/reference/google.protobuf#struct>`__
-        - ``response``: An `Empty
-          message <https://developers.google.com/protocol-buffers/docs/reference/google.protobuf#empty>`__
+          message
+        <https://developers.google.com/protocol-buffers/docs/reference/google.protobuf#struct>`__
 
-        Note: You should always train flows prior to sending them
-        queries. See the `training
-        documentation <https://cloud.google.com/dialogflow/cx/docs/concept/training>`__.
+        - ``response``: An `Empty
+          message
+        <https://developers.google.com/protocol-buffers/docs/reference/google.protobuf#empty>`__
+
+        Note: You should always train flows prior to sending
+        them queries. See the `training
+        documentation
+        <https://cloud.google.com/dialogflow/cx/docs/concept/training>`__.
 
         Returns:
             Callable[[~.RestoreAgentRequest],
@@ -651,8 +655,7 @@ class AgentsGrpcTransport(AgentsTransport):
     def update_generative_settings(
         self,
     ) -> Callable[
-        [agent.UpdateGenerativeSettingsRequest],
-        gcdc_generative_settings.GenerativeSettings,
+        [agent.UpdateGenerativeSettingsRequest], generative_settings.GenerativeSettings
     ]:
         r"""Return a callable for the update generative settings method over gRPC.
 
@@ -674,7 +677,7 @@ class AgentsGrpcTransport(AgentsTransport):
             ] = self._logged_channel.unary_unary(
                 "/google.cloud.dialogflow.cx.v3.Agents/UpdateGenerativeSettings",
                 request_serializer=agent.UpdateGenerativeSettingsRequest.serialize,
-                response_deserializer=gcdc_generative_settings.GenerativeSettings.deserialize,
+                response_deserializer=generative_settings.GenerativeSettings.deserialize,
             )
         return self._stubs["update_generative_settings"]
 

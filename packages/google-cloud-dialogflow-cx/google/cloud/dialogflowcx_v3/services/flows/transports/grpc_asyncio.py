@@ -35,7 +35,6 @@ from grpc.experimental import aio  # type: ignore
 import proto  # type: ignore
 
 from google.cloud.dialogflowcx_v3.types import flow
-from google.cloud.dialogflowcx_v3.types import flow as gcdc_flow
 
 from .base import DEFAULT_CLIENT_INFO, FlowsTransport
 from .grpc import FlowsGrpcTransport
@@ -120,7 +119,8 @@ class _LoggingClientAIOInterceptor(
 class FlowsGrpcAsyncIOTransport(FlowsTransport):
     """gRPC AsyncIO backend transport for Flows.
 
-    Service for managing [Flows][google.cloud.dialogflow.cx.v3.Flow].
+    Service for managing `Flows
+    <google.cloud.dialogflow.cx.v3.Flow>`__.
 
     This class defines the same methods as the primary client, so the
     primary client can load the underlying transport implementation
@@ -351,16 +351,15 @@ class FlowsGrpcAsyncIOTransport(FlowsTransport):
         return self._operations_client
 
     @property
-    def create_flow(
-        self,
-    ) -> Callable[[gcdc_flow.CreateFlowRequest], Awaitable[gcdc_flow.Flow]]:
+    def create_flow(self) -> Callable[[flow.CreateFlowRequest], Awaitable[flow.Flow]]:
         r"""Return a callable for the create flow method over gRPC.
 
         Creates a flow in the specified agent.
 
         Note: You should always train a flow prior to sending it
         queries. See the `training
-        documentation <https://cloud.google.com/dialogflow/cx/docs/concept/training>`__.
+        documentation
+        <https://cloud.google.com/dialogflow/cx/docs/concept/training>`__.
 
         Returns:
             Callable[[~.CreateFlowRequest],
@@ -375,8 +374,8 @@ class FlowsGrpcAsyncIOTransport(FlowsTransport):
         if "create_flow" not in self._stubs:
             self._stubs["create_flow"] = self._logged_channel.unary_unary(
                 "/google.cloud.dialogflow.cx.v3.Flows/CreateFlow",
-                request_serializer=gcdc_flow.CreateFlowRequest.serialize,
-                response_deserializer=gcdc_flow.Flow.deserialize,
+                request_serializer=flow.CreateFlowRequest.serialize,
+                response_deserializer=flow.Flow.deserialize,
             )
         return self._stubs["create_flow"]
 
@@ -457,16 +456,15 @@ class FlowsGrpcAsyncIOTransport(FlowsTransport):
         return self._stubs["get_flow"]
 
     @property
-    def update_flow(
-        self,
-    ) -> Callable[[gcdc_flow.UpdateFlowRequest], Awaitable[gcdc_flow.Flow]]:
+    def update_flow(self) -> Callable[[flow.UpdateFlowRequest], Awaitable[flow.Flow]]:
         r"""Return a callable for the update flow method over gRPC.
 
         Updates the specified flow.
 
         Note: You should always train a flow prior to sending it
         queries. See the `training
-        documentation <https://cloud.google.com/dialogflow/cx/docs/concept/training>`__.
+        documentation
+        <https://cloud.google.com/dialogflow/cx/docs/concept/training>`__.
 
         Returns:
             Callable[[~.UpdateFlowRequest],
@@ -481,8 +479,8 @@ class FlowsGrpcAsyncIOTransport(FlowsTransport):
         if "update_flow" not in self._stubs:
             self._stubs["update_flow"] = self._logged_channel.unary_unary(
                 "/google.cloud.dialogflow.cx.v3.Flows/UpdateFlow",
-                request_serializer=gcdc_flow.UpdateFlowRequest.serialize,
-                response_deserializer=gcdc_flow.Flow.deserialize,
+                request_serializer=flow.UpdateFlowRequest.serialize,
+                response_deserializer=flow.Flow.deserialize,
             )
         return self._stubs["update_flow"]
 
@@ -492,22 +490,27 @@ class FlowsGrpcAsyncIOTransport(FlowsTransport):
     ) -> Callable[[flow.TrainFlowRequest], Awaitable[operations_pb2.Operation]]:
         r"""Return a callable for the train flow method over gRPC.
 
-        Trains the specified flow. Note that only the flow in 'draft'
-        environment is trained.
+        Trains the specified flow. Note that only the flow in
+        'draft' environment is trained.
 
         This method is a `long-running
-        operation <https://cloud.google.com/dialogflow/cx/docs/how/long-running-operation>`__.
+        operation
+        <https://cloud.google.com/dialogflow/cx/docs/how/long-running-operation>`__.
         The returned ``Operation`` type has the following
         method-specific fields:
 
         - ``metadata``: An empty `Struct
-          message <https://developers.google.com/protocol-buffers/docs/reference/google.protobuf#struct>`__
+          message
+        <https://developers.google.com/protocol-buffers/docs/reference/google.protobuf#struct>`__
+
         - ``response``: An `Empty
-          message <https://developers.google.com/protocol-buffers/docs/reference/google.protobuf#empty>`__
+          message
+        <https://developers.google.com/protocol-buffers/docs/reference/google.protobuf#empty>`__
 
         Note: You should always train a flow prior to sending it
         queries. See the `training
-        documentation <https://cloud.google.com/dialogflow/cx/docs/concept/training>`__.
+        documentation
+        <https://cloud.google.com/dialogflow/cx/docs/concept/training>`__.
 
         Returns:
             Callable[[~.TrainFlowRequest],
@@ -593,22 +596,27 @@ class FlowsGrpcAsyncIOTransport(FlowsTransport):
     ) -> Callable[[flow.ImportFlowRequest], Awaitable[operations_pb2.Operation]]:
         r"""Return a callable for the import flow method over gRPC.
 
-        Imports the specified flow to the specified agent from a binary
-        file.
-
+        Imports the specified flow to the specified agent from a
+        binary file.
         This method is a `long-running
-        operation <https://cloud.google.com/dialogflow/cx/docs/how/long-running-operation>`__.
+        operation
+        <https://cloud.google.com/dialogflow/cx/docs/how/long-running-operation>`__.
         The returned ``Operation`` type has the following
         method-specific fields:
 
         - ``metadata``: An empty `Struct
-          message <https://developers.google.com/protocol-buffers/docs/reference/google.protobuf#struct>`__
+          message
+        <https://developers.google.com/protocol-buffers/docs/reference/google.protobuf#struct>`__
+
         - ``response``:
-          [ImportFlowResponse][google.cloud.dialogflow.cx.v3.ImportFlowResponse]
+
+        `ImportFlowResponse
+        <google.cloud.dialogflow.cx.v3.ImportFlowResponse>`__
 
         Note: You should always train a flow prior to sending it
         queries. See the `training
-        documentation <https://cloud.google.com/dialogflow/cx/docs/concept/training>`__.
+        documentation
+        <https://cloud.google.com/dialogflow/cx/docs/concept/training>`__.
 
         Returns:
             Callable[[~.ImportFlowRequest],
@@ -637,17 +645,22 @@ class FlowsGrpcAsyncIOTransport(FlowsTransport):
         Exports the specified flow to a binary file.
 
         This method is a `long-running
-        operation <https://cloud.google.com/dialogflow/cx/docs/how/long-running-operation>`__.
+        operation
+        <https://cloud.google.com/dialogflow/cx/docs/how/long-running-operation>`__.
         The returned ``Operation`` type has the following
         method-specific fields:
 
         - ``metadata``: An empty `Struct
-          message <https://developers.google.com/protocol-buffers/docs/reference/google.protobuf#struct>`__
-        - ``response``:
-          [ExportFlowResponse][google.cloud.dialogflow.cx.v3.ExportFlowResponse]
+          message
+        <https://developers.google.com/protocol-buffers/docs/reference/google.protobuf#struct>`__
 
-        Note that resources (e.g. intents, entities, webhooks) that the
-        flow references will also be exported.
+        - ``response``:
+
+        `ExportFlowResponse
+        <google.cloud.dialogflow.cx.v3.ExportFlowResponse>`__
+
+        Note that resources (e.g. intents, entities, webhooks)
+        that the flow references will also be exported.
 
         Returns:
             Callable[[~.ExportFlowRequest],

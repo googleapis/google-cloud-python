@@ -66,11 +66,7 @@ from google.longrunning import operations_pb2  # type: ignore
 from google.protobuf import field_mask_pb2  # type: ignore
 
 from google.cloud.dialogflowcx_v3.services.transition_route_groups import pagers
-from google.cloud.dialogflowcx_v3.types import (
-    transition_route_group as gcdc_transition_route_group,
-)
-from google.cloud.dialogflowcx_v3.types import page
-from google.cloud.dialogflowcx_v3.types import transition_route_group
+from google.cloud.dialogflowcx_v3.types import page, transition_route_group
 
 from .transports.base import DEFAULT_CLIENT_INFO, TransitionRouteGroupsTransport
 from .transports.grpc import TransitionRouteGroupsGrpcTransport
@@ -117,7 +113,8 @@ class TransitionRouteGroupsClientMeta(type):
 
 class TransitionRouteGroupsClient(metaclass=TransitionRouteGroupsClientMeta):
     """Service for managing
-    [TransitionRouteGroups][google.cloud.dialogflow.cx.v3.TransitionRouteGroup].
+    `TransitionRouteGroups
+    <google.cloud.dialogflow.cx.v3.TransitionRouteGroup>`__.
     """
 
     @staticmethod
@@ -897,12 +894,15 @@ class TransitionRouteGroupsClient(metaclass=TransitionRouteGroupsClientMeta):
         Args:
             request (Union[google.cloud.dialogflowcx_v3.types.ListTransitionRouteGroupsRequest, dict]):
                 The request object. The request message for
-                [TransitionRouteGroups.ListTransitionRouteGroups][google.cloud.dialogflow.cx.v3.TransitionRouteGroups.ListTransitionRouteGroups].
+                `TransitionRouteGroups.ListTransitionRouteGroups
+                <google.cloud.dialogflow.cx.v3.TransitionRouteGroups.ListTransitionRouteGroups>`__.
             parent (str):
-                Required. The flow to list all transition route groups
-                for. Format:
+                Required. The flow to list all
+                transition route groups for. Format:
+
                 ``projects/<ProjectID>/locations/<LocationID>/agents/<AgentID>/flows/<FlowID>``
-                or \`projects//locations//agents/.
+                or
+                `projects/<ProjectID>/locations/<LocationID>/agents/<AgentID>.
 
                 This corresponds to the ``parent`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -918,10 +918,12 @@ class TransitionRouteGroupsClient(metaclass=TransitionRouteGroupsClientMeta):
         Returns:
             google.cloud.dialogflowcx_v3.services.transition_route_groups.pagers.ListTransitionRouteGroupsPager:
                 The response message for
-                   [TransitionRouteGroups.ListTransitionRouteGroups][google.cloud.dialogflow.cx.v3.TransitionRouteGroups.ListTransitionRouteGroups].
+                `TransitionRouteGroups.ListTransitionRouteGroups
+                <google.cloud.dialogflow.cx.v3.TransitionRouteGroups.ListTransitionRouteGroups>`__.
 
-                Iterating over this object will yield results and
-                resolve additional pages automatically.
+                Iterating over this object will yield
+                results and resolve additional pages
+                automatically.
 
         """
         # Create or coerce a protobuf request object.
@@ -997,7 +999,8 @@ class TransitionRouteGroupsClient(metaclass=TransitionRouteGroupsClientMeta):
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> transition_route_group.TransitionRouteGroup:
         r"""Retrieves the specified
-        [TransitionRouteGroup][google.cloud.dialogflow.cx.v3.TransitionRouteGroup].
+        `TransitionRouteGroup
+        <google.cloud.dialogflow.cx.v3.TransitionRouteGroup>`__.
 
         .. code-block:: python
 
@@ -1028,11 +1031,14 @@ class TransitionRouteGroupsClient(metaclass=TransitionRouteGroupsClientMeta):
         Args:
             request (Union[google.cloud.dialogflowcx_v3.types.GetTransitionRouteGroupRequest, dict]):
                 The request object. The request message for
-                [TransitionRouteGroups.GetTransitionRouteGroup][google.cloud.dialogflow.cx.v3.TransitionRouteGroups.GetTransitionRouteGroup].
+                `TransitionRouteGroups.GetTransitionRouteGroup
+                <google.cloud.dialogflow.cx.v3.TransitionRouteGroups.GetTransitionRouteGroup>`__.
             name (str):
                 Required. The name of the
-                [TransitionRouteGroup][google.cloud.dialogflow.cx.v3.TransitionRouteGroup].
+                `TransitionRouteGroup
+                <google.cloud.dialogflow.cx.v3.TransitionRouteGroup>`__.
                 Format:
+
                 ``projects/<ProjectID>/locations/<LocationID>/agents/<AgentID>/flows/<FlowID>/transitionRouteGroups/<TransitionRouteGroupID>``
                 or
                 ``projects/<ProjectID>/locations/<LocationID>/agents/<AgentID>/transitionRouteGroups/<TransitionRouteGroupID>``.
@@ -1050,10 +1056,11 @@ class TransitionRouteGroupsClient(metaclass=TransitionRouteGroupsClientMeta):
 
         Returns:
             google.cloud.dialogflowcx_v3.types.TransitionRouteGroup:
-                A TransitionRouteGroup represents a group of
-                   [TransitionRoutes][google.cloud.dialogflow.cx.v3.TransitionRoute]
-                   to be used by a
-                   [Page][google.cloud.dialogflow.cx.v3.Page].
+                A TransitionRouteGroup represents a
+                group of ```TransitionRoutes``
+                <google.cloud.dialogflow.cx.v3.TransitionRoute>`__
+                to be used by a `Page
+                <google.cloud.dialogflow.cx.v3.Page>`__.
 
         """
         # Create or coerce a protobuf request object.
@@ -1109,24 +1116,26 @@ class TransitionRouteGroupsClient(metaclass=TransitionRouteGroupsClientMeta):
     def create_transition_route_group(
         self,
         request: Optional[
-            Union[gcdc_transition_route_group.CreateTransitionRouteGroupRequest, dict]
+            Union[transition_route_group.CreateTransitionRouteGroupRequest, dict]
         ] = None,
         *,
         parent: Optional[str] = None,
         transition_route_group: Optional[
-            gcdc_transition_route_group.TransitionRouteGroup
+            transition_route_group.TransitionRouteGroup
         ] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
-    ) -> gcdc_transition_route_group.TransitionRouteGroup:
+    ) -> transition_route_group.TransitionRouteGroup:
         r"""Creates an
-        [TransitionRouteGroup][google.cloud.dialogflow.cx.v3.TransitionRouteGroup]
+        `TransitionRouteGroup
+        <google.cloud.dialogflow.cx.v3.TransitionRouteGroup>`__
         in the specified flow.
 
         Note: You should always train a flow prior to sending it
         queries. See the `training
-        documentation <https://cloud.google.com/dialogflow/cx/docs/concept/training>`__.
+        documentation
+        <https://cloud.google.com/dialogflow/cx/docs/concept/training>`__.
 
         .. code-block:: python
 
@@ -1161,11 +1170,14 @@ class TransitionRouteGroupsClient(metaclass=TransitionRouteGroupsClientMeta):
         Args:
             request (Union[google.cloud.dialogflowcx_v3.types.CreateTransitionRouteGroupRequest, dict]):
                 The request object. The request message for
-                [TransitionRouteGroups.CreateTransitionRouteGroup][google.cloud.dialogflow.cx.v3.TransitionRouteGroups.CreateTransitionRouteGroup].
+                `TransitionRouteGroups.CreateTransitionRouteGroup
+                <google.cloud.dialogflow.cx.v3.TransitionRouteGroups.CreateTransitionRouteGroup>`__.
             parent (str):
                 Required. The flow to create an
-                [TransitionRouteGroup][google.cloud.dialogflow.cx.v3.TransitionRouteGroup]
+                `TransitionRouteGroup
+                <google.cloud.dialogflow.cx.v3.TransitionRouteGroup>`__
                 for. Format:
+
                 ``projects/<ProjectID>/locations/<LocationID>/agents/<AgentID>/flows/<FlowID>``
                 or
                 ``projects/<ProjectID>/locations/<LocationID>/agents/<AgentID>``
@@ -1191,10 +1203,11 @@ class TransitionRouteGroupsClient(metaclass=TransitionRouteGroupsClientMeta):
 
         Returns:
             google.cloud.dialogflowcx_v3.types.TransitionRouteGroup:
-                A TransitionRouteGroup represents a group of
-                   [TransitionRoutes][google.cloud.dialogflow.cx.v3.TransitionRoute]
-                   to be used by a
-                   [Page][google.cloud.dialogflow.cx.v3.Page].
+                A TransitionRouteGroup represents a
+                group of ```TransitionRoutes``
+                <google.cloud.dialogflow.cx.v3.TransitionRoute>`__
+                to be used by a `Page
+                <google.cloud.dialogflow.cx.v3.Page>`__.
 
         """
         # Create or coerce a protobuf request object.
@@ -1213,11 +1226,9 @@ class TransitionRouteGroupsClient(metaclass=TransitionRouteGroupsClientMeta):
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
         if not isinstance(
-            request, gcdc_transition_route_group.CreateTransitionRouteGroupRequest
+            request, transition_route_group.CreateTransitionRouteGroupRequest
         ):
-            request = gcdc_transition_route_group.CreateTransitionRouteGroupRequest(
-                request
-            )
+            request = transition_route_group.CreateTransitionRouteGroupRequest(request)
             # If we have keyword arguments corresponding to fields on the
             # request, apply these.
             if parent is not None:
@@ -1254,23 +1265,25 @@ class TransitionRouteGroupsClient(metaclass=TransitionRouteGroupsClientMeta):
     def update_transition_route_group(
         self,
         request: Optional[
-            Union[gcdc_transition_route_group.UpdateTransitionRouteGroupRequest, dict]
+            Union[transition_route_group.UpdateTransitionRouteGroupRequest, dict]
         ] = None,
         *,
         transition_route_group: Optional[
-            gcdc_transition_route_group.TransitionRouteGroup
+            transition_route_group.TransitionRouteGroup
         ] = None,
         update_mask: Optional[field_mask_pb2.FieldMask] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
-    ) -> gcdc_transition_route_group.TransitionRouteGroup:
+    ) -> transition_route_group.TransitionRouteGroup:
         r"""Updates the specified
-        [TransitionRouteGroup][google.cloud.dialogflow.cx.v3.TransitionRouteGroup].
+        `TransitionRouteGroup
+        <google.cloud.dialogflow.cx.v3.TransitionRouteGroup>`__.
 
         Note: You should always train a flow prior to sending it
         queries. See the `training
-        documentation <https://cloud.google.com/dialogflow/cx/docs/concept/training>`__.
+        documentation
+        <https://cloud.google.com/dialogflow/cx/docs/concept/training>`__.
 
         .. code-block:: python
 
@@ -1304,7 +1317,8 @@ class TransitionRouteGroupsClient(metaclass=TransitionRouteGroupsClientMeta):
         Args:
             request (Union[google.cloud.dialogflowcx_v3.types.UpdateTransitionRouteGroupRequest, dict]):
                 The request object. The request message for
-                [TransitionRouteGroups.UpdateTransitionRouteGroup][google.cloud.dialogflow.cx.v3.TransitionRouteGroups.UpdateTransitionRouteGroup].
+                `TransitionRouteGroups.UpdateTransitionRouteGroup
+                <google.cloud.dialogflow.cx.v3.TransitionRouteGroups.UpdateTransitionRouteGroup>`__.
             transition_route_group (google.cloud.dialogflowcx_v3.types.TransitionRouteGroup):
                 Required. The transition route group
                 to update.
@@ -1329,10 +1343,11 @@ class TransitionRouteGroupsClient(metaclass=TransitionRouteGroupsClientMeta):
 
         Returns:
             google.cloud.dialogflowcx_v3.types.TransitionRouteGroup:
-                A TransitionRouteGroup represents a group of
-                   [TransitionRoutes][google.cloud.dialogflow.cx.v3.TransitionRoute]
-                   to be used by a
-                   [Page][google.cloud.dialogflow.cx.v3.Page].
+                A TransitionRouteGroup represents a
+                group of ```TransitionRoutes``
+                <google.cloud.dialogflow.cx.v3.TransitionRoute>`__
+                to be used by a `Page
+                <google.cloud.dialogflow.cx.v3.Page>`__.
 
         """
         # Create or coerce a protobuf request object.
@@ -1351,11 +1366,9 @@ class TransitionRouteGroupsClient(metaclass=TransitionRouteGroupsClientMeta):
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
         if not isinstance(
-            request, gcdc_transition_route_group.UpdateTransitionRouteGroupRequest
+            request, transition_route_group.UpdateTransitionRouteGroupRequest
         ):
-            request = gcdc_transition_route_group.UpdateTransitionRouteGroupRequest(
-                request
-            )
+            request = transition_route_group.UpdateTransitionRouteGroupRequest(request)
             # If we have keyword arguments corresponding to fields on the
             # request, apply these.
             if transition_route_group is not None:
@@ -1403,11 +1416,13 @@ class TransitionRouteGroupsClient(metaclass=TransitionRouteGroupsClientMeta):
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> None:
         r"""Deletes the specified
-        [TransitionRouteGroup][google.cloud.dialogflow.cx.v3.TransitionRouteGroup].
+        `TransitionRouteGroup
+        <google.cloud.dialogflow.cx.v3.TransitionRouteGroup>`__.
 
         Note: You should always train a flow prior to sending it
         queries. See the `training
-        documentation <https://cloud.google.com/dialogflow/cx/docs/concept/training>`__.
+        documentation
+        <https://cloud.google.com/dialogflow/cx/docs/concept/training>`__.
 
         .. code-block:: python
 
@@ -1435,11 +1450,14 @@ class TransitionRouteGroupsClient(metaclass=TransitionRouteGroupsClientMeta):
         Args:
             request (Union[google.cloud.dialogflowcx_v3.types.DeleteTransitionRouteGroupRequest, dict]):
                 The request object. The request message for
-                [TransitionRouteGroups.DeleteTransitionRouteGroup][google.cloud.dialogflow.cx.v3.TransitionRouteGroups.DeleteTransitionRouteGroup].
+                `TransitionRouteGroups.DeleteTransitionRouteGroup
+                <google.cloud.dialogflow.cx.v3.TransitionRouteGroups.DeleteTransitionRouteGroup>`__.
             name (str):
                 Required. The name of the
-                [TransitionRouteGroup][google.cloud.dialogflow.cx.v3.TransitionRouteGroup]
+                `TransitionRouteGroup
+                <google.cloud.dialogflow.cx.v3.TransitionRouteGroup>`__
                 to delete. Format:
+
                 ``projects/<ProjectID>/locations/<LocationID>/agents/<AgentID>/flows/<FlowID>/transitionRouteGroups/<TransitionRouteGroupID>``
                 or
                 ``projects/<ProjectID>/locations/<LocationID>/agents/<AgentID>/transitionRouteGroups/<TransitionRouteGroupID>``.

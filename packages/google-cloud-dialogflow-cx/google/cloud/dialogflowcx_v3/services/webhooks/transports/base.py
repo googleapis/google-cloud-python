@@ -30,7 +30,6 @@ from google.protobuf import empty_pb2  # type: ignore
 
 from google.cloud.dialogflowcx_v3 import gapic_version as package_version
 from google.cloud.dialogflowcx_v3.types import webhook
-from google.cloud.dialogflowcx_v3.types import webhook as gcdc_webhook
 
 DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
     gapic_version=package_version.__version__
@@ -222,8 +221,8 @@ class WebhooksTransport(abc.ABC):
     def create_webhook(
         self,
     ) -> Callable[
-        [gcdc_webhook.CreateWebhookRequest],
-        Union[gcdc_webhook.Webhook, Awaitable[gcdc_webhook.Webhook]],
+        [webhook.CreateWebhookRequest],
+        Union[webhook.Webhook, Awaitable[webhook.Webhook]],
     ]:
         raise NotImplementedError()
 
@@ -231,8 +230,8 @@ class WebhooksTransport(abc.ABC):
     def update_webhook(
         self,
     ) -> Callable[
-        [gcdc_webhook.UpdateWebhookRequest],
-        Union[gcdc_webhook.Webhook, Awaitable[gcdc_webhook.Webhook]],
+        [webhook.UpdateWebhookRequest],
+        Union[webhook.Webhook, Awaitable[webhook.Webhook]],
     ]:
         raise NotImplementedError()
 

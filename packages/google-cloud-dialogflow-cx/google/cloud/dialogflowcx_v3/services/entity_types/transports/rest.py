@@ -32,7 +32,6 @@ from google.protobuf import json_format
 from requests import __version__ as requests_version
 
 from google.cloud.dialogflowcx_v3.types import entity_type
-from google.cloud.dialogflowcx_v3.types import entity_type as gcdc_entity_type
 
 from .base import DEFAULT_CLIENT_INFO as BASE_DEFAULT_CLIENT_INFO
 from .rest_base import _BaseEntityTypesRestTransport
@@ -136,11 +135,10 @@ class EntityTypesRestInterceptor:
 
     def pre_create_entity_type(
         self,
-        request: gcdc_entity_type.CreateEntityTypeRequest,
+        request: entity_type.CreateEntityTypeRequest,
         metadata: Sequence[Tuple[str, Union[str, bytes]]],
     ) -> Tuple[
-        gcdc_entity_type.CreateEntityTypeRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
+        entity_type.CreateEntityTypeRequest, Sequence[Tuple[str, Union[str, bytes]]]
     ]:
         """Pre-rpc interceptor for create_entity_type
 
@@ -150,8 +148,8 @@ class EntityTypesRestInterceptor:
         return request, metadata
 
     def post_create_entity_type(
-        self, response: gcdc_entity_type.EntityType
-    ) -> gcdc_entity_type.EntityType:
+        self, response: entity_type.EntityType
+    ) -> entity_type.EntityType:
         """Post-rpc interceptor for create_entity_type
 
         DEPRECATED. Please use the `post_create_entity_type_with_metadata`
@@ -166,9 +164,9 @@ class EntityTypesRestInterceptor:
 
     def post_create_entity_type_with_metadata(
         self,
-        response: gcdc_entity_type.EntityType,
+        response: entity_type.EntityType,
         metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[gcdc_entity_type.EntityType, Sequence[Tuple[str, Union[str, bytes]]]]:
+    ) -> Tuple[entity_type.EntityType, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for create_entity_type
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -393,11 +391,10 @@ class EntityTypesRestInterceptor:
 
     def pre_update_entity_type(
         self,
-        request: gcdc_entity_type.UpdateEntityTypeRequest,
+        request: entity_type.UpdateEntityTypeRequest,
         metadata: Sequence[Tuple[str, Union[str, bytes]]],
     ) -> Tuple[
-        gcdc_entity_type.UpdateEntityTypeRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
+        entity_type.UpdateEntityTypeRequest, Sequence[Tuple[str, Union[str, bytes]]]
     ]:
         """Pre-rpc interceptor for update_entity_type
 
@@ -407,8 +404,8 @@ class EntityTypesRestInterceptor:
         return request, metadata
 
     def post_update_entity_type(
-        self, response: gcdc_entity_type.EntityType
-    ) -> gcdc_entity_type.EntityType:
+        self, response: entity_type.EntityType
+    ) -> entity_type.EntityType:
         """Post-rpc interceptor for update_entity_type
 
         DEPRECATED. Please use the `post_update_entity_type_with_metadata`
@@ -423,9 +420,9 @@ class EntityTypesRestInterceptor:
 
     def post_update_entity_type_with_metadata(
         self,
-        response: gcdc_entity_type.EntityType,
+        response: entity_type.EntityType,
         metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[gcdc_entity_type.EntityType, Sequence[Tuple[str, Union[str, bytes]]]]:
+    ) -> Tuple[entity_type.EntityType, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for update_entity_type
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -574,8 +571,8 @@ class EntityTypesRestStub:
 class EntityTypesRestTransport(_BaseEntityTypesRestTransport):
     """REST backend synchronous transport for EntityTypes.
 
-    Service for managing
-    [EntityTypes][google.cloud.dialogflow.cx.v3.EntityType].
+    Service for managing `EntityTypes
+    <google.cloud.dialogflow.cx.v3.EntityType>`__.
 
     This class defines the same methods as the primary client, so the
     primary client can load the underlying transport implementation
@@ -742,18 +739,19 @@ class EntityTypesRestTransport(_BaseEntityTypesRestTransport):
 
         def __call__(
             self,
-            request: gcdc_entity_type.CreateEntityTypeRequest,
+            request: entity_type.CreateEntityTypeRequest,
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
             metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
-        ) -> gcdc_entity_type.EntityType:
+        ) -> entity_type.EntityType:
             r"""Call the create entity type method over HTTP.
 
             Args:
-                request (~.gcdc_entity_type.CreateEntityTypeRequest):
+                request (~.entity_type.CreateEntityTypeRequest):
                     The request object. The request message for
-                [EntityTypes.CreateEntityType][google.cloud.dialogflow.cx.v3.EntityTypes.CreateEntityType].
+                `EntityTypes.CreateEntityType
+                <google.cloud.dialogflow.cx.v3.EntityTypes.CreateEntityType>`__.
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -763,42 +761,53 @@ class EntityTypesRestTransport(_BaseEntityTypesRestTransport):
                     be of type `bytes`.
 
             Returns:
-                ~.gcdc_entity_type.EntityType:
-                    Entities are extracted from user input and represent
-                parameters that are meaningful to your application. For
-                example, a date range, a proper name such as a
-                geographic location or landmark, and so on. Entities
-                represent actionable data for your application.
+                ~.entity_type.EntityType:
+                    Entities are extracted from user input
+                and represent parameters that are
+                meaningful to your application. For
+                example, a date range, a proper name
+                such as a geographic location or
+                landmark, and so on. Entities represent
+                actionable data for your application.
 
-                When you define an entity, you can also include synonyms
-                that all map to that entity. For example, "soft drink",
+                When you define an entity, you can also
+                include synonyms that all map to that
+                entity. For example, "soft drink",
                 "soda", "pop", and so on.
 
                 There are three types of entities:
 
-                - **System** - entities that are defined by the
-                  Dialogflow API for common data types such as date,
-                  time, currency, and so on. A system entity is
-                  represented by the ``EntityType`` type.
+                *   **System** - entities that are
+                defined by the Dialogflow API for common
+                data types such as date, time, currency,
+                and so on. A system entity is
+                represented by the ``EntityType`` type.
 
-                - **Custom** - entities that are defined by you that
-                  represent actionable data that is meaningful to your
-                  application. For example, you could define a
-                  ``pizza.sauce`` entity for red or white pizza sauce, a
-                  ``pizza.cheese`` entity for the different types of
-                  cheese on a pizza, a ``pizza.topping`` entity for
-                  different toppings, and so on. A custom entity is
-                  represented by the ``EntityType`` type.
+                *   **Custom** - entities that are
+                defined by you that represent
+                actionable data that is meaningful to
+                your application. For example,     you
+                could define a ``pizza.sauce`` entity
+                for red or white pizza sauce,     a
+                ``pizza.cheese`` entity for the
+                different types of cheese on a pizza,
+                a ``pizza.topping`` entity for different
+                toppings, and so on. A custom     entity
+                is represented by the ``EntityType``
+                type.
 
-                - **User** - entities that are built for an individual
-                  user such as favorites, preferences, playlists, and so
-                  on. A user entity is represented by the
-                  [SessionEntityType][google.cloud.dialogflow.cx.v3.SessionEntityType]
-                  type.
+                *   **User** - entities that are built
+                for an individual user such as
+                favorites, preferences, playlists, and
+                so on. A user entity is     represented
+                by the
+                    `SessionEntityType
+                <google.cloud.dialogflow.cx.v3.SessionEntityType>`__
+                type.
 
-                For more information about entity types, see the
-                `Dialogflow
-                documentation <https://cloud.google.com/dialogflow/docs/entities-overview>`__.
+                For more information about entity types,
+                see the `Dialogflow documentation
+                <https://cloud.google.com/dialogflow/docs/entities-overview>`__.
 
             """
 
@@ -866,8 +875,8 @@ class EntityTypesRestTransport(_BaseEntityTypesRestTransport):
                 raise core_exceptions.from_http_response(response)
 
             # Return the response
-            resp = gcdc_entity_type.EntityType()
-            pb_resp = gcdc_entity_type.EntityType.pb(resp)
+            resp = entity_type.EntityType()
+            pb_resp = entity_type.EntityType.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
@@ -880,7 +889,7 @@ class EntityTypesRestTransport(_BaseEntityTypesRestTransport):
                 logging.DEBUG
             ):  # pragma: NO COVER
                 try:
-                    response_payload = gcdc_entity_type.EntityType.to_json(response)
+                    response_payload = entity_type.EntityType.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -940,7 +949,8 @@ class EntityTypesRestTransport(_BaseEntityTypesRestTransport):
             Args:
                 request (~.entity_type.DeleteEntityTypeRequest):
                     The request object. The request message for
-                [EntityTypes.DeleteEntityType][google.cloud.dialogflow.cx.v3.EntityTypes.DeleteEntityType].
+                `EntityTypes.DeleteEntityType
+                <google.cloud.dialogflow.cx.v3.EntityTypes.DeleteEntityType>`__.
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -1050,7 +1060,8 @@ class EntityTypesRestTransport(_BaseEntityTypesRestTransport):
             Args:
                 request (~.entity_type.ExportEntityTypesRequest):
                     The request object. The request message for
-                [EntityTypes.ExportEntityTypes][google.cloud.dialogflow.cx.v3.EntityTypes.ExportEntityTypes].
+                `EntityTypes.ExportEntityTypes
+                <google.cloud.dialogflow.cx.v3.EntityTypes.ExportEntityTypes>`__.
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -1203,7 +1214,8 @@ class EntityTypesRestTransport(_BaseEntityTypesRestTransport):
             Args:
                 request (~.entity_type.GetEntityTypeRequest):
                     The request object. The request message for
-                [EntityTypes.GetEntityType][google.cloud.dialogflow.cx.v3.EntityTypes.GetEntityType].
+                `EntityTypes.GetEntityType
+                <google.cloud.dialogflow.cx.v3.EntityTypes.GetEntityType>`__.
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -1214,41 +1226,52 @@ class EntityTypesRestTransport(_BaseEntityTypesRestTransport):
 
             Returns:
                 ~.entity_type.EntityType:
-                    Entities are extracted from user input and represent
-                parameters that are meaningful to your application. For
-                example, a date range, a proper name such as a
-                geographic location or landmark, and so on. Entities
-                represent actionable data for your application.
+                    Entities are extracted from user input
+                and represent parameters that are
+                meaningful to your application. For
+                example, a date range, a proper name
+                such as a geographic location or
+                landmark, and so on. Entities represent
+                actionable data for your application.
 
-                When you define an entity, you can also include synonyms
-                that all map to that entity. For example, "soft drink",
+                When you define an entity, you can also
+                include synonyms that all map to that
+                entity. For example, "soft drink",
                 "soda", "pop", and so on.
 
                 There are three types of entities:
 
-                - **System** - entities that are defined by the
-                  Dialogflow API for common data types such as date,
-                  time, currency, and so on. A system entity is
-                  represented by the ``EntityType`` type.
+                *   **System** - entities that are
+                defined by the Dialogflow API for common
+                data types such as date, time, currency,
+                and so on. A system entity is
+                represented by the ``EntityType`` type.
 
-                - **Custom** - entities that are defined by you that
-                  represent actionable data that is meaningful to your
-                  application. For example, you could define a
-                  ``pizza.sauce`` entity for red or white pizza sauce, a
-                  ``pizza.cheese`` entity for the different types of
-                  cheese on a pizza, a ``pizza.topping`` entity for
-                  different toppings, and so on. A custom entity is
-                  represented by the ``EntityType`` type.
+                *   **Custom** - entities that are
+                defined by you that represent
+                actionable data that is meaningful to
+                your application. For example,     you
+                could define a ``pizza.sauce`` entity
+                for red or white pizza sauce,     a
+                ``pizza.cheese`` entity for the
+                different types of cheese on a pizza,
+                a ``pizza.topping`` entity for different
+                toppings, and so on. A custom     entity
+                is represented by the ``EntityType``
+                type.
 
-                - **User** - entities that are built for an individual
-                  user such as favorites, preferences, playlists, and so
-                  on. A user entity is represented by the
-                  [SessionEntityType][google.cloud.dialogflow.cx.v3.SessionEntityType]
-                  type.
+                *   **User** - entities that are built
+                for an individual user such as
+                favorites, preferences, playlists, and
+                so on. A user entity is     represented
+                by the
+                    `SessionEntityType
+                <google.cloud.dialogflow.cx.v3.SessionEntityType>`__
+                type.
 
-                For more information about entity types, see the
-                `Dialogflow
-                documentation <https://cloud.google.com/dialogflow/docs/entities-overview>`__.
+                For more information about entity types,
+                see the `Dialogflow documentation
+                <https://cloud.google.com/dialogflow/docs/entities-overview>`__.
 
             """
 
@@ -1386,7 +1409,8 @@ class EntityTypesRestTransport(_BaseEntityTypesRestTransport):
             Args:
                 request (~.entity_type.ImportEntityTypesRequest):
                     The request object. The request message for
-                [EntityTypes.ImportEntityTypes][google.cloud.dialogflow.cx.v3.EntityTypes.ImportEntityTypes].
+                `EntityTypes.ImportEntityTypes
+                <google.cloud.dialogflow.cx.v3.EntityTypes.ImportEntityTypes>`__.
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -1539,7 +1563,8 @@ class EntityTypesRestTransport(_BaseEntityTypesRestTransport):
             Args:
                 request (~.entity_type.ListEntityTypesRequest):
                     The request object. The request message for
-                [EntityTypes.ListEntityTypes][google.cloud.dialogflow.cx.v3.EntityTypes.ListEntityTypes].
+                `EntityTypes.ListEntityTypes
+                <google.cloud.dialogflow.cx.v3.EntityTypes.ListEntityTypes>`__.
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -1551,7 +1576,8 @@ class EntityTypesRestTransport(_BaseEntityTypesRestTransport):
             Returns:
                 ~.entity_type.ListEntityTypesResponse:
                     The response message for
-                [EntityTypes.ListEntityTypes][google.cloud.dialogflow.cx.v3.EntityTypes.ListEntityTypes].
+                `EntityTypes.ListEntityTypes
+                <google.cloud.dialogflow.cx.v3.EntityTypes.ListEntityTypes>`__.
 
             """
 
@@ -1680,18 +1706,19 @@ class EntityTypesRestTransport(_BaseEntityTypesRestTransport):
 
         def __call__(
             self,
-            request: gcdc_entity_type.UpdateEntityTypeRequest,
+            request: entity_type.UpdateEntityTypeRequest,
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
             metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
-        ) -> gcdc_entity_type.EntityType:
+        ) -> entity_type.EntityType:
             r"""Call the update entity type method over HTTP.
 
             Args:
-                request (~.gcdc_entity_type.UpdateEntityTypeRequest):
+                request (~.entity_type.UpdateEntityTypeRequest):
                     The request object. The request message for
-                [EntityTypes.UpdateEntityType][google.cloud.dialogflow.cx.v3.EntityTypes.UpdateEntityType].
+                `EntityTypes.UpdateEntityType
+                <google.cloud.dialogflow.cx.v3.EntityTypes.UpdateEntityType>`__.
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -1701,42 +1728,53 @@ class EntityTypesRestTransport(_BaseEntityTypesRestTransport):
                     be of type `bytes`.
 
             Returns:
-                ~.gcdc_entity_type.EntityType:
-                    Entities are extracted from user input and represent
-                parameters that are meaningful to your application. For
-                example, a date range, a proper name such as a
-                geographic location or landmark, and so on. Entities
-                represent actionable data for your application.
+                ~.entity_type.EntityType:
+                    Entities are extracted from user input
+                and represent parameters that are
+                meaningful to your application. For
+                example, a date range, a proper name
+                such as a geographic location or
+                landmark, and so on. Entities represent
+                actionable data for your application.
 
-                When you define an entity, you can also include synonyms
-                that all map to that entity. For example, "soft drink",
+                When you define an entity, you can also
+                include synonyms that all map to that
+                entity. For example, "soft drink",
                 "soda", "pop", and so on.
 
                 There are three types of entities:
 
-                - **System** - entities that are defined by the
-                  Dialogflow API for common data types such as date,
-                  time, currency, and so on. A system entity is
-                  represented by the ``EntityType`` type.
+                *   **System** - entities that are
+                defined by the Dialogflow API for common
+                data types such as date, time, currency,
+                and so on. A system entity is
+                represented by the ``EntityType`` type.
 
-                - **Custom** - entities that are defined by you that
-                  represent actionable data that is meaningful to your
-                  application. For example, you could define a
-                  ``pizza.sauce`` entity for red or white pizza sauce, a
-                  ``pizza.cheese`` entity for the different types of
-                  cheese on a pizza, a ``pizza.topping`` entity for
-                  different toppings, and so on. A custom entity is
-                  represented by the ``EntityType`` type.
+                *   **Custom** - entities that are
+                defined by you that represent
+                actionable data that is meaningful to
+                your application. For example,     you
+                could define a ``pizza.sauce`` entity
+                for red or white pizza sauce,     a
+                ``pizza.cheese`` entity for the
+                different types of cheese on a pizza,
+                a ``pizza.topping`` entity for different
+                toppings, and so on. A custom     entity
+                is represented by the ``EntityType``
+                type.
 
-                - **User** - entities that are built for an individual
-                  user such as favorites, preferences, playlists, and so
-                  on. A user entity is represented by the
-                  [SessionEntityType][google.cloud.dialogflow.cx.v3.SessionEntityType]
-                  type.
+                *   **User** - entities that are built
+                for an individual user such as
+                favorites, preferences, playlists, and
+                so on. A user entity is     represented
+                by the
+                    `SessionEntityType
+                <google.cloud.dialogflow.cx.v3.SessionEntityType>`__
+                type.
 
-                For more information about entity types, see the
-                `Dialogflow
-                documentation <https://cloud.google.com/dialogflow/docs/entities-overview>`__.
+                For more information about entity types,
+                see the `Dialogflow documentation
+                <https://cloud.google.com/dialogflow/docs/entities-overview>`__.
 
             """
 
@@ -1804,8 +1842,8 @@ class EntityTypesRestTransport(_BaseEntityTypesRestTransport):
                 raise core_exceptions.from_http_response(response)
 
             # Return the response
-            resp = gcdc_entity_type.EntityType()
-            pb_resp = gcdc_entity_type.EntityType.pb(resp)
+            resp = entity_type.EntityType()
+            pb_resp = entity_type.EntityType.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
@@ -1818,7 +1856,7 @@ class EntityTypesRestTransport(_BaseEntityTypesRestTransport):
                 logging.DEBUG
             ):  # pragma: NO COVER
                 try:
-                    response_payload = gcdc_entity_type.EntityType.to_json(response)
+                    response_payload = entity_type.EntityType.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -1840,9 +1878,7 @@ class EntityTypesRestTransport(_BaseEntityTypesRestTransport):
     @property
     def create_entity_type(
         self,
-    ) -> Callable[
-        [gcdc_entity_type.CreateEntityTypeRequest], gcdc_entity_type.EntityType
-    ]:
+    ) -> Callable[[entity_type.CreateEntityTypeRequest], entity_type.EntityType]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._CreateEntityType(self._session, self._host, self._interceptor)  # type: ignore
@@ -1892,9 +1928,7 @@ class EntityTypesRestTransport(_BaseEntityTypesRestTransport):
     @property
     def update_entity_type(
         self,
-    ) -> Callable[
-        [gcdc_entity_type.UpdateEntityTypeRequest], gcdc_entity_type.EntityType
-    ]:
+    ) -> Callable[[entity_type.UpdateEntityTypeRequest], entity_type.EntityType]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._UpdateEntityType(self._session, self._host, self._interceptor)  # type: ignore

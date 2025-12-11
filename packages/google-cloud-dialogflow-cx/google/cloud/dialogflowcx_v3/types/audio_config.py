@@ -39,10 +39,12 @@ __protobuf__ = proto.module(
 
 
 class AudioEncoding(proto.Enum):
-    r"""Audio encoding of the audio content sent in the conversational query
-    request. Refer to the `Cloud Speech API
-    documentation <https://cloud.google.com/speech-to-text/docs/basics>`__
-    for more details.
+    r"""Audio encoding of the audio content sent in the conversational
+    query request. Refer to the
+    `Cloud Speech API
+    documentation
+    <https://cloud.google.com/speech-to-text/docs/basics>`__ for
+    more details.
 
     Values:
         AUDIO_ENCODING_UNSPECIFIED (0):
@@ -51,42 +53,50 @@ class AudioEncoding(proto.Enum):
             Uncompressed 16-bit signed little-endian
             samples (Linear PCM).
         AUDIO_ENCODING_FLAC (2):
-            ```FLAC`` <https://xiph.org/flac/documentation.html>`__
-            (Free Lossless Audio Codec) is the recommended encoding
-            because it is lossless (therefore recognition is not
-            compromised) and requires only about half the bandwidth of
-            ``LINEAR16``. ``FLAC`` stream encoding supports 16-bit and
-            24-bit samples, however, not all fields in ``STREAMINFO``
-            are supported.
+            ```FLAC``
+            <https://xiph.org/flac/documentation.html>`__
+            (Free Lossless Audio Codec) is the recommended
+            encoding because it is lossless (therefore
+            recognition is not compromised) and requires
+            only about half the bandwidth of ``LINEAR16``.
+            ``FLAC`` stream encoding supports 16-bit and
+            24-bit samples, however, not all fields in
+            ``STREAMINFO`` are supported.
         AUDIO_ENCODING_MULAW (3):
             8-bit samples that compand 14-bit audio
             samples using G.711 PCMU/mu-law.
         AUDIO_ENCODING_AMR (4):
-            Adaptive Multi-Rate Narrowband codec. ``sample_rate_hertz``
-            must be 8000.
+            Adaptive Multi-Rate Narrowband codec.
+            ``sample_rate_hertz`` must be 8000.
         AUDIO_ENCODING_AMR_WB (5):
-            Adaptive Multi-Rate Wideband codec. ``sample_rate_hertz``
-            must be 16000.
+            Adaptive Multi-Rate Wideband codec.
+            ``sample_rate_hertz`` must be 16000.
         AUDIO_ENCODING_OGG_OPUS (6):
             Opus encoded audio frames in Ogg container
             (`OggOpus <https://wiki.xiph.org/OggOpus>`__).
             ``sample_rate_hertz`` must be 16000.
         AUDIO_ENCODING_SPEEX_WITH_HEADER_BYTE (7):
-            Although the use of lossy encodings is not recommended, if a
-            very low bitrate encoding is required, ``OGG_OPUS`` is
-            highly preferred over Speex encoding. The
-            `Speex <https://speex.org/>`__ encoding supported by
-            Dialogflow API has a header byte in each block, as in MIME
-            type ``audio/x-speex-with-header-byte``. It is a variant of
-            the RTP Speex encoding defined in `RFC
-            5574 <https://tools.ietf.org/html/rfc5574>`__. The stream is
-            a sequence of blocks, one block per RTP packet. Each block
-            starts with a byte containing the length of the block, in
-            bytes, followed by one or more frames of Speex data, padded
-            to an integral number of bytes (octets) as specified in RFC
-            5574. In other words, each RTP header is replaced with a
-            single byte containing the block length. Only Speex wideband
-            is supported. ``sample_rate_hertz`` must be 16000.
+            Although the use of lossy encodings is not
+            recommended, if a very low bitrate encoding is
+            required, ``OGG_OPUS`` is highly preferred over
+            Speex encoding. The `Speex
+            <https://speex.org/>`__ encoding supported by
+            Dialogflow API has a header byte in each block,
+            as in MIME type
+            ``audio/x-speex-with-header-byte``.
+            It is a variant of the RTP Speex encoding
+            defined in `RFC 5574
+            <https://tools.ietf.org/html/rfc5574>`__. The
+            stream is a sequence of blocks, one block per
+            RTP packet. Each block starts with a byte
+            containing the length of the block, in bytes,
+            followed by one or more frames of Speex data,
+            padded to an integral number of bytes (octets)
+            as specified in RFC 5574. In other words, each
+            RTP header is replaced with a single byte
+            containing the block length. Only Speex wideband
+            is supported. ``sample_rate_hertz`` must be
+            16000.
         AUDIO_ENCODING_ALAW (8):
             8-bit samples that compand 13-bit audio
             samples using G.711 PCMU/a-law.
@@ -103,40 +113,45 @@ class AudioEncoding(proto.Enum):
 
 
 class SpeechModelVariant(proto.Enum):
-    r"""Variant of the specified [Speech
-    model][google.cloud.dialogflow.cx.v3.InputAudioConfig.model] to use.
+    r"""Variant of the specified `Speech
+    model <google.cloud.dialogflow.cx.v3.InputAudioConfig.model>`__
+    to use.
 
     See the `Cloud Speech
-    documentation <https://cloud.google.com/speech-to-text/docs/enhanced-models>`__
+    documentation
+    <https://cloud.google.com/speech-to-text/docs/enhanced-models>`__
     for which models have different variants. For example, the
-    "phone_call" model has both a standard and an enhanced variant. When
-    you use an enhanced model, you will generally receive higher quality
-    results than for a standard model.
+    "phone_call" model has both a standard and an enhanced variant.
+    When you use an enhanced model, you will generally receive
+    higher quality results than for a standard model.
 
     Values:
         SPEECH_MODEL_VARIANT_UNSPECIFIED (0):
-            No model variant specified. In this case Dialogflow defaults
-            to USE_BEST_AVAILABLE.
+            No model variant specified. In this case
+            Dialogflow defaults to USE_BEST_AVAILABLE.
         USE_BEST_AVAILABLE (1):
-            Use the best available variant of the [Speech
-            model][InputAudioConfig.model] that the caller is eligible
-            for.
+            Use the best available variant of the `Speech
+            model <InputAudioConfig.model>`__ that the
+            caller is eligible for.
         USE_STANDARD (2):
-            Use standard model variant even if an enhanced model is
-            available. See the `Cloud Speech
-            documentation <https://cloud.google.com/speech-to-text/docs/enhanced-models>`__
+            Use standard model variant even if an enhanced
+            model is available.  See the `Cloud Speech
+            documentation
+            <https://cloud.google.com/speech-to-text/docs/enhanced-models>`__
             for details about enhanced models.
         USE_ENHANCED (3):
             Use an enhanced model variant:
 
-            - If an enhanced variant does not exist for the given
-              [model][google.cloud.dialogflow.cx.v3.InputAudioConfig.model]
-              and request language, Dialogflow falls back to the
-              standard variant.
+            * If an enhanced variant does not exist for the
+            given   `model
+            <google.cloud.dialogflow.cx.v3.InputAudioConfig.model>`__
+            and request   language, Dialogflow falls back to
+            the standard variant.
 
               The `Cloud Speech
-              documentation <https://cloud.google.com/speech-to-text/docs/enhanced-models>`__
-              describes which models have enhanced variants.
+              documentation
+            <https://cloud.google.com/speech-to-text/docs/enhanced-models>`__
+            describes which models have enhanced variants.
     """
     SPEECH_MODEL_VARIANT_UNSPECIFIED = 0
     USE_BEST_AVAILABLE = 1
@@ -145,8 +160,9 @@ class SpeechModelVariant(proto.Enum):
 
 
 class SsmlVoiceGender(proto.Enum):
-    r"""Gender of the voice as described in `SSML voice
-    element <https://www.w3.org/TR/speech-synthesis11/#edef_voice>`__.
+    r"""Gender of the voice as described in
+    `SSML voice element
+    <https://www.w3.org/TR/speech-synthesis11/#edef_voice>`__.
 
     Values:
         SSML_VOICE_GENDER_UNSPECIFIED (0):
@@ -253,28 +269,28 @@ class SpeechWordInfo(proto.Message):
 
 
 class BargeInConfig(proto.Message):
-    r"""Configuration of the barge-in behavior. Barge-in instructs the API
-    to return a detected utterance at a proper time while the client is
-    playing back the response audio from a previous request. When the
-    client sees the utterance, it should stop the playback and
-    immediately get ready for receiving the responses for the current
-    request.
+    r"""Configuration of the barge-in behavior. Barge-in instructs the
+    API to return a detected utterance at a proper time while the
+    client is playing back the response audio from a previous
+    request. When the client sees the utterance, it should stop the
+    playback and immediately get ready for receiving the responses
+    for the current request.
 
-    The barge-in handling requires the client to start streaming audio
-    input as soon as it starts playing back the audio from the previous
-    response. The playback is modeled into two phases:
+    The barge-in handling requires the client to start streaming
+    audio input as soon as it starts playing back the audio from the
+    previous response. The playback is modeled into two phases:
 
-    - No barge-in phase: which goes first and during which speech
-      detection should not be carried out.
+    * No barge-in phase: which goes first and during which speech
+    detection   should not be carried out.
 
-    - Barge-in phase: which follows the no barge-in phase and during
-      which the API starts speech detection and may inform the client
-      that an utterance has been detected. Note that no-speech event is
-      not expected in this phase.
+    * Barge-in phase: which follows the no barge-in phase and during
+    which   the API starts speech detection and may inform the
+    client that an utterance   has been detected. Note that
+    no-speech event is not expected in this   phase.
 
-    The client provides this configuration in terms of the durations of
-    those two phases. The durations are measured in terms of the audio
-    length from the start of the input audio.
+    The client provides this configuration in terms of the durations
+    of those two phases. The durations are measured in terms of the
+    audio length from the start of the input audio.
 
     No-speech event is a response with END_OF_UTTERANCE without any
     transcript following up.
@@ -309,52 +325,65 @@ class InputAudioConfig(proto.Message):
             Required. Audio encoding of the audio content
             to process.
         sample_rate_hertz (int):
-            Sample rate (in Hertz) of the audio content sent in the
-            query. Refer to `Cloud Speech API
-            documentation <https://cloud.google.com/speech-to-text/docs/basics>`__
+            Sample rate (in Hertz) of the audio content sent
+            in the query. Refer to
+            `Cloud Speech API
+            documentation
+            <https://cloud.google.com/speech-to-text/docs/basics>`__
             for more details.
         enable_word_info (bool):
             Optional. If ``true``, Dialogflow returns
-            [SpeechWordInfo][google.cloud.dialogflow.cx.v3.SpeechWordInfo]
-            in
-            [StreamingRecognitionResult][google.cloud.dialogflow.cx.v3.StreamingRecognitionResult]
-            with information about the recognized speech words, e.g.
-            start and end time offsets. If false or unspecified, Speech
-            doesn't return any word-level information.
+            `SpeechWordInfo
+            <google.cloud.dialogflow.cx.v3.SpeechWordInfo>`__
+            in `StreamingRecognitionResult
+            <google.cloud.dialogflow.cx.v3.StreamingRecognitionResult>`__
+            with information about the recognized speech
+            words, e.g. start and end time offsets. If false
+            or unspecified, Speech doesn't return any
+            word-level information.
         phrase_hints (MutableSequence[str]):
-            Optional. A list of strings containing words and phrases
-            that the speech recognizer should recognize with higher
-            likelihood.
+            Optional. A list of strings containing words and
+            phrases that the speech recognizer should
+            recognize with higher likelihood.
 
             See `the Cloud Speech
-            documentation <https://cloud.google.com/speech-to-text/docs/basics#phrase-hints>`__
+            documentation
+            <https://cloud.google.com/speech-to-text/docs/basics#phrase-hints>`__
             for more details.
         model (str):
-            Optional. Which Speech model to select for the given
-            request. For more information, see `Speech
-            models <https://cloud.google.com/dialogflow/cx/docs/concept/speech-models>`__.
+            Optional. Which Speech model to select for the
+            given request. For more information, see
+            `Speech
+            models
+            <https://cloud.google.com/dialogflow/cx/docs/concept/speech-models>`__.
         model_variant (google.cloud.dialogflowcx_v3.types.SpeechModelVariant):
-            Optional. Which variant of the [Speech
-            model][google.cloud.dialogflow.cx.v3.InputAudioConfig.model]
+            Optional. Which variant of the `Speech
+            model
+            <google.cloud.dialogflow.cx.v3.InputAudioConfig.model>`__
             to use.
         single_utterance (bool):
-            Optional. If ``false`` (default), recognition does not cease
-            until the client closes the stream. If ``true``, the
-            recognizer will detect a single spoken utterance in input
-            audio. Recognition ceases when it detects the audio's voice
-            has stopped or paused. In this case, once a detected intent
-            is received, the client should close the stream and start a
-            new request with a new stream as needed. Note: This setting
-            is relevant only for streaming methods.
+            Optional. If ``false`` (default), recognition
+            does not cease until the client closes the
+            stream. If ``true``, the recognizer will detect
+            a single spoken utterance in input audio.
+            Recognition ceases when it detects the audio's
+            voice has stopped or paused. In this case, once
+            a detected intent is received, the client should
+            close the stream and start a new request with a
+            new stream as needed.
+            Note: This setting is relevant only for
+            streaming methods.
         barge_in_config (google.cloud.dialogflowcx_v3.types.BargeInConfig):
             Configuration of barge-in behavior during the
             streaming of input audio.
         opt_out_conformer_model_migration (bool):
-            If ``true``, the request will opt out for STT conformer
-            model migration. This field will be deprecated once force
-            migration takes place in June 2024. Please refer to
-            `Dialogflow CX Speech model
-            migration <https://cloud.google.com/dialogflow/cx/docs/concept/speech-model-migration>`__.
+            If ``true``, the request will opt out for STT
+            conformer model migration. This field will be
+            deprecated once force migration takes place in
+            June
+            2024. Please refer to `Dialogflow CX Speech
+                model migration
+                <https://cloud.google.com/dialogflow/cx/docs/concept/speech-model-migration>`__.
     """
 
     audio_encoding: "AudioEncoding" = proto.Field(
@@ -403,22 +432,25 @@ class VoiceSelectionParams(proto.Message):
 
     Attributes:
         name (str):
-            Optional. The name of the voice. If not set, the service
-            will choose a voice based on the other parameters such as
-            language_code and
-            [ssml_gender][google.cloud.dialogflow.cx.v3.VoiceSelectionParams.ssml_gender].
+            Optional. The name of the voice. If not set, the
+            service will choose a voice based on the other
+            parameters such as language_code and
+            `ssml_gender
+            <google.cloud.dialogflow.cx.v3.VoiceSelectionParams.ssml_gender>`__.
 
-            For the list of available voices, please refer to `Supported
-            voices and
-            languages <https://cloud.google.com/text-to-speech/docs/voices>`__.
+            For the list of available voices, please refer
+            to `Supported voices and languages
+            <https://cloud.google.com/text-to-speech/docs/voices>`__.
         ssml_gender (google.cloud.dialogflowcx_v3.types.SsmlVoiceGender):
-            Optional. The preferred gender of the voice. If not set, the
-            service will choose a voice based on the other parameters
-            such as language_code and
-            [name][google.cloud.dialogflow.cx.v3.VoiceSelectionParams.name].
-            Note that this is only a preference, not requirement. If a
-            voice of the appropriate gender is not available, the
-            synthesizer substitutes a voice with a different gender
+            Optional. The preferred gender of the voice. If
+            not set, the service will choose a voice based
+            on the other parameters such as language_code
+            and `name
+            <google.cloud.dialogflow.cx.v3.VoiceSelectionParams.name>`__.
+            Note that this is only a preference, not
+            requirement. If a voice of the appropriate
+            gender is not available, the synthesizer
+            substitutes a voice with a different gender
             rather than failing the request.
     """
 
@@ -438,26 +470,30 @@ class SynthesizeSpeechConfig(proto.Message):
 
     Attributes:
         speaking_rate (float):
-            Optional. Speaking rate/speed, in the range [0.25, 4.0]. 1.0
-            is the normal native speed supported by the specific voice.
-            2.0 is twice as fast, and 0.5 is half as fast. If
-            unset(0.0), defaults to the native 1.0 speed. Any other
+            Optional. Speaking rate/speed, in the range
+            [0.25, 4.0]. 1.0 is the normal native speed
+            supported by the specific voice. 2.0 is twice as
+            fast, and 0.5 is half as fast. If unset(0.0),
+            defaults to the native 1.0 speed. Any other
             values < 0.25 or > 4.0 will return an error.
         pitch (float):
-            Optional. Speaking pitch, in the range [-20.0, 20.0]. 20
-            means increase 20 semitones from the original pitch. -20
-            means decrease 20 semitones from the original pitch.
+            Optional. Speaking pitch, in the range [-20.0,
+            20.0]. 20 means increase 20 semitones from the
+            original pitch. -20 means decrease 20 semitones
+            from the original pitch.
         volume_gain_db (float):
-            Optional. Volume gain (in dB) of the normal native volume
-            supported by the specific voice, in the range [-96.0, 16.0].
-            If unset, or set to a value of 0.0 (dB), will play at normal
-            native signal amplitude. A value of -6.0 (dB) will play at
-            approximately half the amplitude of the normal native signal
-            amplitude. A value of +6.0 (dB) will play at approximately
-            twice the amplitude of the normal native signal amplitude.
-            We strongly recommend not to exceed +10 (dB) as there's
-            usually no effective increase in loudness for any value
-            greater than that.
+            Optional. Volume gain (in dB) of the normal
+            native volume supported by the specific voice,
+            in the range [-96.0, 16.0]. If unset, or set to
+            a value of 0.0 (dB), will play at normal native
+            signal amplitude. A value of -6.0 (dB) will play
+            at approximately half the amplitude of the
+            normal native signal amplitude. A value of +6.0
+            (dB) will play at approximately twice the
+            amplitude of the normal native signal amplitude.
+            We strongly recommend not to exceed +10 (dB) as
+            there's usually no effective increase in
+            loudness for any value greater than that.
         effects_profile_id (MutableSequence[str]):
             Optional. An identifier which selects 'audio
             effects' profiles that are applied on (post
@@ -510,9 +546,10 @@ class OutputAudioConfig(proto.Message):
             converting to the desired sample rate (which
             might result in worse audio quality).
         synthesize_speech_config (google.cloud.dialogflowcx_v3.types.SynthesizeSpeechConfig):
-            Optional. Configuration of how speech should be synthesized.
-            If not specified,
-            [Agent.text_to_speech_settings][google.cloud.dialogflow.cx.v3.Agent.text_to_speech_settings]
+            Optional. Configuration of how speech should be
+            synthesized. If not specified,
+            `Agent.text_to_speech_settings
+            <google.cloud.dialogflow.cx.v3.Agent.text_to_speech_settings>`__
             is applied.
     """
 
@@ -537,24 +574,29 @@ class TextToSpeechSettings(proto.Message):
 
     Attributes:
         synthesize_speech_configs (MutableMapping[str, google.cloud.dialogflowcx_v3.types.SynthesizeSpeechConfig]):
-            Configuration of how speech should be synthesized, mapping
-            from language
+            Configuration of how speech should be
+            synthesized, mapping from language
             (https://cloud.google.com/dialogflow/cx/docs/reference/language)
             to SynthesizeSpeechConfig.
 
             These settings affect:
 
             - The `phone
-              gateway <https://cloud.google.com/dialogflow/cx/docs/concept/integration/phone-gateway>`__
-              synthesize configuration set via
-              [Agent.text_to_speech_settings][google.cloud.dialogflow.cx.v3.Agent.text_to_speech_settings].
+             gateway
+            <https://cloud.google.com/dialogflow/cx/docs/concept/integration/phone-gateway>`__
+            synthesize configuration set via
+               `Agent.text_to_speech_settings
+            <google.cloud.dialogflow.cx.v3.Agent.text_to_speech_settings>`__.
 
             - How speech is synthesized when invoking
-              [session][google.cloud.dialogflow.cx.v3.Sessions] APIs.
-              [Agent.text_to_speech_settings][google.cloud.dialogflow.cx.v3.Agent.text_to_speech_settings]
-              only applies if
-              [OutputAudioConfig.synthesize_speech_config][google.cloud.dialogflow.cx.v3.OutputAudioConfig.synthesize_speech_config]
-              is not specified.
+             `session
+            <google.cloud.dialogflow.cx.v3.Sessions>`__
+            APIs.    `Agent.text_to_speech_settings
+            <google.cloud.dialogflow.cx.v3.Agent.text_to_speech_settings>`__
+            only applies if
+               `OutputAudioConfig.synthesize_speech_config
+            <google.cloud.dialogflow.cx.v3.OutputAudioConfig.synthesize_speech_config>`__
+            is not specified.
     """
 
     synthesize_speech_configs: MutableMapping[

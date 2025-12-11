@@ -64,7 +64,6 @@ from google.cloud.dialogflowcx_v3.services.experiments import (
     transports,
 )
 from google.cloud.dialogflowcx_v3.types import experiment
-from google.cloud.dialogflowcx_v3.types import experiment as gcdc_experiment
 
 CRED_INFO_JSON = {
     "credential_source": "/path/to/file",
@@ -1945,7 +1944,7 @@ async def test_get_experiment_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        gcdc_experiment.CreateExperimentRequest,
+        experiment.CreateExperimentRequest,
         dict,
     ],
 )
@@ -1964,11 +1963,11 @@ def test_create_experiment(request_type, transport: str = "grpc"):
         type(client.transport.create_experiment), "__call__"
     ) as call:
         # Designate an appropriate return value for the call.
-        call.return_value = gcdc_experiment.Experiment(
+        call.return_value = experiment.Experiment(
             name="name_value",
             display_name="display_name_value",
             description="description_value",
-            state=gcdc_experiment.Experiment.State.DRAFT,
+            state=experiment.Experiment.State.DRAFT,
             rollout_failure_reason="rollout_failure_reason_value",
         )
         response = client.create_experiment(request)
@@ -1976,15 +1975,15 @@ def test_create_experiment(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        request = gcdc_experiment.CreateExperimentRequest()
+        request = experiment.CreateExperimentRequest()
         assert args[0] == request
 
     # Establish that the response is the type that we expect.
-    assert isinstance(response, gcdc_experiment.Experiment)
+    assert isinstance(response, experiment.Experiment)
     assert response.name == "name_value"
     assert response.display_name == "display_name_value"
     assert response.description == "description_value"
-    assert response.state == gcdc_experiment.Experiment.State.DRAFT
+    assert response.state == experiment.Experiment.State.DRAFT
     assert response.rollout_failure_reason == "rollout_failure_reason_value"
 
 
@@ -1999,7 +1998,7 @@ def test_create_experiment_non_empty_request_with_auto_populated_field():
     # Populate all string fields in the request which are not UUID4
     # since we want to check that UUID4 are populated automatically
     # if they meet the requirements of AIP 4235.
-    request = gcdc_experiment.CreateExperimentRequest(
+    request = experiment.CreateExperimentRequest(
         parent="parent_value",
     )
 
@@ -2013,7 +2012,7 @@ def test_create_experiment_non_empty_request_with_auto_populated_field():
         client.create_experiment(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == gcdc_experiment.CreateExperimentRequest(
+        assert args[0] == experiment.CreateExperimentRequest(
             parent="parent_value",
         )
 
@@ -2099,8 +2098,7 @@ async def test_create_experiment_async_use_cached_wrapped_rpc(
 
 @pytest.mark.asyncio
 async def test_create_experiment_async(
-    transport: str = "grpc_asyncio",
-    request_type=gcdc_experiment.CreateExperimentRequest,
+    transport: str = "grpc_asyncio", request_type=experiment.CreateExperimentRequest
 ):
     client = ExperimentsAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -2117,11 +2115,11 @@ async def test_create_experiment_async(
     ) as call:
         # Designate an appropriate return value for the call.
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            gcdc_experiment.Experiment(
+            experiment.Experiment(
                 name="name_value",
                 display_name="display_name_value",
                 description="description_value",
-                state=gcdc_experiment.Experiment.State.DRAFT,
+                state=experiment.Experiment.State.DRAFT,
                 rollout_failure_reason="rollout_failure_reason_value",
             )
         )
@@ -2130,15 +2128,15 @@ async def test_create_experiment_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        request = gcdc_experiment.CreateExperimentRequest()
+        request = experiment.CreateExperimentRequest()
         assert args[0] == request
 
     # Establish that the response is the type that we expect.
-    assert isinstance(response, gcdc_experiment.Experiment)
+    assert isinstance(response, experiment.Experiment)
     assert response.name == "name_value"
     assert response.display_name == "display_name_value"
     assert response.description == "description_value"
-    assert response.state == gcdc_experiment.Experiment.State.DRAFT
+    assert response.state == experiment.Experiment.State.DRAFT
     assert response.rollout_failure_reason == "rollout_failure_reason_value"
 
 
@@ -2154,7 +2152,7 @@ def test_create_experiment_field_headers():
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
-    request = gcdc_experiment.CreateExperimentRequest()
+    request = experiment.CreateExperimentRequest()
 
     request.parent = "parent_value"
 
@@ -2162,7 +2160,7 @@ def test_create_experiment_field_headers():
     with mock.patch.object(
         type(client.transport.create_experiment), "__call__"
     ) as call:
-        call.return_value = gcdc_experiment.Experiment()
+        call.return_value = experiment.Experiment()
         client.create_experiment(request)
 
         # Establish that the underlying gRPC stub method was called.
@@ -2186,7 +2184,7 @@ async def test_create_experiment_field_headers_async():
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
-    request = gcdc_experiment.CreateExperimentRequest()
+    request = experiment.CreateExperimentRequest()
 
     request.parent = "parent_value"
 
@@ -2195,7 +2193,7 @@ async def test_create_experiment_field_headers_async():
         type(client.transport.create_experiment), "__call__"
     ) as call:
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            gcdc_experiment.Experiment()
+            experiment.Experiment()
         )
         await client.create_experiment(request)
 
@@ -2222,12 +2220,12 @@ def test_create_experiment_flattened():
         type(client.transport.create_experiment), "__call__"
     ) as call:
         # Designate an appropriate return value for the call.
-        call.return_value = gcdc_experiment.Experiment()
+        call.return_value = experiment.Experiment()
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
         client.create_experiment(
             parent="parent_value",
-            experiment=gcdc_experiment.Experiment(name="name_value"),
+            experiment=experiment.Experiment(name="name_value"),
         )
 
         # Establish that the underlying call was made with the expected
@@ -2238,7 +2236,7 @@ def test_create_experiment_flattened():
         mock_val = "parent_value"
         assert arg == mock_val
         arg = args[0].experiment
-        mock_val = gcdc_experiment.Experiment(name="name_value")
+        mock_val = experiment.Experiment(name="name_value")
         assert arg == mock_val
 
 
@@ -2251,9 +2249,9 @@ def test_create_experiment_flattened_error():
     # fields is an error.
     with pytest.raises(ValueError):
         client.create_experiment(
-            gcdc_experiment.CreateExperimentRequest(),
+            experiment.CreateExperimentRequest(),
             parent="parent_value",
-            experiment=gcdc_experiment.Experiment(name="name_value"),
+            experiment=experiment.Experiment(name="name_value"),
         )
 
 
@@ -2268,16 +2266,16 @@ async def test_create_experiment_flattened_async():
         type(client.transport.create_experiment), "__call__"
     ) as call:
         # Designate an appropriate return value for the call.
-        call.return_value = gcdc_experiment.Experiment()
+        call.return_value = experiment.Experiment()
 
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            gcdc_experiment.Experiment()
+            experiment.Experiment()
         )
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
         response = await client.create_experiment(
             parent="parent_value",
-            experiment=gcdc_experiment.Experiment(name="name_value"),
+            experiment=experiment.Experiment(name="name_value"),
         )
 
         # Establish that the underlying call was made with the expected
@@ -2288,7 +2286,7 @@ async def test_create_experiment_flattened_async():
         mock_val = "parent_value"
         assert arg == mock_val
         arg = args[0].experiment
-        mock_val = gcdc_experiment.Experiment(name="name_value")
+        mock_val = experiment.Experiment(name="name_value")
         assert arg == mock_val
 
 
@@ -2302,16 +2300,16 @@ async def test_create_experiment_flattened_error_async():
     # fields is an error.
     with pytest.raises(ValueError):
         await client.create_experiment(
-            gcdc_experiment.CreateExperimentRequest(),
+            experiment.CreateExperimentRequest(),
             parent="parent_value",
-            experiment=gcdc_experiment.Experiment(name="name_value"),
+            experiment=experiment.Experiment(name="name_value"),
         )
 
 
 @pytest.mark.parametrize(
     "request_type",
     [
-        gcdc_experiment.UpdateExperimentRequest,
+        experiment.UpdateExperimentRequest,
         dict,
     ],
 )
@@ -2330,11 +2328,11 @@ def test_update_experiment(request_type, transport: str = "grpc"):
         type(client.transport.update_experiment), "__call__"
     ) as call:
         # Designate an appropriate return value for the call.
-        call.return_value = gcdc_experiment.Experiment(
+        call.return_value = experiment.Experiment(
             name="name_value",
             display_name="display_name_value",
             description="description_value",
-            state=gcdc_experiment.Experiment.State.DRAFT,
+            state=experiment.Experiment.State.DRAFT,
             rollout_failure_reason="rollout_failure_reason_value",
         )
         response = client.update_experiment(request)
@@ -2342,15 +2340,15 @@ def test_update_experiment(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        request = gcdc_experiment.UpdateExperimentRequest()
+        request = experiment.UpdateExperimentRequest()
         assert args[0] == request
 
     # Establish that the response is the type that we expect.
-    assert isinstance(response, gcdc_experiment.Experiment)
+    assert isinstance(response, experiment.Experiment)
     assert response.name == "name_value"
     assert response.display_name == "display_name_value"
     assert response.description == "description_value"
-    assert response.state == gcdc_experiment.Experiment.State.DRAFT
+    assert response.state == experiment.Experiment.State.DRAFT
     assert response.rollout_failure_reason == "rollout_failure_reason_value"
 
 
@@ -2365,7 +2363,7 @@ def test_update_experiment_non_empty_request_with_auto_populated_field():
     # Populate all string fields in the request which are not UUID4
     # since we want to check that UUID4 are populated automatically
     # if they meet the requirements of AIP 4235.
-    request = gcdc_experiment.UpdateExperimentRequest()
+    request = experiment.UpdateExperimentRequest()
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2377,7 +2375,7 @@ def test_update_experiment_non_empty_request_with_auto_populated_field():
         client.update_experiment(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == gcdc_experiment.UpdateExperimentRequest()
+        assert args[0] == experiment.UpdateExperimentRequest()
 
 
 def test_update_experiment_use_cached_wrapped_rpc():
@@ -2461,8 +2459,7 @@ async def test_update_experiment_async_use_cached_wrapped_rpc(
 
 @pytest.mark.asyncio
 async def test_update_experiment_async(
-    transport: str = "grpc_asyncio",
-    request_type=gcdc_experiment.UpdateExperimentRequest,
+    transport: str = "grpc_asyncio", request_type=experiment.UpdateExperimentRequest
 ):
     client = ExperimentsAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -2479,11 +2476,11 @@ async def test_update_experiment_async(
     ) as call:
         # Designate an appropriate return value for the call.
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            gcdc_experiment.Experiment(
+            experiment.Experiment(
                 name="name_value",
                 display_name="display_name_value",
                 description="description_value",
-                state=gcdc_experiment.Experiment.State.DRAFT,
+                state=experiment.Experiment.State.DRAFT,
                 rollout_failure_reason="rollout_failure_reason_value",
             )
         )
@@ -2492,15 +2489,15 @@ async def test_update_experiment_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        request = gcdc_experiment.UpdateExperimentRequest()
+        request = experiment.UpdateExperimentRequest()
         assert args[0] == request
 
     # Establish that the response is the type that we expect.
-    assert isinstance(response, gcdc_experiment.Experiment)
+    assert isinstance(response, experiment.Experiment)
     assert response.name == "name_value"
     assert response.display_name == "display_name_value"
     assert response.description == "description_value"
-    assert response.state == gcdc_experiment.Experiment.State.DRAFT
+    assert response.state == experiment.Experiment.State.DRAFT
     assert response.rollout_failure_reason == "rollout_failure_reason_value"
 
 
@@ -2516,7 +2513,7 @@ def test_update_experiment_field_headers():
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
-    request = gcdc_experiment.UpdateExperimentRequest()
+    request = experiment.UpdateExperimentRequest()
 
     request.experiment.name = "name_value"
 
@@ -2524,7 +2521,7 @@ def test_update_experiment_field_headers():
     with mock.patch.object(
         type(client.transport.update_experiment), "__call__"
     ) as call:
-        call.return_value = gcdc_experiment.Experiment()
+        call.return_value = experiment.Experiment()
         client.update_experiment(request)
 
         # Establish that the underlying gRPC stub method was called.
@@ -2548,7 +2545,7 @@ async def test_update_experiment_field_headers_async():
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
-    request = gcdc_experiment.UpdateExperimentRequest()
+    request = experiment.UpdateExperimentRequest()
 
     request.experiment.name = "name_value"
 
@@ -2557,7 +2554,7 @@ async def test_update_experiment_field_headers_async():
         type(client.transport.update_experiment), "__call__"
     ) as call:
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            gcdc_experiment.Experiment()
+            experiment.Experiment()
         )
         await client.update_experiment(request)
 
@@ -2584,11 +2581,11 @@ def test_update_experiment_flattened():
         type(client.transport.update_experiment), "__call__"
     ) as call:
         # Designate an appropriate return value for the call.
-        call.return_value = gcdc_experiment.Experiment()
+        call.return_value = experiment.Experiment()
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
         client.update_experiment(
-            experiment=gcdc_experiment.Experiment(name="name_value"),
+            experiment=experiment.Experiment(name="name_value"),
             update_mask=field_mask_pb2.FieldMask(paths=["paths_value"]),
         )
 
@@ -2597,7 +2594,7 @@ def test_update_experiment_flattened():
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
         arg = args[0].experiment
-        mock_val = gcdc_experiment.Experiment(name="name_value")
+        mock_val = experiment.Experiment(name="name_value")
         assert arg == mock_val
         arg = args[0].update_mask
         mock_val = field_mask_pb2.FieldMask(paths=["paths_value"])
@@ -2613,8 +2610,8 @@ def test_update_experiment_flattened_error():
     # fields is an error.
     with pytest.raises(ValueError):
         client.update_experiment(
-            gcdc_experiment.UpdateExperimentRequest(),
-            experiment=gcdc_experiment.Experiment(name="name_value"),
+            experiment.UpdateExperimentRequest(),
+            experiment=experiment.Experiment(name="name_value"),
             update_mask=field_mask_pb2.FieldMask(paths=["paths_value"]),
         )
 
@@ -2630,15 +2627,15 @@ async def test_update_experiment_flattened_async():
         type(client.transport.update_experiment), "__call__"
     ) as call:
         # Designate an appropriate return value for the call.
-        call.return_value = gcdc_experiment.Experiment()
+        call.return_value = experiment.Experiment()
 
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            gcdc_experiment.Experiment()
+            experiment.Experiment()
         )
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
         response = await client.update_experiment(
-            experiment=gcdc_experiment.Experiment(name="name_value"),
+            experiment=experiment.Experiment(name="name_value"),
             update_mask=field_mask_pb2.FieldMask(paths=["paths_value"]),
         )
 
@@ -2647,7 +2644,7 @@ async def test_update_experiment_flattened_async():
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
         arg = args[0].experiment
-        mock_val = gcdc_experiment.Experiment(name="name_value")
+        mock_val = experiment.Experiment(name="name_value")
         assert arg == mock_val
         arg = args[0].update_mask
         mock_val = field_mask_pb2.FieldMask(paths=["paths_value"])
@@ -2664,8 +2661,8 @@ async def test_update_experiment_flattened_error_async():
     # fields is an error.
     with pytest.raises(ValueError):
         await client.update_experiment(
-            gcdc_experiment.UpdateExperimentRequest(),
-            experiment=gcdc_experiment.Experiment(name="name_value"),
+            experiment.UpdateExperimentRequest(),
+            experiment=experiment.Experiment(name="name_value"),
             update_mask=field_mask_pb2.FieldMask(paths=["paths_value"]),
         )
 
@@ -4158,7 +4155,7 @@ def test_create_experiment_rest_use_cached_wrapped_rpc():
 
 
 def test_create_experiment_rest_required_fields(
-    request_type=gcdc_experiment.CreateExperimentRequest,
+    request_type=experiment.CreateExperimentRequest,
 ):
     transport_class = transports.ExperimentsRestTransport
 
@@ -4197,7 +4194,7 @@ def test_create_experiment_rest_required_fields(
     request = request_type(**request_init)
 
     # Designate an appropriate value for the returned response.
-    return_value = gcdc_experiment.Experiment()
+    return_value = experiment.Experiment()
     # Mock the http request call within the method and fake a response.
     with mock.patch.object(Session, "request") as req:
         # We need to mock transcode() because providing default values
@@ -4219,7 +4216,7 @@ def test_create_experiment_rest_required_fields(
             response_value.status_code = 200
 
             # Convert return value to protobuf type
-            return_value = gcdc_experiment.Experiment.pb(return_value)
+            return_value = experiment.Experiment.pb(return_value)
             json_return_value = json_format.MessageToJson(return_value)
 
             response_value._content = json_return_value.encode("UTF-8")
@@ -4259,7 +4256,7 @@ def test_create_experiment_rest_flattened():
     # Mock the http request call within the method and fake a response.
     with mock.patch.object(type(client.transport._session), "request") as req:
         # Designate an appropriate value for the returned response.
-        return_value = gcdc_experiment.Experiment()
+        return_value = experiment.Experiment()
 
         # get arguments that satisfy an http rule for this method
         sample_request = {
@@ -4269,7 +4266,7 @@ def test_create_experiment_rest_flattened():
         # get truthy value for each flattened field
         mock_args = dict(
             parent="parent_value",
-            experiment=gcdc_experiment.Experiment(name="name_value"),
+            experiment=experiment.Experiment(name="name_value"),
         )
         mock_args.update(sample_request)
 
@@ -4277,7 +4274,7 @@ def test_create_experiment_rest_flattened():
         response_value = Response()
         response_value.status_code = 200
         # Convert return value to protobuf type
-        return_value = gcdc_experiment.Experiment.pb(return_value)
+        return_value = experiment.Experiment.pb(return_value)
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
@@ -4306,9 +4303,9 @@ def test_create_experiment_rest_flattened_error(transport: str = "rest"):
     # fields is an error.
     with pytest.raises(ValueError):
         client.create_experiment(
-            gcdc_experiment.CreateExperimentRequest(),
+            experiment.CreateExperimentRequest(),
             parent="parent_value",
-            experiment=gcdc_experiment.Experiment(name="name_value"),
+            experiment=experiment.Experiment(name="name_value"),
         )
 
 
@@ -4351,7 +4348,7 @@ def test_update_experiment_rest_use_cached_wrapped_rpc():
 
 
 def test_update_experiment_rest_required_fields(
-    request_type=gcdc_experiment.UpdateExperimentRequest,
+    request_type=experiment.UpdateExperimentRequest,
 ):
     transport_class = transports.ExperimentsRestTransport
 
@@ -4387,7 +4384,7 @@ def test_update_experiment_rest_required_fields(
     request = request_type(**request_init)
 
     # Designate an appropriate value for the returned response.
-    return_value = gcdc_experiment.Experiment()
+    return_value = experiment.Experiment()
     # Mock the http request call within the method and fake a response.
     with mock.patch.object(Session, "request") as req:
         # We need to mock transcode() because providing default values
@@ -4409,7 +4406,7 @@ def test_update_experiment_rest_required_fields(
             response_value.status_code = 200
 
             # Convert return value to protobuf type
-            return_value = gcdc_experiment.Experiment.pb(return_value)
+            return_value = experiment.Experiment.pb(return_value)
             json_return_value = json_format.MessageToJson(return_value)
 
             response_value._content = json_return_value.encode("UTF-8")
@@ -4449,7 +4446,7 @@ def test_update_experiment_rest_flattened():
     # Mock the http request call within the method and fake a response.
     with mock.patch.object(type(client.transport._session), "request") as req:
         # Designate an appropriate value for the returned response.
-        return_value = gcdc_experiment.Experiment()
+        return_value = experiment.Experiment()
 
         # get arguments that satisfy an http rule for this method
         sample_request = {
@@ -4460,7 +4457,7 @@ def test_update_experiment_rest_flattened():
 
         # get truthy value for each flattened field
         mock_args = dict(
-            experiment=gcdc_experiment.Experiment(name="name_value"),
+            experiment=experiment.Experiment(name="name_value"),
             update_mask=field_mask_pb2.FieldMask(paths=["paths_value"]),
         )
         mock_args.update(sample_request)
@@ -4469,7 +4466,7 @@ def test_update_experiment_rest_flattened():
         response_value = Response()
         response_value.status_code = 200
         # Convert return value to protobuf type
-        return_value = gcdc_experiment.Experiment.pb(return_value)
+        return_value = experiment.Experiment.pb(return_value)
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
@@ -4498,8 +4495,8 @@ def test_update_experiment_rest_flattened_error(transport: str = "rest"):
     # fields is an error.
     with pytest.raises(ValueError):
         client.update_experiment(
-            gcdc_experiment.UpdateExperimentRequest(),
-            experiment=gcdc_experiment.Experiment(name="name_value"),
+            experiment.UpdateExperimentRequest(),
+            experiment=experiment.Experiment(name="name_value"),
             update_mask=field_mask_pb2.FieldMask(paths=["paths_value"]),
         )
 
@@ -5205,13 +5202,13 @@ def test_create_experiment_empty_call_grpc():
     with mock.patch.object(
         type(client.transport.create_experiment), "__call__"
     ) as call:
-        call.return_value = gcdc_experiment.Experiment()
+        call.return_value = experiment.Experiment()
         client.create_experiment(request=None)
 
         # Establish that the underlying stub method was called.
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        request_msg = gcdc_experiment.CreateExperimentRequest()
+        request_msg = experiment.CreateExperimentRequest()
 
         assert args[0] == request_msg
 
@@ -5228,13 +5225,13 @@ def test_update_experiment_empty_call_grpc():
     with mock.patch.object(
         type(client.transport.update_experiment), "__call__"
     ) as call:
-        call.return_value = gcdc_experiment.Experiment()
+        call.return_value = experiment.Experiment()
         client.update_experiment(request=None)
 
         # Establish that the underlying stub method was called.
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        request_msg = gcdc_experiment.UpdateExperimentRequest()
+        request_msg = experiment.UpdateExperimentRequest()
 
         assert args[0] == request_msg
 
@@ -5391,11 +5388,11 @@ async def test_create_experiment_empty_call_grpc_asyncio():
     ) as call:
         # Designate an appropriate return value for the call.
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            gcdc_experiment.Experiment(
+            experiment.Experiment(
                 name="name_value",
                 display_name="display_name_value",
                 description="description_value",
-                state=gcdc_experiment.Experiment.State.DRAFT,
+                state=experiment.Experiment.State.DRAFT,
                 rollout_failure_reason="rollout_failure_reason_value",
             )
         )
@@ -5404,7 +5401,7 @@ async def test_create_experiment_empty_call_grpc_asyncio():
         # Establish that the underlying stub method was called.
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        request_msg = gcdc_experiment.CreateExperimentRequest()
+        request_msg = experiment.CreateExperimentRequest()
 
         assert args[0] == request_msg
 
@@ -5424,11 +5421,11 @@ async def test_update_experiment_empty_call_grpc_asyncio():
     ) as call:
         # Designate an appropriate return value for the call.
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            gcdc_experiment.Experiment(
+            experiment.Experiment(
                 name="name_value",
                 display_name="display_name_value",
                 description="description_value",
-                state=gcdc_experiment.Experiment.State.DRAFT,
+                state=experiment.Experiment.State.DRAFT,
                 rollout_failure_reason="rollout_failure_reason_value",
             )
         )
@@ -5437,7 +5434,7 @@ async def test_update_experiment_empty_call_grpc_asyncio():
         # Establish that the underlying stub method was called.
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        request_msg = gcdc_experiment.UpdateExperimentRequest()
+        request_msg = experiment.UpdateExperimentRequest()
 
         assert args[0] == request_msg
 
@@ -5807,7 +5804,7 @@ def test_get_experiment_rest_interceptors(null_interceptor):
 
 
 def test_create_experiment_rest_bad_request(
-    request_type=gcdc_experiment.CreateExperimentRequest,
+    request_type=experiment.CreateExperimentRequest,
 ):
     client = ExperimentsClient(
         credentials=ga_credentials.AnonymousCredentials(), transport="rest"
@@ -5836,7 +5833,7 @@ def test_create_experiment_rest_bad_request(
 @pytest.mark.parametrize(
     "request_type",
     [
-        gcdc_experiment.CreateExperimentRequest,
+        experiment.CreateExperimentRequest,
         dict,
     ],
 )
@@ -5918,7 +5915,7 @@ def test_create_experiment_rest_call_success(request_type):
     # See https://github.com/googleapis/gapic-generator-python/issues/1748
 
     # Determine if the message type is proto-plus or protobuf
-    test_field = gcdc_experiment.CreateExperimentRequest.meta.fields["experiment"]
+    test_field = experiment.CreateExperimentRequest.meta.fields["experiment"]
 
     def get_message_fields(field):
         # Given a field which is a message (composite type), return a list with
@@ -5985,11 +5982,11 @@ def test_create_experiment_rest_call_success(request_type):
     # Mock the http request call within the method and fake a response.
     with mock.patch.object(type(client.transport._session), "request") as req:
         # Designate an appropriate value for the returned response.
-        return_value = gcdc_experiment.Experiment(
+        return_value = experiment.Experiment(
             name="name_value",
             display_name="display_name_value",
             description="description_value",
-            state=gcdc_experiment.Experiment.State.DRAFT,
+            state=experiment.Experiment.State.DRAFT,
             rollout_failure_reason="rollout_failure_reason_value",
         )
 
@@ -5998,7 +5995,7 @@ def test_create_experiment_rest_call_success(request_type):
         response_value.status_code = 200
 
         # Convert return value to protobuf type
-        return_value = gcdc_experiment.Experiment.pb(return_value)
+        return_value = experiment.Experiment.pb(return_value)
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
@@ -6006,11 +6003,11 @@ def test_create_experiment_rest_call_success(request_type):
         response = client.create_experiment(request)
 
     # Establish that the response is the type that we expect.
-    assert isinstance(response, gcdc_experiment.Experiment)
+    assert isinstance(response, experiment.Experiment)
     assert response.name == "name_value"
     assert response.display_name == "display_name_value"
     assert response.description == "description_value"
-    assert response.state == gcdc_experiment.Experiment.State.DRAFT
+    assert response.state == experiment.Experiment.State.DRAFT
     assert response.rollout_failure_reason == "rollout_failure_reason_value"
 
 
@@ -6038,8 +6035,8 @@ def test_create_experiment_rest_interceptors(null_interceptor):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
-        pb_message = gcdc_experiment.CreateExperimentRequest.pb(
-            gcdc_experiment.CreateExperimentRequest()
+        pb_message = experiment.CreateExperimentRequest.pb(
+            experiment.CreateExperimentRequest()
         )
         transcode.return_value = {
             "method": "post",
@@ -6051,17 +6048,17 @@ def test_create_experiment_rest_interceptors(null_interceptor):
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
         req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
-        return_value = gcdc_experiment.Experiment.to_json(gcdc_experiment.Experiment())
+        return_value = experiment.Experiment.to_json(experiment.Experiment())
         req.return_value.content = return_value
 
-        request = gcdc_experiment.CreateExperimentRequest()
+        request = experiment.CreateExperimentRequest()
         metadata = [
             ("key", "val"),
             ("cephalopod", "squid"),
         ]
         pre.return_value = request, metadata
-        post.return_value = gcdc_experiment.Experiment()
-        post_with_metadata.return_value = gcdc_experiment.Experiment(), metadata
+        post.return_value = experiment.Experiment()
+        post_with_metadata.return_value = experiment.Experiment(), metadata
 
         client.create_experiment(
             request,
@@ -6077,7 +6074,7 @@ def test_create_experiment_rest_interceptors(null_interceptor):
 
 
 def test_update_experiment_rest_bad_request(
-    request_type=gcdc_experiment.UpdateExperimentRequest,
+    request_type=experiment.UpdateExperimentRequest,
 ):
     client = ExperimentsClient(
         credentials=ga_credentials.AnonymousCredentials(), transport="rest"
@@ -6108,7 +6105,7 @@ def test_update_experiment_rest_bad_request(
 @pytest.mark.parametrize(
     "request_type",
     [
-        gcdc_experiment.UpdateExperimentRequest,
+        experiment.UpdateExperimentRequest,
         dict,
     ],
 )
@@ -6192,7 +6189,7 @@ def test_update_experiment_rest_call_success(request_type):
     # See https://github.com/googleapis/gapic-generator-python/issues/1748
 
     # Determine if the message type is proto-plus or protobuf
-    test_field = gcdc_experiment.UpdateExperimentRequest.meta.fields["experiment"]
+    test_field = experiment.UpdateExperimentRequest.meta.fields["experiment"]
 
     def get_message_fields(field):
         # Given a field which is a message (composite type), return a list with
@@ -6259,11 +6256,11 @@ def test_update_experiment_rest_call_success(request_type):
     # Mock the http request call within the method and fake a response.
     with mock.patch.object(type(client.transport._session), "request") as req:
         # Designate an appropriate value for the returned response.
-        return_value = gcdc_experiment.Experiment(
+        return_value = experiment.Experiment(
             name="name_value",
             display_name="display_name_value",
             description="description_value",
-            state=gcdc_experiment.Experiment.State.DRAFT,
+            state=experiment.Experiment.State.DRAFT,
             rollout_failure_reason="rollout_failure_reason_value",
         )
 
@@ -6272,7 +6269,7 @@ def test_update_experiment_rest_call_success(request_type):
         response_value.status_code = 200
 
         # Convert return value to protobuf type
-        return_value = gcdc_experiment.Experiment.pb(return_value)
+        return_value = experiment.Experiment.pb(return_value)
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
@@ -6280,11 +6277,11 @@ def test_update_experiment_rest_call_success(request_type):
         response = client.update_experiment(request)
 
     # Establish that the response is the type that we expect.
-    assert isinstance(response, gcdc_experiment.Experiment)
+    assert isinstance(response, experiment.Experiment)
     assert response.name == "name_value"
     assert response.display_name == "display_name_value"
     assert response.description == "description_value"
-    assert response.state == gcdc_experiment.Experiment.State.DRAFT
+    assert response.state == experiment.Experiment.State.DRAFT
     assert response.rollout_failure_reason == "rollout_failure_reason_value"
 
 
@@ -6312,8 +6309,8 @@ def test_update_experiment_rest_interceptors(null_interceptor):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
-        pb_message = gcdc_experiment.UpdateExperimentRequest.pb(
-            gcdc_experiment.UpdateExperimentRequest()
+        pb_message = experiment.UpdateExperimentRequest.pb(
+            experiment.UpdateExperimentRequest()
         )
         transcode.return_value = {
             "method": "post",
@@ -6325,17 +6322,17 @@ def test_update_experiment_rest_interceptors(null_interceptor):
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
         req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
-        return_value = gcdc_experiment.Experiment.to_json(gcdc_experiment.Experiment())
+        return_value = experiment.Experiment.to_json(experiment.Experiment())
         req.return_value.content = return_value
 
-        request = gcdc_experiment.UpdateExperimentRequest()
+        request = experiment.UpdateExperimentRequest()
         metadata = [
             ("key", "val"),
             ("cephalopod", "squid"),
         ]
         pre.return_value = request, metadata
-        post.return_value = gcdc_experiment.Experiment()
-        post_with_metadata.return_value = gcdc_experiment.Experiment(), metadata
+        post.return_value = experiment.Experiment()
+        post_with_metadata.return_value = experiment.Experiment(), metadata
 
         client.update_experiment(
             request,
@@ -7109,7 +7106,7 @@ def test_create_experiment_empty_call_rest():
         # Establish that the underlying stub method was called.
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        request_msg = gcdc_experiment.CreateExperimentRequest()
+        request_msg = experiment.CreateExperimentRequest()
 
         assert args[0] == request_msg
 
@@ -7131,7 +7128,7 @@ def test_update_experiment_empty_call_rest():
         # Establish that the underlying stub method was called.
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        request_msg = gcdc_experiment.UpdateExperimentRequest()
+        request_msg = experiment.UpdateExperimentRequest()
 
         assert args[0] == request_msg
 

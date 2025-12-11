@@ -51,7 +51,6 @@ from google.protobuf import field_mask_pb2  # type: ignore
 
 from google.cloud.dialogflowcx_v3.services.webhooks import pagers
 from google.cloud.dialogflowcx_v3.types import webhook
-from google.cloud.dialogflowcx_v3.types import webhook as gcdc_webhook
 
 from .client import WebhooksClient
 from .transports.base import DEFAULT_CLIENT_INFO, WebhooksTransport
@@ -68,8 +67,8 @@ _LOGGER = std_logging.getLogger(__name__)
 
 
 class WebhooksAsyncClient:
-    """Service for managing
-    [Webhooks][google.cloud.dialogflow.cx.v3.Webhook].
+    """Service for managing `Webhooks
+    <google.cloud.dialogflow.cx.v3.Webhook>`__.
     """
 
     _client: WebhooksClient
@@ -331,9 +330,11 @@ class WebhooksAsyncClient:
         Args:
             request (Optional[Union[google.cloud.dialogflowcx_v3.types.ListWebhooksRequest, dict]]):
                 The request object. The request message for
-                [Webhooks.ListWebhooks][google.cloud.dialogflow.cx.v3.Webhooks.ListWebhooks].
+                `Webhooks.ListWebhooks
+                <google.cloud.dialogflow.cx.v3.Webhooks.ListWebhooks>`__.
             parent (:class:`str`):
-                Required. The agent to list all webhooks for. Format:
+                Required. The agent to list all webhooks
+                for. Format:
                 ``projects/<ProjectID>/locations/<LocationID>/agents/<AgentID>``.
 
                 This corresponds to the ``parent`` field
@@ -350,10 +351,12 @@ class WebhooksAsyncClient:
         Returns:
             google.cloud.dialogflowcx_v3.services.webhooks.pagers.ListWebhooksAsyncPager:
                 The response message for
-                   [Webhooks.ListWebhooks][google.cloud.dialogflow.cx.v3.Webhooks.ListWebhooks].
+                `Webhooks.ListWebhooks
+                <google.cloud.dialogflow.cx.v3.Webhooks.ListWebhooks>`__.
 
-                Iterating over this object will yield results and
-                resolve additional pages automatically.
+                Iterating over this object will yield
+                results and resolve additional pages
+                automatically.
 
         """
         # Create or coerce a protobuf request object.
@@ -456,9 +459,12 @@ class WebhooksAsyncClient:
         Args:
             request (Optional[Union[google.cloud.dialogflowcx_v3.types.GetWebhookRequest, dict]]):
                 The request object. The request message for
-                [Webhooks.GetWebhook][google.cloud.dialogflow.cx.v3.Webhooks.GetWebhook].
+                `Webhooks.GetWebhook
+                <google.cloud.dialogflow.cx.v3.Webhooks.GetWebhook>`__.
             name (:class:`str`):
-                Required. The name of the webhook. Format:
+                Required. The name of the webhook.
+                Format:
+
                 ``projects/<ProjectID>/locations/<LocationID>/agents/<AgentID>/webhooks/<WebhookID>``.
 
                 This corresponds to the ``name`` field
@@ -534,14 +540,14 @@ class WebhooksAsyncClient:
 
     async def create_webhook(
         self,
-        request: Optional[Union[gcdc_webhook.CreateWebhookRequest, dict]] = None,
+        request: Optional[Union[webhook.CreateWebhookRequest, dict]] = None,
         *,
         parent: Optional[str] = None,
-        webhook: Optional[gcdc_webhook.Webhook] = None,
+        webhook: Optional[webhook.Webhook] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
-    ) -> gcdc_webhook.Webhook:
+    ) -> webhook.Webhook:
         r"""Creates a webhook in the specified agent.
 
         .. code-block:: python
@@ -578,9 +584,11 @@ class WebhooksAsyncClient:
         Args:
             request (Optional[Union[google.cloud.dialogflowcx_v3.types.CreateWebhookRequest, dict]]):
                 The request object. The request message for
-                [Webhooks.CreateWebhook][google.cloud.dialogflow.cx.v3.Webhooks.CreateWebhook].
+                `Webhooks.CreateWebhook
+                <google.cloud.dialogflow.cx.v3.Webhooks.CreateWebhook>`__.
             parent (:class:`str`):
-                Required. The agent to create a webhook for. Format:
+                Required. The agent to create a webhook
+                for. Format:
                 ``projects/<ProjectID>/locations/<LocationID>/agents/<AgentID>``.
 
                 This corresponds to the ``parent`` field
@@ -625,8 +633,8 @@ class WebhooksAsyncClient:
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
-        if not isinstance(request, gcdc_webhook.CreateWebhookRequest):
-            request = gcdc_webhook.CreateWebhookRequest(request)
+        if not isinstance(request, webhook.CreateWebhookRequest):
+            request = webhook.CreateWebhookRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -663,14 +671,14 @@ class WebhooksAsyncClient:
 
     async def update_webhook(
         self,
-        request: Optional[Union[gcdc_webhook.UpdateWebhookRequest, dict]] = None,
+        request: Optional[Union[webhook.UpdateWebhookRequest, dict]] = None,
         *,
-        webhook: Optional[gcdc_webhook.Webhook] = None,
+        webhook: Optional[webhook.Webhook] = None,
         update_mask: Optional[field_mask_pb2.FieldMask] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
-    ) -> gcdc_webhook.Webhook:
+    ) -> webhook.Webhook:
         r"""Updates the specified webhook.
 
         .. code-block:: python
@@ -706,7 +714,8 @@ class WebhooksAsyncClient:
         Args:
             request (Optional[Union[google.cloud.dialogflowcx_v3.types.UpdateWebhookRequest, dict]]):
                 The request object. The request message for
-                [Webhooks.UpdateWebhook][google.cloud.dialogflow.cx.v3.Webhooks.UpdateWebhook].
+                `Webhooks.UpdateWebhook
+                <google.cloud.dialogflow.cx.v3.Webhooks.UpdateWebhook>`__.
             webhook (:class:`google.cloud.dialogflowcx_v3.types.Webhook`):
                 Required. The webhook to update.
                 This corresponds to the ``webhook`` field
@@ -754,8 +763,8 @@ class WebhooksAsyncClient:
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
-        if not isinstance(request, gcdc_webhook.UpdateWebhookRequest):
-            request = gcdc_webhook.UpdateWebhookRequest(request)
+        if not isinstance(request, webhook.UpdateWebhookRequest):
+            request = webhook.UpdateWebhookRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -829,9 +838,12 @@ class WebhooksAsyncClient:
         Args:
             request (Optional[Union[google.cloud.dialogflowcx_v3.types.DeleteWebhookRequest, dict]]):
                 The request object. The request message for
-                [Webhooks.DeleteWebhook][google.cloud.dialogflow.cx.v3.Webhooks.DeleteWebhook].
+                `Webhooks.DeleteWebhook
+                <google.cloud.dialogflow.cx.v3.Webhooks.DeleteWebhook>`__.
             name (:class:`str`):
-                Required. The name of the webhook to delete. Format:
+                Required. The name of the webhook to
+                delete. Format:
+
                 ``projects/<ProjectID>/locations/<LocationID>/agents/<AgentID>/webhooks/<WebhookID>``.
 
                 This corresponds to the ``name`` field

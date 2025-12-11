@@ -24,7 +24,6 @@ from google.protobuf import empty_pb2  # type: ignore
 from google.protobuf import json_format
 
 from google.cloud.dialogflowcx_v3.types import flow
-from google.cloud.dialogflowcx_v3.types import flow as gcdc_flow
 
 from .base import DEFAULT_CLIENT_INFO, FlowsTransport
 
@@ -118,7 +117,7 @@ class _BaseFlowsRestTransport(FlowsTransport):
 
         @staticmethod
         def _get_transcoded_request(http_options, request):
-            pb_request = gcdc_flow.CreateFlowRequest.pb(request)
+            pb_request = flow.CreateFlowRequest.pb(request)
             transcoded_request = path_template.transcode(http_options, pb_request)
             return transcoded_request
 
@@ -534,7 +533,7 @@ class _BaseFlowsRestTransport(FlowsTransport):
 
         @staticmethod
         def _get_transcoded_request(http_options, request):
-            pb_request = gcdc_flow.UpdateFlowRequest.pb(request)
+            pb_request = flow.UpdateFlowRequest.pb(request)
             transcoded_request = path_template.transcode(http_options, pb_request)
             return transcoded_request
 

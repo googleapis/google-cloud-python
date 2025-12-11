@@ -32,7 +32,6 @@ from google.protobuf import json_format
 from requests import __version__ as requests_version
 
 from google.cloud.dialogflowcx_v3.types import flow
-from google.cloud.dialogflowcx_v3.types import flow as gcdc_flow
 
 from .base import DEFAULT_CLIENT_INFO as BASE_DEFAULT_CLIENT_INFO
 from .rest_base import _BaseFlowsRestTransport
@@ -160,9 +159,9 @@ class FlowsRestInterceptor:
 
     def pre_create_flow(
         self,
-        request: gcdc_flow.CreateFlowRequest,
+        request: flow.CreateFlowRequest,
         metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[gcdc_flow.CreateFlowRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
+    ) -> Tuple[flow.CreateFlowRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for create_flow
 
         Override in a subclass to manipulate the request or metadata
@@ -170,7 +169,7 @@ class FlowsRestInterceptor:
         """
         return request, metadata
 
-    def post_create_flow(self, response: gcdc_flow.Flow) -> gcdc_flow.Flow:
+    def post_create_flow(self, response: flow.Flow) -> flow.Flow:
         """Post-rpc interceptor for create_flow
 
         DEPRECATED. Please use the `post_create_flow_with_metadata`
@@ -184,10 +183,8 @@ class FlowsRestInterceptor:
         return response
 
     def post_create_flow_with_metadata(
-        self,
-        response: gcdc_flow.Flow,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[gcdc_flow.Flow, Sequence[Tuple[str, Union[str, bytes]]]]:
+        self, response: flow.Flow, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[flow.Flow, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for create_flow
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -490,9 +487,9 @@ class FlowsRestInterceptor:
 
     def pre_update_flow(
         self,
-        request: gcdc_flow.UpdateFlowRequest,
+        request: flow.UpdateFlowRequest,
         metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[gcdc_flow.UpdateFlowRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
+    ) -> Tuple[flow.UpdateFlowRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for update_flow
 
         Override in a subclass to manipulate the request or metadata
@@ -500,7 +497,7 @@ class FlowsRestInterceptor:
         """
         return request, metadata
 
-    def post_update_flow(self, response: gcdc_flow.Flow) -> gcdc_flow.Flow:
+    def post_update_flow(self, response: flow.Flow) -> flow.Flow:
         """Post-rpc interceptor for update_flow
 
         DEPRECATED. Please use the `post_update_flow_with_metadata`
@@ -514,10 +511,8 @@ class FlowsRestInterceptor:
         return response
 
     def post_update_flow_with_metadata(
-        self,
-        response: gcdc_flow.Flow,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[gcdc_flow.Flow, Sequence[Tuple[str, Union[str, bytes]]]]:
+        self, response: flow.Flow, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[flow.Flow, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for update_flow
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -712,7 +707,8 @@ class FlowsRestStub:
 class FlowsRestTransport(_BaseFlowsRestTransport):
     """REST backend synchronous transport for Flows.
 
-    Service for managing [Flows][google.cloud.dialogflow.cx.v3.Flow].
+    Service for managing `Flows
+    <google.cloud.dialogflow.cx.v3.Flow>`__.
 
     This class defines the same methods as the primary client, so the
     primary client can load the underlying transport implementation
@@ -877,18 +873,19 @@ class FlowsRestTransport(_BaseFlowsRestTransport):
 
         def __call__(
             self,
-            request: gcdc_flow.CreateFlowRequest,
+            request: flow.CreateFlowRequest,
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
             metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
-        ) -> gcdc_flow.Flow:
+        ) -> flow.Flow:
             r"""Call the create flow method over HTTP.
 
             Args:
-                request (~.gcdc_flow.CreateFlowRequest):
+                request (~.flow.CreateFlowRequest):
                     The request object. The request message for
-                [Flows.CreateFlow][google.cloud.dialogflow.cx.v3.Flows.CreateFlow].
+                `Flows.CreateFlow
+                <google.cloud.dialogflow.cx.v3.Flows.CreateFlow>`__.
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -898,7 +895,7 @@ class FlowsRestTransport(_BaseFlowsRestTransport):
                     be of type `bytes`.
 
             Returns:
-                ~.gcdc_flow.Flow:
+                ~.flow.Flow:
                     Flows represents the conversation
                 flows when you build your chatbot agent.
                 A flow consists of many pages connected
@@ -989,8 +986,8 @@ class FlowsRestTransport(_BaseFlowsRestTransport):
                 raise core_exceptions.from_http_response(response)
 
             # Return the response
-            resp = gcdc_flow.Flow()
-            pb_resp = gcdc_flow.Flow.pb(resp)
+            resp = flow.Flow()
+            pb_resp = flow.Flow.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
@@ -1003,7 +1000,7 @@ class FlowsRestTransport(_BaseFlowsRestTransport):
                 logging.DEBUG
             ):  # pragma: NO COVER
                 try:
-                    response_payload = gcdc_flow.Flow.to_json(response)
+                    response_payload = flow.Flow.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -1061,7 +1058,8 @@ class FlowsRestTransport(_BaseFlowsRestTransport):
             Args:
                 request (~.flow.DeleteFlowRequest):
                     The request object. The request message for
-                [Flows.DeleteFlow][google.cloud.dialogflow.cx.v3.Flows.DeleteFlow].
+                `Flows.DeleteFlow
+                <google.cloud.dialogflow.cx.v3.Flows.DeleteFlow>`__.
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -1169,7 +1167,8 @@ class FlowsRestTransport(_BaseFlowsRestTransport):
             Args:
                 request (~.flow.ExportFlowRequest):
                     The request object. The request message for
-                [Flows.ExportFlow][google.cloud.dialogflow.cx.v3.Flows.ExportFlow].
+                `Flows.ExportFlow
+                <google.cloud.dialogflow.cx.v3.Flows.ExportFlow>`__.
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -1320,7 +1319,8 @@ class FlowsRestTransport(_BaseFlowsRestTransport):
             Args:
                 request (~.flow.GetFlowRequest):
                     The request object. The response message for
-                [Flows.GetFlow][google.cloud.dialogflow.cx.v3.Flows.GetFlow].
+                `Flows.GetFlow
+                <google.cloud.dialogflow.cx.v3.Flows.GetFlow>`__.
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -1489,7 +1489,8 @@ class FlowsRestTransport(_BaseFlowsRestTransport):
                 Args:
                     request (~.flow.GetFlowValidationResultRequest):
                         The request object. The request message for
-                    [Flows.GetFlowValidationResult][google.cloud.dialogflow.cx.v3.Flows.GetFlowValidationResult].
+                    `Flows.GetFlowValidationResult
+                    <google.cloud.dialogflow.cx.v3.Flows.GetFlowValidationResult>`__.
                     retry (google.api_core.retry.Retry): Designation of what errors, if any,
                         should be retried.
                     timeout (float): The timeout for this request.
@@ -1501,7 +1502,8 @@ class FlowsRestTransport(_BaseFlowsRestTransport):
                 Returns:
                     ~.flow.FlowValidationResult:
                         The response message for
-                    [Flows.GetFlowValidationResult][google.cloud.dialogflow.cx.v3.Flows.GetFlowValidationResult].
+                    `Flows.GetFlowValidationResult
+                    <google.cloud.dialogflow.cx.v3.Flows.GetFlowValidationResult>`__.
 
             """
 
@@ -1637,7 +1639,8 @@ class FlowsRestTransport(_BaseFlowsRestTransport):
             Args:
                 request (~.flow.ImportFlowRequest):
                     The request object. The request message for
-                [Flows.ImportFlow][google.cloud.dialogflow.cx.v3.Flows.ImportFlow].
+                `Flows.ImportFlow
+                <google.cloud.dialogflow.cx.v3.Flows.ImportFlow>`__.
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -1788,7 +1791,8 @@ class FlowsRestTransport(_BaseFlowsRestTransport):
             Args:
                 request (~.flow.ListFlowsRequest):
                     The request object. The request message for
-                [Flows.ListFlows][google.cloud.dialogflow.cx.v3.Flows.ListFlows].
+                `Flows.ListFlows
+                <google.cloud.dialogflow.cx.v3.Flows.ListFlows>`__.
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -1800,7 +1804,8 @@ class FlowsRestTransport(_BaseFlowsRestTransport):
             Returns:
                 ~.flow.ListFlowsResponse:
                     The response message for
-                [Flows.ListFlows][google.cloud.dialogflow.cx.v3.Flows.ListFlows].
+                `Flows.ListFlows
+                <google.cloud.dialogflow.cx.v3.Flows.ListFlows>`__.
 
             """
 
@@ -1936,7 +1941,8 @@ class FlowsRestTransport(_BaseFlowsRestTransport):
             Args:
                 request (~.flow.TrainFlowRequest):
                     The request object. The request message for
-                [Flows.TrainFlow][google.cloud.dialogflow.cx.v3.Flows.TrainFlow].
+                `Flows.TrainFlow
+                <google.cloud.dialogflow.cx.v3.Flows.TrainFlow>`__.
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -2077,18 +2083,19 @@ class FlowsRestTransport(_BaseFlowsRestTransport):
 
         def __call__(
             self,
-            request: gcdc_flow.UpdateFlowRequest,
+            request: flow.UpdateFlowRequest,
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
             metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
-        ) -> gcdc_flow.Flow:
+        ) -> flow.Flow:
             r"""Call the update flow method over HTTP.
 
             Args:
-                request (~.gcdc_flow.UpdateFlowRequest):
+                request (~.flow.UpdateFlowRequest):
                     The request object. The request message for
-                [Flows.UpdateFlow][google.cloud.dialogflow.cx.v3.Flows.UpdateFlow].
+                `Flows.UpdateFlow
+                <google.cloud.dialogflow.cx.v3.Flows.UpdateFlow>`__.
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -2098,7 +2105,7 @@ class FlowsRestTransport(_BaseFlowsRestTransport):
                     be of type `bytes`.
 
             Returns:
-                ~.gcdc_flow.Flow:
+                ~.flow.Flow:
                     Flows represents the conversation
                 flows when you build your chatbot agent.
                 A flow consists of many pages connected
@@ -2189,8 +2196,8 @@ class FlowsRestTransport(_BaseFlowsRestTransport):
                 raise core_exceptions.from_http_response(response)
 
             # Return the response
-            resp = gcdc_flow.Flow()
-            pb_resp = gcdc_flow.Flow.pb(resp)
+            resp = flow.Flow()
+            pb_resp = flow.Flow.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
@@ -2203,7 +2210,7 @@ class FlowsRestTransport(_BaseFlowsRestTransport):
                 logging.DEBUG
             ):  # pragma: NO COVER
                 try:
-                    response_payload = gcdc_flow.Flow.to_json(response)
+                    response_payload = flow.Flow.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -2262,7 +2269,8 @@ class FlowsRestTransport(_BaseFlowsRestTransport):
             Args:
                 request (~.flow.ValidateFlowRequest):
                     The request object. The request message for
-                [Flows.ValidateFlow][google.cloud.dialogflow.cx.v3.Flows.ValidateFlow].
+                `Flows.ValidateFlow
+                <google.cloud.dialogflow.cx.v3.Flows.ValidateFlow>`__.
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -2274,7 +2282,8 @@ class FlowsRestTransport(_BaseFlowsRestTransport):
             Returns:
                 ~.flow.FlowValidationResult:
                     The response message for
-                [Flows.GetFlowValidationResult][google.cloud.dialogflow.cx.v3.Flows.GetFlowValidationResult].
+                `Flows.GetFlowValidationResult
+                <google.cloud.dialogflow.cx.v3.Flows.GetFlowValidationResult>`__.
 
             """
 
@@ -2376,7 +2385,7 @@ class FlowsRestTransport(_BaseFlowsRestTransport):
             return resp
 
     @property
-    def create_flow(self) -> Callable[[gcdc_flow.CreateFlowRequest], gcdc_flow.Flow]:
+    def create_flow(self) -> Callable[[flow.CreateFlowRequest], flow.Flow]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._CreateFlow(self._session, self._host, self._interceptor)  # type: ignore
@@ -2430,7 +2439,7 @@ class FlowsRestTransport(_BaseFlowsRestTransport):
         return self._TrainFlow(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def update_flow(self) -> Callable[[gcdc_flow.UpdateFlowRequest], gcdc_flow.Flow]:
+    def update_flow(self) -> Callable[[flow.UpdateFlowRequest], flow.Flow]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._UpdateFlow(self._session, self._host, self._interceptor)  # type: ignore

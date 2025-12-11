@@ -33,36 +33,54 @@ __protobuf__ = proto.module(
 
 class ListChangelogsRequest(proto.Message):
     r"""The request message for
-    [Changelogs.ListChangelogs][google.cloud.dialogflow.cx.v3.Changelogs.ListChangelogs].
+    `Changelogs.ListChangelogs
+    <google.cloud.dialogflow.cx.v3.Changelogs.ListChangelogs>`__.
 
     Attributes:
         parent (str):
-            Required. The agent containing the changelogs. Format:
+            Required. The agent containing the changelogs.
+            Format:
             ``projects/<ProjectID>/locations/<LocationID>/agents/<AgentID>``.
         filter (str):
-            The filter string. Supports filter by user_email, resource,
-            type and create_time. Some examples:
+            The filter string. Supports filter by
+            user_email, resource, type and create_time. Some
+            examples:
 
-            1. By user email: user_email = "someone@google.com"
-            2. By resource name: resource =
-               "projects/123/locations/global/agents/456/flows/789"
-            3. By resource display name: display_name = "my agent"
-            4. By action: action = "Create"
-            5. By type: type = "flows"
-            6. By create time. Currently predicates on ``create_time``
-               and ``create_time_epoch_seconds`` are supported:
-               create_time_epoch_seconds > 1551790877 AND create_time <=
-               2017-01-15T01:30:15.01Z
-            7. Combination of above filters: resource =
-               "projects/123/locations/global/agents/456/flows/789" AND
-               user_email = "someone@google.com" AND create_time <=
-               2017-01-15T01:30:15.01Z
+              1. By user email:
+
+                   user_email = "someone@google.com"
+              2. By resource name:
+
+                   resource =
+            "projects/123/locations/global/agents/456/flows/789"
+              3. By resource display name:
+
+                   display_name = "my agent"
+              4. By action:
+
+                   action = "Create"
+              5. By type:
+
+                   type = "flows"
+              6. By create time. Currently predicates on
+                ``create_time`` and
+                ``create_time_epoch_seconds`` are supported:
+
+                   create_time_epoch_seconds > 1551790877
+            AND create_time <=
+            2017-01-15T01:30:15.01Z
+              7. Combination of above filters:
+
+                   resource =
+            "projects/123/locations/global/agents/456/flows/789"
+            AND user_email = "someone@google.com"
+            AND create_time <= 2017-01-15T01:30:15.01Z
         page_size (int):
             The maximum number of items to return in a
             single page. By default 100 and at most 1000.
         page_token (str):
-            The next_page_token value returned from a previous list
-            request.
+            The next_page_token value returned from a
+            previous list request.
     """
 
     parent: str = proto.Field(
@@ -85,13 +103,15 @@ class ListChangelogsRequest(proto.Message):
 
 class ListChangelogsResponse(proto.Message):
     r"""The response message for
-    [Changelogs.ListChangelogs][google.cloud.dialogflow.cx.v3.Changelogs.ListChangelogs].
+    `Changelogs.ListChangelogs
+    <google.cloud.dialogflow.cx.v3.Changelogs.ListChangelogs>`__.
 
     Attributes:
         changelogs (MutableSequence[google.cloud.dialogflowcx_v3.types.Changelog]):
-            The list of changelogs. There will be a maximum number of
-            items returned based on the page_size field in the request.
-            The changelogs will be ordered by timestamp.
+            The list of changelogs. There will be a maximum
+            number of items returned based on the page_size
+            field in the request. The changelogs will be
+            ordered by timestamp.
         next_page_token (str):
             Token to retrieve the next page of results,
             or empty if there are no more results in the
@@ -115,11 +135,14 @@ class ListChangelogsResponse(proto.Message):
 
 class GetChangelogRequest(proto.Message):
     r"""The request message for
-    [Changelogs.GetChangelog][google.cloud.dialogflow.cx.v3.Changelogs.GetChangelog].
+    `Changelogs.GetChangelog
+    <google.cloud.dialogflow.cx.v3.Changelogs.GetChangelog>`__.
 
     Attributes:
         name (str):
-            Required. The name of the changelog to get. Format:
+            Required. The name of the changelog to get.
+            Format:
+
             ``projects/<ProjectID>/locations/<LocationID>/agents/<AgentID>/changelogs/<ChangelogID>``.
     """
 
@@ -134,7 +157,9 @@ class Changelog(proto.Message):
 
     Attributes:
         name (str):
-            The unique identifier of the changelog. Format:
+            The unique identifier of the changelog.
+            Format:
+
             ``projects/<ProjectID>/locations/<LocationID>/agents/<AgentID>/changelogs/<ChangelogID>``.
         user_email (str):
             Email address of the authenticated user.

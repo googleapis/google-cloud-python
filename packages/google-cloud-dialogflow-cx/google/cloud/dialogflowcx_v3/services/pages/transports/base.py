@@ -30,7 +30,6 @@ from google.protobuf import empty_pb2  # type: ignore
 
 from google.cloud.dialogflowcx_v3 import gapic_version as package_version
 from google.cloud.dialogflowcx_v3.types import page
-from google.cloud.dialogflowcx_v3.types import page as gcdc_page
 
 DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
     gapic_version=package_version.__version__
@@ -219,17 +218,13 @@ class PagesTransport(abc.ABC):
     @property
     def create_page(
         self,
-    ) -> Callable[
-        [gcdc_page.CreatePageRequest], Union[gcdc_page.Page, Awaitable[gcdc_page.Page]]
-    ]:
+    ) -> Callable[[page.CreatePageRequest], Union[page.Page, Awaitable[page.Page]]]:
         raise NotImplementedError()
 
     @property
     def update_page(
         self,
-    ) -> Callable[
-        [gcdc_page.UpdatePageRequest], Union[gcdc_page.Page, Awaitable[gcdc_page.Page]]
-    ]:
+    ) -> Callable[[page.UpdatePageRequest], Union[page.Page, Awaitable[page.Page]]]:
         raise NotImplementedError()
 
     @property

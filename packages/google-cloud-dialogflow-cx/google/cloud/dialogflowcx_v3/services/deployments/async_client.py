@@ -66,8 +66,8 @@ _LOGGER = std_logging.getLogger(__name__)
 
 
 class DeploymentsAsyncClient:
-    """Service for managing
-    [Deployments][google.cloud.dialogflow.cx.v3.Deployment].
+    """Service for managing `Deployments
+    <google.cloud.dialogflow.cx.v3.Deployment>`__.
     """
 
     _client: DeploymentsClient
@@ -307,7 +307,8 @@ class DeploymentsAsyncClient:
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> pagers.ListDeploymentsAsyncPager:
         r"""Returns the list of all deployments in the specified
-        [Environment][google.cloud.dialogflow.cx.v3.Environment].
+        `Environment
+        <google.cloud.dialogflow.cx.v3.Environment>`__.
 
         .. code-block:: python
 
@@ -339,11 +340,13 @@ class DeploymentsAsyncClient:
         Args:
             request (Optional[Union[google.cloud.dialogflowcx_v3.types.ListDeploymentsRequest, dict]]):
                 The request object. The request message for
-                [Deployments.ListDeployments][google.cloud.dialogflow.cx.v3.Deployments.ListDeployments].
+                `Deployments.ListDeployments
+                <google.cloud.dialogflow.cx.v3.Deployments.ListDeployments>`__.
             parent (:class:`str`):
-                Required. The
-                [Environment][google.cloud.dialogflow.cx.v3.Environment]
+                Required. The `Environment
+                <google.cloud.dialogflow.cx.v3.Environment>`__
                 to list all environments for. Format:
+
                 ``projects/<ProjectID>/locations/<LocationID>/agents/<AgentID>/environments/<EnvironmentID>``.
 
                 This corresponds to the ``parent`` field
@@ -360,10 +363,12 @@ class DeploymentsAsyncClient:
         Returns:
             google.cloud.dialogflowcx_v3.services.deployments.pagers.ListDeploymentsAsyncPager:
                 The response message for
-                   [Deployments.ListDeployments][google.cloud.dialogflow.cx.v3.Deployments.ListDeployments].
+                `Deployments.ListDeployments
+                <google.cloud.dialogflow.cx.v3.Deployments.ListDeployments>`__.
 
-                Iterating over this object will yield results and
-                resolve additional pages automatically.
+                Iterating over this object will yield
+                results and resolve additional pages
+                automatically.
 
         """
         # Create or coerce a protobuf request object.
@@ -436,7 +441,8 @@ class DeploymentsAsyncClient:
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> deployment.Deployment:
         r"""Retrieves the specified
-        [Deployment][google.cloud.dialogflow.cx.v3.Deployment].
+        `Deployment
+        <google.cloud.dialogflow.cx.v3.Deployment>`__.
 
         .. code-block:: python
 
@@ -467,11 +473,14 @@ class DeploymentsAsyncClient:
         Args:
             request (Optional[Union[google.cloud.dialogflowcx_v3.types.GetDeploymentRequest, dict]]):
                 The request object. The request message for
-                [Deployments.GetDeployment][google.cloud.dialogflow.cx.v3.Deployments.GetDeployment].
+                `Deployments.GetDeployment
+                <google.cloud.dialogflow.cx.v3.Deployments.GetDeployment>`__.
             name (:class:`str`):
                 Required. The name of the
-                [Deployment][google.cloud.dialogflow.cx.v3.Deployment].
+                `Deployment
+                <google.cloud.dialogflow.cx.v3.Deployment>`__.
                 Format:
+
                 ``projects/<ProjectID>/locations/<LocationID>/agents/<AgentID>/environments/<EnvironmentID>/deployments/<DeploymentID>``.
 
                 This corresponds to the ``name`` field

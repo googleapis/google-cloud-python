@@ -21,9 +21,11 @@ from google.protobuf import field_mask_pb2  # type: ignore
 from google.protobuf import timestamp_pb2  # type: ignore
 import proto  # type: ignore
 
-from google.cloud.dialogflowcx_v3.types import import_strategy, page, validation_message
 from google.cloud.dialogflowcx_v3.types import (
-    advanced_settings as gcdc_advanced_settings,
+    advanced_settings,
+    import_strategy,
+    page,
+    validation_message,
 )
 
 __protobuf__ = proto.module(
@@ -77,7 +79,8 @@ class NluSettings(proto.Message):
 
         Values:
             MODEL_TYPE_UNSPECIFIED (0):
-                Not specified. ``MODEL_TYPE_STANDARD`` will be used.
+                Not specified. ``MODEL_TYPE_STANDARD`` will be
+                used.
             MODEL_TYPE_STANDARD (1):
                 Use standard NLU model.
             MODEL_TYPE_ADVANCED (3):
@@ -92,8 +95,8 @@ class NluSettings(proto.Message):
 
         Values:
             MODEL_TRAINING_MODE_UNSPECIFIED (0):
-                Not specified. ``MODEL_TRAINING_MODE_AUTOMATIC`` will be
-                used.
+                Not specified. ``MODEL_TRAINING_MODE_AUTOMATIC``
+                will be used.
             MODEL_TRAINING_MODE_AUTOMATIC (1):
                 NLU model training is automatically triggered
                 when a flow gets modified. User can also
@@ -143,7 +146,9 @@ class Flow(proto.Message):
 
     Attributes:
         name (str):
-            The unique identifier of the flow. Format:
+            The unique identifier of the flow.
+            Format:
+
             ``projects/<ProjectID>/locations/<LocationID>/agents/<AgentID>/flows/<FlowID>``.
         display_name (str):
             Required. The human-readable name of the
@@ -155,49 +160,60 @@ class Flow(proto.Message):
         transition_routes (MutableSequence[google.cloud.dialogflowcx_v3.types.TransitionRoute]):
             A flow's transition routes serve two purposes:
 
-            - They are responsible for matching the user's first
-              utterances in the flow.
-            - They are inherited by every page's [transition
-              routes][Page.transition_routes] and can support use cases
-              such as the user saying "help" or "can I talk to a
-              human?", which can be handled in a common way regardless
-              of the current page. Transition routes defined in the page
-              have higher priority than those defined in the flow.
+            *   They are responsible for matching the user's
+            first utterances in the flow.
 
-            TransitionRoutes are evaluated in the following order:
+            *   They are inherited by every page's
+            `transition routes <Page.transition_routes>`__
+            and can support use cases such as the user
+            saying "help" or "can I talk to a human?", which
+            can be handled in a common way regardless of the
+            current page. Transition routes defined in the
+            page have higher priority than those defined in
+            the flow.
 
-            - TransitionRoutes with intent specified.
-            - TransitionRoutes with only condition specified.
+            TransitionRoutes are evaluated in the following
+            order:
 
-            TransitionRoutes with intent specified are inherited by
-            pages in the flow.
+            *   TransitionRoutes with intent specified.
+            *   TransitionRoutes with only condition
+            specified.
+
+            TransitionRoutes with intent specified are
+            inherited by pages in the flow.
         event_handlers (MutableSequence[google.cloud.dialogflowcx_v3.types.EventHandler]):
             A flow's event handlers serve two purposes:
 
-            - They are responsible for handling events (e.g. no match,
-              webhook errors) in the flow.
-            - They are inherited by every page's [event
-              handlers][Page.event_handlers], which can be used to
-              handle common events regardless of the current page. Event
-              handlers defined in the page have higher priority than
-              those defined in the flow.
+            *   They are responsible for handling events
+            (e.g. no match, webhook errors) in the flow.
+
+            *   They are inherited by every page's `event
+            handlers <Page.event_handlers>`__, which can be
+            used to handle common events regardless of the
+            current page. Event handlers defined in the page
+            have higher priority than those defined in the
+            flow.
 
             Unlike
-            [transition_routes][google.cloud.dialogflow.cx.v3.Flow.transition_routes],
-            these handlers are evaluated on a first-match basis. The
-            first one that matches the event get executed, with the rest
-            being ignored.
+            `transition_routes
+            <google.cloud.dialogflow.cx.v3.Flow.transition_routes>`__,
+            these handlers are evaluated on a first-match
+            basis. The first one that matches the event get
+            executed, with the rest being ignored.
         transition_route_groups (MutableSequence[str]):
-            A flow's transition route group serve two purposes:
+            A flow's transition route group serve two
+            purposes:
+            *   They are responsible for matching the user's
+            first utterances in the flow.
 
-            - They are responsible for matching the user's first
-              utterances in the flow.
-            - They are inherited by every page's [transition route
-              groups][Page.transition_route_groups]. Transition route
-              groups defined in the page have higher priority than those
-              defined in the flow.
+            *   They are inherited by every page's
+            `transition route groups
+            <Page.transition_route_groups>`__. Transition
+            route groups defined in the page have higher
+            priority than those defined in the flow.
 
             Format:
+
             ``projects/<ProjectID>/locations/<LocationID>/agents/<AgentID>/flows/<FlowID>/transitionRouteGroups/<TransitionRouteGroupID>``
             or
             ``projects/<ProjectID>/locations/<LocationID>/agents/<AgentID>/transitionRouteGroups/<TransitionRouteGroupID>``
@@ -225,19 +241,23 @@ class Flow(proto.Message):
 
         Attributes:
             enable_multi_language_detection (bool):
-                Optional. Enable multi-language detection for this flow.
-                This can be set only if [agent level multi language
-                setting][Agent.enable_multi_language_training] is enabled.
+                Optional. Enable multi-language detection for
+                this flow. This can be set only if `agent level
+                multi language setting
+                <Agent.enable_multi_language_training>`__ is
+                enabled.
             supported_response_language_codes (MutableSequence[str]):
-                Optional. Agent will respond in the detected language if the
-                detected language code is in the supported resolved
-                languages for this flow. This will be used only if
-                multi-language training is enabled in the
-                [agent][google.cloud.dialogflow.cx.v3.Agent.enable_multi_language_training]
+                Optional. Agent will respond in the detected
+                language if the detected language code is in the
+                supported resolved languages for this flow. This
+                will be used only if multi-language training is
+                enabled in the `agent
+                <google.cloud.dialogflow.cx.v3.Agent.enable_multi_language_training>`__
                 and multi-language detection is enabled in the
-                [flow][google.cloud.dialogflow.cx.v3.Flow.MultiLanguageSettings.enable_multi_language_detection].
-                The supported languages must be a subset of the languages
-                supported by the agent.
+                `flow
+                <google.cloud.dialogflow.cx.v3.Flow.MultiLanguageSettings.enable_multi_language_detection>`__.
+                The supported languages must be a subset of the
+                languages supported by the agent.
         """
 
         enable_multi_language_detection: bool = proto.Field(
@@ -280,10 +300,10 @@ class Flow(proto.Message):
         number=11,
         message="NluSettings",
     )
-    advanced_settings: gcdc_advanced_settings.AdvancedSettings = proto.Field(
+    advanced_settings: advanced_settings.AdvancedSettings = proto.Field(
         proto.MESSAGE,
         number=14,
-        message=gcdc_advanced_settings.AdvancedSettings,
+        message=advanced_settings.AdvancedSettings,
     )
     knowledge_connector_settings: page.KnowledgeConnectorSettings = proto.Field(
         proto.MESSAGE,
@@ -303,26 +323,36 @@ class Flow(proto.Message):
 
 class CreateFlowRequest(proto.Message):
     r"""The request message for
-    [Flows.CreateFlow][google.cloud.dialogflow.cx.v3.Flows.CreateFlow].
+    `Flows.CreateFlow
+    <google.cloud.dialogflow.cx.v3.Flows.CreateFlow>`__.
 
     Attributes:
         parent (str):
-            Required. The agent to create a flow for. Format:
+            Required. The agent to create a flow for.
+            Format:
             ``projects/<ProjectID>/locations/<LocationID>/agents/<AgentID>``.
         flow (google.cloud.dialogflowcx_v3.types.Flow):
             Required. The flow to create.
         language_code (str):
-            The language of the following fields in ``flow``:
+            The language of the following fields in
+            ``flow``:
+            *
+            ``Flow.event_handlers.trigger_fulfillment.messages``
 
-            - ``Flow.event_handlers.trigger_fulfillment.messages``
-            - ``Flow.event_handlers.trigger_fulfillment.conditional_cases``
-            - ``Flow.transition_routes.trigger_fulfillment.messages``
-            - ``Flow.transition_routes.trigger_fulfillment.conditional_cases``
+            *
+            ``Flow.event_handlers.trigger_fulfillment.conditional_cases``
+            *
+            ``Flow.transition_routes.trigger_fulfillment.messages``
 
-            If not specified, the agent's default language is used.
-            `Many
-            languages <https://cloud.google.com/dialogflow/cx/docs/reference/language>`__
-            are supported. Note: languages must be enabled in the agent
+            *
+            ``Flow.transition_routes.trigger_fulfillment.conditional_cases``
+
+            If not specified, the agent's default language
+            is used. `Many
+            languages
+            <https://cloud.google.com/dialogflow/cx/docs/reference/language>`__
+            are supported.
+            Note: languages must be enabled in the agent
             before they can be used.
     """
 
@@ -343,23 +373,32 @@ class CreateFlowRequest(proto.Message):
 
 class DeleteFlowRequest(proto.Message):
     r"""The request message for
-    [Flows.DeleteFlow][google.cloud.dialogflow.cx.v3.Flows.DeleteFlow].
+    `Flows.DeleteFlow
+    <google.cloud.dialogflow.cx.v3.Flows.DeleteFlow>`__.
 
     Attributes:
         name (str):
-            Required. The name of the flow to delete. Format:
+            Required. The name of the flow to delete.
+            Format:
+
             ``projects/<ProjectID>/locations/<LocationID>/agents/<AgentID>/flows/<FlowID>``.
         force (bool):
-            This field has no effect for flows with no incoming
-            transitions. For flows with incoming transitions:
+            This field has no effect for flows with no
+            incoming transitions. For flows with incoming
+            transitions:
 
-            - If ``force`` is set to false, an error will be returned
-              with message indicating the incoming transitions.
-            - If ``force`` is set to true, Dialogflow will remove the
-              flow, as well as any transitions to the flow (i.e. [Target
-              flow][EventHandler.target_flow] in event handlers or
-              [Target flow][TransitionRoute.target_flow] in transition
-              routes that point to this flow will be cleared).
+            *  If ``force`` is set to false, an error will
+            be returned with message    indicating the
+            incoming transitions.
+
+            *  If ``force`` is set to true, Dialogflow will
+            remove the flow, as well as    any transitions
+            to the flow (i.e. `Target
+               flow <EventHandler.target_flow>`__ in event
+            handlers or `Target    flow
+            <TransitionRoute.target_flow>`__ in transition
+            routes that point to    this flow will be
+            cleared).
     """
 
     name: str = proto.Field(
@@ -374,31 +413,40 @@ class DeleteFlowRequest(proto.Message):
 
 class ListFlowsRequest(proto.Message):
     r"""The request message for
-    [Flows.ListFlows][google.cloud.dialogflow.cx.v3.Flows.ListFlows].
+    `Flows.ListFlows
+    <google.cloud.dialogflow.cx.v3.Flows.ListFlows>`__.
 
     Attributes:
         parent (str):
-            Required. The agent containing the flows. Format:
+            Required. The agent containing the flows.
+            Format:
             ``projects/<ProjectID>/locations/<LocationID>/agents/<AgentID>``.
         page_size (int):
             The maximum number of items to return in a
             single page. By default 100 and at most 1000.
         page_token (str):
-            The next_page_token value returned from a previous list
-            request.
+            The next_page_token value returned from a
+            previous list request.
         language_code (str):
-            The language to list flows for. The following fields are
-            language dependent:
+            The language to list flows for. The following
+            fields are language dependent:
 
-            - ``Flow.event_handlers.trigger_fulfillment.messages``
-            - ``Flow.event_handlers.trigger_fulfillment.conditional_cases``
-            - ``Flow.transition_routes.trigger_fulfillment.messages``
-            - ``Flow.transition_routes.trigger_fulfillment.conditional_cases``
+            *
+            ``Flow.event_handlers.trigger_fulfillment.messages``
+            *
+            ``Flow.event_handlers.trigger_fulfillment.conditional_cases``
 
-            If not specified, the agent's default language is used.
-            `Many
-            languages <https://cloud.google.com/dialogflow/cx/docs/reference/language>`__
-            are supported. Note: languages must be enabled in the agent
+            *
+            ``Flow.transition_routes.trigger_fulfillment.messages``
+            *
+            ``Flow.transition_routes.trigger_fulfillment.conditional_cases``
+
+            If not specified, the agent's default language
+            is used. `Many
+            languages
+            <https://cloud.google.com/dialogflow/cx/docs/reference/language>`__
+            are supported.
+            Note: languages must be enabled in the agent
             before they can be used.
     """
 
@@ -422,12 +470,14 @@ class ListFlowsRequest(proto.Message):
 
 class ListFlowsResponse(proto.Message):
     r"""The response message for
-    [Flows.ListFlows][google.cloud.dialogflow.cx.v3.Flows.ListFlows].
+    `Flows.ListFlows
+    <google.cloud.dialogflow.cx.v3.Flows.ListFlows>`__.
 
     Attributes:
         flows (MutableSequence[google.cloud.dialogflowcx_v3.types.Flow]):
-            The list of flows. There will be a maximum number of items
-            returned based on the page_size field in the request.
+            The list of flows. There will be a maximum
+            number of items returned based on the page_size
+            field in the request.
         next_page_token (str):
             Token to retrieve the next page of results,
             or empty if there are no more results in the
@@ -451,25 +501,34 @@ class ListFlowsResponse(proto.Message):
 
 class GetFlowRequest(proto.Message):
     r"""The response message for
-    [Flows.GetFlow][google.cloud.dialogflow.cx.v3.Flows.GetFlow].
+    `Flows.GetFlow <google.cloud.dialogflow.cx.v3.Flows.GetFlow>`__.
 
     Attributes:
         name (str):
-            Required. The name of the flow to get. Format:
+            Required. The name of the flow to get.
+            Format:
+
             ``projects/<ProjectID>/locations/<LocationID>/agents/<AgentID>/flows/<FlowID>``.
         language_code (str):
-            The language to retrieve the flow for. The following fields
-            are language dependent:
+            The language to retrieve the flow for. The
+            following fields are language dependent:
 
-            - ``Flow.event_handlers.trigger_fulfillment.messages``
-            - ``Flow.event_handlers.trigger_fulfillment.conditional_cases``
-            - ``Flow.transition_routes.trigger_fulfillment.messages``
-            - ``Flow.transition_routes.trigger_fulfillment.conditional_cases``
+            *
+            ``Flow.event_handlers.trigger_fulfillment.messages``
+            *
+            ``Flow.event_handlers.trigger_fulfillment.conditional_cases``
 
-            If not specified, the agent's default language is used.
-            `Many
-            languages <https://cloud.google.com/dialogflow/cx/docs/reference/language>`__
-            are supported. Note: languages must be enabled in the agent
+            *
+            ``Flow.transition_routes.trigger_fulfillment.messages``
+            *
+            ``Flow.transition_routes.trigger_fulfillment.conditional_cases``
+
+            If not specified, the agent's default language
+            is used. `Many
+            languages
+            <https://cloud.google.com/dialogflow/cx/docs/reference/language>`__
+            are supported.
+            Note: languages must be enabled in the agent
             before they can be used.
     """
 
@@ -485,7 +544,8 @@ class GetFlowRequest(proto.Message):
 
 class UpdateFlowRequest(proto.Message):
     r"""The request message for
-    [Flows.UpdateFlow][google.cloud.dialogflow.cx.v3.Flows.UpdateFlow].
+    `Flows.UpdateFlow
+    <google.cloud.dialogflow.cx.v3.Flows.UpdateFlow>`__.
 
     Attributes:
         flow (google.cloud.dialogflowcx_v3.types.Flow):
@@ -495,17 +555,25 @@ class UpdateFlowRequest(proto.Message):
             If the mask is not present, all fields will be
             updated.
         language_code (str):
-            The language of the following fields in ``flow``:
+            The language of the following fields in
+            ``flow``:
+            *
+            ``Flow.event_handlers.trigger_fulfillment.messages``
 
-            - ``Flow.event_handlers.trigger_fulfillment.messages``
-            - ``Flow.event_handlers.trigger_fulfillment.conditional_cases``
-            - ``Flow.transition_routes.trigger_fulfillment.messages``
-            - ``Flow.transition_routes.trigger_fulfillment.conditional_cases``
+            *
+            ``Flow.event_handlers.trigger_fulfillment.conditional_cases``
+            *
+            ``Flow.transition_routes.trigger_fulfillment.messages``
 
-            If not specified, the agent's default language is used.
-            `Many
-            languages <https://cloud.google.com/dialogflow/cx/docs/reference/language>`__
-            are supported. Note: languages must be enabled in the agent
+            *
+            ``Flow.transition_routes.trigger_fulfillment.conditional_cases``
+
+            If not specified, the agent's default language
+            is used. `Many
+            languages
+            <https://cloud.google.com/dialogflow/cx/docs/reference/language>`__
+            are supported.
+            Note: languages must be enabled in the agent
             before they can be used.
     """
 
@@ -527,11 +595,14 @@ class UpdateFlowRequest(proto.Message):
 
 class TrainFlowRequest(proto.Message):
     r"""The request message for
-    [Flows.TrainFlow][google.cloud.dialogflow.cx.v3.Flows.TrainFlow].
+    `Flows.TrainFlow
+    <google.cloud.dialogflow.cx.v3.Flows.TrainFlow>`__.
 
     Attributes:
         name (str):
-            Required. The flow to train. Format:
+            Required. The flow to train.
+            Format:
+
             ``projects/<ProjectID>/locations/<LocationID>/agents/<AgentID>/flows/<FlowID>``.
     """
 
@@ -543,11 +614,14 @@ class TrainFlowRequest(proto.Message):
 
 class ValidateFlowRequest(proto.Message):
     r"""The request message for
-    [Flows.ValidateFlow][google.cloud.dialogflow.cx.v3.Flows.ValidateFlow].
+    `Flows.ValidateFlow
+    <google.cloud.dialogflow.cx.v3.Flows.ValidateFlow>`__.
 
     Attributes:
         name (str):
-            Required. The flow to validate. Format:
+            Required. The flow to validate.
+            Format:
+
             ``projects/<ProjectID>/locations/<LocationID>/agents/<AgentID>/flows/<FlowID>``.
         language_code (str):
             If not specified, the agent's default
@@ -566,11 +640,14 @@ class ValidateFlowRequest(proto.Message):
 
 class GetFlowValidationResultRequest(proto.Message):
     r"""The request message for
-    [Flows.GetFlowValidationResult][google.cloud.dialogflow.cx.v3.Flows.GetFlowValidationResult].
+    `Flows.GetFlowValidationResult
+    <google.cloud.dialogflow.cx.v3.Flows.GetFlowValidationResult>`__.
 
     Attributes:
         name (str):
-            Required. The flow name. Format:
+            Required. The flow name.
+            Format:
+
             ``projects/<ProjectID>/locations/<LocationID>/agents/<AgentID>/flows/<FlowID>/validationResult``.
         language_code (str):
             If not specified, the agent's default
@@ -589,11 +666,14 @@ class GetFlowValidationResultRequest(proto.Message):
 
 class FlowValidationResult(proto.Message):
     r"""The response message for
-    [Flows.GetFlowValidationResult][google.cloud.dialogflow.cx.v3.Flows.GetFlowValidationResult].
+    `Flows.GetFlowValidationResult
+    <google.cloud.dialogflow.cx.v3.Flows.GetFlowValidationResult>`__.
 
     Attributes:
         name (str):
-            The unique identifier of the flow validation result. Format:
+            The unique identifier of the flow validation
+            result. Format:
+
             ``projects/<ProjectID>/locations/<LocationID>/agents/<AgentID>/flows/<FlowID>/validationResult``.
         validation_messages (MutableSequence[google.cloud.dialogflowcx_v3.types.ValidationMessage]):
             Contains all validation messages.
@@ -621,7 +701,8 @@ class FlowValidationResult(proto.Message):
 
 class ImportFlowRequest(proto.Message):
     r"""The request message for
-    [Flows.ImportFlow][google.cloud.dialogflow.cx.v3.Flows.ImportFlow].
+    `Flows.ImportFlow
+    <google.cloud.dialogflow.cx.v3.Flows.ImportFlow>`__.
 
     This message has `oneof`_ fields (mutually exclusive fields).
     For each oneof, at most one member field can be set at the same time.
@@ -632,19 +713,22 @@ class ImportFlowRequest(proto.Message):
 
     Attributes:
         parent (str):
-            Required. The agent to import the flow into. Format:
+            Required. The agent to import the flow into.
+            Format:
             ``projects/<ProjectID>/locations/<LocationID>/agents/<AgentID>``.
         flow_uri (str):
-            The `Google Cloud
-            Storage <https://cloud.google.com/storage/docs/>`__ URI to
-            import flow from. The format of this URI must be
-            ``gs://<bucket-name>/<object-name>``.
+            The `Google Cloud Storage
+            <https://cloud.google.com/storage/docs/>`__ URI
+            to import flow from. The format of this URI must
+            be ``gs://<bucket-name>/<object-name>``.
 
-            Dialogflow performs a read operation for the Cloud Storage
-            object on the caller's behalf, so your request
-            authentication must have read permissions for the object.
-            For more information, see `Dialogflow access
-            control <https://cloud.google.com/dialogflow/cx/docs/concept/access-control#storage>`__.
+            Dialogflow performs a read operation for the
+            Cloud Storage object on the caller's behalf, so
+            your request authentication must have read
+            permissions for the object. For more
+            information, see `Dialogflow access
+            control
+            <https://cloud.google.com/dialogflow/cx/docs/concept/access-control#storage>`__.
 
             This field is a member of `oneof`_ ``flow``.
         flow_content (bytes):
@@ -652,7 +736,8 @@ class ImportFlowRequest(proto.Message):
 
             This field is a member of `oneof`_ ``flow``.
         import_option (google.cloud.dialogflowcx_v3.types.ImportFlowRequest.ImportOption):
-            Flow import mode. If not specified, ``KEEP`` is assumed.
+            Flow import mode. If not specified, ``KEEP`` is
+            assumed.
         flow_import_strategy (google.cloud.dialogflowcx_v3.types.FlowImportStrategy):
             Optional. Specifies the import strategy used
             when resolving resource conflicts.
@@ -707,14 +792,15 @@ class ImportFlowRequest(proto.Message):
 
 class FlowImportStrategy(proto.Message):
     r"""The flow import strategy used for resource conflict resolution
-    associated with an
-    [ImportFlowRequest][google.cloud.dialogflow.cx.v3.ImportFlowRequest].
+    associated with an `ImportFlowRequest
+    <google.cloud.dialogflow.cx.v3.ImportFlowRequest>`__.
 
     Attributes:
         global_import_strategy (google.cloud.dialogflowcx_v3.types.ImportStrategy):
-            Optional. Import strategy for resource conflict resolution,
-            applied globally throughout the flow. It will be applied for
-            all display name conflicts in the imported content. If not
+            Optional. Import strategy for resource conflict
+            resolution, applied globally throughout the
+            flow. It will be applied for all display name
+            conflicts in the imported content. If not
             specified, 'CREATE_NEW' is assumed.
     """
 
@@ -727,11 +813,14 @@ class FlowImportStrategy(proto.Message):
 
 class ImportFlowResponse(proto.Message):
     r"""The response message for
-    [Flows.ImportFlow][google.cloud.dialogflow.cx.v3.Flows.ImportFlow].
+    `Flows.ImportFlow
+    <google.cloud.dialogflow.cx.v3.Flows.ImportFlow>`__.
 
     Attributes:
         flow (str):
-            The unique identifier of the new flow. Format:
+            The unique identifier of the new flow.
+            Format:
+
             ``projects/<ProjectID>/locations/<LocationID>/agents/<AgentID>/flows/<FlowID>``.
     """
 
@@ -743,24 +832,31 @@ class ImportFlowResponse(proto.Message):
 
 class ExportFlowRequest(proto.Message):
     r"""The request message for
-    [Flows.ExportFlow][google.cloud.dialogflow.cx.v3.Flows.ExportFlow].
+    `Flows.ExportFlow
+    <google.cloud.dialogflow.cx.v3.Flows.ExportFlow>`__.
 
     Attributes:
         name (str):
-            Required. The name of the flow to export. Format:
+            Required. The name of the flow to export.
+            Format:
+
             ``projects/<ProjectID>/locations/<LocationID>/agents/<AgentID>/flows/<FlowID>``.
         flow_uri (str):
             Optional. The `Google Cloud
-            Storage <https://cloud.google.com/storage/docs/>`__ URI to
-            export the flow to. The format of this URI must be
-            ``gs://<bucket-name>/<object-name>``. If left unspecified,
-            the serialized flow is returned inline.
+            Storage
+            <https://cloud.google.com/storage/docs/>`__ URI
+            to export the flow to. The format of this URI
+            must be ``gs://<bucket-name>/<object-name>``. If
+            left unspecified, the serialized flow is
+            returned inline.
 
-            Dialogflow performs a write operation for the Cloud Storage
-            object on the caller's behalf, so your request
-            authentication must have write permissions for the object.
-            For more information, see `Dialogflow access
-            control <https://cloud.google.com/dialogflow/cx/docs/concept/access-control#storage>`__.
+            Dialogflow performs a write operation for the
+            Cloud Storage object on the caller's behalf, so
+            your request authentication must have write
+            permissions for the object. For more
+            information, see `Dialogflow access
+            control
+            <https://cloud.google.com/dialogflow/cx/docs/concept/access-control#storage>`__.
         include_referenced_flows (bool):
             Optional. Whether to export flows referenced
             by the specified flow.
@@ -782,7 +878,8 @@ class ExportFlowRequest(proto.Message):
 
 class ExportFlowResponse(proto.Message):
     r"""The response message for
-    [Flows.ExportFlow][google.cloud.dialogflow.cx.v3.Flows.ExportFlow].
+    `Flows.ExportFlow
+    <google.cloud.dialogflow.cx.v3.Flows.ExportFlow>`__.
 
     This message has `oneof`_ fields (mutually exclusive fields).
     For each oneof, at most one member field can be set at the same time.
@@ -793,9 +890,10 @@ class ExportFlowResponse(proto.Message):
 
     Attributes:
         flow_uri (str):
-            The URI to a file containing the exported flow. This field
-            is populated only if ``flow_uri`` is specified in
-            [ExportFlowRequest][google.cloud.dialogflow.cx.v3.ExportFlowRequest].
+            The URI to a file containing the exported flow.
+            This field is populated only if ``flow_uri`` is
+            specified in `ExportFlowRequest
+            <google.cloud.dialogflow.cx.v3.ExportFlowRequest>`__.
 
             This field is a member of `oneof`_ ``flow``.
         flow_content (bytes):

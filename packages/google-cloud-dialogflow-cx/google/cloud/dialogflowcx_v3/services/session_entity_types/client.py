@@ -66,11 +66,7 @@ from google.longrunning import operations_pb2  # type: ignore
 from google.protobuf import field_mask_pb2  # type: ignore
 
 from google.cloud.dialogflowcx_v3.services.session_entity_types import pagers
-from google.cloud.dialogflowcx_v3.types import (
-    session_entity_type as gcdc_session_entity_type,
-)
-from google.cloud.dialogflowcx_v3.types import entity_type
-from google.cloud.dialogflowcx_v3.types import session_entity_type
+from google.cloud.dialogflowcx_v3.types import entity_type, session_entity_type
 
 from .transports.base import DEFAULT_CLIENT_INFO, SessionEntityTypesTransport
 from .transports.grpc import SessionEntityTypesGrpcTransport
@@ -117,7 +113,8 @@ class SessionEntityTypesClientMeta(type):
 
 class SessionEntityTypesClient(metaclass=SessionEntityTypesClientMeta):
     """Service for managing
-    [SessionEntityTypes][google.cloud.dialogflow.cx.v3.SessionEntityType].
+    `SessionEntityTypes
+    <google.cloud.dialogflow.cx.v3.SessionEntityType>`__.
     """
 
     @staticmethod
@@ -773,15 +770,17 @@ class SessionEntityTypesClient(metaclass=SessionEntityTypesClientMeta):
         Args:
             request (Union[google.cloud.dialogflowcx_v3.types.ListSessionEntityTypesRequest, dict]):
                 The request object. The request message for
-                [SessionEntityTypes.ListSessionEntityTypes][google.cloud.dialogflow.cx.v3.SessionEntityTypes.ListSessionEntityTypes].
+                `SessionEntityTypes.ListSessionEntityTypes
+                <google.cloud.dialogflow.cx.v3.SessionEntityTypes.ListSessionEntityTypes>`__.
             parent (str):
-                Required. The session to list all session entity types
-                from. Format:
+                Required. The session to list all
+                session entity types from. Format:
+
                 ``projects/<ProjectID>/locations/<LocationID>/agents/<AgentID>/sessions/<SessionID>``
                 or
                 ``projects/<ProjectID>/locations/<LocationID>/agents/<AgentID>/environments/<EnvironmentID>/sessions/<SessionID>``.
-                If ``Environment ID`` is not specified, we assume
-                default 'draft' environment.
+                If ``Environment ID`` is not specified,
+                we assume default 'draft' environment.
 
                 This corresponds to the ``parent`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -797,10 +796,12 @@ class SessionEntityTypesClient(metaclass=SessionEntityTypesClientMeta):
         Returns:
             google.cloud.dialogflowcx_v3.services.session_entity_types.pagers.ListSessionEntityTypesPager:
                 The response message for
-                   [SessionEntityTypes.ListSessionEntityTypes][google.cloud.dialogflow.cx.v3.SessionEntityTypes.ListSessionEntityTypes].
+                `SessionEntityTypes.ListSessionEntityTypes
+                <google.cloud.dialogflow.cx.v3.SessionEntityTypes.ListSessionEntityTypes>`__.
 
-                Iterating over this object will yield results and
-                resolve additional pages automatically.
+                Iterating over this object will yield
+                results and resolve additional pages
+                automatically.
 
         """
         # Create or coerce a protobuf request object.
@@ -904,14 +905,17 @@ class SessionEntityTypesClient(metaclass=SessionEntityTypesClientMeta):
         Args:
             request (Union[google.cloud.dialogflowcx_v3.types.GetSessionEntityTypeRequest, dict]):
                 The request object. The request message for
-                [SessionEntityTypes.GetSessionEntityType][google.cloud.dialogflow.cx.v3.SessionEntityTypes.GetSessionEntityType].
+                `SessionEntityTypes.GetSessionEntityType
+                <google.cloud.dialogflow.cx.v3.SessionEntityTypes.GetSessionEntityType>`__.
             name (str):
-                Required. The name of the session entity type. Format:
+                Required. The name of the session entity
+                type. Format:
+
                 ``projects/<ProjectID>/locations/<LocationID>/agents/<AgentID>/sessions/<SessionID>/entityTypes/<EntityTypeID>``
                 or
                 ``projects/<ProjectID>/locations/<LocationID>/agents/<AgentID>/environments/<EnvironmentID>/sessions/<SessionID>/entityTypes/<EntityTypeID>``.
-                If ``Environment ID`` is not specified, we assume
-                default 'draft' environment.
+                If ``Environment ID`` is not specified,
+                we assume default 'draft' environment.
 
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -926,22 +930,26 @@ class SessionEntityTypesClient(metaclass=SessionEntityTypesClientMeta):
 
         Returns:
             google.cloud.dialogflowcx_v3.types.SessionEntityType:
-                Session entity types are referred to as **User** entity types and are
-                   entities that are built for an individual user such
-                   as favorites, preferences, playlists, and so on.
+                Session entity types are referred to as
+                **User** entity types and are entities
+                that are built for an individual user
+                such as favorites, preferences,
+                playlists, and so on.
 
-                   You can redefine a session entity type at the session
-                   level to extend or replace a [custom entity
-                   type][google.cloud.dialogflow.cx.v3.EntityType] at
-                   the user session level (we refer to the entity types
-                   defined at the agent level as "custom entity types").
+                You can redefine a session entity type
+                at the session level to extend or
+                replace a `custom entity type
+                <google.cloud.dialogflow.cx.v3.EntityType>`__
+                at the user session level (we refer to
+                the entity types defined at the agent
+                level as "custom entity types").
 
-                   Note: session entity types apply to all queries,
-                   regardless of the language.
+                Note: session entity types apply to all
+                queries, regardless of the language.
 
-                   For more information about entity types, see the
-                   [Dialogflow
-                   documentation](https://cloud.google.com/dialogflow/docs/entities-overview).
+                For more information about entity types,
+                see the `Dialogflow documentation
+                <https://cloud.google.com/dialogflow/docs/entities-overview>`__.
 
         """
         # Create or coerce a protobuf request object.
@@ -993,17 +1001,15 @@ class SessionEntityTypesClient(metaclass=SessionEntityTypesClientMeta):
     def create_session_entity_type(
         self,
         request: Optional[
-            Union[gcdc_session_entity_type.CreateSessionEntityTypeRequest, dict]
+            Union[session_entity_type.CreateSessionEntityTypeRequest, dict]
         ] = None,
         *,
         parent: Optional[str] = None,
-        session_entity_type: Optional[
-            gcdc_session_entity_type.SessionEntityType
-        ] = None,
+        session_entity_type: Optional[session_entity_type.SessionEntityType] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
-    ) -> gcdc_session_entity_type.SessionEntityType:
+    ) -> session_entity_type.SessionEntityType:
         r"""Creates a session entity type.
 
         .. code-block:: python
@@ -1042,15 +1048,17 @@ class SessionEntityTypesClient(metaclass=SessionEntityTypesClientMeta):
         Args:
             request (Union[google.cloud.dialogflowcx_v3.types.CreateSessionEntityTypeRequest, dict]):
                 The request object. The request message for
-                [SessionEntityTypes.CreateSessionEntityType][google.cloud.dialogflow.cx.v3.SessionEntityTypes.CreateSessionEntityType].
+                `SessionEntityTypes.CreateSessionEntityType
+                <google.cloud.dialogflow.cx.v3.SessionEntityTypes.CreateSessionEntityType>`__.
             parent (str):
-                Required. The session to create a session entity type
-                for. Format:
+                Required. The session to create a
+                session entity type for. Format:
+
                 ``projects/<ProjectID>/locations/<LocationID>/agents/<AgentID>/sessions/<SessionID>``
                 or
                 ``projects/<ProjectID>/locations/<LocationID>/agents/<AgentID>/environments/<EnvironmentID>/sessions/<SessionID>``.
-                If ``Environment ID`` is not specified, we assume
-                default 'draft' environment.
+                If ``Environment ID`` is not specified,
+                we assume default 'draft' environment.
 
                 This corresponds to the ``parent`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -1072,22 +1080,26 @@ class SessionEntityTypesClient(metaclass=SessionEntityTypesClientMeta):
 
         Returns:
             google.cloud.dialogflowcx_v3.types.SessionEntityType:
-                Session entity types are referred to as **User** entity types and are
-                   entities that are built for an individual user such
-                   as favorites, preferences, playlists, and so on.
+                Session entity types are referred to as
+                **User** entity types and are entities
+                that are built for an individual user
+                such as favorites, preferences,
+                playlists, and so on.
 
-                   You can redefine a session entity type at the session
-                   level to extend or replace a [custom entity
-                   type][google.cloud.dialogflow.cx.v3.EntityType] at
-                   the user session level (we refer to the entity types
-                   defined at the agent level as "custom entity types").
+                You can redefine a session entity type
+                at the session level to extend or
+                replace a `custom entity type
+                <google.cloud.dialogflow.cx.v3.EntityType>`__
+                at the user session level (we refer to
+                the entity types defined at the agent
+                level as "custom entity types").
 
-                   Note: session entity types apply to all queries,
-                   regardless of the language.
+                Note: session entity types apply to all
+                queries, regardless of the language.
 
-                   For more information about entity types, see the
-                   [Dialogflow
-                   documentation](https://cloud.google.com/dialogflow/docs/entities-overview).
+                For more information about entity types,
+                see the `Dialogflow documentation
+                <https://cloud.google.com/dialogflow/docs/entities-overview>`__.
 
         """
         # Create or coerce a protobuf request object.
@@ -1105,10 +1117,8 @@ class SessionEntityTypesClient(metaclass=SessionEntityTypesClientMeta):
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
-        if not isinstance(
-            request, gcdc_session_entity_type.CreateSessionEntityTypeRequest
-        ):
-            request = gcdc_session_entity_type.CreateSessionEntityTypeRequest(request)
+        if not isinstance(request, session_entity_type.CreateSessionEntityTypeRequest):
+            request = session_entity_type.CreateSessionEntityTypeRequest(request)
             # If we have keyword arguments corresponding to fields on the
             # request, apply these.
             if parent is not None:
@@ -1145,17 +1155,15 @@ class SessionEntityTypesClient(metaclass=SessionEntityTypesClientMeta):
     def update_session_entity_type(
         self,
         request: Optional[
-            Union[gcdc_session_entity_type.UpdateSessionEntityTypeRequest, dict]
+            Union[session_entity_type.UpdateSessionEntityTypeRequest, dict]
         ] = None,
         *,
-        session_entity_type: Optional[
-            gcdc_session_entity_type.SessionEntityType
-        ] = None,
+        session_entity_type: Optional[session_entity_type.SessionEntityType] = None,
         update_mask: Optional[field_mask_pb2.FieldMask] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
-    ) -> gcdc_session_entity_type.SessionEntityType:
+    ) -> session_entity_type.SessionEntityType:
         r"""Updates the specified session entity type.
 
         .. code-block:: python
@@ -1193,14 +1201,17 @@ class SessionEntityTypesClient(metaclass=SessionEntityTypesClientMeta):
         Args:
             request (Union[google.cloud.dialogflowcx_v3.types.UpdateSessionEntityTypeRequest, dict]):
                 The request object. The request message for
-                [SessionEntityTypes.UpdateSessionEntityType][google.cloud.dialogflow.cx.v3.SessionEntityTypes.UpdateSessionEntityType].
+                `SessionEntityTypes.UpdateSessionEntityType
+                <google.cloud.dialogflow.cx.v3.SessionEntityTypes.UpdateSessionEntityType>`__.
             session_entity_type (google.cloud.dialogflowcx_v3.types.SessionEntityType):
-                Required. The session entity type to update. Format:
+                Required. The session entity type to
+                update. Format:
+
                 ``projects/<ProjectID>/locations/<LocationID>/agents/<AgentID>/sessions/<SessionID>/entityTypes/<EntityTypeID>``
                 or
                 ``projects/<ProjectID>/locations/<LocationID>/agents/<AgentID>/environments/<EnvironmentID>/sessions/<SessionID>/entityTypes/<EntityTypeID>``.
-                If ``Environment ID`` is not specified, we assume
-                default 'draft' environment.
+                If ``Environment ID`` is not specified,
+                we assume default 'draft' environment.
 
                 This corresponds to the ``session_entity_type`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -1222,22 +1233,26 @@ class SessionEntityTypesClient(metaclass=SessionEntityTypesClientMeta):
 
         Returns:
             google.cloud.dialogflowcx_v3.types.SessionEntityType:
-                Session entity types are referred to as **User** entity types and are
-                   entities that are built for an individual user such
-                   as favorites, preferences, playlists, and so on.
+                Session entity types are referred to as
+                **User** entity types and are entities
+                that are built for an individual user
+                such as favorites, preferences,
+                playlists, and so on.
 
-                   You can redefine a session entity type at the session
-                   level to extend or replace a [custom entity
-                   type][google.cloud.dialogflow.cx.v3.EntityType] at
-                   the user session level (we refer to the entity types
-                   defined at the agent level as "custom entity types").
+                You can redefine a session entity type
+                at the session level to extend or
+                replace a `custom entity type
+                <google.cloud.dialogflow.cx.v3.EntityType>`__
+                at the user session level (we refer to
+                the entity types defined at the agent
+                level as "custom entity types").
 
-                   Note: session entity types apply to all queries,
-                   regardless of the language.
+                Note: session entity types apply to all
+                queries, regardless of the language.
 
-                   For more information about entity types, see the
-                   [Dialogflow
-                   documentation](https://cloud.google.com/dialogflow/docs/entities-overview).
+                For more information about entity types,
+                see the `Dialogflow documentation
+                <https://cloud.google.com/dialogflow/docs/entities-overview>`__.
 
         """
         # Create or coerce a protobuf request object.
@@ -1255,10 +1270,8 @@ class SessionEntityTypesClient(metaclass=SessionEntityTypesClientMeta):
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
-        if not isinstance(
-            request, gcdc_session_entity_type.UpdateSessionEntityTypeRequest
-        ):
-            request = gcdc_session_entity_type.UpdateSessionEntityTypeRequest(request)
+        if not isinstance(request, session_entity_type.UpdateSessionEntityTypeRequest):
+            request = session_entity_type.UpdateSessionEntityTypeRequest(request)
             # If we have keyword arguments corresponding to fields on the
             # request, apply these.
             if session_entity_type is not None:
@@ -1333,15 +1346,17 @@ class SessionEntityTypesClient(metaclass=SessionEntityTypesClientMeta):
         Args:
             request (Union[google.cloud.dialogflowcx_v3.types.DeleteSessionEntityTypeRequest, dict]):
                 The request object. The request message for
-                [SessionEntityTypes.DeleteSessionEntityType][google.cloud.dialogflow.cx.v3.SessionEntityTypes.DeleteSessionEntityType].
+                `SessionEntityTypes.DeleteSessionEntityType
+                <google.cloud.dialogflow.cx.v3.SessionEntityTypes.DeleteSessionEntityType>`__.
             name (str):
-                Required. The name of the session entity type to delete.
-                Format:
+                Required. The name of the session entity
+                type to delete. Format:
+
                 ``projects/<ProjectID>/locations/<LocationID>/agents/<AgentID>/sessions/<SessionID>/entityTypes/<EntityTypeID>``
                 or
                 ``projects/<ProjectID>/locations/<LocationID>/agents/<AgentID>/environments/<EnvironmentID>/sessions/<SessionID>/entityTypes/<EntityTypeID>``.
-                If ``Environment ID`` is not specified, we assume
-                default 'draft' environment.
+                If ``Environment ID`` is not specified,
+                we assume default 'draft' environment.
 
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this

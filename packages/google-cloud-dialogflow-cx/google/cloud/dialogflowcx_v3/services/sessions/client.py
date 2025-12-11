@@ -110,10 +110,11 @@ class SessionsClientMeta(type):
 
 
 class SessionsClient(metaclass=SessionsClientMeta):
-    """A session represents an interaction with a user. You retrieve user
-    input and pass it to the
-    [DetectIntent][google.cloud.dialogflow.cx.v3.Sessions.DetectIntent]
-    method to determine user intent and respond.
+    """A session represents an interaction with a user. You retrieve
+    user input and pass it to the
+    `DetectIntent
+    <google.cloud.dialogflow.cx.v3.Sessions.DetectIntent>`__ method
+    to determine user intent and respond.
     """
 
     @staticmethod
@@ -969,14 +970,16 @@ class SessionsClient(metaclass=SessionsClientMeta):
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> session.DetectIntentResponse:
-        r"""Processes a natural language query and returns structured,
-        actionable data as a result. This method is not idempotent,
-        because it may cause session entity types to be updated, which
-        in turn might affect results of future queries.
+        r"""Processes a natural language query and returns
+        structured, actionable data as a result. This method is
+        not idempotent, because it may cause session entity
+        types to be updated, which in turn might affect results
+        of future queries.
 
-        Note: Always use agent versions for production traffic. See
-        `Versions and
-        environments <https://cloud.google.com/dialogflow/cx/docs/concept/version>`__.
+        Note: Always use agent versions for production traffic.
+        See `Versions and
+        environments
+        <https://cloud.google.com/dialogflow/cx/docs/concept/version>`__.
 
         .. code-block:: python
 
@@ -1064,10 +1067,12 @@ class SessionsClient(metaclass=SessionsClientMeta):
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> Iterable[session.DetectIntentResponse]:
-        r"""Processes a natural language query and returns structured,
-        actionable data as a result through server-side streaming.
-        Server-side streaming allows Dialogflow to send `partial
-        responses <https://cloud.google.com/dialogflow/cx/docs/concept/fulfillment#partial-response>`__
+        r"""Processes a natural language query and returns
+        structured, actionable data as a result through
+        server-side streaming. Server-side streaming allows
+        Dialogflow to send `partial
+        responses
+        <https://cloud.google.com/dialogflow/cx/docs/concept/fulfillment#partial-response>`__
         earlier in a single request.
 
         .. code-block:: python
@@ -1160,13 +1165,14 @@ class SessionsClient(metaclass=SessionsClientMeta):
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> Iterable[session.StreamingDetectIntentResponse]:
         r"""Processes a natural language query in audio format in a
-        streaming fashion and returns structured, actionable data as a
-        result. This method is only available via the gRPC API (not
-        REST).
+        streaming fashion and returns structured, actionable
+        data as a result. This method is only available via the
+        gRPC API (not REST).
 
-        Note: Always use agent versions for production traffic. See
-        `Versions and
-        environments <https://cloud.google.com/dialogflow/cx/docs/concept/version>`__.
+        Note: Always use agent versions for production traffic.
+        See `Versions and
+        environments
+        <https://cloud.google.com/dialogflow/cx/docs/concept/version>`__.
 
         .. code-block:: python
 
@@ -1211,44 +1217,56 @@ class SessionsClient(metaclass=SessionsClientMeta):
 
         Args:
             requests (Iterator[google.cloud.dialogflowcx_v3.types.StreamingDetectIntentRequest]):
-                The request object iterator. The top-level message sent by the client to the
-                [Sessions.StreamingDetectIntent][google.cloud.dialogflow.cx.v3.Sessions.StreamingDetectIntent]
+                The request object iterator. The top-level message sent by the client
+                to the `Sessions.StreamingDetectIntent
+                <google.cloud.dialogflow.cx.v3.Sessions.StreamingDetectIntent>`__
                 method.
 
-                Multiple request messages should be sent in order:
+                Multiple request messages should be sent
+                in order:
 
-                1. The first message must contain
-                   [session][google.cloud.dialogflow.cx.v3.StreamingDetectIntentRequest.session],
-                   [query_input][google.cloud.dialogflow.cx.v3.StreamingDetectIntentRequest.query_input]
-                   plus optionally
-                   [query_params][google.cloud.dialogflow.cx.v3.StreamingDetectIntentRequest.query_params].
-                   If the client wants to receive an audio response, it
-                   should also contain
-                   [output_audio_config][google.cloud.dialogflow.cx.v3.StreamingDetectIntentRequest.output_audio_config].
+                1.  The first message must contain
+                    `session
+                <google.cloud.dialogflow.cx.v3.StreamingDetectIntentRequest.session>`__,
+                `query_input
+                <google.cloud.dialogflow.cx.v3.StreamingDetectIntentRequest.query_input>`__
+                plus optionally
+                    `query_params
+                <google.cloud.dialogflow.cx.v3.StreamingDetectIntentRequest.query_params>`__.
+                If the client wants to receive an audio
+                response, it should also contain
+                `output_audio_config
+                <google.cloud.dialogflow.cx.v3.StreamingDetectIntentRequest.output_audio_config>`__.
 
-                2. If
-                   [query_input][google.cloud.dialogflow.cx.v3.StreamingDetectIntentRequest.query_input]
-                   was set to
-                   [query_input.audio.config][google.cloud.dialogflow.cx.v3.AudioInput.config],
-                   all subsequent messages must contain
-                   [query_input.audio.audio][google.cloud.dialogflow.cx.v3.AudioInput.audio]
-                   to continue with Speech recognition. If you decide to
-                   rather detect an intent from text input after you
-                   already started Speech recognition, please send a
-                   message with
-                   [query_input.text][google.cloud.dialogflow.cx.v3.QueryInput.text].
+                2.  If
+                `query_input
+                <google.cloud.dialogflow.cx.v3.StreamingDetectIntentRequest.query_input>`__
+                was set to
+                    `query_input.audio.config
+                <google.cloud.dialogflow.cx.v3.AudioInput.config>`__,
+                all subsequent messages must contain
+                    `query_input.audio.audio
+                <google.cloud.dialogflow.cx.v3.AudioInput.audio>`__
+                to continue with Speech recognition. If
+                you decide to rather detect an
+                intent from text input after you already
+                started Speech recognition,     please
+                send a message with
+                    `query_input.text
+                <google.cloud.dialogflow.cx.v3.QueryInput.text>`__.
 
-                   However, note that:
+                    However, note that:
 
-                   - Dialogflow will bill you for the audio duration so
-                     far.
-                   - Dialogflow discards all Speech recognition results
-                     in favor of the input text.
-                   - Dialogflow will use the language code from the
-                     first message.
+                * Dialogflow will bill you for the audio
+                duration so far.     * Dialogflow
+                discards all Speech recognition results
+                in favor of the       input text.
 
-                After you sent all input, you must half-close or abort
-                the request stream.
+                * Dialogflow will use the language code
+                from the first message.
+
+                After you sent all input, you must
+                half-close or abort the request stream.
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
@@ -1260,30 +1278,39 @@ class SessionsClient(metaclass=SessionsClientMeta):
         Returns:
             Iterable[google.cloud.dialogflowcx_v3.types.StreamingDetectIntentResponse]:
                 The top-level message returned from the
-                   [StreamingDetectIntent][google.cloud.dialogflow.cx.v3.Sessions.StreamingDetectIntent]
-                   method.
+                `StreamingDetectIntent
+                <google.cloud.dialogflow.cx.v3.Sessions.StreamingDetectIntent>`__
+                method.
 
-                   Multiple response messages can be returned in order:
+                Multiple response messages can be
+                returned in order:
 
-                   - If the
-                     StreamingDetectIntentRequest.query_input.audio
-                     field was set, the first M messages contain
-                     recognition_result. Each recognition_result
-                     represents a more complete transcript of what the
-                     user said. The last recognition_result has is_final
-                     set to true.
-                   - If the
-                     StreamingDetectIntentRequest.enable_partial_response
-                     field was true, the detect_intent_response field is
-                     populated for each of the following N responses,
-                     where 0 <= N <= 5. These responses set the
-                     [DetectIntentResponse.response_type][google.cloud.dialogflow.cx.v3.DetectIntentResponse.response_type]
-                     field to PARTIAL.
+                *   If the
+                ``StreamingDetectIntentRequest.query_input.audio``
+                field was     set, the first M messages
+                contain ``recognition_result``.     Each
+                ``recognition_result`` represents a more
+                complete transcript of what     the user
+                said. The last ``recognition_result``
+                has ``is_final`` set to     ``true``.
 
-                   For the last response message, the
-                   detect_intent_response is fully populated, and
-                   [DetectIntentResponse.response_type][google.cloud.dialogflow.cx.v3.DetectIntentResponse.response_type]
-                   is set to FINAL.
+                *   If the
+                ``StreamingDetectIntentRequest.enable_partial_response``
+                field was     true, the
+                ``detect_intent_response`` field is
+                populated for each     of the following
+                N responses, where 0 <= N <= 5.
+                These responses set the
+                    `DetectIntentResponse.response_type
+                <google.cloud.dialogflow.cx.v3.DetectIntentResponse.response_type>`__
+                field to ``PARTIAL``.
+
+                For the last response message, the
+                ``detect_intent_response`` is fully
+                populated, and
+                `DetectIntentResponse.response_type
+                <google.cloud.dialogflow.cx.v3.DetectIntentResponse.response_type>`__
+                is set to ``FINAL``.
 
         """
 
@@ -1401,11 +1428,14 @@ class SessionsClient(metaclass=SessionsClientMeta):
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> session.FulfillIntentResponse:
         r"""Fulfills a matched intent returned by
-        [MatchIntent][google.cloud.dialogflow.cx.v3.Sessions.MatchIntent].
+        `MatchIntent
+        <google.cloud.dialogflow.cx.v3.Sessions.MatchIntent>`__.
         Must be called after
-        [MatchIntent][google.cloud.dialogflow.cx.v3.Sessions.MatchIntent],
+        `MatchIntent
+        <google.cloud.dialogflow.cx.v3.Sessions.MatchIntent>`__,
         with input from
-        [MatchIntentResponse][google.cloud.dialogflow.cx.v3.MatchIntentResponse].
+        `MatchIntentResponse
+        <google.cloud.dialogflow.cx.v3.MatchIntentResponse>`__.
         Otherwise, the behavior is undefined.
 
         .. code-block:: python

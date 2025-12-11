@@ -35,7 +35,6 @@ from grpc.experimental import aio  # type: ignore
 import proto  # type: ignore
 
 from google.cloud.dialogflowcx_v3.types import version
-from google.cloud.dialogflowcx_v3.types import version as gcdc_version
 
 from .base import DEFAULT_CLIENT_INFO, VersionsTransport
 from .grpc import VersionsGrpcTransport
@@ -120,8 +119,8 @@ class _LoggingClientAIOInterceptor(
 class VersionsGrpcAsyncIOTransport(VersionsTransport):
     """gRPC AsyncIO backend transport for Versions.
 
-    Service for managing
-    [Versions][google.cloud.dialogflow.cx.v3.Version].
+    Service for managing `Versions
+    <google.cloud.dialogflow.cx.v3.Version>`__.
 
     This class defines the same methods as the primary client, so the
     primary client can load the underlying transport implementation
@@ -360,7 +359,7 @@ class VersionsGrpcAsyncIOTransport(VersionsTransport):
         r"""Return a callable for the list versions method over gRPC.
 
         Returns the list of all versions in the specified
-        [Flow][google.cloud.dialogflow.cx.v3.Flow].
+        `Flow <google.cloud.dialogflow.cx.v3.Flow>`__.
 
         Returns:
             Callable[[~.ListVersionsRequest],
@@ -386,8 +385,8 @@ class VersionsGrpcAsyncIOTransport(VersionsTransport):
     ) -> Callable[[version.GetVersionRequest], Awaitable[version.Version]]:
         r"""Return a callable for the get version method over gRPC.
 
-        Retrieves the specified
-        [Version][google.cloud.dialogflow.cx.v3.Version].
+        Retrieves the specified `Version
+        <google.cloud.dialogflow.cx.v3.Version>`__.
 
         Returns:
             Callable[[~.GetVersionRequest],
@@ -410,22 +409,26 @@ class VersionsGrpcAsyncIOTransport(VersionsTransport):
     @property
     def create_version(
         self,
-    ) -> Callable[
-        [gcdc_version.CreateVersionRequest], Awaitable[operations_pb2.Operation]
-    ]:
+    ) -> Callable[[version.CreateVersionRequest], Awaitable[operations_pb2.Operation]]:
         r"""Return a callable for the create version method over gRPC.
 
-        Creates a [Version][google.cloud.dialogflow.cx.v3.Version] in
-        the specified [Flow][google.cloud.dialogflow.cx.v3.Flow].
+        Creates a `Version
+        <google.cloud.dialogflow.cx.v3.Version>`__ in the
+        specified `Flow <google.cloud.dialogflow.cx.v3.Flow>`__.
 
         This method is a `long-running
-        operation <https://cloud.google.com/dialogflow/cx/docs/how/long-running-operation>`__.
+        operation
+        <https://cloud.google.com/dialogflow/cx/docs/how/long-running-operation>`__.
         The returned ``Operation`` type has the following
         method-specific fields:
 
         - ``metadata``:
-          [CreateVersionOperationMetadata][google.cloud.dialogflow.cx.v3.CreateVersionOperationMetadata]
-        - ``response``: [Version][google.cloud.dialogflow.cx.v3.Version]
+
+        `CreateVersionOperationMetadata
+        <google.cloud.dialogflow.cx.v3.CreateVersionOperationMetadata>`__
+
+        - ``response``: `Version
+          <google.cloud.dialogflow.cx.v3.Version>`__
 
         Returns:
             Callable[[~.CreateVersionRequest],
@@ -440,7 +443,7 @@ class VersionsGrpcAsyncIOTransport(VersionsTransport):
         if "create_version" not in self._stubs:
             self._stubs["create_version"] = self._logged_channel.unary_unary(
                 "/google.cloud.dialogflow.cx.v3.Versions/CreateVersion",
-                request_serializer=gcdc_version.CreateVersionRequest.serialize,
+                request_serializer=version.CreateVersionRequest.serialize,
                 response_deserializer=operations_pb2.Operation.FromString,
             )
         return self._stubs["create_version"]
@@ -448,11 +451,11 @@ class VersionsGrpcAsyncIOTransport(VersionsTransport):
     @property
     def update_version(
         self,
-    ) -> Callable[[gcdc_version.UpdateVersionRequest], Awaitable[gcdc_version.Version]]:
+    ) -> Callable[[version.UpdateVersionRequest], Awaitable[version.Version]]:
         r"""Return a callable for the update version method over gRPC.
 
-        Updates the specified
-        [Version][google.cloud.dialogflow.cx.v3.Version].
+        Updates the specified `Version
+        <google.cloud.dialogflow.cx.v3.Version>`__.
 
         Returns:
             Callable[[~.UpdateVersionRequest],
@@ -467,8 +470,8 @@ class VersionsGrpcAsyncIOTransport(VersionsTransport):
         if "update_version" not in self._stubs:
             self._stubs["update_version"] = self._logged_channel.unary_unary(
                 "/google.cloud.dialogflow.cx.v3.Versions/UpdateVersion",
-                request_serializer=gcdc_version.UpdateVersionRequest.serialize,
-                response_deserializer=gcdc_version.Version.deserialize,
+                request_serializer=version.UpdateVersionRequest.serialize,
+                response_deserializer=version.Version.deserialize,
             )
         return self._stubs["update_version"]
 
@@ -478,8 +481,8 @@ class VersionsGrpcAsyncIOTransport(VersionsTransport):
     ) -> Callable[[version.DeleteVersionRequest], Awaitable[empty_pb2.Empty]]:
         r"""Return a callable for the delete version method over gRPC.
 
-        Deletes the specified
-        [Version][google.cloud.dialogflow.cx.v3.Version].
+        Deletes the specified `Version
+        <google.cloud.dialogflow.cx.v3.Version>`__.
 
         Returns:
             Callable[[~.DeleteVersionRequest],
@@ -505,17 +508,21 @@ class VersionsGrpcAsyncIOTransport(VersionsTransport):
     ) -> Callable[[version.LoadVersionRequest], Awaitable[operations_pb2.Operation]]:
         r"""Return a callable for the load version method over gRPC.
 
-        Loads resources in the specified version to the draft flow.
-
+        Loads resources in the specified version to the draft
+        flow.
         This method is a `long-running
-        operation <https://cloud.google.com/dialogflow/cx/docs/how/long-running-operation>`__.
+        operation
+        <https://cloud.google.com/dialogflow/cx/docs/how/long-running-operation>`__.
         The returned ``Operation`` type has the following
         method-specific fields:
 
         - ``metadata``: An empty `Struct
-          message <https://developers.google.com/protocol-buffers/docs/reference/google.protobuf#struct>`__
+          message
+        <https://developers.google.com/protocol-buffers/docs/reference/google.protobuf#struct>`__
+
         - ``response``: An `Empty
-          message <https://developers.google.com/protocol-buffers/docs/reference/google.protobuf#empty>`__
+          message
+        <https://developers.google.com/protocol-buffers/docs/reference/google.protobuf#empty>`__
 
         Returns:
             Callable[[~.LoadVersionRequest],

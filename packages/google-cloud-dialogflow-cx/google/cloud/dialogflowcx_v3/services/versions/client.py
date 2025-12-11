@@ -71,9 +71,7 @@ from google.protobuf import struct_pb2  # type: ignore
 from google.protobuf import timestamp_pb2  # type: ignore
 
 from google.cloud.dialogflowcx_v3.services.versions import pagers
-from google.cloud.dialogflowcx_v3.types import flow
-from google.cloud.dialogflowcx_v3.types import version
-from google.cloud.dialogflowcx_v3.types import version as gcdc_version
+from google.cloud.dialogflowcx_v3.types import flow, version
 
 from .transports.base import DEFAULT_CLIENT_INFO, VersionsTransport
 from .transports.grpc import VersionsGrpcTransport
@@ -117,8 +115,8 @@ class VersionsClientMeta(type):
 
 
 class VersionsClient(metaclass=VersionsClientMeta):
-    """Service for managing
-    [Versions][google.cloud.dialogflow.cx.v3.Version].
+    """Service for managing `Versions
+    <google.cloud.dialogflow.cx.v3.Version>`__.
     """
 
     @staticmethod
@@ -732,7 +730,7 @@ class VersionsClient(metaclass=VersionsClientMeta):
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> pagers.ListVersionsPager:
         r"""Returns the list of all versions in the specified
-        [Flow][google.cloud.dialogflow.cx.v3.Flow].
+        `Flow <google.cloud.dialogflow.cx.v3.Flow>`__.
 
         .. code-block:: python
 
@@ -764,10 +762,13 @@ class VersionsClient(metaclass=VersionsClientMeta):
         Args:
             request (Union[google.cloud.dialogflowcx_v3.types.ListVersionsRequest, dict]):
                 The request object. The request message for
-                [Versions.ListVersions][google.cloud.dialogflow.cx.v3.Versions.ListVersions].
+                `Versions.ListVersions
+                <google.cloud.dialogflow.cx.v3.Versions.ListVersions>`__.
             parent (str):
-                Required. The [Flow][google.cloud.dialogflow.cx.v3.Flow]
+                Required. The `Flow
+                <google.cloud.dialogflow.cx.v3.Flow>`__
                 to list all versions for. Format:
+
                 ``projects/<ProjectID>/locations/<LocationID>/agents/<AgentID>/flows/<FlowID>``.
 
                 This corresponds to the ``parent`` field
@@ -784,10 +785,12 @@ class VersionsClient(metaclass=VersionsClientMeta):
         Returns:
             google.cloud.dialogflowcx_v3.services.versions.pagers.ListVersionsPager:
                 The response message for
-                   [Versions.ListVersions][google.cloud.dialogflow.cx.v3.Versions.ListVersions].
+                `Versions.ListVersions
+                <google.cloud.dialogflow.cx.v3.Versions.ListVersions>`__.
 
-                Iterating over this object will yield results and
-                resolve additional pages automatically.
+                Iterating over this object will yield
+                results and resolve additional pages
+                automatically.
 
         """
         # Create or coerce a protobuf request object.
@@ -856,8 +859,8 @@ class VersionsClient(metaclass=VersionsClientMeta):
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> version.Version:
-        r"""Retrieves the specified
-        [Version][google.cloud.dialogflow.cx.v3.Version].
+        r"""Retrieves the specified `Version
+        <google.cloud.dialogflow.cx.v3.Version>`__.
 
         .. code-block:: python
 
@@ -888,11 +891,13 @@ class VersionsClient(metaclass=VersionsClientMeta):
         Args:
             request (Union[google.cloud.dialogflowcx_v3.types.GetVersionRequest, dict]):
                 The request object. The request message for
-                [Versions.GetVersion][google.cloud.dialogflow.cx.v3.Versions.GetVersion].
+                `Versions.GetVersion
+                <google.cloud.dialogflow.cx.v3.Versions.GetVersion>`__.
             name (str):
-                Required. The name of the
-                [Version][google.cloud.dialogflow.cx.v3.Version].
+                Required. The name of the `Version
+                <google.cloud.dialogflow.cx.v3.Version>`__.
                 Format:
+
                 ``projects/<ProjectID>/locations/<LocationID>/agents/<AgentID>/flows/<FlowID>/versions/<VersionID>``.
 
                 This corresponds to the ``name`` field
@@ -958,25 +963,31 @@ class VersionsClient(metaclass=VersionsClientMeta):
 
     def create_version(
         self,
-        request: Optional[Union[gcdc_version.CreateVersionRequest, dict]] = None,
+        request: Optional[Union[version.CreateVersionRequest, dict]] = None,
         *,
         parent: Optional[str] = None,
-        version: Optional[gcdc_version.Version] = None,
+        version: Optional[version.Version] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> operation.Operation:
-        r"""Creates a [Version][google.cloud.dialogflow.cx.v3.Version] in
-        the specified [Flow][google.cloud.dialogflow.cx.v3.Flow].
+        r"""Creates a `Version
+        <google.cloud.dialogflow.cx.v3.Version>`__ in the
+        specified `Flow <google.cloud.dialogflow.cx.v3.Flow>`__.
 
         This method is a `long-running
-        operation <https://cloud.google.com/dialogflow/cx/docs/how/long-running-operation>`__.
+        operation
+        <https://cloud.google.com/dialogflow/cx/docs/how/long-running-operation>`__.
         The returned ``Operation`` type has the following
         method-specific fields:
 
         - ``metadata``:
-          [CreateVersionOperationMetadata][google.cloud.dialogflow.cx.v3.CreateVersionOperationMetadata]
-        - ``response``: [Version][google.cloud.dialogflow.cx.v3.Version]
+
+        `CreateVersionOperationMetadata
+        <google.cloud.dialogflow.cx.v3.CreateVersionOperationMetadata>`__
+
+        - ``response``: `Version
+          <google.cloud.dialogflow.cx.v3.Version>`__
 
         .. code-block:: python
 
@@ -1015,12 +1026,15 @@ class VersionsClient(metaclass=VersionsClientMeta):
         Args:
             request (Union[google.cloud.dialogflowcx_v3.types.CreateVersionRequest, dict]):
                 The request object. The request message for
-                [Versions.CreateVersion][google.cloud.dialogflow.cx.v3.Versions.CreateVersion].
+                `Versions.CreateVersion
+                <google.cloud.dialogflow.cx.v3.Versions.CreateVersion>`__.
             parent (str):
-                Required. The [Flow][google.cloud.dialogflow.cx.v3.Flow]
-                to create an
-                [Version][google.cloud.dialogflow.cx.v3.Version] for.
-                Format:
+                Required. The `Flow
+                <google.cloud.dialogflow.cx.v3.Flow>`__
+                to create an `Version
+                <google.cloud.dialogflow.cx.v3.Version>`__
+                for. Format:
+
                 ``projects/<ProjectID>/locations/<LocationID>/agents/<AgentID>/flows/<FlowID>``.
 
                 This corresponds to the ``parent`` field
@@ -1041,9 +1055,10 @@ class VersionsClient(metaclass=VersionsClientMeta):
 
         Returns:
             google.api_core.operation.Operation:
-                An object representing a long-running operation.
-
-                The result type for the operation will be
+                An object representing a long-running
+                operation.
+                The result type for the operation will
+                be
                 :class:`google.cloud.dialogflowcx_v3.types.Version`
                 Represents a version of a flow.
 
@@ -1063,8 +1078,8 @@ class VersionsClient(metaclass=VersionsClientMeta):
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
-        if not isinstance(request, gcdc_version.CreateVersionRequest):
-            request = gcdc_version.CreateVersionRequest(request)
+        if not isinstance(request, version.CreateVersionRequest):
+            request = version.CreateVersionRequest(request)
             # If we have keyword arguments corresponding to fields on the
             # request, apply these.
             if parent is not None:
@@ -1097,8 +1112,8 @@ class VersionsClient(metaclass=VersionsClientMeta):
         response = operation.from_gapic(
             response,
             self._transport.operations_client,
-            gcdc_version.Version,
-            metadata_type=gcdc_version.CreateVersionOperationMetadata,
+            version.Version,
+            metadata_type=version.CreateVersionOperationMetadata,
         )
 
         # Done; return the response.
@@ -1106,16 +1121,16 @@ class VersionsClient(metaclass=VersionsClientMeta):
 
     def update_version(
         self,
-        request: Optional[Union[gcdc_version.UpdateVersionRequest, dict]] = None,
+        request: Optional[Union[version.UpdateVersionRequest, dict]] = None,
         *,
-        version: Optional[gcdc_version.Version] = None,
+        version: Optional[version.Version] = None,
         update_mask: Optional[field_mask_pb2.FieldMask] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
-    ) -> gcdc_version.Version:
-        r"""Updates the specified
-        [Version][google.cloud.dialogflow.cx.v3.Version].
+    ) -> version.Version:
+        r"""Updates the specified `Version
+        <google.cloud.dialogflow.cx.v3.Version>`__.
 
         .. code-block:: python
 
@@ -1149,15 +1164,17 @@ class VersionsClient(metaclass=VersionsClientMeta):
         Args:
             request (Union[google.cloud.dialogflowcx_v3.types.UpdateVersionRequest, dict]):
                 The request object. The request message for
-                [Versions.UpdateVersion][google.cloud.dialogflow.cx.v3.Versions.UpdateVersion].
+                `Versions.UpdateVersion
+                <google.cloud.dialogflow.cx.v3.Versions.UpdateVersion>`__.
             version (google.cloud.dialogflowcx_v3.types.Version):
                 Required. The version to update.
                 This corresponds to the ``version`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
             update_mask (google.protobuf.field_mask_pb2.FieldMask):
-                Required. The mask to control which fields get updated.
-                Currently only ``description`` and ``display_name`` can
+                Required. The mask to control which
+                fields get updated. Currently only
+                ``description`` and ``display_name`` can
                 be updated.
 
                 This corresponds to the ``update_mask`` field
@@ -1190,8 +1207,8 @@ class VersionsClient(metaclass=VersionsClientMeta):
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
-        if not isinstance(request, gcdc_version.UpdateVersionRequest):
-            request = gcdc_version.UpdateVersionRequest(request)
+        if not isinstance(request, version.UpdateVersionRequest):
+            request = version.UpdateVersionRequest(request)
             # If we have keyword arguments corresponding to fields on the
             # request, apply these.
             if version is not None:
@@ -1234,8 +1251,8 @@ class VersionsClient(metaclass=VersionsClientMeta):
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> None:
-        r"""Deletes the specified
-        [Version][google.cloud.dialogflow.cx.v3.Version].
+        r"""Deletes the specified `Version
+        <google.cloud.dialogflow.cx.v3.Version>`__.
 
         .. code-block:: python
 
@@ -1263,11 +1280,13 @@ class VersionsClient(metaclass=VersionsClientMeta):
         Args:
             request (Union[google.cloud.dialogflowcx_v3.types.DeleteVersionRequest, dict]):
                 The request object. The request message for
-                [Versions.DeleteVersion][google.cloud.dialogflow.cx.v3.Versions.DeleteVersion].
+                `Versions.DeleteVersion
+                <google.cloud.dialogflow.cx.v3.Versions.DeleteVersion>`__.
             name (str):
-                Required. The name of the
-                [Version][google.cloud.dialogflow.cx.v3.Version] to
-                delete. Format:
+                Required. The name of the `Version
+                <google.cloud.dialogflow.cx.v3.Version>`__
+                to delete. Format:
+
                 ``projects/<ProjectID>/locations/<LocationID>/agents/<AgentID>/flows/<FlowID>/versions/<VersionID>``.
 
                 This corresponds to the ``name`` field
@@ -1333,17 +1352,21 @@ class VersionsClient(metaclass=VersionsClientMeta):
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> operation.Operation:
-        r"""Loads resources in the specified version to the draft flow.
-
+        r"""Loads resources in the specified version to the draft
+        flow.
         This method is a `long-running
-        operation <https://cloud.google.com/dialogflow/cx/docs/how/long-running-operation>`__.
+        operation
+        <https://cloud.google.com/dialogflow/cx/docs/how/long-running-operation>`__.
         The returned ``Operation`` type has the following
         method-specific fields:
 
         - ``metadata``: An empty `Struct
-          message <https://developers.google.com/protocol-buffers/docs/reference/google.protobuf#struct>`__
+          message
+        <https://developers.google.com/protocol-buffers/docs/reference/google.protobuf#struct>`__
+
         - ``response``: An `Empty
-          message <https://developers.google.com/protocol-buffers/docs/reference/google.protobuf#empty>`__
+          message
+        <https://developers.google.com/protocol-buffers/docs/reference/google.protobuf#empty>`__
 
         .. code-block:: python
 
@@ -1378,11 +1401,13 @@ class VersionsClient(metaclass=VersionsClientMeta):
         Args:
             request (Union[google.cloud.dialogflowcx_v3.types.LoadVersionRequest, dict]):
                 The request object. The request message for
-                [Versions.LoadVersion][google.cloud.dialogflow.cx.v3.Versions.LoadVersion].
+                `Versions.LoadVersion
+                <google.cloud.dialogflow.cx.v3.Versions.LoadVersion>`__.
             name (str):
-                Required. The
-                [Version][google.cloud.dialogflow.cx.v3.Version] to be
-                loaded to draft flow. Format:
+                Required. The `Version
+                <google.cloud.dialogflow.cx.v3.Version>`__
+                to be loaded to draft flow. Format:
+
                 ``projects/<ProjectID>/locations/<LocationID>/agents/<AgentID>/flows/<FlowID>/versions/<VersionID>``.
 
                 This corresponds to the ``name`` field
@@ -1398,18 +1423,21 @@ class VersionsClient(metaclass=VersionsClientMeta):
 
         Returns:
             google.api_core.operation.Operation:
-                An object representing a long-running operation.
+                An object representing a long-running
+                operation.
+                The result type for the operation will
+                be
+                :class:`google.protobuf.empty_pb2.Empty`
+                A generic empty message that you can
+                re-use to avoid defining duplicated
+                empty messages in your APIs. A typical
+                example is to use it as the request or
+                the response type of an API method. For
+                instance:
 
-                The result type for the operation will be :class:`google.protobuf.empty_pb2.Empty` A generic empty message that you can re-use to avoid defining duplicated
-                   empty messages in your APIs. A typical example is to
-                   use it as the request or the response type of an API
-                   method. For instance:
-
-                      service Foo {
-                         rpc Bar(google.protobuf.Empty) returns
-                         (google.protobuf.Empty);
-
-                      }
+                    service Foo {
+                      rpc Bar(google.protobuf.Empty)
+                returns (google.protobuf.Empty);     }
 
         """
         # Create or coerce a protobuf request object.
@@ -1508,13 +1536,16 @@ class VersionsClient(metaclass=VersionsClientMeta):
         Args:
             request (Union[google.cloud.dialogflowcx_v3.types.CompareVersionsRequest, dict]):
                 The request object. The request message for
-                [Versions.CompareVersions][google.cloud.dialogflow.cx.v3.Versions.CompareVersions].
+                `Versions.CompareVersions
+                <google.cloud.dialogflow.cx.v3.Versions.CompareVersions>`__.
             base_version (str):
-                Required. Name of the base flow version to compare with
-                the target version. Use version ID ``0`` to indicate the
-                draft version of the specified flow.
+                Required. Name of the base flow version
+                to compare with the target version. Use
+                version ID ``0`` to indicate the draft
+                version of the specified flow.
 
                 Format:
+
                 ``projects/<ProjectID>/locations/<LocationID>/agents/<AgentID>/flows/<FlowID>/versions/<VersionID>``.
 
                 This corresponds to the ``base_version`` field
@@ -1531,7 +1562,8 @@ class VersionsClient(metaclass=VersionsClientMeta):
         Returns:
             google.cloud.dialogflowcx_v3.types.CompareVersionsResponse:
                 The response message for
-                   [Versions.CompareVersions][google.cloud.dialogflow.cx.v3.Versions.CompareVersions].
+                `Versions.CompareVersions
+                <google.cloud.dialogflow.cx.v3.Versions.CompareVersions>`__.
 
         """
         # Create or coerce a protobuf request object.

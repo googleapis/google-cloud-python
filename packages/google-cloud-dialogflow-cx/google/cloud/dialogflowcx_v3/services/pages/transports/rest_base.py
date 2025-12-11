@@ -24,7 +24,6 @@ from google.protobuf import empty_pb2  # type: ignore
 from google.protobuf import json_format
 
 from google.cloud.dialogflowcx_v3.types import page
-from google.cloud.dialogflowcx_v3.types import page as gcdc_page
 
 from .base import DEFAULT_CLIENT_INFO, PagesTransport
 
@@ -118,7 +117,7 @@ class _BasePagesRestTransport(PagesTransport):
 
         @staticmethod
         def _get_transcoded_request(http_options, request):
-            pb_request = gcdc_page.CreatePageRequest.pb(request)
+            pb_request = page.CreatePageRequest.pb(request)
             transcoded_request = path_template.transcode(http_options, pb_request)
             return transcoded_request
 
@@ -316,7 +315,7 @@ class _BasePagesRestTransport(PagesTransport):
 
         @staticmethod
         def _get_transcoded_request(http_options, request):
-            pb_request = gcdc_page.UpdatePageRequest.pb(request)
+            pb_request = page.UpdatePageRequest.pb(request)
             transcoded_request = path_template.transcode(http_options, pb_request)
             return transcoded_request
 

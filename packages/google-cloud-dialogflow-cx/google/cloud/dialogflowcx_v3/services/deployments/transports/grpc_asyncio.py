@@ -118,8 +118,8 @@ class _LoggingClientAIOInterceptor(
 class DeploymentsGrpcAsyncIOTransport(DeploymentsTransport):
     """gRPC AsyncIO backend transport for Deployments.
 
-    Service for managing
-    [Deployments][google.cloud.dialogflow.cx.v3.Deployment].
+    Service for managing `Deployments
+    <google.cloud.dialogflow.cx.v3.Deployment>`__.
 
     This class defines the same methods as the primary client, so the
     primary client can load the underlying transport implementation
@@ -342,7 +342,8 @@ class DeploymentsGrpcAsyncIOTransport(DeploymentsTransport):
         r"""Return a callable for the list deployments method over gRPC.
 
         Returns the list of all deployments in the specified
-        [Environment][google.cloud.dialogflow.cx.v3.Environment].
+        `Environment
+        <google.cloud.dialogflow.cx.v3.Environment>`__.
 
         Returns:
             Callable[[~.ListDeploymentsRequest],
@@ -369,7 +370,8 @@ class DeploymentsGrpcAsyncIOTransport(DeploymentsTransport):
         r"""Return a callable for the get deployment method over gRPC.
 
         Retrieves the specified
-        [Deployment][google.cloud.dialogflow.cx.v3.Deployment].
+        `Deployment
+        <google.cloud.dialogflow.cx.v3.Deployment>`__.
 
         Returns:
             Callable[[~.GetDeploymentRequest],

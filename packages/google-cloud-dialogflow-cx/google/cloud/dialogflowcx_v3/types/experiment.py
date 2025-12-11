@@ -79,8 +79,8 @@ class Experiment(proto.Message):
         rollout_state (google.cloud.dialogflowcx_v3.types.RolloutState):
             State of the auto rollout process.
         rollout_failure_reason (str):
-            The reason why rollout has failed. Should only be set when
-            state is ROLLOUT_FAILED.
+            The reason why rollout has failed. Should only
+            be set when state is ROLLOUT_FAILED.
         result (google.cloud.dialogflowcx_v3.types.Experiment.Result):
             Inference result of the experiment.
         create_time (google.protobuf.timestamp_pb2.Timestamp):
@@ -132,11 +132,12 @@ class Experiment(proto.Message):
 
         Attributes:
             condition (str):
-                The condition defines which subset of sessions are selected
-                for this experiment. If not specified, all sessions are
-                eligible. E.g. "query_input.language_code=en" See the
-                `conditions
-                reference <https://cloud.google.com/dialogflow/cx/docs/reference/condition>`__.
+                The condition defines which subset of sessions
+                are selected for this experiment. If not
+                specified, all sessions are eligible. E.g.
+                "query_input.language_code=en" See the
+                `conditions reference
+                <https://cloud.google.com/dialogflow/cx/docs/reference/condition>`__.
             version_variants (google.cloud.dialogflowcx_v3.types.VersionVariants):
                 The flow versions as the variants of this
                 experiment.
@@ -186,8 +187,8 @@ class Experiment(proto.Message):
                 ABANDONED_SESSION_RATE (4):
                     Percentage of sessions where user hung up.
                 SESSION_END_RATE (5):
-                    Percentage of sessions reached Dialogflow 'END_PAGE' or
-                    'END_SESSION'.
+                    Percentage of sessions reached Dialogflow
+                    'END_PAGE' or 'END_SESSION'.
             """
             METRIC_UNSPECIFIED = 0
             CONTAINED_SESSION_NO_CALLBACK_RATE = 1
@@ -261,11 +262,11 @@ class Experiment(proto.Message):
 
             Attributes:
                 type_ (google.cloud.dialogflowcx_v3.types.Experiment.Result.MetricType):
-                    Ratio-based metric type. Only one of type or count_type is
-                    specified in each Metric.
+                    Ratio-based metric type. Only one of type or
+                    count_type is specified in each Metric.
                 count_type (google.cloud.dialogflowcx_v3.types.Experiment.Result.CountType):
-                    Count-based metric type. Only one of type or count_type is
-                    specified in each Metric.
+                    Count-based metric type. Only one of type or
+                    count_type is specified in each Metric.
                 ratio (float):
                     Ratio value of a metric.
 
@@ -310,8 +311,10 @@ class Experiment(proto.Message):
 
             Attributes:
                 version (str):
-                    The name of the flow
-                    [Version][google.cloud.dialogflow.cx.v3.Version]. Format:
+                    The name of the flow `Version
+                    <google.cloud.dialogflow.cx.v3.Version>`__.
+                    Format:
+
                     ``projects/<ProjectID>/locations/<LocationID>/agents/<AgentID>/flows/<FlowID>/versions/<VersionID>``.
                 metrics (MutableSequence[google.cloud.dialogflowcx_v3.types.Experiment.Result.Metric]):
                     The metrics and corresponding confidence
@@ -434,7 +437,9 @@ class VersionVariants(proto.Message):
 
         Attributes:
             version (str):
-                The name of the flow version. Format:
+                The name of the flow version.
+                Format:
+
                 ``projects/<ProjectID>/locations/<LocationID>/agents/<AgentID>/flows/<FlowID>/versions/<VersionID>``.
             traffic_allocation (float):
                 Percentage of the traffic which should be
@@ -500,18 +505,21 @@ class RolloutConfig(proto.Message):
             should be sorted by percentage in ascending
             order.
         rollout_condition (str):
-            The conditions that are used to evaluate the success of a
-            rollout step. If not specified, all rollout steps will
-            proceed to the next one unless failure conditions are met.
-            E.g. "containment_rate > 60% AND callback_rate < 20%". See
-            the `conditions
-            reference <https://cloud.google.com/dialogflow/cx/docs/reference/condition>`__.
+            The conditions that are used to evaluate the
+            success of a rollout step. If not specified, all
+            rollout steps will proceed to the next one
+            unless failure conditions are met. E.g.
+            "containment_rate > 60% AND callback_rate <
+            20%". See the `conditions
+            reference
+            <https://cloud.google.com/dialogflow/cx/docs/reference/condition>`__.
         failure_condition (str):
-            The conditions that are used to evaluate the failure of a
-            rollout step. If not specified, no rollout steps will fail.
-            E.g. "containment_rate < 10% OR average_turn_count < 3". See
-            the `conditions
-            reference <https://cloud.google.com/dialogflow/cx/docs/reference/condition>`__.
+            The conditions that are used to evaluate the
+            failure of a rollout step. If not specified, no
+            rollout steps will fail. E.g. "containment_rate
+            < 10% OR average_turn_count < 3". See the
+            `conditions reference
+            <https://cloud.google.com/dialogflow/cx/docs/reference/condition>`__.
     """
 
     class RolloutStep(proto.Message):
@@ -521,8 +529,8 @@ class RolloutConfig(proto.Message):
             display_name (str):
                 The name of the rollout step;
             traffic_percent (int):
-                The percentage of traffic allocated to the flow version of
-                this rollout step. (0%, 100%].
+                The percentage of traffic allocated to the flow
+                version of this rollout step. (0%, 100%].
             min_duration (google.protobuf.duration_pb2.Duration):
                 The minimum time that this step should last.
                 Should be longer than 1 hour. If not set, the
@@ -590,20 +598,22 @@ class RolloutState(proto.Message):
 
 class ListExperimentsRequest(proto.Message):
     r"""The request message for
-    [Experiments.ListExperiments][google.cloud.dialogflow.cx.v3.Experiments.ListExperiments].
+    `Experiments.ListExperiments
+    <google.cloud.dialogflow.cx.v3.Experiments.ListExperiments>`__.
 
     Attributes:
         parent (str):
-            Required. The
-            [Environment][google.cloud.dialogflow.cx.v3.Environment] to
-            list all environments for. Format:
+            Required. The `Environment
+            <google.cloud.dialogflow.cx.v3.Environment>`__
+            to list all environments for. Format:
+
             ``projects/<ProjectID>/locations/<LocationID>/agents/<AgentID>/environments/<EnvironmentID>``.
         page_size (int):
             The maximum number of items to return in a
             single page. By default 20 and at most 100.
         page_token (str):
-            The next_page_token value returned from a previous list
-            request.
+            The next_page_token value returned from a
+            previous list request.
     """
 
     parent: str = proto.Field(
@@ -622,14 +632,16 @@ class ListExperimentsRequest(proto.Message):
 
 class ListExperimentsResponse(proto.Message):
     r"""The response message for
-    [Experiments.ListExperiments][google.cloud.dialogflow.cx.v3.Experiments.ListExperiments].
+    `Experiments.ListExperiments
+    <google.cloud.dialogflow.cx.v3.Experiments.ListExperiments>`__.
 
     Attributes:
         experiments (MutableSequence[google.cloud.dialogflowcx_v3.types.Experiment]):
-            The list of experiments. There will be a maximum number of
-            items returned based on the page_size field in the request.
-            The list may in some cases be empty or contain fewer entries
-            than page_size even if this isn't the last page.
+            The list of experiments. There will be a maximum
+            number of items returned based on the page_size
+            field in the request. The list may in some cases
+            be empty or contain fewer entries than page_size
+            even if this isn't the last page.
         next_page_token (str):
             Token to retrieve the next page of results,
             or empty if there are no more results in the
@@ -653,13 +665,16 @@ class ListExperimentsResponse(proto.Message):
 
 class GetExperimentRequest(proto.Message):
     r"""The request message for
-    [Experiments.GetExperiment][google.cloud.dialogflow.cx.v3.Experiments.GetExperiment].
+    `Experiments.GetExperiment
+    <google.cloud.dialogflow.cx.v3.Experiments.GetExperiment>`__.
 
     Attributes:
         name (str):
             Required. The name of the
-            [Environment][google.cloud.dialogflow.cx.v3.Environment].
+            `Environment
+            <google.cloud.dialogflow.cx.v3.Environment>`__.
             Format:
+
             ``projects/<ProjectID>/locations/<LocationID>/agents/<AgentID>/environments/<EnvironmentID>/experiments/<ExperimentID>``.
     """
 
@@ -671,14 +686,17 @@ class GetExperimentRequest(proto.Message):
 
 class CreateExperimentRequest(proto.Message):
     r"""The request message for
-    [Experiments.CreateExperiment][google.cloud.dialogflow.cx.v3.Experiments.CreateExperiment].
+    `Experiments.CreateExperiment
+    <google.cloud.dialogflow.cx.v3.Experiments.CreateExperiment>`__.
 
     Attributes:
         parent (str):
-            Required. The [Agent][google.cloud.dialogflow.cx.v3.Agent]
-            to create an
-            [Environment][google.cloud.dialogflow.cx.v3.Environment]
+            Required. The `Agent
+            <google.cloud.dialogflow.cx.v3.Agent>`__ to
+            create an `Environment
+            <google.cloud.dialogflow.cx.v3.Environment>`__
             for. Format:
+
             ``projects/<ProjectID>/locations/<LocationID>/agents/<AgentID>/environments/<EnvironmentID>``.
         experiment (google.cloud.dialogflowcx_v3.types.Experiment):
             Required. The experiment to create.
@@ -697,7 +715,8 @@ class CreateExperimentRequest(proto.Message):
 
 class UpdateExperimentRequest(proto.Message):
     r"""The request message for
-    [Experiments.UpdateExperiment][google.cloud.dialogflow.cx.v3.Experiments.UpdateExperiment].
+    `Experiments.UpdateExperiment
+    <google.cloud.dialogflow.cx.v3.Experiments.UpdateExperiment>`__.
 
     Attributes:
         experiment (google.cloud.dialogflowcx_v3.types.Experiment):
@@ -721,13 +740,16 @@ class UpdateExperimentRequest(proto.Message):
 
 class DeleteExperimentRequest(proto.Message):
     r"""The request message for
-    [Experiments.DeleteExperiment][google.cloud.dialogflow.cx.v3.Experiments.DeleteExperiment].
+    `Experiments.DeleteExperiment
+    <google.cloud.dialogflow.cx.v3.Experiments.DeleteExperiment>`__.
 
     Attributes:
         name (str):
             Required. The name of the
-            [Environment][google.cloud.dialogflow.cx.v3.Environment] to
-            delete. Format:
+            `Environment
+            <google.cloud.dialogflow.cx.v3.Environment>`__
+            to delete. Format:
+
             ``projects/<ProjectID>/locations/<LocationID>/agents/<AgentID>/environments/<EnvironmentID>/experiments/<ExperimentID>``.
     """
 
@@ -739,11 +761,14 @@ class DeleteExperimentRequest(proto.Message):
 
 class StartExperimentRequest(proto.Message):
     r"""The request message for
-    [Experiments.StartExperiment][google.cloud.dialogflow.cx.v3.Experiments.StartExperiment].
+    `Experiments.StartExperiment
+    <google.cloud.dialogflow.cx.v3.Experiments.StartExperiment>`__.
 
     Attributes:
         name (str):
-            Required. Resource name of the experiment to start. Format:
+            Required. Resource name of the experiment to
+            start. Format:
+
             ``projects/<ProjectID>/locations/<LocationID>/agents/<AgentID>/environments/<EnvironmentID>/experiments/<ExperimentID>``.
     """
 
@@ -755,11 +780,14 @@ class StartExperimentRequest(proto.Message):
 
 class StopExperimentRequest(proto.Message):
     r"""The request message for
-    [Experiments.StopExperiment][google.cloud.dialogflow.cx.v3.Experiments.StopExperiment].
+    `Experiments.StopExperiment
+    <google.cloud.dialogflow.cx.v3.Experiments.StopExperiment>`__.
 
     Attributes:
         name (str):
-            Required. Resource name of the experiment to stop. Format:
+            Required. Resource name of the experiment to
+            stop. Format:
+
             ``projects/<ProjectID>/locations/<LocationID>/agents/<AgentID>/environments/<EnvironmentID>/experiments/<ExperimentID>``.
     """
 

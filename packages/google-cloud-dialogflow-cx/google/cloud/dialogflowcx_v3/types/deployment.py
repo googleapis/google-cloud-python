@@ -82,7 +82,9 @@ class Deployment(proto.Message):
 
         Attributes:
             deployment_test_results (MutableSequence[str]):
-                Results of test cases running before the deployment. Format:
+                Results of test cases running before the
+                deployment. Format:
+
                 ``projects/<ProjectID>/locations/<LocationID>/agents/<AgentID>/testCases/<TestCaseID>/results/<TestCaseResultID>``.
             experiment (str):
                 The name of the experiment triggered by this
@@ -132,20 +134,22 @@ class Deployment(proto.Message):
 
 class ListDeploymentsRequest(proto.Message):
     r"""The request message for
-    [Deployments.ListDeployments][google.cloud.dialogflow.cx.v3.Deployments.ListDeployments].
+    `Deployments.ListDeployments
+    <google.cloud.dialogflow.cx.v3.Deployments.ListDeployments>`__.
 
     Attributes:
         parent (str):
-            Required. The
-            [Environment][google.cloud.dialogflow.cx.v3.Environment] to
-            list all environments for. Format:
+            Required. The `Environment
+            <google.cloud.dialogflow.cx.v3.Environment>`__
+            to list all environments for. Format:
+
             ``projects/<ProjectID>/locations/<LocationID>/agents/<AgentID>/environments/<EnvironmentID>``.
         page_size (int):
             The maximum number of items to return in a
             single page. By default 20 and at most 100.
         page_token (str):
-            The next_page_token value returned from a previous list
-            request.
+            The next_page_token value returned from a
+            previous list request.
     """
 
     parent: str = proto.Field(
@@ -164,14 +168,16 @@ class ListDeploymentsRequest(proto.Message):
 
 class ListDeploymentsResponse(proto.Message):
     r"""The response message for
-    [Deployments.ListDeployments][google.cloud.dialogflow.cx.v3.Deployments.ListDeployments].
+    `Deployments.ListDeployments
+    <google.cloud.dialogflow.cx.v3.Deployments.ListDeployments>`__.
 
     Attributes:
         deployments (MutableSequence[google.cloud.dialogflowcx_v3.types.Deployment]):
-            The list of deployments. There will be a maximum number of
-            items returned based on the page_size field in the request.
-            The list may in some cases be empty or contain fewer entries
-            than page_size even if this isn't the last page.
+            The list of deployments. There will be a maximum
+            number of items returned based on the page_size
+            field in the request. The list may in some cases
+            be empty or contain fewer entries than page_size
+            even if this isn't the last page.
         next_page_token (str):
             Token to retrieve the next page of results,
             or empty if there are no more results in the
@@ -195,13 +201,16 @@ class ListDeploymentsResponse(proto.Message):
 
 class GetDeploymentRequest(proto.Message):
     r"""The request message for
-    [Deployments.GetDeployment][google.cloud.dialogflow.cx.v3.Deployments.GetDeployment].
+    `Deployments.GetDeployment
+    <google.cloud.dialogflow.cx.v3.Deployments.GetDeployment>`__.
 
     Attributes:
         name (str):
             Required. The name of the
-            [Deployment][google.cloud.dialogflow.cx.v3.Deployment].
+            `Deployment
+            <google.cloud.dialogflow.cx.v3.Deployment>`__.
             Format:
+
             ``projects/<ProjectID>/locations/<LocationID>/agents/<AgentID>/environments/<EnvironmentID>/deployments/<DeploymentID>``.
     """
 

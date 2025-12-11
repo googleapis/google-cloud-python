@@ -35,7 +35,6 @@ from grpc.experimental import aio  # type: ignore
 import proto  # type: ignore
 
 from google.cloud.dialogflowcx_v3.types import intent
-from google.cloud.dialogflowcx_v3.types import intent as gcdc_intent
 
 from .base import DEFAULT_CLIENT_INFO, IntentsTransport
 from .grpc import IntentsGrpcTransport
@@ -120,8 +119,8 @@ class _LoggingClientAIOInterceptor(
 class IntentsGrpcAsyncIOTransport(IntentsTransport):
     """gRPC AsyncIO backend transport for Intents.
 
-    Service for managing
-    [Intents][google.cloud.dialogflow.cx.v3.Intent].
+    Service for managing `Intents
+    <google.cloud.dialogflow.cx.v3.Intent>`__.
 
     This class defines the same methods as the primary client, so the
     primary client can load the underlying transport implementation
@@ -407,14 +406,15 @@ class IntentsGrpcAsyncIOTransport(IntentsTransport):
     @property
     def create_intent(
         self,
-    ) -> Callable[[gcdc_intent.CreateIntentRequest], Awaitable[gcdc_intent.Intent]]:
+    ) -> Callable[[intent.CreateIntentRequest], Awaitable[intent.Intent]]:
         r"""Return a callable for the create intent method over gRPC.
 
         Creates an intent in the specified agent.
 
         Note: You should always train a flow prior to sending it
         queries. See the `training
-        documentation <https://cloud.google.com/dialogflow/cx/docs/concept/training>`__.
+        documentation
+        <https://cloud.google.com/dialogflow/cx/docs/concept/training>`__.
 
         Returns:
             Callable[[~.CreateIntentRequest],
@@ -429,22 +429,23 @@ class IntentsGrpcAsyncIOTransport(IntentsTransport):
         if "create_intent" not in self._stubs:
             self._stubs["create_intent"] = self._logged_channel.unary_unary(
                 "/google.cloud.dialogflow.cx.v3.Intents/CreateIntent",
-                request_serializer=gcdc_intent.CreateIntentRequest.serialize,
-                response_deserializer=gcdc_intent.Intent.deserialize,
+                request_serializer=intent.CreateIntentRequest.serialize,
+                response_deserializer=intent.Intent.deserialize,
             )
         return self._stubs["create_intent"]
 
     @property
     def update_intent(
         self,
-    ) -> Callable[[gcdc_intent.UpdateIntentRequest], Awaitable[gcdc_intent.Intent]]:
+    ) -> Callable[[intent.UpdateIntentRequest], Awaitable[intent.Intent]]:
         r"""Return a callable for the update intent method over gRPC.
 
         Updates the specified intent.
 
         Note: You should always train a flow prior to sending it
         queries. See the `training
-        documentation <https://cloud.google.com/dialogflow/cx/docs/concept/training>`__.
+        documentation
+        <https://cloud.google.com/dialogflow/cx/docs/concept/training>`__.
 
         Returns:
             Callable[[~.UpdateIntentRequest],
@@ -459,8 +460,8 @@ class IntentsGrpcAsyncIOTransport(IntentsTransport):
         if "update_intent" not in self._stubs:
             self._stubs["update_intent"] = self._logged_channel.unary_unary(
                 "/google.cloud.dialogflow.cx.v3.Intents/UpdateIntent",
-                request_serializer=gcdc_intent.UpdateIntentRequest.serialize,
-                response_deserializer=gcdc_intent.Intent.deserialize,
+                request_serializer=intent.UpdateIntentRequest.serialize,
+                response_deserializer=intent.Intent.deserialize,
             )
         return self._stubs["update_intent"]
 
@@ -474,7 +475,8 @@ class IntentsGrpcAsyncIOTransport(IntentsTransport):
 
         Note: You should always train a flow prior to sending it
         queries. See the `training
-        documentation <https://cloud.google.com/dialogflow/cx/docs/concept/training>`__.
+        documentation
+        <https://cloud.google.com/dialogflow/cx/docs/concept/training>`__.
 
         Returns:
             Callable[[~.DeleteIntentRequest],
@@ -503,14 +505,20 @@ class IntentsGrpcAsyncIOTransport(IntentsTransport):
         Imports the specified intents into the agent.
 
         This method is a `long-running
-        operation <https://cloud.google.com/dialogflow/cx/docs/how/long-running-operation>`__.
+        operation
+        <https://cloud.google.com/dialogflow/cx/docs/how/long-running-operation>`__.
         The returned ``Operation`` type has the following
         method-specific fields:
 
         - ``metadata``:
-          [ImportIntentsMetadata][google.cloud.dialogflow.cx.v3.ImportIntentsMetadata]
+
+        `ImportIntentsMetadata
+        <google.cloud.dialogflow.cx.v3.ImportIntentsMetadata>`__
+
         - ``response``:
-          [ImportIntentsResponse][google.cloud.dialogflow.cx.v3.ImportIntentsResponse]
+
+        `ImportIntentsResponse
+        <google.cloud.dialogflow.cx.v3.ImportIntentsResponse>`__
 
         Returns:
             Callable[[~.ImportIntentsRequest],
@@ -539,14 +547,20 @@ class IntentsGrpcAsyncIOTransport(IntentsTransport):
         Exports the selected intents.
 
         This method is a `long-running
-        operation <https://cloud.google.com/dialogflow/cx/docs/how/long-running-operation>`__.
+        operation
+        <https://cloud.google.com/dialogflow/cx/docs/how/long-running-operation>`__.
         The returned ``Operation`` type has the following
         method-specific fields:
 
         - ``metadata``:
-          [ExportIntentsMetadata][google.cloud.dialogflow.cx.v3.ExportIntentsMetadata]
+
+        `ExportIntentsMetadata
+        <google.cloud.dialogflow.cx.v3.ExportIntentsMetadata>`__
+
         - ``response``:
-          [ExportIntentsResponse][google.cloud.dialogflow.cx.v3.ExportIntentsResponse]
+
+        `ExportIntentsResponse
+        <google.cloud.dialogflow.cx.v3.ExportIntentsResponse>`__
 
         Returns:
             Callable[[~.ExportIntentsRequest],

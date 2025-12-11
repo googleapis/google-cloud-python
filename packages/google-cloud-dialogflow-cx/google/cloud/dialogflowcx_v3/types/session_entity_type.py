@@ -37,31 +37,33 @@ __protobuf__ = proto.module(
 
 
 class SessionEntityType(proto.Message):
-    r"""Session entity types are referred to as **User** entity types and
-    are entities that are built for an individual user such as
+    r"""Session entity types are referred to as **User** entity types
+    and are entities that are built for an individual user such as
     favorites, preferences, playlists, and so on.
 
     You can redefine a session entity type at the session level to
-    extend or replace a [custom entity
-    type][google.cloud.dialogflow.cx.v3.EntityType] at the user session
-    level (we refer to the entity types defined at the agent level as
-    "custom entity types").
+    extend or replace a `custom entity type
+    <google.cloud.dialogflow.cx.v3.EntityType>`__ at the user
+    session level (we refer to the entity types defined at the agent
+    level as "custom entity types").
 
-    Note: session entity types apply to all queries, regardless of the
-    language.
+    Note: session entity types apply to all queries, regardless of
+    the language.
 
     For more information about entity types, see the `Dialogflow
-    documentation <https://cloud.google.com/dialogflow/docs/entities-overview>`__.
+    documentation
+    <https://cloud.google.com/dialogflow/docs/entities-overview>`__.
 
     Attributes:
         name (str):
-            Required. The unique identifier of the session entity type.
-            Format:
+            Required. The unique identifier of the session
+            entity type. Format:
+
             ``projects/<ProjectID>/locations/<LocationID>/agents/<AgentID>/sessions/<SessionID>/entityTypes/<EntityTypeID>``
             or
             ``projects/<ProjectID>/locations/<LocationID>/agents/<AgentID>/environments/<EnvironmentID>/sessions/<SessionID>/entityTypes/<EntityTypeID>``.
-            If ``Environment ID`` is not specified, we assume default
-            'draft' environment.
+            If ``Environment ID`` is not specified, we
+            assume default 'draft' environment.
         entity_override_mode (google.cloud.dialogflowcx_v3.types.SessionEntityType.EntityOverrideMode):
             Required. Indicates whether the additional
             data should override or supplement the custom
@@ -83,16 +85,20 @@ class SessionEntityType(proto.Message):
                 the collection of entities in the corresponding
                 custom entity type.
             ENTITY_OVERRIDE_MODE_SUPPLEMENT (2):
-                The collection of session entities extends the collection of
-                entities in the corresponding custom entity type.
+                The collection of session entities extends the
+                collection of entities in the corresponding
+                custom entity type.
 
                 Note: Even in this override mode calls to
-                ``ListSessionEntityTypes``, ``GetSessionEntityType``,
-                ``CreateSessionEntityType`` and ``UpdateSessionEntityType``
-                only return the additional entities added in this session
-                entity type. If you want to get the supplemented list,
+                ``ListSessionEntityTypes``,
+                ``GetSessionEntityType``,
+                ``CreateSessionEntityType`` and
+                ``UpdateSessionEntityType`` only return the
+                additional entities added in this session entity
+                type. If you want to get the supplemented list,
                 please call
-                [EntityTypes.GetEntityType][google.cloud.dialogflow.cx.v3.EntityTypes.GetEntityType]
+                `EntityTypes.GetEntityType
+                <google.cloud.dialogflow.cx.v3.EntityTypes.GetEntityType>`__
                 on the custom entity type and merge.
         """
         ENTITY_OVERRIDE_MODE_UNSPECIFIED = 0
@@ -117,23 +123,25 @@ class SessionEntityType(proto.Message):
 
 class ListSessionEntityTypesRequest(proto.Message):
     r"""The request message for
-    [SessionEntityTypes.ListSessionEntityTypes][google.cloud.dialogflow.cx.v3.SessionEntityTypes.ListSessionEntityTypes].
+    `SessionEntityTypes.ListSessionEntityTypes
+    <google.cloud.dialogflow.cx.v3.SessionEntityTypes.ListSessionEntityTypes>`__.
 
     Attributes:
         parent (str):
-            Required. The session to list all session entity types from.
-            Format:
+            Required. The session to list all session entity
+            types from. Format:
+
             ``projects/<ProjectID>/locations/<LocationID>/agents/<AgentID>/sessions/<SessionID>``
             or
             ``projects/<ProjectID>/locations/<LocationID>/agents/<AgentID>/environments/<EnvironmentID>/sessions/<SessionID>``.
-            If ``Environment ID`` is not specified, we assume default
-            'draft' environment.
+            If ``Environment ID`` is not specified, we
+            assume default 'draft' environment.
         page_size (int):
             The maximum number of items to return in a
             single page. By default 100 and at most 1000.
         page_token (str):
-            The next_page_token value returned from a previous list
-            request.
+            The next_page_token value returned from a
+            previous list request.
     """
 
     parent: str = proto.Field(
@@ -152,13 +160,14 @@ class ListSessionEntityTypesRequest(proto.Message):
 
 class ListSessionEntityTypesResponse(proto.Message):
     r"""The response message for
-    [SessionEntityTypes.ListSessionEntityTypes][google.cloud.dialogflow.cx.v3.SessionEntityTypes.ListSessionEntityTypes].
+    `SessionEntityTypes.ListSessionEntityTypes
+    <google.cloud.dialogflow.cx.v3.SessionEntityTypes.ListSessionEntityTypes>`__.
 
     Attributes:
         session_entity_types (MutableSequence[google.cloud.dialogflowcx_v3.types.SessionEntityType]):
-            The list of session entity types. There will be a maximum
-            number of items returned based on the page_size field in the
-            request.
+            The list of session entity types. There will be
+            a maximum number of items returned based on the
+            page_size field in the request.
         next_page_token (str):
             Token to retrieve the next page of results,
             or empty if there are no more results in the
@@ -182,16 +191,19 @@ class ListSessionEntityTypesResponse(proto.Message):
 
 class GetSessionEntityTypeRequest(proto.Message):
     r"""The request message for
-    [SessionEntityTypes.GetSessionEntityType][google.cloud.dialogflow.cx.v3.SessionEntityTypes.GetSessionEntityType].
+    `SessionEntityTypes.GetSessionEntityType
+    <google.cloud.dialogflow.cx.v3.SessionEntityTypes.GetSessionEntityType>`__.
 
     Attributes:
         name (str):
-            Required. The name of the session entity type. Format:
+            Required. The name of the session entity type.
+            Format:
+
             ``projects/<ProjectID>/locations/<LocationID>/agents/<AgentID>/sessions/<SessionID>/entityTypes/<EntityTypeID>``
             or
             ``projects/<ProjectID>/locations/<LocationID>/agents/<AgentID>/environments/<EnvironmentID>/sessions/<SessionID>/entityTypes/<EntityTypeID>``.
-            If ``Environment ID`` is not specified, we assume default
-            'draft' environment.
+            If ``Environment ID`` is not specified, we
+            assume default 'draft' environment.
     """
 
     name: str = proto.Field(
@@ -202,17 +214,19 @@ class GetSessionEntityTypeRequest(proto.Message):
 
 class CreateSessionEntityTypeRequest(proto.Message):
     r"""The request message for
-    [SessionEntityTypes.CreateSessionEntityType][google.cloud.dialogflow.cx.v3.SessionEntityTypes.CreateSessionEntityType].
+    `SessionEntityTypes.CreateSessionEntityType
+    <google.cloud.dialogflow.cx.v3.SessionEntityTypes.CreateSessionEntityType>`__.
 
     Attributes:
         parent (str):
-            Required. The session to create a session entity type for.
-            Format:
+            Required. The session to create a session entity
+            type for. Format:
+
             ``projects/<ProjectID>/locations/<LocationID>/agents/<AgentID>/sessions/<SessionID>``
             or
             ``projects/<ProjectID>/locations/<LocationID>/agents/<AgentID>/environments/<EnvironmentID>/sessions/<SessionID>``.
-            If ``Environment ID`` is not specified, we assume default
-            'draft' environment.
+            If ``Environment ID`` is not specified, we
+            assume default 'draft' environment.
         session_entity_type (google.cloud.dialogflowcx_v3.types.SessionEntityType):
             Required. The session entity type to create.
     """
@@ -230,16 +244,19 @@ class CreateSessionEntityTypeRequest(proto.Message):
 
 class UpdateSessionEntityTypeRequest(proto.Message):
     r"""The request message for
-    [SessionEntityTypes.UpdateSessionEntityType][google.cloud.dialogflow.cx.v3.SessionEntityTypes.UpdateSessionEntityType].
+    `SessionEntityTypes.UpdateSessionEntityType
+    <google.cloud.dialogflow.cx.v3.SessionEntityTypes.UpdateSessionEntityType>`__.
 
     Attributes:
         session_entity_type (google.cloud.dialogflowcx_v3.types.SessionEntityType):
-            Required. The session entity type to update. Format:
+            Required. The session entity type to update.
+            Format:
+
             ``projects/<ProjectID>/locations/<LocationID>/agents/<AgentID>/sessions/<SessionID>/entityTypes/<EntityTypeID>``
             or
             ``projects/<ProjectID>/locations/<LocationID>/agents/<AgentID>/environments/<EnvironmentID>/sessions/<SessionID>/entityTypes/<EntityTypeID>``.
-            If ``Environment ID`` is not specified, we assume default
-            'draft' environment.
+            If ``Environment ID`` is not specified,
+            we assume default 'draft' environment.
         update_mask (google.protobuf.field_mask_pb2.FieldMask):
             The mask to control which fields get updated.
     """
@@ -258,17 +275,19 @@ class UpdateSessionEntityTypeRequest(proto.Message):
 
 class DeleteSessionEntityTypeRequest(proto.Message):
     r"""The request message for
-    [SessionEntityTypes.DeleteSessionEntityType][google.cloud.dialogflow.cx.v3.SessionEntityTypes.DeleteSessionEntityType].
+    `SessionEntityTypes.DeleteSessionEntityType
+    <google.cloud.dialogflow.cx.v3.SessionEntityTypes.DeleteSessionEntityType>`__.
 
     Attributes:
         name (str):
-            Required. The name of the session entity type to delete.
-            Format:
+            Required. The name of the session entity type to
+            delete. Format:
+
             ``projects/<ProjectID>/locations/<LocationID>/agents/<AgentID>/sessions/<SessionID>/entityTypes/<EntityTypeID>``
             or
             ``projects/<ProjectID>/locations/<LocationID>/agents/<AgentID>/environments/<EnvironmentID>/sessions/<SessionID>/entityTypes/<EntityTypeID>``.
-            If ``Environment ID`` is not specified, we assume default
-            'draft' environment.
+            If ``Environment ID`` is not specified,
+            we assume default 'draft' environment.
     """
 
     name: str = proto.Field(

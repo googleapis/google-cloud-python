@@ -30,7 +30,6 @@ from google.protobuf import empty_pb2  # type: ignore
 
 from google.cloud.dialogflowcx_v3 import gapic_version as package_version
 from google.cloud.dialogflowcx_v3.types import environment
-from google.cloud.dialogflowcx_v3.types import environment as gcdc_environment
 
 DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
     gapic_version=package_version.__version__
@@ -251,7 +250,7 @@ class EnvironmentsTransport(abc.ABC):
     def create_environment(
         self,
     ) -> Callable[
-        [gcdc_environment.CreateEnvironmentRequest],
+        [environment.CreateEnvironmentRequest],
         Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
     ]:
         raise NotImplementedError()
@@ -260,7 +259,7 @@ class EnvironmentsTransport(abc.ABC):
     def update_environment(
         self,
     ) -> Callable[
-        [gcdc_environment.UpdateEnvironmentRequest],
+        [environment.UpdateEnvironmentRequest],
         Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
     ]:
         raise NotImplementedError()

@@ -31,9 +31,6 @@ from google.protobuf import empty_pb2  # type: ignore
 from google.protobuf import json_format
 from requests import __version__ as requests_version
 
-from google.cloud.dialogflowcx_v3.types import (
-    security_settings as gcdc_security_settings,
-)
 from google.cloud.dialogflowcx_v3.types import security_settings
 
 from .base import DEFAULT_CLIENT_INFO as BASE_DEFAULT_CLIENT_INFO
@@ -122,10 +119,10 @@ class SecuritySettingsServiceRestInterceptor:
 
     def pre_create_security_settings(
         self,
-        request: gcdc_security_settings.CreateSecuritySettingsRequest,
+        request: security_settings.CreateSecuritySettingsRequest,
         metadata: Sequence[Tuple[str, Union[str, bytes]]],
     ) -> Tuple[
-        gcdc_security_settings.CreateSecuritySettingsRequest,
+        security_settings.CreateSecuritySettingsRequest,
         Sequence[Tuple[str, Union[str, bytes]]],
     ]:
         """Pre-rpc interceptor for create_security_settings
@@ -136,8 +133,8 @@ class SecuritySettingsServiceRestInterceptor:
         return request, metadata
 
     def post_create_security_settings(
-        self, response: gcdc_security_settings.SecuritySettings
-    ) -> gcdc_security_settings.SecuritySettings:
+        self, response: security_settings.SecuritySettings
+    ) -> security_settings.SecuritySettings:
         """Post-rpc interceptor for create_security_settings
 
         DEPRECATED. Please use the `post_create_security_settings_with_metadata`
@@ -152,10 +149,10 @@ class SecuritySettingsServiceRestInterceptor:
 
     def post_create_security_settings_with_metadata(
         self,
-        response: gcdc_security_settings.SecuritySettings,
+        response: security_settings.SecuritySettings,
         metadata: Sequence[Tuple[str, Union[str, bytes]]],
     ) -> Tuple[
-        gcdc_security_settings.SecuritySettings, Sequence[Tuple[str, Union[str, bytes]]]
+        security_settings.SecuritySettings, Sequence[Tuple[str, Union[str, bytes]]]
     ]:
         """Post-rpc interceptor for create_security_settings
 
@@ -291,10 +288,10 @@ class SecuritySettingsServiceRestInterceptor:
 
     def pre_update_security_settings(
         self,
-        request: gcdc_security_settings.UpdateSecuritySettingsRequest,
+        request: security_settings.UpdateSecuritySettingsRequest,
         metadata: Sequence[Tuple[str, Union[str, bytes]]],
     ) -> Tuple[
-        gcdc_security_settings.UpdateSecuritySettingsRequest,
+        security_settings.UpdateSecuritySettingsRequest,
         Sequence[Tuple[str, Union[str, bytes]]],
     ]:
         """Pre-rpc interceptor for update_security_settings
@@ -305,8 +302,8 @@ class SecuritySettingsServiceRestInterceptor:
         return request, metadata
 
     def post_update_security_settings(
-        self, response: gcdc_security_settings.SecuritySettings
-    ) -> gcdc_security_settings.SecuritySettings:
+        self, response: security_settings.SecuritySettings
+    ) -> security_settings.SecuritySettings:
         """Post-rpc interceptor for update_security_settings
 
         DEPRECATED. Please use the `post_update_security_settings_with_metadata`
@@ -321,10 +318,10 @@ class SecuritySettingsServiceRestInterceptor:
 
     def post_update_security_settings_with_metadata(
         self,
-        response: gcdc_security_settings.SecuritySettings,
+        response: security_settings.SecuritySettings,
         metadata: Sequence[Tuple[str, Union[str, bytes]]],
     ) -> Tuple[
-        gcdc_security_settings.SecuritySettings, Sequence[Tuple[str, Union[str, bytes]]]
+        security_settings.SecuritySettings, Sequence[Tuple[str, Union[str, bytes]]]
     ]:
         """Post-rpc interceptor for update_security_settings
 
@@ -583,16 +580,16 @@ class SecuritySettingsServiceRestTransport(_BaseSecuritySettingsServiceRestTrans
 
         def __call__(
             self,
-            request: gcdc_security_settings.CreateSecuritySettingsRequest,
+            request: security_settings.CreateSecuritySettingsRequest,
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
             metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
-        ) -> gcdc_security_settings.SecuritySettings:
+        ) -> security_settings.SecuritySettings:
             r"""Call the create security settings method over HTTP.
 
             Args:
-                request (~.gcdc_security_settings.CreateSecuritySettingsRequest):
+                request (~.security_settings.CreateSecuritySettingsRequest):
                     The request object. The request message for
                 [SecuritySettings.CreateSecuritySettings][].
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
@@ -604,7 +601,7 @@ class SecuritySettingsServiceRestTransport(_BaseSecuritySettingsServiceRestTrans
                     be of type `bytes`.
 
             Returns:
-                ~.gcdc_security_settings.SecuritySettings:
+                ~.security_settings.SecuritySettings:
                     Represents the settings related to
                 security issues, such as data redaction
                 and data retention. It may take hours
@@ -678,8 +675,8 @@ class SecuritySettingsServiceRestTransport(_BaseSecuritySettingsServiceRestTrans
                 raise core_exceptions.from_http_response(response)
 
             # Return the response
-            resp = gcdc_security_settings.SecuritySettings()
-            pb_resp = gcdc_security_settings.SecuritySettings.pb(resp)
+            resp = security_settings.SecuritySettings()
+            pb_resp = security_settings.SecuritySettings.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
@@ -692,7 +689,7 @@ class SecuritySettingsServiceRestTransport(_BaseSecuritySettingsServiceRestTrans
                 logging.DEBUG
             ):  # pragma: NO COVER
                 try:
-                    response_payload = gcdc_security_settings.SecuritySettings.to_json(
+                    response_payload = security_settings.SecuritySettings.to_json(
                         response
                     )
                 except:
@@ -865,7 +862,8 @@ class SecuritySettingsServiceRestTransport(_BaseSecuritySettingsServiceRestTrans
             Args:
                 request (~.security_settings.GetSecuritySettingsRequest):
                     The request object. The request message for
-                [SecuritySettingsService.GetSecuritySettings][google.cloud.dialogflow.cx.v3.SecuritySettingsService.GetSecuritySettings].
+                `SecuritySettingsService.GetSecuritySettings
+                <google.cloud.dialogflow.cx.v3.SecuritySettingsService.GetSecuritySettings>`__.
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -1165,18 +1163,19 @@ class SecuritySettingsServiceRestTransport(_BaseSecuritySettingsServiceRestTrans
 
         def __call__(
             self,
-            request: gcdc_security_settings.UpdateSecuritySettingsRequest,
+            request: security_settings.UpdateSecuritySettingsRequest,
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
             metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
-        ) -> gcdc_security_settings.SecuritySettings:
+        ) -> security_settings.SecuritySettings:
             r"""Call the update security settings method over HTTP.
 
             Args:
-                request (~.gcdc_security_settings.UpdateSecuritySettingsRequest):
+                request (~.security_settings.UpdateSecuritySettingsRequest):
                     The request object. The request message for
-                [SecuritySettingsService.UpdateSecuritySettings][google.cloud.dialogflow.cx.v3.SecuritySettingsService.UpdateSecuritySettings].
+                `SecuritySettingsService.UpdateSecuritySettings
+                <google.cloud.dialogflow.cx.v3.SecuritySettingsService.UpdateSecuritySettings>`__.
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -1186,7 +1185,7 @@ class SecuritySettingsServiceRestTransport(_BaseSecuritySettingsServiceRestTrans
                     be of type `bytes`.
 
             Returns:
-                ~.gcdc_security_settings.SecuritySettings:
+                ~.security_settings.SecuritySettings:
                     Represents the settings related to
                 security issues, such as data redaction
                 and data retention. It may take hours
@@ -1260,8 +1259,8 @@ class SecuritySettingsServiceRestTransport(_BaseSecuritySettingsServiceRestTrans
                 raise core_exceptions.from_http_response(response)
 
             # Return the response
-            resp = gcdc_security_settings.SecuritySettings()
-            pb_resp = gcdc_security_settings.SecuritySettings.pb(resp)
+            resp = security_settings.SecuritySettings()
+            pb_resp = security_settings.SecuritySettings.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
@@ -1274,7 +1273,7 @@ class SecuritySettingsServiceRestTransport(_BaseSecuritySettingsServiceRestTrans
                 logging.DEBUG
             ):  # pragma: NO COVER
                 try:
-                    response_payload = gcdc_security_settings.SecuritySettings.to_json(
+                    response_payload = security_settings.SecuritySettings.to_json(
                         response
                     )
                 except:
@@ -1299,8 +1298,8 @@ class SecuritySettingsServiceRestTransport(_BaseSecuritySettingsServiceRestTrans
     def create_security_settings(
         self,
     ) -> Callable[
-        [gcdc_security_settings.CreateSecuritySettingsRequest],
-        gcdc_security_settings.SecuritySettings,
+        [security_settings.CreateSecuritySettingsRequest],
+        security_settings.SecuritySettings,
     ]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
@@ -1340,8 +1339,8 @@ class SecuritySettingsServiceRestTransport(_BaseSecuritySettingsServiceRestTrans
     def update_security_settings(
         self,
     ) -> Callable[
-        [gcdc_security_settings.UpdateSecuritySettingsRequest],
-        gcdc_security_settings.SecuritySettings,
+        [security_settings.UpdateSecuritySettingsRequest],
+        security_settings.SecuritySettings,
     ]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast

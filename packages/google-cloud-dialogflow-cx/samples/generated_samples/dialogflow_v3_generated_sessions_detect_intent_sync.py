@@ -54,5 +54,4 @@ def sample_detect_intent():
     # Handle the response
     print(response)
 
-
 # [END dialogflow_v3_generated_Sessions_DetectIntent_sync]

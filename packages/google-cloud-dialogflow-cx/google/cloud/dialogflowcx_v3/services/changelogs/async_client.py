@@ -66,8 +66,8 @@ _LOGGER = std_logging.getLogger(__name__)
 
 
 class ChangelogsAsyncClient:
-    """Service for managing
-    [Changelogs][google.cloud.dialogflow.cx.v3.Changelog].
+    """Service for managing `Changelogs
+    <google.cloud.dialogflow.cx.v3.Changelog>`__.
     """
 
     _client: ChangelogsClient
@@ -328,9 +328,11 @@ class ChangelogsAsyncClient:
         Args:
             request (Optional[Union[google.cloud.dialogflowcx_v3.types.ListChangelogsRequest, dict]]):
                 The request object. The request message for
-                [Changelogs.ListChangelogs][google.cloud.dialogflow.cx.v3.Changelogs.ListChangelogs].
+                `Changelogs.ListChangelogs
+                <google.cloud.dialogflow.cx.v3.Changelogs.ListChangelogs>`__.
             parent (:class:`str`):
-                Required. The agent containing the changelogs. Format:
+                Required. The agent containing the
+                changelogs. Format:
                 ``projects/<ProjectID>/locations/<LocationID>/agents/<AgentID>``.
 
                 This corresponds to the ``parent`` field
@@ -347,10 +349,12 @@ class ChangelogsAsyncClient:
         Returns:
             google.cloud.dialogflowcx_v3.services.changelogs.pagers.ListChangelogsAsyncPager:
                 The response message for
-                   [Changelogs.ListChangelogs][google.cloud.dialogflow.cx.v3.Changelogs.ListChangelogs].
+                `Changelogs.ListChangelogs
+                <google.cloud.dialogflow.cx.v3.Changelogs.ListChangelogs>`__.
 
-                Iterating over this object will yield results and
-                resolve additional pages automatically.
+                Iterating over this object will yield
+                results and resolve additional pages
+                automatically.
 
         """
         # Create or coerce a protobuf request object.
@@ -453,9 +457,12 @@ class ChangelogsAsyncClient:
         Args:
             request (Optional[Union[google.cloud.dialogflowcx_v3.types.GetChangelogRequest, dict]]):
                 The request object. The request message for
-                [Changelogs.GetChangelog][google.cloud.dialogflow.cx.v3.Changelogs.GetChangelog].
+                `Changelogs.GetChangelog
+                <google.cloud.dialogflow.cx.v3.Changelogs.GetChangelog>`__.
             name (:class:`str`):
-                Required. The name of the changelog to get. Format:
+                Required. The name of the changelog to
+                get. Format:
+
                 ``projects/<ProjectID>/locations/<LocationID>/agents/<AgentID>/changelogs/<ChangelogID>``.
 
                 This corresponds to the ``name`` field

@@ -49,5 +49,4 @@ async def sample_get_changelog():
     # Handle the response
     print(response)
 
-
 # [END dialogflow_v3_generated_Changelogs_GetChangelog_async]

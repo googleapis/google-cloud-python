@@ -112,8 +112,8 @@ class _LoggingClientInterceptor(grpc.UnaryUnaryClientInterceptor):  # pragma: NO
 class ChangelogsGrpcTransport(ChangelogsTransport):
     """gRPC backend transport for Changelogs.
 
-    Service for managing
-    [Changelogs][google.cloud.dialogflow.cx.v3.Changelog].
+    Service for managing `Changelogs
+    <google.cloud.dialogflow.cx.v3.Changelog>`__.
 
     This class defines the same methods as the primary client, so the
     primary client can load the underlying transport implementation

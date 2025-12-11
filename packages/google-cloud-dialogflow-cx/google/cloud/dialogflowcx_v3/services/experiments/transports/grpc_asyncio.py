@@ -35,7 +35,6 @@ from grpc.experimental import aio  # type: ignore
 import proto  # type: ignore
 
 from google.cloud.dialogflowcx_v3.types import experiment
-from google.cloud.dialogflowcx_v3.types import experiment as gcdc_experiment
 
 from .base import DEFAULT_CLIENT_INFO, ExperimentsTransport
 from .grpc import ExperimentsGrpcTransport
@@ -120,8 +119,8 @@ class _LoggingClientAIOInterceptor(
 class ExperimentsGrpcAsyncIOTransport(ExperimentsTransport):
     """gRPC AsyncIO backend transport for Experiments.
 
-    Service for managing
-    [Experiments][google.cloud.dialogflow.cx.v3.Experiment].
+    Service for managing `Experiments
+    <google.cloud.dialogflow.cx.v3.Experiment>`__.
 
     This class defines the same methods as the primary client, so the
     primary client can load the underlying transport implementation
@@ -344,7 +343,8 @@ class ExperimentsGrpcAsyncIOTransport(ExperimentsTransport):
         r"""Return a callable for the list experiments method over gRPC.
 
         Returns the list of all experiments in the specified
-        [Environment][google.cloud.dialogflow.cx.v3.Environment].
+        `Environment
+        <google.cloud.dialogflow.cx.v3.Environment>`__.
 
         Returns:
             Callable[[~.ListExperimentsRequest],
@@ -371,7 +371,8 @@ class ExperimentsGrpcAsyncIOTransport(ExperimentsTransport):
         r"""Return a callable for the get experiment method over gRPC.
 
         Retrieves the specified
-        [Experiment][google.cloud.dialogflow.cx.v3.Experiment].
+        `Experiment
+        <google.cloud.dialogflow.cx.v3.Experiment>`__.
 
         Returns:
             Callable[[~.GetExperimentRequest],
@@ -395,14 +396,14 @@ class ExperimentsGrpcAsyncIOTransport(ExperimentsTransport):
     def create_experiment(
         self,
     ) -> Callable[
-        [gcdc_experiment.CreateExperimentRequest], Awaitable[gcdc_experiment.Experiment]
+        [experiment.CreateExperimentRequest], Awaitable[experiment.Experiment]
     ]:
         r"""Return a callable for the create experiment method over gRPC.
 
-        Creates an
-        [Experiment][google.cloud.dialogflow.cx.v3.Experiment] in the
-        specified
-        [Environment][google.cloud.dialogflow.cx.v3.Environment].
+        Creates an `Experiment
+        <google.cloud.dialogflow.cx.v3.Experiment>`__ in the
+        specified `Environment
+        <google.cloud.dialogflow.cx.v3.Environment>`__.
 
         Returns:
             Callable[[~.CreateExperimentRequest],
@@ -417,8 +418,8 @@ class ExperimentsGrpcAsyncIOTransport(ExperimentsTransport):
         if "create_experiment" not in self._stubs:
             self._stubs["create_experiment"] = self._logged_channel.unary_unary(
                 "/google.cloud.dialogflow.cx.v3.Experiments/CreateExperiment",
-                request_serializer=gcdc_experiment.CreateExperimentRequest.serialize,
-                response_deserializer=gcdc_experiment.Experiment.deserialize,
+                request_serializer=experiment.CreateExperimentRequest.serialize,
+                response_deserializer=experiment.Experiment.deserialize,
             )
         return self._stubs["create_experiment"]
 
@@ -426,12 +427,13 @@ class ExperimentsGrpcAsyncIOTransport(ExperimentsTransport):
     def update_experiment(
         self,
     ) -> Callable[
-        [gcdc_experiment.UpdateExperimentRequest], Awaitable[gcdc_experiment.Experiment]
+        [experiment.UpdateExperimentRequest], Awaitable[experiment.Experiment]
     ]:
         r"""Return a callable for the update experiment method over gRPC.
 
         Updates the specified
-        [Experiment][google.cloud.dialogflow.cx.v3.Experiment].
+        `Experiment
+        <google.cloud.dialogflow.cx.v3.Experiment>`__.
 
         Returns:
             Callable[[~.UpdateExperimentRequest],
@@ -446,8 +448,8 @@ class ExperimentsGrpcAsyncIOTransport(ExperimentsTransport):
         if "update_experiment" not in self._stubs:
             self._stubs["update_experiment"] = self._logged_channel.unary_unary(
                 "/google.cloud.dialogflow.cx.v3.Experiments/UpdateExperiment",
-                request_serializer=gcdc_experiment.UpdateExperimentRequest.serialize,
-                response_deserializer=gcdc_experiment.Experiment.deserialize,
+                request_serializer=experiment.UpdateExperimentRequest.serialize,
+                response_deserializer=experiment.Experiment.deserialize,
             )
         return self._stubs["update_experiment"]
 
@@ -458,7 +460,8 @@ class ExperimentsGrpcAsyncIOTransport(ExperimentsTransport):
         r"""Return a callable for the delete experiment method over gRPC.
 
         Deletes the specified
-        [Experiment][google.cloud.dialogflow.cx.v3.Experiment].
+        `Experiment
+        <google.cloud.dialogflow.cx.v3.Experiment>`__.
 
         Returns:
             Callable[[~.DeleteExperimentRequest],
@@ -487,8 +490,10 @@ class ExperimentsGrpcAsyncIOTransport(ExperimentsTransport):
         r"""Return a callable for the start experiment method over gRPC.
 
         Starts the specified
-        [Experiment][google.cloud.dialogflow.cx.v3.Experiment]. This rpc
-        only changes the state of experiment from PENDING to RUNNING.
+        `Experiment
+        <google.cloud.dialogflow.cx.v3.Experiment>`__. This rpc
+        only changes the state of experiment from PENDING to
+        RUNNING.
 
         Returns:
             Callable[[~.StartExperimentRequest],
@@ -514,9 +519,10 @@ class ExperimentsGrpcAsyncIOTransport(ExperimentsTransport):
     ) -> Callable[[experiment.StopExperimentRequest], Awaitable[experiment.Experiment]]:
         r"""Return a callable for the stop experiment method over gRPC.
 
-        Stops the specified
-        [Experiment][google.cloud.dialogflow.cx.v3.Experiment]. This rpc
-        only changes the state of experiment from RUNNING to DONE.
+        Stops the specified `Experiment
+        <google.cloud.dialogflow.cx.v3.Experiment>`__. This rpc
+        only changes the state of experiment from RUNNING to
+        DONE.
 
         Returns:
             Callable[[~.StopExperimentRequest],

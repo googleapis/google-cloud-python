@@ -50,5 +50,4 @@ async def sample_lookup_environment_history():
     async for response in page_result:
         print(response)
 
-
 # [END dialogflow_v3_generated_Environments_LookupEnvironmentHistory_async]

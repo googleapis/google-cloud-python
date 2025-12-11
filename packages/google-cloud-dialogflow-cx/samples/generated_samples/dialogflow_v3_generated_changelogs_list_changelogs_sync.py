@@ -50,5 +50,4 @@ def sample_list_changelogs():
     for response in page_result:
         print(response)
 
-
 # [END dialogflow_v3_generated_Changelogs_ListChangelogs_sync]

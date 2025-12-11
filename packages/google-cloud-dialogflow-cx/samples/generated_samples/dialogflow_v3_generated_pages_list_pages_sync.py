@@ -50,5 +50,4 @@ def sample_list_pages():
     for response in page_result:
         print(response)
 
-
 # [END dialogflow_v3_generated_Pages_ListPages_sync]

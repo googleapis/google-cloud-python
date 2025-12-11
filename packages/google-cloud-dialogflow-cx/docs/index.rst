@@ -2,9 +2,6 @@
 
 .. include:: multiprocessing.rst
 
-This package includes clients for multiple versions of Dialogflow CX.
-By default, you will get version ``dialogflowcx_v3``.
-
 
 API Reference
 -------------
@@ -13,14 +10,6 @@ API Reference
 
     dialogflowcx_v3/services_
     dialogflowcx_v3/types_
-
-API Reference
--------------
-.. toctree::
-    :maxdepth: 2
-
-    dialogflowcx_v3beta1/services_
-    dialogflowcx_v3beta1/types_
 
 
 Changelog

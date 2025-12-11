@@ -23,12 +23,7 @@ from google.longrunning import operations_pb2  # type: ignore
 from google.protobuf import empty_pb2  # type: ignore
 from google.protobuf import json_format
 
-from google.cloud.dialogflowcx_v3.types import (
-    generative_settings as gcdc_generative_settings,
-)
-from google.cloud.dialogflowcx_v3.types import agent
-from google.cloud.dialogflowcx_v3.types import agent as gcdc_agent
-from google.cloud.dialogflowcx_v3.types import generative_settings
+from google.cloud.dialogflowcx_v3.types import agent, generative_settings
 
 from .base import DEFAULT_CLIENT_INFO, AgentsTransport
 
@@ -122,7 +117,7 @@ class _BaseAgentsRestTransport(AgentsTransport):
 
         @staticmethod
         def _get_transcoded_request(http_options, request):
-            pb_request = gcdc_agent.CreateAgentRequest.pb(request)
+            pb_request = agent.CreateAgentRequest.pb(request)
             transcoded_request = path_template.transcode(http_options, pb_request)
             return transcoded_request
 
@@ -530,7 +525,7 @@ class _BaseAgentsRestTransport(AgentsTransport):
 
         @staticmethod
         def _get_transcoded_request(http_options, request):
-            pb_request = gcdc_agent.UpdateAgentRequest.pb(request)
+            pb_request = agent.UpdateAgentRequest.pb(request)
             transcoded_request = path_template.transcode(http_options, pb_request)
             return transcoded_request
 

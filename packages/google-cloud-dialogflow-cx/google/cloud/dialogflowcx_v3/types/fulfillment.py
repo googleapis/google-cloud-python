@@ -20,10 +20,7 @@ from typing import MutableMapping, MutableSequence
 from google.protobuf import struct_pb2  # type: ignore
 import proto  # type: ignore
 
-from google.cloud.dialogflowcx_v3.types import (
-    advanced_settings as gcdc_advanced_settings,
-)
-from google.cloud.dialogflowcx_v3.types import response_message
+from google.cloud.dialogflowcx_v3.types import advanced_settings, response_message
 
 __protobuf__ = proto.module(
     package="google.cloud.dialogflow.cx.v3",
@@ -36,30 +33,32 @@ __protobuf__ = proto.module(
 class Fulfillment(proto.Message):
     r"""A fulfillment can do one or more of the following actions at the
     same time:
+      * Generate rich message responses.
 
-    - Generate rich message responses.
-    - Set parameter values.
-    - Call the webhook.
+    * Set parameter values.
+      * Call the webhook.
 
-    Fulfillments can be called at various stages in the
-    [Page][google.cloud.dialogflow.cx.v3.Page] or
-    [Form][google.cloud.dialogflow.cx.v3.Form] lifecycle. For example,
-    when a
-    [DetectIntentRequest][google.cloud.dialogflow.cx.v3.DetectIntentRequest]
-    drives a session to enter a new page, the page's entry fulfillment
-    can add a static response to the
-    [QueryResult][google.cloud.dialogflow.cx.v3.QueryResult] in the
-    returning
-    [DetectIntentResponse][google.cloud.dialogflow.cx.v3.DetectIntentResponse],
-    call the webhook (for example, to load user data from a database),
-    or both.
+    Fulfillments can be called at various stages in the `Page
+    <google.cloud.dialogflow.cx.v3.Page>`__ or
+    `Form <google.cloud.dialogflow.cx.v3.Form>`__ lifecycle. For
+    example, when a `DetectIntentRequest
+    <google.cloud.dialogflow.cx.v3.DetectIntentRequest>`__ drives a
+    session to enter a new page, the page's entry fulfillment can
+    add a static response to the
+    `QueryResult <google.cloud.dialogflow.cx.v3.QueryResult>`__ in
+    the returning `DetectIntentResponse
+    <google.cloud.dialogflow.cx.v3.DetectIntentResponse>`__, call
+    the webhook (for example, to load user data from a database), or
+    both.
 
     Attributes:
         messages (MutableSequence[google.cloud.dialogflowcx_v3.types.ResponseMessage]):
             The list of rich message responses to present
             to the user.
         webhook (str):
-            The webhook to call. Format:
+            The webhook to call.
+            Format:
+
             ``projects/<ProjectID>/locations/<LocationID>/agents/<AgentID>/webhooks/<WebhookID>``.
         return_partial_responses (bool):
             Whether Dialogflow should return currently
@@ -77,12 +76,14 @@ class Fulfillment(proto.Message):
             fulfillments that have slow webhooks.
         tag (str):
             The value of this field will be populated in the
-            [WebhookRequest][google.cloud.dialogflow.cx.v3.WebhookRequest]
-            ``fulfillmentInfo.tag`` field by Dialogflow when the
-            associated webhook is called. The tag is typically used by
-            the webhook service to identify which fulfillment is being
-            called, but it could be used for other purposes. This field
-            is required if ``webhook`` is specified.
+            `WebhookRequest
+            <google.cloud.dialogflow.cx.v3.WebhookRequest>`__
+            ``fulfillmentInfo.tag`` field by Dialogflow when
+            the associated webhook is called.
+            The tag is typically used by the webhook service
+            to identify which fulfillment is being called,
+            but it could be used for other purposes. This
+            field is required if ``webhook`` is specified.
         set_parameter_actions (MutableSequence[google.cloud.dialogflowcx_v3.types.Fulfillment.SetParameterAction]):
             Set parameter values before executing the
             webhook.
@@ -94,12 +95,13 @@ class Fulfillment(proto.Message):
             level overrides the settings exposed at the
             higher level.
         enable_generative_fallback (bool):
-            If the flag is true, the agent will utilize LLM to generate
-            a text response. If LLM generation fails, the defined
-            [responses][google.cloud.dialogflow.cx.v3.Fulfillment.messages]
-            in the fulfillment will be respected. This flag is only
-            useful for fulfillments associated with no-match event
-            handlers.
+            If the flag is true, the agent will utilize LLM
+            to generate a text response. If LLM generation
+            fails, the defined `responses
+            <google.cloud.dialogflow.cx.v3.Fulfillment.messages>`__
+            in the fulfillment will be respected. This flag
+            is only useful for fulfillments associated with
+            no-match event handlers.
         generators (MutableSequence[google.cloud.dialogflowcx_v3.types.Fulfillment.GeneratorSettings]):
             A list of Generators to be called during this
             fulfillment.
@@ -143,13 +145,15 @@ class Fulfillment(proto.Message):
 
             Attributes:
                 condition (str):
-                    The condition to activate and select this case. Empty means
-                    the condition is always true. The condition is evaluated
-                    against [form parameters][Form.parameters] or [session
-                    parameters][SessionInfo.parameters].
+                    The condition to activate and select this case.
+                    Empty means the condition is always true. The
+                    condition is evaluated against `form parameters
+                    <Form.parameters>`__ or `session
+                    parameters <SessionInfo.parameters>`__.
 
                     See the `conditions
-                    reference <https://cloud.google.com/dialogflow/cx/docs/reference/condition>`__.
+                    reference
+                    <https://cloud.google.com/dialogflow/cx/docs/reference/condition>`__.
                 case_content (MutableSequence[google.cloud.dialogflowcx_v3.types.Fulfillment.ConditionalCases.Case.CaseContent]):
                     A list of case content.
             """
@@ -215,20 +219,26 @@ class Fulfillment(proto.Message):
 
         Attributes:
             generator (str):
-                Required. The generator to call. Format:
+                Required. The generator to call.
+                Format:
+
                 ``projects/<ProjectID>/locations/<LocationID>/agents/<AgentID>/generators/<GeneratorID>``.
             input_parameters (MutableMapping[str, str]):
-                Map from [placeholder parameter][Generator.Parameter.id] in
-                the [Generator][google.cloud.dialogflow.cx.v3.Generator] to
-                corresponding session parameters. By default, Dialogflow
-                uses the session parameter with the same name to fill in the
-                generator template. e.g. If there is a placeholder parameter
-                ``city`` in the Generator, Dialogflow default to fill in the
-                ``$city`` with ``$session.params.city``. However, you may
+                Map from `placeholder parameter
+                <Generator.Parameter.id>`__ in the `Generator
+                <google.cloud.dialogflow.cx.v3.Generator>`__ to
+                corresponding session parameters. By default,
+                Dialogflow uses the session parameter with the
+                same name to fill in the generator template.
+                e.g. If there is a placeholder parameter
+                ``city`` in the Generator, Dialogflow default to
+                fill in the ``$city`` with
+                ``$session.params.city``. However, you may
                 choose to fill ``$city`` with
                 ``$session.params.desination-city``.
 
-                - Map key: [parameter ID][Genrator.Parameter.id]
+                - Map key: `parameter ID
+                  <Genrator.Parameter.id>`__
                 - Map value: session parameter name
             output_parameter (str):
                 Required. Output parameter which should
@@ -276,10 +286,10 @@ class Fulfillment(proto.Message):
         number=5,
         message=ConditionalCases,
     )
-    advanced_settings: gcdc_advanced_settings.AdvancedSettings = proto.Field(
+    advanced_settings: advanced_settings.AdvancedSettings = proto.Field(
         proto.MESSAGE,
         number=7,
-        message=gcdc_advanced_settings.AdvancedSettings,
+        message=advanced_settings.AdvancedSettings,
     )
     enable_generative_fallback: bool = proto.Field(
         proto.BOOL,

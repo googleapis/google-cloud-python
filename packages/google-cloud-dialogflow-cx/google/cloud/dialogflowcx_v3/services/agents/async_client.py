@@ -54,14 +54,13 @@ from google.protobuf import struct_pb2  # type: ignore
 
 from google.cloud.dialogflowcx_v3.services.agents import pagers
 from google.cloud.dialogflowcx_v3.types import (
-    generative_settings as gcdc_generative_settings,
+    advanced_settings,
+    agent,
+    audio_config,
+    flow,
+    generative_settings,
+    safety_settings,
 )
-from google.cloud.dialogflowcx_v3.types import advanced_settings
-from google.cloud.dialogflowcx_v3.types import agent
-from google.cloud.dialogflowcx_v3.types import agent as gcdc_agent
-from google.cloud.dialogflowcx_v3.types import audio_config, flow
-from google.cloud.dialogflowcx_v3.types import generative_settings
-from google.cloud.dialogflowcx_v3.types import safety_settings
 
 from .client import AgentsClient
 from .transports.base import DEFAULT_CLIENT_INFO, AgentsTransport
@@ -78,7 +77,9 @@ _LOGGER = std_logging.getLogger(__name__)
 
 
 class AgentsAsyncClient:
-    """Service for managing [Agents][google.cloud.dialogflow.cx.v3.Agent]."""
+    """Service for managing `Agents
+    <google.cloud.dialogflow.cx.v3.Agent>`__.
+    """
 
     _client: AgentsClient
 
@@ -361,9 +362,11 @@ class AgentsAsyncClient:
         Args:
             request (Optional[Union[google.cloud.dialogflowcx_v3.types.ListAgentsRequest, dict]]):
                 The request object. The request message for
-                [Agents.ListAgents][google.cloud.dialogflow.cx.v3.Agents.ListAgents].
+                `Agents.ListAgents
+                <google.cloud.dialogflow.cx.v3.Agents.ListAgents>`__.
             parent (:class:`str`):
-                Required. The location to list all agents for. Format:
+                Required. The location to list all
+                agents for. Format:
                 ``projects/<ProjectID>/locations/<LocationID>``.
 
                 This corresponds to the ``parent`` field
@@ -380,10 +383,12 @@ class AgentsAsyncClient:
         Returns:
             google.cloud.dialogflowcx_v3.services.agents.pagers.ListAgentsAsyncPager:
                 The response message for
-                   [Agents.ListAgents][google.cloud.dialogflow.cx.v3.Agents.ListAgents].
+                `Agents.ListAgents
+                <google.cloud.dialogflow.cx.v3.Agents.ListAgents>`__.
 
-                Iterating over this object will yield results and
-                resolve additional pages automatically.
+                Iterating over this object will yield
+                results and resolve additional pages
+                automatically.
 
         """
         # Create or coerce a protobuf request object.
@@ -486,9 +491,11 @@ class AgentsAsyncClient:
         Args:
             request (Optional[Union[google.cloud.dialogflowcx_v3.types.GetAgentRequest, dict]]):
                 The request object. The request message for
-                [Agents.GetAgent][google.cloud.dialogflow.cx.v3.Agents.GetAgent].
+                `Agents.GetAgent
+                <google.cloud.dialogflow.cx.v3.Agents.GetAgent>`__.
             name (:class:`str`):
-                Required. The name of the agent. Format:
+                Required. The name of the agent.
+                Format:
                 ``projects/<ProjectID>/locations/<LocationID>/agents/<AgentID>``.
 
                 This corresponds to the ``name`` field
@@ -504,21 +511,29 @@ class AgentsAsyncClient:
 
         Returns:
             google.cloud.dialogflowcx_v3.types.Agent:
-                Agents are best described as Natural Language Understanding (NLU) modules
-                   that transform user requests into actionable data.
-                   You can include agents in your app, product, or
-                   service to determine user intent and respond to the
-                   user in a natural way.
+                Agents are best described as Natural
+                Language Understanding (NLU) modules
+                that transform user requests into
+                actionable data. You can include agents
+                in your app, product, or service to
+                determine user intent and respond to the
+                user in a natural way.
 
-                   After you create an agent, you can add
-                   [Intents][google.cloud.dialogflow.cx.v3.Intent],
-                   [Entity
-                   Types][google.cloud.dialogflow.cx.v3.EntityType],
-                   [Flows][google.cloud.dialogflow.cx.v3.Flow],
-                   [Fulfillments][google.cloud.dialogflow.cx.v3.Fulfillment],
-                   [Webhooks][google.cloud.dialogflow.cx.v3.Webhook],
-                   [TransitionRouteGroups][google.cloud.dialogflow.cx.v3.TransitionRouteGroup]
-                   and so on to manage the conversation flows.
+                After you create an agent, you can add
+                `Intents
+                <google.cloud.dialogflow.cx.v3.Intent>`__,
+                `Entity Types
+                <google.cloud.dialogflow.cx.v3.EntityType>`__,
+                `Flows
+                <google.cloud.dialogflow.cx.v3.Flow>`__,
+                `Fulfillments
+                <google.cloud.dialogflow.cx.v3.Fulfillment>`__,
+                `Webhooks
+                <google.cloud.dialogflow.cx.v3.Webhook>`__,
+                `TransitionRouteGroups
+                <google.cloud.dialogflow.cx.v3.TransitionRouteGroup>`__
+                and so on to manage the conversation
+                flows.
 
         """
         # Create or coerce a protobuf request object.
@@ -572,19 +587,20 @@ class AgentsAsyncClient:
 
     async def create_agent(
         self,
-        request: Optional[Union[gcdc_agent.CreateAgentRequest, dict]] = None,
+        request: Optional[Union[agent.CreateAgentRequest, dict]] = None,
         *,
         parent: Optional[str] = None,
-        agent: Optional[gcdc_agent.Agent] = None,
+        agent: Optional[agent.Agent] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
-    ) -> gcdc_agent.Agent:
+    ) -> agent.Agent:
         r"""Creates an agent in the specified location.
 
-        Note: You should always train flows prior to sending them
-        queries. See the `training
-        documentation <https://cloud.google.com/dialogflow/cx/docs/concept/training>`__.
+        Note: You should always train flows prior to sending
+        them queries. See the `training
+        documentation
+        <https://cloud.google.com/dialogflow/cx/docs/concept/training>`__.
 
         .. code-block:: python
 
@@ -621,9 +637,11 @@ class AgentsAsyncClient:
         Args:
             request (Optional[Union[google.cloud.dialogflowcx_v3.types.CreateAgentRequest, dict]]):
                 The request object. The request message for
-                [Agents.CreateAgent][google.cloud.dialogflow.cx.v3.Agents.CreateAgent].
+                `Agents.CreateAgent
+                <google.cloud.dialogflow.cx.v3.Agents.CreateAgent>`__.
             parent (:class:`str`):
-                Required. The location to create a agent for. Format:
+                Required. The location to create a agent
+                for. Format:
                 ``projects/<ProjectID>/locations/<LocationID>``.
 
                 This corresponds to the ``parent`` field
@@ -644,21 +662,29 @@ class AgentsAsyncClient:
 
         Returns:
             google.cloud.dialogflowcx_v3.types.Agent:
-                Agents are best described as Natural Language Understanding (NLU) modules
-                   that transform user requests into actionable data.
-                   You can include agents in your app, product, or
-                   service to determine user intent and respond to the
-                   user in a natural way.
+                Agents are best described as Natural
+                Language Understanding (NLU) modules
+                that transform user requests into
+                actionable data. You can include agents
+                in your app, product, or service to
+                determine user intent and respond to the
+                user in a natural way.
 
-                   After you create an agent, you can add
-                   [Intents][google.cloud.dialogflow.cx.v3.Intent],
-                   [Entity
-                   Types][google.cloud.dialogflow.cx.v3.EntityType],
-                   [Flows][google.cloud.dialogflow.cx.v3.Flow],
-                   [Fulfillments][google.cloud.dialogflow.cx.v3.Fulfillment],
-                   [Webhooks][google.cloud.dialogflow.cx.v3.Webhook],
-                   [TransitionRouteGroups][google.cloud.dialogflow.cx.v3.TransitionRouteGroup]
-                   and so on to manage the conversation flows.
+                After you create an agent, you can add
+                `Intents
+                <google.cloud.dialogflow.cx.v3.Intent>`__,
+                `Entity Types
+                <google.cloud.dialogflow.cx.v3.EntityType>`__,
+                `Flows
+                <google.cloud.dialogflow.cx.v3.Flow>`__,
+                `Fulfillments
+                <google.cloud.dialogflow.cx.v3.Fulfillment>`__,
+                `Webhooks
+                <google.cloud.dialogflow.cx.v3.Webhook>`__,
+                `TransitionRouteGroups
+                <google.cloud.dialogflow.cx.v3.TransitionRouteGroup>`__
+                and so on to manage the conversation
+                flows.
 
         """
         # Create or coerce a protobuf request object.
@@ -676,8 +702,8 @@ class AgentsAsyncClient:
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
-        if not isinstance(request, gcdc_agent.CreateAgentRequest):
-            request = gcdc_agent.CreateAgentRequest(request)
+        if not isinstance(request, agent.CreateAgentRequest):
+            request = agent.CreateAgentRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -714,19 +740,20 @@ class AgentsAsyncClient:
 
     async def update_agent(
         self,
-        request: Optional[Union[gcdc_agent.UpdateAgentRequest, dict]] = None,
+        request: Optional[Union[agent.UpdateAgentRequest, dict]] = None,
         *,
-        agent: Optional[gcdc_agent.Agent] = None,
+        agent: Optional[agent.Agent] = None,
         update_mask: Optional[field_mask_pb2.FieldMask] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
-    ) -> gcdc_agent.Agent:
+    ) -> agent.Agent:
         r"""Updates the specified agent.
 
-        Note: You should always train flows prior to sending them
-        queries. See the `training
-        documentation <https://cloud.google.com/dialogflow/cx/docs/concept/training>`__.
+        Note: You should always train flows prior to sending
+        them queries. See the `training
+        documentation
+        <https://cloud.google.com/dialogflow/cx/docs/concept/training>`__.
 
         .. code-block:: python
 
@@ -762,7 +789,8 @@ class AgentsAsyncClient:
         Args:
             request (Optional[Union[google.cloud.dialogflowcx_v3.types.UpdateAgentRequest, dict]]):
                 The request object. The request message for
-                [Agents.UpdateAgent][google.cloud.dialogflow.cx.v3.Agents.UpdateAgent].
+                `Agents.UpdateAgent
+                <google.cloud.dialogflow.cx.v3.Agents.UpdateAgent>`__.
             agent (:class:`google.cloud.dialogflowcx_v3.types.Agent`):
                 Required. The agent to update.
                 This corresponds to the ``agent`` field
@@ -786,21 +814,29 @@ class AgentsAsyncClient:
 
         Returns:
             google.cloud.dialogflowcx_v3.types.Agent:
-                Agents are best described as Natural Language Understanding (NLU) modules
-                   that transform user requests into actionable data.
-                   You can include agents in your app, product, or
-                   service to determine user intent and respond to the
-                   user in a natural way.
+                Agents are best described as Natural
+                Language Understanding (NLU) modules
+                that transform user requests into
+                actionable data. You can include agents
+                in your app, product, or service to
+                determine user intent and respond to the
+                user in a natural way.
 
-                   After you create an agent, you can add
-                   [Intents][google.cloud.dialogflow.cx.v3.Intent],
-                   [Entity
-                   Types][google.cloud.dialogflow.cx.v3.EntityType],
-                   [Flows][google.cloud.dialogflow.cx.v3.Flow],
-                   [Fulfillments][google.cloud.dialogflow.cx.v3.Fulfillment],
-                   [Webhooks][google.cloud.dialogflow.cx.v3.Webhook],
-                   [TransitionRouteGroups][google.cloud.dialogflow.cx.v3.TransitionRouteGroup]
-                   and so on to manage the conversation flows.
+                After you create an agent, you can add
+                `Intents
+                <google.cloud.dialogflow.cx.v3.Intent>`__,
+                `Entity Types
+                <google.cloud.dialogflow.cx.v3.EntityType>`__,
+                `Flows
+                <google.cloud.dialogflow.cx.v3.Flow>`__,
+                `Fulfillments
+                <google.cloud.dialogflow.cx.v3.Fulfillment>`__,
+                `Webhooks
+                <google.cloud.dialogflow.cx.v3.Webhook>`__,
+                `TransitionRouteGroups
+                <google.cloud.dialogflow.cx.v3.TransitionRouteGroup>`__
+                and so on to manage the conversation
+                flows.
 
         """
         # Create or coerce a protobuf request object.
@@ -818,8 +854,8 @@ class AgentsAsyncClient:
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
-        if not isinstance(request, gcdc_agent.UpdateAgentRequest):
-            request = gcdc_agent.UpdateAgentRequest(request)
+        if not isinstance(request, agent.UpdateAgentRequest):
+            request = agent.UpdateAgentRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -893,9 +929,11 @@ class AgentsAsyncClient:
         Args:
             request (Optional[Union[google.cloud.dialogflowcx_v3.types.DeleteAgentRequest, dict]]):
                 The request object. The request message for
-                [Agents.DeleteAgent][google.cloud.dialogflow.cx.v3.Agents.DeleteAgent].
+                `Agents.DeleteAgent
+                <google.cloud.dialogflow.cx.v3.Agents.DeleteAgent>`__.
             name (:class:`str`):
-                Required. The name of the agent to delete. Format:
+                Required. The name of the agent to
+                delete. Format:
                 ``projects/<ProjectID>/locations/<LocationID>/agents/<AgentID>``.
 
                 This corresponds to the ``name`` field
@@ -966,14 +1004,19 @@ class AgentsAsyncClient:
         r"""Exports the specified agent to a binary file.
 
         This method is a `long-running
-        operation <https://cloud.google.com/dialogflow/cx/docs/how/long-running-operation>`__.
+        operation
+        <https://cloud.google.com/dialogflow/cx/docs/how/long-running-operation>`__.
         The returned ``Operation`` type has the following
         method-specific fields:
 
         - ``metadata``: An empty `Struct
-          message <https://developers.google.com/protocol-buffers/docs/reference/google.protobuf#struct>`__
+          message
+        <https://developers.google.com/protocol-buffers/docs/reference/google.protobuf#struct>`__
+
         - ``response``:
-          [ExportAgentResponse][google.cloud.dialogflow.cx.v3.ExportAgentResponse]
+
+        `ExportAgentResponse
+        <google.cloud.dialogflow.cx.v3.ExportAgentResponse>`__
 
         .. code-block:: python
 
@@ -1008,7 +1051,8 @@ class AgentsAsyncClient:
         Args:
             request (Optional[Union[google.cloud.dialogflowcx_v3.types.ExportAgentRequest, dict]]):
                 The request object. The request message for
-                [Agents.ExportAgent][google.cloud.dialogflow.cx.v3.Agents.ExportAgent].
+                `Agents.ExportAgent
+                <google.cloud.dialogflow.cx.v3.Agents.ExportAgent>`__.
             retry (google.api_core.retry_async.AsyncRetry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
@@ -1019,10 +1063,14 @@ class AgentsAsyncClient:
 
         Returns:
             google.api_core.operation_async.AsyncOperation:
-                An object representing a long-running operation.
-
-                The result type for the operation will be :class:`google.cloud.dialogflowcx_v3.types.ExportAgentResponse` The response message for
-                   [Agents.ExportAgent][google.cloud.dialogflow.cx.v3.Agents.ExportAgent].
+                An object representing a long-running
+                operation.
+                The result type for the operation will
+                be
+                :class:`google.cloud.dialogflowcx_v3.types.ExportAgentResponse`
+                The response message for
+                `Agents.ExportAgent
+                <google.cloud.dialogflow.cx.v3.Agents.ExportAgent>`__.
 
         """
         # Create or coerce a protobuf request object.
@@ -1076,22 +1124,27 @@ class AgentsAsyncClient:
         r"""Restores the specified agent from a binary file.
 
         Replaces the current agent with a new one. Note that all
-        existing resources in agent (e.g. intents, entity types, flows)
-        will be removed.
+        existing resources in agent (e.g. intents, entity types,
+        flows) will be removed.
 
         This method is a `long-running
-        operation <https://cloud.google.com/dialogflow/cx/docs/how/long-running-operation>`__.
+        operation
+        <https://cloud.google.com/dialogflow/cx/docs/how/long-running-operation>`__.
         The returned ``Operation`` type has the following
         method-specific fields:
 
         - ``metadata``: An empty `Struct
-          message <https://developers.google.com/protocol-buffers/docs/reference/google.protobuf#struct>`__
-        - ``response``: An `Empty
-          message <https://developers.google.com/protocol-buffers/docs/reference/google.protobuf#empty>`__
+          message
+        <https://developers.google.com/protocol-buffers/docs/reference/google.protobuf#struct>`__
 
-        Note: You should always train flows prior to sending them
-        queries. See the `training
-        documentation <https://cloud.google.com/dialogflow/cx/docs/concept/training>`__.
+        - ``response``: An `Empty
+          message
+        <https://developers.google.com/protocol-buffers/docs/reference/google.protobuf#empty>`__
+
+        Note: You should always train flows prior to sending
+        them queries. See the `training
+        documentation
+        <https://cloud.google.com/dialogflow/cx/docs/concept/training>`__.
 
         .. code-block:: python
 
@@ -1127,7 +1180,8 @@ class AgentsAsyncClient:
         Args:
             request (Optional[Union[google.cloud.dialogflowcx_v3.types.RestoreAgentRequest, dict]]):
                 The request object. The request message for
-                [Agents.RestoreAgent][google.cloud.dialogflow.cx.v3.Agents.RestoreAgent].
+                `Agents.RestoreAgent
+                <google.cloud.dialogflow.cx.v3.Agents.RestoreAgent>`__.
             retry (google.api_core.retry_async.AsyncRetry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
@@ -1138,18 +1192,21 @@ class AgentsAsyncClient:
 
         Returns:
             google.api_core.operation_async.AsyncOperation:
-                An object representing a long-running operation.
+                An object representing a long-running
+                operation.
+                The result type for the operation will
+                be
+                :class:`google.protobuf.empty_pb2.Empty`
+                A generic empty message that you can
+                re-use to avoid defining duplicated
+                empty messages in your APIs. A typical
+                example is to use it as the request or
+                the response type of an API method. For
+                instance:
 
-                The result type for the operation will be :class:`google.protobuf.empty_pb2.Empty` A generic empty message that you can re-use to avoid defining duplicated
-                   empty messages in your APIs. A typical example is to
-                   use it as the request or the response type of an API
-                   method. For instance:
-
-                      service Foo {
-                         rpc Bar(google.protobuf.Empty) returns
-                         (google.protobuf.Empty);
-
-                      }
+                    service Foo {
+                      rpc Bar(google.protobuf.Empty)
+                returns (google.protobuf.Empty);     }
 
         """
         # Create or coerce a protobuf request object.
@@ -1234,7 +1291,8 @@ class AgentsAsyncClient:
         Args:
             request (Optional[Union[google.cloud.dialogflowcx_v3.types.ValidateAgentRequest, dict]]):
                 The request object. The request message for
-                [Agents.ValidateAgent][google.cloud.dialogflow.cx.v3.Agents.ValidateAgent].
+                `Agents.ValidateAgent
+                <google.cloud.dialogflow.cx.v3.Agents.ValidateAgent>`__.
             retry (google.api_core.retry_async.AsyncRetry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
@@ -1246,7 +1304,8 @@ class AgentsAsyncClient:
         Returns:
             google.cloud.dialogflowcx_v3.types.AgentValidationResult:
                 The response message for
-                   [Agents.GetAgentValidationResult][google.cloud.dialogflow.cx.v3.Agents.GetAgentValidationResult].
+                `Agents.GetAgentValidationResult
+                <google.cloud.dialogflow.cx.v3.Agents.GetAgentValidationResult>`__.
 
         """
         # Create or coerce a protobuf request object.
@@ -1322,9 +1381,12 @@ class AgentsAsyncClient:
         Args:
             request (Optional[Union[google.cloud.dialogflowcx_v3.types.GetAgentValidationResultRequest, dict]]):
                 The request object. The request message for
-                [Agents.GetAgentValidationResult][google.cloud.dialogflow.cx.v3.Agents.GetAgentValidationResult].
+                `Agents.GetAgentValidationResult
+                <google.cloud.dialogflow.cx.v3.Agents.GetAgentValidationResult>`__.
             name (:class:`str`):
-                Required. The agent name. Format:
+                Required. The agent name.
+                Format:
+
                 ``projects/<ProjectID>/locations/<LocationID>/agents/<AgentID>/validationResult``.
 
                 This corresponds to the ``name`` field
@@ -1341,7 +1403,8 @@ class AgentsAsyncClient:
         Returns:
             google.cloud.dialogflowcx_v3.types.AgentValidationResult:
                 The response message for
-                   [Agents.GetAgentValidationResult][google.cloud.dialogflow.cx.v3.Agents.GetAgentValidationResult].
+                `Agents.GetAgentValidationResult
+                <google.cloud.dialogflow.cx.v3.Agents.GetAgentValidationResult>`__.
 
         """
         # Create or coerce a protobuf request object.
@@ -1435,10 +1498,12 @@ class AgentsAsyncClient:
         Args:
             request (Optional[Union[google.cloud.dialogflowcx_v3.types.GetGenerativeSettingsRequest, dict]]):
                 The request object. Request for
-                [GetGenerativeSettings][google.cloud.dialogflow.cx.v3.Agents.GetGenerativeSettings]
+                `GetGenerativeSettings
+                <google.cloud.dialogflow.cx.v3.Agents.GetGenerativeSettings>`__
                 RPC.
             name (:class:`str`):
                 Required. Format:
+
                 ``projects/<ProjectID>/locations/<LocationID>/agents/<AgentID>/generativeSettings``.
 
                 This corresponds to the ``name`` field
@@ -1518,14 +1583,12 @@ class AgentsAsyncClient:
         self,
         request: Optional[Union[agent.UpdateGenerativeSettingsRequest, dict]] = None,
         *,
-        generative_settings: Optional[
-            gcdc_generative_settings.GenerativeSettings
-        ] = None,
+        generative_settings: Optional[generative_settings.GenerativeSettings] = None,
         update_mask: Optional[field_mask_pb2.FieldMask] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
-    ) -> gcdc_generative_settings.GenerativeSettings:
+    ) -> generative_settings.GenerativeSettings:
         r"""Updates the generative settings for the agent.
 
         .. code-block:: python
@@ -1556,7 +1619,8 @@ class AgentsAsyncClient:
         Args:
             request (Optional[Union[google.cloud.dialogflowcx_v3.types.UpdateGenerativeSettingsRequest, dict]]):
                 The request object. Request for
-                [UpdateGenerativeSettings][google.cloud.dialogflow.cx.v3.Agents.UpdateGenerativeSettings]
+                `UpdateGenerativeSettings
+                <google.cloud.dialogflow.cx.v3.Agents.UpdateGenerativeSettings>`__
                 RPC.
             generative_settings (:class:`google.cloud.dialogflowcx_v3.types.GenerativeSettings`):
                 Required. Generative settings to

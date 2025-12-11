@@ -43,10 +43,13 @@ class Generator(proto.Message):
 
     Attributes:
         name (str):
-            The unique identifier of the generator. Must be set for the
-            [Generators.UpdateGenerator][google.cloud.dialogflow.cx.v3.Generators.UpdateGenerator]
-            method. [Generators.CreateGenerate][] populates the name
-            automatically. Format:
+            The unique identifier of the generator.
+            Must be set for the
+            `Generators.UpdateGenerator
+            <google.cloud.dialogflow.cx.v3.Generators.UpdateGenerator>`__
+            method. [Generators.CreateGenerate][] populates
+            the name automatically. Format:
+
             ``projects/<ProjectID>/locations/<LocationID>/agents/<AgentID>/generators/<GeneratorID>``.
         display_name (str):
             Required. The human-readable name of the
@@ -95,10 +98,11 @@ class Generator(proto.Message):
 
         Attributes:
             temperature (float):
-                The temperature used for sampling. Temperature sampling
-                occurs after both topP and topK have been applied. Valid
-                range: [0.0, 1.0] Low temperature = less random. High
-                temperature = more random.
+                The temperature used for sampling. Temperature
+                sampling occurs after both topP and topK have
+                been applied. Valid range: [0.0, 1.0]
+                Low temperature = less random. High temperature
+                = more random.
 
                 This field is a member of `oneof`_ ``_temperature``.
             max_decode_steps (int):
@@ -106,17 +110,20 @@ class Generator(proto.Message):
 
                 This field is a member of `oneof`_ ``_max_decode_steps``.
             top_p (float):
-                If set, only the tokens comprising the top top_p probability
-                mass are considered. If both top_p and top_k are set, top_p
-                will be used for further refining candidates selected with
-                top_k. Valid range: (0.0, 1.0]. Small topP = less random.
-                Large topP = more random.
+                If set, only the tokens comprising the top top_p
+                probability mass are considered. If both top_p
+                and top_k are set, top_p will be used for
+                further refining candidates selected with top_k.
+                Valid range: (0.0, 1.0].
+                Small topP = less random. Large topP = more
+                random.
 
                 This field is a member of `oneof`_ ``_top_p``.
             top_k (int):
-                If set, the sampling process in each step is limited to the
-                top_k tokens with highest probabilities. Valid range: [1,
-                40] or 1000+. Small topK = less random. Large topK = more
+                If set, the sampling process in each step is
+                limited to the top_k tokens with highest
+                probabilities. Valid range: [1, 40] or 1000+.
+                Small topK = less random. Large topK = more
                 random.
 
                 This field is a member of `oneof`_ ``_top_k``.
@@ -185,11 +192,13 @@ class Phrase(proto.Message):
 
 class ListGeneratorsRequest(proto.Message):
     r"""The request message for
-    [Generators.ListGenerators][google.cloud.dialogflow.cx.v3.Generators.ListGenerators].
+    `Generators.ListGenerators
+    <google.cloud.dialogflow.cx.v3.Generators.ListGenerators>`__.
 
     Attributes:
         parent (str):
-            Required. The agent to list all generators for. Format:
+            Required. The agent to list all generators for.
+            Format:
             ``projects/<ProjectID>/locations/<LocationID>/agents/<AgentID>``.
         language_code (str):
             The language to list generators for.
@@ -197,8 +206,8 @@ class ListGeneratorsRequest(proto.Message):
             The maximum number of items to return in a
             single page. By default 100 and at most 1000.
         page_token (str):
-            The next_page_token value returned from a previous list
-            request.
+            The next_page_token value returned from a
+            previous list request.
     """
 
     parent: str = proto.Field(
@@ -221,12 +230,14 @@ class ListGeneratorsRequest(proto.Message):
 
 class ListGeneratorsResponse(proto.Message):
     r"""The response message for
-    [Generators.ListGenerators][google.cloud.dialogflow.cx.v3.Generators.ListGenerators].
+    `Generators.ListGenerators
+    <google.cloud.dialogflow.cx.v3.Generators.ListGenerators>`__.
 
     Attributes:
         generators (MutableSequence[google.cloud.dialogflowcx_v3.types.Generator]):
-            The list of generators. There will be a maximum number of
-            items returned based on the page_size field in the request.
+            The list of generators. There will be a maximum
+            number of items returned based on the page_size
+            field in the request.
         next_page_token (str):
             Token to retrieve the next page of results,
             or empty if there are no more results in the
@@ -250,11 +261,14 @@ class ListGeneratorsResponse(proto.Message):
 
 class GetGeneratorRequest(proto.Message):
     r"""The request message for
-    [Generators.GetGenerator][google.cloud.dialogflow.cx.v3.Generators.GetGenerator].
+    `Generators.GetGenerator
+    <google.cloud.dialogflow.cx.v3.Generators.GetGenerator>`__.
 
     Attributes:
         name (str):
-            Required. The name of the generator. Format:
+            Required. The name of the generator.
+            Format:
+
             ``projects/<ProjectID>/locations/<LocationID>/agents/<AgentID>/generators/<GeneratorID>``.
         language_code (str):
             The language to list generators for.
@@ -272,19 +286,21 @@ class GetGeneratorRequest(proto.Message):
 
 class CreateGeneratorRequest(proto.Message):
     r"""The request message for
-    [Generators.CreateGenerator][google.cloud.dialogflow.cx.v3.Generators.CreateGenerator].
+    `Generators.CreateGenerator
+    <google.cloud.dialogflow.cx.v3.Generators.CreateGenerator>`__.
 
     Attributes:
         parent (str):
-            Required. The agent to create a generator for. Format:
+            Required. The agent to create a generator for.
+            Format:
             ``projects/<ProjectID>/locations/<LocationID>/agents/<AgentID>``.
         generator (google.cloud.dialogflowcx_v3.types.Generator):
             Required. The generator to create.
         language_code (str):
-            The language to create generators for the following fields:
-
-            - ``Generator.prompt_text.text`` If not specified, the
-              agent's default language is used.
+            The language to create generators for the
+            following fields: *
+            ``Generator.prompt_text.text`` If not specified,
+            the agent's default language is used.
     """
 
     parent: str = proto.Field(
@@ -304,7 +320,8 @@ class CreateGeneratorRequest(proto.Message):
 
 class UpdateGeneratorRequest(proto.Message):
     r"""The request message for
-    [Generators.UpdateGenerator][google.cloud.dialogflow.cx.v3.Generators.UpdateGenerator].
+    `Generators.UpdateGenerator
+    <google.cloud.dialogflow.cx.v3.Generators.UpdateGenerator>`__.
 
     Attributes:
         generator (google.cloud.dialogflowcx_v3.types.Generator):
@@ -335,22 +352,29 @@ class UpdateGeneratorRequest(proto.Message):
 
 class DeleteGeneratorRequest(proto.Message):
     r"""The request message for
-    [Generators.DeleteGenerator][google.cloud.dialogflow.cx.v3.Generators.DeleteGenerator].
+    `Generators.DeleteGenerator
+    <google.cloud.dialogflow.cx.v3.Generators.DeleteGenerator>`__.
 
     Attributes:
         name (str):
-            Required. The name of the generator to delete. Format:
+            Required. The name of the generator to delete.
+            Format:
+
             ``projects/<ProjectID>/locations/<LocationID>/agents/<AgentID>/generators/<GeneratorID>``.
         force (bool):
-            This field has no effect for generators not being used. For
-            generators that are used by pages/flows/transition route
-            groups:
+            This field has no effect for generators not
+            being used. For generators that are used by
+            pages/flows/transition route groups:
 
-            - If ``force`` is set to false, an error will be returned
-              with message indicating the referenced resources.
-            - If ``force`` is set to true, Dialogflow will remove the
-              generator, as well as any references to the generator
-              (i.e. [Generator][Fulfillment.generator]) in fulfillments.
+            *  If ``force`` is set to false, an error will
+            be returned with message    indicating the
+            referenced resources.
+
+            *  If ``force`` is set to true, Dialogflow will
+            remove the generator, as well    as any
+            references to the generator (i.e.
+               `Generator <Fulfillment.generator>`__) in
+            fulfillments.
     """
 
     name: str = proto.Field(

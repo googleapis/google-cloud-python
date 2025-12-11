@@ -24,7 +24,6 @@ from google.protobuf import empty_pb2  # type: ignore
 from google.protobuf import json_format
 
 from google.cloud.dialogflowcx_v3.types import environment
-from google.cloud.dialogflowcx_v3.types import environment as gcdc_environment
 
 from .base import DEFAULT_CLIENT_INFO, EnvironmentsTransport
 
@@ -118,7 +117,7 @@ class _BaseEnvironmentsRestTransport(EnvironmentsTransport):
 
         @staticmethod
         def _get_transcoded_request(http_options, request):
-            pb_request = gcdc_environment.CreateEnvironmentRequest.pb(request)
+            pb_request = environment.CreateEnvironmentRequest.pb(request)
             transcoded_request = path_template.transcode(http_options, pb_request)
             return transcoded_request
 
@@ -526,7 +525,7 @@ class _BaseEnvironmentsRestTransport(EnvironmentsTransport):
 
         @staticmethod
         def _get_transcoded_request(http_options, request):
-            pb_request = gcdc_environment.UpdateEnvironmentRequest.pb(request)
+            pb_request = environment.UpdateEnvironmentRequest.pb(request)
             transcoded_request = path_template.transcode(http_options, pb_request)
             return transcoded_request
 

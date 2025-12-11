@@ -24,7 +24,6 @@ from google.protobuf import empty_pb2  # type: ignore
 from google.protobuf import json_format
 
 from google.cloud.dialogflowcx_v3.types import entity_type
-from google.cloud.dialogflowcx_v3.types import entity_type as gcdc_entity_type
 
 from .base import DEFAULT_CLIENT_INFO, EntityTypesTransport
 
@@ -118,7 +117,7 @@ class _BaseEntityTypesRestTransport(EntityTypesTransport):
 
         @staticmethod
         def _get_transcoded_request(http_options, request):
-            pb_request = gcdc_entity_type.CreateEntityTypeRequest.pb(request)
+            pb_request = entity_type.CreateEntityTypeRequest.pb(request)
             transcoded_request = path_template.transcode(http_options, pb_request)
             return transcoded_request
 
@@ -430,7 +429,7 @@ class _BaseEntityTypesRestTransport(EntityTypesTransport):
 
         @staticmethod
         def _get_transcoded_request(http_options, request):
-            pb_request = gcdc_entity_type.UpdateEntityTypeRequest.pb(request)
+            pb_request = entity_type.UpdateEntityTypeRequest.pb(request)
             transcoded_request = path_template.transcode(http_options, pb_request)
             return transcoded_request
 

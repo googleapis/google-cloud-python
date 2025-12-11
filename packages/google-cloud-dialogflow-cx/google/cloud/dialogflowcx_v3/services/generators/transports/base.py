@@ -30,7 +30,6 @@ from google.protobuf import empty_pb2  # type: ignore
 
 from google.cloud.dialogflowcx_v3 import gapic_version as package_version
 from google.cloud.dialogflowcx_v3.types import generator
-from google.cloud.dialogflowcx_v3.types import generator as gcdc_generator
 
 DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
     gapic_version=package_version.__version__
@@ -226,8 +225,8 @@ class GeneratorsTransport(abc.ABC):
     def create_generator(
         self,
     ) -> Callable[
-        [gcdc_generator.CreateGeneratorRequest],
-        Union[gcdc_generator.Generator, Awaitable[gcdc_generator.Generator]],
+        [generator.CreateGeneratorRequest],
+        Union[generator.Generator, Awaitable[generator.Generator]],
     ]:
         raise NotImplementedError()
 
@@ -235,8 +234,8 @@ class GeneratorsTransport(abc.ABC):
     def update_generator(
         self,
     ) -> Callable[
-        [gcdc_generator.UpdateGeneratorRequest],
-        Union[gcdc_generator.Generator, Awaitable[gcdc_generator.Generator]],
+        [generator.UpdateGeneratorRequest],
+        Union[generator.Generator, Awaitable[generator.Generator]],
     ]:
         raise NotImplementedError()
 

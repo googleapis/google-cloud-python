@@ -29,12 +29,7 @@ import google.protobuf
 from google.protobuf import empty_pb2  # type: ignore
 
 from google.cloud.dialogflowcx_v3 import gapic_version as package_version
-from google.cloud.dialogflowcx_v3.types import (
-    generative_settings as gcdc_generative_settings,
-)
-from google.cloud.dialogflowcx_v3.types import agent
-from google.cloud.dialogflowcx_v3.types import agent as gcdc_agent
-from google.cloud.dialogflowcx_v3.types import generative_settings
+from google.cloud.dialogflowcx_v3.types import agent, generative_settings
 
 DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
     gapic_version=package_version.__version__
@@ -268,8 +263,7 @@ class AgentsTransport(abc.ABC):
     def create_agent(
         self,
     ) -> Callable[
-        [gcdc_agent.CreateAgentRequest],
-        Union[gcdc_agent.Agent, Awaitable[gcdc_agent.Agent]],
+        [agent.CreateAgentRequest], Union[agent.Agent, Awaitable[agent.Agent]]
     ]:
         raise NotImplementedError()
 
@@ -277,8 +271,7 @@ class AgentsTransport(abc.ABC):
     def update_agent(
         self,
     ) -> Callable[
-        [gcdc_agent.UpdateAgentRequest],
-        Union[gcdc_agent.Agent, Awaitable[gcdc_agent.Agent]],
+        [agent.UpdateAgentRequest], Union[agent.Agent, Awaitable[agent.Agent]]
     ]:
         raise NotImplementedError()
 
@@ -344,8 +337,8 @@ class AgentsTransport(abc.ABC):
     ) -> Callable[
         [agent.UpdateGenerativeSettingsRequest],
         Union[
-            gcdc_generative_settings.GenerativeSettings,
-            Awaitable[gcdc_generative_settings.GenerativeSettings],
+            generative_settings.GenerativeSettings,
+            Awaitable[generative_settings.GenerativeSettings],
         ],
     ]:
         raise NotImplementedError()

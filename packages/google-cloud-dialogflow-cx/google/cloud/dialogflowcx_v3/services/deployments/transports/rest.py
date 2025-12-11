@@ -328,8 +328,8 @@ class DeploymentsRestStub:
 class DeploymentsRestTransport(_BaseDeploymentsRestTransport):
     """REST backend synchronous transport for Deployments.
 
-    Service for managing
-    [Deployments][google.cloud.dialogflow.cx.v3.Deployment].
+    Service for managing `Deployments
+    <google.cloud.dialogflow.cx.v3.Deployment>`__.
 
     This class defines the same methods as the primary client, so the
     primary client can load the underlying transport implementation
@@ -447,7 +447,8 @@ class DeploymentsRestTransport(_BaseDeploymentsRestTransport):
             Args:
                 request (~.deployment.GetDeploymentRequest):
                     The request object. The request message for
-                [Deployments.GetDeployment][google.cloud.dialogflow.cx.v3.Deployments.GetDeployment].
+                `Deployments.GetDeployment
+                <google.cloud.dialogflow.cx.v3.Deployments.GetDeployment>`__.
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -601,7 +602,8 @@ class DeploymentsRestTransport(_BaseDeploymentsRestTransport):
             Args:
                 request (~.deployment.ListDeploymentsRequest):
                     The request object. The request message for
-                [Deployments.ListDeployments][google.cloud.dialogflow.cx.v3.Deployments.ListDeployments].
+                `Deployments.ListDeployments
+                <google.cloud.dialogflow.cx.v3.Deployments.ListDeployments>`__.
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -613,7 +615,8 @@ class DeploymentsRestTransport(_BaseDeploymentsRestTransport):
             Returns:
                 ~.deployment.ListDeploymentsResponse:
                     The response message for
-                [Deployments.ListDeployments][google.cloud.dialogflow.cx.v3.Deployments.ListDeployments].
+                `Deployments.ListDeployments
+                <google.cloud.dialogflow.cx.v3.Deployments.ListDeployments>`__.
 
             """
 

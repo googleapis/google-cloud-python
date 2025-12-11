@@ -32,7 +32,6 @@ from google.protobuf import json_format
 from requests import __version__ as requests_version
 
 from google.cloud.dialogflowcx_v3.types import test_case
-from google.cloud.dialogflowcx_v3.types import test_case as gcdc_test_case
 
 from .base import DEFAULT_CLIENT_INFO as BASE_DEFAULT_CLIENT_INFO
 from .rest_base import _BaseTestCasesRestTransport
@@ -288,10 +287,10 @@ class TestCasesRestInterceptor:
 
     def pre_create_test_case(
         self,
-        request: gcdc_test_case.CreateTestCaseRequest,
+        request: test_case.CreateTestCaseRequest,
         metadata: Sequence[Tuple[str, Union[str, bytes]]],
     ) -> Tuple[
-        gcdc_test_case.CreateTestCaseRequest, Sequence[Tuple[str, Union[str, bytes]]]
+        test_case.CreateTestCaseRequest, Sequence[Tuple[str, Union[str, bytes]]]
     ]:
         """Pre-rpc interceptor for create_test_case
 
@@ -300,9 +299,7 @@ class TestCasesRestInterceptor:
         """
         return request, metadata
 
-    def post_create_test_case(
-        self, response: gcdc_test_case.TestCase
-    ) -> gcdc_test_case.TestCase:
+    def post_create_test_case(self, response: test_case.TestCase) -> test_case.TestCase:
         """Post-rpc interceptor for create_test_case
 
         DEPRECATED. Please use the `post_create_test_case_with_metadata`
@@ -317,9 +314,9 @@ class TestCasesRestInterceptor:
 
     def post_create_test_case_with_metadata(
         self,
-        response: gcdc_test_case.TestCase,
+        response: test_case.TestCase,
         metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[gcdc_test_case.TestCase, Sequence[Tuple[str, Union[str, bytes]]]]:
+    ) -> Tuple[test_case.TestCase, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for create_test_case
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -668,10 +665,10 @@ class TestCasesRestInterceptor:
 
     def pre_update_test_case(
         self,
-        request: gcdc_test_case.UpdateTestCaseRequest,
+        request: test_case.UpdateTestCaseRequest,
         metadata: Sequence[Tuple[str, Union[str, bytes]]],
     ) -> Tuple[
-        gcdc_test_case.UpdateTestCaseRequest, Sequence[Tuple[str, Union[str, bytes]]]
+        test_case.UpdateTestCaseRequest, Sequence[Tuple[str, Union[str, bytes]]]
     ]:
         """Pre-rpc interceptor for update_test_case
 
@@ -680,9 +677,7 @@ class TestCasesRestInterceptor:
         """
         return request, metadata
 
-    def post_update_test_case(
-        self, response: gcdc_test_case.TestCase
-    ) -> gcdc_test_case.TestCase:
+    def post_update_test_case(self, response: test_case.TestCase) -> test_case.TestCase:
         """Post-rpc interceptor for update_test_case
 
         DEPRECATED. Please use the `post_update_test_case_with_metadata`
@@ -697,9 +692,9 @@ class TestCasesRestInterceptor:
 
     def post_update_test_case_with_metadata(
         self,
-        response: gcdc_test_case.TestCase,
+        response: test_case.TestCase,
         metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[gcdc_test_case.TestCase, Sequence[Tuple[str, Union[str, bytes]]]]:
+    ) -> Tuple[test_case.TestCase, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for update_test_case
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -848,9 +843,9 @@ class TestCasesRestStub:
 class TestCasesRestTransport(_BaseTestCasesRestTransport):
     """REST backend synchronous transport for TestCases.
 
-    Service for managing [Test
-    Cases][google.cloud.dialogflow.cx.v3.TestCase] and [Test Case
-    Results][google.cloud.dialogflow.cx.v3.TestCaseResult].
+    Service for managing `Test Cases
+    <google.cloud.dialogflow.cx.v3.TestCase>`__ and `Test Case
+    Results <google.cloud.dialogflow.cx.v3.TestCaseResult>`__.
 
     This class defines the same methods as the primary client, so the
     primary client can load the underlying transport implementation
@@ -1028,7 +1023,8 @@ class TestCasesRestTransport(_BaseTestCasesRestTransport):
             Args:
                 request (~.test_case.BatchDeleteTestCasesRequest):
                     The request object. The request message for
-                [TestCases.BatchDeleteTestCases][google.cloud.dialogflow.cx.v3.TestCases.BatchDeleteTestCases].
+                `TestCases.BatchDeleteTestCases
+                <google.cloud.dialogflow.cx.v3.TestCases.BatchDeleteTestCases>`__.
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -1143,7 +1139,8 @@ class TestCasesRestTransport(_BaseTestCasesRestTransport):
             Args:
                 request (~.test_case.BatchRunTestCasesRequest):
                     The request object. The request message for
-                [TestCases.BatchRunTestCases][google.cloud.dialogflow.cx.v3.TestCases.BatchRunTestCases].
+                `TestCases.BatchRunTestCases
+                <google.cloud.dialogflow.cx.v3.TestCases.BatchRunTestCases>`__.
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -1296,7 +1293,8 @@ class TestCasesRestTransport(_BaseTestCasesRestTransport):
             Args:
                 request (~.test_case.CalculateCoverageRequest):
                     The request object. The request message for
-                [TestCases.CalculateCoverage][google.cloud.dialogflow.cx.v3.TestCases.CalculateCoverage].
+                `TestCases.CalculateCoverage
+                <google.cloud.dialogflow.cx.v3.TestCases.CalculateCoverage>`__.
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -1308,7 +1306,8 @@ class TestCasesRestTransport(_BaseTestCasesRestTransport):
             Returns:
                 ~.test_case.CalculateCoverageResponse:
                     The response message for
-                [TestCases.CalculateCoverage][google.cloud.dialogflow.cx.v3.TestCases.CalculateCoverage].
+                `TestCases.CalculateCoverage
+                <google.cloud.dialogflow.cx.v3.TestCases.CalculateCoverage>`__.
 
             """
 
@@ -1437,18 +1436,19 @@ class TestCasesRestTransport(_BaseTestCasesRestTransport):
 
         def __call__(
             self,
-            request: gcdc_test_case.CreateTestCaseRequest,
+            request: test_case.CreateTestCaseRequest,
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
             metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
-        ) -> gcdc_test_case.TestCase:
+        ) -> test_case.TestCase:
             r"""Call the create test case method over HTTP.
 
             Args:
-                request (~.gcdc_test_case.CreateTestCaseRequest):
+                request (~.test_case.CreateTestCaseRequest):
                     The request object. The request message for
-                [TestCases.CreateTestCase][google.cloud.dialogflow.cx.v3.TestCases.CreateTestCase].
+                `TestCases.CreateTestCase
+                <google.cloud.dialogflow.cx.v3.TestCases.CreateTestCase>`__.
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -1458,7 +1458,7 @@ class TestCasesRestTransport(_BaseTestCasesRestTransport):
                     be of type `bytes`.
 
             Returns:
-                ~.gcdc_test_case.TestCase:
+                ~.test_case.TestCase:
                     Represents a test case.
             """
 
@@ -1532,8 +1532,8 @@ class TestCasesRestTransport(_BaseTestCasesRestTransport):
                 raise core_exceptions.from_http_response(response)
 
             # Return the response
-            resp = gcdc_test_case.TestCase()
-            pb_resp = gcdc_test_case.TestCase.pb(resp)
+            resp = test_case.TestCase()
+            pb_resp = test_case.TestCase.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
@@ -1546,7 +1546,7 @@ class TestCasesRestTransport(_BaseTestCasesRestTransport):
                 logging.DEBUG
             ):  # pragma: NO COVER
                 try:
-                    response_payload = gcdc_test_case.TestCase.to_json(response)
+                    response_payload = test_case.TestCase.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -1607,7 +1607,8 @@ class TestCasesRestTransport(_BaseTestCasesRestTransport):
             Args:
                 request (~.test_case.ExportTestCasesRequest):
                     The request object. The request message for
-                [TestCases.ExportTestCases][google.cloud.dialogflow.cx.v3.TestCases.ExportTestCases].
+                `TestCases.ExportTestCases
+                <google.cloud.dialogflow.cx.v3.TestCases.ExportTestCases>`__.
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -1762,7 +1763,8 @@ class TestCasesRestTransport(_BaseTestCasesRestTransport):
             Args:
                 request (~.test_case.GetTestCaseRequest):
                     The request object. The request message for
-                [TestCases.GetTestCase][google.cloud.dialogflow.cx.v3.TestCases.GetTestCase].
+                `TestCases.GetTestCase
+                <google.cloud.dialogflow.cx.v3.TestCases.GetTestCase>`__.
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -1911,7 +1913,8 @@ class TestCasesRestTransport(_BaseTestCasesRestTransport):
             Args:
                 request (~.test_case.GetTestCaseResultRequest):
                     The request object. The request message for
-                [TestCases.GetTestCaseResult][google.cloud.dialogflow.cx.v3.TestCases.GetTestCaseResult].
+                `TestCases.GetTestCaseResult
+                <google.cloud.dialogflow.cx.v3.TestCases.GetTestCaseResult>`__.
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -2061,7 +2064,8 @@ class TestCasesRestTransport(_BaseTestCasesRestTransport):
             Args:
                 request (~.test_case.ImportTestCasesRequest):
                     The request object. The request message for
-                [TestCases.ImportTestCases][google.cloud.dialogflow.cx.v3.TestCases.ImportTestCases].
+                `TestCases.ImportTestCases
+                <google.cloud.dialogflow.cx.v3.TestCases.ImportTestCases>`__.
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -2218,7 +2222,8 @@ class TestCasesRestTransport(_BaseTestCasesRestTransport):
             Args:
                 request (~.test_case.ListTestCaseResultsRequest):
                     The request object. The request message for
-                [TestCases.ListTestCaseResults][google.cloud.dialogflow.cx.v3.TestCases.ListTestCaseResults].
+                `TestCases.ListTestCaseResults
+                <google.cloud.dialogflow.cx.v3.TestCases.ListTestCaseResults>`__.
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -2230,7 +2235,8 @@ class TestCasesRestTransport(_BaseTestCasesRestTransport):
             Returns:
                 ~.test_case.ListTestCaseResultsResponse:
                     The response message for
-                [TestCases.ListTestCaseResults][google.cloud.dialogflow.cx.v3.TestCases.ListTestCaseResults].
+                `TestCases.ListTestCaseResults
+                <google.cloud.dialogflow.cx.v3.TestCases.ListTestCaseResults>`__.
 
             """
 
@@ -2369,7 +2375,8 @@ class TestCasesRestTransport(_BaseTestCasesRestTransport):
             Args:
                 request (~.test_case.ListTestCasesRequest):
                     The request object. The request message for
-                [TestCases.ListTestCases][google.cloud.dialogflow.cx.v3.TestCases.ListTestCases].
+                `TestCases.ListTestCases
+                <google.cloud.dialogflow.cx.v3.TestCases.ListTestCases>`__.
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -2381,7 +2388,8 @@ class TestCasesRestTransport(_BaseTestCasesRestTransport):
             Returns:
                 ~.test_case.ListTestCasesResponse:
                     The response message for
-                [TestCases.ListTestCases][google.cloud.dialogflow.cx.v3.TestCases.ListTestCases].
+                `TestCases.ListTestCases
+                <google.cloud.dialogflow.cx.v3.TestCases.ListTestCases>`__.
 
             """
 
@@ -2519,7 +2527,8 @@ class TestCasesRestTransport(_BaseTestCasesRestTransport):
             Args:
                 request (~.test_case.RunTestCaseRequest):
                     The request object. The request message for
-                [TestCases.RunTestCase][google.cloud.dialogflow.cx.v3.TestCases.RunTestCase].
+                `TestCases.RunTestCase
+                <google.cloud.dialogflow.cx.v3.TestCases.RunTestCase>`__.
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -2664,18 +2673,19 @@ class TestCasesRestTransport(_BaseTestCasesRestTransport):
 
         def __call__(
             self,
-            request: gcdc_test_case.UpdateTestCaseRequest,
+            request: test_case.UpdateTestCaseRequest,
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
             metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
-        ) -> gcdc_test_case.TestCase:
+        ) -> test_case.TestCase:
             r"""Call the update test case method over HTTP.
 
             Args:
-                request (~.gcdc_test_case.UpdateTestCaseRequest):
+                request (~.test_case.UpdateTestCaseRequest):
                     The request object. The request message for
-                [TestCases.UpdateTestCase][google.cloud.dialogflow.cx.v3.TestCases.UpdateTestCase].
+                `TestCases.UpdateTestCase
+                <google.cloud.dialogflow.cx.v3.TestCases.UpdateTestCase>`__.
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -2685,7 +2695,7 @@ class TestCasesRestTransport(_BaseTestCasesRestTransport):
                     be of type `bytes`.
 
             Returns:
-                ~.gcdc_test_case.TestCase:
+                ~.test_case.TestCase:
                     Represents a test case.
             """
 
@@ -2759,8 +2769,8 @@ class TestCasesRestTransport(_BaseTestCasesRestTransport):
                 raise core_exceptions.from_http_response(response)
 
             # Return the response
-            resp = gcdc_test_case.TestCase()
-            pb_resp = gcdc_test_case.TestCase.pb(resp)
+            resp = test_case.TestCase()
+            pb_resp = test_case.TestCase.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
@@ -2773,7 +2783,7 @@ class TestCasesRestTransport(_BaseTestCasesRestTransport):
                 logging.DEBUG
             ):  # pragma: NO COVER
                 try:
-                    response_payload = gcdc_test_case.TestCase.to_json(response)
+                    response_payload = test_case.TestCase.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -2821,7 +2831,7 @@ class TestCasesRestTransport(_BaseTestCasesRestTransport):
     @property
     def create_test_case(
         self,
-    ) -> Callable[[gcdc_test_case.CreateTestCaseRequest], gcdc_test_case.TestCase]:
+    ) -> Callable[[test_case.CreateTestCaseRequest], test_case.TestCase]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._CreateTestCase(self._session, self._host, self._interceptor)  # type: ignore
@@ -2887,7 +2897,7 @@ class TestCasesRestTransport(_BaseTestCasesRestTransport):
     @property
     def update_test_case(
         self,
-    ) -> Callable[[gcdc_test_case.UpdateTestCaseRequest], gcdc_test_case.TestCase]:
+    ) -> Callable[[test_case.UpdateTestCaseRequest], test_case.TestCase]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._UpdateTestCase(self._session, self._host, self._interceptor)  # type: ignore

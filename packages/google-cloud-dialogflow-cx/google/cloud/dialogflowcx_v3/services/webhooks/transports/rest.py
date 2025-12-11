@@ -32,7 +32,6 @@ from google.protobuf import json_format
 from requests import __version__ as requests_version
 
 from google.cloud.dialogflowcx_v3.types import webhook
-from google.cloud.dialogflowcx_v3.types import webhook as gcdc_webhook
 
 from .base import DEFAULT_CLIENT_INFO as BASE_DEFAULT_CLIENT_INFO
 from .rest_base import _BaseWebhooksRestTransport
@@ -120,11 +119,9 @@ class WebhooksRestInterceptor:
 
     def pre_create_webhook(
         self,
-        request: gcdc_webhook.CreateWebhookRequest,
+        request: webhook.CreateWebhookRequest,
         metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        gcdc_webhook.CreateWebhookRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+    ) -> Tuple[webhook.CreateWebhookRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for create_webhook
 
         Override in a subclass to manipulate the request or metadata
@@ -132,9 +129,7 @@ class WebhooksRestInterceptor:
         """
         return request, metadata
 
-    def post_create_webhook(
-        self, response: gcdc_webhook.Webhook
-    ) -> gcdc_webhook.Webhook:
+    def post_create_webhook(self, response: webhook.Webhook) -> webhook.Webhook:
         """Post-rpc interceptor for create_webhook
 
         DEPRECATED. Please use the `post_create_webhook_with_metadata`
@@ -149,9 +144,9 @@ class WebhooksRestInterceptor:
 
     def post_create_webhook_with_metadata(
         self,
-        response: gcdc_webhook.Webhook,
+        response: webhook.Webhook,
         metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[gcdc_webhook.Webhook, Sequence[Tuple[str, Union[str, bytes]]]]:
+    ) -> Tuple[webhook.Webhook, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for create_webhook
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -270,11 +265,9 @@ class WebhooksRestInterceptor:
 
     def pre_update_webhook(
         self,
-        request: gcdc_webhook.UpdateWebhookRequest,
+        request: webhook.UpdateWebhookRequest,
         metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        gcdc_webhook.UpdateWebhookRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+    ) -> Tuple[webhook.UpdateWebhookRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for update_webhook
 
         Override in a subclass to manipulate the request or metadata
@@ -282,9 +275,7 @@ class WebhooksRestInterceptor:
         """
         return request, metadata
 
-    def post_update_webhook(
-        self, response: gcdc_webhook.Webhook
-    ) -> gcdc_webhook.Webhook:
+    def post_update_webhook(self, response: webhook.Webhook) -> webhook.Webhook:
         """Post-rpc interceptor for update_webhook
 
         DEPRECATED. Please use the `post_update_webhook_with_metadata`
@@ -299,9 +290,9 @@ class WebhooksRestInterceptor:
 
     def post_update_webhook_with_metadata(
         self,
-        response: gcdc_webhook.Webhook,
+        response: webhook.Webhook,
         metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[gcdc_webhook.Webhook, Sequence[Tuple[str, Union[str, bytes]]]]:
+    ) -> Tuple[webhook.Webhook, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for update_webhook
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -450,8 +441,8 @@ class WebhooksRestStub:
 class WebhooksRestTransport(_BaseWebhooksRestTransport):
     """REST backend synchronous transport for Webhooks.
 
-    Service for managing
-    [Webhooks][google.cloud.dialogflow.cx.v3.Webhook].
+    Service for managing `Webhooks
+    <google.cloud.dialogflow.cx.v3.Webhook>`__.
 
     This class defines the same methods as the primary client, so the
     primary client can load the underlying transport implementation
@@ -559,18 +550,19 @@ class WebhooksRestTransport(_BaseWebhooksRestTransport):
 
         def __call__(
             self,
-            request: gcdc_webhook.CreateWebhookRequest,
+            request: webhook.CreateWebhookRequest,
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
             metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
-        ) -> gcdc_webhook.Webhook:
+        ) -> webhook.Webhook:
             r"""Call the create webhook method over HTTP.
 
             Args:
-                request (~.gcdc_webhook.CreateWebhookRequest):
+                request (~.webhook.CreateWebhookRequest):
                     The request object. The request message for
-                [Webhooks.CreateWebhook][google.cloud.dialogflow.cx.v3.Webhooks.CreateWebhook].
+                `Webhooks.CreateWebhook
+                <google.cloud.dialogflow.cx.v3.Webhooks.CreateWebhook>`__.
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -580,7 +572,7 @@ class WebhooksRestTransport(_BaseWebhooksRestTransport):
                     be of type `bytes`.
 
             Returns:
-                ~.gcdc_webhook.Webhook:
+                ~.webhook.Webhook:
                     Webhooks host the developer's
                 business logic. During a session,
                 webhooks allow the developer to use the
@@ -657,8 +649,8 @@ class WebhooksRestTransport(_BaseWebhooksRestTransport):
                 raise core_exceptions.from_http_response(response)
 
             # Return the response
-            resp = gcdc_webhook.Webhook()
-            pb_resp = gcdc_webhook.Webhook.pb(resp)
+            resp = webhook.Webhook()
+            pb_resp = webhook.Webhook.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
@@ -671,7 +663,7 @@ class WebhooksRestTransport(_BaseWebhooksRestTransport):
                 logging.DEBUG
             ):  # pragma: NO COVER
                 try:
-                    response_payload = gcdc_webhook.Webhook.to_json(response)
+                    response_payload = webhook.Webhook.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -731,7 +723,8 @@ class WebhooksRestTransport(_BaseWebhooksRestTransport):
             Args:
                 request (~.webhook.DeleteWebhookRequest):
                     The request object. The request message for
-                [Webhooks.DeleteWebhook][google.cloud.dialogflow.cx.v3.Webhooks.DeleteWebhook].
+                `Webhooks.DeleteWebhook
+                <google.cloud.dialogflow.cx.v3.Webhooks.DeleteWebhook>`__.
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -840,7 +833,8 @@ class WebhooksRestTransport(_BaseWebhooksRestTransport):
             Args:
                 request (~.webhook.GetWebhookRequest):
                     The request object. The request message for
-                [Webhooks.GetWebhook][google.cloud.dialogflow.cx.v3.Webhooks.GetWebhook].
+                `Webhooks.GetWebhook
+                <google.cloud.dialogflow.cx.v3.Webhooks.GetWebhook>`__.
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -994,7 +988,8 @@ class WebhooksRestTransport(_BaseWebhooksRestTransport):
             Args:
                 request (~.webhook.ListWebhooksRequest):
                     The request object. The request message for
-                [Webhooks.ListWebhooks][google.cloud.dialogflow.cx.v3.Webhooks.ListWebhooks].
+                `Webhooks.ListWebhooks
+                <google.cloud.dialogflow.cx.v3.Webhooks.ListWebhooks>`__.
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -1006,7 +1001,8 @@ class WebhooksRestTransport(_BaseWebhooksRestTransport):
             Returns:
                 ~.webhook.ListWebhooksResponse:
                     The response message for
-                [Webhooks.ListWebhooks][google.cloud.dialogflow.cx.v3.Webhooks.ListWebhooks].
+                `Webhooks.ListWebhooks
+                <google.cloud.dialogflow.cx.v3.Webhooks.ListWebhooks>`__.
 
             """
 
@@ -1135,18 +1131,19 @@ class WebhooksRestTransport(_BaseWebhooksRestTransport):
 
         def __call__(
             self,
-            request: gcdc_webhook.UpdateWebhookRequest,
+            request: webhook.UpdateWebhookRequest,
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
             metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
-        ) -> gcdc_webhook.Webhook:
+        ) -> webhook.Webhook:
             r"""Call the update webhook method over HTTP.
 
             Args:
-                request (~.gcdc_webhook.UpdateWebhookRequest):
+                request (~.webhook.UpdateWebhookRequest):
                     The request object. The request message for
-                [Webhooks.UpdateWebhook][google.cloud.dialogflow.cx.v3.Webhooks.UpdateWebhook].
+                `Webhooks.UpdateWebhook
+                <google.cloud.dialogflow.cx.v3.Webhooks.UpdateWebhook>`__.
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -1156,7 +1153,7 @@ class WebhooksRestTransport(_BaseWebhooksRestTransport):
                     be of type `bytes`.
 
             Returns:
-                ~.gcdc_webhook.Webhook:
+                ~.webhook.Webhook:
                     Webhooks host the developer's
                 business logic. During a session,
                 webhooks allow the developer to use the
@@ -1233,8 +1230,8 @@ class WebhooksRestTransport(_BaseWebhooksRestTransport):
                 raise core_exceptions.from_http_response(response)
 
             # Return the response
-            resp = gcdc_webhook.Webhook()
-            pb_resp = gcdc_webhook.Webhook.pb(resp)
+            resp = webhook.Webhook()
+            pb_resp = webhook.Webhook.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
@@ -1247,7 +1244,7 @@ class WebhooksRestTransport(_BaseWebhooksRestTransport):
                 logging.DEBUG
             ):  # pragma: NO COVER
                 try:
-                    response_payload = gcdc_webhook.Webhook.to_json(response)
+                    response_payload = webhook.Webhook.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -1269,7 +1266,7 @@ class WebhooksRestTransport(_BaseWebhooksRestTransport):
     @property
     def create_webhook(
         self,
-    ) -> Callable[[gcdc_webhook.CreateWebhookRequest], gcdc_webhook.Webhook]:
+    ) -> Callable[[webhook.CreateWebhookRequest], webhook.Webhook]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._CreateWebhook(self._session, self._host, self._interceptor)  # type: ignore
@@ -1299,7 +1296,7 @@ class WebhooksRestTransport(_BaseWebhooksRestTransport):
     @property
     def update_webhook(
         self,
-    ) -> Callable[[gcdc_webhook.UpdateWebhookRequest], gcdc_webhook.Webhook]:
+    ) -> Callable[[webhook.UpdateWebhookRequest], webhook.Webhook]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._UpdateWebhook(self._session, self._host, self._interceptor)  # type: ignore

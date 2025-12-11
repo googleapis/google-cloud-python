@@ -50,5 +50,4 @@ def sample_list_intents():
     for response in page_result:
         print(response)
 
-
 # [END dialogflow_v3_generated_Intents_ListIntents_sync]

@@ -35,6 +35,7 @@ class GenerativeSettings(proto.Message):
     Attributes:
         name (str):
             Format:
+
             ``projects/<ProjectID>/locations/<LocationID>/agents/<AgentID>/generativeSettings``.
         fallback_settings (google.cloud.dialogflowcx_v3.types.GenerativeSettings.FallbackSettings):
             Settings for Generative Fallback.
@@ -100,10 +101,10 @@ class GenerativeSettings(proto.Message):
         )
 
     class KnowledgeConnectorSettings(proto.Message):
-        r"""Settings for knowledge connector. These parameters are used for LLM
-        prompt like "You are . You are a helpful and verbose
-        <agent_identity> at , <business_description>. Your task is to help
-        humans on <agent_scope>".
+        r"""Settings for knowledge connector. These parameters are used for
+        LLM prompt like "You are <agent>. You are a helpful and verbose
+        <agent_identity> at <business>, <business_description>. Your
+        task is to help humans on <agent_scope>".
 
         Attributes:
             business (str):

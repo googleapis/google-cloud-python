@@ -30,7 +30,6 @@ from google.protobuf import empty_pb2  # type: ignore
 
 from google.cloud.dialogflowcx_v3 import gapic_version as package_version
 from google.cloud.dialogflowcx_v3.types import version
-from google.cloud.dialogflowcx_v3.types import version as gcdc_version
 
 DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
     gapic_version=package_version.__version__
@@ -237,7 +236,7 @@ class VersionsTransport(abc.ABC):
     def create_version(
         self,
     ) -> Callable[
-        [gcdc_version.CreateVersionRequest],
+        [version.CreateVersionRequest],
         Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
     ]:
         raise NotImplementedError()
@@ -246,8 +245,8 @@ class VersionsTransport(abc.ABC):
     def update_version(
         self,
     ) -> Callable[
-        [gcdc_version.UpdateVersionRequest],
-        Union[gcdc_version.Version, Awaitable[gcdc_version.Version]],
+        [version.UpdateVersionRequest],
+        Union[version.Version, Awaitable[version.Version]],
     ]:
         raise NotImplementedError()
 

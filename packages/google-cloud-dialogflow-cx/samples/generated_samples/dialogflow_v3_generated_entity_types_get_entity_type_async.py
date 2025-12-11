@@ -49,5 +49,4 @@ async def sample_get_entity_type():
     # Handle the response
     print(response)
 
-
 # [END dialogflow_v3_generated_EntityTypes_GetEntityType_async]

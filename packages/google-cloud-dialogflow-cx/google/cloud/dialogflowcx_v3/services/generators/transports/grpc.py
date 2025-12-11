@@ -32,7 +32,6 @@ import grpc  # type: ignore
 import proto  # type: ignore
 
 from google.cloud.dialogflowcx_v3.types import generator
-from google.cloud.dialogflowcx_v3.types import generator as gcdc_generator
 
 from .base import DEFAULT_CLIENT_INFO, GeneratorsTransport
 
@@ -114,8 +113,8 @@ class _LoggingClientInterceptor(grpc.UnaryUnaryClientInterceptor):  # pragma: NO
 class GeneratorsGrpcTransport(GeneratorsTransport):
     """gRPC backend transport for Generators.
 
-    Service for managing
-    [Generators][google.cloud.dialogflow.cx.v3.Generator]
+    Service for managing `Generators
+    <google.cloud.dialogflow.cx.v3.Generator>`__
 
     This class defines the same methods as the primary client, so the
     primary client can load the underlying transport implementation
@@ -382,7 +381,7 @@ class GeneratorsGrpcTransport(GeneratorsTransport):
     @property
     def create_generator(
         self,
-    ) -> Callable[[gcdc_generator.CreateGeneratorRequest], gcdc_generator.Generator]:
+    ) -> Callable[[generator.CreateGeneratorRequest], generator.Generator]:
         r"""Return a callable for the create generator method over gRPC.
 
         Creates a generator in the specified agent.
@@ -400,15 +399,15 @@ class GeneratorsGrpcTransport(GeneratorsTransport):
         if "create_generator" not in self._stubs:
             self._stubs["create_generator"] = self._logged_channel.unary_unary(
                 "/google.cloud.dialogflow.cx.v3.Generators/CreateGenerator",
-                request_serializer=gcdc_generator.CreateGeneratorRequest.serialize,
-                response_deserializer=gcdc_generator.Generator.deserialize,
+                request_serializer=generator.CreateGeneratorRequest.serialize,
+                response_deserializer=generator.Generator.deserialize,
             )
         return self._stubs["create_generator"]
 
     @property
     def update_generator(
         self,
-    ) -> Callable[[gcdc_generator.UpdateGeneratorRequest], gcdc_generator.Generator]:
+    ) -> Callable[[generator.UpdateGeneratorRequest], generator.Generator]:
         r"""Return a callable for the update generator method over gRPC.
 
         Update the specified generator.
@@ -426,8 +425,8 @@ class GeneratorsGrpcTransport(GeneratorsTransport):
         if "update_generator" not in self._stubs:
             self._stubs["update_generator"] = self._logged_channel.unary_unary(
                 "/google.cloud.dialogflow.cx.v3.Generators/UpdateGenerator",
-                request_serializer=gcdc_generator.UpdateGeneratorRequest.serialize,
-                response_deserializer=gcdc_generator.Generator.deserialize,
+                request_serializer=generator.UpdateGeneratorRequest.serialize,
+                response_deserializer=generator.Generator.deserialize,
             )
         return self._stubs["update_generator"]
 

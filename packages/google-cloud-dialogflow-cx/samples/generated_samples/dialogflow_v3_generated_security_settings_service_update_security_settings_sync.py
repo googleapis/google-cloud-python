@@ -53,5 +53,4 @@ def sample_update_security_settings():
     # Handle the response
     print(response)
 
-
 # [END dialogflow_v3_generated_SecuritySettingsService_UpdateSecuritySettings_sync]

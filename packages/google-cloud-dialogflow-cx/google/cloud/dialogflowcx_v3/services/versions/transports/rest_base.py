@@ -24,7 +24,6 @@ from google.protobuf import empty_pb2  # type: ignore
 from google.protobuf import json_format
 
 from google.cloud.dialogflowcx_v3.types import version
-from google.cloud.dialogflowcx_v3.types import version as gcdc_version
 
 from .base import DEFAULT_CLIENT_INFO, VersionsTransport
 
@@ -175,7 +174,7 @@ class _BaseVersionsRestTransport(VersionsTransport):
 
         @staticmethod
         def _get_transcoded_request(http_options, request):
-            pb_request = gcdc_version.CreateVersionRequest.pb(request)
+            pb_request = version.CreateVersionRequest.pb(request)
             transcoded_request = path_template.transcode(http_options, pb_request)
             return transcoded_request
 
@@ -432,7 +431,7 @@ class _BaseVersionsRestTransport(VersionsTransport):
 
         @staticmethod
         def _get_transcoded_request(http_options, request):
-            pb_request = gcdc_version.UpdateVersionRequest.pb(request)
+            pb_request = version.UpdateVersionRequest.pb(request)
             transcoded_request = path_template.transcode(http_options, pb_request)
             return transcoded_request
 

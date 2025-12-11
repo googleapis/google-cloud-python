@@ -53,5 +53,4 @@ def sample_create_transition_route_group():
     # Handle the response
     print(response)
 
-
 # [END dialogflow_v3_generated_TransitionRouteGroups_CreateTransitionRouteGroup_sync]

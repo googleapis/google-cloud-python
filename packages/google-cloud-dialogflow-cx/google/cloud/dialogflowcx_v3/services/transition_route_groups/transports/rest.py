@@ -31,9 +31,6 @@ from google.protobuf import empty_pb2  # type: ignore
 from google.protobuf import json_format
 from requests import __version__ as requests_version
 
-from google.cloud.dialogflowcx_v3.types import (
-    transition_route_group as gcdc_transition_route_group,
-)
 from google.cloud.dialogflowcx_v3.types import transition_route_group
 
 from .base import DEFAULT_CLIENT_INFO as BASE_DEFAULT_CLIENT_INFO
@@ -122,10 +119,10 @@ class TransitionRouteGroupsRestInterceptor:
 
     def pre_create_transition_route_group(
         self,
-        request: gcdc_transition_route_group.CreateTransitionRouteGroupRequest,
+        request: transition_route_group.CreateTransitionRouteGroupRequest,
         metadata: Sequence[Tuple[str, Union[str, bytes]]],
     ) -> Tuple[
-        gcdc_transition_route_group.CreateTransitionRouteGroupRequest,
+        transition_route_group.CreateTransitionRouteGroupRequest,
         Sequence[Tuple[str, Union[str, bytes]]],
     ]:
         """Pre-rpc interceptor for create_transition_route_group
@@ -136,8 +133,8 @@ class TransitionRouteGroupsRestInterceptor:
         return request, metadata
 
     def post_create_transition_route_group(
-        self, response: gcdc_transition_route_group.TransitionRouteGroup
-    ) -> gcdc_transition_route_group.TransitionRouteGroup:
+        self, response: transition_route_group.TransitionRouteGroup
+    ) -> transition_route_group.TransitionRouteGroup:
         """Post-rpc interceptor for create_transition_route_group
 
         DEPRECATED. Please use the `post_create_transition_route_group_with_metadata`
@@ -152,10 +149,10 @@ class TransitionRouteGroupsRestInterceptor:
 
     def post_create_transition_route_group_with_metadata(
         self,
-        response: gcdc_transition_route_group.TransitionRouteGroup,
+        response: transition_route_group.TransitionRouteGroup,
         metadata: Sequence[Tuple[str, Union[str, bytes]]],
     ) -> Tuple[
-        gcdc_transition_route_group.TransitionRouteGroup,
+        transition_route_group.TransitionRouteGroup,
         Sequence[Tuple[str, Union[str, bytes]]],
     ]:
         """Post-rpc interceptor for create_transition_route_group
@@ -293,10 +290,10 @@ class TransitionRouteGroupsRestInterceptor:
 
     def pre_update_transition_route_group(
         self,
-        request: gcdc_transition_route_group.UpdateTransitionRouteGroupRequest,
+        request: transition_route_group.UpdateTransitionRouteGroupRequest,
         metadata: Sequence[Tuple[str, Union[str, bytes]]],
     ) -> Tuple[
-        gcdc_transition_route_group.UpdateTransitionRouteGroupRequest,
+        transition_route_group.UpdateTransitionRouteGroupRequest,
         Sequence[Tuple[str, Union[str, bytes]]],
     ]:
         """Pre-rpc interceptor for update_transition_route_group
@@ -307,8 +304,8 @@ class TransitionRouteGroupsRestInterceptor:
         return request, metadata
 
     def post_update_transition_route_group(
-        self, response: gcdc_transition_route_group.TransitionRouteGroup
-    ) -> gcdc_transition_route_group.TransitionRouteGroup:
+        self, response: transition_route_group.TransitionRouteGroup
+    ) -> transition_route_group.TransitionRouteGroup:
         """Post-rpc interceptor for update_transition_route_group
 
         DEPRECATED. Please use the `post_update_transition_route_group_with_metadata`
@@ -323,10 +320,10 @@ class TransitionRouteGroupsRestInterceptor:
 
     def post_update_transition_route_group_with_metadata(
         self,
-        response: gcdc_transition_route_group.TransitionRouteGroup,
+        response: transition_route_group.TransitionRouteGroup,
         metadata: Sequence[Tuple[str, Union[str, bytes]]],
     ) -> Tuple[
-        gcdc_transition_route_group.TransitionRouteGroup,
+        transition_route_group.TransitionRouteGroup,
         Sequence[Tuple[str, Union[str, bytes]]],
     ]:
         """Post-rpc interceptor for update_transition_route_group
@@ -478,7 +475,8 @@ class TransitionRouteGroupsRestTransport(_BaseTransitionRouteGroupsRestTransport
     """REST backend synchronous transport for TransitionRouteGroups.
 
     Service for managing
-    [TransitionRouteGroups][google.cloud.dialogflow.cx.v3.TransitionRouteGroup].
+    `TransitionRouteGroups
+    <google.cloud.dialogflow.cx.v3.TransitionRouteGroup>`__.
 
     This class defines the same methods as the primary client, so the
     primary client can load the underlying transport implementation
@@ -587,19 +585,20 @@ class TransitionRouteGroupsRestTransport(_BaseTransitionRouteGroupsRestTransport
 
         def __call__(
             self,
-            request: gcdc_transition_route_group.CreateTransitionRouteGroupRequest,
+            request: transition_route_group.CreateTransitionRouteGroupRequest,
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
             metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
-        ) -> gcdc_transition_route_group.TransitionRouteGroup:
+        ) -> transition_route_group.TransitionRouteGroup:
             r"""Call the create transition route
             group method over HTTP.
 
                 Args:
-                    request (~.gcdc_transition_route_group.CreateTransitionRouteGroupRequest):
+                    request (~.transition_route_group.CreateTransitionRouteGroupRequest):
                         The request object. The request message for
-                    [TransitionRouteGroups.CreateTransitionRouteGroup][google.cloud.dialogflow.cx.v3.TransitionRouteGroups.CreateTransitionRouteGroup].
+                    `TransitionRouteGroups.CreateTransitionRouteGroup
+                    <google.cloud.dialogflow.cx.v3.TransitionRouteGroups.CreateTransitionRouteGroup>`__.
                     retry (google.api_core.retry.Retry): Designation of what errors, if any,
                         should be retried.
                     timeout (float): The timeout for this request.
@@ -609,11 +608,12 @@ class TransitionRouteGroupsRestTransport(_BaseTransitionRouteGroupsRestTransport
                         be of type `bytes`.
 
                 Returns:
-                    ~.gcdc_transition_route_group.TransitionRouteGroup:
-                        A TransitionRouteGroup represents a group of
-                    [``TransitionRoutes``][google.cloud.dialogflow.cx.v3.TransitionRoute]
-                    to be used by a
-                    [Page][google.cloud.dialogflow.cx.v3.Page].
+                    ~.transition_route_group.TransitionRouteGroup:
+                        A TransitionRouteGroup represents a
+                    group of ```TransitionRoutes``
+                    <google.cloud.dialogflow.cx.v3.TransitionRoute>`__
+                    to be used by a `Page
+                    <google.cloud.dialogflow.cx.v3.Page>`__.
 
             """
 
@@ -681,8 +681,8 @@ class TransitionRouteGroupsRestTransport(_BaseTransitionRouteGroupsRestTransport
                 raise core_exceptions.from_http_response(response)
 
             # Return the response
-            resp = gcdc_transition_route_group.TransitionRouteGroup()
-            pb_resp = gcdc_transition_route_group.TransitionRouteGroup.pb(resp)
+            resp = transition_route_group.TransitionRouteGroup()
+            pb_resp = transition_route_group.TransitionRouteGroup.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
@@ -699,9 +699,7 @@ class TransitionRouteGroupsRestTransport(_BaseTransitionRouteGroupsRestTransport
             ):  # pragma: NO COVER
                 try:
                     response_payload = (
-                        gcdc_transition_route_group.TransitionRouteGroup.to_json(
-                            response
-                        )
+                        transition_route_group.TransitionRouteGroup.to_json(response)
                     )
                 except:
                     response_payload = None
@@ -764,7 +762,8 @@ class TransitionRouteGroupsRestTransport(_BaseTransitionRouteGroupsRestTransport
                 Args:
                     request (~.transition_route_group.DeleteTransitionRouteGroupRequest):
                         The request object. The request message for
-                    [TransitionRouteGroups.DeleteTransitionRouteGroup][google.cloud.dialogflow.cx.v3.TransitionRouteGroups.DeleteTransitionRouteGroup].
+                    `TransitionRouteGroups.DeleteTransitionRouteGroup
+                    <google.cloud.dialogflow.cx.v3.TransitionRouteGroups.DeleteTransitionRouteGroup>`__.
                     retry (google.api_core.retry.Retry): Designation of what errors, if any,
                         should be retried.
                     timeout (float): The timeout for this request.
@@ -875,7 +874,8 @@ class TransitionRouteGroupsRestTransport(_BaseTransitionRouteGroupsRestTransport
                 Args:
                     request (~.transition_route_group.GetTransitionRouteGroupRequest):
                         The request object. The request message for
-                    [TransitionRouteGroups.GetTransitionRouteGroup][google.cloud.dialogflow.cx.v3.TransitionRouteGroups.GetTransitionRouteGroup].
+                    `TransitionRouteGroups.GetTransitionRouteGroup
+                    <google.cloud.dialogflow.cx.v3.TransitionRouteGroups.GetTransitionRouteGroup>`__.
                     retry (google.api_core.retry.Retry): Designation of what errors, if any,
                         should be retried.
                     timeout (float): The timeout for this request.
@@ -886,10 +886,11 @@ class TransitionRouteGroupsRestTransport(_BaseTransitionRouteGroupsRestTransport
 
                 Returns:
                     ~.transition_route_group.TransitionRouteGroup:
-                        A TransitionRouteGroup represents a group of
-                    [``TransitionRoutes``][google.cloud.dialogflow.cx.v3.TransitionRoute]
-                    to be used by a
-                    [Page][google.cloud.dialogflow.cx.v3.Page].
+                        A TransitionRouteGroup represents a
+                    group of ```TransitionRoutes``
+                    <google.cloud.dialogflow.cx.v3.TransitionRoute>`__
+                    to be used by a `Page
+                    <google.cloud.dialogflow.cx.v3.Page>`__.
 
             """
 
@@ -1030,7 +1031,8 @@ class TransitionRouteGroupsRestTransport(_BaseTransitionRouteGroupsRestTransport
                 Args:
                     request (~.transition_route_group.ListTransitionRouteGroupsRequest):
                         The request object. The request message for
-                    [TransitionRouteGroups.ListTransitionRouteGroups][google.cloud.dialogflow.cx.v3.TransitionRouteGroups.ListTransitionRouteGroups].
+                    `TransitionRouteGroups.ListTransitionRouteGroups
+                    <google.cloud.dialogflow.cx.v3.TransitionRouteGroups.ListTransitionRouteGroups>`__.
                     retry (google.api_core.retry.Retry): Designation of what errors, if any,
                         should be retried.
                     timeout (float): The timeout for this request.
@@ -1042,7 +1044,8 @@ class TransitionRouteGroupsRestTransport(_BaseTransitionRouteGroupsRestTransport
                 Returns:
                     ~.transition_route_group.ListTransitionRouteGroupsResponse:
                         The response message for
-                    [TransitionRouteGroups.ListTransitionRouteGroups][google.cloud.dialogflow.cx.v3.TransitionRouteGroups.ListTransitionRouteGroups].
+                    `TransitionRouteGroups.ListTransitionRouteGroups
+                    <google.cloud.dialogflow.cx.v3.TransitionRouteGroups.ListTransitionRouteGroups>`__.
 
             """
 
@@ -1172,19 +1175,20 @@ class TransitionRouteGroupsRestTransport(_BaseTransitionRouteGroupsRestTransport
 
         def __call__(
             self,
-            request: gcdc_transition_route_group.UpdateTransitionRouteGroupRequest,
+            request: transition_route_group.UpdateTransitionRouteGroupRequest,
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
             metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
-        ) -> gcdc_transition_route_group.TransitionRouteGroup:
+        ) -> transition_route_group.TransitionRouteGroup:
             r"""Call the update transition route
             group method over HTTP.
 
                 Args:
-                    request (~.gcdc_transition_route_group.UpdateTransitionRouteGroupRequest):
+                    request (~.transition_route_group.UpdateTransitionRouteGroupRequest):
                         The request object. The request message for
-                    [TransitionRouteGroups.UpdateTransitionRouteGroup][google.cloud.dialogflow.cx.v3.TransitionRouteGroups.UpdateTransitionRouteGroup].
+                    `TransitionRouteGroups.UpdateTransitionRouteGroup
+                    <google.cloud.dialogflow.cx.v3.TransitionRouteGroups.UpdateTransitionRouteGroup>`__.
                     retry (google.api_core.retry.Retry): Designation of what errors, if any,
                         should be retried.
                     timeout (float): The timeout for this request.
@@ -1194,11 +1198,12 @@ class TransitionRouteGroupsRestTransport(_BaseTransitionRouteGroupsRestTransport
                         be of type `bytes`.
 
                 Returns:
-                    ~.gcdc_transition_route_group.TransitionRouteGroup:
-                        A TransitionRouteGroup represents a group of
-                    [``TransitionRoutes``][google.cloud.dialogflow.cx.v3.TransitionRoute]
-                    to be used by a
-                    [Page][google.cloud.dialogflow.cx.v3.Page].
+                    ~.transition_route_group.TransitionRouteGroup:
+                        A TransitionRouteGroup represents a
+                    group of ```TransitionRoutes``
+                    <google.cloud.dialogflow.cx.v3.TransitionRoute>`__
+                    to be used by a `Page
+                    <google.cloud.dialogflow.cx.v3.Page>`__.
 
             """
 
@@ -1266,8 +1271,8 @@ class TransitionRouteGroupsRestTransport(_BaseTransitionRouteGroupsRestTransport
                 raise core_exceptions.from_http_response(response)
 
             # Return the response
-            resp = gcdc_transition_route_group.TransitionRouteGroup()
-            pb_resp = gcdc_transition_route_group.TransitionRouteGroup.pb(resp)
+            resp = transition_route_group.TransitionRouteGroup()
+            pb_resp = transition_route_group.TransitionRouteGroup.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
@@ -1284,9 +1289,7 @@ class TransitionRouteGroupsRestTransport(_BaseTransitionRouteGroupsRestTransport
             ):  # pragma: NO COVER
                 try:
                     response_payload = (
-                        gcdc_transition_route_group.TransitionRouteGroup.to_json(
-                            response
-                        )
+                        transition_route_group.TransitionRouteGroup.to_json(response)
                     )
                 except:
                     response_payload = None
@@ -1310,8 +1313,8 @@ class TransitionRouteGroupsRestTransport(_BaseTransitionRouteGroupsRestTransport
     def create_transition_route_group(
         self,
     ) -> Callable[
-        [gcdc_transition_route_group.CreateTransitionRouteGroupRequest],
-        gcdc_transition_route_group.TransitionRouteGroup,
+        [transition_route_group.CreateTransitionRouteGroupRequest],
+        transition_route_group.TransitionRouteGroup,
     ]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
@@ -1353,8 +1356,8 @@ class TransitionRouteGroupsRestTransport(_BaseTransitionRouteGroupsRestTransport
     def update_transition_route_group(
         self,
     ) -> Callable[
-        [gcdc_transition_route_group.UpdateTransitionRouteGroupRequest],
-        gcdc_transition_route_group.TransitionRouteGroup,
+        [transition_route_group.UpdateTransitionRouteGroupRequest],
+        transition_route_group.TransitionRouteGroup,
     ]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast

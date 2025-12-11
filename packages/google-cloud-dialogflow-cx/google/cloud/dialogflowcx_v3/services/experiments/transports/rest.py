@@ -32,7 +32,6 @@ from google.protobuf import json_format
 from requests import __version__ as requests_version
 
 from google.cloud.dialogflowcx_v3.types import experiment
-from google.cloud.dialogflowcx_v3.types import experiment as gcdc_experiment
 
 from .base import DEFAULT_CLIENT_INFO as BASE_DEFAULT_CLIENT_INFO
 from .rest_base import _BaseExperimentsRestTransport
@@ -136,10 +135,10 @@ class ExperimentsRestInterceptor:
 
     def pre_create_experiment(
         self,
-        request: gcdc_experiment.CreateExperimentRequest,
+        request: experiment.CreateExperimentRequest,
         metadata: Sequence[Tuple[str, Union[str, bytes]]],
     ) -> Tuple[
-        gcdc_experiment.CreateExperimentRequest, Sequence[Tuple[str, Union[str, bytes]]]
+        experiment.CreateExperimentRequest, Sequence[Tuple[str, Union[str, bytes]]]
     ]:
         """Pre-rpc interceptor for create_experiment
 
@@ -149,8 +148,8 @@ class ExperimentsRestInterceptor:
         return request, metadata
 
     def post_create_experiment(
-        self, response: gcdc_experiment.Experiment
-    ) -> gcdc_experiment.Experiment:
+        self, response: experiment.Experiment
+    ) -> experiment.Experiment:
         """Post-rpc interceptor for create_experiment
 
         DEPRECATED. Please use the `post_create_experiment_with_metadata`
@@ -165,9 +164,9 @@ class ExperimentsRestInterceptor:
 
     def post_create_experiment_with_metadata(
         self,
-        response: gcdc_experiment.Experiment,
+        response: experiment.Experiment,
         metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[gcdc_experiment.Experiment, Sequence[Tuple[str, Union[str, bytes]]]]:
+    ) -> Tuple[experiment.Experiment, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for create_experiment
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -392,10 +391,10 @@ class ExperimentsRestInterceptor:
 
     def pre_update_experiment(
         self,
-        request: gcdc_experiment.UpdateExperimentRequest,
+        request: experiment.UpdateExperimentRequest,
         metadata: Sequence[Tuple[str, Union[str, bytes]]],
     ) -> Tuple[
-        gcdc_experiment.UpdateExperimentRequest, Sequence[Tuple[str, Union[str, bytes]]]
+        experiment.UpdateExperimentRequest, Sequence[Tuple[str, Union[str, bytes]]]
     ]:
         """Pre-rpc interceptor for update_experiment
 
@@ -405,8 +404,8 @@ class ExperimentsRestInterceptor:
         return request, metadata
 
     def post_update_experiment(
-        self, response: gcdc_experiment.Experiment
-    ) -> gcdc_experiment.Experiment:
+        self, response: experiment.Experiment
+    ) -> experiment.Experiment:
         """Post-rpc interceptor for update_experiment
 
         DEPRECATED. Please use the `post_update_experiment_with_metadata`
@@ -421,9 +420,9 @@ class ExperimentsRestInterceptor:
 
     def post_update_experiment_with_metadata(
         self,
-        response: gcdc_experiment.Experiment,
+        response: experiment.Experiment,
         metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[gcdc_experiment.Experiment, Sequence[Tuple[str, Union[str, bytes]]]]:
+    ) -> Tuple[experiment.Experiment, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for update_experiment
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -572,8 +571,8 @@ class ExperimentsRestStub:
 class ExperimentsRestTransport(_BaseExperimentsRestTransport):
     """REST backend synchronous transport for Experiments.
 
-    Service for managing
-    [Experiments][google.cloud.dialogflow.cx.v3.Experiment].
+    Service for managing `Experiments
+    <google.cloud.dialogflow.cx.v3.Experiment>`__.
 
     This class defines the same methods as the primary client, so the
     primary client can load the underlying transport implementation
@@ -681,18 +680,19 @@ class ExperimentsRestTransport(_BaseExperimentsRestTransport):
 
         def __call__(
             self,
-            request: gcdc_experiment.CreateExperimentRequest,
+            request: experiment.CreateExperimentRequest,
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
             metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
-        ) -> gcdc_experiment.Experiment:
+        ) -> experiment.Experiment:
             r"""Call the create experiment method over HTTP.
 
             Args:
-                request (~.gcdc_experiment.CreateExperimentRequest):
+                request (~.experiment.CreateExperimentRequest):
                     The request object. The request message for
-                [Experiments.CreateExperiment][google.cloud.dialogflow.cx.v3.Experiments.CreateExperiment].
+                `Experiments.CreateExperiment
+                <google.cloud.dialogflow.cx.v3.Experiments.CreateExperiment>`__.
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -702,7 +702,7 @@ class ExperimentsRestTransport(_BaseExperimentsRestTransport):
                     be of type `bytes`.
 
             Returns:
-                ~.gcdc_experiment.Experiment:
+                ~.experiment.Experiment:
                     Represents an experiment in an
                 environment.
 
@@ -772,8 +772,8 @@ class ExperimentsRestTransport(_BaseExperimentsRestTransport):
                 raise core_exceptions.from_http_response(response)
 
             # Return the response
-            resp = gcdc_experiment.Experiment()
-            pb_resp = gcdc_experiment.Experiment.pb(resp)
+            resp = experiment.Experiment()
+            pb_resp = experiment.Experiment.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
@@ -786,7 +786,7 @@ class ExperimentsRestTransport(_BaseExperimentsRestTransport):
                 logging.DEBUG
             ):  # pragma: NO COVER
                 try:
-                    response_payload = gcdc_experiment.Experiment.to_json(response)
+                    response_payload = experiment.Experiment.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -846,7 +846,8 @@ class ExperimentsRestTransport(_BaseExperimentsRestTransport):
             Args:
                 request (~.experiment.DeleteExperimentRequest):
                     The request object. The request message for
-                [Experiments.DeleteExperiment][google.cloud.dialogflow.cx.v3.Experiments.DeleteExperiment].
+                `Experiments.DeleteExperiment
+                <google.cloud.dialogflow.cx.v3.Experiments.DeleteExperiment>`__.
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -955,7 +956,8 @@ class ExperimentsRestTransport(_BaseExperimentsRestTransport):
             Args:
                 request (~.experiment.GetExperimentRequest):
                     The request object. The request message for
-                [Experiments.GetExperiment][google.cloud.dialogflow.cx.v3.Experiments.GetExperiment].
+                `Experiments.GetExperiment
+                <google.cloud.dialogflow.cx.v3.Experiments.GetExperiment>`__.
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -1104,7 +1106,8 @@ class ExperimentsRestTransport(_BaseExperimentsRestTransport):
             Args:
                 request (~.experiment.ListExperimentsRequest):
                     The request object. The request message for
-                [Experiments.ListExperiments][google.cloud.dialogflow.cx.v3.Experiments.ListExperiments].
+                `Experiments.ListExperiments
+                <google.cloud.dialogflow.cx.v3.Experiments.ListExperiments>`__.
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -1116,7 +1119,8 @@ class ExperimentsRestTransport(_BaseExperimentsRestTransport):
             Returns:
                 ~.experiment.ListExperimentsResponse:
                     The response message for
-                [Experiments.ListExperiments][google.cloud.dialogflow.cx.v3.Experiments.ListExperiments].
+                `Experiments.ListExperiments
+                <google.cloud.dialogflow.cx.v3.Experiments.ListExperiments>`__.
 
             """
 
@@ -1256,7 +1260,8 @@ class ExperimentsRestTransport(_BaseExperimentsRestTransport):
             Args:
                 request (~.experiment.StartExperimentRequest):
                     The request object. The request message for
-                [Experiments.StartExperiment][google.cloud.dialogflow.cx.v3.Experiments.StartExperiment].
+                `Experiments.StartExperiment
+                <google.cloud.dialogflow.cx.v3.Experiments.StartExperiment>`__.
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -1411,7 +1416,8 @@ class ExperimentsRestTransport(_BaseExperimentsRestTransport):
             Args:
                 request (~.experiment.StopExperimentRequest):
                     The request object. The request message for
-                [Experiments.StopExperiment][google.cloud.dialogflow.cx.v3.Experiments.StopExperiment].
+                `Experiments.StopExperiment
+                <google.cloud.dialogflow.cx.v3.Experiments.StopExperiment>`__.
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -1553,18 +1559,19 @@ class ExperimentsRestTransport(_BaseExperimentsRestTransport):
 
         def __call__(
             self,
-            request: gcdc_experiment.UpdateExperimentRequest,
+            request: experiment.UpdateExperimentRequest,
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
             metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
-        ) -> gcdc_experiment.Experiment:
+        ) -> experiment.Experiment:
             r"""Call the update experiment method over HTTP.
 
             Args:
-                request (~.gcdc_experiment.UpdateExperimentRequest):
+                request (~.experiment.UpdateExperimentRequest):
                     The request object. The request message for
-                [Experiments.UpdateExperiment][google.cloud.dialogflow.cx.v3.Experiments.UpdateExperiment].
+                `Experiments.UpdateExperiment
+                <google.cloud.dialogflow.cx.v3.Experiments.UpdateExperiment>`__.
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -1574,7 +1581,7 @@ class ExperimentsRestTransport(_BaseExperimentsRestTransport):
                     be of type `bytes`.
 
             Returns:
-                ~.gcdc_experiment.Experiment:
+                ~.experiment.Experiment:
                     Represents an experiment in an
                 environment.
 
@@ -1644,8 +1651,8 @@ class ExperimentsRestTransport(_BaseExperimentsRestTransport):
                 raise core_exceptions.from_http_response(response)
 
             # Return the response
-            resp = gcdc_experiment.Experiment()
-            pb_resp = gcdc_experiment.Experiment.pb(resp)
+            resp = experiment.Experiment()
+            pb_resp = experiment.Experiment.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
@@ -1658,7 +1665,7 @@ class ExperimentsRestTransport(_BaseExperimentsRestTransport):
                 logging.DEBUG
             ):  # pragma: NO COVER
                 try:
-                    response_payload = gcdc_experiment.Experiment.to_json(response)
+                    response_payload = experiment.Experiment.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -1680,9 +1687,7 @@ class ExperimentsRestTransport(_BaseExperimentsRestTransport):
     @property
     def create_experiment(
         self,
-    ) -> Callable[
-        [gcdc_experiment.CreateExperimentRequest], gcdc_experiment.Experiment
-    ]:
+    ) -> Callable[[experiment.CreateExperimentRequest], experiment.Experiment]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._CreateExperiment(self._session, self._host, self._interceptor)  # type: ignore
@@ -1732,9 +1737,7 @@ class ExperimentsRestTransport(_BaseExperimentsRestTransport):
     @property
     def update_experiment(
         self,
-    ) -> Callable[
-        [gcdc_experiment.UpdateExperimentRequest], gcdc_experiment.Experiment
-    ]:
+    ) -> Callable[[experiment.UpdateExperimentRequest], experiment.Experiment]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._UpdateExperiment(self._session, self._host, self._interceptor)  # type: ignore

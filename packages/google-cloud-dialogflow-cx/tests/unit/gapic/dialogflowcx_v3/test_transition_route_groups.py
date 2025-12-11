@@ -69,11 +69,8 @@ from google.cloud.dialogflowcx_v3.types import (
     gcs,
     page,
     response_message,
+    transition_route_group,
 )
-from google.cloud.dialogflowcx_v3.types import (
-    transition_route_group as gcdc_transition_route_group,
-)
-from google.cloud.dialogflowcx_v3.types import transition_route_group
 
 CRED_INFO_JSON = {
     "credential_source": "/path/to/file",
@@ -2098,7 +2095,7 @@ async def test_get_transition_route_group_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        gcdc_transition_route_group.CreateTransitionRouteGroupRequest,
+        transition_route_group.CreateTransitionRouteGroupRequest,
         dict,
     ],
 )
@@ -2117,7 +2114,7 @@ def test_create_transition_route_group(request_type, transport: str = "grpc"):
         type(client.transport.create_transition_route_group), "__call__"
     ) as call:
         # Designate an appropriate return value for the call.
-        call.return_value = gcdc_transition_route_group.TransitionRouteGroup(
+        call.return_value = transition_route_group.TransitionRouteGroup(
             name="name_value",
             display_name="display_name_value",
         )
@@ -2126,11 +2123,11 @@ def test_create_transition_route_group(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        request = gcdc_transition_route_group.CreateTransitionRouteGroupRequest()
+        request = transition_route_group.CreateTransitionRouteGroupRequest()
         assert args[0] == request
 
     # Establish that the response is the type that we expect.
-    assert isinstance(response, gcdc_transition_route_group.TransitionRouteGroup)
+    assert isinstance(response, transition_route_group.TransitionRouteGroup)
     assert response.name == "name_value"
     assert response.display_name == "display_name_value"
 
@@ -2146,7 +2143,7 @@ def test_create_transition_route_group_non_empty_request_with_auto_populated_fie
     # Populate all string fields in the request which are not UUID4
     # since we want to check that UUID4 are populated automatically
     # if they meet the requirements of AIP 4235.
-    request = gcdc_transition_route_group.CreateTransitionRouteGroupRequest(
+    request = transition_route_group.CreateTransitionRouteGroupRequest(
         parent="parent_value",
         language_code="language_code_value",
     )
@@ -2161,7 +2158,7 @@ def test_create_transition_route_group_non_empty_request_with_auto_populated_fie
         client.create_transition_route_group(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == gcdc_transition_route_group.CreateTransitionRouteGroupRequest(
+        assert args[0] == transition_route_group.CreateTransitionRouteGroupRequest(
             parent="parent_value",
             language_code="language_code_value",
         )
@@ -2252,7 +2249,7 @@ async def test_create_transition_route_group_async_use_cached_wrapped_rpc(
 @pytest.mark.asyncio
 async def test_create_transition_route_group_async(
     transport: str = "grpc_asyncio",
-    request_type=gcdc_transition_route_group.CreateTransitionRouteGroupRequest,
+    request_type=transition_route_group.CreateTransitionRouteGroupRequest,
 ):
     client = TransitionRouteGroupsAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -2269,7 +2266,7 @@ async def test_create_transition_route_group_async(
     ) as call:
         # Designate an appropriate return value for the call.
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            gcdc_transition_route_group.TransitionRouteGroup(
+            transition_route_group.TransitionRouteGroup(
                 name="name_value",
                 display_name="display_name_value",
             )
@@ -2279,11 +2276,11 @@ async def test_create_transition_route_group_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        request = gcdc_transition_route_group.CreateTransitionRouteGroupRequest()
+        request = transition_route_group.CreateTransitionRouteGroupRequest()
         assert args[0] == request
 
     # Establish that the response is the type that we expect.
-    assert isinstance(response, gcdc_transition_route_group.TransitionRouteGroup)
+    assert isinstance(response, transition_route_group.TransitionRouteGroup)
     assert response.name == "name_value"
     assert response.display_name == "display_name_value"
 
@@ -2300,7 +2297,7 @@ def test_create_transition_route_group_field_headers():
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
-    request = gcdc_transition_route_group.CreateTransitionRouteGroupRequest()
+    request = transition_route_group.CreateTransitionRouteGroupRequest()
 
     request.parent = "parent_value"
 
@@ -2308,7 +2305,7 @@ def test_create_transition_route_group_field_headers():
     with mock.patch.object(
         type(client.transport.create_transition_route_group), "__call__"
     ) as call:
-        call.return_value = gcdc_transition_route_group.TransitionRouteGroup()
+        call.return_value = transition_route_group.TransitionRouteGroup()
         client.create_transition_route_group(request)
 
         # Establish that the underlying gRPC stub method was called.
@@ -2332,7 +2329,7 @@ async def test_create_transition_route_group_field_headers_async():
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
-    request = gcdc_transition_route_group.CreateTransitionRouteGroupRequest()
+    request = transition_route_group.CreateTransitionRouteGroupRequest()
 
     request.parent = "parent_value"
 
@@ -2341,7 +2338,7 @@ async def test_create_transition_route_group_field_headers_async():
         type(client.transport.create_transition_route_group), "__call__"
     ) as call:
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            gcdc_transition_route_group.TransitionRouteGroup()
+            transition_route_group.TransitionRouteGroup()
         )
         await client.create_transition_route_group(request)
 
@@ -2368,12 +2365,12 @@ def test_create_transition_route_group_flattened():
         type(client.transport.create_transition_route_group), "__call__"
     ) as call:
         # Designate an appropriate return value for the call.
-        call.return_value = gcdc_transition_route_group.TransitionRouteGroup()
+        call.return_value = transition_route_group.TransitionRouteGroup()
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
         client.create_transition_route_group(
             parent="parent_value",
-            transition_route_group=gcdc_transition_route_group.TransitionRouteGroup(
+            transition_route_group=transition_route_group.TransitionRouteGroup(
                 name="name_value"
             ),
         )
@@ -2386,7 +2383,7 @@ def test_create_transition_route_group_flattened():
         mock_val = "parent_value"
         assert arg == mock_val
         arg = args[0].transition_route_group
-        mock_val = gcdc_transition_route_group.TransitionRouteGroup(name="name_value")
+        mock_val = transition_route_group.TransitionRouteGroup(name="name_value")
         assert arg == mock_val
 
 
@@ -2399,9 +2396,9 @@ def test_create_transition_route_group_flattened_error():
     # fields is an error.
     with pytest.raises(ValueError):
         client.create_transition_route_group(
-            gcdc_transition_route_group.CreateTransitionRouteGroupRequest(),
+            transition_route_group.CreateTransitionRouteGroupRequest(),
             parent="parent_value",
-            transition_route_group=gcdc_transition_route_group.TransitionRouteGroup(
+            transition_route_group=transition_route_group.TransitionRouteGroup(
                 name="name_value"
             ),
         )
@@ -2418,16 +2415,16 @@ async def test_create_transition_route_group_flattened_async():
         type(client.transport.create_transition_route_group), "__call__"
     ) as call:
         # Designate an appropriate return value for the call.
-        call.return_value = gcdc_transition_route_group.TransitionRouteGroup()
+        call.return_value = transition_route_group.TransitionRouteGroup()
 
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            gcdc_transition_route_group.TransitionRouteGroup()
+            transition_route_group.TransitionRouteGroup()
         )
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
         response = await client.create_transition_route_group(
             parent="parent_value",
-            transition_route_group=gcdc_transition_route_group.TransitionRouteGroup(
+            transition_route_group=transition_route_group.TransitionRouteGroup(
                 name="name_value"
             ),
         )
@@ -2440,7 +2437,7 @@ async def test_create_transition_route_group_flattened_async():
         mock_val = "parent_value"
         assert arg == mock_val
         arg = args[0].transition_route_group
-        mock_val = gcdc_transition_route_group.TransitionRouteGroup(name="name_value")
+        mock_val = transition_route_group.TransitionRouteGroup(name="name_value")
         assert arg == mock_val
 
 
@@ -2454,9 +2451,9 @@ async def test_create_transition_route_group_flattened_error_async():
     # fields is an error.
     with pytest.raises(ValueError):
         await client.create_transition_route_group(
-            gcdc_transition_route_group.CreateTransitionRouteGroupRequest(),
+            transition_route_group.CreateTransitionRouteGroupRequest(),
             parent="parent_value",
-            transition_route_group=gcdc_transition_route_group.TransitionRouteGroup(
+            transition_route_group=transition_route_group.TransitionRouteGroup(
                 name="name_value"
             ),
         )
@@ -2465,7 +2462,7 @@ async def test_create_transition_route_group_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        gcdc_transition_route_group.UpdateTransitionRouteGroupRequest,
+        transition_route_group.UpdateTransitionRouteGroupRequest,
         dict,
     ],
 )
@@ -2484,7 +2481,7 @@ def test_update_transition_route_group(request_type, transport: str = "grpc"):
         type(client.transport.update_transition_route_group), "__call__"
     ) as call:
         # Designate an appropriate return value for the call.
-        call.return_value = gcdc_transition_route_group.TransitionRouteGroup(
+        call.return_value = transition_route_group.TransitionRouteGroup(
             name="name_value",
             display_name="display_name_value",
         )
@@ -2493,11 +2490,11 @@ def test_update_transition_route_group(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        request = gcdc_transition_route_group.UpdateTransitionRouteGroupRequest()
+        request = transition_route_group.UpdateTransitionRouteGroupRequest()
         assert args[0] == request
 
     # Establish that the response is the type that we expect.
-    assert isinstance(response, gcdc_transition_route_group.TransitionRouteGroup)
+    assert isinstance(response, transition_route_group.TransitionRouteGroup)
     assert response.name == "name_value"
     assert response.display_name == "display_name_value"
 
@@ -2513,7 +2510,7 @@ def test_update_transition_route_group_non_empty_request_with_auto_populated_fie
     # Populate all string fields in the request which are not UUID4
     # since we want to check that UUID4 are populated automatically
     # if they meet the requirements of AIP 4235.
-    request = gcdc_transition_route_group.UpdateTransitionRouteGroupRequest(
+    request = transition_route_group.UpdateTransitionRouteGroupRequest(
         language_code="language_code_value",
     )
 
@@ -2527,7 +2524,7 @@ def test_update_transition_route_group_non_empty_request_with_auto_populated_fie
         client.update_transition_route_group(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == gcdc_transition_route_group.UpdateTransitionRouteGroupRequest(
+        assert args[0] == transition_route_group.UpdateTransitionRouteGroupRequest(
             language_code="language_code_value",
         )
 
@@ -2617,7 +2614,7 @@ async def test_update_transition_route_group_async_use_cached_wrapped_rpc(
 @pytest.mark.asyncio
 async def test_update_transition_route_group_async(
     transport: str = "grpc_asyncio",
-    request_type=gcdc_transition_route_group.UpdateTransitionRouteGroupRequest,
+    request_type=transition_route_group.UpdateTransitionRouteGroupRequest,
 ):
     client = TransitionRouteGroupsAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -2634,7 +2631,7 @@ async def test_update_transition_route_group_async(
     ) as call:
         # Designate an appropriate return value for the call.
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            gcdc_transition_route_group.TransitionRouteGroup(
+            transition_route_group.TransitionRouteGroup(
                 name="name_value",
                 display_name="display_name_value",
             )
@@ -2644,11 +2641,11 @@ async def test_update_transition_route_group_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        request = gcdc_transition_route_group.UpdateTransitionRouteGroupRequest()
+        request = transition_route_group.UpdateTransitionRouteGroupRequest()
         assert args[0] == request
 
     # Establish that the response is the type that we expect.
-    assert isinstance(response, gcdc_transition_route_group.TransitionRouteGroup)
+    assert isinstance(response, transition_route_group.TransitionRouteGroup)
     assert response.name == "name_value"
     assert response.display_name == "display_name_value"
 
@@ -2665,7 +2662,7 @@ def test_update_transition_route_group_field_headers():
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
-    request = gcdc_transition_route_group.UpdateTransitionRouteGroupRequest()
+    request = transition_route_group.UpdateTransitionRouteGroupRequest()
 
     request.transition_route_group.name = "name_value"
 
@@ -2673,7 +2670,7 @@ def test_update_transition_route_group_field_headers():
     with mock.patch.object(
         type(client.transport.update_transition_route_group), "__call__"
     ) as call:
-        call.return_value = gcdc_transition_route_group.TransitionRouteGroup()
+        call.return_value = transition_route_group.TransitionRouteGroup()
         client.update_transition_route_group(request)
 
         # Establish that the underlying gRPC stub method was called.
@@ -2697,7 +2694,7 @@ async def test_update_transition_route_group_field_headers_async():
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
-    request = gcdc_transition_route_group.UpdateTransitionRouteGroupRequest()
+    request = transition_route_group.UpdateTransitionRouteGroupRequest()
 
     request.transition_route_group.name = "name_value"
 
@@ -2706,7 +2703,7 @@ async def test_update_transition_route_group_field_headers_async():
         type(client.transport.update_transition_route_group), "__call__"
     ) as call:
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            gcdc_transition_route_group.TransitionRouteGroup()
+            transition_route_group.TransitionRouteGroup()
         )
         await client.update_transition_route_group(request)
 
@@ -2733,11 +2730,11 @@ def test_update_transition_route_group_flattened():
         type(client.transport.update_transition_route_group), "__call__"
     ) as call:
         # Designate an appropriate return value for the call.
-        call.return_value = gcdc_transition_route_group.TransitionRouteGroup()
+        call.return_value = transition_route_group.TransitionRouteGroup()
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
         client.update_transition_route_group(
-            transition_route_group=gcdc_transition_route_group.TransitionRouteGroup(
+            transition_route_group=transition_route_group.TransitionRouteGroup(
                 name="name_value"
             ),
             update_mask=field_mask_pb2.FieldMask(paths=["paths_value"]),
@@ -2748,7 +2745,7 @@ def test_update_transition_route_group_flattened():
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
         arg = args[0].transition_route_group
-        mock_val = gcdc_transition_route_group.TransitionRouteGroup(name="name_value")
+        mock_val = transition_route_group.TransitionRouteGroup(name="name_value")
         assert arg == mock_val
         arg = args[0].update_mask
         mock_val = field_mask_pb2.FieldMask(paths=["paths_value"])
@@ -2764,8 +2761,8 @@ def test_update_transition_route_group_flattened_error():
     # fields is an error.
     with pytest.raises(ValueError):
         client.update_transition_route_group(
-            gcdc_transition_route_group.UpdateTransitionRouteGroupRequest(),
-            transition_route_group=gcdc_transition_route_group.TransitionRouteGroup(
+            transition_route_group.UpdateTransitionRouteGroupRequest(),
+            transition_route_group=transition_route_group.TransitionRouteGroup(
                 name="name_value"
             ),
             update_mask=field_mask_pb2.FieldMask(paths=["paths_value"]),
@@ -2783,15 +2780,15 @@ async def test_update_transition_route_group_flattened_async():
         type(client.transport.update_transition_route_group), "__call__"
     ) as call:
         # Designate an appropriate return value for the call.
-        call.return_value = gcdc_transition_route_group.TransitionRouteGroup()
+        call.return_value = transition_route_group.TransitionRouteGroup()
 
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            gcdc_transition_route_group.TransitionRouteGroup()
+            transition_route_group.TransitionRouteGroup()
         )
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
         response = await client.update_transition_route_group(
-            transition_route_group=gcdc_transition_route_group.TransitionRouteGroup(
+            transition_route_group=transition_route_group.TransitionRouteGroup(
                 name="name_value"
             ),
             update_mask=field_mask_pb2.FieldMask(paths=["paths_value"]),
@@ -2802,7 +2799,7 @@ async def test_update_transition_route_group_flattened_async():
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
         arg = args[0].transition_route_group
-        mock_val = gcdc_transition_route_group.TransitionRouteGroup(name="name_value")
+        mock_val = transition_route_group.TransitionRouteGroup(name="name_value")
         assert arg == mock_val
         arg = args[0].update_mask
         mock_val = field_mask_pb2.FieldMask(paths=["paths_value"])
@@ -2819,8 +2816,8 @@ async def test_update_transition_route_group_flattened_error_async():
     # fields is an error.
     with pytest.raises(ValueError):
         await client.update_transition_route_group(
-            gcdc_transition_route_group.UpdateTransitionRouteGroupRequest(),
-            transition_route_group=gcdc_transition_route_group.TransitionRouteGroup(
+            transition_route_group.UpdateTransitionRouteGroupRequest(),
+            transition_route_group=transition_route_group.TransitionRouteGroup(
                 name="name_value"
             ),
             update_mask=field_mask_pb2.FieldMask(paths=["paths_value"]),
@@ -3661,7 +3658,7 @@ def test_create_transition_route_group_rest_use_cached_wrapped_rpc():
 
 
 def test_create_transition_route_group_rest_required_fields(
-    request_type=gcdc_transition_route_group.CreateTransitionRouteGroupRequest,
+    request_type=transition_route_group.CreateTransitionRouteGroupRequest,
 ):
     transport_class = transports.TransitionRouteGroupsRestTransport
 
@@ -3702,7 +3699,7 @@ def test_create_transition_route_group_rest_required_fields(
     request = request_type(**request_init)
 
     # Designate an appropriate value for the returned response.
-    return_value = gcdc_transition_route_group.TransitionRouteGroup()
+    return_value = transition_route_group.TransitionRouteGroup()
     # Mock the http request call within the method and fake a response.
     with mock.patch.object(Session, "request") as req:
         # We need to mock transcode() because providing default values
@@ -3724,9 +3721,7 @@ def test_create_transition_route_group_rest_required_fields(
             response_value.status_code = 200
 
             # Convert return value to protobuf type
-            return_value = gcdc_transition_route_group.TransitionRouteGroup.pb(
-                return_value
-            )
+            return_value = transition_route_group.TransitionRouteGroup.pb(return_value)
             json_return_value = json_format.MessageToJson(return_value)
 
             response_value._content = json_return_value.encode("UTF-8")
@@ -3768,7 +3763,7 @@ def test_create_transition_route_group_rest_flattened():
     # Mock the http request call within the method and fake a response.
     with mock.patch.object(type(client.transport._session), "request") as req:
         # Designate an appropriate value for the returned response.
-        return_value = gcdc_transition_route_group.TransitionRouteGroup()
+        return_value = transition_route_group.TransitionRouteGroup()
 
         # get arguments that satisfy an http rule for this method
         sample_request = {
@@ -3778,7 +3773,7 @@ def test_create_transition_route_group_rest_flattened():
         # get truthy value for each flattened field
         mock_args = dict(
             parent="parent_value",
-            transition_route_group=gcdc_transition_route_group.TransitionRouteGroup(
+            transition_route_group=transition_route_group.TransitionRouteGroup(
                 name="name_value"
             ),
         )
@@ -3788,7 +3783,7 @@ def test_create_transition_route_group_rest_flattened():
         response_value = Response()
         response_value.status_code = 200
         # Convert return value to protobuf type
-        return_value = gcdc_transition_route_group.TransitionRouteGroup.pb(return_value)
+        return_value = transition_route_group.TransitionRouteGroup.pb(return_value)
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
@@ -3817,9 +3812,9 @@ def test_create_transition_route_group_rest_flattened_error(transport: str = "re
     # fields is an error.
     with pytest.raises(ValueError):
         client.create_transition_route_group(
-            gcdc_transition_route_group.CreateTransitionRouteGroupRequest(),
+            transition_route_group.CreateTransitionRouteGroupRequest(),
             parent="parent_value",
-            transition_route_group=gcdc_transition_route_group.TransitionRouteGroup(
+            transition_route_group=transition_route_group.TransitionRouteGroup(
                 name="name_value"
             ),
         )
@@ -3867,7 +3862,7 @@ def test_update_transition_route_group_rest_use_cached_wrapped_rpc():
 
 
 def test_update_transition_route_group_rest_required_fields(
-    request_type=gcdc_transition_route_group.UpdateTransitionRouteGroupRequest,
+    request_type=transition_route_group.UpdateTransitionRouteGroupRequest,
 ):
     transport_class = transports.TransitionRouteGroupsRestTransport
 
@@ -3908,7 +3903,7 @@ def test_update_transition_route_group_rest_required_fields(
     request = request_type(**request_init)
 
     # Designate an appropriate value for the returned response.
-    return_value = gcdc_transition_route_group.TransitionRouteGroup()
+    return_value = transition_route_group.TransitionRouteGroup()
     # Mock the http request call within the method and fake a response.
     with mock.patch.object(Session, "request") as req:
         # We need to mock transcode() because providing default values
@@ -3930,9 +3925,7 @@ def test_update_transition_route_group_rest_required_fields(
             response_value.status_code = 200
 
             # Convert return value to protobuf type
-            return_value = gcdc_transition_route_group.TransitionRouteGroup.pb(
-                return_value
-            )
+            return_value = transition_route_group.TransitionRouteGroup.pb(return_value)
             json_return_value = json_format.MessageToJson(return_value)
 
             response_value._content = json_return_value.encode("UTF-8")
@@ -3974,7 +3967,7 @@ def test_update_transition_route_group_rest_flattened():
     # Mock the http request call within the method and fake a response.
     with mock.patch.object(type(client.transport._session), "request") as req:
         # Designate an appropriate value for the returned response.
-        return_value = gcdc_transition_route_group.TransitionRouteGroup()
+        return_value = transition_route_group.TransitionRouteGroup()
 
         # get arguments that satisfy an http rule for this method
         sample_request = {
@@ -3985,7 +3978,7 @@ def test_update_transition_route_group_rest_flattened():
 
         # get truthy value for each flattened field
         mock_args = dict(
-            transition_route_group=gcdc_transition_route_group.TransitionRouteGroup(
+            transition_route_group=transition_route_group.TransitionRouteGroup(
                 name="name_value"
             ),
             update_mask=field_mask_pb2.FieldMask(paths=["paths_value"]),
@@ -3996,7 +3989,7 @@ def test_update_transition_route_group_rest_flattened():
         response_value = Response()
         response_value.status_code = 200
         # Convert return value to protobuf type
-        return_value = gcdc_transition_route_group.TransitionRouteGroup.pb(return_value)
+        return_value = transition_route_group.TransitionRouteGroup.pb(return_value)
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
@@ -4025,8 +4018,8 @@ def test_update_transition_route_group_rest_flattened_error(transport: str = "re
     # fields is an error.
     with pytest.raises(ValueError):
         client.update_transition_route_group(
-            gcdc_transition_route_group.UpdateTransitionRouteGroupRequest(),
-            transition_route_group=gcdc_transition_route_group.TransitionRouteGroup(
+            transition_route_group.UpdateTransitionRouteGroupRequest(),
+            transition_route_group=transition_route_group.TransitionRouteGroup(
                 name="name_value"
             ),
             update_mask=field_mask_pb2.FieldMask(paths=["paths_value"]),
@@ -4381,13 +4374,13 @@ def test_create_transition_route_group_empty_call_grpc():
     with mock.patch.object(
         type(client.transport.create_transition_route_group), "__call__"
     ) as call:
-        call.return_value = gcdc_transition_route_group.TransitionRouteGroup()
+        call.return_value = transition_route_group.TransitionRouteGroup()
         client.create_transition_route_group(request=None)
 
         # Establish that the underlying stub method was called.
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        request_msg = gcdc_transition_route_group.CreateTransitionRouteGroupRequest()
+        request_msg = transition_route_group.CreateTransitionRouteGroupRequest()
 
         assert args[0] == request_msg
 
@@ -4404,13 +4397,13 @@ def test_update_transition_route_group_empty_call_grpc():
     with mock.patch.object(
         type(client.transport.update_transition_route_group), "__call__"
     ) as call:
-        call.return_value = gcdc_transition_route_group.TransitionRouteGroup()
+        call.return_value = transition_route_group.TransitionRouteGroup()
         client.update_transition_route_group(request=None)
 
         # Establish that the underlying stub method was called.
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        request_msg = gcdc_transition_route_group.UpdateTransitionRouteGroupRequest()
+        request_msg = transition_route_group.UpdateTransitionRouteGroupRequest()
 
         assert args[0] == request_msg
 
@@ -4526,7 +4519,7 @@ async def test_create_transition_route_group_empty_call_grpc_asyncio():
     ) as call:
         # Designate an appropriate return value for the call.
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            gcdc_transition_route_group.TransitionRouteGroup(
+            transition_route_group.TransitionRouteGroup(
                 name="name_value",
                 display_name="display_name_value",
             )
@@ -4536,7 +4529,7 @@ async def test_create_transition_route_group_empty_call_grpc_asyncio():
         # Establish that the underlying stub method was called.
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        request_msg = gcdc_transition_route_group.CreateTransitionRouteGroupRequest()
+        request_msg = transition_route_group.CreateTransitionRouteGroupRequest()
 
         assert args[0] == request_msg
 
@@ -4556,7 +4549,7 @@ async def test_update_transition_route_group_empty_call_grpc_asyncio():
     ) as call:
         # Designate an appropriate return value for the call.
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            gcdc_transition_route_group.TransitionRouteGroup(
+            transition_route_group.TransitionRouteGroup(
                 name="name_value",
                 display_name="display_name_value",
             )
@@ -4566,7 +4559,7 @@ async def test_update_transition_route_group_empty_call_grpc_asyncio():
         # Establish that the underlying stub method was called.
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        request_msg = gcdc_transition_route_group.UpdateTransitionRouteGroupRequest()
+        request_msg = transition_route_group.UpdateTransitionRouteGroupRequest()
 
         assert args[0] == request_msg
 
@@ -4886,7 +4879,7 @@ def test_get_transition_route_group_rest_interceptors(null_interceptor):
 
 
 def test_create_transition_route_group_rest_bad_request(
-    request_type=gcdc_transition_route_group.CreateTransitionRouteGroupRequest,
+    request_type=transition_route_group.CreateTransitionRouteGroupRequest,
 ):
     client = TransitionRouteGroupsClient(
         credentials=ga_credentials.AnonymousCredentials(), transport="rest"
@@ -4915,7 +4908,7 @@ def test_create_transition_route_group_rest_bad_request(
 @pytest.mark.parametrize(
     "request_type",
     [
-        gcdc_transition_route_group.CreateTransitionRouteGroupRequest,
+        transition_route_group.CreateTransitionRouteGroupRequest,
         dict,
     ],
 )
@@ -5042,11 +5035,9 @@ def test_create_transition_route_group_rest_call_success(request_type):
     # See https://github.com/googleapis/gapic-generator-python/issues/1748
 
     # Determine if the message type is proto-plus or protobuf
-    test_field = (
-        gcdc_transition_route_group.CreateTransitionRouteGroupRequest.meta.fields[
-            "transition_route_group"
-        ]
-    )
+    test_field = transition_route_group.CreateTransitionRouteGroupRequest.meta.fields[
+        "transition_route_group"
+    ]
 
     def get_message_fields(field):
         # Given a field which is a message (composite type), return a list with
@@ -5115,7 +5106,7 @@ def test_create_transition_route_group_rest_call_success(request_type):
     # Mock the http request call within the method and fake a response.
     with mock.patch.object(type(client.transport._session), "request") as req:
         # Designate an appropriate value for the returned response.
-        return_value = gcdc_transition_route_group.TransitionRouteGroup(
+        return_value = transition_route_group.TransitionRouteGroup(
             name="name_value",
             display_name="display_name_value",
         )
@@ -5125,7 +5116,7 @@ def test_create_transition_route_group_rest_call_success(request_type):
         response_value.status_code = 200
 
         # Convert return value to protobuf type
-        return_value = gcdc_transition_route_group.TransitionRouteGroup.pb(return_value)
+        return_value = transition_route_group.TransitionRouteGroup.pb(return_value)
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
@@ -5133,7 +5124,7 @@ def test_create_transition_route_group_rest_call_success(request_type):
         response = client.create_transition_route_group(request)
 
     # Establish that the response is the type that we expect.
-    assert isinstance(response, gcdc_transition_route_group.TransitionRouteGroup)
+    assert isinstance(response, transition_route_group.TransitionRouteGroup)
     assert response.name == "name_value"
     assert response.display_name == "display_name_value"
 
@@ -5165,8 +5156,8 @@ def test_create_transition_route_group_rest_interceptors(null_interceptor):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
-        pb_message = gcdc_transition_route_group.CreateTransitionRouteGroupRequest.pb(
-            gcdc_transition_route_group.CreateTransitionRouteGroupRequest()
+        pb_message = transition_route_group.CreateTransitionRouteGroupRequest.pb(
+            transition_route_group.CreateTransitionRouteGroupRequest()
         )
         transcode.return_value = {
             "method": "post",
@@ -5178,20 +5169,20 @@ def test_create_transition_route_group_rest_interceptors(null_interceptor):
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
         req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
-        return_value = gcdc_transition_route_group.TransitionRouteGroup.to_json(
-            gcdc_transition_route_group.TransitionRouteGroup()
+        return_value = transition_route_group.TransitionRouteGroup.to_json(
+            transition_route_group.TransitionRouteGroup()
         )
         req.return_value.content = return_value
 
-        request = gcdc_transition_route_group.CreateTransitionRouteGroupRequest()
+        request = transition_route_group.CreateTransitionRouteGroupRequest()
         metadata = [
             ("key", "val"),
             ("cephalopod", "squid"),
         ]
         pre.return_value = request, metadata
-        post.return_value = gcdc_transition_route_group.TransitionRouteGroup()
+        post.return_value = transition_route_group.TransitionRouteGroup()
         post_with_metadata.return_value = (
-            gcdc_transition_route_group.TransitionRouteGroup(),
+            transition_route_group.TransitionRouteGroup(),
             metadata,
         )
 
@@ -5209,7 +5200,7 @@ def test_create_transition_route_group_rest_interceptors(null_interceptor):
 
 
 def test_update_transition_route_group_rest_bad_request(
-    request_type=gcdc_transition_route_group.UpdateTransitionRouteGroupRequest,
+    request_type=transition_route_group.UpdateTransitionRouteGroupRequest,
 ):
     client = TransitionRouteGroupsClient(
         credentials=ga_credentials.AnonymousCredentials(), transport="rest"
@@ -5240,7 +5231,7 @@ def test_update_transition_route_group_rest_bad_request(
 @pytest.mark.parametrize(
     "request_type",
     [
-        gcdc_transition_route_group.UpdateTransitionRouteGroupRequest,
+        transition_route_group.UpdateTransitionRouteGroupRequest,
         dict,
     ],
 )
@@ -5369,11 +5360,9 @@ def test_update_transition_route_group_rest_call_success(request_type):
     # See https://github.com/googleapis/gapic-generator-python/issues/1748
 
     # Determine if the message type is proto-plus or protobuf
-    test_field = (
-        gcdc_transition_route_group.UpdateTransitionRouteGroupRequest.meta.fields[
-            "transition_route_group"
-        ]
-    )
+    test_field = transition_route_group.UpdateTransitionRouteGroupRequest.meta.fields[
+        "transition_route_group"
+    ]
 
     def get_message_fields(field):
         # Given a field which is a message (composite type), return a list with
@@ -5442,7 +5431,7 @@ def test_update_transition_route_group_rest_call_success(request_type):
     # Mock the http request call within the method and fake a response.
     with mock.patch.object(type(client.transport._session), "request") as req:
         # Designate an appropriate value for the returned response.
-        return_value = gcdc_transition_route_group.TransitionRouteGroup(
+        return_value = transition_route_group.TransitionRouteGroup(
             name="name_value",
             display_name="display_name_value",
         )
@@ -5452,7 +5441,7 @@ def test_update_transition_route_group_rest_call_success(request_type):
         response_value.status_code = 200
 
         # Convert return value to protobuf type
-        return_value = gcdc_transition_route_group.TransitionRouteGroup.pb(return_value)
+        return_value = transition_route_group.TransitionRouteGroup.pb(return_value)
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
@@ -5460,7 +5449,7 @@ def test_update_transition_route_group_rest_call_success(request_type):
         response = client.update_transition_route_group(request)
 
     # Establish that the response is the type that we expect.
-    assert isinstance(response, gcdc_transition_route_group.TransitionRouteGroup)
+    assert isinstance(response, transition_route_group.TransitionRouteGroup)
     assert response.name == "name_value"
     assert response.display_name == "display_name_value"
 
@@ -5492,8 +5481,8 @@ def test_update_transition_route_group_rest_interceptors(null_interceptor):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
-        pb_message = gcdc_transition_route_group.UpdateTransitionRouteGroupRequest.pb(
-            gcdc_transition_route_group.UpdateTransitionRouteGroupRequest()
+        pb_message = transition_route_group.UpdateTransitionRouteGroupRequest.pb(
+            transition_route_group.UpdateTransitionRouteGroupRequest()
         )
         transcode.return_value = {
             "method": "post",
@@ -5505,20 +5494,20 @@ def test_update_transition_route_group_rest_interceptors(null_interceptor):
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
         req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
-        return_value = gcdc_transition_route_group.TransitionRouteGroup.to_json(
-            gcdc_transition_route_group.TransitionRouteGroup()
+        return_value = transition_route_group.TransitionRouteGroup.to_json(
+            transition_route_group.TransitionRouteGroup()
         )
         req.return_value.content = return_value
 
-        request = gcdc_transition_route_group.UpdateTransitionRouteGroupRequest()
+        request = transition_route_group.UpdateTransitionRouteGroupRequest()
         metadata = [
             ("key", "val"),
             ("cephalopod", "squid"),
         ]
         pre.return_value = request, metadata
-        post.return_value = gcdc_transition_route_group.TransitionRouteGroup()
+        post.return_value = transition_route_group.TransitionRouteGroup()
         post_with_metadata.return_value = (
-            gcdc_transition_route_group.TransitionRouteGroup(),
+            transition_route_group.TransitionRouteGroup(),
             metadata,
         )
 
@@ -6021,7 +6010,7 @@ def test_create_transition_route_group_empty_call_rest():
         # Establish that the underlying stub method was called.
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        request_msg = gcdc_transition_route_group.CreateTransitionRouteGroupRequest()
+        request_msg = transition_route_group.CreateTransitionRouteGroupRequest()
 
         assert args[0] == request_msg
 
@@ -6043,7 +6032,7 @@ def test_update_transition_route_group_empty_call_rest():
         # Establish that the underlying stub method was called.
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        request_msg = gcdc_transition_route_group.UpdateTransitionRouteGroupRequest()
+        request_msg = transition_route_group.UpdateTransitionRouteGroupRequest()
 
         assert args[0] == request_msg
 

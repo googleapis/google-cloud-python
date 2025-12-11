@@ -35,7 +35,6 @@ from grpc.experimental import aio  # type: ignore
 import proto  # type: ignore
 
 from google.cloud.dialogflowcx_v3.types import webhook
-from google.cloud.dialogflowcx_v3.types import webhook as gcdc_webhook
 
 from .base import DEFAULT_CLIENT_INFO, WebhooksTransport
 from .grpc import WebhooksGrpcTransport
@@ -120,8 +119,8 @@ class _LoggingClientAIOInterceptor(
 class WebhooksGrpcAsyncIOTransport(WebhooksTransport):
     """gRPC AsyncIO backend transport for Webhooks.
 
-    Service for managing
-    [Webhooks][google.cloud.dialogflow.cx.v3.Webhook].
+    Service for managing `Webhooks
+    <google.cloud.dialogflow.cx.v3.Webhook>`__.
 
     This class defines the same methods as the primary client, so the
     primary client can load the underlying transport implementation
@@ -392,7 +391,7 @@ class WebhooksGrpcAsyncIOTransport(WebhooksTransport):
     @property
     def create_webhook(
         self,
-    ) -> Callable[[gcdc_webhook.CreateWebhookRequest], Awaitable[gcdc_webhook.Webhook]]:
+    ) -> Callable[[webhook.CreateWebhookRequest], Awaitable[webhook.Webhook]]:
         r"""Return a callable for the create webhook method over gRPC.
 
         Creates a webhook in the specified agent.
@@ -410,15 +409,15 @@ class WebhooksGrpcAsyncIOTransport(WebhooksTransport):
         if "create_webhook" not in self._stubs:
             self._stubs["create_webhook"] = self._logged_channel.unary_unary(
                 "/google.cloud.dialogflow.cx.v3.Webhooks/CreateWebhook",
-                request_serializer=gcdc_webhook.CreateWebhookRequest.serialize,
-                response_deserializer=gcdc_webhook.Webhook.deserialize,
+                request_serializer=webhook.CreateWebhookRequest.serialize,
+                response_deserializer=webhook.Webhook.deserialize,
             )
         return self._stubs["create_webhook"]
 
     @property
     def update_webhook(
         self,
-    ) -> Callable[[gcdc_webhook.UpdateWebhookRequest], Awaitable[gcdc_webhook.Webhook]]:
+    ) -> Callable[[webhook.UpdateWebhookRequest], Awaitable[webhook.Webhook]]:
         r"""Return a callable for the update webhook method over gRPC.
 
         Updates the specified webhook.
@@ -436,8 +435,8 @@ class WebhooksGrpcAsyncIOTransport(WebhooksTransport):
         if "update_webhook" not in self._stubs:
             self._stubs["update_webhook"] = self._logged_channel.unary_unary(
                 "/google.cloud.dialogflow.cx.v3.Webhooks/UpdateWebhook",
-                request_serializer=gcdc_webhook.UpdateWebhookRequest.serialize,
-                response_deserializer=gcdc_webhook.Webhook.deserialize,
+                request_serializer=webhook.UpdateWebhookRequest.serialize,
+                response_deserializer=webhook.Webhook.deserialize,
             )
         return self._stubs["update_webhook"]
 

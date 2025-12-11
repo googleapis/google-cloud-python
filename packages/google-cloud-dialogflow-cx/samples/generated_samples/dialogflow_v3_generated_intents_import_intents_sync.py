@@ -54,5 +54,4 @@ def sample_import_intents():
     # Handle the response
     print(response)
 
-
 # [END dialogflow_v3_generated_Intents_ImportIntents_sync]

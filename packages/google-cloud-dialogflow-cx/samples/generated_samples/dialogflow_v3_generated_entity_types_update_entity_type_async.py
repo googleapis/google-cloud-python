@@ -53,5 +53,4 @@ async def sample_update_entity_type():
     # Handle the response
     print(response)
 
-
 # [END dialogflow_v3_generated_EntityTypes_UpdateEntityType_async]

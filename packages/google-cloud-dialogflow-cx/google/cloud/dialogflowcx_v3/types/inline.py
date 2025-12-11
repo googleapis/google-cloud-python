@@ -29,9 +29,10 @@ __protobuf__ = proto.module(
 
 
 class InlineDestination(proto.Message):
-    r"""Inline destination for a Dialogflow operation that writes or exports
-    objects (e.g. [intents][google.cloud.dialogflow.cx.v3.Intent])
-    outside of Dialogflow.
+    r"""Inline destination for a Dialogflow operation that writes or
+    exports objects (e.g. `intents
+    <google.cloud.dialogflow.cx.v3.Intent>`__) outside of
+    Dialogflow.
 
     Attributes:
         content (bytes):
@@ -47,8 +48,8 @@ class InlineDestination(proto.Message):
 
 class InlineSource(proto.Message):
     r"""Inline source for a Dialogflow operation that reads or imports
-    objects (e.g. [intents][google.cloud.dialogflow.cx.v3.Intent]) into
-    Dialogflow.
+    objects (e.g. `intents
+    <google.cloud.dialogflow.cx.v3.Intent>`__) into Dialogflow.
 
     Attributes:
         content (bytes):

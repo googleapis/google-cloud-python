@@ -29,9 +29,6 @@ import google.protobuf
 from google.protobuf import empty_pb2  # type: ignore
 
 from google.cloud.dialogflowcx_v3 import gapic_version as package_version
-from google.cloud.dialogflowcx_v3.types import (
-    security_settings as gcdc_security_settings,
-)
 from google.cloud.dialogflowcx_v3.types import security_settings
 
 DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
@@ -207,10 +204,10 @@ class SecuritySettingsServiceTransport(abc.ABC):
     def create_security_settings(
         self,
     ) -> Callable[
-        [gcdc_security_settings.CreateSecuritySettingsRequest],
+        [security_settings.CreateSecuritySettingsRequest],
         Union[
-            gcdc_security_settings.SecuritySettings,
-            Awaitable[gcdc_security_settings.SecuritySettings],
+            security_settings.SecuritySettings,
+            Awaitable[security_settings.SecuritySettings],
         ],
     ]:
         raise NotImplementedError()
@@ -231,10 +228,10 @@ class SecuritySettingsServiceTransport(abc.ABC):
     def update_security_settings(
         self,
     ) -> Callable[
-        [gcdc_security_settings.UpdateSecuritySettingsRequest],
+        [security_settings.UpdateSecuritySettingsRequest],
         Union[
-            gcdc_security_settings.SecuritySettings,
-            Awaitable[gcdc_security_settings.SecuritySettings],
+            security_settings.SecuritySettings,
+            Awaitable[security_settings.SecuritySettings],
         ],
     ]:
         raise NotImplementedError()
