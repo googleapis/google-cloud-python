@@ -21,6 +21,7 @@ from google.cloud.sqlalchemy_spanner.dml import insert_or_update
 from sample_helper import run_sample
 from model import Singer
 
+
 # Shows how to use insert-or-update using SQLAlchemy and Spanner.
 def insert_or_update_sample():
     engine = create_engine(

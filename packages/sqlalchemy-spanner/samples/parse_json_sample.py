@@ -18,6 +18,7 @@ from sqlalchemy.orm import Session
 from sample_helper import run_sample
 from model import Venue
 
+
 # Shows how to use the PARSE_JSON function in Spanner using SQLAlchemy.
 def parse_json_sample():
     engine = create_engine(

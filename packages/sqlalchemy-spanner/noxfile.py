@@ -75,10 +75,12 @@ UPGRADE_CODE = """def upgrade():
     """
 
 
-BLACK_VERSION = "black==22.3.0"
+BLACK_VERSION = "black==23.7.0"
 BLACK_PATHS = ["google", "test", "noxfile.py", "setup.py", "samples"]
-DEFAULT_PYTHON_VERSION = "3.12"
-DEFAULT_PYTHON_VERSION_FOR_SQLALCHEMY_20 = "3.12"
+UNIT_TEST_PYTHON_VERSIONS = ["3.9", "3.10", "3.11", "3.12", "3.13", "3.14"]
+SYSTEM_TEST_PYTHON_VERSIONS = ["3.9", "3.14"]
+DEFAULT_PYTHON_VERSION = "3.14"
+DEFAULT_PYTHON_VERSION_FOR_SQLALCHEMY_20 = "3.14"
 
 
 @nox.session(python=DEFAULT_PYTHON_VERSION_FOR_SQLALCHEMY_20)
@@ -126,7 +128,7 @@ def lint_setup_py(session):
     session.run("python", "setup.py", "check", "--restructuredtext", "--strict")
 
 
-@nox.session(python=DEFAULT_PYTHON_VERSION)
+@nox.session(python=UNIT_TEST_PYTHON_VERSIONS[0])
 def compliance_test_14(session):
     """Run SQLAlchemy dialect compliance test suite."""
 
@@ -208,7 +210,7 @@ def compliance_test_20(session):
     )
 
 
-@nox.session()
+@nox.session(python=SYSTEM_TEST_PYTHON_VERSIONS)
 def system(session):
     """Run SQLAlchemy dialect system test suite."""
 
@@ -245,7 +247,7 @@ def system(session):
     session.run("python", "drop_test_database.py")
 
 
-@nox.session(python=DEFAULT_PYTHON_VERSION)
+@nox.session(python=UNIT_TEST_PYTHON_VERSIONS)
 def unit(session):
     """Run unit tests."""
     # Run SQLAlchemy dialect compliance test suite with OpenTelemetry.
@@ -287,14 +289,14 @@ def mockserver(session):
     )
 
 
-@nox.session(python=DEFAULT_PYTHON_VERSION)
+@nox.session(python=UNIT_TEST_PYTHON_VERSIONS[0])
 def migration_test(session):
     """Test migrations with SQLAlchemy v1.4 and Alembic"""
     session.run("pip", "install", "sqlalchemy>=1.4,<2.0", "--force-reinstall")
     _migration_test(session)
 
 
-@nox.session(python=DEFAULT_PYTHON_VERSION)
+@nox.session(python=UNIT_TEST_PYTHON_VERSIONS[-1])
 def _migration_test(session):
     """Migrate with SQLAlchemy and Alembic and check the result."""
     import glob

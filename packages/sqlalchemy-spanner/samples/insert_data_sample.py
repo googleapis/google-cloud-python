@@ -20,6 +20,7 @@ from sqlalchemy.orm import Session
 from sample_helper import run_sample
 from model import Singer, Album, Track
 
+
 # Shows how to insert data using SQLAlchemy, including relationships that are
 # defined both as foreign keys and as interleaved tables.
 def insert_data():

@@ -14,7 +14,7 @@ jobs:
       - name: Setup Python
         uses: actions/setup-python@v6
         with:
-          python-version: 3.12
+          python-version: 3.14
       - name: Install nox
         run: python -m pip install nox
       - name: Run Lint
@@ -22,18 +22,20 @@ jobs:
 
   unit:
     runs-on: ubuntu-latest
-
+    strategy:
+      matrix:
+        python-version: ["3.9", "3.10", "3.11", "3.12", "3.13", "3.14"]
     steps:
       - name: Checkout code
         uses: actions/checkout@v5
-      - name: Setup Python
+      - name: Setup Python ${{ matrix.python-version }}
         uses: actions/setup-python@v6
         with:
-          python-version: 3.12
+          python-version: ${{ matrix.python-version }}
       - name: Install nox
         run: python -m pip install nox
       - name: Run Unit Tests
-        run: nox -s unit
+        run: nox -s unit-${{ matrix.python-version }}
         env:
           SPANNER_EMULATOR_HOST: localhost:9010
           GOOGLE_CLOUD_PROJECT: appdev-soda-spanner-staging
@@ -47,7 +49,7 @@ jobs:
       - name: Setup Python
         uses: actions/setup-python@v6
         with:
-          python-version: 3.12
+          python-version: 3.14
       - name: Install nox
         run: python -m pip install nox
       - name: Run mockserver tests
@@ -62,7 +64,7 @@ jobs:
       - name: Setup Python
         uses: actions/setup-python@v6
         with:
-          python-version: 3.12
+          python-version: 3.14
       - name: Install nox
         run: python -m pip install nox
       - name: Run samples
@@ -84,7 +86,7 @@ jobs:
       - name: Setup Python
         uses: actions/setup-python@v6
         with:
-          python-version: 3.12
+          python-version: 3.9
       - name: Install nox
         run: python -m pip install nox
       - name: Run Compliance Tests
@@ -109,7 +111,7 @@ jobs:
       - name: Setup Python
         uses: actions/setup-python@v6
         with:
-          python-version: 3.12
+          python-version: 3.14
       - name: Install nox
         run: python -m pip install nox
       - name: Run Compliance Tests
@@ -120,7 +122,9 @@ jobs:
 
   system:
     runs-on: ubuntu-latest
-
+    strategy:
+      matrix:
+        python-version: ["3.9", "3.14"]
     services:
       emulator-0:
         image: gcr.io/cloud-spanner-emulator/emulator:latest
@@ -130,14 +134,14 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v5
-      - name: Setup Python
+      - name: Setup Python ${{ matrix.python-version }}
         uses: actions/setup-python@v6
         with:
-          python-version: 3.12
+          python-version: ${{ matrix.python-version }}
       - name: Install nox
         run: python -m pip install nox
       - name: Run System Tests
-        run: nox -s system
+        run: nox -s system-${{ matrix.python-version }}
         env:
           SPANNER_EMULATOR_HOST: localhost:9010
           GOOGLE_CLOUD_PROJECT: appdev-soda-spanner-staging
@@ -157,7 +161,7 @@ jobs:
       - name: Setup Python
         uses: actions/setup-python@v6
         with:
-          python-version: 3.12
+          python-version: 3.9
       - name: Install nox
         run: python -m pip install nox
       - name: Run Migration Tests

@@ -17,6 +17,7 @@ from sqlalchemy import create_engine, text
 
 from sample_helper import run_sample
 
+
 # Shows how to use Partitioned DML using SQLAlchemy and Spanner.
 def partitioned_dml_sample():
     engine = create_engine(

@@ -20,6 +20,7 @@ from sqlalchemy.orm import Session
 from sample_helper import run_sample
 from model import Singer, Album, Track
 
+
 # Shows how INTERLEAVE IN PARENT can be used in SQLAlchemy.
 # INTERLEAVE IN PARENT can be modelled as if it were a normal relationship
 # in SQLAlchemy. SQLAlchemy can also generate the correct DDL for this.

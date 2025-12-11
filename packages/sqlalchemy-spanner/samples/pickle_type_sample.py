@@ -20,6 +20,7 @@ from sqlalchemy.orm import Session
 from sample_helper import run_sample
 from model import Singer
 
+
 # Shows how to use PickleType with Spanner.
 def pickle_type():
     engine = create_engine(
