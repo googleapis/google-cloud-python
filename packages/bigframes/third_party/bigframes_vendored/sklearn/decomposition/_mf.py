@@ -94,3 +94,23 @@ class MatrixFactorization(BaseEstimator, metaclass=ABCMeta):
         Returns:
             bigframes.dataframe.DataFrame: Predicted DataFrames."""
         raise NotImplementedError(constants.ABSTRACT_METHOD_ERROR_MESSAGE)
+
+    def fit_predict(
+        self,
+        X,
+        y=None,
+    ):
+        """Fit the model with X and generate a predicted rating for every user-item row combination for a matrix factorization model. on X.
+
+        Convenience method; equivalent to calling fit(X) followed by predict(X).
+
+        Args:
+            X (bigframes.dataframe.DataFrame or bigframes.series.Series or pandas.core.frame.DataFrame or pandas.core.series.Series):
+                DataFrame of shape (n_samples, n_features). Training data.
+            y (default None):
+                Not used, present here for API consistency by convention.
+
+        Returns:
+            bigframes.dataframe.DataFrame: DataFrame of shape (n_samples, n_input_columns + n_prediction_columns). Returns predicted labels.
+        """
+        raise NotImplementedError(constants.ABSTRACT_METHOD_ERROR_MESSAGE)

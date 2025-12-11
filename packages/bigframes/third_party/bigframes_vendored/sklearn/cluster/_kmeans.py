@@ -115,6 +115,26 @@ class KMeans(_BaseKMeans):
         """
         raise NotImplementedError(constants.ABSTRACT_METHOD_ERROR_MESSAGE)
 
+    def fit_predict(
+        self,
+        X,
+        y=None,
+    ):
+        """Compute cluster centers and predict cluster index for each sample.
+
+        Convenience method; equivalent to calling fit(X) followed by predict(X).
+
+        Args:
+            X (bigframes.dataframe.DataFrame or bigframes.series.Series or pandas.core.frame.DataFrame or pandas.core.series.Series):
+                DataFrame of shape (n_samples, n_features). Training data.
+            y (default None):
+                Not used, present here for API consistency by convention.
+
+        Returns:
+            bigframes.dataframe.DataFrame: DataFrame of shape (n_samples, n_input_columns + n_prediction_columns). Returns predicted labels.
+        """
+        raise NotImplementedError(constants.ABSTRACT_METHOD_ERROR_MESSAGE)
+
     def score(
         self,
         X,
