@@ -172,7 +172,7 @@ def generate_write_requests(pyarrow_table):
         combined_table = pa.Table.from_batches(batches)
         request = gapic_types.AppendRowsRequest()
         request.arrow_rows.rows.serialized_record_batch = (
-            combined_table.serialize().to_pybytes()
+            combined_table.combine_chunks().to_batches()[0].serialize().to_pybytes()
         )
         return request
 
