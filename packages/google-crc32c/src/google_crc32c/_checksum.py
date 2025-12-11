@@ -38,7 +38,7 @@ class CommonChecksum(object):
             chunk (Optional[bytes]): a chunk of data used to extend
                 the CRC32C checksum.
         """
-        raise NotImplemented()
+        raise NotImplementedError
 
     def digest(self):
         """Big-endian order, per RFC 4960.
