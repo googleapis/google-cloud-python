@@ -4,6 +4,19 @@
 
 [1]: https://pypi.org/project/bigframes/#history
 
+## [2.31.0](https://github.com/googleapis/google-cloud-python/compare/bigframes-v2.30.0...bigframes-v2.31.0) (2025-12-10)
+
+
+### Features
+
+* add `bigframes.bigquery.ml` methods (#2300) ([719b278c844ca80c1bec741873b30a9ee4fd6c56](https://github.com/googleapis/google-cloud-python/commit/719b278c844ca80c1bec741873b30a9ee4fd6c56))
+* add 'weekday' property to DatatimeMethod (#2304) ([fafd7c732d434eca3f8b5d849a87149f106e3d5d](https://github.com/googleapis/google-cloud-python/commit/fafd7c732d434eca3f8b5d849a87149f106e3d5d))
+
+
+### Bug Fixes
+
+* cache DataFrames to temp tables in bigframes.bigquery.ml methods to avoid time travel (#2318) ([d99383195ac3f1683842cfe472cca5a914b04d8e](https://github.com/googleapis/google-cloud-python/commit/d99383195ac3f1683842cfe472cca5a914b04d8e))
+
 ## [2.30.0](https://github.com/googleapis/google-cloud-python/compare/bigframes-v2.29.0...bigframes-v2.30.0) (2025-12-03)
 
 
