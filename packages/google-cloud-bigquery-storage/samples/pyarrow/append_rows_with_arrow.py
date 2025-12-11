@@ -160,17 +160,43 @@ def generate_pyarrow_table(num_rows=TABLE_LENGTH):
 
 
 def generate_write_requests(pyarrow_table):
-    # Determine max_chunksize of the record batches. Because max size of
-    # AppendRowsRequest is 10 MB, we need to split the table if it's too big.
-    # See: https://cloud.google.com/bigquery/docs/reference/storage/rpc/google.cloud.bigquery.storage.v1#appendrowsrequest
-    max_request_bytes = 10 * 2**20  # 10 MB
-    chunk_num = int(pyarrow_table.nbytes / max_request_bytes) + 1
-    chunk_size = int(pyarrow_table.num_rows / chunk_num)
+    # Maximum size for a single AppendRowsRequest is 10 MB.
+    # To be safe, we'll aim for a soft limit of 7 MB.
+    max_request_bytes = 7 * 1024 * 1024  # 7 MB
 
-    # Construct request(s).
-    for batch in pyarrow_table.to_batches(max_chunksize=chunk_size):
+    batches_in_request = []
+    current_size = 0
+
+    # Split table into batches of one row.
+    for row_batch in pyarrow_table.to_batches(max_chunksize=1):
+        serialized_batch = row_batch.serialize().to_pybytes()
+        batch_size = len(serialized_batch)
+
+        if batch_size > max_request_bytes:
+            raise ValueError(
+                f"A single PyArrow batch of one row is larger than the maximum request size (batch size: {batch_size} > max request size: {max_request_bytes}). "
+                "Cannot proceed."
+            )
+
+        if current_size + batch_size > max_request_bytes and batches_in_request:
+            # Combine collected batches and yield request
+            combined_table = pa.Table.from_batches(batches_in_request)
+            request = gapic_types.AppendRowsRequest()
+            request.arrow_rows.rows.serialized_record_batch = combined_table.serialize().to_pybytes()
+            yield request
+
+            # Reset for next request.
+            batches_in_request = []
+            current_size = 0
+
+        batches_in_request.append(row_batch)
+        current_size += batch_size
+
+    # Yield any remaining batches
+    if batches_in_request:
+        combined_table = pa.Table.from_batches(batches_in_request)
         request = gapic_types.AppendRowsRequest()
-        request.arrow_rows.rows.serialized_record_batch = batch.serialize().to_pybytes()
+        request.arrow_rows.rows.serialized_record_batch = combined_table.serialize().to_pybytes()
         yield request
 
 
