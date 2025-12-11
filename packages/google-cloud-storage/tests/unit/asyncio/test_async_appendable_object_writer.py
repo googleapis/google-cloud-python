@@ -313,7 +313,7 @@ async def test_finalize_on_close(mock_write_object_stream, mock_client):
     result = await writer.close(finalize_on_close=True)
 
     # Assert
-    mock_stream.close.assert_not_awaited()  # Based on new implementation
+    mock_stream.close.assert_awaited_once()
     assert not writer._is_stream_open
     assert writer.offset is None
     assert writer.object_resource == mock_resource
