@@ -167,6 +167,15 @@ def generate_write_requests(pyarrow_table):
     # To be safe, we'll aim for a soft limit of 7 MB.
     max_request_bytes = 7 * 1024 * 1024  # 7 MB
 
+    def _create_request(batches):
+        """Helper to create an AppendRowsRequest from a list of batches."""
+        combined_table = pa.Table.from_batches(batches)
+        request = gapic_types.AppendRowsRequest()
+        request.arrow_rows.rows.serialized_record_batch = (
+            combined_table.serialize().to_pybytes()
+        )
+        return request
+
     batches_in_request = []
     current_size = 0
 
@@ -186,12 +195,7 @@ def generate_write_requests(pyarrow_table):
 
         if current_size + batch_size > max_request_bytes and batches_in_request:
             # Combine collected batches and yield request
-            combined_table = pa.Table.from_batches(batches_in_request)
-            request = gapic_types.AppendRowsRequest()
-            request.arrow_rows.rows.serialized_record_batch = (
-                combined_table.serialize().to_pybytes()
-            )
-            yield request
+            yield _create_request(batches_in_request)
 
             # Reset for next request.
             batches_in_request = []
@@ -202,12 +206,7 @@ def generate_write_requests(pyarrow_table):
 
     # Yield any remaining batches
     if batches_in_request:
-        combined_table = pa.Table.from_batches(batches_in_request)
-        request = gapic_types.AppendRowsRequest()
-        request.arrow_rows.rows.serialized_record_batch = (
-            combined_table.serialize().to_pybytes()
-        )
-        yield request
+        yield _create_request(batches_in_request)
 
 
 def verify_result(client, table, futures):
