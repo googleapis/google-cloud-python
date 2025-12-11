@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-cloud-geminidataanalytics/#history
 
+## [0.7.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-geminidataanalytics-v0.6.0...google-cloud-geminidataanalytics-v0.7.0) (2025-12-11)
+
+
+### Features
+
+* add QueryData method ([4927067384eb6ed2018bb886f90265b7bcfc800e](https://github.com/googleapis/google-cloud-python/commit/4927067384eb6ed2018bb886f90265b7bcfc800e))
+
 ## [0.6.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-geminidataanalytics-v0.5.0...google-cloud-geminidataanalytics-v0.6.0) (2025-11-12)
 
 

@@ -4,6 +4,28 @@
 
 [1]: https://pypi.org/project/google-cloud-run/#history
 
+## [0.13.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-run-v0.12.0...google-cloud-run-v0.13.0) (2025-12-11)
+
+
+### Documentation
+
+* A comment for field `custom_audiences` in message `.google.cloud.run.v2.WorkerPool` is changed ([4927067384eb6ed2018bb886f90265b7bcfc800e](https://github.com/googleapis/google-cloud-python/commit/4927067384eb6ed2018bb886f90265b7bcfc800e))
+* A comment for field `limits` in message `.google.cloud.run.v2.ResourceRequirements` is changed ([4927067384eb6ed2018bb886f90265b7bcfc800e](https://github.com/googleapis/google-cloud-python/commit/4927067384eb6ed2018bb886f90265b7bcfc800e))
+* A comment for field `etag` in message `.google.cloud.run.v2.Service` is changed ([4927067384eb6ed2018bb886f90265b7bcfc800e](https://github.com/googleapis/google-cloud-python/commit/4927067384eb6ed2018bb886f90265b7bcfc800e))
+* A comment for field `etag` in message `.google.cloud.run.v2.Job` is changed ([4927067384eb6ed2018bb886f90265b7bcfc800e](https://github.com/googleapis/google-cloud-python/commit/4927067384eb6ed2018bb886f90265b7bcfc800e))
+* A comment for field `items` in message `.google.cloud.run.v2.SecretVolumeSource` is changed ([4927067384eb6ed2018bb886f90265b7bcfc800e](https://github.com/googleapis/google-cloud-python/commit/4927067384eb6ed2018bb886f90265b7bcfc800e))
+* A comment for field `invoker_iam_disabled` in message `.google.cloud.run.v2.Service` is changed ([4927067384eb6ed2018bb886f90265b7bcfc800e](https://github.com/googleapis/google-cloud-python/commit/4927067384eb6ed2018bb886f90265b7bcfc800e))
+* A comment for field `etag` in message `.google.cloud.run.v2.WorkerPool` is changed ([4927067384eb6ed2018bb886f90265b7bcfc800e](https://github.com/googleapis/google-cloud-python/commit/4927067384eb6ed2018bb886f90265b7bcfc800e))
+* A comment for field `observed_generation` in message `.google.cloud.run.v2.WorkerPool` is changed ([4927067384eb6ed2018bb886f90265b7bcfc800e](https://github.com/googleapis/google-cloud-python/commit/4927067384eb6ed2018bb886f90265b7bcfc800e))
+* A comment for field `name` in message `.google.cloud.run.v2.Service` is changed ([4927067384eb6ed2018bb886f90265b7bcfc800e](https://github.com/googleapis/google-cloud-python/commit/4927067384eb6ed2018bb886f90265b7bcfc800e))
+* A comment for field `latest_ready_revision` in message `.google.cloud.run.v2.WorkerPool` is changed ([4927067384eb6ed2018bb886f90265b7bcfc800e](https://github.com/googleapis/google-cloud-python/commit/4927067384eb6ed2018bb886f90265b7bcfc800e))
+* A comment for field `reconciling` in message `.google.cloud.run.v2.WorkerPool` is changed ([4927067384eb6ed2018bb886f90265b7bcfc800e](https://github.com/googleapis/google-cloud-python/commit/4927067384eb6ed2018bb886f90265b7bcfc800e))
+
+
+### Features
+
+* add SourceCode proto to Run container config ([4927067384eb6ed2018bb886f90265b7bcfc800e](https://github.com/googleapis/google-cloud-python/commit/4927067384eb6ed2018bb886f90265b7bcfc800e))
+
 ## [0.12.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-run-v0.11.0...google-cloud-run-v0.12.0) (2025-10-20)
 
 
