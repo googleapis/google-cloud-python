@@ -61,6 +61,7 @@ def rst(
                 text,
                 "rst",
                 format=source_format,
+                verify_format=False,
                 extra_args=["--columns=%d" % (width - indent)],
             )
             .strip()
