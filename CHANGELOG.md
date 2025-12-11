@@ -2,7 +2,7 @@ Please refer to each API's `CHANGELOG.md` file under the `packages/` directory
 
 Changelogs
 -----
-- [google-ads-admanager==0.6.0](https://github.com/googleapis/google-cloud-python/tree/main/packages/google-ads-admanager/CHANGELOG.md)
+- [google-ads-admanager==0.7.0](https://github.com/googleapis/google-cloud-python/tree/main/packages/google-ads-admanager/CHANGELOG.md)
 - [google-ads-marketingplatform-admin==0.3.0](https://github.com/googleapis/google-cloud-python/tree/main/packages/google-ads-marketingplatform-admin/CHANGELOG.md)
 - [google-ai-generativelanguage==0.9.0](https://github.com/googleapis/google-cloud-python/tree/main/packages/google-ai-generativelanguage/CHANGELOG.md)
 - [google-analytics-admin==0.26.0](https://github.com/googleapis/google-cloud-python/tree/main/packages/google-analytics-admin/CHANGELOG.md)
@@ -98,7 +98,7 @@ Changelogs
 - [google-cloud-financialservices==0.2.0](https://github.com/googleapis/google-cloud-python/tree/main/packages/google-cloud-financialservices/CHANGELOG.md)
 - [google-cloud-functions==1.21.0](https://github.com/googleapis/google-cloud-python/tree/main/packages/google-cloud-functions/CHANGELOG.md)
 - [google-cloud-gdchardwaremanagement==0.2.0](https://github.com/googleapis/google-cloud-python/tree/main/packages/google-cloud-gdchardwaremanagement/CHANGELOG.md)
-- [google-cloud-geminidataanalytics==0.6.0](https://github.com/googleapis/google-cloud-python/tree/main/packages/google-cloud-geminidataanalytics/CHANGELOG.md)
+- [google-cloud-geminidataanalytics==0.7.0](https://github.com/googleapis/google-cloud-python/tree/main/packages/google-cloud-geminidataanalytics/CHANGELOG.md)
 - [google-cloud-gke-backup==0.6.0](https://github.com/googleapis/google-cloud-python/tree/main/packages/google-cloud-gke-backup/CHANGELOG.md)
 - [google-cloud-gke-connect-gateway==0.11.0](https://github.com/googleapis/google-cloud-python/tree/main/packages/google-cloud-gke-connect-gateway/CHANGELOG.md)
 - [google-cloud-gke-hub==1.17.3](https://github.com/googleapis/google-cloud-python/tree/main/packages/google-cloud-gke-hub/CHANGELOG.md)
@@ -157,7 +157,7 @@ Changelogs
 - [google-cloud-redis==2.19.0](https://github.com/googleapis/google-cloud-python/tree/main/packages/google-cloud-redis/CHANGELOG.md)
 - [google-cloud-resource-manager==1.15.0](https://github.com/googleapis/google-cloud-python/tree/main/packages/google-cloud-resource-manager/CHANGELOG.md)
 - [google-cloud-retail==2.7.0](https://github.com/googleapis/google-cloud-python/tree/main/packages/google-cloud-retail/CHANGELOG.md)
-- [google-cloud-run==0.12.0](https://github.com/googleapis/google-cloud-python/tree/main/packages/google-cloud-run/CHANGELOG.md)
+- [google-cloud-run==0.13.0](https://github.com/googleapis/google-cloud-python/tree/main/packages/google-cloud-run/CHANGELOG.md)
 - [google-cloud-saasplatform-saasservicemgmt==0.2.0](https://github.com/googleapis/google-cloud-python/tree/main/packages/google-cloud-saasplatform-saasservicemgmt/CHANGELOG.md)
 - [google-cloud-scheduler==2.17.0](https://github.com/googleapis/google-cloud-python/tree/main/packages/google-cloud-scheduler/CHANGELOG.md)
 - [google-cloud-secret-manager==2.24.0](https://github.com/googleapis/google-cloud-python/tree/main/packages/google-cloud-secret-manager/CHANGELOG.md)

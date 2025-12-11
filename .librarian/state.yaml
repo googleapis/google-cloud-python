@@ -1,7 +1,7 @@
 image: us-central1-docker.pkg.dev/cloud-sdk-librarian-prod/images-prod/python-librarian-generator@sha256:72e9b62c0f8f3799651ee62d777a2905f5b72ff19ea46f2e7b7d682d7d1e9414
 libraries:
   - id: google-ads-admanager
-    version: 0.6.0
+    version: 0.7.0
     last_generated_commit: effe5c4fa816021e724ca856d5640f2e55b14a8b
     apis:
       - path: google/ads/admanager/v1
@@ -1878,7 +1878,7 @@ libraries:
       - packages/google-cloud-gdchardwaremanagement/
     tag_format: '{id}-v{version}'
   - id: google-cloud-geminidataanalytics
-    version: 0.6.0
+    version: 0.7.0
     last_generated_commit: effe5c4fa816021e724ca856d5640f2e55b14a8b
     apis:
       - path: google/cloud/geminidataanalytics/v1beta
@@ -2990,7 +2990,7 @@ libraries:
       - packages/google-cloud-retail/
     tag_format: '{id}-v{version}'
   - id: google-cloud-run
-    version: 0.12.0
+    version: 0.13.0
     last_generated_commit: effe5c4fa816021e724ca856d5640f2e55b14a8b
     apis:
       - path: google/cloud/run/v2
