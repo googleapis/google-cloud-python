@@ -188,7 +188,9 @@ def generate_write_requests(pyarrow_table):
             # Combine collected batches and yield request
             combined_table = pa.Table.from_batches(batches_in_request)
             request = gapic_types.AppendRowsRequest()
-            request.arrow_rows.rows.serialized_record_batch = combined_table.serialize().to_pybytes()
+            request.arrow_rows.rows.serialized_record_batch = (
+                combined_table.serialize().to_pybytes()
+            )
             yield request
 
             # Reset for next request.
@@ -202,7 +204,9 @@ def generate_write_requests(pyarrow_table):
     if batches_in_request:
         combined_table = pa.Table.from_batches(batches_in_request)
         request = gapic_types.AppendRowsRequest()
-        request.arrow_rows.rows.serialized_record_batch = combined_table.serialize().to_pybytes()
+        request.arrow_rows.rows.serialized_record_batch = (
+            combined_table.serialize().to_pybytes()
+        )
         yield request
 
 
