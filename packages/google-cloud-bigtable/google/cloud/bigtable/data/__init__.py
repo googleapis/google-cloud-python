@@ -31,6 +31,7 @@ from google.cloud.bigtable.data.row import Cell
 
 from google.cloud.bigtable.data.mutations import Mutation
 from google.cloud.bigtable.data.mutations import RowMutationEntry
+from google.cloud.bigtable.data.mutations import AddToCell
 from google.cloud.bigtable.data.mutations import SetCell
 from google.cloud.bigtable.data.mutations import DeleteRangeFromColumn
 from google.cloud.bigtable.data.mutations import DeleteAllFromFamily
@@ -89,6 +90,7 @@ __all__ = (
     "RowRange",
     "Mutation",
     "RowMutationEntry",
+    "AddToCell",
     "SetCell",
     "DeleteRangeFromColumn",
     "DeleteAllFromFamily",
