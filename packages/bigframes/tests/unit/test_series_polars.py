@@ -5109,3 +5109,18 @@ def test_series_item_with_empty(session):
 
     with pytest.raises(ValueError, match=re.escape(expected_message)):
         bf_s_empty.item()
+
+
+def test_series_dt_total_seconds(scalars_df_index, scalars_pandas_df_index):
+    bf_result = scalars_df_index["duration_col"].dt.total_seconds().to_pandas()
+
+    pd_result = scalars_pandas_df_index["duration_col"].dt.total_seconds()
+
+    # Index will be object type in pandas, string type in bigframes, but same values
+    pd.testing.assert_series_equal(
+        bf_result,
+        pd_result,
+        check_index_type=False,
+        # bigframes uses Float64, newer pandas may use double[pyarrow]
+        check_dtype=False,
+    )

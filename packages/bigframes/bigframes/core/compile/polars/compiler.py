@@ -152,6 +152,11 @@ if polars_installed:
                 value = None
             if expression.dtype is None:
                 return pl.lit(None)
+
+            # Polars lit does not handle pandas timedelta well at v1.36
+            if isinstance(value, pd.Timedelta):
+                value = value.to_pytimedelta()
+
             return pl.lit(value, _bigframes_dtype_to_polars_dtype(expression.dtype))
 
         @compile_expression.register
