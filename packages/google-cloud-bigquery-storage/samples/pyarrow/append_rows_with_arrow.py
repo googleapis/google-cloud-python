@@ -20,8 +20,8 @@ from google.cloud import bigquery
 from google.cloud.bigquery import enums
 from google.cloud.bigquery_storage_v1 import types as gapic_types
 from google.cloud.bigquery_storage_v1.writer import AppendRowsStream
-import pandas as pd
 
+import pandas as pd
 import pyarrow as pa
 
 TABLE_LENGTH = 100_000
@@ -174,8 +174,11 @@ def generate_write_requests(pyarrow_table):
 
         if batch_size > max_request_bytes:
             raise ValueError(
-                f"A single PyArrow batch of one row is larger than the maximum request size (batch size: {batch_size} > max request size: {max_request_bytes}). "
-                "Cannot proceed."
+                (
+                    "A single PyArrow batch of one row is larger than the "
+                    f"maximum request size (batch size: {batch_size} > "
+                    f"max request size: {max_request_bytes}). Cannot proceed."
+                )
             )
 
         if current_size + batch_size > max_request_bytes and batches_in_request:
