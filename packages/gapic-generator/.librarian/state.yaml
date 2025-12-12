@@ -1,4 +1,4 @@
-image: us-central1-docker.pkg.dev/cloud-sdk-librarian-prod/images-prod/python-librarian-generator@sha256:4e3486fee9eba44b75a18c67f0c60fa0c4af675132305e3ff3fae2e9b94f94bb
+image: us-central1-docker.pkg.dev/cloud-sdk-librarian-prod/images-prod/python-librarian-generator@sha256:68c7c79adf43af1be4c0527673342dd180aebebf652ea623614eaebff924ca27
 libraries:
   - id: gapic-generator
     version: 1.30.0
