@@ -3980,7 +3980,7 @@ libraries:
     tag_format: '{id}-v{version}'
   - id: google-shopping-merchant-accounts
     version: 1.2.0
-    last_generated_commit: 535d161c24965e9ed1a0b27032cc1c8b4beab818
+    last_generated_commit: 55ab9c6263bafb0ef1aa2d8722d190c1697bcbcb
     apis:
       - path: google/shopping/merchant/accounts/v1
         service_config: merchantapi_v1.yaml
