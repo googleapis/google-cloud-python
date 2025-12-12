@@ -2303,7 +2303,7 @@ class Series(vendored_pandas_series.Series):
         *,
         allow_large_results: Optional[bool] = None,
     ) -> typing.Mapping:
-        return typing.cast(dict, self.to_pandas(allow_large_results=allow_large_results).to_dict(into))  # type: ignore
+        return typing.cast(dict, self.to_pandas(allow_large_results=allow_large_results).to_dict(into=into))  # type: ignore
 
     def to_excel(
         self, excel_writer, sheet_name="Sheet1", *, allow_large_results=None, **kwargs

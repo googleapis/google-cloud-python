@@ -14,6 +14,7 @@
 
 import base64
 import decimal
+import re
 from typing import Iterable, Optional, Sequence, Set, Union
 
 import geopandas as gpd  # type: ignore
@@ -69,6 +70,12 @@ ML_MULTIMODAL_GENERATE_EMBEDDING_OUTPUT = [
 ]
 
 
+def pandas_major_version() -> int:
+    match = re.search(r"^v?(\d+)", pd.__version__.strip())
+    assert match is not None
+    return int(match.group(1))
+
+
 # Prefer this function for tests that run in both ordered and unordered mode
 def assert_dfs_equivalent(pd_df: pd.DataFrame, bf_df: bpd.DataFrame, **kwargs):
     bf_df_local = bf_df.to_pandas()
@@ -83,7 +90,7 @@ def assert_series_equivalent(pd_series: pd.Series, bf_series: bpd.Series, **kwar
 
 
 def _normalize_all_nulls(col: pd.Series) -> pd.Series:
-    if col.dtype == bigframes.dtypes.FLOAT_DTYPE:
+    if col.dtype in (bigframes.dtypes.FLOAT_DTYPE, bigframes.dtypes.INT_DTYPE):
         col = col.astype("float64")
     if pd_types.is_object_dtype(col):
         col = col.fillna(float("nan"))
@@ -133,6 +140,15 @@ def assert_series_equal(
         else:
             left = left.sort_index()
             right = right.sort_index()
+
+    if isinstance(left.index, pd.RangeIndex) or pd_types.is_integer_dtype(
+        left.index.dtype,
+    ):
+        left.index = left.index.astype("Int64")
+    if isinstance(right.index, pd.RangeIndex) or pd_types.is_integer_dtype(
+        right.index.dtype,
+    ):
+        right.index = right.index.astype("Int64")
 
     if nulls_are_nan:
         left = _normalize_all_nulls(left)

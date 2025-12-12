@@ -593,8 +593,8 @@ def test_drop_bigframes_index_with_na(scalars_dfs):
     scalars_pandas_df = scalars_pandas_df.copy()
     scalars_df = scalars_df.set_index("bytes_col")
     scalars_pandas_df = scalars_pandas_df.set_index("bytes_col")
-    drop_index = scalars_df.iloc[[3, 5]].index
-    drop_pandas_index = scalars_pandas_df.iloc[[3, 5]].index
+    drop_index = scalars_df.iloc[[2, 5]].index
+    drop_pandas_index = scalars_pandas_df.iloc[[2, 5]].index
 
     pd_result = scalars_pandas_df.drop(index=drop_pandas_index)  # drop_pandas_index)
     bf_result = scalars_df.drop(index=drop_index).to_pandas()
@@ -2682,9 +2682,10 @@ def test_dataframe_pct_change(scalars_df_index, scalars_pandas_df_index, periods
     bf_result = scalars_df_index[col_names].pct_change(periods=periods).to_pandas()
     # pandas 3.0 does not automatically ffill anymore
     pd_result = scalars_pandas_df_index[col_names].ffill().pct_change(periods=periods)
-    pd.testing.assert_frame_equal(
+    assert_frame_equal(
         pd_result,
         bf_result,
+        nulls_are_nan=True,
     )
 
 
@@ -4297,8 +4298,13 @@ def test_df_value_counts(scalars_dfs, subset, normalize, ascending, dropna):
         subset, normalize=normalize, ascending=ascending, dropna=dropna
     )
 
-    pd.testing.assert_series_equal(
-        bf_result, pd_result, check_dtype=False, check_index_type=False
+    assert_series_equal(
+        bf_result,
+        pd_result,
+        check_dtype=False,
+        check_index_type=False,
+        # different pandas versions inconsistent for tie-handling
+        ignore_order=True,
     )
 
 
