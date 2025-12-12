@@ -83,15 +83,6 @@ def ephemera_penguins_linear_model(
     return bf_model
 
 
-@pytest.fixture(scope="function")
-def penguins_linear_model_w_global_explain(
-    penguins_bqml_linear_model: core.BqmlModel,
-) -> linear_model.LinearRegression:
-    bf_model = linear_model.LinearRegression(enable_global_explain=True)
-    bf_model._bqml_model = penguins_bqml_linear_model
-    return bf_model
-
-
 @pytest.fixture(scope="session")
 def penguins_logistic_model(
     session, penguins_logistic_model_name
