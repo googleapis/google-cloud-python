@@ -291,13 +291,13 @@ class StreamingDataFrame(StreamingBase):
 
     __repr__.__doc__ = _curate_df_doc(inspect.getdoc(dataframe.DataFrame.__repr__))
 
-    def _repr_html_(self, *args, **kwargs):
-        return _return_type_wrapper(self._df._repr_html_, StreamingDataFrame)(
+    def _repr_mimebundle_(self, *args, **kwargs):
+        return _return_type_wrapper(self._df._repr_mimebundle_, StreamingDataFrame)(
             *args, **kwargs
         )
 
-    _repr_html_.__doc__ = _curate_df_doc(
-        inspect.getdoc(dataframe.DataFrame._repr_html_)
+    _repr_mimebundle_.__doc__ = _curate_df_doc(
+        inspect.getdoc(dataframe.DataFrame._repr_mimebundle_)
     )
 
     @property
