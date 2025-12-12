@@ -137,9 +137,9 @@ def test_date_set_slice_null():
         ("1-3", "Bad date string: '1-3'"),
         ("1", "Bad date string: '1'"),
         ("", "Bad date string: ''"),
-        ("2021-2-99", "day is out of range for month"),
+        ("2021-2-99", "day is out of range for month|day .* must be in range .*"),
         ("2021-99-1", "month must be in 1[.][.]12"),
-        ("10000-1-1", "year 10000 is out of range"),
+        ("10000-1-1", "year 10000 is out of range|year must be in .*"),
     ],
 )
 def test_date_parsing_errors(value, error):

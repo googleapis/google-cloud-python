@@ -33,7 +33,7 @@ dependencies = [
     "numpy >= 1.24.0, <= 2.2.6 ; python_version == '3.10'",
     "numpy >= 1.24.0 ; python_version != '3.10'",
     "packaging >= 24.2.0",
-    "pandas >= 1.5.3",
+    "pandas >= 1.5.3, < 3.0.0",
     "pyarrow >= 13.0.0",
 ]
 
@@ -69,6 +69,7 @@ setup(
         "Programming Language :: Python :: 3.11",
         "Programming Language :: Python :: 3.12",
         "Programming Language :: Python :: 3.13",
+        "Programming Language :: Python :: 3.14",
         "Operating System :: OS Independent",
         "Topic :: Database :: Front-Ends",
     ],

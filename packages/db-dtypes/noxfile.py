@@ -41,6 +41,7 @@ UNIT_TEST_PYTHON_VERSIONS: List[str] = [
     "3.11",
     "3.12",
     "3.13",
+    "3.14",
 ]
 UNIT_TEST_STANDARD_DEPENDENCIES = [
     "mock",
@@ -218,14 +219,11 @@ def prerelease(session, tests_path):
         "--upgrade",
         "pyarrow",
     )
-    # Avoid pandas==2.2.0rc0 as this version causes PyArrow to fail. Once newer
-    # prerelease comes out, this constraint can be removed. See
-    # https://github.com/googleapis/python-db-dtypes-pandas/issues/234
     session.install(
         "--prefer-binary",
         "--pre",
         "--upgrade",
-        "pandas!=2.2.0rc0",
+        "pandas<3.0.0rc0",
     )
     session.install(
         "mock",
