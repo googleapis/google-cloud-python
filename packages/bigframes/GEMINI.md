@@ -16,7 +16,8 @@ We use `nox` to instrument our tests.
   nox -r -s unit-3.13 -- -k <name of test>
   ```
 
-- To run system tests, you can execute::
+- Ignore this step if you lack access to Google Cloud resources. To run system
+  tests, you can execute::
 
    # Run all system tests
    $ nox -r -s system
@@ -26,7 +27,7 @@ We use `nox` to instrument our tests.
 
 - The codebase must have better coverage than it had previously after each
   change. You can test coverage via `nox -s unit system cover` (takes a long
-  time).
+  time). Omit `system` if you lack access to cloud resources.
 
 ## Code Style
 

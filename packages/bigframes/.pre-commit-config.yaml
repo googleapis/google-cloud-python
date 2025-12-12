@@ -14,6 +14,10 @@
 #
 # See https://pre-commit.com for more information
 # See https://pre-commit.com/hooks.html for more hooks
+default_install_hook_types:
+-   pre-commit
+-   commit-msg
+
 repos:
 -   repo: https://github.com/pre-commit/pre-commit-hooks
     rev: v4.0.1
@@ -47,3 +51,9 @@ repos:
     hooks:
     -   id: biome-check
         files: '\.(js|css)$'
+-   repo: https://github.com/compilerla/conventional-pre-commit
+    rev: fdde5f0251edbfc554795afdd6df71826d6602f3
+    hooks:
+      - id: conventional-pre-commit
+        stages: [commit-msg]
+        args: []
