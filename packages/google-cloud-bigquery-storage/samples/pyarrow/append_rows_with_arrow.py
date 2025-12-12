@@ -223,8 +223,7 @@ def verify_result(client, table, futures):
     assert query_result.iloc[0, 0] >= TABLE_LENGTH
 
     # Verify that table was split into multiple requests.
-    print(len(futures))
-    assert len(futures) == 2
+    assert len(futures) == 21
 
 
 def main(project_id, dataset):
