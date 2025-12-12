@@ -37,6 +37,7 @@ set PYTHONUNBUFFERED=1
 set /p TWINE_PASSWORD=<%KOKORO_KEYSTORE_DIR%/73713_google-cloud-pypi-token-keystore-3
 call py -3 setup.py sdist || goto :error
 call py -3 -m twine upload --skip-existing --username __token__ --password "%TWINE_PASSWORD%" dist/* wheels/google_crc32c* || goto :error
+dir wheels
 
 goto :EOF
 

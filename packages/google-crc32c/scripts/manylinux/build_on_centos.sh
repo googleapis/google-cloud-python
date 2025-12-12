@@ -63,6 +63,9 @@ if [[ -z ${BUILD_PYTHON} ]]; then
         elif [[ "${PYTHON_BIN}" == *"313"* && "${PYTHON_BIN}" != *"313t"* ]]; then
             PYTHON_VERSIONS="${PYTHON_VERSIONS} ${PYTHON_BIN}"
             continue
+        elif [[ "${PYTHON_BIN}" == *"314"* && "${PYTHON_BIN}" != *"314t"* ]]; then
+            PYTHON_VERSIONS="${PYTHON_VERSIONS} ${PYTHON_BIN}"
+            continue
         else
             echo "Ignoring unsupported version: ${PYTHON_BIN}"
             echo "====================================="

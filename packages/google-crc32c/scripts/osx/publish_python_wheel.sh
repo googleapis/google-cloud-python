@@ -15,16 +15,20 @@
 
 set -eo pipefail
 
-PYTHON=$(PYENV_VERSION=3.9 pyenv which python)
-PYTHON_BIN=$(dirname ${PYTHON})
+if [ -z "$(pyenv versions --bare | grep 3.8)" ]; then
+    echo "Python 3.8 is not installed. Installing..."
+    pyenv install 3.8
+fi
+pyenv shell 3.8
+
+python -m pip install "setuptools<71"
 
 # Start the releasetool reporter
-${PYTHON} -m pip install --require-hashes -r ${REPO_ROOT}/.kokoro/requirements.txt
-${PYTHON} -m releasetool publish-reporter-script > /tmp/publisher-script; source /tmp/publisher-script
+python -m pip install --require-hashes -r ${REPO_ROOT}/.kokoro/requirements.txt
+python -m releasetool publish-reporter-script > /tmp/publisher-script; source /tmp/publisher-script
 
-TWINE=${PYTHON_BIN}/twine
-
+ls ${REPO_ROOT}/wheels/
 # Disable logging
 set +x
 TWINE_PASSWORD=$(cat "${KOKORO_KEYSTORE_DIR}/73713_google-cloud-pypi-token-keystore-3")
-${PYTHON} -m twine upload --skip-existing --username __token__ --password "${TWINE_PASSWORD}" ${REPO_ROOT}/wheels/*
+python -m twine upload --skip-existing --username __token__ --password "${TWINE_PASSWORD}" ${REPO_ROOT}/wheels/*

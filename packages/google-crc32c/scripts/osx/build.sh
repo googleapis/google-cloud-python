@@ -38,17 +38,18 @@ git submodule update --init --recursive
 
 ${OSX_DIR}/build_c_lib.sh
 
-# Build the wheel for the system Python.
-. /${OSX_DIR}/build_python_wheel.sh
+# reinstall pyenv
+rm -rf /Users/kbuilder/.pyenv
+git clone https://github.com/pyenv/pyenv.git /Users/kbuilder/.pyenv
 
-# Install the wheel in a virtualenv and test it.
-VENV=${REPO_ROOT}/venv
-"python3" -m venv ${VENV}
-${VENV}/bin/pip install --no-index --find-links=${REPO_ROOT}/wheels google-crc32c --force-reinstall
-${VENV}/bin/pip install pytest
-${VENV}/bin/py.test ${REPO_ROOT}/tests
-${VENV}/bin/python ${REPO_ROOT}/scripts/check_crc32c_extension.py
-rm -fr ${VENV}
+SUPPORTED_PYTHON_VERSIONS=("3.9" "3.10" "3.11" "3.12" "3.13" "3.14")
+
+for PYTHON_VERSION in ${SUPPORTED_PYTHON_VERSIONS[@]}; do
+    echo "Build wheel for Python ${PYTHON_VERSION}"
+    export PY_BIN=$PYTHON_VERSION
+    export PY_TAG="cp${PYTHON_VERSION//.}-cp${PYTHON_VERSION//.}"
+    . /${OSX_DIR}/build_python_wheel.sh
+done
 
 # Clean up.
 rm -fr ${CRC32C_INSTALL_PREFIX}
