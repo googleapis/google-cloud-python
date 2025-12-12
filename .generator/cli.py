@@ -290,9 +290,12 @@ def handle_configure(
         )
         prepared_config = _prepare_new_library_config(new_library_config)
 
-        # Create a `CHANGELOG.md` and `docs/CHANGELOG.md` file for the new library
+        is_mono_repo = _is_mono_repo(input)
         library_id = _get_library_id(prepared_config)
-        _create_new_changelog_for_library(library_id, output)
+        path_to_library = f"packages/{library_id}" if is_mono_repo else "."
+        if not Path(f"{repo}/{path_to_library}").exists():
+            # Create a `CHANGELOG.md` and `docs/CHANGELOG.md` file for the new library
+            _create_new_changelog_for_library(library_id, output)
 
         # Write the new library configuration to configure-response.json.
         _write_json_file(f"{librarian}/configure-response.json", prepared_config)
