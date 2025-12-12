@@ -1126,7 +1126,7 @@ def test_to_sql_query_unnamed_index_included(
     )
     roundtrip = session.read_gbq(sql, index_col=idx_ids)
     roundtrip.index.names = [None]
-    utils.assert_pandas_df_equal(roundtrip.to_pandas(), pd_df, check_index_type=False)
+    utils.assert_frame_equal(roundtrip.to_pandas(), pd_df, check_index_type=False)
 
 
 def test_to_sql_query_named_index_included(
@@ -1147,7 +1147,7 @@ def test_to_sql_query_named_index_included(
         columns="duration_col"
     )
     roundtrip = session.read_gbq(sql, index_col=idx_ids)
-    utils.assert_pandas_df_equal(roundtrip.to_pandas(), pd_df)
+    utils.assert_frame_equal(roundtrip.to_pandas(), pd_df)
 
 
 def test_to_sql_query_unnamed_index_excluded(
@@ -1164,7 +1164,7 @@ def test_to_sql_query_unnamed_index_excluded(
         columns="duration_col"
     )
     roundtrip = session.read_gbq(sql)
-    utils.assert_pandas_df_equal(
+    utils.assert_frame_equal(
         roundtrip.to_pandas(), pd_df, check_index_type=False, ignore_order=True
     )
 
@@ -1187,7 +1187,7 @@ def test_to_sql_query_named_index_excluded(
         .drop(columns="duration_col")
     )
     roundtrip = session.read_gbq(sql)
-    utils.assert_pandas_df_equal(
+    utils.assert_frame_equal(
         roundtrip.to_pandas(), pd_df, check_index_type=False, ignore_order=True
     )
 

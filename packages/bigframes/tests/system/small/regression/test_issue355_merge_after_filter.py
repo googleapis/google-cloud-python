@@ -15,7 +15,7 @@
 import pandas as pd
 import pytest
 
-from bigframes.testing.utils import assert_pandas_df_equal
+from bigframes.testing.utils import assert_frame_equal
 
 
 @pytest.mark.parametrize(
@@ -67,4 +67,4 @@ def test_merge_after_filter(baseball_schedules_df, merge_how):
         sort=True,
     )
 
-    assert_pandas_df_equal(bf_result, pd_result, ignore_order=True)
+    assert_frame_equal(bf_result, pd_result, ignore_order=True)

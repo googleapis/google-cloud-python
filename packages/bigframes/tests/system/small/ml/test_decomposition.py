@@ -180,7 +180,7 @@ def test_pca_explained_variance_(penguins_pca_model: decomposition.PCA):
             "explained_variance": [3.278657, 1.270829, 1.125354],
         },
     )
-    bigframes.testing.utils.assert_pandas_df_equal(
+    bigframes.testing.utils.assert_frame_equal(
         result,
         expected,
         check_exact=False,
@@ -200,7 +200,7 @@ def test_pca_explained_variance_ratio_(penguins_pca_model: decomposition.PCA):
             "explained_variance_ratio": [0.469357, 0.181926, 0.1611],
         },
     )
-    bigframes.testing.utils.assert_pandas_df_equal(
+    bigframes.testing.utils.assert_frame_equal(
         result,
         expected,
         check_exact=False,

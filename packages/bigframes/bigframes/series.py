@@ -2653,9 +2653,10 @@ class Series(vendored_pandas_series.Series):
     ) -> Series:
         """Applies a unary operator to the series."""
         block, result_id = self._block.apply_unary_op(
-            self._value_column, op, result_label=self._name
+            self._value_column,
+            op,
         )
-        return Series(block.select_column(result_id))
+        return Series(block.select_column(result_id), name=self.name)  # type: ignore
 
     def _apply_binary_op(
         self,
@@ -2683,8 +2684,9 @@ class Series(vendored_pandas_series.Series):
             expr = op.as_expr(
                 other_col if reverse else self_col, self_col if reverse else other_col
             )
-            block, result_id = block.project_expr(expr, name)
-            return Series(block.select_column(result_id))
+            block, result_id = block.project_expr(expr)
+            block = block.select_column(result_id).with_column_labels([name])
+            return Series(block)  # type: ignore
 
         else:  # Scalar binop
             name = self._name
@@ -2692,8 +2694,9 @@ class Series(vendored_pandas_series.Series):
                 ex.const(other) if reverse else self._value_column,
                 self._value_column if reverse else ex.const(other),
             )
-            block, result_id = self._block.project_expr(expr, name)
-            return Series(block.select_column(result_id))
+            block, result_id = self._block.project_expr(expr)
+            block = block.select_column(result_id).with_column_labels([name])
+            return Series(block)  # type: ignore
 
     def _apply_nary_op(
         self,

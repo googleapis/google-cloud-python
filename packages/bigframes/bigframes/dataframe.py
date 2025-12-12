@@ -5088,7 +5088,7 @@ class DataFrame(vendored_pandas_frame.DataFrame):
         return bigframes.series.Series(
             block.select_column(
                 indicator,
-            )
+            ).with_column_labels(pandas.Index([None])),
         )
 
     def rank(

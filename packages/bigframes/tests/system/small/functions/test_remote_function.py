@@ -34,7 +34,7 @@ import bigframes.exceptions
 from bigframes.functions import _utils as bff_utils
 from bigframes.functions import function as bff
 import bigframes.session._io.bigquery
-from bigframes.testing.utils import assert_pandas_df_equal, get_function_name
+from bigframes.testing.utils import assert_frame_equal, get_function_name
 
 _prefixer = test_utils.prefixer.Prefixer("bigframes", "")
 
@@ -159,7 +159,7 @@ def test_remote_function_direct_no_session_param(
     pd_result_col = pd_result_col.astype(pd.Int64Dtype())
     pd_result = pd_int64_col_filtered.to_frame().assign(result=pd_result_col)
 
-    assert_pandas_df_equal(bf_result, pd_result)
+    assert_frame_equal(bf_result, pd_result)
 
 
 @pytest.mark.flaky(retries=2, delay=120)
@@ -208,7 +208,7 @@ def test_remote_function_connection_w_location(
     pd_result_col = pd_result_col.astype(pd.Int64Dtype())
     pd_result = pd_int64_col_filtered.to_frame().assign(result=pd_result_col)
 
-    assert_pandas_df_equal(bf_result, pd_result)
+    assert_frame_equal(bf_result, pd_result)
 
 
 @pytest.mark.flaky(retries=2, delay=120)
@@ -300,7 +300,7 @@ def test_remote_function_connection_w_location_project(
     pd_result_col = pd_result_col.astype(pd.Int64Dtype())
     pd_result = pd_int64_col_filtered.to_frame().assign(result=pd_result_col)
 
-    assert_pandas_df_equal(bf_result, pd_result)
+    assert_frame_equal(bf_result, pd_result)
 
 
 @pytest.mark.flaky(retries=2, delay=120)
@@ -388,7 +388,7 @@ def test_remote_function_direct_session_param(
     pd_result_col = pd_result_col.astype(pd.Int64Dtype())
     pd_result = pd_int64_col_filtered.to_frame().assign(result=pd_result_col)
 
-    assert_pandas_df_equal(bf_result, pd_result)
+    assert_frame_equal(bf_result, pd_result)
 
 
 @pytest.mark.flaky(retries=2, delay=120)
@@ -437,7 +437,7 @@ def test_remote_function_via_session_default(
     pd_result_col = pd_result_col.astype(pd.Int64Dtype())
     pd_result = pd_int64_col_filtered.to_frame().assign(result=pd_result_col)
 
-    assert_pandas_df_equal(bf_result, pd_result)
+    assert_frame_equal(bf_result, pd_result)
 
 
 @pytest.mark.flaky(retries=2, delay=120)
@@ -482,7 +482,7 @@ def test_remote_function_via_session_with_overrides(
     pd_result_col = pd_result_col.astype(pd.Int64Dtype())
     pd_result = pd_int64_col_filtered.to_frame().assign(result=pd_result_col)
 
-    assert_pandas_df_equal(bf_result, pd_result)
+    assert_frame_equal(bf_result, pd_result)
 
 
 @pytest.mark.flaky(retries=2, delay=120)
@@ -517,7 +517,7 @@ def test_dataframe_applymap(
     for col in pd_result:
         pd_result[col] = pd_result[col].astype(pd_int64_df_filtered[col].dtype)
 
-    assert_pandas_df_equal(bf_result, pd_result)
+    assert_frame_equal(bf_result, pd_result)
 
 
 @pytest.mark.flaky(retries=2, delay=120)
@@ -552,7 +552,7 @@ def test_dataframe_applymap_explicit_filter(
     for col in pd_result:
         pd_result[col] = pd_result[col].astype(pd_int64_df_filtered[col].dtype)
 
-    assert_pandas_df_equal(bf_result, pd_result)
+    assert_frame_equal(bf_result, pd_result)
 
 
 @pytest.mark.flaky(retries=2, delay=120)
@@ -585,7 +585,7 @@ def test_dataframe_applymap_na_ignore(
     for col in pd_result:
         pd_result[col] = pd_result[col].astype(pd_int64_df[col].dtype)
 
-    assert_pandas_df_equal(bf_result, pd_result)
+    assert_frame_equal(bf_result, pd_result)
 
 
 @pytest.mark.flaky(retries=2, delay=120)
@@ -738,7 +738,7 @@ def test_read_gbq_function_like_original(
     s2_result_col = int64_col_filtered.apply(square2)
     s2_result = int64_col_filtered.to_frame().assign(result=s2_result_col)
 
-    assert_pandas_df_equal(s1_result.to_pandas(), s2_result.to_pandas())
+    assert_frame_equal(s1_result.to_pandas(), s2_result.to_pandas())
 
 
 def test_read_gbq_function_runs_existing_udf(session):
@@ -937,7 +937,7 @@ def test_read_gbq_function_reads_udfs(session, bigquery_client, dataset_id):
         indirect_df = indirect_df.assign(y=indirect_df.x.apply(square))
         converted_indirect_df = indirect_df.to_pandas()
 
-        assert_pandas_df_equal(
+        assert_frame_equal(
             direct_df, converted_indirect_df, ignore_order=True, check_index_type=False
         )
 

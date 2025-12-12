@@ -1295,7 +1295,7 @@ class Block:
             as_array = ops.ToArrayOp().as_expr(*(col for col in self.value_columns))
             reduced = ops.ArrayReduceOp(operation).as_expr(as_array)
             block, id = self.project_expr(reduced, None)
-            return block.select_column(id)
+            return block.select_column(id).with_column_labels(pd.Index([None]))
 
     def aggregate_size(
         self,

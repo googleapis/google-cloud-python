@@ -17,7 +17,7 @@ import pandas as pd
 import pytest
 
 import bigframes.pandas as bpd
-from bigframes.testing.utils import assert_pandas_df_equal
+from bigframes.testing.utils import assert_frame_equal
 
 # =================
 # DataFrame.groupby
@@ -205,7 +205,7 @@ def test_dataframe_groupby_agg_string(
     pd_result = scalars_pandas_df_index[col_names].groupby("string_col").agg("count")
     bf_result_computed = bf_result.to_pandas(ordered=ordered)
 
-    assert_pandas_df_equal(
+    assert_frame_equal(
         pd_result, bf_result_computed, check_dtype=False, ignore_order=not ordered
     )
 
@@ -509,7 +509,7 @@ def test_dataframe_groupby_diff(scalars_df_index, scalars_pandas_df_index, order
     pd_result = scalars_pandas_df_index[col_names].groupby("string_col").diff(-1)
     bf_result_computed = bf_result.to_pandas(ordered=ordered)
 
-    assert_pandas_df_equal(
+    assert_frame_equal(
         pd_result, bf_result_computed, check_dtype=False, ignore_order=not ordered
     )
 

@@ -22,11 +22,13 @@ from google.cloud import bigquery, functions_v2
 from google.cloud.functions_v2.types import functions
 import numpy as np
 import pandas as pd
+import pandas.api.types as pd_types
 import pyarrow as pa  # type: ignore
 import pytest
 
 from bigframes import operations as ops
 from bigframes.core import expression as ex
+import bigframes.dtypes
 import bigframes.functions._utils as bff_utils
 import bigframes.pandas as bpd
 
@@ -71,7 +73,7 @@ ML_MULTIMODAL_GENERATE_EMBEDDING_OUTPUT = [
 def assert_dfs_equivalent(pd_df: pd.DataFrame, bf_df: bpd.DataFrame, **kwargs):
     bf_df_local = bf_df.to_pandas()
     ignore_order = not bf_df._session._strictly_ordered
-    assert_pandas_df_equal(bf_df_local, pd_df, ignore_order=ignore_order, **kwargs)
+    assert_frame_equal(bf_df_local, pd_df, ignore_order=ignore_order, **kwargs)
 
 
 def assert_series_equivalent(pd_series: pd.Series, bf_series: bpd.Series, **kwargs):
@@ -80,25 +82,49 @@ def assert_series_equivalent(pd_series: pd.Series, bf_series: bpd.Series, **kwar
     assert_series_equal(bf_df_local, pd_series, ignore_order=ignore_order, **kwargs)
 
 
-def assert_pandas_df_equal(df0, df1, ignore_order: bool = False, **kwargs):
+def _normalize_all_nulls(col: pd.Series) -> pd.Series:
+    if col.dtype == bigframes.dtypes.FLOAT_DTYPE:
+        col = col.astype("float64")
+    if pd_types.is_object_dtype(col):
+        col = col.fillna(float("nan"))
+    return col
+
+
+def assert_frame_equal(
+    left: pd.DataFrame,
+    right: pd.DataFrame,
+    *,
+    ignore_order: bool = False,
+    nulls_are_nan: bool = True,
+    **kwargs,
+):
     if ignore_order:
         # Sort by a column to get consistent results.
-        if df0.index.name != "rowindex":
-            df0 = df0.sort_values(
-                list(df0.columns.drop("geography_col", errors="ignore"))
+        if left.index.name != "rowindex":
+            left = left.sort_values(
+                list(left.columns.drop("geography_col", errors="ignore"))
             ).reset_index(drop=True)
-            df1 = df1.sort_values(
-                list(df1.columns.drop("geography_col", errors="ignore"))
+            right = right.sort_values(
+                list(right.columns.drop("geography_col", errors="ignore"))
             ).reset_index(drop=True)
         else:
-            df0 = df0.sort_index()
-            df1 = df1.sort_index()
+            left = left.sort_index()
+            right = right.sort_index()
 
-    pd.testing.assert_frame_equal(df0, df1, **kwargs)
+    if nulls_are_nan:
+        left = left.apply(_normalize_all_nulls)
+        right = right.apply(_normalize_all_nulls)
+
+    pd.testing.assert_frame_equal(left, right, **kwargs)
 
 
 def assert_series_equal(
-    left: pd.Series, right: pd.Series, ignore_order: bool = False, **kwargs
+    left: pd.Series,
+    right: pd.Series,
+    *,
+    ignore_order: bool = False,
+    nulls_are_nan: bool = True,
+    **kwargs,
 ):
     if ignore_order:
         if left.index.name is None:
@@ -107,6 +133,10 @@ def assert_series_equal(
         else:
             left = left.sort_index()
             right = right.sort_index()
+
+    if nulls_are_nan:
+        left = _normalize_all_nulls(left)
+        right = _normalize_all_nulls(right)
 
     pd.testing.assert_series_equal(left, right, **kwargs)
 

@@ -23,7 +23,7 @@ import pytest
 
 import bigframes.bigquery as bbq
 import bigframes.pandas as bpd
-from bigframes.testing.utils import assert_pandas_df_equal
+from bigframes.testing.utils import assert_frame_equal
 
 # Need at least 5,000 rows to create a vector index.
 VECTOR_DF = pd.DataFrame(
@@ -154,7 +154,7 @@ def test_vector_search_basic_params_with_df():
         },
         index=pd.Index([1, 0, 0, 1], dtype="Int64"),
     )
-    assert_pandas_df_equal(
+    assert_frame_equal(
         expected.sort_values("id"),
         vector_search_result.sort_values("id"),
         check_dtype=False,

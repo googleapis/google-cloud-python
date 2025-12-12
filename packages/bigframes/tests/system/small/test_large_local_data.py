@@ -17,7 +17,7 @@ import pandas as pd
 import pytest
 
 import bigframes
-from bigframes.testing.utils import assert_pandas_df_equal
+from bigframes.testing.utils import assert_frame_equal
 
 large_dataframe = pd.DataFrame(np.random.rand(10000, 10), dtype="Float64")
 large_dataframe.index = large_dataframe.index.astype("Int64")
@@ -27,7 +27,7 @@ def test_read_pandas_defer_noop(session: bigframes.Session):
     pytest.importorskip("pandas", minversion="2.0.0")
     bf_df = session.read_pandas(large_dataframe, write_engine="_deferred")
 
-    assert_pandas_df_equal(large_dataframe, bf_df.to_pandas())
+    assert_frame_equal(large_dataframe, bf_df.to_pandas())
 
 
 def test_read_pandas_defer_cumsum(session: bigframes.Session):
@@ -35,7 +35,7 @@ def test_read_pandas_defer_cumsum(session: bigframes.Session):
     bf_df = session.read_pandas(large_dataframe, write_engine="_deferred")
     bf_df = bf_df.cumsum()
 
-    assert_pandas_df_equal(large_dataframe.cumsum(), bf_df.to_pandas())
+    assert_frame_equal(large_dataframe.cumsum(), bf_df.to_pandas())
 
 
 def test_read_pandas_defer_cache_cumsum_cumsum(session: bigframes.Session):
@@ -43,7 +43,7 @@ def test_read_pandas_defer_cache_cumsum_cumsum(session: bigframes.Session):
     bf_df = session.read_pandas(large_dataframe, write_engine="_deferred")
     bf_df = bf_df.cumsum().cache().cumsum()
 
-    assert_pandas_df_equal(large_dataframe.cumsum().cumsum(), bf_df.to_pandas())
+    assert_frame_equal(large_dataframe.cumsum().cumsum(), bf_df.to_pandas())
 
 
 def test_read_pandas_defer_peek(session: bigframes.Session):
@@ -52,4 +52,4 @@ def test_read_pandas_defer_peek(session: bigframes.Session):
     bf_result = bf_df.peek(15)
 
     assert len(bf_result) == 15
-    assert_pandas_df_equal(large_dataframe.loc[bf_result.index], bf_result)
+    assert_frame_equal(large_dataframe.loc[bf_result.index], bf_result)

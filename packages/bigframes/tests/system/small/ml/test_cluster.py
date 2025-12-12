@@ -16,7 +16,7 @@ import pandas as pd
 
 from bigframes.ml import cluster
 import bigframes.pandas as bpd
-from bigframes.testing.utils import assert_pandas_df_equal
+from bigframes.testing.utils import assert_frame_equal
 
 _PD_NEW_PENGUINS = pd.DataFrame.from_dict(
     {
@@ -71,7 +71,7 @@ def test_kmeans_predict(session, penguins_kmeans_model: cluster.KMeans):
         dtype="Int64",
         index=pd.Index(["test1", "test2", "test3", "test4"], dtype="string[pyarrow]"),
     )
-    assert_pandas_df_equal(result, expected, ignore_order=True)
+    assert_frame_equal(result, expected, ignore_order=True)
 
 
 def test_kmeans_detect_anomalies(

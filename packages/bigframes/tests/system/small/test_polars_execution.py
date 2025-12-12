@@ -17,7 +17,7 @@ import pytest
 
 import bigframes
 import bigframes.bigquery
-from bigframes.testing.utils import assert_pandas_df_equal
+from bigframes.testing.utils import assert_frame_equal
 
 polars = pytest.importorskip("polars")
 
@@ -40,7 +40,7 @@ def test_polar_execution_sorted(session_w_polars, scalars_pandas_df_index):
     bf_result = bf_df.sort_index(ascending=False)[["int64_too", "bool_col"]].to_pandas()
 
     assert session_w_polars._metrics.execution_count == execution_count_before
-    assert_pandas_df_equal(bf_result, pd_result)
+    assert_frame_equal(bf_result, pd_result)
 
 
 def test_polar_execution_sorted_filtered(session_w_polars, scalars_pandas_df_index):
@@ -57,7 +57,7 @@ def test_polar_execution_sorted_filtered(session_w_polars, scalars_pandas_df_ind
     )
 
     assert session_w_polars._metrics.execution_count == execution_count_before
-    assert_pandas_df_equal(bf_result, pd_result)
+    assert_frame_equal(bf_result, pd_result)
 
 
 def test_polar_execution_unsupported_sql_fallback(
