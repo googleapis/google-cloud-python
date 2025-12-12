@@ -36,7 +36,7 @@ BLACK_PATHS = [
 DEFAULT_PYTHON_VERSION = "3.10"
 # TODO(https://github.com/googleapis/google-auth-library-python/issues/1787):
 # Remove or restore testing for Python 3.7/3.8
-UNIT_TEST_PYTHON_VERSIONS = ["3.9", "3.10", "3.11", "3.12", "3.13"]
+UNIT_TEST_PYTHON_VERSIONS = ["3.9", "3.10", "3.11", "3.12", "3.13", "3.14"]
 
 # Error if a python version is missing
 nox.options.error_on_missing_interpreters = True
@@ -53,6 +53,7 @@ nox.options.sessions = [
     "unit-3.11",
     "unit-3.12",
     "unit-3.13",
+    "unit-3.14",
     # cover must be last to avoid error `No data to report`
     "cover",
     "docs",
