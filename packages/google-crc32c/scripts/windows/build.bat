@@ -23,7 +23,7 @@ set CRC32C_INSTALL_PREFIX=%cd%\build\%CONFIGURATION%
 @rem Unfortunately pyenv for Windows has an out-of-date versions list. Choco's
 @rem installer seems to have some problems with installing multiple versions at
 @rem once, so as a workaround, we will install and then uninstall every version.
-FOR %%P IN (3.9, 3.10, 3.11, 3.12, 3.13.1) DO (
+FOR %%P IN (3.9, 3.10, 3.11, 3.12, 3.13.1, 3.14.0) DO (
 
     echo "Installing Python version %%P"
     choco install python --version=%%P -y --no-progress
