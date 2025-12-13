@@ -1,0 +1,36 @@
+image: us-central1-docker.pkg.dev/cloud-sdk-librarian-prod/images-prod/python-librarian-generator@sha256:ce48ed695c727f7e13efd1fd68f466a55a0d772c87b69158720cec39965bc8b2
+libraries:
+  - id: google-cloud-datastore
+    version: 2.21.0
+    last_generated_commit: 659ea6e98acc7d58661ce2aa7b4cf76a7ef3fd42
+    apis:
+      - path: google/datastore/v1
+        service_config: datastore_v1.yaml
+      - path: google/datastore/admin/v1
+        service_config: datastore_v1.yaml
+    source_roots:
+      - .
+    preserve_regex: []
+    remove_regex:
+      - ^google/cloud/datastore_v1
+      - ^google/cloud/datastore_admin
+      - ^google/cloud/datastore_admin_v1
+      - ^tests/unit/gapic
+      - ^tests/__init__.py
+      - ^tests/unit/__init__.py
+      - ^.pre-commit-config.yaml
+      - ^.repo-metadata.json
+      - ^.trampolinerc
+      - ^SECURITY.md
+      - ^noxfile.py
+      - ^owlbot.py
+      - ^renovate.json
+      - ^samples/AUTHORING_GUIDE.md
+      - ^samples/CONTRIBUTING.md
+      - ^samples/generated_samples
+      - ^scripts/fixup_
+      - ^setup.py
+      - ^README.rst
+      - ^docs/README.rst
+      - ^docs/summary_overview.md
+    tag_format: v{version}
