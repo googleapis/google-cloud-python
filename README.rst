@@ -1141,6 +1141,12 @@ Libraries
      -
      -
      - `Client Library Issues <https://github.com/googleapis/google-cloud-python/issues>`_
+   * - `Database Center API <https://github.com/googleapis/google-cloud-python/tree/main/packages/google-cloud-databasecenter>`_
+     - preview
+     - |PyPI-google-cloud-databasecenter|
+     - `API Issues <https://issuetracker.google.com/issues?q=componentid:1476470>`_
+     - `File an API Issue <https://issuetracker.google.com/issues/new?component=1476470>`_
+     - `Client Library Issues <https://github.com/googleapis/google-cloud-python/issues>`_
    * - `Dataflow <https://github.com/googleapis/google-cloud-python/tree/main/packages/google-cloud-dataflow-client>`_
      - preview
      - |PyPI-google-cloud-dataflow-client|
@@ -1960,6 +1966,8 @@ Libraries
      :target: https://pypi.org/project/google-ads-datamanager
 .. |PyPI-google-cloud-data-qna| image:: https://img.shields.io/pypi/v/google-cloud-data-qna.svg
      :target: https://pypi.org/project/google-cloud-data-qna
+.. |PyPI-google-cloud-databasecenter| image:: https://img.shields.io/pypi/v/google-cloud-databasecenter.svg
+     :target: https://pypi.org/project/google-cloud-databasecenter
 .. |PyPI-google-cloud-dataflow-client| image:: https://img.shields.io/pypi/v/google-cloud-dataflow-client.svg
      :target: https://pypi.org/project/google-cloud-dataflow-client
 .. |PyPI-google-cloud-dataform| image:: https://img.shields.io/pypi/v/google-cloud-dataform.svg
