@@ -1,0 +1,12 @@
+{
+    "name": "proto-plus",
+    "name_pretty": "Proto Plus",
+    "client_documentation": "https://googleapis.dev/python/proto-plus/latest",
+    "release_level": "stable",
+    "language": "python",
+    "library_type": "CORE",
+    "repo": "googleapis/proto-plus-python",
+    "distribution_name": "proto-plus",
+    "default_version": "",
+    "codeowner_team": ""
+}
