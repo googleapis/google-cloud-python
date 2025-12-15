@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/gapic-generator/#history
 
+## [1.30.1](https://github.com/googleapis/gapic-generator-python/compare/v1.30.0...v1.30.1) (2025-12-12)
+
+
+### Bug Fixes
+
+* **perf:** specify `verify_format=False` when running pypandoc (#2504) ([211e73c14d7bf44df0fe8f9bea14944ea874df3d](https://github.com/googleapis/gapic-generator-python/commit/211e73c14d7bf44df0fe8f9bea14944ea874df3d))
+
 ## [1.30.0](https://github.com/googleapis/gapic-generator-python/compare/v1.29.0...v1.30.0) (2025-11-14)
 
 ### Features
