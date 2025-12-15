@@ -3,6 +3,7 @@
 # license that can be found in the LICENSE file.
 
 from pandas_gbq.load.core import (
+    cast_dataframe_for_csv,
     cast_dataframe_for_parquet,
     encode_chunk,
     load_chunks,
@@ -13,6 +14,7 @@ from pandas_gbq.load.core import (
 )
 
 __all__ = [
+    "cast_dataframe_for_csv",
     "cast_dataframe_for_parquet",
     "encode_chunk",
     "load_chunks",

@@ -124,6 +124,45 @@ def cast_dataframe_for_parquet(
     return dataframe
 
 
+def cast_dataframe_for_csv(
+    dataframe: pandas.DataFrame,
+    schema: Optional[Dict[str, Any]],
+) -> pandas.DataFrame:
+    """Cast columns to needed dtype when writing CSV files."""
+
+    columns = schema.get("fields", [])
+
+    # Protect against an explicit None in the dictionary.
+    columns = columns if columns is not None else []
+
+    new_columns = {}
+    for column in columns:
+        # Schema can be a superset of the columns in the dataframe, so ignore
+        # columns that aren't present.
+        column_name = column.get("name")
+        if column_name not in dataframe.columns:
+            continue
+
+        column_type = column.get("type", "").upper()
+        if column_type in {"DATETIME", "TIMESTAMP"}:
+            # Use isoformat to ensure that the years are 4 digits.
+            # https://github.com/googleapis/python-bigquery-pandas/issues/365
+            def convert(x):
+                if pandas.isna(x):
+                    return None
+                try:
+                    return x.isoformat(sep=" ")
+                except AttributeError:
+                    # It might be a string already or some other type.
+                    return x
+
+            new_columns[column_name] = dataframe[column_name].map(convert)
+
+    if new_columns:
+        dataframe = dataframe.assign(**new_columns)
+    return dataframe
+
+
 def load_parquet(
     client: bigquery.Client,
     dataframe: pandas.DataFrame,
@@ -195,6 +234,9 @@ def load_csv_from_dataframe(
         bq_schema = pandas_gbq.schema.to_google_cloud_bigquery(schema)
 
     def load_chunk(chunk, job_config):
+        if schema is not None:
+            chunk = cast_dataframe_for_csv(chunk, schema)
+
         client.load_table_from_dataframe(
             chunk,
             destination_table_ref,

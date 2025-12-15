@@ -160,6 +160,27 @@ DATAFRAME_ROUND_TRIPS = [
                     ),
                 }
             ),
+            expected_df=pandas.DataFrame(
+                {
+                    "row_num": [0, 1, 2],
+                    "bool_col": pandas.Series(
+                        [True, False, True],
+                        dtype="bool",
+                    ),
+                    "boolean_col": pandas.Series(
+                        [None, True, False],
+                        dtype="boolean",
+                    ),
+                    "object_col": pandas.Series(
+                        [
+                            False,
+                            (pandas.NA if hasattr(pandas, "NA") else None),
+                            True,
+                        ],
+                        dtype="object",
+                    ),
+                }
+            ),
             table_schema=[
                 {"name": "bool_col", "type": "BOOLEAN"},
                 {"name": "boolean_col", "type": "BOOLEAN"},
