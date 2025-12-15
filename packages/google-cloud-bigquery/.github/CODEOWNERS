@@ -4,8 +4,8 @@
 # For syntax help see:
 # https://help.github.com/en/github/creating-cloning-and-archiving-repositories/about-code-owners#codeowners-syntax
 
-# The @googleapis/api-bigquery is the default owner for changes in this repo
-*               @googleapis/api-bigquery @googleapis/yoshi-python
+# The @googleapis/python-core-client-libraries is the default owner for changes in this repo
+*               @googleapis/python-core-client-libraries @googleapis/yoshi-python
 
 # The python-samples-reviewers team is the default owner for samples changes
-/samples/   @googleapis/api-bigquery @googleapis/python-samples-owners @googleapis/yoshi-python
+/samples/   @googleapis/python-core-client-libraries @googleapis/python-samples-owners @googleapis/yoshi-python
