@@ -12,5 +12,5 @@
     "api_id": "bigquery.googleapis.com",
     "requires_billing": false,
     "default_version": "",
-    "codeowner_team": "@googleapis/api-bigquery @googleapis/api-bigquery-dataframe"
+    "codeowner_team": "@googleapis/python-core-client-libraries @googleapis/api-bigquery-dataframe"
 }
