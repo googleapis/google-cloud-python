@@ -25,7 +25,9 @@ dependencies = [
     "db-dtypes >=1.0.4,<2.0.0",
     "numpy >=1.18.1",
     "pandas >=1.1.4, <3.0.0",
-    "pyarrow >=4.0.0",
+    "pyarrow >= 4.0.0",
+    # See https://arrow.apache.org/release/22.0.0.html
+    "pyarrow >= 22.0.0; python_version >= '3.14'",
     "pydata-google-auth >=1.5.0",
     "psutil >=5.9.8",
     # Note: google-api-core and google-auth are also included via transitive
@@ -91,6 +93,7 @@ setuptools.setup(
         "Programming Language :: Python :: 3.11",
         "Programming Language :: Python :: 3.12",
         "Programming Language :: Python :: 3.13",
+        "Programming Language :: Python :: 3.14",
         "Operating System :: OS Independent",
         "Topic :: Internet",
         "Topic :: Scientific/Engineering",
