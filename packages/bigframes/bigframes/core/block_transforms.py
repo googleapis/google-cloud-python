@@ -129,12 +129,12 @@ def quantile(
                 window_spec=window,
             )
             quantile_cols.append(quantile_col)
-    block, _ = block.aggregate(
-        grouping_column_ids,
+    block = block.aggregate(
         tuple(
             agg_expressions.UnaryAggregation(agg_ops.AnyValueOp(), ex.deref(col))
             for col in quantile_cols
         ),
+        grouping_column_ids,
         column_labels=pd.Index(labels),
         dropna=dropna,
     )
@@ -358,12 +358,12 @@ def value_counts(
     if grouping_keys and drop_na:
         # only need this if grouping_keys is involved, otherwise the drop_na in the aggregation will handle it for us
         block = dropna(block, columns, how="any")
-    block, agg_ids = block.aggregate(
-        by_column_ids=(*grouping_keys, *columns),
+    block = block.aggregate(
         aggregations=[agg_expressions.NullaryAggregation(agg_ops.size_op)],
+        by_column_ids=(*grouping_keys, *columns),
         dropna=drop_na and not grouping_keys,
     )
-    count_id = agg_ids[0]
+    count_id = block.value_columns[0]
     if normalize:
         unbound_window = windows.unbound(grouping_keys=tuple(grouping_keys))
         block, total_count_id = block.apply_window_op(
@@ -622,40 +622,28 @@ def skew(
     original_columns = skew_column_ids
     column_labels = block.select_columns(original_columns).column_labels
 
-    block, delta3_ids = _mean_delta_to_power(
-        block, 3, original_columns, grouping_column_ids
-    )
     # counts, moment3 for each column
     aggregations = []
-    for i, col in enumerate(original_columns):
+    for col in original_columns:
+        delta3_expr = _mean_delta_to_power(3, col)
         count_agg = agg_expressions.UnaryAggregation(
             agg_ops.count_op,
             ex.deref(col),
         )
         moment3_agg = agg_expressions.UnaryAggregation(
             agg_ops.mean_op,
-            ex.deref(delta3_ids[i]),
+            delta3_expr,
         )
         variance_agg = agg_expressions.UnaryAggregation(
             agg_ops.PopVarOp(),
             ex.deref(col),
         )
-        aggregations.extend([count_agg, moment3_agg, variance_agg])
+        skew_expr = _skew_from_moments_and_count(count_agg, moment3_agg, variance_agg)
+        aggregations.append(skew_expr)
 
-    block, agg_ids = block.aggregate(
-        by_column_ids=grouping_column_ids, aggregations=aggregations
+    block = block.aggregate(
+        aggregations, grouping_column_ids, column_labels=column_labels
     )
-
-    skew_ids = []
-    for i, col in enumerate(original_columns):
-        # Corresponds to order of aggregations in preceding loop
-        count_id, moment3_id, var_id = agg_ids[i * 3 : (i * 3) + 3]
-        block, skew_id = _skew_from_moments_and_count(
-            block, count_id, moment3_id, var_id
-        )
-        skew_ids.append(skew_id)
-
-    block = block.select_columns(skew_ids).with_column_labels(column_labels)
     if not grouping_column_ids:
         # When ungrouped, transpose result row into a series
         # perform transpose last, so as to not invalidate cache
@@ -672,36 +660,23 @@ def kurt(
 ) -> blocks.Block:
     original_columns = skew_column_ids
     column_labels = block.select_columns(original_columns).column_labels
-
-    block, delta4_ids = _mean_delta_to_power(
-        block, 4, original_columns, grouping_column_ids
-    )
     # counts, moment4 for each column
-    aggregations = []
-    for i, col in enumerate(original_columns):
+    kurt_exprs = []
+    for col in original_columns:
+        delta_4_expr = _mean_delta_to_power(4, col)
         count_agg = agg_expressions.UnaryAggregation(agg_ops.count_op, ex.deref(col))
-        moment4_agg = agg_expressions.UnaryAggregation(
-            agg_ops.mean_op, ex.deref(delta4_ids[i])
-        )
+        moment4_agg = agg_expressions.UnaryAggregation(agg_ops.mean_op, delta_4_expr)
         variance_agg = agg_expressions.UnaryAggregation(
             agg_ops.PopVarOp(), ex.deref(col)
         )
-        aggregations.extend([count_agg, moment4_agg, variance_agg])
 
-    block, agg_ids = block.aggregate(
-        by_column_ids=grouping_column_ids, aggregations=aggregations
-    )
-
-    kurt_ids = []
-    for i, col in enumerate(original_columns):
         # Corresponds to order of aggregations in preceding loop
-        count_id, moment4_id, var_id = agg_ids[i * 3 : (i * 3) + 3]
-        block, kurt_id = _kurt_from_moments_and_count(
-            block, count_id, moment4_id, var_id
-        )
-        kurt_ids.append(kurt_id)
+        kurt_expr = _kurt_from_moments_and_count(count_agg, moment4_agg, variance_agg)
+        kurt_exprs.append(kurt_expr)
 
-    block = block.select_columns(kurt_ids).with_column_labels(column_labels)
+    block = block.aggregate(
+        kurt_exprs, grouping_column_ids, column_labels=column_labels
+    )
     if not grouping_column_ids:
         # When ungrouped, transpose result row into a series
         # perform transpose last, so as to not invalidate cache
@@ -712,38 +687,30 @@ def kurt(
 
 
 def _mean_delta_to_power(
-    block: blocks.Block,
     n_power: int,
-    column_ids: typing.Sequence[str],
-    grouping_column_ids: typing.Sequence[str],
-) -> typing.Tuple[blocks.Block, typing.Sequence[str]]:
+    val_id: str,
+) -> ex.Expression:
     """Calculate (x-mean(x))^n. Useful for calculating moment statistics such as skew and kurtosis."""
-    window = windows.unbound(grouping_keys=tuple(grouping_column_ids))
-    block, mean_ids = block.multi_apply_window_op(column_ids, agg_ops.mean_op, window)
-    delta_ids = []
-    for val_id, mean_val_id in zip(column_ids, mean_ids):
-        delta = ops.sub_op.as_expr(val_id, mean_val_id)
-        delta_power = ops.pow_op.as_expr(delta, ex.const(n_power))
-        block, delta_power_id = block.project_expr(delta_power)
-        delta_ids.append(delta_power_id)
-    return block, delta_ids
+    mean_expr = agg_expressions.UnaryAggregation(agg_ops.mean_op, ex.deref(val_id))
+    delta = ops.sub_op.as_expr(val_id, mean_expr)
+    return ops.pow_op.as_expr(delta, ex.const(n_power))
 
 
 def _skew_from_moments_and_count(
-    block: blocks.Block, count_id: str, moment3_id: str, moment2_id: str
-) -> typing.Tuple[blocks.Block, str]:
+    count: ex.Expression, moment3: ex.Expression, moment2: ex.Expression
+) -> ex.Expression:
     # Calculate skew using count, third moment and population variance
     # See G1 estimator:
     # https://en.wikipedia.org/wiki/Skewness#Sample_skewness
     moments_estimator = ops.div_op.as_expr(
-        moment3_id, ops.pow_op.as_expr(moment2_id, ex.const(3 / 2))
+        moment3, ops.pow_op.as_expr(moment2, ex.const(3 / 2))
     )
 
-    countminus1 = ops.sub_op.as_expr(count_id, ex.const(1))
-    countminus2 = ops.sub_op.as_expr(count_id, ex.const(2))
+    countminus1 = ops.sub_op.as_expr(count, ex.const(1))
+    countminus2 = ops.sub_op.as_expr(count, ex.const(2))
     adjustment = ops.div_op.as_expr(
         ops.unsafe_pow_op.as_expr(
-            ops.mul_op.as_expr(count_id, countminus1), ex.const(1 / 2)
+            ops.mul_op.as_expr(count, countminus1), ex.const(1 / 2)
         ),
         countminus2,
     )
@@ -752,14 +719,14 @@ def _skew_from_moments_and_count(
 
     # Need to produce NA if have less than 3 data points
     cleaned_skew = ops.where_op.as_expr(
-        skew, ops.ge_op.as_expr(count_id, ex.const(3)), ex.const(None)
+        skew, ops.ge_op.as_expr(count, ex.const(3)), ex.const(None)
     )
-    return block.project_expr(cleaned_skew)
+    return cleaned_skew
 
 
 def _kurt_from_moments_and_count(
-    block: blocks.Block, count_id: str, moment4_id: str, moment2_id: str
-) -> typing.Tuple[blocks.Block, str]:
+    count: ex.Expression, moment4: ex.Expression, moment2: ex.Expression
+) -> ex.Expression:
     # Kurtosis is often defined as the second standardize moment: moment(4)/moment(2)**2
     # Pandas however uses Fisher’s estimator, implemented below
     # numerator = (count + 1) * (count - 1) * moment4
@@ -768,28 +735,26 @@ def _kurt_from_moments_and_count(
     # kurtosis = (numerator / denominator) - adjustment
 
     numerator = ops.mul_op.as_expr(
-        moment4_id,
+        moment4,
         ops.mul_op.as_expr(
-            ops.sub_op.as_expr(count_id, ex.const(1)),
-            ops.add_op.as_expr(count_id, ex.const(1)),
+            ops.sub_op.as_expr(count, ex.const(1)),
+            ops.add_op.as_expr(count, ex.const(1)),
         ),
     )
 
     # Denominator
-    countminus2 = ops.sub_op.as_expr(count_id, ex.const(2))
-    countminus3 = ops.sub_op.as_expr(count_id, ex.const(3))
+    countminus2 = ops.sub_op.as_expr(count, ex.const(2))
+    countminus3 = ops.sub_op.as_expr(count, ex.const(3))
 
     # Denominator
     denominator = ops.mul_op.as_expr(
-        ops.unsafe_pow_op.as_expr(moment2_id, ex.const(2)),
+        ops.unsafe_pow_op.as_expr(moment2, ex.const(2)),
         ops.mul_op.as_expr(countminus2, countminus3),
     )
 
     # Adjustment
     adj_num = ops.mul_op.as_expr(
-        ops.unsafe_pow_op.as_expr(
-            ops.sub_op.as_expr(count_id, ex.const(1)), ex.const(2)
-        ),
+        ops.unsafe_pow_op.as_expr(ops.sub_op.as_expr(count, ex.const(1)), ex.const(2)),
         ex.const(3),
     )
     adj_denom = ops.mul_op.as_expr(countminus2, countminus3)
@@ -800,9 +765,9 @@ def _kurt_from_moments_and_count(
 
     # Need to produce NA if have less than 4 data points
     cleaned_kurt = ops.where_op.as_expr(
-        kurt, ops.ge_op.as_expr(count_id, ex.const(4)), ex.const(None)
+        kurt, ops.ge_op.as_expr(count, ex.const(4)), ex.const(None)
     )
-    return block.project_expr(cleaned_kurt)
+    return cleaned_kurt
 
 
 def align(

@@ -55,7 +55,7 @@ def block_groupby_iter(
         # are more efficient.
         session_aware=False,
     )
-    keys_block, _ = block.aggregate(by_col_ids, dropna=dropna)
+    keys_block = block.aggregate(by_column_ids=by_col_ids, dropna=dropna)
     for chunk in keys_block.to_pandas_batches():
         # Convert to MultiIndex to make sure we get tuples,
         # even for singular keys.

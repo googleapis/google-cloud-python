@@ -182,7 +182,8 @@ class DataFrameGroupBy(vendored_pandas_groupby.DataFrameGroupBy):
         return len(self.agg([]))
 
     def size(self) -> typing.Union[df.DataFrame, series.Series]:
-        agg_block, _ = self._block.aggregate_size(
+        agg_block = self._block.aggregate(
+            aggregations=[agg_ops.SizeOp().as_expr()],
             by_column_ids=self._by_col_ids,
             dropna=self._dropna,
         )
@@ -304,7 +305,7 @@ class DataFrameGroupBy(vendored_pandas_groupby.DataFrameGroupBy):
         uniq_orig_columns = utils.combine_indices(labels, pd.Index(range(len(labels))))
         result_labels = utils.cross_indices(uniq_orig_columns, uniq_orig_columns)
 
-        block, _ = block.aggregate(
+        block = block.aggregate(
             by_column_ids=self._by_col_ids,
             aggregations=aggregations,
             column_labels=result_labels,
@@ -339,7 +340,7 @@ class DataFrameGroupBy(vendored_pandas_groupby.DataFrameGroupBy):
         uniq_orig_columns = utils.combine_indices(labels, pd.Index(range(len(labels))))
         result_labels = utils.cross_indices(uniq_orig_columns, uniq_orig_columns)
 
-        block, _ = block.aggregate(
+        block = block.aggregate(
             by_column_ids=self._by_col_ids,
             aggregations=aggregations,
             column_labels=result_labels,
@@ -383,9 +384,9 @@ class DataFrameGroupBy(vendored_pandas_groupby.DataFrameGroupBy):
             agg_ops.FirstNonNullOp(),
             window_spec=window_spec,
         )
-        block, _ = block.aggregate(
-            self._by_col_ids,
-            tuple(
+        block = block.aggregate(
+            by_column_ids=self._by_col_ids,
+            aggregations=tuple(
                 aggs.agg(firsts_id, agg_ops.AnyValueOp()) for firsts_id in firsts_ids
             ),
             dropna=self._dropna,
@@ -405,9 +406,11 @@ class DataFrameGroupBy(vendored_pandas_groupby.DataFrameGroupBy):
             agg_ops.LastNonNullOp(),
             window_spec=window_spec,
         )
-        block, _ = block.aggregate(
-            self._by_col_ids,
-            tuple(aggs.agg(lasts_id, agg_ops.AnyValueOp()) for lasts_id in lasts_ids),
+        block = block.aggregate(
+            by_column_ids=self._by_col_ids,
+            aggregations=tuple(
+                aggs.agg(lasts_id, agg_ops.AnyValueOp()) for lasts_id in lasts_ids
+            ),
             dropna=self._dropna,
             column_labels=index,
         )
@@ -582,7 +585,7 @@ class DataFrameGroupBy(vendored_pandas_groupby.DataFrameGroupBy):
         aggregations = [
             aggs.agg(col_id, agg_ops.lookup_agg_func(func)[0]) for col_id in ids
         ]
-        agg_block, _ = self._block.aggregate(
+        agg_block = self._block.aggregate(
             by_column_ids=self._by_col_ids,
             aggregations=aggregations,
             dropna=self._dropna,
@@ -608,7 +611,7 @@ class DataFrameGroupBy(vendored_pandas_groupby.DataFrameGroupBy):
                 aggregations.append(aggs.agg(col_id, f_op))
                 column_labels.append(label)
                 function_labels.append(f_label)
-        agg_block, _ = self._block.aggregate(
+        agg_block = self._block.aggregate(
             by_column_ids=self._by_col_ids,
             aggregations=aggregations,
             dropna=self._dropna,
@@ -646,7 +649,7 @@ class DataFrameGroupBy(vendored_pandas_groupby.DataFrameGroupBy):
                 (label, agg_ops.lookup_agg_func(f)[1]) for label in labels for f in func
             ]
 
-        agg_block, _ = self._block.aggregate(
+        agg_block = self._block.aggregate(
             by_column_ids=self._by_col_ids,
             aggregations=aggregations,
             dropna=self._dropna,
@@ -672,7 +675,7 @@ class DataFrameGroupBy(vendored_pandas_groupby.DataFrameGroupBy):
             col_id = self._resolve_label(v[0])
             aggregations.append(aggs.agg(col_id, agg_ops.lookup_agg_func(v[1])[0]))
             column_labels.append(k)
-        agg_block, _ = self._block.aggregate(
+        agg_block = self._block.aggregate(
             by_column_ids=self._by_col_ids,
             aggregations=aggregations,
             dropna=self._dropna,
@@ -729,7 +732,7 @@ class DataFrameGroupBy(vendored_pandas_groupby.DataFrameGroupBy):
     ) -> df.DataFrame:
         aggregated_col_ids, labels = self._aggregated_columns(numeric_only=numeric_only)
         aggregations = [aggs.agg(col_id, aggregate_op) for col_id in aggregated_col_ids]
-        result_block, _ = self._block.aggregate(
+        result_block = self._block.aggregate(
             by_column_ids=self._by_col_ids,
             aggregations=aggregations,
             column_labels=labels,

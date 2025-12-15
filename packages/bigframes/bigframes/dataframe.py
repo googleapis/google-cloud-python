@@ -1510,7 +1510,7 @@ class DataFrame(vendored_pandas_frame.DataFrame):
         )
         labels = utils.cross_indices(uniq_orig_columns, uniq_orig_columns)
 
-        block, _ = block.aggregate(aggregations=aggregations, column_labels=labels)
+        block = block.aggregate(aggregations=aggregations, column_labels=labels)
 
         block = block.stack(levels=orig_columns.nlevels + 1)
         # The aggregate operation crated a index level with just 0, need to drop it
@@ -1765,7 +1765,7 @@ class DataFrame(vendored_pandas_frame.DataFrame):
             r_block.column_labels, how="outer"
         ).difference(labels)
 
-        block, _ = block.aggregate(
+        block = block.aggregate(
             aggregations=tuple(
                 agg_expressions.BinaryAggregation(agg_ops.CorrOp(), left_ex, right_ex)
                 for left_ex, right_ex in expr_pairs
@@ -3393,13 +3393,13 @@ class DataFrame(vendored_pandas_frame.DataFrame):
             if any(utils.is_list_like(v) for v in func.values()):
                 new_index, _ = self.columns.reindex(labels)
                 new_index = utils.combine_indices(new_index, pandas.Index(funcnames))
-                agg_block, _ = self._block.aggregate(
+                agg_block = self._block.aggregate(
                     aggregations=aggs, column_labels=new_index
                 )
                 return DataFrame(agg_block).stack().droplevel(0, axis="index")
             else:
                 new_index, _ = self.columns.reindex(labels)
-                agg_block, _ = self._block.aggregate(
+                agg_block = self._block.aggregate(
                     aggregations=aggs, column_labels=new_index
                 )
                 return bigframes.series.Series(

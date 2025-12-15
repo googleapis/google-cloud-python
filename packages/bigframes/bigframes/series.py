@@ -1486,7 +1486,7 @@ class Series(vendored_pandas_series.Series):
     def mode(self) -> Series:
         block = self._block
         # Approach: Count each value, return each value for which count(x) == max(counts))
-        block, agg_ids = block.aggregate(
+        block = block.aggregate(
             by_column_ids=[self._value_column],
             aggregations=(
                 agg_expressions.UnaryAggregation(
@@ -1494,7 +1494,7 @@ class Series(vendored_pandas_series.Series):
                 ),
             ),
         )
-        value_count_col_id = agg_ids[0]
+        value_count_col_id = block.value_columns[0]
         block, max_value_count_col_id = block.apply_window_op(
             value_count_col_id,
             agg_ops.max_op,
@@ -2234,17 +2234,17 @@ class Series(vendored_pandas_series.Series):
         if keep_order:
             validations.enforce_ordered(self, "unique(keep_order != False)")
             return self.drop_duplicates()
-        block, result = self._block.aggregate(
-            [self._value_column],
+        block = self._block.aggregate(
             [
                 agg_expressions.UnaryAggregation(
                     agg_ops.AnyValueOp(), ex.deref(self._value_column)
                 )
             ],
+            [self._value_column],
             column_labels=self._block.column_labels,
             dropna=False,
         )
-        return Series(block.select_columns(result).reset_index())
+        return Series(block.reset_index())
 
     def duplicated(self, keep: str = "first") -> Series:
         block, indicator = block_ops.indicate_duplicates(

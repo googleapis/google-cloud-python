@@ -16,7 +16,6 @@ from __future__ import annotations
 from dataclasses import dataclass
 import datetime
 import functools
-import itertools
 import typing
 from typing import Iterable, List, Mapping, Optional, Sequence, Tuple
 
@@ -267,20 +266,95 @@ class ArrayValue:
         )
 
     def compute_general_expression(self, assignments: Sequence[ex.Expression]):
+        """
+        Applies arbitrary column expressions to the current execution block.
+
+        This method transforms the logical plan by applying a sequence of expressions that
+        preserve the length of the input columns. It supports both scalar operations
+        and window functions. Each expression is assigned a unique internal column identifier.
+
+        Args:
+            assignments (Sequence[ex.Expression]): A sequence of expression objects
+                representing the transformations to apply to the columns.
+
+        Returns:
+            Tuple[ArrayValue, Tuple[str, ...]]: A tuple containing:
+                - An `ArrayValue` wrapping the new root node of the updated logical plan.
+                - A tuple of strings representing the unique column IDs generated for
+                  each expression in the assignments.
+        """
         named_exprs = [
             nodes.ColumnDef(expr, ids.ColumnId.unique()) for expr in assignments
         ]
         # TODO: Push this to rewrite later to go from block expression to planning form
-        # TODO: Jointly fragmentize expressions to more efficiently reuse common sub-expressions
-        fragments = tuple(
-            itertools.chain.from_iterable(
-                expression_factoring.fragmentize_expression(expr)
-                for expr in named_exprs
-            )
-        )
+        new_root = expression_factoring.apply_col_exprs_to_plan(self.node, named_exprs)
+
         target_ids = tuple(named_expr.id for named_expr in named_exprs)
-        new_root = expression_factoring.push_into_tree(self.node, fragments, target_ids)
         return (ArrayValue(new_root), target_ids)
+
+    def compute_general_reduction(
+        self,
+        assignments: Sequence[ex.Expression],
+        by_column_ids: typing.Sequence[str] = (),
+        *,
+        dropna: bool = False,
+    ):
+        """
+        Applies arbitrary aggregation expressions to the block, optionally grouped by keys.
+
+        This method handles reduction operations (e.g., sum, mean, count) that collapse
+        multiple input rows into a single scalar value per group. If grouping keys are
+        provided, the operation is performed per group; otherwise, it is a global reduction.
+
+        Note: Intermediate aggregations (those that are inputs to further aggregations)
+        must be windowizable. Notably excluded are approx quantile, top count ops.
+
+        Args:
+            assignments (Sequence[ex.Expression]): A sequence of aggregation expressions
+                to be calculated.
+            by_column_ids (typing.Sequence[str], optional): A sequence of column IDs
+                to use as grouping keys. Defaults to an empty tuple (global reduction).
+            dropna (bool, optional): If True, rows containing null values in the
+                `by_column_ids` columns will be filtered out before the reduction
+                is applied. Defaults to False.
+
+        Returns:
+            ArrayValue:
+               The new root node representing the aggregation/group-by result.
+        """
+        plan = self.node
+
+        # shortcircuit to keep things simple if all aggs are simple
+        # TODO: Fully unify paths once rewriters are strong enough to simplify complexity from full path
+        def _is_direct_agg(agg_expr):
+            return isinstance(agg_expr, agg_expressions.Aggregation) and all(
+                isinstance(child, (ex.DerefOp, ex.ScalarConstantExpression))
+                for child in agg_expr.children
+            )
+
+        if all(_is_direct_agg(agg) for agg in assignments):
+            agg_defs = tuple((agg, ids.ColumnId.unique()) for agg in assignments)
+            return ArrayValue(
+                nodes.AggregateNode(
+                    child=self.node,
+                    aggregations=agg_defs,  # type: ignore
+                    by_column_ids=tuple(map(ex.deref, by_column_ids)),
+                    dropna=dropna,
+                )
+            )
+
+        if dropna:
+            for col_id in by_column_ids:
+                plan = nodes.FilterNode(plan, ops.notnull_op.as_expr(col_id))
+
+        named_exprs = [
+            nodes.ColumnDef(expr, ids.ColumnId.unique()) for expr in assignments
+        ]
+        # TODO: Push this to rewrite later to go from block expression to planning form
+        new_root = expression_factoring.apply_agg_exprs_to_plan(
+            plan, named_exprs, grouping_keys=[ex.deref(by) for by in by_column_ids]
+        )
+        return ArrayValue(new_root)
 
     def project_to_id(self, expression: ex.Expression):
         array_val, ids = self.compute_values(

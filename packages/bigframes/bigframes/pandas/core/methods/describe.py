@@ -90,7 +90,7 @@ def _describe(
         label_tuple = (label,) if block.column_labels.nlevels == 1 else label
         column_labels.extend((*label_tuple, op.name) for op in agg_ops)  # type: ignore
 
-    agg_block, _ = block.aggregate(
+    agg_block = block.aggregate(
         by_column_ids=by_col_ids,
         aggregations=stats,
         dropna=dropna,
