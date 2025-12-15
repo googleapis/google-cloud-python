@@ -4,6 +4,18 @@
 
 [1]: https://pypi.org/project/google-crc32c/#history
 
+## [1.8.0](https://github.com/googleapis/python-crc32c/compare/v1.7.1...v1.8.0) (2025-12-15)
+
+
+### Features
+
+* support Python 3.14 (#315) ([49d0a36f3334048833d0201788fd864d3342d1b2](https://github.com/googleapis/python-crc32c/commit/49d0a36f3334048833d0201788fd864d3342d1b2))
+
+
+### Bug Fixes
+
+* update toml file with setup.cfg content (#319) ([42e5268c7e6077a71e54b342ada4ed2843dbc01e](https://github.com/googleapis/python-crc32c/commit/42e5268c7e6077a71e54b342ada4ed2843dbc01e))
+
 ## [1.7.1](https://github.com/googleapis/python-crc32c/compare/v1.7.0...v1.7.1) (2025-03-25)
 
 
