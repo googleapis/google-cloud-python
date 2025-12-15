@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-cloud-datastore/#history
 
+## [2.22.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-datastore-v2.21.0...google-cloud-datastore-v2.22.0) (2025-12-12)
+
+
+### Bug Fixes
+
+* remove setup.cfg configuration for creating universal wheels (#601) ([df729015149bd69e9d6dbced260d97c8eed77d4f](https://github.com/googleapis/google-cloud-python/commit/df729015149bd69e9d6dbced260d97c8eed77d4f))
+
 ## [2.21.0](https://github.com/googleapis/python-datastore/compare/v2.20.2...v2.21.0) (2025-04-10)
 
 
