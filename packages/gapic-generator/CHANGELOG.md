@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/gapic-generator/#history
 
+## [1.30.2](https://github.com/googleapis/gapic-generator-python/compare/v1.30.1...v1.30.2) (2025-12-15)
+
+
+### Bug Fixes
+
+* revert changes to code formatting in 1.30.1 (#2511) ([1327d4762b02dfd47ddf7f2014f4ab7503d3963d](https://github.com/googleapis/gapic-generator-python/commit/1327d4762b02dfd47ddf7f2014f4ab7503d3963d))
+
 ## [1.30.1](https://github.com/googleapis/gapic-generator-python/compare/v1.30.0...v1.30.1) (2025-12-12)
 
 
