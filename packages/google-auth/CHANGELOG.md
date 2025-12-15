@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-auth/#history
 
+## [2.45.0](https://github.com/googleapis/google-auth-library-python/compare/v2.44.0...v2.45.0) (2025-12-15)
+
+
+### Features
+
+* Adding Agent Identity bound token support and handling certificate mismatches with retries (#1890) ([b32c934e6b0d09b94c467cd432a0a635e8b05f5c](https://github.com/googleapis/google-auth-library-python/commit/b32c934e6b0d09b94c467cd432a0a635e8b05f5c))
+
 ## [2.44.0](https://github.com/googleapis/google-auth-library-python/compare/v2.43.0...v2.44.0) (2025-12-13)
 
 
