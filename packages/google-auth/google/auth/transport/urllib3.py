@@ -16,6 +16,7 @@
 
 from __future__ import absolute_import
 
+import http.client as http_client
 import logging
 import warnings
 
@@ -52,6 +53,7 @@ except ImportError as caught_exc:  # pragma: NO COVER
 from google.auth import _helpers
 from google.auth import exceptions
 from google.auth import transport
+from google.auth.transport import _mtls_helper
 from google.oauth2 import service_account
 
 if version.parse(urllib3.__version__) >= version.parse("2.0.0"):  # pragma: NO COVER
@@ -299,6 +301,7 @@ class AuthorizedHttp(RequestMethods):  # type: ignore
         # Request instance used by internal methods (for example,
         # credentials.refresh).
         self._request = Request(self.http)
+        self._is_mtls = False
 
         # https://google.aip.dev/auth/4111
         # Attempt to use self-signed JWTs when a service account is used.
@@ -335,7 +338,10 @@ class AuthorizedHttp(RequestMethods):  # type: ignore
         """
         use_client_cert = transport._mtls_helper.check_use_client_cert()
         if not use_client_cert:
+            self._is_mtls = False
             return False
+        else:
+            self._is_mtls = True
         try:
             import OpenSSL
         except ImportError as caught_exc:
@@ -349,6 +355,7 @@ class AuthorizedHttp(RequestMethods):  # type: ignore
 
             if found_cert_key:
                 self.http = _make_mutual_tls_http(cert, key)
+                self._cached_cert = cert
             else:
                 self.http = _make_default_http()
         except (
@@ -381,6 +388,11 @@ class AuthorizedHttp(RequestMethods):  # type: ignore
         if headers is None:
             headers = self.headers
 
+        use_mtls = False
+        if self._is_mtls:
+            MTLS_URL_PREFIXES = ["mtls.googleapis.com", "mtls.sandbox.googleapis.com"]
+            use_mtls = any([prefix in url for prefix in MTLS_URL_PREFIXES])
+
         # Make a copy of the headers. They will be modified by the credentials
         # and we want to pass the original headers if we recurse.
         request_headers = headers.copy()
@@ -402,6 +414,34 @@ class AuthorizedHttp(RequestMethods):  # type: ignore
             response.status in self._refresh_status_codes
             and _credential_refresh_attempt < self._max_refresh_attempts
         ):
+            if response.status == http_client.UNAUTHORIZED:
+                if use_mtls:
+                    call_cert_bytes, call_key_bytes, cached_fingerprint, current_cert_fingerprint = _mtls_helper.check_parameters_for_unauthorized_response(
+                        self._cached_cert
+                    )
+                    if cached_fingerprint != current_cert_fingerprint:
+                        try:
+                            _LOGGER.info(
+                                "Client certificate has changed, reconfiguring mTLS "
+                                "channel."
+                            )
+                            self.configure_mtls_channel(
+                                client_cert_callback=lambda: (
+                                    call_cert_bytes,
+                                    call_key_bytes,
+                                )
+                            )
+                        except Exception as e:
+                            _LOGGER.error("Failed to reconfigure mTLS channel: %s", e)
+                            raise exceptions.MutualTLSChannelError(
+                                "Failed to reconfigure mTLS channel"
+                            ) from e
+
+                    else:
+                        _LOGGER.info(
+                            "Skipping reconfiguration of mTLS channel because the "
+                            "client certificate has not changed."
+                        )
 
             _LOGGER.info(
                 "Refreshing credentials due to a %s response. Attempt %s/%s.",

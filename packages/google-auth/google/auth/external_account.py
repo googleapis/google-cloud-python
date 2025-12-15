@@ -420,6 +420,9 @@ class Credentials(
         credentials, it will refresh the access token and the trust boundary.
         """
         self._refresh_token(request)
+        self._handle_trust_boundary(request)
+
+    def _handle_trust_boundary(self, request):
         # If we are impersonating, the trust boundary is handled by the
         # impersonated credentials object. We need to get it from there.
         if self._service_account_impersonation_url:
@@ -428,7 +431,7 @@ class Credentials(
             # Otherwise, refresh the trust boundary for the external account.
             self._refresh_trust_boundary(request)
 
-    def _refresh_token(self, request):
+    def _refresh_token(self, request, cert_fingerprint=None):
         scopes = self._scopes if self._scopes is not None else self._default_scopes
 
         # Inject client certificate into request.
@@ -446,11 +449,15 @@ class Credentials(
             self.expiry = self._impersonated_credentials.expiry
         else:
             now = _helpers.utcnow()
-            additional_options = None
+            additional_options = {}
             # Do not pass workforce_pool_user_project when client authentication
             # is used. The client ID is sufficient for determining the user project.
             if self._workforce_pool_user_project and not self._client_id:
-                additional_options = {"userProject": self._workforce_pool_user_project}
+                additional_options["userProject"] = self._workforce_pool_user_project
+
+            if cert_fingerprint:
+                additional_options["bindCertFingerprint"] = cert_fingerprint
+
             additional_headers = {
                 metrics.API_CLIENT_HEADER: metrics.byoid_metrics_header(
                     self._metrics_options
@@ -464,7 +471,7 @@ class Credentials(
                 audience=self._audience,
                 scopes=scopes,
                 requested_token_type=_STS_REQUESTED_TOKEN_TYPE,
-                additional_options=additional_options,
+                additional_options=additional_options if additional_options else None,
                 additional_headers=additional_headers,
             )
             self.token = response_data.get("access_token")

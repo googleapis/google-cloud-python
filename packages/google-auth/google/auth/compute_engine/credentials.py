@@ -135,9 +135,9 @@ class Credentials(
                 service can't be reached if if the instance has not
                 credentials.
         """
-        scopes = self._scopes if self._scopes is not None else self._default_scopes
         try:
             self._retrieve_info(request)
+            scopes = self._scopes if self._scopes is not None else self._default_scopes
             # Always fetch token with default service account email.
             self.token, self.expiry = _metadata.get_service_account_token(
                 request, service_account="default", scopes=scopes

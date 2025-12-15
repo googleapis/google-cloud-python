@@ -29,6 +29,9 @@ import google.auth.transport.urllib3
 from google.oauth2 import service_account
 from tests.transport import compliance
 
+CERT_MOCK_VAL = b"-----BEGIN CERTIFICATE-----\nMIIDIzCCAgugAwIBAgIJAMfISuBQ5m+5MA0GCSqGSIb3DQEBBQUAMBUxEzARBgNV\nBAMTCnVuaXQtdGVzdHMwHhcNMTExMjA2MTYyNjAyWhcNMjExMjAzMTYyNjAyWjAV\nMRMwEQYDVQQDEwp1bml0LXRlc3RzMIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIB\nCgKCAQEA4ej0p7bQ7L/r4rVGUz9RN4VQWoej1Bg1mYWIDYslvKrk1gpj7wZgkdmM\n7oVK2OfgrSj/FCTkInKPqaCR0gD7K80q+mLBrN3PUkDrJQZpvRZIff3/xmVU1Wer\nuQLFJjnFb2dqu0s/FY/2kWiJtBCakXvXEOb7zfbINuayL+MSsCGSdVYsSliS5qQp\ngyDap+8b5fpXZVJkq92hrcNtbkg7hCYUJczt8n9hcCTJCfUpApvaFQ18pe+zpyl4\n+WzkP66I28hniMQyUlA1hBiskT7qiouq0m8IOodhv2fagSZKjOTTU2xkSBc//fy3\nZpsL7WqgsZS7Q+0VRK8gKfqkxg5OYQIDAQABo3YwdDAdBgNVHQ4EFgQU2RQ8yO+O\ngN8oVW2SW7RLrfYd9jEwRQYDVR0jBD4wPIAU2RQ8yO+OgN8oVW2SW7RLrfYd9jGh\nGaQXMBUxEzARBgNVBAMTCnVuaXQtdGVzdHOCCQDHyErgUOZvuTAMBgNVHRMEBTAD\nAQH/MA0GCSqGSIb3DQEBBQUAA4IBAQBRv+M/6+FiVu7KXNjFI5pSN17OcW5QUtPr\nodJMlWrJBtynn/TA1oJlYu3yV5clc/71Vr/AxuX5xGP+IXL32YDF9lTUJXG/uUGk\n+JETpKmQviPbRsvzYhz4pf6ZIOZMc3/GIcNq92ECbseGO+yAgyWUVKMmZM0HqXC9\novNslqe0M8C1sLm1zAR5z/h/litE7/8O2ietija3Q/qtl2TOXJdCA6sgjJX2WUql\nybrC55ct18NKf3qhpcEkGQvFU40rVYApJpi98DiZPYFdx1oBDp/f4uZ3ojpxRVFT\ncDwcJLfNRCPUhormsY7fDS9xSyThiHsW9mjJYdcaKQkwYZ0F11yB\n-----END CERTIFICATE-----\n"
+KEY_MOCK_VAL = b"-----BEGIN ENCRYPTED PRIVATE KEY-----\nMIHeMEkGCSqGSIb3DQEFDTA8MBsGCSqGSIb3DQEFDDAOBAj9XnJ2h78QVAICCAAw\nHQYJYIZIAWUDBAECBBBeiiOF2LnLzq/wjb/viwMwBIGQk28Zkfj2EIk42bgc7UzC\nSf98qssCVhsIYz0Xa3eSATg8Cpn83YieaBeyxdk/tXTnrOhxMV/vt7T98kWhaGbH\n5Z9CdGVLfes0UFvVJqrlk6vcf2sOnLCGbrn78HS+ayrGOCRSCd/7+dnEiB/7Um1B\nMk6BBJHsLEnZZSHyfrw8jvYgVmcSBy/WdY0pqldD/+4D\n-----END ENCRYPTED PRIVATE KEY-----\n"
+
 
 class TestRequestResponse(compliance.RequestResponseTests):
     def make_request(self):
@@ -320,3 +323,208 @@ class TestAuthorizedHttp(object):
         authed_http.http = None
         authed_http.__del__()
         # Expect it to not crash
+
+    def test_cert_rotation_when_cert_mismatch_and_mtls_endpoint_used(self):
+        credentials = mock.Mock(wraps=CredentialsStub())
+        final_response = ResponseStub(status=http_client.OK)
+        http = HttpStub([ResponseStub(status=http_client.UNAUTHORIZED), final_response])
+
+        authed_http = google.auth.transport.urllib3.AuthorizedHttp(
+            credentials, http=http
+        )
+
+        old_cert = b"-----BEGIN CERTIFICATE-----\nMIIBdTCCARqgAwIBAgIJAOYVvu/axMxvMAoGCCqGSM49BAMCMCcxJTAjBgNVBAMM\nHEdvb2dsZSBFbmRwb2ludCBWZXJpZmljYXRpb24wHhcNMjUwNzMwMjMwNjA4WhcN\nMjYwNzMxMjMwNjA4WjAnMSUwIwYDVQQDDBxHb29nbGUgRW5kcG9pbnQgVmVyaWZp\nY2F0aW9uMFkwEwYHKoZIzj0CAQYIKoZIzj0DAQcDQgAEbtr18gkEtwPow2oqyZsU\n4KLwFaLFlRlYv55UATS3QTDykDnIufC42TJCnqFRYhwicwpE2jnUV+l9g3Voias8\nraMvMC0wCQYDVR0TBAIwADALBgNVHQ8EBAMCB4AwEwYDVR0lBAwwCgYIKwYBBQUH\nAwIwCgYIKoZIzj0EAwIDSQAwRgIhAKcjW6dmF1YCksXPgDPlPu/nSnOjb3qCcivz\n/Jxq2zoeAiEA7/aNxcEoCGS3hwMIXoaaD/vPcZOOopKSyqXCvxRooKQ=\n-----END CERTIFICATE-----\n"
+
+        # New certificate and key to simulate rotation.
+        new_cert = CERT_MOCK_VAL
+        new_key = KEY_MOCK_VAL
+        # Set _cached_cert to a callable that returns the old certificate.
+        authed_http._cached_cert = old_cert
+        authed_http._is_mtls = True
+        # Mock call_client_cert_callback to return the new certificate.
+        with mock.patch.object(
+            google.auth._agent_identity_utils,
+            "call_client_cert_callback",
+            return_value=(new_cert, new_key),
+        ) as mock_callback:
+            # mTLS endpoint is used
+            result = authed_http.urlopen("GET", "http://example.mtls.googleapis.com")
+
+        # Asserts to verify the behavior.
+        assert result == final_response
+        assert credentials.refresh.called
+        assert credentials.refresh.call_count == 1
+        assert mock_callback.called
+
+    def test_no_cert_rotation_when_cert_match_and_mtls_endpoint_used(self):
+        credentials = mock.Mock(wraps=CredentialsStub())
+        final_response = ResponseStub(status=http_client.UNAUTHORIZED)
+        http = HttpStub(
+            [
+                ResponseStub(status=http_client.UNAUTHORIZED),
+                ResponseStub(status=http_client.UNAUTHORIZED),
+                ResponseStub(status=http_client.UNAUTHORIZED),
+            ]
+        )
+        authed_http = google.auth.transport.urllib3.AuthorizedHttp(
+            credentials, http=http
+        )
+        old_cert = CERT_MOCK_VAL
+
+        new_cert = old_cert
+        new_key = KEY_MOCK_VAL
+        # Set _cached_cert to a callable that returns the same certificate.
+        authed_http._cached_cert = old_cert
+        authed_http._is_mtls = True
+        # Mock call_client_cert_callback to return the certificate.
+        with mock.patch.object(
+            google.auth._agent_identity_utils,
+            "call_client_cert_callback",
+            return_value=(new_cert, new_key),
+        ):
+            # mTLS endpoint is used
+            result = authed_http.urlopen("GET", "http://example.mtls.googleapis.com")
+
+        # Asserts to verify the behavior.
+        assert credentials.refresh.call_count == 2
+        assert result.status == final_response.status
+
+    def test_no_cert_match_check_when_mtls_endpoint_not_used(self):
+        credentials = mock.Mock(wraps=CredentialsStub())
+        final_response = ResponseStub(status=http_client.UNAUTHORIZED)
+        http = HttpStub(
+            [
+                ResponseStub(status=http_client.UNAUTHORIZED),
+                ResponseStub(status=http_client.UNAUTHORIZED),
+                ResponseStub(status=http_client.UNAUTHORIZED),
+            ]
+        )
+        authed_http = google.auth.transport.urllib3.AuthorizedHttp(
+            credentials, http=http
+        )
+        authed_http._is_mtls = False
+        new_cert = CERT_MOCK_VAL
+        new_key = KEY_MOCK_VAL
+
+        # Mock call_client_cert_callback to return the certificate.
+        with mock.patch.object(
+            google.auth._agent_identity_utils,
+            "call_client_cert_callback",
+            return_value=(new_cert, new_key),
+        ) as mock_callback:
+            # non-mTLS endpoint is used
+            result = authed_http.urlopen("GET", "http://example.googleapis.com")
+
+        # Asserts to verify the behavior.
+        assert not mock_callback.called
+        assert result.status == final_response.status
+
+    def test_no_cert_rotation_when_no_unauthorized_response(self):
+        credentials = mock.Mock(wraps=CredentialsStub())
+        final_response = ResponseStub(status=http_client.UPGRADE_REQUIRED)
+
+        # Response is set to code other than 401(Unauthorized).
+        http = HttpStub([ResponseStub(status=http_client.UPGRADE_REQUIRED)])
+        authed_http = google.auth.transport.urllib3.AuthorizedHttp(
+            credentials, http=http
+        )
+        authed_http._is_mtls = True
+        with mock.patch.dict(
+            os.environ, {environment_vars.GOOGLE_API_USE_CLIENT_CERTIFICATE: "true"}
+        ):
+            # mTLS endpoint is used
+            result = authed_http.urlopen("GET", "http://example.mtls.googleapis.com")
+        assert result.status == final_response.status
+        assert not credentials.refresh.called
+        assert credentials.refresh.call_count == 0
+
+    def test_cert_rotation_failure_raises_error(self):
+        credentials = mock.Mock(wraps=CredentialsStub())
+        http = HttpStub([ResponseStub(status=http_client.UNAUTHORIZED)])
+
+        authed_http = google.auth.transport.urllib3.AuthorizedHttp(
+            credentials, http=http
+        )
+
+        old_cert = b"-----BEGIN CERTIFICATE-----\nMIIBdTCCARqgAwIBAgIJAOYVvu/axMxvMAoGCCqGSM49BAMCMCcxJTAjBgNVBAMM\nHEdvb2dsZSBFbmRwb2ludCBWZXJpZmljYXRpb24wHhcNMjUwNzMwMjMwNjA4WhcN\nMjYwNzMxMjMwNjA4WjAnMSUwIwYDVQQDDBxHb29nbGUgRW5kcG9pbnQgVmVyaWZp\nY2F0aW9uMFkwEwYHKoZIzj0CAQYIKoZIzj0DAQcDQgAEbtr18gkEtwPow2oqyZsU\n4KLwFaLFlRlYv55UATS3QTDykDnIufC42TJCnqFRYhwicwpE2jnUV+l9g3Voias8\nraMvMC0wCQYDVR0TBAIwADALBgNVHQ8EBAMCB4AwEwYDVR0lBAwwCgYIKwYBBQUH\nAwIwCgYIKoZIzj0EAwIDSQAwRgIhAKcjW6dmF1YCksXPgDPlPu/nSnOjb3qCcivz\n/Jxq2zoeAiEA7/aNxcEoCGS3hwMIXoaaD/vPcZOOopKSyqXCvxRooKQ=\n-----END CERTIFICATE-----\n"
+
+        # New certificate and key to simulate rotation.
+        new_cert = CERT_MOCK_VAL
+        new_key = KEY_MOCK_VAL
+        authed_http._cached_cert = old_cert
+        authed_http._is_mtls = True
+
+        # Mock call_client_cert_callback to return the new certificate.
+        with mock.patch.object(
+            google.auth.transport._mtls_helper,
+            "check_parameters_for_unauthorized_response",
+            return_value=(new_cert, new_key, "old_fingerprint", "new_fingerprint"),
+        ) as mock_check_params:
+            with mock.patch.object(
+                authed_http,
+                "configure_mtls_channel",
+                side_effect=Exception("Failed to reconfigure"),
+            ) as mock_reconfigure:
+                with pytest.raises(exceptions.MutualTLSChannelError):
+                    authed_http.urlopen("GET", "https://example.mtls.googleapis.com")
+
+                mock_check_params.assert_called_once()
+                mock_reconfigure.assert_called_once()
+                credentials.refresh.assert_not_called()
+
+    def test_cert_rotation_check_params_fails(self):
+        credentials = mock.Mock(wraps=CredentialsStub())
+        http = HttpStub([ResponseStub(status=http_client.UNAUTHORIZED)])
+
+        authed_http = google.auth.transport.urllib3.AuthorizedHttp(
+            credentials, http=http
+        )
+        authed_http._is_mtls = True
+        authed_http._cached_cert = b"cached_cert"
+
+        with mock.patch(
+            "google.auth.transport.urllib3._mtls_helper.check_parameters_for_unauthorized_response",
+            side_effect=Exception("check_params failed"),
+        ) as mock_check_params:
+            with pytest.raises(Exception, match="check_params failed"):
+                authed_http.urlopen("GET", "http://example.mtls.googleapis.com")
+
+            mock_check_params.assert_called_once()
+            credentials.refresh.assert_not_called()
+
+    def test_cert_rotation_logic_skipped_on_other_refresh_status_codes(self):
+        """
+        Tests that the code can handle a refresh triggered by a status code
+        other than 401 (UNAUTHORIZED). This covers the 'else' branch of the
+        'if response.status_code == http_client.UNAUTHORIZED' check
+        """
+        credentials = mock.Mock(wraps=CredentialsStub())
+        # Configure the session to treat 503 (Service Unavailable) as a refreshable error
+        custom_codes = [http_client.SERVICE_UNAVAILABLE]
+
+        # Return 503 first, then 200
+        http = HttpStub(
+            [
+                ResponseStub(status=http_client.SERVICE_UNAVAILABLE),
+                ResponseStub(status=http_client.OK),
+            ]
+        )
+
+        authed_http = google.auth.transport.urllib3.AuthorizedHttp(
+            credentials, http=http, refresh_status_codes=custom_codes
+        )
+
+        # Enable mTLS to prove it is skipped despite being enabled
+        authed_http._is_mtls = True
+        mtls_url = "https://mtls.googleapis.com/test"
+
+        with mock.patch(
+            "google.auth.transport.urllib3._mtls_helper", autospec=True
+        ) as mock_helper:
+            authed_http.urlopen("GET", mtls_url)
+
+            # Assert refresh happened (Outer Check was True)
+            assert credentials.refresh.called
+
+            # Assert mTLS check logic was SKIPPED (Inner Check was False)
+            assert not mock_helper.check_parameters_for_unauthorized_response.called

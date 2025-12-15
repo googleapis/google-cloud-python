@@ -106,6 +106,7 @@ def mypy(session):
         "types-requests",
         "types-setuptools",
         "types-mock",
+        "pytest<8.0.0",
     )
     session.run("mypy", "-p", "google", "-p", "tests", "-p", "tests_async")
 
@@ -130,6 +131,7 @@ def unit(session):
 
 @nox.session(python=DEFAULT_PYTHON_VERSION)
 def cover(session):
+    session.env["PIP_EXTRA_INDEX_URL"] = "https://pypi.org/simple"
     session.install("-e", ".[testing]")
     session.run(
         "pytest",

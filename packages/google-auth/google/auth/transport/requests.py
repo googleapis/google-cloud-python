@@ -17,6 +17,7 @@
 from __future__ import absolute_import
 
 import functools
+import http.client as http_client
 import logging
 import numbers
 import time
@@ -36,6 +37,7 @@ from requests.packages.urllib3.util.ssl_ import (  # type: ignore
 from google.auth import _helpers
 from google.auth import exceptions
 from google.auth import transport
+from google.auth.transport import _mtls_helper
 import google.auth.transport._mtls_helper
 from google.oauth2 import service_account
 
@@ -463,6 +465,7 @@ class AuthorizedSession(requests.Session):
 
             if self._is_mtls:
                 mtls_adapter = _MutualTlsAdapter(cert, key)
+                self._cached_cert = cert
                 self.mount("https://", mtls_adapter)
         except (
             exceptions.ClientCertError,
@@ -502,6 +505,10 @@ class AuthorizedSession(requests.Session):
                 itself does not timeout, e.g. if a large file is being
                 transmitted. The timout error will be raised after such
                 request completes.
+        Raises:
+            google.auth.exceptions.MutualTLSChannelError: If mutual TLS
+                channel creation fails for any reason.
+            ValueError: If the client certificate is invalid.
         """
         # pylint: disable=arguments-differ
         # Requests has a ton of arguments to request, but only two
@@ -551,7 +558,31 @@ class AuthorizedSession(requests.Session):
             response.status_code in self._refresh_status_codes
             and _credential_refresh_attempt < self._max_refresh_attempts
         ):
-
+            # Handle unauthorized permission error(401 status code)
+            if response.status_code == http_client.UNAUTHORIZED:
+                if self.is_mtls:
+                    call_cert_bytes, call_key_bytes, cached_fingerprint, current_cert_fingerprint = _mtls_helper.check_parameters_for_unauthorized_response(
+                        self._cached_cert
+                    )
+                    if cached_fingerprint != current_cert_fingerprint:
+                        try:
+                            _LOGGER.info(
+                                "Client certificate has changed, reconfiguring mTLS "
+                                "channel."
+                            )
+                            self.configure_mtls_channel(
+                                lambda: (call_cert_bytes, call_key_bytes)
+                            )
+                        except Exception as e:
+                            _LOGGER.error("Failed to reconfigure mTLS channel: %s", e)
+                            raise exceptions.MutualTLSChannelError(
+                                "Failed to reconfigure mTLS channel"
+                            ) from e
+                    else:
+                        _LOGGER.info(
+                            "Skipping reconfiguration of mTLS channel because the client"
+                            " certificate has not changed."
+                        )
             _LOGGER.info(
                 "Refreshing credentials due to a %s response. Attempt %s/%s.",
                 response.status_code,

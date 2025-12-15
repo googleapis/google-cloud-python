@@ -737,6 +737,24 @@ class TestCredentials(object):
         credentials.apply(headers_applied)
         assert "x-allowed-locations" not in headers_applied
 
+    def test_refresh_token_with_cert_fingerprint(self):
+        credentials = self.make_credentials()
+        credentials._sts_client = mock.MagicMock()
+        credentials._sts_client.exchange_token.return_value = {
+            "access_token": "token",
+            "expires_in": 3600,
+        }
+        credentials.retrieve_subject_token = mock.MagicMock(
+            return_value="subject_token"
+        )
+
+        credentials._refresh_token(
+            request=mock.sentinel.request, cert_fingerprint="my-fingerprint"
+        )
+
+        _, kwargs = credentials._sts_client.exchange_token.call_args
+        assert kwargs["additional_options"]["bindCertFingerprint"] == "my-fingerprint"
+
     def test_refresh_skips_sending_allowed_locations_header_with_trust_boundary(self):
         # This test verifies that the x-allowed-locations header is not sent with
         # the STS request even if a trust boundary is cached.

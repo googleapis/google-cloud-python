@@ -81,6 +81,7 @@ testing_extra_require = [
 ]
 
 extras = {
+    "cryptography": cryptography_base_require,
     "aiohttp": aiohttp_extra_require,
     "enterprise_cert": enterprise_cert_extra_require,
     "pyopenssl": pyopenssl_extra_require,

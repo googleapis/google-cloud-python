@@ -23,8 +23,9 @@ import pytest  # type: ignore
 from google.auth import exceptions
 from google.auth.transport import _mtls_helper
 
+CERT_MOCK_VAL = b"cert"
+KEY_MOCK_VAL = b"key"
 CONTEXT_AWARE_METADATA = {"cert_provider_command": ["some command"]}
-
 ENCRYPTED_EC_PRIVATE_KEY = b"""-----BEGIN ENCRYPTED PRIVATE KEY-----
 MIHkME8GCSqGSIb3DQEFDTBCMCkGCSqGSIb3DQEFDDAcBAgl2/yVgs1h3QICCAAw
 DAYIKoZIhvcNAgkFADAVBgkrBgEEAZdVAQIECJk2GRrvxOaJBIGQXIBnMU4wmciT
@@ -813,3 +814,64 @@ class TestDecryptPrivateKey(object):
         monkeypatch.setenv("GOOGLE_API_USE_CLIENT_CERTIFICATE", "")
         use_client_cert = _mtls_helper.check_use_client_cert()
         assert use_client_cert is False
+
+
+class TestMtlsHelper:
+    @mock.patch("google.auth.transport._mtls_helper._agent_identity_utils")
+    def test_check_parameters_for_unauthorized_response_with_cached_cert(
+        self, mock_agent_identity_utils
+    ):
+        mock_agent_identity_utils.call_client_cert_callback.return_value = (
+            CERT_MOCK_VAL,
+            KEY_MOCK_VAL,
+        )
+        mock_agent_identity_utils.get_cached_cert_fingerprint.return_value = (
+            "cached_fingerprint"
+        )
+        mock_agent_identity_utils.calculate_certificate_fingerprint.return_value = (
+            "current_fingerprint"
+        )
+
+        (
+            cert,
+            key,
+            cached_fingerprint,
+            current_fingerprint,
+        ) = _mtls_helper.check_parameters_for_unauthorized_response(
+            cached_cert=b"cached_cert_bytes"
+        )
+
+        assert cert == CERT_MOCK_VAL
+        assert key == KEY_MOCK_VAL
+        assert cached_fingerprint == "cached_fingerprint"
+        assert current_fingerprint == "current_fingerprint"
+        mock_agent_identity_utils.call_client_cert_callback.assert_called_once()
+        mock_agent_identity_utils.get_cached_cert_fingerprint.assert_called_once_with(
+            b"cached_cert_bytes"
+        )
+
+    @mock.patch("google.auth.transport._mtls_helper._agent_identity_utils")
+    def test_check_parameters_for_unauthorized_response_without_cached_cert(
+        self, mock_agent_identity_utils
+    ):
+        mock_agent_identity_utils.call_client_cert_callback.return_value = (
+            CERT_MOCK_VAL,
+            KEY_MOCK_VAL,
+        )
+        mock_agent_identity_utils.calculate_certificate_fingerprint.return_value = (
+            "current_fingerprint"
+        )
+
+        (
+            cert,
+            key,
+            cached_fingerprint,
+            current_fingerprint,
+        ) = _mtls_helper.check_parameters_for_unauthorized_response(cached_cert=None)
+
+        assert cert == CERT_MOCK_VAL
+        assert key == KEY_MOCK_VAL
+        assert cached_fingerprint == "current_fingerprint"
+        assert current_fingerprint == "current_fingerprint"
+        mock_agent_identity_utils.call_client_cert_callback.assert_called_once()
+        mock_agent_identity_utils.get_cached_cert_fingerprint.assert_not_called()

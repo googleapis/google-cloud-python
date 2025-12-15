@@ -40,6 +40,29 @@ SMBIOS_PRODUCT_NAME_NON_GOOGLE = os.path.join(
     DATA_DIR, "smbios_product_name_non_google"
 )
 
+# A mock PEM-encoded certificate without an Agent Identity SPIFFE ID.
+NON_AGENT_IDENTITY_CERT_BYTES = (
+    b"-----BEGIN CERTIFICATE-----\n"
+    b"MIIDIzCCAgugAwIBAgIJAMfISuBQ5m+5MA0GCSqGSIb3DQEBBQUAMBUxEzARBgNV\n"
+    b"BAMTCnVuaXQtdGVzdHMwHhcNMTExMjA2MTYyNjAyWhcNMjExMjAzMTYyNjAyWjAV\n"
+    b"MRMwEQYDVQQDEwp1bml0LXRlc3RzMIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIB\n"
+    b"CgKCAQEA4ej0p7bQ7L/r4rVGUz9RN4VQWoej1Bg1mYWIDYslvKrk1gpj7wZgkdmM\n"
+    b"7oVK2OfgrSj/FCTkInKPqaCR0gD7K80q+mLBrN3PUkDrJQZpvRZIff3/xmVU1Wer\n"
+    b"uQLFJjnFb2dqu0s/FY/2kWiJtBCakXvXEOb7zfbINuayL+MSsCGSdVYsSliS5qQp\n"
+    b"gyDap+8b5fpXZVJkq92hrcNtbkg7hCYUJczt8n9hcCTJCfUpApvaFQ18pe+zpyl4\n"
+    b"+WzkP66I28hniMQyUlA1hBiskT7qiouq0m8IOodhv2fagSZKjOTTU2xkSBc//fy3\n"
+    b"ZpsL7WqgsZS7Q+0VRK8gKfqkxg5OYQIDAQABo3YwdDAdBgNVHQ4EFgQU2RQ8yO+O\n"
+    b"gN8oVW2SW7RLrfYd9jEwRQYDVR0jBD4wPIAU2RQ8yO+OgN8oVW2SW7RLrfYd9jGh\n"
+    b"GaQXMBUxEzARBgNVBAMTCnVuaXQtdGVzdHOCCQDHyErgUOZvuTAMBgNVHRMEBTAD\n"
+    b"AQH/MA0GCSqGSIb3DQEBBQUAA4IBAQBRv+M/6+FiVu7KXNjFI5pSN17OcW5QUtPr\n"
+    b"odJMlWrJBtynn/TA1oJlYu3yV5clc/71Vr/AxuX5xGP+IXL32YDF9lTUJXG/uUGk\n"
+    b"+JETpKmQviPbRsvzYhz4pf6ZIOZMc3/GIcNq92ECbseGO+yAgyWUVKMmZM0HqXC9\n"
+    b"ovNslqe0M8C1sLm1zAR5z/h/litE7/8O2ietija3Q/qtl2TOXJdCA6sgjJX2WUql\n"
+    b"ybrC55ct18NKf3qhpcEkGQvFU40rVYApJpi98DiZPYFdx1oBDp/f4uZ3ojpxRVFT\n"
+    b"cDwcJLfNRCPUhormsY7fDS9xSyThiHsW9mjJYdcaKQkwYZ0F11yB\n"
+    b"-----END CERTIFICATE-----\n"
+)
+
 ACCESS_TOKEN_REQUEST_METRICS_HEADER_VALUE = (
     "gl-python/3.7 auth/1.1 auth-request-type/at cred-type/mds"
 )
@@ -668,6 +691,83 @@ def test_get_service_account_token_with_scopes_string(
     )
     assert token == "token"
     assert expiry == utcnow() + datetime.timedelta(seconds=ttl)
+
+
+@mock.patch("google.auth._agent_identity_utils.calculate_certificate_fingerprint")
+@mock.patch("google.auth._agent_identity_utils.should_request_bound_token")
+@mock.patch(
+    "google.auth._agent_identity_utils.get_and_parse_agent_identity_certificate"
+)
+@mock.patch(
+    "google.auth.metrics.token_request_access_token_mds",
+    return_value=ACCESS_TOKEN_REQUEST_METRICS_HEADER_VALUE,
+)
+@mock.patch("google.auth._helpers.utcnow", return_value=datetime.datetime.min)
+def test_get_service_account_token_with_bound_token(
+    utcnow,
+    mock_metrics_header_value,
+    mock_get_and_parse,
+    mock_should_request,
+    mock_calculate_fingerprint,
+):
+    # Test the successful path where a certificate is found and a bound token
+    # is requested.
+    mock_cert = mock.sentinel.cert
+    mock_get_and_parse.return_value = mock_cert
+    mock_should_request.return_value = True
+    mock_calculate_fingerprint.return_value = "fake_fingerprint"
+
+    token_response = json.dumps({"access_token": "token", "expires_in": 3600})
+    request = make_request(token_response, headers={"content-type": "application/json"})
+
+    _metadata.get_service_account_token(request)
+
+    mock_get_and_parse.assert_called_once()
+    mock_should_request.assert_called_once_with(mock_cert)
+    mock_calculate_fingerprint.assert_called_once_with(mock_cert)
+
+    request.assert_called_once()
+    _, kwargs = request.call_args
+    url = kwargs["url"]
+    assert "bindCertificateFingerprint=fake_fingerprint" in url
+
+
+@mock.patch(
+    "google.auth._agent_identity_utils.get_and_parse_agent_identity_certificate"
+)
+def test_get_service_account_token_no_cert(mock_get_and_parse):
+    # Test that no fingerprint is added when no certificate is found.
+    mock_get_and_parse.return_value = None
+    token_response = json.dumps({"access_token": "token", "expires_in": 3600})
+    request = make_request(token_response, headers={"content-type": "application/json"})
+
+    _metadata.get_service_account_token(request)
+
+    request.assert_called_once()
+    _, kwargs = request.call_args
+    url = kwargs["url"]
+    assert "bindCertificateFingerprint" not in url
+
+
+@mock.patch("google.auth._agent_identity_utils.should_request_bound_token")
+@mock.patch(
+    "google.auth._agent_identity_utils.get_and_parse_agent_identity_certificate"
+)
+def test_get_service_account_token_should_not_bind(
+    mock_get_and_parse, mock_should_request
+):
+    # Test that no fingerprint is added when a cert is found but should not be used.
+    mock_get_and_parse.return_value = mock.sentinel.cert
+    mock_should_request.return_value = False
+    token_response = json.dumps({"access_token": "token", "expires_in": 3600})
+    request = make_request(token_response, headers={"content-type": "application/json"})
+
+    _metadata.get_service_account_token(request)
+
+    request.assert_called_once()
+    _, kwargs = request.call_args
+    url = kwargs["url"]
+    assert "bindCertificateFingerprint" not in url
 
 
 def test_get_service_account_info():
