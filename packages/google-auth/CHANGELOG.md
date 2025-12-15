@@ -4,6 +4,24 @@
 
 [1]: https://pypi.org/project/google-auth/#history
 
+## [2.44.0](https://github.com/googleapis/google-auth-library-python/compare/v2.43.0...v2.44.0) (2025-12-13)
+
+
+### Features
+
+* support Python 3.14 (#1822) ([0f7097e78f247665b6ef0287d482033f7be2ed6d](https://github.com/googleapis/google-auth-library-python/commit/0f7097e78f247665b6ef0287d482033f7be2ed6d))
+* add ecdsa p-384 support (#1872) ([39c381a5f6881b590025f36d333d12eff8dc60fc](https://github.com/googleapis/google-auth-library-python/commit/39c381a5f6881b590025f36d333d12eff8dc60fc))
+* MDS connections use mTLS (#1856) ([0387bb95713653d47e846cad3a010eb55ef2db4c](https://github.com/googleapis/google-auth-library-python/commit/0387bb95713653d47e846cad3a010eb55ef2db4c))
+* Implement token revocation in STS client and add revoke() metho… (#1849) ([d5638986ca03ee95bfffa9ad821124ed7e903e63](https://github.com/googleapis/google-auth-library-python/commit/d5638986ca03ee95bfffa9ad821124ed7e903e63))
+* Add shlex to correctly parse executable commands with spaces (#1855) ([cf6fc3cced78bc1362a7fe596c32ebc9ce03c26b](https://github.com/googleapis/google-auth-library-python/commit/cf6fc3cced78bc1362a7fe596c32ebc9ce03c26b))
+
+
+### Bug Fixes
+
+* Use public refresh method for source credentials in ImpersonatedCredentials (#1884) ([e0c3296f471747258f6d98d2d9bfde636358ecde](https://github.com/googleapis/google-auth-library-python/commit/e0c3296f471747258f6d98d2d9bfde636358ecde))
+* Add temporary patch to workload cert logic to accomodate Cloud Run mis-configuration (#1880) ([78de7907b8bdb7b5510e3c6fa8a3f3721e2436d7](https://github.com/googleapis/google-auth-library-python/commit/78de7907b8bdb7b5510e3c6fa8a3f3721e2436d7))
+* Delegate workload cert and key default lookup to helper function (#1877) ([b0993c7edaba505d0fb0628af28760c43034c959](https://github.com/googleapis/google-auth-library-python/commit/b0993c7edaba505d0fb0628af28760c43034c959))
+
 ## [2.43.0](https://github.com/googleapis/google-cloud-python/compare/google-auth-v2.42.1...google-auth-v2.43.0) (2025-11-05)
 
 
