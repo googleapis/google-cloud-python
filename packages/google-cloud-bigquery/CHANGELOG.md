@@ -4,6 +4,26 @@
 
 [1]: https://pypi.org/project/google-cloud-bigquery/#history
 
+## [3.39.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-bigquery-v3.38.0...google-cloud-bigquery-v3.39.0) (2025-12-12)
+
+
+### Documentation
+
+* remove experimental annotations from GA features (#2303) ([1f1f9d41e8a2c9016198d848ad3f1cbb88cf77b0](https://github.com/googleapis/google-cloud-python/commit/1f1f9d41e8a2c9016198d848ad3f1cbb88cf77b0))
+
+
+### Features
+
+* adds support for Python runtime 3.14 (#2322) ([6065e14c448cb430189982dd70025fa0575777ca](https://github.com/googleapis/google-cloud-python/commit/6065e14c448cb430189982dd70025fa0575777ca))
+* Add ExternalRuntimeOptions to BigQuery routine (#2311) ([fa76e310a16ea6cba0071ff1d767ca1c71514da7](https://github.com/googleapis/google-cloud-python/commit/fa76e310a16ea6cba0071ff1d767ca1c71514da7))
+
+
+### Bug Fixes
+
+* include `io.Base` in the `PathType` (#2323) ([b11e09cb6ee32e451b37eda66bece2220b9ceaba](https://github.com/googleapis/google-cloud-python/commit/b11e09cb6ee32e451b37eda66bece2220b9ceaba))
+* honor custom `retry` in `job.result()` (#2302) ([e118b029bbc89a5adbab83f39858c356c23665bf](https://github.com/googleapis/google-cloud-python/commit/e118b029bbc89a5adbab83f39858c356c23665bf))
+* remove ambiguous error codes from query retries (#2308) ([8bbd3d01026c493dfa5903b397d2b01c0e9bf43b](https://github.com/googleapis/google-cloud-python/commit/8bbd3d01026c493dfa5903b397d2b01c0e9bf43b))
+
 
 ## [3.38.0](https://github.com/googleapis/python-bigquery/compare/v3.37.0...v3.38.0) (2025-09-15)
 
