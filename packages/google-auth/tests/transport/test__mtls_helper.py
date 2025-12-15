@@ -12,7 +12,6 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-import json
 import os
 import re
 
@@ -739,81 +738,78 @@ class TestDecryptPrivateKey(object):
                 ENCRYPTED_EC_PRIVATE_KEY, b"wrong_password"
             )
 
-    def test_check_use_client_cert(self, monkeypatch):
-        monkeypatch.setenv("GOOGLE_API_USE_CLIENT_CERTIFICATE", "true")
-        use_client_cert = _mtls_helper.check_use_client_cert()
-        assert use_client_cert is True
 
-    def test_check_use_client_cert_for_workload_with_config_file(self, monkeypatch):
-        config_data = {
-            "version": 1,
-            "cert_configs": {
-                "workload": {
-                    "cert_path": "path/to/cert/file",
-                    "key_path": "path/to/key/file",
-                }
-            },
-        }
-        config_filename = "mock_certificate_config.json"
-        config_file_content = json.dumps(config_data)
-        monkeypatch.setenv("GOOGLE_API_CERTIFICATE_CONFIG", config_filename)
-        monkeypatch.setenv("GOOGLE_API_USE_CLIENT_CERTIFICATE", "")
-        # Use mock_open to simulate the file in memory
-        mock_file_handle = mock.mock_open(read_data=config_file_content)
-        with mock.patch("builtins.open", mock_file_handle):
-            use_client_cert = _mtls_helper.check_use_client_cert()
-            assert use_client_cert is True
+class TestCheckUseClientCert(object):
+    @mock.patch.dict(os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": "true"})
+    def test_env_var_explicit_true(self):
+        assert _mtls_helper.check_use_client_cert() is True
 
-    def test_check_use_client_cert_false(self, monkeypatch):
-        monkeypatch.setenv("GOOGLE_API_USE_CLIENT_CERTIFICATE", "false")
-        use_client_cert = _mtls_helper.check_use_client_cert()
-        assert use_client_cert is False
+    @mock.patch.dict(os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": "True"})
+    def test_env_var_explicit_true_capitalized(self):
+        assert _mtls_helper.check_use_client_cert() is True
 
-    def test_check_use_client_cert_unsupported_value(self, monkeypatch):
-        monkeypatch.setenv("GOOGLE_API_USE_CLIENT_CERTIFICATE", "dummy")
-        use_client_cert = _mtls_helper.check_use_client_cert()
-        assert use_client_cert is False
+    @mock.patch.dict(os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": "false"})
+    def test_env_var_explicit_false(self):
+        assert _mtls_helper.check_use_client_cert() is False
 
-    def test_check_use_client_cert_for_workload_with_config_file_not_found(
-        self, monkeypatch
-    ):
-        monkeypatch.setenv("GOOGLE_API_USE_CLIENT_CERTIFICATE", "")
-        use_client_cert = _mtls_helper.check_use_client_cert()
-        assert use_client_cert is False
+    @mock.patch.dict(os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": "garbage"})
+    def test_env_var_explicit_garbage(self):
+        assert _mtls_helper.check_use_client_cert() is False
 
-    def test_check_use_client_cert_for_workload_with_config_file_not_json(
-        self, monkeypatch
-    ):
-        config_filename = "mock_certificate_config.json"
-        config_file_content = "not_valid_json"
-        monkeypatch.setenv("GOOGLE_API_CERTIFICATE_CONFIG", config_filename)
-        monkeypatch.setenv("GOOGLE_API_USE_CLIENT_CERTIFICATE", "")
-        # Use mock_open to simulate the file in memory
-        mock_file_handle = mock.mock_open(read_data=config_file_content)
-        with mock.patch("builtins.open", mock_file_handle):
-            use_client_cert = _mtls_helper.check_use_client_cert()
-            assert use_client_cert is False
+    @mock.patch("builtins.open", autospec=True)
+    @mock.patch.dict(
+        os.environ,
+        {
+            "GOOGLE_API_USE_CLIENT_CERTIFICATE": "",
+            "GOOGLE_API_CERTIFICATE_CONFIG": "/path/to/config",
+        },
+    )
+    def test_config_file_success(self, mock_file):
+        # We manually apply mock_open here so we can keep autospec=True on the decorator
+        mock_file.side_effect = mock.mock_open(
+            read_data='{"cert_configs": {"workload": "exists"}}'
+        )
+        assert _mtls_helper.check_use_client_cert() is True
 
-    def test_check_use_client_cert_for_workload_with_config_file_no_workload(
-        self, monkeypatch
-    ):
-        config_data = {"version": 1, "cert_configs": {"dummy_key": {}}}
-        config_filename = "mock_certificate_config.json"
-        config_file_content = json.dumps(config_data)
-        monkeypatch.setenv("GOOGLE_API_CERTIFICATE_CONFIG", config_filename)
-        monkeypatch.setenv("GOOGLE_API_USE_CLIENT_CERTIFICATE", "")
-        # Use mock_open to simulate the file in memory
-        mock_file_handle = mock.mock_open(read_data=config_file_content)
-        with mock.patch("builtins.open", mock_file_handle):
-            use_client_cert = _mtls_helper.check_use_client_cert()
-            assert use_client_cert is False
+    @mock.patch("builtins.open", autospec=True)
+    @mock.patch.dict(
+        os.environ,
+        {
+            "GOOGLE_API_USE_CLIENT_CERTIFICATE": "",
+            "GOOGLE_API_CERTIFICATE_CONFIG": "/path/to/config",
+        },
+    )
+    def test_config_file_missing_keys(self, mock_file):
+        mock_file.side_effect = mock.mock_open(read_data='{"cert_configs": {}}')
+        assert _mtls_helper.check_use_client_cert() is False
 
-    def test_check_use_client_cert_when_file_does_not_exist(self, monkeypatch):
-        config_filename = "mock_certificate_config.json"
-        monkeypatch.setenv("GOOGLE_API_CERTIFICATE_CONFIG", config_filename)
-        monkeypatch.setenv("GOOGLE_API_USE_CLIENT_CERTIFICATE", "")
-        use_client_cert = _mtls_helper.check_use_client_cert()
-        assert use_client_cert is False
+    @mock.patch("builtins.open", autospec=True)
+    @mock.patch.dict(
+        os.environ,
+        {
+            "GOOGLE_API_USE_CLIENT_CERTIFICATE": "",
+            "GOOGLE_API_CERTIFICATE_CONFIG": "/path/to/config",
+        },
+    )
+    def test_config_file_bad_json(self, mock_file):
+        mock_file.side_effect = mock.mock_open(read_data="{bad_json")
+        assert _mtls_helper.check_use_client_cert() is False
+
+    @mock.patch("builtins.open", autospec=True)
+    @mock.patch.dict(
+        os.environ,
+        {
+            "GOOGLE_API_USE_CLIENT_CERTIFICATE": "",
+            "GOOGLE_API_CERTIFICATE_CONFIG": "/path/does/not/exist",
+        },
+    )
+    def test_config_file_not_found(self, mock_file):
+        mock_file.side_effect = FileNotFoundError
+        assert _mtls_helper.check_use_client_cert() is False
+
+    @mock.patch.dict(os.environ, {}, clear=True)
+    def test_no_env_vars_set(self):
+        assert _mtls_helper.check_use_client_cert() is False
 
 
 class TestMtlsHelper:
